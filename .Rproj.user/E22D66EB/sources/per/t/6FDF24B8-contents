@@ -1,0 +1,1198 @@
+# 確率分布と乱数
+
+```{r, setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+
+pacman::p_load(tidyverse)
+```
+
+
+
+```{r, filename="1～100の整数からランダムに20個取り出す"}
+sample(1:100, 20, replace=TRUE)
+```
+
+
+
+```{r, filename="set.seed関数で乱数のシードを設定"}
+set.seed(0)
+sample(1:100, 20, replace=TRUE)
+
+set.seed(0)
+sample(1:100, 20, replace=TRUE)
+```
+
+
+```{r, filename="正規分布の確率密度"}
+dnorm(1, mean = 0, sd = 1) # 正規分布の確率密度
+pnorm(1, mean = 0, sd = 1) # 正規分布の累積確率密度
+qnorm(0.975, mean = 0, sd = 1) # 正規分布の95%分位点における値
+rnorm(10, mean = 0, sd = 1) # 正規分布の乱数
+```
+
+```{r, echo=FALSE}
+d <- readxl::read_excel("./data/chapter24_distributions.xlsx", sheet=1)
+knitr::kable(d, label="表1：分布を表す記号")
+```
+
+## 正規分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="正規分布の確率密度をプロット"}
+x <- seq(-5, 5, by = 0.01)
+d <- tibble(
+  x,
+  m0s1 = dnorm(x, mean = 0, sd = 1), # 平均0，標準偏差1
+  m1s2 = dnorm(x, mean = 1, sd = 2), # 平均1，標準偏差2
+  m2s05 = dnorm(x, mean = 2, sd = 0.5) # 平均2，標準偏差0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="正規分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  m0s1 = pnorm(x, mean = 0, sd = 1), # 平均0，標準偏差1
+  m1s2 = pnorm(x, mean = 1, sd = 2), # 平均1，標準偏差2
+  m2s05 = pnorm(x, mean = 2, sd = 0.5) # 平均2，標準偏差0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqnormでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  m0s1 = qnorm(x, mean = 0, sd = 1), # 平均0，標準偏差1
+  m1s2 = qnorm(x, mean = 1, sd = 2), # 平均1，標準偏差2
+  m2s05 = qnorm(x, mean = 2, sd = 0.5) # 平均2，標準偏差0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 正規乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  m0s1 = rnorm(1000, mean = 0, sd = 1), # 平均0，標準偏差1
+  m1s2 = rnorm(1000, mean = 1, sd = 2), # 平均1，標準偏差2
+  m2s05 = rnorm(1000, mean = 2, sd = 0.5) # 平均2，標準偏差0.5
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=1, position="identity")
+```
+
+:::
+
+## ベータ分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="ベータ分布の確率密度をプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s05s075 = dbeta(x, shape1 = 0.5, shape2 = 0.75), # shape1が0.5，shape2が0.75
+  s1s1  = dbeta(x, shape1 = 1, shape2 = 1), # shape1が1，shape2が1
+  s3s2 = dbeta(x, shape1 = 3, shape2 = 2) # shape1が3，shape2が2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="ベータ分布の累積確率密度をプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s05s075 = pbeta(x, shape1 = 0.5, shape2 = 0.75), # shape1が0.5，shape2が0.75
+  s1s1  = pbeta(x, shape1 = 1, shape2 = 1), # shape1が1，shape2が1
+  s3s2 = pbeta(x, shape1 = 3, shape2 = 2) # shape1が3，shape2が2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqbetaでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s05s075 = qbeta(x, shape1 = 0.5, shape2 = 0.75), # shape1が0.5，shape2が0.75
+  s1s1  = qbeta(x, shape1 = 1, shape2 = 1), # shape1が1，shape2が1
+  s3s2 = qbeta(x, shape1 = 3, shape2 = 2) # shape1が3，shape2が2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## ベータ分布乱数
+
+```{r, filename="乱数のヒストグラムをプロット"}
+d <- tibble(
+  s05s075 = rbeta(1000, shape1 = 0.5, shape2 = 0.75), # shape1が0.5，shape2が0.75
+  s1s1  = rbeta(1000, shape1 = 1, shape2 = 1), # shape1が1，shape2が1
+  s3s2 = rbeta(1000, shape1 = 3, shape2 = 2) # shape1が3，shape2が2
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth=0.1, position="identity")
+```
+
+:::
+
+## 二項分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="二項分布の確率密度をプロット"}
+x <- 0:20
+d <- tibble(
+  x,
+  s20p01 = dbinom(x, size = 20, prob = 0.1), # サイズ20，確率0.1
+  s20p05 = dbinom(x, size = 20, prob = 0.5), # サイズ20，確率0.5
+  s20p08 = dbinom(x, size = 20, prob = 0.8) # サイズ20，確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="二項分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  s20p01 = pbinom(x, size = 20, prob = 0.1), # サイズ20，確率0.1
+  s20p05 = pbinom(x, size = 20, prob = 0.5), # サイズ20，確率0.5
+  s20p08 = pbinom(x, size = 20, prob = 0.8) # サイズ20，確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqbinomでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s20p01 = qbinom(x, size = 20, prob = 0.1), # サイズ20，確率0.1
+  s20p05 = qbinom(x, size = 20, prob = 0.5), # サイズ20，確率0.5
+  s20p08 = qbinom(x, size = 20, prob = 0.8) # サイズ20，確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 二項乱数
+
+```{r, filename="乱数のヒストグラムをプロット"}
+d <- tibble(
+  s20p01 = rbinom(1000, size = 20, prob = 0.1), # サイズ20，確率0.1
+  s20p05 = rbinom(1000, size = 20, prob = 0.5), # サイズ20，確率0.5
+  s20p08 = rbinom(1000, size = 20, prob = 0.8) # サイズ20，確率0.8
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=1, position="identity")
+```
+
+:::
+
+## コーシー分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="コーシー分布の確率密度をプロット"}
+x <- seq(-5, 5, by = 0.01)
+d <- tibble(
+  x,
+  l0s1 = dcauchy(x, location = 0, scale = 1), # 中央値0，スケール1
+  lm2s05 = dcauchy(x, location = -2, scale = 0.5), # 中央値-2，スケール0.5
+  l2s2 = dcauchy(x, location = 2, scale = 2) # 中央値2，スケール2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="コーシー分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  l0s1 = pcauchy(x, location = 0, scale = 1), # 中央値20，スケール0.1
+  lm2s05 = pcauchy(x, location = -2, scale = 0.5), # 中央値20，スケール0.5
+  l2s2 = pcauchy(x, location = 2, scale = 2) # 中央値20，スケール0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()+
+  expand_limits(y=0)
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqcauchyでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  l0s1 = qcauchy(x, location = 0, scale = 1), # 中央値20，スケール0.1
+  lm2s05 = qcauchy(x, location = -2, scale = 0.5), # 中央値20，スケール0.5
+  l2s2 = qcauchy(x, location = 2, scale = 2) # 中央値20，スケール0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## コーシー乱数
+
+```{r, filename="乱数のヒストグラムをプロット"}
+set.seed(0)
+d <- tibble(
+  l0s1 = rcauchy(1000, location = 0, scale = 1), # 中央値20，スケール0.1
+  lm2s05 = rcauchy(1000, location = -2, scale = 0.5), # 中央値20，スケール0.5
+  l2s2 = rcauchy(1000, location = 2, scale = 2) # 中央値20，スケール0.8
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.2)) +
+  geom_histogram(binwidth=50, position="identity")
+```
+
+:::
+
+
+## カイ二乗分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="カイ二乗分布の確率密度をプロット"}
+x <- seq(0, 30, by = 0.01)
+d <- tibble(
+  x,
+  d3n0 = dchisq(x, df = 3, ncp = 0), # 自由度3，非心パラメータ0
+  d5n05 = dchisq(x, df = 5, ncp = 0.5), # 自由度5，非心パラメータ0.5
+  d10n2 = dchisq(x, df = 10, ncp = 2) # 自由度10，非心パラメータ2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="カイ二乗分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  d3n0 = pchisq(x, df = 3, ncp = 0), # 自由度3，非心パラメータ0
+  d5n05 = pchisq(x, df = 5, ncp = 0.5), # 自由度5，非心パラメータ0.5
+  d10n2 = pchisq(x, df = 10, ncp = 2) # 自由度10，非心パラメータ2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqchisqでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  d3n0 = qchisq(x, df = 3, ncp = 0), # 自由度3，非心パラメータ0
+  d5n05 = qchisq(x, df = 5, ncp = 0.5), # 自由度5，非心パラメータ0.5
+  d10n2 = qchisq(x, df = 10, ncp = 2) # 自由度10，非心パラメータ2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## カイ二乗乱数
+
+```{r, filename="乱数のヒストグラムをプロット"}
+d <- tibble(
+  d3n0 = rchisq(1000, df = 3, ncp = 0), # 自由度3，非心パラメータ0
+  d5n05 = rchisq(1000, df = 5, ncp = 0.5), # 自由度5，非心パラメータ0.5
+  d10n2 = rchisq(1000, df = 10, ncp = 2) # 自由度10，非心パラメータ2
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=1, position="identity")
+```
+
+:::
+
+## 指数分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="指数分布の確率密度をプロット"}
+x <- seq(0, 10, by = 0.01)
+d <- tibble(
+  x,
+  r1 = dexp(x, rate = 1), # ラムダ1
+  r3 = dexp(x, rate = 3), # ラムダ3
+  r5 = dexp(x, rate = 5) # ラムダ5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="指数分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  r1 = pexp(x, rate = 1), # ラムダ1
+  r3 = pexp(x, rate = 3), # ラムダ3
+  r5 = pexp(x, rate = 5) # ラムダ5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqexpでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  r1 = qexp(x, rate = 1), # ラムダ1
+  r3 = qexp(x, rate = 3), # ラムダ3
+  r5 = qexp(x, rate = 5) # ラムダ5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 指数乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  r1 = rexp(1000, rate = 1), # ラムダ1
+  r3 = rexp(1000, rate = 3), # ラムダ3
+  r5 = rexp(1000, rate = 5) # ラムダ5
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=0.1, position="identity")
+```
+
+:::
+
+
+## F分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="F分布の確率密度をプロット"}
+x <- seq(0, 10, by = 0.01)
+d <- tibble(
+  x,
+  df5df5 = df(x, df1 = 5, df2 = 5), # 自由度1 5、自由度2 5
+  df10df15 = df(x, df1 = 10, df2 = 15), # 自由度1 10、自由度2 15
+  df15df20 = df(x, df1 = 20, df2 = 15) # 自由度1 20、自由度2 15
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="F分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  df5df5 = pf(x, df1 = 5, df2 = 5), # 自由度1 5、自由度2 5
+  df10df15 = pf(x, df1 = 10, df2 = 15), # 自由度1 10、自由度2 15
+  df15df20 = pf(x, df1 = 20, df2 = 15) # 自由度1 20、自由度2 15
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  df5df5 = qf(x, df1 = 5, df2 = 5), # 自由度1 5、自由度2 5
+  df10df15 = qf(x, df1 = 10, df2 = 15), # 自由度1 10、自由度2 15
+  df15df20 = qf(x, df1 = 20, df2 = 15) # 自由度1 20、自由度2 15
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## F乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  df5df5 = rf(1000, df1 = 5, df2 = 5), # 自由度1 5、自由度2 5
+  df10df15 = rf(1000, df1 = 10, df2 = 15), # 自由度1 10、自由度2 15
+  df15df20 = rf(1000, df1 = 20, df2 = 15) # 自由度1 20、自由度2 15
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=1, position="identity")
+```
+
+:::
+
+## ガンマ分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="ガンマ分布の確率密度をプロット"}
+x <- seq(0, 100, by = 0.1)
+d <- tibble(
+  x,
+  df5df5 = dgamma(x, shape = 5, scale = 2), # shape 5 scale 2
+  df10df15 = dgamma(x, shape = 10, scale = 4), # shape 10 scale 4
+  df15df20 = dgamma(x, shape = 1, scale = 6) # shape 1 scale 6
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="ガンマ分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  df5df5 = pgamma(x, shape = 5, scale = 2), # shape 5 scale 2
+  df10df15 = pgamma(x, shape = 10, scale = 4), # shape 10 scale 4
+  df15df20 = pgamma(x, shape = 1, scale = 6) # shape 1 scale 6
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  df5df5 = qgamma(x, shape = 5, scale = 2), # shape 5 scale 2
+  df10df15 = qgamma(x, shape = 10, scale = 4), # shape 10 scale 4
+  df15df20 = qgamma(x, shape = 1, scale = 6) # shape 1 scale 6
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## ガンマ乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  df5df5 = rgamma(1000, shape = 5, scale = 2), # shape 5 scale 2
+  df10df15 = rgamma(1000, shape = 10, scale = 4), # shape 10 scale 4
+  df15df20 = rgamma(1000, shape = 1, scale = 6) # shape 1 scale 6
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=5, position="identity")
+```
+
+:::
+
+## 幾何分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="幾何分布の確率密度をプロット"}
+x <- 1:50
+d <- tibble(
+  x,
+  r01 = dgeom(x, prob = 0.1), # 確率0.1
+  r05 = dgeom(x, prob = 0.5), # 確率0.5
+  r08 = dgeom(x, prob = 0.8) # 確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="幾何分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  r01 = pgeom(x, prob = 0.1), # 確率0.1
+  r05 = pgeom(x, prob = 0.5), # 確率0.5
+  r08 = pgeom(x, prob = 0.8) # 確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  r01 = qgeom(x, prob = 0.1), # 確率0.1
+  r05 = qgeom(x, prob = 0.5), # 確率0.5
+  r08 = qgeom(x, prob = 0.8) # 確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 幾何乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  r01 = rgeom(1000, prob = 0.1), # 確率0.1
+  r05 = rgeom(1000, prob = 0.5), # 確率0.5
+  r08 = rgeom(1000, prob = 0.8) # 確率0.8
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=5, position="identity")
+```
+
+:::
+
+## 超幾何分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="超幾何分布の確率密度をプロット"}
+x <- 1:6
+d <- tibble(
+  x,
+  m5n5k5 = dhyper(x, m = 5, n = 5, k = 5), # 白 5, 赤 5, 取るボールの数 5
+  m10n5k5 = dhyper(x, m = 10, n = 5, k = 5), # 白 10, 赤 5, 取るボールの数 5
+  m5n20k10 = dhyper(x, m = 5, n = 20, k = 10) # 白 5, 赤 20, 取るボールの数 10
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="超幾何分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  m5n5k5 = phyper(x, m = 5, n = 5, k = 5), # 白 5, 赤 5, 取るボールの数 5
+  m10n5k5 = phyper(x, m = 10, n = 5, k = 5), # 白 10, 赤 5, 取るボールの数 5
+  m5n20k10 = phyper(x, m = 5, n = 20, k = 10) # 白 5, 赤 20, 取るボールの数 10
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  m5n5k5 = qhyper(x, m = 5, n = 5, k = 5), # 白 5, 赤 5, 取るボールの数 5
+  m10n5k5 = qhyper(x, m = 10, n = 5, k = 5), # 白 10, 赤 5, 取るボールの数 5
+  m5n20k10 = qhyper(x, m = 5, n = 20, k = 10) # 白 5, 赤 20, 取るボールの数 10
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 超幾何乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  m5n5k5 = rhyper(1000, m = 5, n = 5, k = 5), # 白 5, 赤 5, 取るボールの数 5
+  m10n5k5 = rhyper(1000, m = 10, n = 5, k = 5), # 白 10, 赤 5, 取るボールの数 5
+  m5n20k10 = rhyper(1000, m = 5, n = 20, k = 10) # 白 5, 赤 20, 取るボールの数 10
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=0.1, position="identity")
+```
+
+:::
+
+## 対数正規分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="対数正規分布の確率密度をプロット"}
+x <- seq(0, 5, by = 0.01)
+d <- tibble(
+  x,
+  m0s1 = dlnorm(x, meanlog = 0, sdlog = 1), # 平均（対数）0、標準偏差（対数）1
+  m2s2 = dlnorm(x, meanlog = 2, sdlog = 2), # 平均（対数）2、標準偏差（対数）2
+  mm2s05 = dlnorm(x, meanlog = -2, sdlog = 0.5) # 平均（対数）-2、標準偏差（対数）0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="対数正規分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  m0s1 = plnorm(x, meanlog = 0, sdlog = 1), # 平均（対数）0、標準偏差（対数）1
+  m2s2 = plnorm(x, meanlog = 2, sdlog = 2), # 平均（対数）2、標準偏差（対数）2
+  mm2s05 = plnorm(x, meanlog = -2, sdlog = 0.5) # 平均（対数）-2、標準偏差（対数）0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  m0s1 = qlnorm(x, meanlog = 0, sdlog = 1), # 平均（対数）0、標準偏差（対数）1
+  m2s2 = qlnorm(x, meanlog = 2, sdlog = 2), # 平均（対数）2、標準偏差（対数）2
+  mm2s05 = qlnorm(x, meanlog = -2, sdlog = 0.5) # 平均（対数）-2、標準偏差（対数）0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 対数正規乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  m0s1 = rlnorm(1000, meanlog = 0, sdlog = 1), # 平均（対数）0、標準偏差（対数）1
+  m2s2 = rlnorm(1000, meanlog = 2, sdlog = 2), # 平均（対数）2、標準偏差（対数）2
+  mm2s05 = rlnorm(1000, meanlog = -2, sdlog = 0.5) # 平均（対数）-2、標準偏差（対数）0.5
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=100, position="identity")
+```
+
+:::
+
+## 負の二項分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="負の二項分布の確率密度をプロット"}
+x <- 0:100
+d <- tibble(
+  x,
+  p01 = dnbinom(x, size = 5, prob = 0.1), # サイズ5、確率0.1
+  p05 = dnbinom(x, size = 5, prob = 0.5), # サイズ5、確率0.5
+  p08 = dnbinom(x, size = 5, prob = 0.8) # サイズ5、確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="負の二項分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  p01 = pnbinom(x, size = 5, prob = 0.1), # サイズ5、確率0.1
+  p05 = pnbinom(x, size = 5, prob = 0.5), # サイズ5、確率0.5
+  p08 = pnbinom(x, size = 5, prob = 0.8) # サイズ5、確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  p01 = qnbinom(x, size = 5, prob = 0.1), # サイズ5、確率0.1
+  p05 = qnbinom(x, size = 5, prob = 0.5), # サイズ5、確率0.5
+  p08 = qnbinom(x, size = 5, prob = 0.8) # サイズ5、確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 負の二項乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  p01 = rnbinom(1000, size = 5, prob = 0.1), # サイズ5、確率0.1
+  p05 = rnbinom(1000, size = 5, prob = 0.5), # サイズ5、確率0.5
+  p08 = rnbinom(1000, size = 5, prob = 0.8) # サイズ5、確率0.8
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=10, position="identity")
+```
+
+:::
+
+## ポアソン分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="ポアソン分布の確率密度をプロット"}
+x <- 0:25
+d <- tibble(
+  x,
+  l3 = dpois(x, lambda = 3), # ラムダ3
+  l8 = dpois(x, lambda = 8), # ラムダ8
+  l11 = dpois(x, lambda = 11) # ラムダ11
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="ポアソン分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  l3 = ppois(x, lambda = 3), # ラムダ3
+  l8 = ppois(x, lambda = 8), # ラムダ8
+  l11 = ppois(x, lambda = 11) # ラムダ11
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  l3 = qpois(x, lambda = 3), # ラムダ3
+  l8 = qpois(x, lambda = 8), # ラムダ8
+  l11 = qpois(x, lambda = 11) # ラムダ11
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## ポアソン乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  l3 = rpois(1000, lambda = 3), # ラムダ3
+  l8 = rpois(1000, lambda = 8), # ラムダ8
+  l11 = rpois(1000, lambda = 11) # ラムダ11
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=1, position="identity")
+```
+
+:::
+
+## t分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="t分布の確率密度をプロット"}
+x <- seq(-5, 15, by = 0.01)
+d <- tibble(
+  x,
+  d3n0 = dt(x, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d8n0 = dt(x, df = 8, ncp = 0), # 自由度8、非心パラメータ0
+  d3n3 = dt(x, df = 3, ncp = 3) # 自由度3、非心パラメータ3
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="t分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  d3n0 = pt(x, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d8n0 = pt(x, df = 8, ncp = 0), # 自由度8、非心パラメータ0
+  d3n3 = pt(x, df = 3, ncp = 3) # 自由度3、非心パラメータ3
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  d3n0 = qt(x, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d8n0 = qt(x, df = 8, ncp = 0), # 自由度8、非心パラメータ0
+  d3n3 = qt(x, df = 3, ncp = 3) # 自由度3、非心パラメータ3
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## t分布の乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  d3n0 = rt(1000, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d8n0 = rt(1000, df = 8, ncp = 0), # 自由度8、非心パラメータ0
+  d3n3 = rt(1000, df = 3, ncp = 3) # 自由度3、非心パラメータ3
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=1, position="identity")
+```
+
+:::
+
+## 一様分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="一様分布の確率密度をプロット"}
+x <- seq(-1.5, 4.5, by = 0.01)
+d <- tibble(
+  x,
+  m0m1 = dunif(x, min = 0, max = 1), # 最小0、最大1
+  mm1m1 = dunif(x, min = -1, max = 1), # 最小-1、最大1
+  m2m4 = dunif(x, min = 2, max = 4) # 最小2、最大4
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="一様分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  m0m1 = punif(x, min = 0, max = 1), # 最小0、最大1
+  mm1m1 = punif(x, min = -1, max = 1), # 最小-1、最大1
+  m2m4 = punif(x, min = 2, max = 4) # 最小2、最大4
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  m0m1 = qunif(x, min = 0, max = 1), # 最小0、最大1
+  mm1m1 = qunif(x, min = -1, max = 1), # 最小-1、最大1
+  m2m4 = qunif(x, min = 2, max = 4) # 最小2、最大4
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 一様乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  m0m1 = runif(1000, min = 0, max = 1), # 最小0、最大1
+  mm1m1 = runif(1000, min = -1, max = 1), # 最小-1、最大1
+  m2m4 = runif(1000, min = 2, max = 4) # 最小2、最大4
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidunifh=1, position="identity")
+```
+
+:::
+
+## ワイブル分布
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="ワイブル分布の確率密度をプロット"}
+x <- seq(0, 5, by = 0.01)
+d <- tibble(
+  x,
+  s1s1 = dweibull(x, shape = 1, scale = 1), # shape 1、scale 1
+  s2s2 = dweibull(x, shape = 2, scale = 2), # shape 2、scale 2
+  s05s05 = dweibull(x, shape = 0.5, scale = 0.5) # shape 0.5、scale 0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積確率密度
+
+```{r, filename="ワイブル分布の累積確率密度をプロット"}
+d <- tibble(
+  x,
+  s1s1 = pweibull(x, shape = 1, scale = 1), # shape 1、scale 1
+  s2s2 = pweibull(x, shape = 2, scale = 2), # shape 2、scale 2
+  s05s05 = pweibull(x, shape = 0.5, scale = 0.5) # shape 0.5、scale 0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積確率密度の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s1s1 = qweibull(x, shape = 1, scale = 1), # shape 1、scale 1
+  s2s2 = qweibull(x, shape = 2, scale = 2), # shape 2、scale 2
+  s05s05 = qweibull(x, shape = 0.5, scale = 0.5) # shape 0.5、scale 0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## ワイブル乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  s1s1 = rweibull(1000, shape = 1, scale = 1), # shape 1、scale 1
+  s2s2 = rweibull(1000, shape = 2, scale = 2), # shape 2、scale 2
+  s05s05 = rweibull(1000, shape = 0.5, scale = 0.5) # shape 0.5、scale 0.5
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill=name, alpha = 0.5)) +
+  geom_histogram(binwidth=0.2, position="identity")
+```
+
+:::
+
+## 多項分布
+
+```{r, warning=FALSE}
+# 0.1、0.3、0.6の確率で起こる事象がそれぞれ1、2、4回同時に起こる確率
+dmultinom(c(1, 2, 4), size = 7, prob = c(0.1, 0.3, 0.6))
+
+# 足し合わせると20になる制約付き2項分布と考えるとわかりやすい
+rmnom <- rmultinom(1000, size=20, prob = c(0.1, 0.3, 0.6))
+rmnom |> 
+  t() |> 
+  as_tibble() |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x=value, color=name, fill=name, alpha=0.5))+
+  geom_histogram(binwidth=1, position="identity")
+
+```
+
+logistic distribution(dlogis, plogis, qlogis, rlogis)がない。ロジスティック分布はロジスティック関数の微分を反映した分布のこと。

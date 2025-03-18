@@ -1,0 +1,578 @@
+# 日時データの取り扱い
+
+```{r, setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+```
+
+時間とともに変化する値を記録したデータである**時系列データ**は、統計で取り扱う代表的なデータの一つです。時系列データの代表的な例として、為替や株価、温度や湿度、ネットワークへのアクセス数などが挙げられます。これらのデータを取り扱うためには、**日時データ**を適切に取り扱う必要があります。
+
+日時データは通常文字列として記録されるため、Rでデータを読み込んだ際には、文字列のデータを日時データとして取り扱えるように変換する必要があります。この変換に関する関数をRは多数取り揃えています。
+
+## 日時データのクラス：Date・POSIXct・POSIXlt・POSIXt
+
+Rでは、日時データのクラスとして、**Date・POSIXct・POSIXlt・POSIXt**の4種類が設定されています。これらのうち、**Date型は日付**のみを取り扱う型、**POSIXct・POSIXlt・POSIXt型は日時（日付＋時間）**を取り扱う型です。これらの型は、それぞれ取り扱い方が少しずつ異なります。
+
+Rには、表1に示す日時データ取り扱いのための関数が備わっています。以下にそれぞれの関数・データ型の取り扱いについて説明します。
+
+```{r, echo=FALSE}
+pacman::p_load(readxl)
+d <- read_excel("./data/chapter17_datetime.xlsx", sheet=1)
+knitr::kable(d, caption="表1：R標準の日時関連関数群")
+```
+
+:::{.callout-tip collapse="true"}
+
+## POSIXtクラス
+
+POSIXtクラスはPOSIXctとPOSIXltの親クラスです。Rの日時に関する関数の多くはPOSIXtクラスを引数に取るよう設定されているため、POSIXctもPOSIXltもほぼ同じように取り扱うことができます。
+
+:::
+
+## 現在の日時を取得する
+
+`Sys.Date`関数と`Sys.time`関数は、現在の日付・日時をそれぞれ取得するための関数です。`Sys.Date`関数は現在の日付をDateクラスで、`Sys.time`関数は現在の時刻をPOSIXctクラスで返します。同様の関数として`date`関数もありますが、この関数の返り値は文字列です。
+
+`Sys.timezone`関数は、Rが演算に用いるタイムゾーンを返す関数です。日本で使用しているPCでは、通常Asia/Tokyo（GMT+9）をタイムゾーンとしています。
+
+```{r, filename="Sys.DateとSys.time関数"}
+Sys.Date() # 現在の日付（Date）
+
+Sys.time() # 現在の日時（POSIXct）
+
+date() # 現在の日時（文字列）
+
+Sys.timezone() # システムのタイムゾーン
+
+
+Sys.Date() |> class() # Sys.Dateの返り値はDate
+
+Sys.time() |> class() # Sys.timeの返り値はPOSIXct（POSIXt）
+
+date() |> class() # dateの返り値は文字列（character）
+```
+
+Dateクラスのデータ型は数値で、`as.numeric`関数で数値に変換すると1970年1月1日からの日数を返します。
+
+```{r, filename="Dateクラス"}
+Sys.Date() |> mode() # Dateクラスは数値型
+
+Sys.Date() |> as.numeric() # 1970/1/1からの日数
+```
+
+同様に、POSIXctもデータ型は数値で、数値変換すると1970年1月1日0時0分0秒からの秒数を返します。
+
+```{r, filename="POSIXctクラス"}
+Sys.time() |> mode() # POSIXctクラスは数値型
+
+Sys.time() |> as.numeric() # 1970/1/1からの時間（秒）
+```
+
+## POSIXctクラスとPOSIXltクラス
+
+POSIXctクラスのオブジェクトは、`as.POSIXlt`関数でPOSIXltクラスに変換することができます。また、`as.POSIXct`関数を用いてPOSIXltクラスのオブジェクトをPOSIXctクラスに変換することもできます。
+
+POSIXctクラスとPOSIXltクラスの違いは、POSIXctが数値なのに対し、POSIXltにはクラスだけでなく、名前（`names`）とタイムゾーン（`tzone`）がアトリビュートとして設定されているリストである点です。POSIXltは名前付きリストですので、設定されている名前（`sec`、`min`、`hour`、`mday`など）を用いて、秒、分、時、日などの日時の部分データを呼び出すことができます。
+
+```{r, error=TRUE, filename="POSIXltクラス"}
+Sys.time() |> as.POSIXct() # POSIXctに変換
+
+Sys.time() |> as.POSIXlt() # POSIXltに変換
+
+
+t <- Sys.time() # tはPOSIXct
+t$year # POSIXctには名前が無いため、エラー
+
+attributes(t) # class以外は設定されていない
+
+
+t1 <- as.POSIXlt(t) # t1はPOSIXlt
+attributes(t1) # 名前とタイムゾーンが設定されている
+
+as.numeric(t1) # POSIXltも数値に置き換えできる
+
+mode(t1) # POSIXltはリスト
+
+t1$mday # POSIXltは$で名前から呼び出し可能
+
+t1$hour
+
+t1$wday # 曜日は月曜日が1
+
+t1$zone # タイムゾーン
+```
+
+POSIXltにはタイムゾーンがアトリビュートとして設定されており、POSIXctには設定されていませんが、いずれも`as.POSIXlt`、`as.POSIXct`関数の`tz`引数を設定することで、タイムゾーンを変更することができます。
+
+```{r, error=TRUE, filename="タイムゾーンの設定"}
+as.POSIXct(Sys.time(), tz = "GMT") # POSIXct型のSys.time()をUTCに変換
+
+as.POSIXct(Sys.time(), tz = "EST") # アメリカ東時間に変換
+
+as.POSIXlt(t1, tz = "GMT") # POSIXlt型をUTCに変換
+
+as.POSIXlt(t1, tz = "EST") # アメリカ東時間に変換
+```
+
+POSIXct、POSIXltクラスのオブジェクトは、共にRの日時データに関する関数の引数として設定し、演算を行うことができます。
+
+代表的な日時データに関する関数は、`weekdays`関数や`months`関数、`quarters`関数などです。いずれも日時データのベクターを引数に取り、曜日・月・四半期などの値を返します。
+
+```{r, error=TRUE, filename="日時データに関する関数"}
+weekdays(t)
+
+weekdays(t, abbreviate = T) # 省略形
+
+weekdays(as.POSIXlt(t, tz="EST")) # US時間に変更しても、日本語で出てくる
+
+
+t2 <- c(as.POSIXct("2023-10-10 11:11:11"), as.POSIXct("2024-1-11 11:11:11"))
+weekdays(t2) # ベクターでも処理可能
+
+months(t2) # 月を返す関数
+
+quarters(t2) # 四半期を返す関数
+```
+
+## 文字列を日時データに変換する
+
+Excelやテキストファイルなどでは、日時データは文字列や数値で保存されています。Rでは文字列や数値をそのまま日時データとして取り扱うことはできないため、日時データに変換する必要があります。日時データへの変換にも、`as.POSIXct`関数や`as.POSIXlt`関数を用います。
+
+文字列は、日本人が通常使うような日時の表現（`"2022/2/22 11:11:11"`や`"2022-2-22 11:11:11"`など）であれば、その文字列のみを引数に取り、`as.POSIXct`関数や`as.POSIXlt`関数で日時クラスに変換できます。
+
+ただし、単に日時の数値を並べた文字列や、年月日等の日本語が混じった文字列では、どのような日時データなのかRが読み解くことができないため、`as.POSIXct`関数や`as.POSIXlt`関数で直接日時データに変換することはできません。
+
+このように、文字列を日時データに変換する場合には、変換のルールである**フォーマット**を指定する必要があります。フォーマットとは、%（パーセント）に特定のアルファベットを付けて、年や月、分などを指定するものです。例えば、年であれば`%Y`や`%y`、月であれば`%m`が対応するフォーマットとなります。フォーマットの一覧を以下の表2に示します。
+
+```{r, echo=FALSE}
+pacman::p_load(readxl)
+d <- read_excel("./data/chapter17_datetime.xlsx", sheet=2)
+knitr::kable(d, caption="表2：日時formatの記載一覧")
+```
+
+フォーマットを利用することで、日本語の混じった文字列や、単に数値だけの文字列であっても、日時データに変換することができます。
+
+```{r, error=TRUE, filename="フォーマットを用いた日時データへの変換"}
+as.POSIXlt("2022-2-22 11:11:11")
+
+as.POSIXlt("2022/2/22 11:11:11")
+
+as.Date("2022/10/22")
+
+
+as.POSIXct("20221022 111111") # エラー
+
+as.POSIXct("20221022 111111", format = "%Y%m%d %H%M%S") # フォーマットを設定
+
+as.Date("20221022", format = "%Y%m%d")
+
+ # 漢字が混じっていても、フォーマットを設定すると日時データに変換できる
+as.POSIXct("2022年10月22日 11時11分11秒", format = "%Y年%m月%d日 %H時%M分%S秒")
+```
+
+## 数値を日時データに変換する
+
+`as.Date`や`as.POSIXct`の引数に数値を指定すると、1970年1月1日からの日数・秒数に従い日時データに変換されてしまいます。したがって、数値を日時データに変換する場合には、まず文字列に変換しておく必要があります。
+
+```{r, error=TRUE, filename="数値から日時データへの変換"}
+as.Date(20221022, format = "%Y%m%d") # 数値はうまく変換できない
+
+20221022 |> as.character() |> as.Date(format = "%Y%m%d") # 文字列に変換する
+```
+
+### ISOdatetime関数で日時データを作成する
+
+`ISOdatetime`関数を用いて日時データを作成することもできます。`ISOdatetime`関数は引数に年、月、日、時、分、秒の数値を取り、引数に応じた日時データをPOSIXctクラスで返します。
+
+```{r, error=TRUE, filename="ISOdatetime関数"}
+ISOdatetime(2022, 2, 22, 2, 22, 22) # POSIXct型の2022/2/22 2:22:22を作成
+```
+
+## 連続した日時データの作成
+
+ココまでは、1つの日時データの作成について見てきました。しかし、統計では日時データとして一定間隔で数時間～数年などの連続した時間を取り扱う場合が多いです。このような一定間隔での日時データの作成には、`seq`関数を用います。
+
+数値ベクターでの`seq`関数と同じく、第一引数に始めの日時、第二引数に終わりの日時、`by`引数に時間間隔を入力すると、始めの日時から終わりの日時まで、`by`引数で指定した間隔での連続した日時データを作成することができます。
+
+`seq`関数の引数には`Date`クラスも`POSIXt`クラスも利用することができますが、`Date`クラスと`POSIXt`クラスを同時に用いることはできません。
+
+```{r, error=TRUE, filename="seq関数で連続する日時データを作成する"}
+day1 <- as.POSIXlt("2022-2-22")
+day2 <- as.POSIXlt("2022-2-26")
+
+# day1からday2まで、1日置きのベクター
+seq(day1, day2, by="day")
+
+# 1日間隔で、5日間のベクター
+seq(day1, by="day", length.out=5)
+
+# 1週間間隔で、5週間のベクター
+seq(day1, by="week", length.out=5)
+
+# 2週間間隔で、10週間のベクター
+seq(day1, by="2 week", length.out=5)
+
+day3 <- as.Date("2022-2-22") # Dateクラスでも同じ演算が使える
+seq(day3, by="1 week", length.out=5)
+
+seq(day1, day3, by="day") # POSIXtとDateを同時に使うとエラー
+```
+
+:::{.callout-tip collapse="true"}
+
+## seq関数で連続した日時データを作成する
+
+`seq`関数はジェネリック関数の一つで、引数が数値の場合には`seq.default`関数、整数の場合には`seq.int`関数、引数がPOSIXtの場合には`seq.POSIXt`関数、引数がDateの場合は`seq.Date`関数がそれぞれ実行されます。`seq`関数の第一引数と第二引数のクラスは同じである必要があります。引数にDateとPOSIXtを指定すると、第一引数に従い用いる関数が変化するため（第一引数がDateなら`seq.Date`、POSIXtなら`seq.POSIXt`が呼び出される）、第一引数と第二引数のデータ型が異なるとエラーとなります。
+
+:::
+
+## cut関数
+
+`cut`関数は、第一引数に日時データのベクター、第二引数`by`に時間間隔（`"weeks"`、`"months"`など）を取り、時間間隔で指定した範囲の日時データを同一の値に変換する関数です。返り値は因子になるため、週や月、年の集計データを収集したい場合などに利用できます。
+
+```{r, error=TRUE, filename="cut関数"}
+hdays <- seq(day1, by="day", length.out = 25) # 2022-2-22から25日間のデータ
+cutdays <- cut(hdays, "weeks") # hdaysを週ごとに分けて、因子にする
+cutdays[1:14] # 同一週の日時は同じ因子のレベルが振り当てられる
+
+class(cutdays) # cut関数の返り値は因子
+
+levels(cutdays) # 週ごとにレベルが設定される
+```
+
+## 日時データを引数に取る関数
+
+上記の`cut`関数以外にも、Rには日時データを引数に取る関数が多数設定されています。例えば最初の日時、最後の日時を返す`min`・`max`関数、平均の日時を返す`mean`関数、最初と最後の日時を返す`range`関数などが代表例です。日時の差は`difftime`関数で計算することができますが、単に日時データを引き算することでも計算できます。また、特定の単位（年、月、日など）で丸める場合には、`round`関数を用いることができます。
+
+```{r, error=TRUE, filename="日時データの関数演算"}
+min(hdays)
+
+max(hdays)
+
+mean(hdays)
+
+range(hdays)
+
+difftime(max(hdays), min(hdays))
+
+max(hdays) - min(hdays)
+
+round(t, unit="year")
+```
+
+## 演算を一時停止する：Sys.sleep関数
+
+`Sys.sleep`関数はRの演算の途中で、演算を指定した時間だけ一時停止するための関数です。一時停止する時間（秒）を数値で引数に取ります。
+
+```{r, eval=FALSE, filename="Sys.sleep関数"}
+Sys.sleep(5) # 5秒待つ
+```
+
+## 演算時間の計測
+
+`Sys.time`関数を用いると、演算にかかる時間を計測することができます。繰り返し計算などで、とても時間がかかる演算を含む場合には、あらかじめ演算時間を計測しておくと、繰り返し計算全体でどの程度時間がかかるのか把握しやすくなります。
+
+まず、`Sys.time`関数の返り値である、現在の時刻を変数`t`に代入します。その後何らかの演算を行い（下の例では`Sys.sleep`関数で3秒停止）、その後、演算後の現在時刻から`t`を引くと、`Sys.sleep`関数による演算の時間を計測することができます。`Sys.sleep`関数による3秒の停止以外にも、代入等でわずかに時間がかかるため、3秒よりほんの少し時間がかかっていることが計測できます。
+
+同様の時間計測は、`system.time`関数を用いても行うことができます。`system.time`関数は演算全体を引数に取り、その演算にかかる時間を計測します。
+
+```{r, filename="プログラムの演算時間を計測する"}
+t <- Sys.time() # 現在時刻を記録
+Sys.sleep(3) # 3秒スリープ
+Sys.time() - t # 現在時刻と記録した時刻の差を計算
+
+# system.time関数でも演算時間を計測できる
+system.time(for(i in 1:1000000){i^2})
+```
+
+### tictocパッケージ
+
+もう少しスマートに演算時間を計測する方法を[`tictoc`](https://cran.r-project.org/web/packages/tictoc/index.html)パッケージ [@tictoc_bib]が提供しています。`tictoc`パッケージには`tic`関数と`toc`関数が設定されており、`tic`関数で計測を開始し、`toc`関数で計測を終了、演算時間を返します。
+
+`tic`関数は引数に文字列を取ることができ、`toc`関数で計測時間が返ってくる時に、この`tic`関数の引数を同時に返してくれます。`tic`関数、`toc`関数による時間計測は、**後入れ先出し（Last In, First Out, LIFO）**のルールに従い時間を計測します。ですので、後から`tic`関数で計測をスタートした演算時間は、先の`toc`関数で返ってくる仕組みになっています。
+
+```{r, filename="tictocパッケージで演算時間を計測"}
+pacman::p_load(tictoc)
+tic()
+Sys.sleep(3)
+toc()
+
+tic("first")
+tic("second")
+tic("third")
+toc() # 後のtic（third）からの時間がまず返ってくる
+
+toc()
+
+toc() # 先のtic（first）が最後に返ってくる
+```
+
+## 時系列データ：tsクラス
+
+**時系列データ（time series data）**は、日時データとセットになった測定値です。例えば、[14章](./chapter14.html)で説明した`Nile`のデータセットは時系列データの代表的な例です。`Nile`は1871年から1970年のナイル川の流量を年ごとに測定したデータです。
+
+```{r, filename="Nileデータセット"}
+Nile # 時系列データの代表例：ナイル川の流量
+```
+
+このような時系列データをRで取り扱うために準備されているクラスが、**tsクラス**です。tsクラスには計測されたデータと共に、日時に関する情報が付属しています。
+
+```{r, filename="tsクラスのattribute"}
+attributes(Nile) # 日時に関するattribute（tsp）が記録されている
+```
+
+tsクラスを引数とする関数が、Rには複数備わっています。tsクラスを引数とする関数の一覧を以下の表3に示します。
+
+```{r, echo=FALSE}
+pacman::p_load(readxl)
+d <- read_excel("./data/chapter17_datetime.xlsx", sheet=3)
+knitr::kable(d, caption="表3：tsクラスを引数とする関数群")
+```
+
+```{r, filename="tsクラスの作成と演算"}
+value <- rep(1:3, 8) # 時系列の元になる値
+# tsクラスの変数を作成
+tsobj <- ts(value, frequency = 1, start=c(2023)) 
+tsobj # 2023年から2046年までのtsクラスのデータ
+
+as.ts(1:12) # tsに変換
+
+tsobj |> is.ts() # tsオブジェクトであることを確認
+
+ts(value, frequency = 4, start=c(2023)) # 4半期ごとのデータ
+
+ts(value, frequency = 12, start=c(2023)) # 月次のデータ
+
+tsobj2 <- ts(value, frequency = 4, start=c(2023))
+tsobj2 |> tsp() # 2023年から2028年4Qまで四半期置きのデータ
+
+tsobj2 |> cycle() # 四半期（cycle）についてのラベル
+
+tsobj2 |> frequency() # frequencyは4
+
+tsobj2 |> deltat() # データの間隔は1/4年
+
+# 2025年1Qから2026年4Qまでのデータを返す
+tsobj2 |> window(c(2025, 1), c(2026, 4)) 
+
+tsobj2 |> time() # 各データの時点に変換
+
+tsobj2 |> start() # 2023年1Qからのデータ
+
+tsobj2 |> end() # 2028年4Qまでのデータ
+```
+
+:::{.callout-tip collapse="true"}
+
+## tsクラスの利用
+
+時系列データを取り扱う場合に、必ずしもtsクラスのオブジェクトを用いないといけない、というわけではありません。日時データと値の2つのベクターを用いても、時系列の解析を行うことはできます。
+
+時系列データの解析には、[Stan](https://mc-stan.org/) [@carpenter2017stan]などの外部ツールを用いる場合もあるため、場合によってはtsクラスではないデータの方が取り扱いやすい場合もあります。
+
+:::
+
+## lubridateパッケージ
+
+上記のように、Rには時間を取り扱うクラスとして、Date、POSIXct、POSIXlt、tsなどを備えています。ただし、フォーマットの設定や関数に見られるように、必ずしもすべてのクラスが時系列データの解析において使いやすい、というわけではありません。
+
+Rでの日時データの取り扱いを簡単にするためのライブラリが、[`lubridate`](https://lubridate.tidyverse.org/)パッケージ [@lubridate_bib]です。`lubridate`パッケージは日時データを取り扱うための関数のセットを提供しており、様々なフォーマットの文字列を簡単に日時データに変換し、演算に用いることができます。
+
+`lubridate`パッケージが提供する関数群を以下の表4に示します。
+
+```{r, echo=FALSE}
+pacman::p_load(readxl)
+d <- read_excel("./data/chapter17_datetime.xlsx", sheet=4)
+knitr::kable(d, caption="表4：lubridateパッケージの関数群")
+```
+
+### 日付データへの変換：ymd関数
+
+文字列を日時データに変換する場合、`as.POSIXlt`関数や`as.Date`関数で、フォーマットを指定するのがRのデフォルトの手法です。この手順を簡単に行うことができる関数が、`ymd`関数を含む関数群です。`ymd`は、「year, month, day」の略で、この年月日の順で数値が記載された文字列や数値であれば、かなり適当に記載した文字列・数値であっても、正確に日時データに変換してくれます。
+
+日本では年月日の順で日付を書くのが一般的ですが、アメリカでは月日年、ヨーロッパでは日月年の順で日付を書くことになっています。このように、年月日の順番が異なる場合には、`ymd`関数ではなく、`mdy`関数や`dmy`関数を用いることで、日時データに簡単に変換することができます。
+
+```{r, error=TRUE, filename="ymd・mdy・dmy関数でDateに変換"}
+pacman::p_load(lubridate)
+
+# どんな書き方でも変換してくれる
+ymd("20231020")
+
+ymd("2023/10/20")
+
+ymd("2023-10-20")
+
+ymd("23 10 20")
+
+ymd("2023年10月20日") # 漢字が入っていても変換可能
+
+ymd(20231020) # 数値でも変換可能
+
+ymd(231020)
+
+mdy("10/20/2023") # USでは月/日/年
+
+dmy("20/10/2023") # ヨーロッパでは日/月/年
+
+ym("2023/10") # yearとmonthだけのデータも対応できる
+```
+
+### 日時データの変換：ymd_hms関数
+
+時間を含むデータの場合には、`ymd_hms`関数などの関数群を用います。こちらも、かなりいい加減な記載の日時データでも、簡単にPOSIXctクラスに変換してくれます（デフォルトのタイムゾーンはUTC、グリニッジ標準時）。タイムゾーンはtz引数に文字列で指定（[TZ identifier](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)で指定）することで変更できます。
+
+```{r, error=TRUE, filename="ymd_hms関数でPOSIXctに変換"}
+ymd_hms("2023/10/20 22:22:22") # POSIXctに変換
+
+ymd_hms("2023年10月20日 22時22分22秒") # POSIXctに変換
+
+ymd_hms(231020222222) # 数値も変換できる
+
+ymd_hms("2023年10月20日 22時22分22秒", tz="Asia/Tokyo") # JSTに変換
+```
+
+`ymd`関数群や`ymd_hms`関数群などの機能を1つの関数に落とし込んだものが、`parse_date_time`関数です。この`parse_date_time`関数では、関数名で年月日の順番を指定するのではなく、`orders`という引数で年月日、時間の順番を指定します。
+
+```{r, error=TRUE, filename="parse_date_timeで日時データに変換"}
+parse_date_time("2023/12/21", "ymd")
+
+parse_date_time("2023/12/21 12:25:30", "ymdHMS")
+```
+
+`lubridate`には、日時データから年や月などの一部を取り出す関数群として、`year`、`month`、`week`、`day`、`hour`、`minute`、`second`が設定されています。日時データを引数に取り、関数に数値を代入することで、特定の値を変更することもできます。
+
+また、日時データのタイムゾーンを`tz`関数で取得することができ、日時データを引数に取った`tz`関数にタイムゾーンを代入することで、タイムゾーンを変更することもできます。
+
+```{r, error=TRUE, filename="lubridateの日時データ演算に関する関数"}
+t <- ymd("2023/10/20") # Dateクラスの変数を作成
+year(t)
+
+year(t) <- 2024 # 代入で変更できる
+t
+
+tz(t) # タイムゾーンを返す関数
+
+tz(t) <- "Asia/Tokyo" # 代入でタイムゾーンも変更可能
+tz(t)
+```
+
+### 現在時刻の取得：today関数とnow関数
+
+`Sys.Date`関数や`Sys.time`関数と同じような関数として、`lubridate`には`today`関数と`now`関数が設定されています。
+
+```{r, error=TRUE, filename="today・now関数"}
+today() # 今日の日付
+
+now() # 今の日時
+```
+
+### 時刻を整形した文字列に変換：stamp関数
+
+`stamp`関数は日時データを整形し、文字列として返すための関数です。`stamp`関数の引数は日時を表記するための文字列で、日時自体はどのような時間でも問題ありません。`stamp`関数の後にカッコを付けて、カッコ内に文字列に変換したい日時データを与えます。この関数を実行すると、カッコ内の日時データを、`stamp`関数の引数の形に従って整形した文字列に変換して返してくれます。
+
+文字列が日付のみで、日時データがPOSIXctなどの時間を含むデータだと、正しく変更できない場合もあります。
+
+```{r, error=TRUE, filename="stamp関数で文字列に変換する"}
+stamp("1970/1/1 12:00:00")(now())
+
+stamp("1970/1/1 12:00:00に作成されたデータ")(now())
+
+# うまくいかないときもある（月と日を曜日に変換している）。
+stamp_date("1970年01月01日")(now()) 
+```
+
+## periodクラス
+
+ココまではDateクラス、POSIXct・POSIXlt型に関する`lubridate`の関数について示してきました。`lubridate`には、Date・POSIXct・POSIXlt以外に、時間の間隔を取り扱うクラスとして、**periodクラス**が備わっています。
+
+DateクラスやPOSIXctクラスは基本的に数値型ですので、足し算や引き算で日時を変更することができます。ただし、例えばPOSIXct型で1年3ヶ月と10日後の、3時間前といった変更をしたい場合には、すべて秒として換算し直して演算を行う必要があります。これはあまり直感的ではありませんし、月ごとに日数が異なっているため、正確に演算することも困難です。
+
+```{r, error=TRUE, filename="periodでの演算"}
+today()
+
+today() + 10 # 10日後
+
+now()
+
+now() + 60 # 1分後
+
+today() + 365 * 1 + 3 * 30 + 10 # 1年3ヶ月と10日後
+```
+
+このような複雑な日時データの演算に対応するため、`lubridate`ではperiodクラスのオブジェクトを作成し、このオブジェクトを演算に用いることができるようになっています。
+
+periodクラスのオブジェクトを作成するには、`duration`関数を用いる、または、`years`、`months`、`days`、`hours`、`minutes`、`seconds`の、「時間の単位+s」の名前が付いた関数を用います。
+
+`duration`関数は引数に数値と時間の単位を取り、引数の時間単位で数値の値を持つオブジェクトを作成する関数です（クラスはDuration）。このオブジェクトはDateクラスやPOSIXctクラスとの演算に用いることができます。
+
+例えば、Periodクラスのオブジェクトである`months(20)`を用いて、「`now() + months(20)`」とすると、現在時刻から20ヶ月後を演算することができます。「1年3ヶ月と10日後の、3時間前」といった複雑な計算も、このperiodクラスを用いれば簡単に行うことができます。
+
+```{r, error=TRUE, filename="periodクラスを作成する関数群"}
+duration(90, "seconds") # 90秒のperiod
+
+now() + duration(10, "years") # 10年後
+
+now() + years(10) # 上と同じ
+
+now() + months(20) # 20ヶ月後
+
+now() + days(30)
+
+now() + hours(40)
+
+now() + minutes(50)
+
+now() + seconds(60)
+```
+
+### hms関数
+
+時間に関するperiodクラスのオブジェクトを作成する場合には、`ymd`関数のように、文字列を自動的にperiodクラスのオブジェクトに変換してくれる関数である、`hms`関数を用いることができます。`hms`関数は文字列を時・分・秒を持つperiodクラスのオブジェクトに変換し、返してくれます。`ymd`とは異なり、`hms`関数は数値をperiodに変換することはできません。
+
+```{r, error=TRUE, filename="hms関数でperiodクラスオブジェクトを作成"}
+hms("2:22:22")
+
+hms(22222) # エラー
+```
+
+### 時間の切り上げ・切り下げ
+
+日時データを四捨五入する際には、Rの`round`関数を用いることができます。ただし、切り下げ（`floor`）や切り上げ（`ceiling`）の関数は、DateクラスやPOSIXtクラスには対応していません。
+
+日時の四捨五入・切り下げ・切り上げには、`round_date`、`floor_date`、`ceiling_date`関数を用いることができます。切り上げ等の単位は、`unit`引数に指定します。
+
+```{r, error=TRUE, filename="日時の四捨五入"}
+now() |> round_date(unit="month") # 月で四捨五入
+
+now() |> floor_date(unit="hour") # 時間で切り下げ
+
+now() |> ceiling_date(unit="hour") # 時間で切り上げ
+```
+
+### am・pm関数
+
+日時データが午前か午後かを判別する関数が、`am`関数と`pm`関数です。共に論理型（`TRUE`・`FALSE`）を返す関数で、引数が午前なら`am`関数は`TRUE`、`pm`関数は`FALSE`を返します。
+
+```{r, error=TRUE, filename="am・pm関数"}
+now() |> am()
+
+now() |> pm()
+```
+
+### interval
+
+`lubridate`には、ある期間（interval）を評価するためのクラスとして、Intervalクラスが設定されています。このIntervalクラスのオブジェクトは`interval`関数に始めと最後の日時を与えることで作成できます。Intervalの期間の長さは`int_length`関数で、2つのIntervalクラスオブジェクトに重複があるかどうかは`int_overlaps`関数を用いて判別できます。
+
+```{r, error=TRUE, filename="Intervalの取り扱い"}
+intr1 <-  interval(ymd("2023-10-20"), ymd("2023-10-30"))
+intr2 <-  interval(ymd("2023-10-25"), ymd("2023-11-5"))
+
+intr1 # 始めと最後の日が記録されている
+
+intr1 |> class() # データ型はInterval
+
+int_length(intr1) # 期間の長さの単位は秒
+
+int_overlaps(intr1, intr2) # 重複があればTRUEが返ってくる
+```

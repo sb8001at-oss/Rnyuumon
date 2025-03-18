@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>R入門 - 23&nbsp; plotly</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./chapter24.html" rel="next">
+<link href="./chapter22.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter20.html">Rでのグラフ作成</a></li><li class="breadcrumb-item"><a href="./chapter23.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">plotly</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R入門</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">はじめに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Rプログラミングの基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Rのインストール</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Rを使ってみよう</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">オブジェクトと変数・定数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">条件判断（Control structures）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">繰り返し文（Looping）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">エラー処理（error handler）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">数値</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">文字列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">因子（factor）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">ベクター</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">リスト・データフレーム・行列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">データの読み込みと書き出し（I/O）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">データセット</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Rでのデータの取り扱い</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">apply関数群</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">tidyr・dplyr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">日時データの取り扱い</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">オブジェクト指向とクラス</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter19.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">コーディング規約</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Rでのグラフ作成</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">グラフ作成：高レベルグラフィック関数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">グラフ作成：低レベルグラフィック関数とグラフィックパラメータ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter22.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">ggplot2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter23.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">plotly</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">統計解析の基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter24.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">確率分布と乱数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter25.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">検定</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter26.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">相関と回帰</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter27.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">分類</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter28.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">教師なし学習</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter29.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">時系列分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter30.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">生存時間解析</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">アドバンスな手法</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter31.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">purrr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter32.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">地理空間情報</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter33.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">ネットワーク解析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter34.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">R markdown・Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter35.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">おわりに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">参考文献</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#インタラクティブなグラフ" id="toc-インタラクティブなグラフ" class="nav-link active" data-scroll-target="#インタラクティブなグラフ"><span class="header-section-number">23.1</span> インタラクティブなグラフ</a></li>
+  <li><a href="#散布図" id="toc-散布図" class="nav-link" data-scroll-target="#散布図"><span class="header-section-number">23.2</span> 散布図</a></li>
+  <li><a href="#棒グラフ" id="toc-棒グラフ" class="nav-link" data-scroll-target="#棒グラフ"><span class="header-section-number">23.3</span> 棒グラフ</a></li>
+  <li><a href="#線グラフ" id="toc-線グラフ" class="nav-link" data-scroll-target="#線グラフ"><span class="header-section-number">23.4</span> 線グラフ</a></li>
+  <li><a href="#次元グラフ" id="toc-次元グラフ" class="nav-link" data-scroll-target="#次元グラフ"><span class="header-section-number">23.5</span> 3次元グラフ</a></li>
+  <li><a href="#時系列プロット" id="toc-時系列プロット" class="nav-link" data-scroll-target="#時系列プロット"><span class="header-section-number">23.6</span> 時系列プロット</a></li>
+  <li><a href="#ウォーターフォールプロット" id="toc-ウォーターフォールプロット" class="nav-link" data-scroll-target="#ウォーターフォールプロット"><span class="header-section-number">23.7</span> ウォーターフォールプロット</a></li>
+  <li><a href="#ggplotly" id="toc-ggplotly" class="nav-link" data-scroll-target="#ggplotly"><span class="header-section-number">23.8</span> ggplotly</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter20.html">Rでのグラフ作成</a></li><li class="breadcrumb-item"><a href="./chapter23.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">plotly</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">plotly</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="インタラクティブなグラフ" class="level2" data-number="23.1">
+<h2 data-number="23.1" class="anchored" data-anchor-id="インタラクティブなグラフ"><span class="header-section-number">23.1</span> インタラクティブなグラフ</h2>
+<p>Rでインタラクティブなグラフを作成したい場合には、<a href="https://dmurdoch.github.io/rgl/">rgl</a>パッケージ<span class="citation" data-cites="rgl_bib">(<a href="references.html#ref-rgl_bib" role="doc-biblioref">Murdoch and Adler 2023</a>)</span>や、Javascriptのインタラクティブグラフィックライブラリである<a href="https://d3js.org/">d3.js</a>を使用したライブラリである<a href="https://rstudio.github.io/r2d3/">r2d3</a> <span class="citation" data-cites="r2d3_bib">(<a href="references.html#ref-r2d3_bib" role="doc-biblioref">Strayer, Luraschi, and Allaire 2022</a>)</span>を用いるなど、様々な様々な方法があります。</p>
+<p>このようなインタラクティブなグラフ作成パッケージの中では、<a href="https://plotly.com/graphing-libraries/">plotly</a> <span class="citation" data-cites="plotly_bib">(<a href="references.html#ref-plotly_bib" role="doc-biblioref">Sievert 2020</a>)</span>が機能が多彩かつ記述の方法もシンプルで非常に分かりやすい優れたライブラリです。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>plotlyライブラリのロード</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(plotly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+インタラクティブなグラフとR
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>以前はRでインタラクティブなグラフを作成しても、Rが実行されているPC上でのみ確認ができただけで、他の人とグラフを共有するすべがほとんどありませんでした。しかし、ここ10年で、Rを用いてHTMLの文書を作成するライブラリ（<a href="https://rmarkdown.rstudio.com/">RMarkdown</a> <span class="citation" data-cites="rmarkdown_bib1 rmarkdown_bib2 rmarkdown_bib3">(<a href="references.html#ref-rmarkdown_bib1" role="doc-biblioref">Allaire et al. 2023</a>; <a href="references.html#ref-rmarkdown_bib2" role="doc-biblioref">Xie, Allaire, and Grolemund 2018</a>; <a href="references.html#ref-rmarkdown_bib3" role="doc-biblioref">Xie, Dervieux, and Riederer 2020</a>)</span>、<a href="https://quarto.org/">Quarto</a>）や、Webアプリケーションを作成するためのライブラリ（<a href="https://shiny.posit.co/">Shiny</a>）<span class="citation" data-cites="shiny_bib">(<a href="references.html#ref-shiny_bib" role="doc-biblioref">Chang et al. 2024</a>)</span>が公開され、インタラクティブなグラフを共有するしくみが構築されました。</p>
+<p>Web上でのインタラクティブなグラフの多くは<a href="https://d3js.org/">d3.js</a>で構築されていると思います。しかし、d3.jsの記法はやや特殊で、Rユーザーが使いこなすのはやや難しいです。<code>plotly</code>は主にPythonのライブラリとして開発されていますが、Rやほかの言語での開発も行われています。記法も<code>ggplot2</code>やRのデフォルトのグラフィック関数に近く、Rユーザーにも使いやすいものとなっています。</p>
+<p>インタラクティブなグラフの使いどころは難しいですが、有効に用いれば、データを確認しやすく、見る人の興味を引くグラフを作成することができます。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="散布図" class="level2" data-number="23.2">
+<h2 data-number="23.2" class="anchored" data-anchor-id="散布図"><span class="header-section-number">23.2</span> 散布図</h2>
+<p><code>plotly</code>では、グラフは<code>plot_ly</code>関数で描画します。<code>plot_ly</code>関数の引数としてグラフのタイプ（<code>type</code>）を指定しない場合には、<code>x</code>や<code>y</code>軸に指定した値に対応したグラフを描画してくれます。<code>x</code>にも<code>y</code>にも数値を指定すれば、散布図が自動的に選択されて、描画されます。<code>x</code>や<code>y</code>などの、<code>ggplot2</code>での<code>aes</code>にあたる要素の指定では、データフレームの列名にチルダ（<code>~</code>）を付けます。チルダがないと、列名をうまく読み込むことはできません。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>plot_ly関数で散布図</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>(<span class="at">data =</span> iris, <span class="at">x =</span> <span class="sc">~</span>Sepal.Length, <span class="at">y =</span> <span class="sc">~</span>Sepal.Width, <span class="at">color =</span> <span class="sc">~</span>Species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-4a2603475a4a40e58cad" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-4a2603475a4a40e58cad">{"x":{"visdat":{"20a446ac578":["function () ","plotlyVisDat"]},"cur_data":"20a446ac578","attrs":{"20a446ac578":{"x":{},"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Sepal.Length"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Sepal.Width"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[5.0999999999999996,4.9000000000000004,4.7000000000000002,4.5999999999999996,5,5.4000000000000004,4.5999999999999996,5,4.4000000000000004,4.9000000000000004,5.4000000000000004,4.7999999999999998,4.7999999999999998,4.2999999999999998,5.7999999999999998,5.7000000000000002,5.4000000000000004,5.0999999999999996,5.7000000000000002,5.0999999999999996,5.4000000000000004,5.0999999999999996,4.5999999999999996,5.0999999999999996,4.7999999999999998,5,5,5.2000000000000002,5.2000000000000002,4.7000000000000002,4.7999999999999998,5.4000000000000004,5.2000000000000002,5.5,4.9000000000000004,5,5.5,4.9000000000000004,4.4000000000000004,5.0999999999999996,5,4.5,4.4000000000000004,5,5.0999999999999996,4.7999999999999998,5.0999999999999996,4.5999999999999996,5.2999999999999998,5],"y":[3.5,3,3.2000000000000002,3.1000000000000001,3.6000000000000001,3.8999999999999999,3.3999999999999999,3.3999999999999999,2.8999999999999999,3.1000000000000001,3.7000000000000002,3.3999999999999999,3,3,4,4.4000000000000004,3.8999999999999999,3.5,3.7999999999999998,3.7999999999999998,3.3999999999999999,3.7000000000000002,3.6000000000000001,3.2999999999999998,3.3999999999999999,3,3.3999999999999999,3.5,3.3999999999999999,3.2000000000000002,3.1000000000000001,3.3999999999999999,4.0999999999999996,4.2000000000000002,3.1000000000000001,3.2000000000000002,3.5,3.6000000000000001,3,3.3999999999999999,3.5,2.2999999999999998,3.2000000000000002,3.5,3.7999999999999998,3,3.7999999999999998,3.2000000000000002,3.7000000000000002,3.2999999999999998],"type":"scatter","mode":"markers","name":"setosa","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[7,6.4000000000000004,6.9000000000000004,5.5,6.5,5.7000000000000002,6.2999999999999998,4.9000000000000004,6.5999999999999996,5.2000000000000002,5,5.9000000000000004,6,6.0999999999999996,5.5999999999999996,6.7000000000000002,5.5999999999999996,5.7999999999999998,6.2000000000000002,5.5999999999999996,5.9000000000000004,6.0999999999999996,6.2999999999999998,6.0999999999999996,6.4000000000000004,6.5999999999999996,6.7999999999999998,6.7000000000000002,6,5.7000000000000002,5.5,5.5,5.7999999999999998,6,5.4000000000000004,6,6.7000000000000002,6.2999999999999998,5.5999999999999996,5.5,5.5,6.0999999999999996,5.7999999999999998,5,5.5999999999999996,5.7000000000000002,5.7000000000000002,6.2000000000000002,5.0999999999999996,5.7000000000000002],"y":[3.2000000000000002,3.2000000000000002,3.1000000000000001,2.2999999999999998,2.7999999999999998,2.7999999999999998,3.2999999999999998,2.3999999999999999,2.8999999999999999,2.7000000000000002,2,3,2.2000000000000002,2.8999999999999999,2.8999999999999999,3.1000000000000001,3,2.7000000000000002,2.2000000000000002,2.5,3.2000000000000002,2.7999999999999998,2.5,2.7999999999999998,2.8999999999999999,3,2.7999999999999998,3,2.8999999999999999,2.6000000000000001,2.3999999999999999,2.3999999999999999,2.7000000000000002,2.7000000000000002,3,3.3999999999999999,3.1000000000000001,2.2999999999999998,3,2.5,2.6000000000000001,3,2.6000000000000001,2.2999999999999998,2.7000000000000002,3,2.8999999999999999,2.8999999999999999,2.5,2.7999999999999998],"type":"scatter","mode":"markers","name":"versicolor","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[6.2999999999999998,5.7999999999999998,7.0999999999999996,6.2999999999999998,6.5,7.5999999999999996,4.9000000000000004,7.2999999999999998,6.7000000000000002,7.2000000000000002,6.5,6.4000000000000004,6.7999999999999998,5.7000000000000002,5.7999999999999998,6.4000000000000004,6.5,7.7000000000000002,7.7000000000000002,6,6.9000000000000004,5.5999999999999996,7.7000000000000002,6.2999999999999998,6.7000000000000002,7.2000000000000002,6.2000000000000002,6.0999999999999996,6.4000000000000004,7.2000000000000002,7.4000000000000004,7.9000000000000004,6.4000000000000004,6.2999999999999998,6.0999999999999996,7.7000000000000002,6.2999999999999998,6.4000000000000004,6,6.9000000000000004,6.7000000000000002,6.9000000000000004,5.7999999999999998,6.7999999999999998,6.7000000000000002,6.7000000000000002,6.2999999999999998,6.5,6.2000000000000002,5.9000000000000004],"y":[3.2999999999999998,2.7000000000000002,3,2.8999999999999999,3,3,2.5,2.8999999999999999,2.5,3.6000000000000001,3.2000000000000002,2.7000000000000002,3,2.5,2.7999999999999998,3.2000000000000002,3,3.7999999999999998,2.6000000000000001,2.2000000000000002,3.2000000000000002,2.7999999999999998,2.7999999999999998,2.7000000000000002,3.2999999999999998,3.2000000000000002,2.7999999999999998,3,2.7999999999999998,3,2.7999999999999998,3.7999999999999998,2.7999999999999998,2.7999999999999998,2.6000000000000001,3,3.3999999999999999,3.1000000000000001,3,3.1000000000000001,3.1000000000000001,3.1000000000000001,2.7000000000000002,3.2000000000000002,3.2999999999999998,3,2.5,3,3.3999999999999999,3],"type":"scatter","mode":"markers","name":"virginica","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p><code>ggplot2</code>と同様に、<code>color</code>や<code>size</code>などの引数に数値を取ることで、バブルチャートなどのグラフを作成することもできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>plot_ly関数でバブルチャート</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_ly</span>(<span class="at">x =</span> <span class="sc">~</span>Sepal.Length, <span class="at">y =</span> <span class="sc">~</span>Sepal.Width, <span class="at">color =</span> <span class="sc">~</span>Petal.Length, <span class="at">size =</span> <span class="sc">~</span>Petal.Width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-7fa93ef8da58471d2247" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-7fa93ef8da58471d2247">{"x":{"visdat":{"20a4da8299c":["function () ","plotlyVisDat"]},"cur_data":"20a4da8299c","attrs":{"20a4da8299c":{"x":{},"y":{},"color":{},"size":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Sepal.Length"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Sepal.Width"},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[5.0999999999999996,4.9000000000000004,4.7000000000000002,4.5999999999999996,5,5.4000000000000004,4.5999999999999996,5,4.4000000000000004,4.9000000000000004,5.4000000000000004,4.7999999999999998,4.7999999999999998,4.2999999999999998,5.7999999999999998,5.7000000000000002,5.4000000000000004,5.0999999999999996,5.7000000000000002,5.0999999999999996,5.4000000000000004,5.0999999999999996,4.5999999999999996,5.0999999999999996,4.7999999999999998,5,5,5.2000000000000002,5.2000000000000002,4.7000000000000002,4.7999999999999998,5.4000000000000004,5.2000000000000002,5.5,4.9000000000000004,5,5.5,4.9000000000000004,4.4000000000000004,5.0999999999999996,5,4.5,4.4000000000000004,5,5.0999999999999996,4.7999999999999998,5.0999999999999996,4.5999999999999996,5.2999999999999998,5,7,6.4000000000000004,6.9000000000000004,5.5,6.5,5.7000000000000002,6.2999999999999998,4.9000000000000004,6.5999999999999996,5.2000000000000002,5,5.9000000000000004,6,6.0999999999999996,5.5999999999999996,6.7000000000000002,5.5999999999999996,5.7999999999999998,6.2000000000000002,5.5999999999999996,5.9000000000000004,6.0999999999999996,6.2999999999999998,6.0999999999999996,6.4000000000000004,6.5999999999999996,6.7999999999999998,6.7000000000000002,6,5.7000000000000002,5.5,5.5,5.7999999999999998,6,5.4000000000000004,6,6.7000000000000002,6.2999999999999998,5.5999999999999996,5.5,5.5,6.0999999999999996,5.7999999999999998,5,5.5999999999999996,5.7000000000000002,5.7000000000000002,6.2000000000000002,5.0999999999999996,5.7000000000000002,6.2999999999999998,5.7999999999999998,7.0999999999999996,6.2999999999999998,6.5,7.5999999999999996,4.9000000000000004,7.2999999999999998,6.7000000000000002,7.2000000000000002,6.5,6.4000000000000004,6.7999999999999998,5.7000000000000002,5.7999999999999998,6.4000000000000004,6.5,7.7000000000000002,7.7000000000000002,6,6.9000000000000004,5.5999999999999996,7.7000000000000002,6.2999999999999998,6.7000000000000002,7.2000000000000002,6.2000000000000002,6.0999999999999996,6.4000000000000004,7.2000000000000002,7.4000000000000004,7.9000000000000004,6.4000000000000004,6.2999999999999998,6.0999999999999996,7.7000000000000002,6.2999999999999998,6.4000000000000004,6,6.9000000000000004,6.7000000000000002,6.9000000000000004,5.7999999999999998,6.7999999999999998,6.7000000000000002,6.7000000000000002,6.2999999999999998,6.5,6.2000000000000002,5.9000000000000004],"y":[3.5,3,3.2000000000000002,3.1000000000000001,3.6000000000000001,3.8999999999999999,3.3999999999999999,3.3999999999999999,2.8999999999999999,3.1000000000000001,3.7000000000000002,3.3999999999999999,3,3,4,4.4000000000000004,3.8999999999999999,3.5,3.7999999999999998,3.7999999999999998,3.3999999999999999,3.7000000000000002,3.6000000000000001,3.2999999999999998,3.3999999999999999,3,3.3999999999999999,3.5,3.3999999999999999,3.2000000000000002,3.1000000000000001,3.3999999999999999,4.0999999999999996,4.2000000000000002,3.1000000000000001,3.2000000000000002,3.5,3.6000000000000001,3,3.3999999999999999,3.5,2.2999999999999998,3.2000000000000002,3.5,3.7999999999999998,3,3.7999999999999998,3.2000000000000002,3.7000000000000002,3.2999999999999998,3.2000000000000002,3.2000000000000002,3.1000000000000001,2.2999999999999998,2.7999999999999998,2.7999999999999998,3.2999999999999998,2.3999999999999999,2.8999999999999999,2.7000000000000002,2,3,2.2000000000000002,2.8999999999999999,2.8999999999999999,3.1000000000000001,3,2.7000000000000002,2.2000000000000002,2.5,3.2000000000000002,2.7999999999999998,2.5,2.7999999999999998,2.8999999999999999,3,2.7999999999999998,3,2.8999999999999999,2.6000000000000001,2.3999999999999999,2.3999999999999999,2.7000000000000002,2.7000000000000002,3,3.3999999999999999,3.1000000000000001,2.2999999999999998,3,2.5,2.6000000000000001,3,2.6000000000000001,2.2999999999999998,2.7000000000000002,3,2.8999999999999999,2.8999999999999999,2.5,2.7999999999999998,3.2999999999999998,2.7000000000000002,3,2.8999999999999999,3,3,2.5,2.8999999999999999,2.5,3.6000000000000001,3.2000000000000002,2.7000000000000002,3,2.5,2.7999999999999998,3.2000000000000002,3,3.7999999999999998,2.6000000000000001,2.2000000000000002,3.2000000000000002,2.7999999999999998,2.7999999999999998,2.7000000000000002,3.2999999999999998,3.2000000000000002,2.7999999999999998,3,2.7999999999999998,3,2.7999999999999998,3.7999999999999998,2.7999999999999998,2.7999999999999998,2.6000000000000001,3,3.3999999999999999,3.1000000000000001,3,3.1000000000000001,3.1000000000000001,3.1000000000000001,2.7000000000000002,3.2000000000000002,3.2999999999999998,3,2.5,3,3.3999999999999999,3],"type":"scatter","mode":"markers","marker":{"colorbar":{"title":"Petal.Length","ticklen":2},"cmin":1,"cmax":6.9000000000000004,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[1.3999999999999999,1.3999999999999999,1.3,1.5,1.3999999999999999,1.7,1.3999999999999999,1.5,1.3999999999999999,1.5,1.5,1.6000000000000001,1.3999999999999999,1.1000000000000001,1.2,1.5,1.3,1.3999999999999999,1.7,1.5,1.7,1.5,1,1.7,1.8999999999999999,1.6000000000000001,1.6000000000000001,1.5,1.3999999999999999,1.6000000000000001,1.6000000000000001,1.5,1.5,1.3999999999999999,1.5,1.2,1.3,1.3999999999999999,1.3,1.5,1.3,1.3,1.3,1.6000000000000001,1.8999999999999999,1.3999999999999999,1.6000000000000001,1.3999999999999999,1.5,1.3999999999999999,4.7000000000000002,4.5,4.9000000000000004,4,4.5999999999999996,4.5,4.7000000000000002,3.2999999999999998,4.5999999999999996,3.8999999999999999,3.5,4.2000000000000002,4,4.7000000000000002,3.6000000000000001,4.4000000000000004,4.5,4.0999999999999996,4.5,3.8999999999999999,4.7999999999999998,4,4.9000000000000004,4.7000000000000002,4.2999999999999998,4.4000000000000004,4.7999999999999998,5,4.5,3.5,3.7999999999999998,3.7000000000000002,3.8999999999999999,5.0999999999999996,4.5,4.5,4.7000000000000002,4.4000000000000004,4.0999999999999996,4,4.4000000000000004,4.5999999999999996,4,3.2999999999999998,4.2000000000000002,4.2000000000000002,4.2000000000000002,4.2999999999999998,3,4.0999999999999996,6,5.0999999999999996,5.9000000000000004,5.5999999999999996,5.7999999999999998,6.5999999999999996,4.5,6.2999999999999998,5.7999999999999998,6.0999999999999996,5.0999999999999996,5.2999999999999998,5.5,5,5.0999999999999996,5.2999999999999998,5.5,6.7000000000000002,6.9000000000000004,5,5.7000000000000002,4.9000000000000004,6.7000000000000002,4.9000000000000004,5.7000000000000002,6,4.7999999999999998,4.9000000000000004,5.5999999999999996,5.7999999999999998,6.0999999999999996,6.4000000000000004,5.5999999999999996,5.0999999999999996,5.5999999999999996,6.0999999999999996,5.5999999999999996,5.5,4.7999999999999998,5.4000000000000004,5.5999999999999996,5.0999999999999996,5.0999999999999996,5.9000000000000004,5.7000000000000002,5.2000000000000002,5,5.2000000000000002,5.4000000000000004,5.0999999999999996],"size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75,58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55,100,77.5,85,73.75,88.750000000000014,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.750000000000014,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.750000000000014,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75],"sizemode":"area","line":{"colorbar":{"title":"","ticklen":2},"cmin":1,"cmax":6.9000000000000004,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[1.3999999999999999,1.3999999999999999,1.3,1.5,1.3999999999999999,1.7,1.3999999999999999,1.5,1.3999999999999999,1.5,1.5,1.6000000000000001,1.3999999999999999,1.1000000000000001,1.2,1.5,1.3,1.3999999999999999,1.7,1.5,1.7,1.5,1,1.7,1.8999999999999999,1.6000000000000001,1.6000000000000001,1.5,1.3999999999999999,1.6000000000000001,1.6000000000000001,1.5,1.5,1.3999999999999999,1.5,1.2,1.3,1.3999999999999999,1.3,1.5,1.3,1.3,1.3,1.6000000000000001,1.8999999999999999,1.3999999999999999,1.6000000000000001,1.3999999999999999,1.5,1.3999999999999999,4.7000000000000002,4.5,4.9000000000000004,4,4.5999999999999996,4.5,4.7000000000000002,3.2999999999999998,4.5999999999999996,3.8999999999999999,3.5,4.2000000000000002,4,4.7000000000000002,3.6000000000000001,4.4000000000000004,4.5,4.0999999999999996,4.5,3.8999999999999999,4.7999999999999998,4,4.9000000000000004,4.7000000000000002,4.2999999999999998,4.4000000000000004,4.7999999999999998,5,4.5,3.5,3.7999999999999998,3.7000000000000002,3.8999999999999999,5.0999999999999996,4.5,4.5,4.7000000000000002,4.4000000000000004,4.0999999999999996,4,4.4000000000000004,4.5999999999999996,4,3.2999999999999998,4.2000000000000002,4.2000000000000002,4.2000000000000002,4.2999999999999998,3,4.0999999999999996,6,5.0999999999999996,5.9000000000000004,5.5999999999999996,5.7999999999999998,6.5999999999999996,4.5,6.2999999999999998,5.7999999999999998,6.0999999999999996,5.0999999999999996,5.2999999999999998,5.5,5,5.0999999999999996,5.2999999999999998,5.5,6.7000000000000002,6.9000000000000004,5,5.7000000000000002,4.9000000000000004,6.7000000000000002,4.9000000000000004,5.7000000000000002,6,4.7999999999999998,4.9000000000000004,5.5999999999999996,5.7999999999999998,6.0999999999999996,6.4000000000000004,5.5999999999999996,5.0999999999999996,5.5999999999999996,6.0999999999999996,5.5999999999999996,5.5,4.7999999999999998,5.4000000000000004,5.5999999999999996,5.0999999999999996,5.0999999999999996,5.9000000000000004,5.7000000000000002,5.2000000000000002,5,5.2000000000000002,5.4000000000000004,5.0999999999999996]}},"textfont":{"size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75,58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55,100,77.5,85,73.75,88.750000000000014,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.750000000000014,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.750000000000014,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75]},"error_y":{"width":[]},"error_x":{"width":[]},"xaxis":"x","yaxis":"y","frame":null},{"x":[4.2999999999999998,7.9000000000000004],"y":[2,4.4000000000000004],"type":"scatter","mode":"markers","opacity":0,"hoverinfo":"none","showlegend":false,"marker":{"colorbar":{"title":"Petal.Length","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"cmin":1,"cmax":6.9000000000000004,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":true,"color":[1,6.9000000000000004],"line":{"color":"rgba(255,127,14,1)"}},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p><code>ggplot2</code>での<code>scale_color_brewer</code>のように、Color Brewerを用いた色の指定も行うことができます。配色の指定には<code>colors</code>という引数を用います。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ColorBrewerの色指定</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>diamonds[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(diamonds), <span class="dv">500</span>),] <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_ly</span>(<span class="at">data =</span> _, <span class="at">x =</span> <span class="sc">~</span>carat, <span class="at">y =</span> <span class="sc">~</span>price, <span class="at">color =</span> <span class="sc">~</span>carat, <span class="at">colors =</span> <span class="st">"RdYlGn"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-39f3cc032070ea98c3bf" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-39f3cc032070ea98c3bf">{"x":{"visdat":{"20a42f4711e1":["function () ","plotlyVisDat"]},"cur_data":"20a42f4711e1","attrs":{"20a42f4711e1":{"x":{},"y":{},"color":{},"colors":"RdYlGn","alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"carat"},"yaxis":{"domain":[0,1],"automargin":true,"title":"price"},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1.51,1.0900000000000001,1.1200000000000001,1.2,1,0.57999999999999996,0.90000000000000002,0.31,0.35999999999999999,0.32000000000000001,2.0099999999999998,1.21,0.81999999999999995,1.01,0.33000000000000002,1.2,0.29999999999999999,2.1400000000000001,0.40999999999999998,0.51000000000000001,2.5600000000000001,0.40000000000000002,0.52000000000000002,1.52,0.33000000000000002,1.51,0.56999999999999995,0.38,1.73,1,1.51,0.32000000000000001,0.67000000000000004,0.70999999999999996,0.90000000000000002,1.23,0.31,0.31,0.25,0.77000000000000002,0.39000000000000001,1.8899999999999999,0.47999999999999998,0.26000000000000001,1,1,0.72999999999999998,1.2,0.31,0.40999999999999998,1.23,1.0900000000000001,0.5,1.0900000000000001,0.53000000000000003,1.01,0.37,0.54000000000000004,0.32000000000000001,0.55000000000000004,0.33000000000000002,1.1699999999999999,0.75,0.91000000000000003,0.76000000000000001,2.02,1.7,0.73999999999999999,0.31,0.40999999999999998,0.70999999999999996,0.5,0.34000000000000002,0.70999999999999996,1.1000000000000001,1.1599999999999999,0.28999999999999998,1.0600000000000001,1.1799999999999999,0.69999999999999996,1.72,1.51,1.55,1.53,0.52000000000000002,0.51000000000000001,0.5,1.2,0.53000000000000003,1.01,0.40999999999999998,1.5,1.75,2.2000000000000002,0.69999999999999996,1.01,1,0.40000000000000002,1.01,0.90000000000000002,1.04,0.51000000000000001,0.37,0.59999999999999998,0.70999999999999996,0.69999999999999996,0.91000000000000003,1.01,0.62,2.2400000000000002,1.5,2.0699999999999998,0.32000000000000001,0.40000000000000002,1.1200000000000001,0.40999999999999998,0.56000000000000005,0.5,1.5,0.40000000000000002,0.31,1.52,1.02,0.75,0.32000000000000001,0.81999999999999995,2.1000000000000001,0.70999999999999996,0.31,0.40000000000000002,0.59999999999999998,0.34000000000000002,0.33000000000000002,1.1000000000000001,0.53000000000000003,0.51000000000000001,0.29999999999999999,0.31,1.01,0.34999999999999998,0.55000000000000004,0.29999999999999999,1.01,0.77000000000000002,0.5,0.32000000000000001,0.29999999999999999,0.71999999999999997,0.55000000000000004,0.62,1.3300000000000001,0.73999999999999999,0.38,0.34000000000000002,1.01,0.34999999999999998,0.70999999999999996,0.5,1.51,0.69999999999999996,1.6299999999999999,0.32000000000000001,1.01,0.45000000000000001,0.70999999999999996,0.32000000000000001,1.02,0.90000000000000002,0.28000000000000003,1.1200000000000001,0.90000000000000002,0.70999999999999996,0.47999999999999998,0.32000000000000001,0.32000000000000001,0.51000000000000001,0.32000000000000001,1.75,2.0800000000000001,0.90000000000000002,1.72,0.76000000000000001,0.35999999999999999,0.52000000000000002,0.31,0.72999999999999998,1.1799999999999999,1.1299999999999999,1.03,0.79000000000000004,1.1399999999999999,1.01,0.80000000000000004,0.35999999999999999,1.02,0.70999999999999996,0.85999999999999999,0.23000000000000001,0.35999999999999999,1.0600000000000001,0.70999999999999996,0.40000000000000002,1.5,0.52000000000000002,1.03,1.0700000000000001,0.33000000000000002,0.29999999999999999,0.29999999999999999,0.35999999999999999,0.57999999999999996,1.51,0.90000000000000002,0.54000000000000004,0.38,0.91000000000000003,1.0600000000000001,1.05,0.32000000000000001,0.29999999999999999,0.59999999999999998,0.42999999999999999,1.0600000000000001,0.42999999999999999,0.70999999999999996,1.55,2.02,0.34000000000000002,0.40999999999999998,0.92000000000000004,0.33000000000000002,0.69999999999999996,1.01,0.38,0.69999999999999996,1.7,1.2,0.70999999999999996,0.32000000000000001,0.29999999999999999,1.51,1.25,0.33000000000000002,1.3899999999999999,0.31,0.59999999999999998,0.28999999999999998,0.29999999999999999,0.29999999999999999,1.6200000000000001,1.04,1.1799999999999999,2.46,0.69999999999999996,0.37,0.69999999999999996,0.51000000000000001,0.35999999999999999,0.31,0.90000000000000002,0.34999999999999998,1.01,1.01,1,0.64000000000000001,1.0700000000000001,1.0900000000000001,1.01,1.6899999999999999,0.29999999999999999,0.41999999999999998,0.42999999999999999,0.77000000000000002,0.31,1.01,0.41999999999999998,0.52000000000000002,0.51000000000000001,0.90000000000000002,0.37,1.01,1.3,1.1399999999999999,0.34000000000000002,2.1600000000000001,0.32000000000000001,0.40999999999999998,1.3300000000000001,0.52000000000000002,0.32000000000000001,0.34000000000000002,0.32000000000000001,0.71999999999999997,0.29999999999999999,0.80000000000000004,1.01,1.2,0.31,0.69999999999999996,0.84999999999999998,0.52000000000000002,0.40999999999999998,1.04,0.54000000000000004,2.0299999999999998,0.40999999999999998,0.46000000000000002,0.55000000000000004,0.32000000000000001,0.53000000000000003,1.1100000000000001,0.34000000000000002,1.03,1.01,0.5,1.1699999999999999,1.1000000000000001,0.92000000000000004,1.24,0.31,1.0900000000000001,0.38,1.01,0.40000000000000002,0.28000000000000003,1.51,0.5,0.41999999999999998,0.29999999999999999,1.5,0.83999999999999997,1.01,0.31,0.90000000000000002,0.40999999999999998,1.24,0.29999999999999999,0.71999999999999997,2,0.59999999999999998,0.51000000000000001,1.1299999999999999,1.01,1,0.31,1.05,0.5,0.80000000000000004,0.70999999999999996,1.02,0.53000000000000003,0.29999999999999999,0.34000000000000002,0.51000000000000001,0.77000000000000002,2.23,1.02,0.55000000000000004,1.25,0.29999999999999999,0.29999999999999999,0.5,0.90000000000000002,0.32000000000000001,1.2,1.04,0.75,0.32000000000000001,1.01,0.40999999999999998,1,0.29999999999999999,0.54000000000000004,0.29999999999999999,0.56999999999999995,0.38,1.74,1.2,0.68999999999999995,0.29999999999999999,0.35999999999999999,0.42999999999999999,1.5,0.34000000000000002,0.54000000000000004,0.31,0.34000000000000002,1.22,0.55000000000000004,0.58999999999999997,1.0600000000000001,0.29999999999999999,0.34000000000000002,1,0.51000000000000001,0.72999999999999998,2.54,0.33000000000000002,1.02,0.69999999999999996,1.3500000000000001,1.5800000000000001,0.79000000000000004,0.5,0.51000000000000001,1.01,0.42999999999999999,0.27000000000000002,0.54000000000000004,1.03,0.29999999999999999,0.31,0.34999999999999998,2.0499999999999998,0.56999999999999995,1.4399999999999999,0.92000000000000004,0.5,0.31,1.5,1.75,1.01,1.1100000000000001,0.70999999999999996,0.32000000000000001,0.90000000000000002,0.5,0.69999999999999996,0.29999999999999999,0.52000000000000002,0.57999999999999996,1.51,0.25,0.44,1.01,0.35999999999999999,0.29999999999999999,0.59999999999999998,0.32000000000000001,0.93000000000000005,0.5,1.5,0.23999999999999999,0.28000000000000003,1.1200000000000001,0.40999999999999998,0.51000000000000001,1.01,1.01,2.0099999999999998,0.34000000000000002,0.31,0.52000000000000002,1.5,1.51,0.31,0.38,1.01,1.54,1.22,1.24,2.3199999999999998,1.0900000000000001,0.59999999999999998,0.69999999999999996,1.54,0.5,0.31,0.29999999999999999,2.1000000000000001,1.01,1.21,2,0.90000000000000002,0.72999999999999998,1.1399999999999999,1,0.93999999999999995,0.31,0.51000000000000001,0.31,0.71999999999999997,1.7,0.71999999999999997,0.70999999999999996,0.32000000000000001,0.41999999999999998,0.40000000000000002,0.70999999999999996,0.90000000000000002,0.31,0.40000000000000002,0.39000000000000001,0.56999999999999995,1.01,1.21,1,1.23,2.1200000000000001,0.34000000000000002],"y":[9301,5034,6317,4177,5940,1608,3803,713,726,702,15841,7279,2692,5988,761,6639,911,15559,1007,1406,15231,516,1219,8127,948,9682,2274,833,9207,7096,10959,449,1910,3701,2923,8381,802,625,363,3321,670,12674,990,456,5242,6989,1975,4368,583,784,10445,4761,2529,9346,1122,4916,746,2334,864,1831,445,6336,3024,4770,2358,12267,15259,2761,816,991,2780,1838,596,2056,5524,7094,748,7079,5562,2352,12696,10821,8959,12907,1897,2812,1632,5763,1113,4989,984,10973,17036,13065,2417,7179,7567,1039,3733,6689,4543,1619,791,2318,2409,1895,4514,4672,1841,13827,10584,6503,645,1333,7193,758,3465,1197,6006,678,734,12840,4044,2674,720,2602,17837,3161,698,798,2560,596,1002,3872,1769,1546,1013,516,7821,1027,1752,764,4672,2513,1731,825,684,3478,1668,1624,6316,3246,648,477,6108,748,2345,1784,6139,2092,9504,936,6773,1035,2893,936,5055,3619,487,5055,4385,1902,969,645,900,1442,421,12416,13437,3989,13622,2607,663,1605,914,2821,4555,11051,5021,2793,4708,6221,3283,810,4207,2660,2851,680,770,5277,2249,786,7140,1815,10032,4224,1002,911,675,810,2245,9581,3468,2479,1013,4345,4096,7667,561,401,2105,916,5205,1218,2629,11149,18077,596,876,2858,743,2232,4234,1033,2155,17228,9169,2686,449,764,8541,8400,743,12943,1168,2897,384,684,764,5157,5570,5871,15745,2333,811,3127,1163,835,698,3398,767,6159,3461,4372,1725,7850,4046,7411,6757,789,1081,948,1996,982,4260,710,1887,1781,4334,874,4489,5962,5986,612,17934,461,876,6442,1098,672,765,1080,2903,725,2640,4672,6085,682,3206,3237,1829,891,6709,1637,13063,1381,1006,1580,505,1654,7619,1033,4758,8922,1436,5423,5673,3967,7106,767,7493,983,6754,931,481,10216,1125,777,895,11189,2593,6295,732,3805,827,7701,477,2954,11413,3001,1875,3797,2488,4042,897,5352,1410,2867,3013,7257,2331,878,630,1098,3309,14129,5432,1238,7227,640,351,1627,4210,612,6140,6141,2808,540,4707,698,7200,658,1385,675,1180,1318,13761,4980,1946,789,789,937,7980,2160,1786,734,749,6149,1881,2515,7075,754,775,6841,1385,2101,14421,781,4633,2141,7918,14624,3171,1628,1836,3111,723,464,1163,6250,473,734,583,16295,2719,5161,3895,1758,628,7500,8840,4916,4584,2282,972,4693,1666,2245,572,1651,2192,9891,452,2506,4418,641,863,1250,589,4351,613,6006,419,490,4798,1115,1583,5190,4791,13219,612,698,1675,10428,10838,749,787,5006,5028,6046,4375,17676,5127,1738,2048,11663,1845,801,422,16783,6097,17192,16462,3931,1971,4788,7450,3938,770,1776,840,2337,11481,3344,2450,801,907,1050,2913,3534,734,982,1024,1608,6998,5989,6600,4025,18120,507],"type":"scatter","mode":"markers","marker":{"colorbar":{"title":"carat","ticklen":2},"cmin":0.23000000000000001,"cmax":2.5600000000000001,"colorscale":[["0","rgba(165,0,38,1)"],["0.0416666666666667","rgba(186,25,39,1)"],["0.0833333333333333","rgba(207,42,39,1)"],["0.125","rgba(222,66,46,1)"],["0.166666666666667","rgba(235,91,57,1)"],["0.208333333333333","rgba(245,115,69,1)"],["0.25","rgba(249,143,82,1)"],["0.291666666666667","rgba(253,169,94,1)"],["0.333333333333333","rgba(254,191,111,1)"],["0.375","rgba(254,212,128,1)"],["0.416666666666667","rgba(255,229,148,1)"],["0.458333333333333","rgba(255,242,169,1)"],["0.5","rgba(255,255,191,1)"],["0.541666666666667","rgba(239,248,169,1)"],["0.583333333333333","rgba(223,242,148,1)"],["0.625","rgba(204,234,131,1)"],["0.666666666666667","rgba(183,224,117,1)"],["0.708333333333333","rgba(161,215,105,1)"],["0.75","rgba(135,203,103,1)"],["0.791666666666667","rgba(108,191,100,1)"],["0.833333333333333","rgba(81,177,93,1)"],["0.875","rgba(51,161,85,1)"],["0.916666666666667","rgba(22,144,76,1)"],["0.958333333333333","rgba(10,124,65,1)"],["1","rgba(0,104,55,1)"]],"showscale":false,"color":[1.51,1.0900000000000001,1.1200000000000001,1.2,1,0.57999999999999996,0.90000000000000002,0.31,0.35999999999999999,0.32000000000000001,2.0099999999999998,1.21,0.81999999999999995,1.01,0.33000000000000002,1.2,0.29999999999999999,2.1400000000000001,0.40999999999999998,0.51000000000000001,2.5600000000000001,0.40000000000000002,0.52000000000000002,1.52,0.33000000000000002,1.51,0.56999999999999995,0.38,1.73,1,1.51,0.32000000000000001,0.67000000000000004,0.70999999999999996,0.90000000000000002,1.23,0.31,0.31,0.25,0.77000000000000002,0.39000000000000001,1.8899999999999999,0.47999999999999998,0.26000000000000001,1,1,0.72999999999999998,1.2,0.31,0.40999999999999998,1.23,1.0900000000000001,0.5,1.0900000000000001,0.53000000000000003,1.01,0.37,0.54000000000000004,0.32000000000000001,0.55000000000000004,0.33000000000000002,1.1699999999999999,0.75,0.91000000000000003,0.76000000000000001,2.02,1.7,0.73999999999999999,0.31,0.40999999999999998,0.70999999999999996,0.5,0.34000000000000002,0.70999999999999996,1.1000000000000001,1.1599999999999999,0.28999999999999998,1.0600000000000001,1.1799999999999999,0.69999999999999996,1.72,1.51,1.55,1.53,0.52000000000000002,0.51000000000000001,0.5,1.2,0.53000000000000003,1.01,0.40999999999999998,1.5,1.75,2.2000000000000002,0.69999999999999996,1.01,1,0.40000000000000002,1.01,0.90000000000000002,1.04,0.51000000000000001,0.37,0.59999999999999998,0.70999999999999996,0.69999999999999996,0.91000000000000003,1.01,0.62,2.2400000000000002,1.5,2.0699999999999998,0.32000000000000001,0.40000000000000002,1.1200000000000001,0.40999999999999998,0.56000000000000005,0.5,1.5,0.40000000000000002,0.31,1.52,1.02,0.75,0.32000000000000001,0.81999999999999995,2.1000000000000001,0.70999999999999996,0.31,0.40000000000000002,0.59999999999999998,0.34000000000000002,0.33000000000000002,1.1000000000000001,0.53000000000000003,0.51000000000000001,0.29999999999999999,0.31,1.01,0.34999999999999998,0.55000000000000004,0.29999999999999999,1.01,0.77000000000000002,0.5,0.32000000000000001,0.29999999999999999,0.71999999999999997,0.55000000000000004,0.62,1.3300000000000001,0.73999999999999999,0.38,0.34000000000000002,1.01,0.34999999999999998,0.70999999999999996,0.5,1.51,0.69999999999999996,1.6299999999999999,0.32000000000000001,1.01,0.45000000000000001,0.70999999999999996,0.32000000000000001,1.02,0.90000000000000002,0.28000000000000003,1.1200000000000001,0.90000000000000002,0.70999999999999996,0.47999999999999998,0.32000000000000001,0.32000000000000001,0.51000000000000001,0.32000000000000001,1.75,2.0800000000000001,0.90000000000000002,1.72,0.76000000000000001,0.35999999999999999,0.52000000000000002,0.31,0.72999999999999998,1.1799999999999999,1.1299999999999999,1.03,0.79000000000000004,1.1399999999999999,1.01,0.80000000000000004,0.35999999999999999,1.02,0.70999999999999996,0.85999999999999999,0.23000000000000001,0.35999999999999999,1.0600000000000001,0.70999999999999996,0.40000000000000002,1.5,0.52000000000000002,1.03,1.0700000000000001,0.33000000000000002,0.29999999999999999,0.29999999999999999,0.35999999999999999,0.57999999999999996,1.51,0.90000000000000002,0.54000000000000004,0.38,0.91000000000000003,1.0600000000000001,1.05,0.32000000000000001,0.29999999999999999,0.59999999999999998,0.42999999999999999,1.0600000000000001,0.42999999999999999,0.70999999999999996,1.55,2.02,0.34000000000000002,0.40999999999999998,0.92000000000000004,0.33000000000000002,0.69999999999999996,1.01,0.38,0.69999999999999996,1.7,1.2,0.70999999999999996,0.32000000000000001,0.29999999999999999,1.51,1.25,0.33000000000000002,1.3899999999999999,0.31,0.59999999999999998,0.28999999999999998,0.29999999999999999,0.29999999999999999,1.6200000000000001,1.04,1.1799999999999999,2.46,0.69999999999999996,0.37,0.69999999999999996,0.51000000000000001,0.35999999999999999,0.31,0.90000000000000002,0.34999999999999998,1.01,1.01,1,0.64000000000000001,1.0700000000000001,1.0900000000000001,1.01,1.6899999999999999,0.29999999999999999,0.41999999999999998,0.42999999999999999,0.77000000000000002,0.31,1.01,0.41999999999999998,0.52000000000000002,0.51000000000000001,0.90000000000000002,0.37,1.01,1.3,1.1399999999999999,0.34000000000000002,2.1600000000000001,0.32000000000000001,0.40999999999999998,1.3300000000000001,0.52000000000000002,0.32000000000000001,0.34000000000000002,0.32000000000000001,0.71999999999999997,0.29999999999999999,0.80000000000000004,1.01,1.2,0.31,0.69999999999999996,0.84999999999999998,0.52000000000000002,0.40999999999999998,1.04,0.54000000000000004,2.0299999999999998,0.40999999999999998,0.46000000000000002,0.55000000000000004,0.32000000000000001,0.53000000000000003,1.1100000000000001,0.34000000000000002,1.03,1.01,0.5,1.1699999999999999,1.1000000000000001,0.92000000000000004,1.24,0.31,1.0900000000000001,0.38,1.01,0.40000000000000002,0.28000000000000003,1.51,0.5,0.41999999999999998,0.29999999999999999,1.5,0.83999999999999997,1.01,0.31,0.90000000000000002,0.40999999999999998,1.24,0.29999999999999999,0.71999999999999997,2,0.59999999999999998,0.51000000000000001,1.1299999999999999,1.01,1,0.31,1.05,0.5,0.80000000000000004,0.70999999999999996,1.02,0.53000000000000003,0.29999999999999999,0.34000000000000002,0.51000000000000001,0.77000000000000002,2.23,1.02,0.55000000000000004,1.25,0.29999999999999999,0.29999999999999999,0.5,0.90000000000000002,0.32000000000000001,1.2,1.04,0.75,0.32000000000000001,1.01,0.40999999999999998,1,0.29999999999999999,0.54000000000000004,0.29999999999999999,0.56999999999999995,0.38,1.74,1.2,0.68999999999999995,0.29999999999999999,0.35999999999999999,0.42999999999999999,1.5,0.34000000000000002,0.54000000000000004,0.31,0.34000000000000002,1.22,0.55000000000000004,0.58999999999999997,1.0600000000000001,0.29999999999999999,0.34000000000000002,1,0.51000000000000001,0.72999999999999998,2.54,0.33000000000000002,1.02,0.69999999999999996,1.3500000000000001,1.5800000000000001,0.79000000000000004,0.5,0.51000000000000001,1.01,0.42999999999999999,0.27000000000000002,0.54000000000000004,1.03,0.29999999999999999,0.31,0.34999999999999998,2.0499999999999998,0.56999999999999995,1.4399999999999999,0.92000000000000004,0.5,0.31,1.5,1.75,1.01,1.1100000000000001,0.70999999999999996,0.32000000000000001,0.90000000000000002,0.5,0.69999999999999996,0.29999999999999999,0.52000000000000002,0.57999999999999996,1.51,0.25,0.44,1.01,0.35999999999999999,0.29999999999999999,0.59999999999999998,0.32000000000000001,0.93000000000000005,0.5,1.5,0.23999999999999999,0.28000000000000003,1.1200000000000001,0.40999999999999998,0.51000000000000001,1.01,1.01,2.0099999999999998,0.34000000000000002,0.31,0.52000000000000002,1.5,1.51,0.31,0.38,1.01,1.54,1.22,1.24,2.3199999999999998,1.0900000000000001,0.59999999999999998,0.69999999999999996,1.54,0.5,0.31,0.29999999999999999,2.1000000000000001,1.01,1.21,2,0.90000000000000002,0.72999999999999998,1.1399999999999999,1,0.93999999999999995,0.31,0.51000000000000001,0.31,0.71999999999999997,1.7,0.71999999999999997,0.70999999999999996,0.32000000000000001,0.41999999999999998,0.40000000000000002,0.70999999999999996,0.90000000000000002,0.31,0.40000000000000002,0.39000000000000001,0.56999999999999995,1.01,1.21,1,1.23,2.1200000000000001,0.34000000000000002],"line":{"colorbar":{"title":"","ticklen":2},"cmin":0.23000000000000001,"cmax":2.5600000000000001,"colorscale":[["0","rgba(165,0,38,1)"],["0.0416666666666667","rgba(186,25,39,1)"],["0.0833333333333333","rgba(207,42,39,1)"],["0.125","rgba(222,66,46,1)"],["0.166666666666667","rgba(235,91,57,1)"],["0.208333333333333","rgba(245,115,69,1)"],["0.25","rgba(249,143,82,1)"],["0.291666666666667","rgba(253,169,94,1)"],["0.333333333333333","rgba(254,191,111,1)"],["0.375","rgba(254,212,128,1)"],["0.416666666666667","rgba(255,229,148,1)"],["0.458333333333333","rgba(255,242,169,1)"],["0.5","rgba(255,255,191,1)"],["0.541666666666667","rgba(239,248,169,1)"],["0.583333333333333","rgba(223,242,148,1)"],["0.625","rgba(204,234,131,1)"],["0.666666666666667","rgba(183,224,117,1)"],["0.708333333333333","rgba(161,215,105,1)"],["0.75","rgba(135,203,103,1)"],["0.791666666666667","rgba(108,191,100,1)"],["0.833333333333333","rgba(81,177,93,1)"],["0.875","rgba(51,161,85,1)"],["0.916666666666667","rgba(22,144,76,1)"],["0.958333333333333","rgba(10,124,65,1)"],["1","rgba(0,104,55,1)"]],"showscale":false,"color":[1.51,1.0900000000000001,1.1200000000000001,1.2,1,0.57999999999999996,0.90000000000000002,0.31,0.35999999999999999,0.32000000000000001,2.0099999999999998,1.21,0.81999999999999995,1.01,0.33000000000000002,1.2,0.29999999999999999,2.1400000000000001,0.40999999999999998,0.51000000000000001,2.5600000000000001,0.40000000000000002,0.52000000000000002,1.52,0.33000000000000002,1.51,0.56999999999999995,0.38,1.73,1,1.51,0.32000000000000001,0.67000000000000004,0.70999999999999996,0.90000000000000002,1.23,0.31,0.31,0.25,0.77000000000000002,0.39000000000000001,1.8899999999999999,0.47999999999999998,0.26000000000000001,1,1,0.72999999999999998,1.2,0.31,0.40999999999999998,1.23,1.0900000000000001,0.5,1.0900000000000001,0.53000000000000003,1.01,0.37,0.54000000000000004,0.32000000000000001,0.55000000000000004,0.33000000000000002,1.1699999999999999,0.75,0.91000000000000003,0.76000000000000001,2.02,1.7,0.73999999999999999,0.31,0.40999999999999998,0.70999999999999996,0.5,0.34000000000000002,0.70999999999999996,1.1000000000000001,1.1599999999999999,0.28999999999999998,1.0600000000000001,1.1799999999999999,0.69999999999999996,1.72,1.51,1.55,1.53,0.52000000000000002,0.51000000000000001,0.5,1.2,0.53000000000000003,1.01,0.40999999999999998,1.5,1.75,2.2000000000000002,0.69999999999999996,1.01,1,0.40000000000000002,1.01,0.90000000000000002,1.04,0.51000000000000001,0.37,0.59999999999999998,0.70999999999999996,0.69999999999999996,0.91000000000000003,1.01,0.62,2.2400000000000002,1.5,2.0699999999999998,0.32000000000000001,0.40000000000000002,1.1200000000000001,0.40999999999999998,0.56000000000000005,0.5,1.5,0.40000000000000002,0.31,1.52,1.02,0.75,0.32000000000000001,0.81999999999999995,2.1000000000000001,0.70999999999999996,0.31,0.40000000000000002,0.59999999999999998,0.34000000000000002,0.33000000000000002,1.1000000000000001,0.53000000000000003,0.51000000000000001,0.29999999999999999,0.31,1.01,0.34999999999999998,0.55000000000000004,0.29999999999999999,1.01,0.77000000000000002,0.5,0.32000000000000001,0.29999999999999999,0.71999999999999997,0.55000000000000004,0.62,1.3300000000000001,0.73999999999999999,0.38,0.34000000000000002,1.01,0.34999999999999998,0.70999999999999996,0.5,1.51,0.69999999999999996,1.6299999999999999,0.32000000000000001,1.01,0.45000000000000001,0.70999999999999996,0.32000000000000001,1.02,0.90000000000000002,0.28000000000000003,1.1200000000000001,0.90000000000000002,0.70999999999999996,0.47999999999999998,0.32000000000000001,0.32000000000000001,0.51000000000000001,0.32000000000000001,1.75,2.0800000000000001,0.90000000000000002,1.72,0.76000000000000001,0.35999999999999999,0.52000000000000002,0.31,0.72999999999999998,1.1799999999999999,1.1299999999999999,1.03,0.79000000000000004,1.1399999999999999,1.01,0.80000000000000004,0.35999999999999999,1.02,0.70999999999999996,0.85999999999999999,0.23000000000000001,0.35999999999999999,1.0600000000000001,0.70999999999999996,0.40000000000000002,1.5,0.52000000000000002,1.03,1.0700000000000001,0.33000000000000002,0.29999999999999999,0.29999999999999999,0.35999999999999999,0.57999999999999996,1.51,0.90000000000000002,0.54000000000000004,0.38,0.91000000000000003,1.0600000000000001,1.05,0.32000000000000001,0.29999999999999999,0.59999999999999998,0.42999999999999999,1.0600000000000001,0.42999999999999999,0.70999999999999996,1.55,2.02,0.34000000000000002,0.40999999999999998,0.92000000000000004,0.33000000000000002,0.69999999999999996,1.01,0.38,0.69999999999999996,1.7,1.2,0.70999999999999996,0.32000000000000001,0.29999999999999999,1.51,1.25,0.33000000000000002,1.3899999999999999,0.31,0.59999999999999998,0.28999999999999998,0.29999999999999999,0.29999999999999999,1.6200000000000001,1.04,1.1799999999999999,2.46,0.69999999999999996,0.37,0.69999999999999996,0.51000000000000001,0.35999999999999999,0.31,0.90000000000000002,0.34999999999999998,1.01,1.01,1,0.64000000000000001,1.0700000000000001,1.0900000000000001,1.01,1.6899999999999999,0.29999999999999999,0.41999999999999998,0.42999999999999999,0.77000000000000002,0.31,1.01,0.41999999999999998,0.52000000000000002,0.51000000000000001,0.90000000000000002,0.37,1.01,1.3,1.1399999999999999,0.34000000000000002,2.1600000000000001,0.32000000000000001,0.40999999999999998,1.3300000000000001,0.52000000000000002,0.32000000000000001,0.34000000000000002,0.32000000000000001,0.71999999999999997,0.29999999999999999,0.80000000000000004,1.01,1.2,0.31,0.69999999999999996,0.84999999999999998,0.52000000000000002,0.40999999999999998,1.04,0.54000000000000004,2.0299999999999998,0.40999999999999998,0.46000000000000002,0.55000000000000004,0.32000000000000001,0.53000000000000003,1.1100000000000001,0.34000000000000002,1.03,1.01,0.5,1.1699999999999999,1.1000000000000001,0.92000000000000004,1.24,0.31,1.0900000000000001,0.38,1.01,0.40000000000000002,0.28000000000000003,1.51,0.5,0.41999999999999998,0.29999999999999999,1.5,0.83999999999999997,1.01,0.31,0.90000000000000002,0.40999999999999998,1.24,0.29999999999999999,0.71999999999999997,2,0.59999999999999998,0.51000000000000001,1.1299999999999999,1.01,1,0.31,1.05,0.5,0.80000000000000004,0.70999999999999996,1.02,0.53000000000000003,0.29999999999999999,0.34000000000000002,0.51000000000000001,0.77000000000000002,2.23,1.02,0.55000000000000004,1.25,0.29999999999999999,0.29999999999999999,0.5,0.90000000000000002,0.32000000000000001,1.2,1.04,0.75,0.32000000000000001,1.01,0.40999999999999998,1,0.29999999999999999,0.54000000000000004,0.29999999999999999,0.56999999999999995,0.38,1.74,1.2,0.68999999999999995,0.29999999999999999,0.35999999999999999,0.42999999999999999,1.5,0.34000000000000002,0.54000000000000004,0.31,0.34000000000000002,1.22,0.55000000000000004,0.58999999999999997,1.0600000000000001,0.29999999999999999,0.34000000000000002,1,0.51000000000000001,0.72999999999999998,2.54,0.33000000000000002,1.02,0.69999999999999996,1.3500000000000001,1.5800000000000001,0.79000000000000004,0.5,0.51000000000000001,1.01,0.42999999999999999,0.27000000000000002,0.54000000000000004,1.03,0.29999999999999999,0.31,0.34999999999999998,2.0499999999999998,0.56999999999999995,1.4399999999999999,0.92000000000000004,0.5,0.31,1.5,1.75,1.01,1.1100000000000001,0.70999999999999996,0.32000000000000001,0.90000000000000002,0.5,0.69999999999999996,0.29999999999999999,0.52000000000000002,0.57999999999999996,1.51,0.25,0.44,1.01,0.35999999999999999,0.29999999999999999,0.59999999999999998,0.32000000000000001,0.93000000000000005,0.5,1.5,0.23999999999999999,0.28000000000000003,1.1200000000000001,0.40999999999999998,0.51000000000000001,1.01,1.01,2.0099999999999998,0.34000000000000002,0.31,0.52000000000000002,1.5,1.51,0.31,0.38,1.01,1.54,1.22,1.24,2.3199999999999998,1.0900000000000001,0.59999999999999998,0.69999999999999996,1.54,0.5,0.31,0.29999999999999999,2.1000000000000001,1.01,1.21,2,0.90000000000000002,0.72999999999999998,1.1399999999999999,1,0.93999999999999995,0.31,0.51000000000000001,0.31,0.71999999999999997,1.7,0.71999999999999997,0.70999999999999996,0.32000000000000001,0.41999999999999998,0.40000000000000002,0.70999999999999996,0.90000000000000002,0.31,0.40000000000000002,0.39000000000000001,0.56999999999999995,1.01,1.21,1,1.23,2.1200000000000001,0.34000000000000002]}},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.23000000000000001,2.5600000000000001],"y":[351,18120],"type":"scatter","mode":"markers","opacity":0,"hoverinfo":"none","showlegend":false,"marker":{"colorbar":{"title":"carat","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"cmin":0.23000000000000001,"cmax":2.5600000000000001,"colorscale":[["0","rgba(165,0,38,1)"],["0.0416666666666667","rgba(186,25,39,1)"],["0.0833333333333333","rgba(207,42,39,1)"],["0.125","rgba(222,66,46,1)"],["0.166666666666667","rgba(235,91,57,1)"],["0.208333333333333","rgba(245,115,69,1)"],["0.25","rgba(249,143,82,1)"],["0.291666666666667","rgba(253,169,94,1)"],["0.333333333333333","rgba(254,191,111,1)"],["0.375","rgba(254,212,128,1)"],["0.416666666666667","rgba(255,229,148,1)"],["0.458333333333333","rgba(255,242,169,1)"],["0.5","rgba(255,255,191,1)"],["0.541666666666667","rgba(239,248,169,1)"],["0.583333333333333","rgba(223,242,148,1)"],["0.625","rgba(204,234,131,1)"],["0.666666666666667","rgba(183,224,117,1)"],["0.708333333333333","rgba(161,215,105,1)"],["0.75","rgba(135,203,103,1)"],["0.791666666666667","rgba(108,191,100,1)"],["0.833333333333333","rgba(81,177,93,1)"],["0.875","rgba(51,161,85,1)"],["0.916666666666667","rgba(22,144,76,1)"],["0.958333333333333","rgba(10,124,65,1)"],["1","rgba(0,104,55,1)"]],"showscale":true,"color":[0.23000000000000001,2.5600000000000001],"line":{"color":"rgba(255,127,14,1)"}},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="棒グラフ" class="level2" data-number="23.3">
+<h2 data-number="23.3" class="anchored" data-anchor-id="棒グラフ"><span class="header-section-number">23.3</span> 棒グラフ</h2>
+<p><code>x</code>に因子、<code>y</code>に数値を与えると、<code>plot_ly</code>関数は自動的に棒グラフを描画します。逆に<code>x</code>に数値、<code>y</code>に因子を与えると、棒グラフが横向きになります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>棒グラフの描画</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mSepal.Length =</span> <span class="fu">mean</span>(Sepal.Length)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_ly</span>(<span class="at">x =</span> <span class="sc">~</span>Species, <span class="at">y =</span> <span class="sc">~</span>mSepal.Length, <span class="at">color =</span> <span class="sc">~</span>Species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-336b22606a81937bd2ef" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-336b22606a81937bd2ef">{"x":{"visdat":{"20a41301168":["function () ","plotlyVisDat"]},"cur_data":"20a41301168","attrs":{"20a41301168":{"x":{},"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Species","type":"category","categoryorder":"array","categoryarray":["setosa","versicolor","virginica"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"mSepal.Length"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["setosa"],"y":[5.0060000000000002],"type":"bar","name":"setosa","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["versicolor"],"y":[5.9359999999999999],"type":"bar","name":"versicolor","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["virginica"],"y":[6.5880000000000001],"type":"bar","name":"virginica","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="線グラフ" class="level2" data-number="23.4">
+<h2 data-number="23.4" class="anchored" data-anchor-id="線グラフ"><span class="header-section-number">23.4</span> 線グラフ</h2>
+<p>線グラフを描画する場合の<code>x</code>、<code>y</code>の指定は散布図と同じです。線を加える場合には、<code>mode="lines"</code>もしくは<code>mode="lines+markers"</code>と指定します。<code>"lines"</code>で指定した場合には線のみ、<code>"lines+markers"</code>は点と線を描画する形になります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>mode="lines"で線グラフを描画</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(gapminder)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>color_4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"black"</span>) <span class="co"># 色をベクターで指定</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>gapminder<span class="sc">::</span>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"Japan"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"China"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"United States"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"Australia"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_ly</span>(<span class="at">x =</span> <span class="sc">~</span>year, <span class="at">y =</span> <span class="sc">~</span>gdpPercap, <span class="at">type =</span> <span class="st">"scatter"</span>, <span class="at">mode =</span> <span class="st">"lines+markers"</span>, <span class="at">color =</span> <span class="sc">~</span>country, <span class="at">colors =</span> color_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-00278637b76a6e76695b" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-00278637b76a6e76695b">{"x":{"visdat":{"20a426155926":["function () ","plotlyVisDat"]},"cur_data":"20a426155926","attrs":{"20a426155926":{"x":{},"y":{},"mode":"lines+markers","color":{},"colors":["red","blue","green","black"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"gdpPercap"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1952,1957,1962,1967,1972,1977,1982,1987,1992,1997,2002,2007],"y":[10039.59564,10949.649590000001,12217.226860000001,14526.12465,16788.62948,18334.197510000002,19477.009279999998,21888.889029999998,23424.76683,26997.936570000002,30687.754730000001,34435.367440000002],"mode":"lines+markers","type":"scatter","name":"Australia","marker":{"color":"rgba(246,0,44,1)","line":{"color":"rgba(246,0,44,1)"}},"textfont":{"color":"rgba(246,0,44,1)"},"error_y":{"color":"rgba(246,0,44,1)"},"error_x":{"color":"rgba(246,0,44,1)"},"line":{"color":"rgba(246,0,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[1952,1957,1962,1967,1972,1977,1982,1987,1992,1997,2002,2007],"y":[400.44861100000003,575.9870009,487.6740183,612.70569339999997,676.90009210000005,741.23746989999995,962.42138050000005,1378.904018,1655.7841579999999,2289.234136,3119.2808960000002,4959.1148540000004],"mode":"lines+markers","type":"scatter","name":"China","marker":{"color":"rgba(200,0,139,1)","line":{"color":"rgba(200,0,139,1)"}},"textfont":{"color":"rgba(200,0,139,1)"},"error_y":{"color":"rgba(200,0,139,1)"},"error_x":{"color":"rgba(200,0,139,1)"},"line":{"color":"rgba(200,0,139,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[1952,1957,1962,1967,1972,1977,1982,1987,1992,1997,2002,2007],"y":[3216.9563469999998,4317.6943650000003,6576.649461,9847.7886070000004,14778.78636,16610.37701,19384.10571,22375.941889999998,26824.895110000001,28816.584989999999,28604.591899999999,31656.068060000001],"mode":"lines+markers","type":"scatter","name":"Japan","marker":{"color":"rgba(123,126,184,1)","line":{"color":"rgba(123,126,184,1)"}},"textfont":{"color":"rgba(123,126,184,1)"},"error_y":{"color":"rgba(123,126,184,1)"},"error_x":{"color":"rgba(123,126,184,1)"},"line":{"color":"rgba(123,126,184,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[1952,1957,1962,1967,1972,1977,1982,1987,1992,1997,2002,2007],"y":[13990.48208,14847.127119999999,16173.145860000001,19530.365570000002,21806.035940000002,24072.632130000002,25009.559140000001,29884.350409999999,32003.932239999998,35767.43303,39097.099549999999,42951.65309],"mode":"lines+markers","type":"scatter","name":"United States","marker":{"color":"rgba(21,38,15,1)","line":{"color":"rgba(21,38,15,1)"}},"textfont":{"color":"rgba(21,38,15,1)"},"error_y":{"color":"rgba(21,38,15,1)"},"error_x":{"color":"rgba(21,38,15,1)"},"line":{"color":"rgba(21,38,15,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="次元グラフ" class="level2" data-number="23.5">
+<h2 data-number="23.5" class="anchored" data-anchor-id="次元グラフ"><span class="header-section-number">23.5</span> 3次元グラフ</h2>
+<p>3次元のグラフは<code>rgl</code>で描画できますが、<code>plotly</code>でも簡単に3次元グラフを作成することができます。<code>plotly</code>で三次元グラフを作成する場合には、<code>x</code>、<code>y</code>に加えて、<code>z</code>軸に相当する値を指定します。ただし、<code>rgl</code>と同じように、3次元グラフはデータを認識しにくいため、3dグラフを用いるのではなく他のグラフ、例えばバブルチャートなどを選択する方がよいでしょう。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>plotlyで3次元グラフ</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_ly</span>(<span class="at">x =</span> <span class="sc">~</span>Sepal.Length, <span class="at">y =</span> <span class="sc">~</span>Sepal.Width, <span class="at">z =</span> <span class="sc">~</span>Petal.Length, <span class="at">color =</span> <span class="sc">~</span>Species, <span class="at">size =</span> <span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-989127aa3c20693613fc" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-989127aa3c20693613fc">{"x":{"visdat":{"20a45db1f7f":["function () ","plotlyVisDat"]},"cur_data":"20a45db1f7f","attrs":{"20a45db1f7f":{"x":{},"y":{},"z":{},"color":{},"size":0.10000000000000001,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Sepal.Length"},"yaxis":{"title":"Sepal.Width"},"zaxis":{"title":"Petal.Length"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[5.0999999999999996,4.9000000000000004,4.7000000000000002,4.5999999999999996,5,5.4000000000000004,4.5999999999999996,5,4.4000000000000004,4.9000000000000004,5.4000000000000004,4.7999999999999998,4.7999999999999998,4.2999999999999998,5.7999999999999998,5.7000000000000002,5.4000000000000004,5.0999999999999996,5.7000000000000002,5.0999999999999996,5.4000000000000004,5.0999999999999996,4.5999999999999996,5.0999999999999996,4.7999999999999998,5,5,5.2000000000000002,5.2000000000000002,4.7000000000000002,4.7999999999999998,5.4000000000000004,5.2000000000000002,5.5,4.9000000000000004,5,5.5,4.9000000000000004,4.4000000000000004,5.0999999999999996,5,4.5,4.4000000000000004,5,5.0999999999999996,4.7999999999999998,5.0999999999999996,4.5999999999999996,5.2999999999999998,5],"y":[3.5,3,3.2000000000000002,3.1000000000000001,3.6000000000000001,3.8999999999999999,3.3999999999999999,3.3999999999999999,2.8999999999999999,3.1000000000000001,3.7000000000000002,3.3999999999999999,3,3,4,4.4000000000000004,3.8999999999999999,3.5,3.7999999999999998,3.7999999999999998,3.3999999999999999,3.7000000000000002,3.6000000000000001,3.2999999999999998,3.3999999999999999,3,3.3999999999999999,3.5,3.3999999999999999,3.2000000000000002,3.1000000000000001,3.3999999999999999,4.0999999999999996,4.2000000000000002,3.1000000000000001,3.2000000000000002,3.5,3.6000000000000001,3,3.3999999999999999,3.5,2.2999999999999998,3.2000000000000002,3.5,3.7999999999999998,3,3.7999999999999998,3.2000000000000002,3.7000000000000002,3.2999999999999998],"z":[1.3999999999999999,1.3999999999999999,1.3,1.5,1.3999999999999999,1.7,1.3999999999999999,1.5,1.3999999999999999,1.5,1.5,1.6000000000000001,1.3999999999999999,1.1000000000000001,1.2,1.5,1.3,1.3999999999999999,1.7,1.5,1.7,1.5,1,1.7,1.8999999999999999,1.6000000000000001,1.6000000000000001,1.5,1.3999999999999999,1.6000000000000001,1.6000000000000001,1.5,1.5,1.3999999999999999,1.5,1.2,1.3,1.3999999999999999,1.3,1.5,1.3,1.3,1.3,1.6000000000000001,1.8999999999999999,1.3999999999999999,1.6000000000000001,1.3999999999999999,1.5,1.3999999999999999],"type":"scatter3d","mode":"markers","name":"setosa","marker":{"color":"rgba(102,194,165,1)","size":[55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55],"sizemode":"area","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)","size":55},"error_y":{"color":"rgba(102,194,165,1)","width":55},"error_x":{"color":"rgba(102,194,165,1)","width":55},"line":{"color":"rgba(102,194,165,1)","width":55},"frame":null},{"x":[7,6.4000000000000004,6.9000000000000004,5.5,6.5,5.7000000000000002,6.2999999999999998,4.9000000000000004,6.5999999999999996,5.2000000000000002,5,5.9000000000000004,6,6.0999999999999996,5.5999999999999996,6.7000000000000002,5.5999999999999996,5.7999999999999998,6.2000000000000002,5.5999999999999996,5.9000000000000004,6.0999999999999996,6.2999999999999998,6.0999999999999996,6.4000000000000004,6.5999999999999996,6.7999999999999998,6.7000000000000002,6,5.7000000000000002,5.5,5.5,5.7999999999999998,6,5.4000000000000004,6,6.7000000000000002,6.2999999999999998,5.5999999999999996,5.5,5.5,6.0999999999999996,5.7999999999999998,5,5.5999999999999996,5.7000000000000002,5.7000000000000002,6.2000000000000002,5.0999999999999996,5.7000000000000002],"y":[3.2000000000000002,3.2000000000000002,3.1000000000000001,2.2999999999999998,2.7999999999999998,2.7999999999999998,3.2999999999999998,2.3999999999999999,2.8999999999999999,2.7000000000000002,2,3,2.2000000000000002,2.8999999999999999,2.8999999999999999,3.1000000000000001,3,2.7000000000000002,2.2000000000000002,2.5,3.2000000000000002,2.7999999999999998,2.5,2.7999999999999998,2.8999999999999999,3,2.7999999999999998,3,2.8999999999999999,2.6000000000000001,2.3999999999999999,2.3999999999999999,2.7000000000000002,2.7000000000000002,3,3.3999999999999999,3.1000000000000001,2.2999999999999998,3,2.5,2.6000000000000001,3,2.6000000000000001,2.2999999999999998,2.7000000000000002,3,2.8999999999999999,2.8999999999999999,2.5,2.7999999999999998],"z":[4.7000000000000002,4.5,4.9000000000000004,4,4.5999999999999996,4.5,4.7000000000000002,3.2999999999999998,4.5999999999999996,3.8999999999999999,3.5,4.2000000000000002,4,4.7000000000000002,3.6000000000000001,4.4000000000000004,4.5,4.0999999999999996,4.5,3.8999999999999999,4.7999999999999998,4,4.9000000000000004,4.7000000000000002,4.2999999999999998,4.4000000000000004,4.7999999999999998,5,4.5,3.5,3.7999999999999998,3.7000000000000002,3.8999999999999999,5.0999999999999996,4.5,4.5,4.7000000000000002,4.4000000000000004,4.0999999999999996,4,4.4000000000000004,4.5999999999999996,4,3.2999999999999998,4.2000000000000002,4.2000000000000002,4.2000000000000002,4.2999999999999998,3,4.0999999999999996],"type":"scatter3d","mode":"markers","name":"versicolor","marker":{"color":"rgba(252,141,98,1)","size":[55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":55},"error_y":{"color":"rgba(252,141,98,1)","width":55},"error_x":{"color":"rgba(252,141,98,1)","width":55},"line":{"color":"rgba(252,141,98,1)","width":55},"frame":null},{"x":[6.2999999999999998,5.7999999999999998,7.0999999999999996,6.2999999999999998,6.5,7.5999999999999996,4.9000000000000004,7.2999999999999998,6.7000000000000002,7.2000000000000002,6.5,6.4000000000000004,6.7999999999999998,5.7000000000000002,5.7999999999999998,6.4000000000000004,6.5,7.7000000000000002,7.7000000000000002,6,6.9000000000000004,5.5999999999999996,7.7000000000000002,6.2999999999999998,6.7000000000000002,7.2000000000000002,6.2000000000000002,6.0999999999999996,6.4000000000000004,7.2000000000000002,7.4000000000000004,7.9000000000000004,6.4000000000000004,6.2999999999999998,6.0999999999999996,7.7000000000000002,6.2999999999999998,6.4000000000000004,6,6.9000000000000004,6.7000000000000002,6.9000000000000004,5.7999999999999998,6.7999999999999998,6.7000000000000002,6.7000000000000002,6.2999999999999998,6.5,6.2000000000000002,5.9000000000000004],"y":[3.2999999999999998,2.7000000000000002,3,2.8999999999999999,3,3,2.5,2.8999999999999999,2.5,3.6000000000000001,3.2000000000000002,2.7000000000000002,3,2.5,2.7999999999999998,3.2000000000000002,3,3.7999999999999998,2.6000000000000001,2.2000000000000002,3.2000000000000002,2.7999999999999998,2.7999999999999998,2.7000000000000002,3.2999999999999998,3.2000000000000002,2.7999999999999998,3,2.7999999999999998,3,2.7999999999999998,3.7999999999999998,2.7999999999999998,2.7999999999999998,2.6000000000000001,3,3.3999999999999999,3.1000000000000001,3,3.1000000000000001,3.1000000000000001,3.1000000000000001,2.7000000000000002,3.2000000000000002,3.2999999999999998,3,2.5,3,3.3999999999999999,3],"z":[6,5.0999999999999996,5.9000000000000004,5.5999999999999996,5.7999999999999998,6.5999999999999996,4.5,6.2999999999999998,5.7999999999999998,6.0999999999999996,5.0999999999999996,5.2999999999999998,5.5,5,5.0999999999999996,5.2999999999999998,5.5,6.7000000000000002,6.9000000000000004,5,5.7000000000000002,4.9000000000000004,6.7000000000000002,4.9000000000000004,5.7000000000000002,6,4.7999999999999998,4.9000000000000004,5.5999999999999996,5.7999999999999998,6.0999999999999996,6.4000000000000004,5.5999999999999996,5.0999999999999996,5.5999999999999996,6.0999999999999996,5.5999999999999996,5.5,4.7999999999999998,5.4000000000000004,5.5999999999999996,5.0999999999999996,5.0999999999999996,5.9000000000000004,5.7000000000000002,5.2000000000000002,5,5.2000000000000002,5.4000000000000004,5.0999999999999996],"type":"scatter3d","mode":"markers","name":"virginica","marker":{"color":"rgba(141,160,203,1)","size":[55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55],"sizemode":"area","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)","size":55},"error_y":{"color":"rgba(141,160,203,1)","width":55},"error_x":{"color":"rgba(141,160,203,1)","width":55},"line":{"color":"rgba(141,160,203,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="時系列プロット" class="level2" data-number="23.6">
+<h2 data-number="23.6" class="anchored" data-anchor-id="時系列プロット"><span class="header-section-number">23.6</span> 時系列プロット</h2>
+<p><code>x</code>軸に日時データを指定すれば、簡単に時系列グラフを描画することができます。時系列プロットや線グラフを作成する場合には、<code>plot_ly</code>関数の返り値を<code>add_trace</code>関数の引数にする形でも指定できます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>add_trace関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">year =</span> <span class="fu">time</span>(Nile), <span class="at">value =</span> Nile) <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_ly</span>(<span class="at">type =</span> <span class="st">"scatter"</span>, <span class="at">mode =</span> <span class="st">"lines"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">x =</span> <span class="sc">~</span>year, <span class="at">y =</span> <span class="sc">~</span>value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-91472e73d0bf190e66d2" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-91472e73d0bf190e66d2">{"x":{"visdat":{"20a410fb6617":["function () ","plotlyVisDat"]},"cur_data":"20a410fb6617","attrs":{"20a410fb6617":{"mode":"lines","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"},"20a410fb6617.1":{"mode":"lines","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","x":{},"y":{},"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"value"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"mode":"lines","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"mode":"lines","type":"scatter","x":[1871,1872,1873,1874,1875,1876,1877,1878,1879,1880,1881,1882,1883,1884,1885,1886,1887,1888,1889,1890,1891,1892,1893,1894,1895,1896,1897,1898,1899,1900,1901,1902,1903,1904,1905,1906,1907,1908,1909,1910,1911,1912,1913,1914,1915,1916,1917,1918,1919,1920,1921,1922,1923,1924,1925,1926,1927,1928,1929,1930,1931,1932,1933,1934,1935,1936,1937,1938,1939,1940,1941,1942,1943,1944,1945,1946,1947,1948,1949,1950,1951,1952,1953,1954,1955,1956,1957,1958,1959,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970],"y":[1120,1160,963,1210,1160,1160,813,1230,1370,1140,995,935,1110,994,1020,960,1180,799,958,1140,1100,1210,1150,1250,1260,1220,1030,1100,774,840,874,694,940,833,701,916,692,1020,1050,969,831,726,456,824,702,1120,1100,832,764,821,768,845,864,862,698,845,744,796,1040,759,781,865,845,944,984,897,822,1010,771,676,649,846,812,742,801,1040,860,874,848,890,744,749,838,1050,918,986,797,923,975,815,1020,906,901,1170,912,746,919,718,714,740],"marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="ウォーターフォールプロット" class="level2" data-number="23.7">
+<h2 data-number="23.7" class="anchored" data-anchor-id="ウォーターフォールプロット"><span class="header-section-number">23.7</span> ウォーターフォールプロット</h2>
+<p>企業の財務状態などを表記する場合には、<strong>ウォーターフォールプロット</strong>が便利です。ウォーターフォールプロットでは、収益と支出の色を変え、収益はプラス方向、支出はマイナス方向の方向性を持った形で棒グラフで表現します。ウォーターフォールプロットを作図する場合には、<code>type="waterfall"</code>と指定します。</p>
+<p><code>plotly</code>では、ウォーターフォールプロットのほかにも、<a href="https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%BC%E3%82%BD%E3%82%AF%E8%B6%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%83%88">ろうそくチャート</a>や<a href="https://datavizcatalogue.com/methods/OHLC_chart.html">オープン-ハイ-ロー-クローズチャート</a>など、ビジネスや株価に関連したグラフを簡単に作成することができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>waterfallプロット</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Sales"</span>, <span class="st">"Consulting"</span>, <span class="st">"Net revenue"</span>, <span class="st">"Purchases"</span>, <span class="st">"Other expenses"</span>, <span class="st">"Profit before tax"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>measure<span class="ot">=</span> <span class="fu">c</span>(<span class="st">"relative"</span>, <span class="st">"relative"</span>, <span class="st">"total"</span>, <span class="st">"relative"</span>, <span class="st">"relative"</span>, <span class="st">"total"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>text<span class="ot">=</span> <span class="fu">c</span>(<span class="st">"+60"</span>, <span class="st">"+80"</span>, <span class="st">""</span>, <span class="st">"-40"</span>, <span class="st">"-20"</span>, <span class="st">"Total"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">80</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">40</span>, <span class="sc">-</span><span class="dv">20</span>, <span class="dv">0</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">factor</span>(x, <span class="at">levels =</span> x), measure, text, y)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>fig <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  data, <span class="at">name =</span> <span class="st">"20"</span>, <span class="at">type =</span> <span class="st">"waterfall"</span>, <span class="at">measure =</span> <span class="sc">~</span>measure,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="sc">~</span>x, <span class="at">textposition =</span> <span class="st">"outside"</span>, <span class="at">y=</span> <span class="sc">~</span>y, <span class="at">text =</span> <span class="sc">~</span>text,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">connector =</span> <span class="fu">list</span>(<span class="at">line =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"rgb(63, 63, 63)"</span>))) </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>fig <span class="ot">&lt;-</span> fig <span class="sc">%&gt;%</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">title =</span> <span class="st">"Profit and loss statement 2018"</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">""</span>),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">""</span>),</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">autosize =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">showlegend =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-124fa3167eb9036ad08b" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-124fa3167eb9036ad08b">{"x":{"visdat":{"20a4532851e5":["function () ","plotlyVisDat"]},"cur_data":"20a4532851e5","attrs":{"20a4532851e5":{"measure":{},"x":{},"textposition":"outside","y":{},"text":{},"connector":{"line":{"color":"rgb(63, 63, 63)"}},"name":"20","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"waterfall"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Profit and loss statement 2018","xaxis":{"domain":[0,1],"automargin":true,"title":"","type":"category","categoryorder":"array","categoryarray":["Sales","Consulting","Net revenue","Purchases","Other expenses","Profit before tax"]},"yaxis":{"domain":[0,1],"automargin":true,"title":""},"autosize":true,"showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"measure":["relative","relative","total","relative","relative","total"],"x":["Sales","Consulting","Net revenue","Purchases","Other expenses","Profit before tax"],"textposition":["outside","outside","outside","outside","outside","outside"],"y":[60,80,0,-40,-20,0],"text":["+60","+80","","-40","-20","Total"],"connector":{"line":{"color":"rgb(63, 63, 63)"}},"name":"20","type":"waterfall","xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="ggplotly" class="level2" data-number="23.8">
+<h2 data-number="23.8" class="anchored" data-anchor-id="ggplotly"><span class="header-section-number">23.8</span> ggplotly</h2>
+<p><code>plotly</code>では、<code>ggplot2</code>で準備したグラフをインタラクティブなグラフに簡単に変換することができます。<code>ggplot2</code>のグラフオブジェクトを変数に保存し、その変数を<code>ggplotly</code>関数の引数にするだけで、<code>ggplot2</code>のグラフがインタラクティブなものに変換されます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ggplotlyでインタラクティブなggplot2グラフ</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> iris <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">size =</span> Petal.Length, <span class="at">color =</span> Species))<span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-2bdd4b80168ecb8f57cd" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-2bdd4b80168ecb8f57cd">{"x":{"data":[{"x":[5.0999999999999996,4.9000000000000004,4.7000000000000002,4.5999999999999996,5,5.4000000000000004,4.5999999999999996,5,4.4000000000000004,4.9000000000000004,5.4000000000000004,4.7999999999999998,4.7999999999999998,4.2999999999999998,5.7999999999999998,5.7000000000000002,5.4000000000000004,5.0999999999999996,5.7000000000000002,5.0999999999999996,5.4000000000000004,5.0999999999999996,4.5999999999999996,5.0999999999999996,4.7999999999999998,5,5,5.2000000000000002,5.2000000000000002,4.7000000000000002,4.7999999999999998,5.4000000000000004,5.2000000000000002,5.5,4.9000000000000004,5,5.5,4.9000000000000004,4.4000000000000004,5.0999999999999996,5,4.5,4.4000000000000004,5,5.0999999999999996,4.7999999999999998,5.0999999999999996,4.5999999999999996,5.2999999999999998,5],"y":[3.5,3,3.2000000000000002,3.1000000000000001,3.6000000000000001,3.8999999999999999,3.3999999999999999,3.3999999999999999,2.8999999999999999,3.1000000000000001,3.7000000000000002,3.3999999999999999,3,3,4,4.4000000000000004,3.8999999999999999,3.5,3.7999999999999998,3.7999999999999998,3.3999999999999999,3.7000000000000002,3.6000000000000001,3.2999999999999998,3.3999999999999999,3,3.3999999999999999,3.5,3.3999999999999999,3.2000000000000002,3.1000000000000001,3.3999999999999999,4.0999999999999996,4.2000000000000002,3.1000000000000001,3.2000000000000002,3.5,3.6000000000000001,3,3.3999999999999999,3.5,2.2999999999999998,3.2000000000000002,3.5,3.7999999999999998,3,3.7999999999999998,3.2000000000000002,3.7000000000000002,3.2999999999999998],"text":["Sepal.Length: 5.1<br />Sepal.Width: 3.5<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 4.9<br />Sepal.Width: 3.0<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 4.7<br />Sepal.Width: 3.2<br />Petal.Length: 1.3<br />Species: setosa","Sepal.Length: 4.6<br />Sepal.Width: 3.1<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.6<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.9<br />Petal.Length: 1.7<br />Species: setosa","Sepal.Length: 4.6<br />Sepal.Width: 3.4<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.4<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 4.4<br />Sepal.Width: 2.9<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 4.9<br />Sepal.Width: 3.1<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.7<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.4<br />Petal.Length: 1.6<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.0<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 4.3<br />Sepal.Width: 3.0<br />Petal.Length: 1.1<br />Species: setosa","Sepal.Length: 5.8<br />Sepal.Width: 4.0<br />Petal.Length: 1.2<br />Species: setosa","Sepal.Length: 5.7<br />Sepal.Width: 4.4<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.9<br />Petal.Length: 1.3<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.5<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 5.7<br />Sepal.Width: 3.8<br />Petal.Length: 1.7<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.8<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.4<br />Petal.Length: 1.7<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.7<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 4.6<br />Sepal.Width: 3.6<br />Petal.Length: 1.0<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.3<br />Petal.Length: 1.7<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.4<br />Petal.Length: 1.9<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.0<br />Petal.Length: 1.6<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.4<br />Petal.Length: 1.6<br />Species: setosa","Sepal.Length: 5.2<br />Sepal.Width: 3.5<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.2<br />Sepal.Width: 3.4<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 4.7<br />Sepal.Width: 3.2<br />Petal.Length: 1.6<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.1<br />Petal.Length: 1.6<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.4<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.2<br />Sepal.Width: 4.1<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.5<br />Sepal.Width: 4.2<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 4.9<br />Sepal.Width: 3.1<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.2<br />Petal.Length: 1.2<br />Species: setosa","Sepal.Length: 5.5<br />Sepal.Width: 3.5<br />Petal.Length: 1.3<br />Species: setosa","Sepal.Length: 4.9<br />Sepal.Width: 3.6<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 4.4<br />Sepal.Width: 3.0<br />Petal.Length: 1.3<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.4<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.5<br />Petal.Length: 1.3<br />Species: setosa","Sepal.Length: 4.5<br />Sepal.Width: 2.3<br />Petal.Length: 1.3<br />Species: setosa","Sepal.Length: 4.4<br />Sepal.Width: 3.2<br />Petal.Length: 1.3<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.5<br />Petal.Length: 1.6<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.8<br />Petal.Length: 1.9<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.0<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.8<br />Petal.Length: 1.6<br />Species: setosa","Sepal.Length: 4.6<br />Sepal.Width: 3.2<br />Petal.Length: 1.4<br />Species: setosa","Sepal.Length: 5.3<br />Sepal.Width: 3.7<br />Petal.Length: 1.5<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.3<br />Petal.Length: 1.4<br />Species: setosa"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":[8.7000533284090924,8.7000533284090924,8.0408278752916278,9.2808426117125862,8.7000533284090924,10.288771311752807,8.7000533284090924,9.2808426117125862,8.7000533284090924,9.2808426117125862,9.2808426117125862,9.805916259621549,8.7000533284090924,6.2397904437321055,7.258864697568467,9.2808426117125862,8.0408278752916278,8.7000533284090924,10.288771311752807,9.2808426117125862,10.288771311752807,9.2808426117125862,3.7795275590551185,10.288771311752807,11.160316213086078,9.805916259621549,9.805916259621549,9.2808426117125862,8.7000533284090924,9.805916259621549,9.805916259621549,9.2808426117125862,9.2808426117125862,8.7000533284090924,9.2808426117125862,7.258864697568467,8.0408278752916278,8.7000533284090924,8.0408278752916278,9.2808426117125862,8.0408278752916278,8.0408278752916278,8.0408278752916278,9.805916259621549,11.160316213086078,8.7000533284090924,9.805916259621549,8.7000533284090924,9.2808426117125862,8.7000533284090924],"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"setosa","legendgroup":"setosa","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[7,6.4000000000000004,6.9000000000000004,5.5,6.5,5.7000000000000002,6.2999999999999998,4.9000000000000004,6.5999999999999996,5.2000000000000002,5,5.9000000000000004,6,6.0999999999999996,5.5999999999999996,6.7000000000000002,5.5999999999999996,5.7999999999999998,6.2000000000000002,5.5999999999999996,5.9000000000000004,6.0999999999999996,6.2999999999999998,6.0999999999999996,6.4000000000000004,6.5999999999999996,6.7999999999999998,6.7000000000000002,6,5.7000000000000002,5.5,5.5,5.7999999999999998,6,5.4000000000000004,6,6.7000000000000002,6.2999999999999998,5.5999999999999996,5.5,5.5,6.0999999999999996,5.7999999999999998,5,5.5999999999999996,5.7000000000000002,5.7000000000000002,6.2000000000000002,5.0999999999999996,5.7000000000000002],"y":[3.2000000000000002,3.2000000000000002,3.1000000000000001,2.2999999999999998,2.7999999999999998,2.7999999999999998,3.2999999999999998,2.3999999999999999,2.8999999999999999,2.7000000000000002,2,3,2.2000000000000002,2.8999999999999999,2.8999999999999999,3.1000000000000001,3,2.7000000000000002,2.2000000000000002,2.5,3.2000000000000002,2.7999999999999998,2.5,2.7999999999999998,2.8999999999999999,3,2.7999999999999998,3,2.8999999999999999,2.6000000000000001,2.3999999999999999,2.3999999999999999,2.7000000000000002,2.7000000000000002,3,3.3999999999999999,3.1000000000000001,2.2999999999999998,3,2.5,2.6000000000000001,3,2.6000000000000001,2.2999999999999998,2.7000000000000002,3,2.8999999999999999,2.8999999999999999,2.5,2.7999999999999998],"text":["Sepal.Length: 7.0<br />Sepal.Width: 3.2<br />Petal.Length: 4.7<br />Species: versicolor","Sepal.Length: 6.4<br />Sepal.Width: 3.2<br />Petal.Length: 4.5<br />Species: versicolor","Sepal.Length: 6.9<br />Sepal.Width: 3.1<br />Petal.Length: 4.9<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.3<br />Petal.Length: 4.0<br />Species: versicolor","Sepal.Length: 6.5<br />Sepal.Width: 2.8<br />Petal.Length: 4.6<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 2.8<br />Petal.Length: 4.5<br />Species: versicolor","Sepal.Length: 6.3<br />Sepal.Width: 3.3<br />Petal.Length: 4.7<br />Species: versicolor","Sepal.Length: 4.9<br />Sepal.Width: 2.4<br />Petal.Length: 3.3<br />Species: versicolor","Sepal.Length: 6.6<br />Sepal.Width: 2.9<br />Petal.Length: 4.6<br />Species: versicolor","Sepal.Length: 5.2<br />Sepal.Width: 2.7<br />Petal.Length: 3.9<br />Species: versicolor","Sepal.Length: 5.0<br />Sepal.Width: 2.0<br />Petal.Length: 3.5<br />Species: versicolor","Sepal.Length: 5.9<br />Sepal.Width: 3.0<br />Petal.Length: 4.2<br />Species: versicolor","Sepal.Length: 6.0<br />Sepal.Width: 2.2<br />Petal.Length: 4.0<br />Species: versicolor","Sepal.Length: 6.1<br />Sepal.Width: 2.9<br />Petal.Length: 4.7<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 2.9<br />Petal.Length: 3.6<br />Species: versicolor","Sepal.Length: 6.7<br />Sepal.Width: 3.1<br />Petal.Length: 4.4<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 3.0<br />Petal.Length: 4.5<br />Species: versicolor","Sepal.Length: 5.8<br />Sepal.Width: 2.7<br />Petal.Length: 4.1<br />Species: versicolor","Sepal.Length: 6.2<br />Sepal.Width: 2.2<br />Petal.Length: 4.5<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 2.5<br />Petal.Length: 3.9<br />Species: versicolor","Sepal.Length: 5.9<br />Sepal.Width: 3.2<br />Petal.Length: 4.8<br />Species: versicolor","Sepal.Length: 6.1<br />Sepal.Width: 2.8<br />Petal.Length: 4.0<br />Species: versicolor","Sepal.Length: 6.3<br />Sepal.Width: 2.5<br />Petal.Length: 4.9<br />Species: versicolor","Sepal.Length: 6.1<br />Sepal.Width: 2.8<br />Petal.Length: 4.7<br />Species: versicolor","Sepal.Length: 6.4<br />Sepal.Width: 2.9<br />Petal.Length: 4.3<br />Species: versicolor","Sepal.Length: 6.6<br />Sepal.Width: 3.0<br />Petal.Length: 4.4<br />Species: versicolor","Sepal.Length: 6.8<br />Sepal.Width: 2.8<br />Petal.Length: 4.8<br />Species: versicolor","Sepal.Length: 6.7<br />Sepal.Width: 3.0<br />Petal.Length: 5.0<br />Species: versicolor","Sepal.Length: 6.0<br />Sepal.Width: 2.9<br />Petal.Length: 4.5<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 2.6<br />Petal.Length: 3.5<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.4<br />Petal.Length: 3.8<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.4<br />Petal.Length: 3.7<br />Species: versicolor","Sepal.Length: 5.8<br />Sepal.Width: 2.7<br />Petal.Length: 3.9<br />Species: versicolor","Sepal.Length: 6.0<br />Sepal.Width: 2.7<br />Petal.Length: 5.1<br />Species: versicolor","Sepal.Length: 5.4<br />Sepal.Width: 3.0<br />Petal.Length: 4.5<br />Species: versicolor","Sepal.Length: 6.0<br />Sepal.Width: 3.4<br />Petal.Length: 4.5<br />Species: versicolor","Sepal.Length: 6.7<br />Sepal.Width: 3.1<br />Petal.Length: 4.7<br />Species: versicolor","Sepal.Length: 6.3<br />Sepal.Width: 2.3<br />Petal.Length: 4.4<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 3.0<br />Petal.Length: 4.1<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.5<br />Petal.Length: 4.0<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.6<br />Petal.Length: 4.4<br />Species: versicolor","Sepal.Length: 6.1<br />Sepal.Width: 3.0<br />Petal.Length: 4.6<br />Species: versicolor","Sepal.Length: 5.8<br />Sepal.Width: 2.6<br />Petal.Length: 4.0<br />Species: versicolor","Sepal.Length: 5.0<br />Sepal.Width: 2.3<br />Petal.Length: 3.3<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 2.7<br />Petal.Length: 4.2<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 3.0<br />Petal.Length: 4.2<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 2.9<br />Petal.Length: 4.2<br />Species: versicolor","Sepal.Length: 6.2<br />Sepal.Width: 2.9<br />Petal.Length: 4.3<br />Species: versicolor","Sepal.Length: 5.1<br />Sepal.Width: 2.5<br />Petal.Length: 3.0<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 2.8<br />Petal.Length: 4.1<br />Species: versicolor"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","opacity":1,"size":[18.7447224486517,18.334639072202979,19.143864349396768,17.254942352358285,18.541104867117038,18.334639072202979,18.7447224486517,15.578533857025294,18.541104867117038,17.02844866191684,16.080841982440049,17.696876113108512,17.254942352358285,18.7447224486517,16.324456016591146,18.125202088279956,18.334639072202979,17.477691571553027,18.334639072202979,17.02844866191684,18.94560653634278,17.254942352358285,19.143864349396768,18.7447224486517,17.91266182703443,18.125202088279956,18.94560653634278,19.339596275766016,18.334639072202979,16.080841982440049,16.798015064450496,16.563428507764648,17.02844866191684,19.532896466386788,18.334639072202979,18.334639072202979,18.7447224486517,18.125202088279956,17.477691571553027,17.254942352358285,18.125202088279956,18.541104867117038,17.254942352358285,15.578533857025294,17.696876113108512,17.696876113108512,17.696876113108512,17.91266182703443,14.782157664370054,17.477691571553027],"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,186,56,1)"}},"hoveron":"points","name":"versicolor","legendgroup":"versicolor","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[6.2999999999999998,5.7999999999999998,7.0999999999999996,6.2999999999999998,6.5,7.5999999999999996,4.9000000000000004,7.2999999999999998,6.7000000000000002,7.2000000000000002,6.5,6.4000000000000004,6.7999999999999998,5.7000000000000002,5.7999999999999998,6.4000000000000004,6.5,7.7000000000000002,7.7000000000000002,6,6.9000000000000004,5.5999999999999996,7.7000000000000002,6.2999999999999998,6.7000000000000002,7.2000000000000002,6.2000000000000002,6.0999999999999996,6.4000000000000004,7.2000000000000002,7.4000000000000004,7.9000000000000004,6.4000000000000004,6.2999999999999998,6.0999999999999996,7.7000000000000002,6.2999999999999998,6.4000000000000004,6,6.9000000000000004,6.7000000000000002,6.9000000000000004,5.7999999999999998,6.7999999999999998,6.7000000000000002,6.7000000000000002,6.2999999999999998,6.5,6.2000000000000002,5.9000000000000004],"y":[3.2999999999999998,2.7000000000000002,3,2.8999999999999999,3,3,2.5,2.8999999999999999,2.5,3.6000000000000001,3.2000000000000002,2.7000000000000002,3,2.5,2.7999999999999998,3.2000000000000002,3,3.7999999999999998,2.6000000000000001,2.2000000000000002,3.2000000000000002,2.7999999999999998,2.7999999999999998,2.7000000000000002,3.2999999999999998,3.2000000000000002,2.7999999999999998,3,2.7999999999999998,3,2.7999999999999998,3.7999999999999998,2.7999999999999998,2.7999999999999998,2.6000000000000001,3,3.3999999999999999,3.1000000000000001,3,3.1000000000000001,3.1000000000000001,3.1000000000000001,2.7000000000000002,3.2000000000000002,3.2999999999999998,3,2.5,3,3.3999999999999999,3],"text":["Sepal.Length: 6.3<br />Sepal.Width: 3.3<br />Petal.Length: 6.0<br />Species: virginica","Sepal.Length: 5.8<br />Sepal.Width: 2.7<br />Petal.Length: 5.1<br />Species: virginica","Sepal.Length: 7.1<br />Sepal.Width: 3.0<br />Petal.Length: 5.9<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 2.9<br />Petal.Length: 5.6<br />Species: virginica","Sepal.Length: 6.5<br />Sepal.Width: 3.0<br />Petal.Length: 5.8<br />Species: virginica","Sepal.Length: 7.6<br />Sepal.Width: 3.0<br />Petal.Length: 6.6<br />Species: virginica","Sepal.Length: 4.9<br />Sepal.Width: 2.5<br />Petal.Length: 4.5<br />Species: virginica","Sepal.Length: 7.3<br />Sepal.Width: 2.9<br />Petal.Length: 6.3<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 2.5<br />Petal.Length: 5.8<br />Species: virginica","Sepal.Length: 7.2<br />Sepal.Width: 3.6<br />Petal.Length: 6.1<br />Species: virginica","Sepal.Length: 6.5<br />Sepal.Width: 3.2<br />Petal.Length: 5.1<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 2.7<br />Petal.Length: 5.3<br />Species: virginica","Sepal.Length: 6.8<br />Sepal.Width: 3.0<br />Petal.Length: 5.5<br />Species: virginica","Sepal.Length: 5.7<br />Sepal.Width: 2.5<br />Petal.Length: 5.0<br />Species: virginica","Sepal.Length: 5.8<br />Sepal.Width: 2.8<br />Petal.Length: 5.1<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 3.2<br />Petal.Length: 5.3<br />Species: virginica","Sepal.Length: 6.5<br />Sepal.Width: 3.0<br />Petal.Length: 5.5<br />Species: virginica","Sepal.Length: 7.7<br />Sepal.Width: 3.8<br />Petal.Length: 6.7<br />Species: virginica","Sepal.Length: 7.7<br />Sepal.Width: 2.6<br />Petal.Length: 6.9<br />Species: virginica","Sepal.Length: 6.0<br />Sepal.Width: 2.2<br />Petal.Length: 5.0<br />Species: virginica","Sepal.Length: 6.9<br />Sepal.Width: 3.2<br />Petal.Length: 5.7<br />Species: virginica","Sepal.Length: 5.6<br />Sepal.Width: 2.8<br />Petal.Length: 4.9<br />Species: virginica","Sepal.Length: 7.7<br />Sepal.Width: 2.8<br />Petal.Length: 6.7<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 2.7<br />Petal.Length: 4.9<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 3.3<br />Petal.Length: 5.7<br />Species: virginica","Sepal.Length: 7.2<br />Sepal.Width: 3.2<br />Petal.Length: 6.0<br />Species: virginica","Sepal.Length: 6.2<br />Sepal.Width: 2.8<br />Petal.Length: 4.8<br />Species: virginica","Sepal.Length: 6.1<br />Sepal.Width: 3.0<br />Petal.Length: 4.9<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 2.8<br />Petal.Length: 5.6<br />Species: virginica","Sepal.Length: 7.2<br />Sepal.Width: 3.0<br />Petal.Length: 5.8<br />Species: virginica","Sepal.Length: 7.4<br />Sepal.Width: 2.8<br />Petal.Length: 6.1<br />Species: virginica","Sepal.Length: 7.9<br />Sepal.Width: 3.8<br />Petal.Length: 6.4<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 2.8<br />Petal.Length: 5.6<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 2.8<br />Petal.Length: 5.1<br />Species: virginica","Sepal.Length: 6.1<br />Sepal.Width: 2.6<br />Petal.Length: 5.6<br />Species: virginica","Sepal.Length: 7.7<br />Sepal.Width: 3.0<br />Petal.Length: 6.1<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 3.4<br />Petal.Length: 5.6<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 3.1<br />Petal.Length: 5.5<br />Species: virginica","Sepal.Length: 6.0<br />Sepal.Width: 3.0<br />Petal.Length: 4.8<br />Species: virginica","Sepal.Length: 6.9<br />Sepal.Width: 3.1<br />Petal.Length: 5.4<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 3.1<br />Petal.Length: 5.6<br />Species: virginica","Sepal.Length: 6.9<br />Sepal.Width: 3.1<br />Petal.Length: 5.1<br />Species: virginica","Sepal.Length: 5.8<br />Sepal.Width: 2.7<br />Petal.Length: 5.1<br />Species: virginica","Sepal.Length: 6.8<br />Sepal.Width: 3.2<br />Petal.Length: 5.9<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 3.3<br />Petal.Length: 5.7<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 3.0<br />Petal.Length: 5.2<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 2.5<br />Petal.Length: 5.0<br />Species: virginica","Sepal.Length: 6.5<br />Sepal.Width: 3.0<br />Petal.Length: 5.2<br />Species: virginica","Sepal.Length: 6.2<br />Sepal.Width: 3.4<br />Petal.Length: 5.4<br />Species: virginica","Sepal.Length: 5.9<br />Sepal.Width: 3.0<br />Petal.Length: 5.1<br />Species: virginica"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","opacity":1,"size":[21.17621325162186,19.532896466386788,21.001367751794024,20.465842288170109,20.824728824001159,22.19044915076994,18.334639072202979,21.690511716021859,20.824728824001159,21.349318865376187,19.532896466386788,19.912550178946361,20.283472717027522,19.339596275766016,19.532896466386788,19.912550178946361,20.283472717027522,22.35410500560798,22.677165354330711,19.339596275766016,20.646240122586843,19.143864349396768,22.35410500560798,19.143864349396768,20.646240122586843,21.17621325162186,18.94560653634278,19.143864349396768,20.465842288170109,20.824728824001159,21.349318865376187,21.858693660754415,20.465842288170109,19.532896466386788,20.465842288170109,21.349318865376187,20.465842288170109,20.283472717027522,18.94560653634278,20.099065307277083,20.465842288170109,19.532896466386788,19.532896466386788,21.001367751794024,20.646240122586843,19.723853364563592,19.339596275766016,19.723853364563592,20.099065307277083,19.532896466386788],"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(97,156,255,1)"}},"hoveron":"points","name":"virginica","legendgroup":"virginica","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.228310502283104,"r":7.3059360730593621,"b":40.182648401826491,"l":43.105022831050235},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[4.1200000000000001,8.0800000000000001],"tickmode":"array","ticktext":["5","6","7","8"],"tickvals":[5,6,7,8],"categoryorder":"array","categoryarray":["5","6","7","8"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Sepal.Length","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1.8799999999999999,4.5200000000000005],"tickmode":"array","ticktext":["2.0","2.5","3.0","3.5","4.0","4.5"],"tickvals":[2,2.5,3,3.5,4,4.5],"categoryorder":"array","categoryarray":["2.0","2.5","3.0","3.5","4.0","4.5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Sepal.Width","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"title":{"text":"Petal.Length<br />Species","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"20a42e2a4ddf":{"x":{},"y":{},"size":{},"colour":{},"type":"scatter"}},"cur_data":"20a42e2a4ddf","visdat":{"20a42e2a4ddf":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-rmarkdown_bib1" class="csl-entry" role="listitem">
+Allaire, JJ, Yihui Xie, Christophe Dervieux, Jonathan McPherson, Javier Luraschi, Kevin Ushey, Aron Atkins, et al. 2023. <em>Rmarkdown: Dynamic Documents for r</em>. <a href="https://github.com/rstudio/rmarkdown">https://github.com/rstudio/rmarkdown</a>.
+</div>
+<div id="ref-shiny_bib" class="csl-entry" role="listitem">
+Chang, Winston, Joe Cheng, JJ Allaire, Carson Sievert, Barret Schloerke, Yihui Xie, Jeff Allen, Jonathan McPherson, Alan Dipert, and Barbara Borges. 2024. <em>Shiny: Web Application Framework for r</em>. <a href="https://CRAN.R-project.org/package=shiny">https://CRAN.R-project.org/package=shiny</a>.
+</div>
+<div id="ref-rgl_bib" class="csl-entry" role="listitem">
+Murdoch, Duncan, and Daniel Adler. 2023. <em>Rgl: 3D Visualization Using OpenGL</em>. <a href="https://CRAN.R-project.org/package=rgl">https://CRAN.R-project.org/package=rgl</a>.
+</div>
+<div id="ref-plotly_bib" class="csl-entry" role="listitem">
+Sievert, Carson. 2020. <em>Interactive Web-Based Data Visualization with r, Plotly, and Shiny</em>. Chapman; Hall/CRC. <a href="https://plotly-r.com">https://plotly-r.com</a>.
+</div>
+<div id="ref-r2d3_bib" class="csl-entry" role="listitem">
+Strayer, Nick, Javier Luraschi, and JJ Allaire. 2022. <em>R2d3: Interface to ’D3’ Visualizations</em>. <a href="https://CRAN.R-project.org/package=r2d3">https://CRAN.R-project.org/package=r2d3</a>.
+</div>
+<div id="ref-rmarkdown_bib2" class="csl-entry" role="listitem">
+Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. <em>R Markdown: The Definitive Guide</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown">https://bookdown.org/yihui/rmarkdown</a>.
+</div>
+<div id="ref-rmarkdown_bib3" class="csl-entry" role="listitem">
+Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R Markdown Cookbook</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown-cookbook">https://bookdown.org/yihui/rmarkdown-cookbook</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./chapter22.html" class="pagination-link" aria-label="ggplot2">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">ggplot2</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./chapter24.html" class="pagination-link" aria-label="確率分布と乱数">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">確率分布と乱数</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># plotly</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## インタラクティブなグラフ</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Rでインタラクティブなグラフを作成したい場合には、<span class="co">[</span><span class="ot">rgl</span><span class="co">](https://dmurdoch.github.io/rgl/)</span>パッケージ<span class="co">[</span><span class="ot">@rgl_bib</span><span class="co">]</span>や、Javascriptのインタラクティブグラフィックライブラリである<span class="co">[</span><span class="ot">d3.js</span><span class="co">](https://d3js.org/)</span>を使用したライブラリである<span class="co">[</span><span class="ot">r2d3</span><span class="co">](https://rstudio.github.io/r2d3/)</span> <span class="co">[</span><span class="ot">@r2d3_bib</span><span class="co">]</span>を用いるなど、様々な様々な方法があります。</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>このようなインタラクティブなグラフ作成パッケージの中では、<span class="co">[</span><span class="ot">plotly</span><span class="co">](https://plotly.com/graphing-libraries/)</span> <span class="co">[</span><span class="ot">@plotly_bib</span><span class="co">]</span>が機能が多彩かつ記述の方法もシンプルで非常に分かりやすい優れたライブラリです。</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="plotlyライブラリのロード"}</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(plotly)</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## インタラクティブなグラフとR</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>以前はRでインタラクティブなグラフを作成しても、Rが実行されているPC上でのみ確認ができただけで、他の人とグラフを共有するすべがほとんどありませんでした。しかし、ここ10年で、Rを用いてHTMLの文書を作成するライブラリ（<span class="co">[</span><span class="ot">RMarkdown</span><span class="co">](https://rmarkdown.rstudio.com/)</span> <span class="co">[</span><span class="ot">@rmarkdown_bib1; @rmarkdown_bib2; @rmarkdown_bib3</span><span class="co">]</span>、<span class="co">[</span><span class="ot">Quarto</span><span class="co">](https://quarto.org/)</span>）や、Webアプリケーションを作成するためのライブラリ（<span class="co">[</span><span class="ot">Shiny</span><span class="co">](https://shiny.posit.co/)</span>）<span class="co">[</span><span class="ot">@shiny_bib</span><span class="co">]</span>が公開され、インタラクティブなグラフを共有するしくみが構築されました。</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>Web上でのインタラクティブなグラフの多くは<span class="co">[</span><span class="ot">d3.js</span><span class="co">](https://d3js.org/)</span>で構築されていると思います。しかし、d3.jsの記法はやや特殊で、Rユーザーが使いこなすのはやや難しいです。<span class="in">`plotly`</span>は主にPythonのライブラリとして開発されていますが、Rやほかの言語での開発も行われています。記法も<span class="in">`ggplot2`</span>やRのデフォルトのグラフィック関数に近く、Rユーザーにも使いやすいものとなっています。</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>インタラクティブなグラフの使いどころは難しいですが、有効に用いれば、データを確認しやすく、見る人の興味を引くグラフを作成することができます。</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## 散布図</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="in">`plotly`</span>では、グラフは<span class="in">`plot_ly`</span>関数で描画します。<span class="in">`plot_ly`</span>関数の引数としてグラフのタイプ（<span class="in">`type`</span>）を指定しない場合には、<span class="in">`x`</span>や<span class="in">`y`</span>軸に指定した値に対応したグラフを描画してくれます。<span class="in">`x`</span>にも<span class="in">`y`</span>にも数値を指定すれば、散布図が自動的に選択されて、描画されます。<span class="in">`x`</span>や<span class="in">`y`</span>などの、<span class="in">`ggplot2`</span>での<span class="in">`aes`</span>にあたる要素の指定では、データフレームの列名にチルダ（<span class="in">`~`</span>）を付けます。チルダがないと、列名をうまく読み込むことはできません。</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, filename="plot_ly関数で散布図"}</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="in">plot_ly(data = iris, x = ~Sepal.Length, y = ~Sepal.Width, color = ~Species)</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="in">`ggplot2`</span>と同様に、<span class="in">`color`</span>や<span class="in">`size`</span>などの引数に数値を取ることで、バブルチャートなどのグラフを作成することもできます。</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE, filename="plot_ly関数でバブルチャート"}</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="in">iris |&gt; </span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_ly(x = ~Sepal.Length, y = ~Sepal.Width, color = ~Petal.Length, size = ~Petal.Width)</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="in">`ggplot2`</span>での<span class="in">`scale_color_brewer`</span>のように、Color Brewerを用いた色の指定も行うことができます。配色の指定には<span class="in">`colors`</span>という引数を用います。</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, filename="ColorBrewerの色指定"}</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="in">diamonds[sample(1:nrow(diamonds), 500),] |&gt; </span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_ly(data = _, x = ~carat, y = ~price, color = ~carat, colors = "RdYlGn")</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## 棒グラフ</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="in">`x`</span>に因子、<span class="in">`y`</span>に数値を与えると、<span class="in">`plot_ly`</span>関数は自動的に棒グラフを描画します。逆に<span class="in">`x`</span>に数値、<span class="in">`y`</span>に因子を与えると、棒グラフが横向きになります。</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE, filename="棒グラフの描画"}</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="in">iris |&gt; </span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(Species) |&gt;</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="in">  summarise(mSepal.Length = mean(Sepal.Length)) |&gt; </span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_ly(x = ~Species, y = ~mSepal.Length, color = ~Species)</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## 線グラフ</span></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>線グラフを描画する場合の<span class="in">`x`</span>、<span class="in">`y`</span>の指定は散布図と同じです。線を加える場合には、<span class="in">`mode="lines"`</span>もしくは<span class="in">`mode="lines+markers"`</span>と指定します。<span class="in">`"lines"`</span>で指定した場合には線のみ、<span class="in">`"lines+markers"`</span>は点と線を描画する形になります。</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, filename="mode=\"lines\"で線グラフを描画"}</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(gapminder)</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="in">color_4 &lt;- c("red", "blue", "green", "black") # 色をベクターで指定</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a><span class="in">gapminder::gapminder |&gt; </span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(country == "Japan" | country == "China" | country == "United States" | country == "Australia") |&gt; </span></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_ly(x = ~year, y = ~gdpPercap, type = "scatter", mode = "lines+markers", color = ~country, colors = color_4)</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3次元グラフ</span></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>3次元のグラフは<span class="in">`rgl`</span>で描画できますが、<span class="in">`plotly`</span>でも簡単に3次元グラフを作成することができます。<span class="in">`plotly`</span>で三次元グラフを作成する場合には、<span class="in">`x`</span>、<span class="in">`y`</span>に加えて、<span class="in">`z`</span>軸に相当する値を指定します。ただし、<span class="in">`rgl`</span>と同じように、3次元グラフはデータを認識しにくいため、3dグラフを用いるのではなく他のグラフ、例えばバブルチャートなどを選択する方がよいでしょう。</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, filename="plotlyで3次元グラフ"}</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="in">iris |&gt; </span></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_ly(x = ~Sepal.Length, y = ~Sepal.Width, z = ~Petal.Length, color = ~Species, size = 0.1)</span></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## 時系列プロット</span></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a><span class="in">`x`</span>軸に日時データを指定すれば、簡単に時系列グラフを描画することができます。時系列プロットや線グラフを作成する場合には、<span class="in">`plot_ly`</span>関数の返り値を<span class="in">`add_trace`</span>関数の引数にする形でも指定できます。</span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="add_trace関数"}</span></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a><span class="in">data.frame(year = time(Nile), value = Nile) |&gt; </span></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_ly(type = "scatter", mode = "lines") |&gt; </span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a><span class="in">  add_trace(x = ~year, y = ~value)</span></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## ウォーターフォールプロット</span></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>企業の財務状態などを表記する場合には、**ウォーターフォールプロット**が便利です。ウォーターフォールプロットでは、収益と支出の色を変え、収益はプラス方向、支出はマイナス方向の方向性を持った形で棒グラフで表現します。ウォーターフォールプロットを作図する場合には、<span class="in">`type="waterfall"`</span>と指定します。</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="in">`plotly`</span>では、ウォーターフォールプロットのほかにも、<span class="co">[</span><span class="ot">ろうそくチャート</span><span class="co">](https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%BC%E3%82%BD%E3%82%AF%E8%B6%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%83%88)</span>や<span class="co">[</span><span class="ot">オープン-ハイ-ロー-クローズチャート</span><span class="co">](https://datavizcatalogue.com/methods/OHLC_chart.html)</span>など、ビジネスや株価に関連したグラフを簡単に作成することができます。</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="waterfallプロット"}</span></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="in">x= c("Sales", "Consulting", "Net revenue", "Purchases", "Other expenses", "Profit before tax")</span></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a><span class="in">measure= c("relative", "relative", "total", "relative", "relative", "total")</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="in">text= c("+60", "+80", "", "-40", "-20", "Total")</span></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="in">y= c(60, 80, 0, -40, -20, 0)</span></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a><span class="in">data = data.frame(x = factor(x, levels = x), measure, text, y)</span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a><span class="in">fig &lt;- plot_ly(</span></span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="in">  data, name = "20", type = "waterfall", measure = ~measure,</span></span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a><span class="in">  x = ~x, textposition = "outside", y= ~y, text = ~text,</span></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a><span class="in">  connector = list(line = list(color = "rgb(63, 63, 63)"))) </span></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a><span class="in">fig &lt;- fig %&gt;%</span></span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="in">  layout(title = "Profit and loss statement 2018",</span></span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a><span class="in">        xaxis = list(title = ""),</span></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a><span class="in">        yaxis = list(title = ""),</span></span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a><span class="in">        autosize = TRUE,</span></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="in">        showlegend = TRUE)</span></span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="in">fig</span></span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="fu">## ggplotly</span></span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="in">`plotly`</span>では、<span class="in">`ggplot2`</span>で準備したグラフをインタラクティブなグラフに簡単に変換することができます。<span class="in">`ggplot2`</span>のグラフオブジェクトを変数に保存し、その変数を<span class="in">`ggplotly`</span>関数の引数にするだけで、<span class="in">`ggplot2`</span>のグラフがインタラクティブなものに変換されます。</span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ggplotlyでインタラクティブなggplot2グラフ"}</span></span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a><span class="in">p &lt;- iris |&gt; </span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = Sepal.Length, y = Sepal.Width, size = Petal.Length, color = Species))+</span></span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point() </span></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="in">ggplotly(p)</span></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

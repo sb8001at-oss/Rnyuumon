@@ -1,0 +1,2463 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>R入門 - 13&nbsp; データの読み込みと書き出し（I/O）</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./chapter14.html" rel="next">
+<link href="./chapter12.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter13.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">データの読み込みと書き出し（I/O）</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R入門</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">はじめに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Rプログラミングの基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Rのインストール</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Rを使ってみよう</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">オブジェクトと変数・定数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">条件判断（Control structures）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">繰り返し文（Looping）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">エラー処理（error handler）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">数値</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">文字列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">因子（factor）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">ベクター</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">リスト・データフレーム・行列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter13.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">データの読み込みと書き出し（I/O）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">データセット</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Rでのデータの取り扱い</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">apply関数群</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">tidyr・dplyr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">日時データの取り扱い</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">オブジェクト指向とクラス</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter19.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">コーディング規約</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Rでのグラフ作成</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">グラフ作成：高レベルグラフィック関数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">グラフ作成：低レベルグラフィック関数とグラフィックパラメータ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter22.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">ggplot2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter23.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">plotly</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">統計解析の基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter24.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">確率分布と乱数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter25.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">検定</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter26.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">相関と回帰</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter27.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">分類</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter28.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">教師なし学習</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter29.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">時系列分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter30.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">生存時間解析</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">アドバンスな手法</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter31.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">purrr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter32.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">地理空間情報</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter33.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">ネットワーク解析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter34.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">R markdown・Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter35.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">おわりに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">参考文献</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#ディレクトリの操作" id="toc-ディレクトリの操作" class="nav-link active" data-scroll-target="#ディレクトリの操作"><span class="header-section-number">13.1</span> ディレクトリの操作</a>
+  <ul>
+  <li><a href="#getwd関数とsetwd関数" id="toc-getwd関数とsetwd関数" class="nav-link" data-scroll-target="#getwd関数とsetwd関数"><span class="header-section-number">13.1.1</span> getwd関数とsetwd関数</a></li>
+  <li><a href="#絶対パスと相対パス" id="toc-絶対パスと相対パス" class="nav-link" data-scroll-target="#絶対パスと相対パス"><span class="header-section-number">13.1.2</span> 絶対パスと相対パス</a></li>
+  </ul></li>
+  <li><a href="#ディレクトリ内のファイルの確認" id="toc-ディレクトリ内のファイルの確認" class="nav-link" data-scroll-target="#ディレクトリ内のファイルの確認"><span class="header-section-number">13.2</span> ディレクトリ内のファイルの確認</a></li>
+  <li><a href="#フォルダとファイルの作成" id="toc-フォルダとファイルの作成" class="nav-link" data-scroll-target="#フォルダとファイルの作成"><span class="header-section-number">13.3</span> フォルダとファイルの作成</a></li>
+  <li><a href="#ワークスペースイメージ.rdataの保存" id="toc-ワークスペースイメージ.rdataの保存" class="nav-link" data-scroll-target="#ワークスペースイメージ.rdataの保存"><span class="header-section-number">13.4</span> ワークスペースイメージ（.Rdata）の保存</a></li>
+  <li><a href="#オブジェクトの保存と読み込み" id="toc-オブジェクトの保存と読み込み" class="nav-link" data-scroll-target="#オブジェクトの保存と読み込み"><span class="header-section-number">13.5</span> オブジェクトの保存と読み込み</a>
+  <ul>
+  <li><a href="#プログラムを呼び出す" id="toc-プログラムを呼び出す" class="nav-link" data-scroll-target="#プログラムを呼び出す"><span class="header-section-number">13.5.1</span> プログラムを呼び出す</a></li>
+  </ul></li>
+  <li><a href="#データの読み込み" id="toc-データの読み込み" class="nav-link" data-scroll-target="#データの読み込み"><span class="header-section-number">13.6</span> データの読み込み</a>
+  <ul>
+  <li><a href="#excelからデータを読み込む古典的な方法" id="toc-excelからデータを読み込む古典的な方法" class="nav-link" data-scroll-target="#excelからデータを読み込む古典的な方法"><span class="header-section-number">13.6.1</span> Excelからデータを読み込む（古典的な方法）</a>
+  <ul class="collapse">
+  <li><a href="#excelcsvタブ切りテキストへの変換" id="toc-excelcsvタブ切りテキストへの変換" class="nav-link" data-scroll-target="#excelcsvタブ切りテキストへの変換"><span class="header-section-number">13.6.1.1</span> Excel：csv・タブ切りテキストへの変換</a></li>
+  </ul></li>
+  <li><a href="#scan関数" id="toc-scan関数" class="nav-link" data-scroll-target="#scan関数"><span class="header-section-number">13.6.2</span> scan関数</a></li>
+  <li><a href="#read.table関数" id="toc-read.table関数" class="nav-link" data-scroll-target="#read.table関数"><span class="header-section-number">13.6.3</span> read.table関数</a></li>
+  <li><a href="#read.csv関数read.delim関数" id="toc-read.csv関数read.delim関数" class="nav-link" data-scroll-target="#read.csv関数read.delim関数"><span class="header-section-number">13.6.4</span> read.csv関数、read.delim関数</a>
+  <ul class="collapse">
+  <li><a href="#stringasfactorsとfileencoding" id="toc-stringasfactorsとfileencoding" class="nav-link" data-scroll-target="#stringasfactorsとfileencoding"><span class="header-section-number">13.6.4.1</span> stringAsFactorsとfileEncoding</a></li>
+  </ul></li>
+  <li><a href="#クリップボードからの読み込み" id="toc-クリップボードからの読み込み" class="nav-link" data-scroll-target="#クリップボードからの読み込み"><span class="header-section-number">13.6.5</span> クリップボードからの読み込み</a></li>
+  </ul></li>
+  <li><a href="#データの書き出し" id="toc-データの書き出し" class="nav-link" data-scroll-target="#データの書き出し"><span class="header-section-number">13.7</span> データの書き出し</a>
+  <ul>
+  <li><a href="#writecat関数" id="toc-writecat関数" class="nav-link" data-scroll-target="#writecat関数"><span class="header-section-number">13.7.1</span> write・cat関数</a></li>
+  <li><a href="#write.table関数" id="toc-write.table関数" class="nav-link" data-scroll-target="#write.table関数"><span class="header-section-number">13.7.2</span> write.table関数</a></li>
+  </ul></li>
+  <li><a href="#readr" id="toc-readr" class="nav-link" data-scroll-target="#readr"><span class="header-section-number">13.8</span> readr</a>
+  <ul>
+  <li><a href="#readrテキストデータの読み込み" id="toc-readrテキストデータの読み込み" class="nav-link" data-scroll-target="#readrテキストデータの読み込み"><span class="header-section-number">13.8.1</span> readr：テキストデータの読み込み</a></li>
+  <li><a href="#tibble" id="toc-tibble" class="nav-link" data-scroll-target="#tibble"><span class="header-section-number">13.8.2</span> tibble</a></li>
+  <li><a href="#readrテキストファイルの書き出し" id="toc-readrテキストファイルの書き出し" class="nav-link" data-scroll-target="#readrテキストファイルの書き出し"><span class="header-section-number">13.8.3</span> readr：テキストファイルの書き出し</a></li>
+  </ul></li>
+  <li><a href="#readxl" id="toc-readxl" class="nav-link" data-scroll-target="#readxl"><span class="header-section-number">13.9</span> readxl</a></li>
+  <li><a href="#excelファイルの種類" id="toc-excelファイルの種類" class="nav-link" data-scroll-target="#excelファイルの種類"><span class="header-section-number">13.10</span> Excelファイルの種類</a></li>
+  <li><a href="#その他のデータ読み込みライブラリ" id="toc-その他のデータ読み込みライブラリ" class="nav-link" data-scroll-target="#その他のデータ読み込みライブラリ"><span class="header-section-number">13.10.0.1</span> その他のデータ読み込みライブラリ</a></li>
+  <li><a href="#data.table" id="toc-data.table" class="nav-link" data-scroll-target="#data.table"><span class="header-section-number">13.11</span> data.table</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter13.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">データの読み込みと書き出し（I/O）</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">データの読み込みと書き出し（I/O）</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>統計に用いるデータは、通常Excelのような表計算ソフトや、データベースなどで作成されます。Rを用いてデータ解析・統計解析を行うためには、まずRに表計算ソフトやデータベースからデータを読み込む必要があります。</p>
+<p>データ解析・統計解析が終われば、Rでの解析結果を書き出し、Excelなどで取り扱う必要があります。</p>
+<p>このように、Rで解析を行うためには、データの読み込み・書き出しが必須となります。Rはこのような、データの読み込み・書き出し（Input/Output、<strong>I/O</strong>）のための関数を多数備えています。</p>
+<section id="ディレクトリの操作" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="ディレクトリの操作"><span class="header-section-number">13.1</span> ディレクトリの操作</h2>
+<p>データを読み込み、書き出すためには、まず読み込む・書き出すためのフォルダが必要となります。フォルダのことを<strong>ディレクトリ</strong>とも呼びます。Rでは、<strong>ワーキングディレクトリ（working directory）</strong>というものが設定されています。Rからはこのワーキングディレクトリの中のファイルを確認することができます。</p>
+<p>ワーキングディレクトリは通常、RStudioを起動した時に、右下のカラムのFilesタブに表示されています。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/filestab.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1" title="図1：ワーキングディレクトリをfilesタブで確認する"><img src="./image/filestab.png" class="img-fluid figure-img" alt="図1：ワーキングディレクトリをfilesタブで確認する"></a></p>
+<figcaption>図1：ワーキングディレクトリをfilesタブで確認する</figcaption>
+</figure>
+</div>
+<p>このfilesタブでは、任意のフォルダに移動することができます。上図の右上、…と記載されている部分をクリックするとウインドウが開きます。このウインドウ上で任意のフォルダに移動すれば、filesタブに示されるフォルダが変わります。ただし、表示するフォルダを変えるだけではワーキングディレクトリを変更することはできません。</p>
+<p>filesタブに表示されたフォルダをワーキングディレクトリに設定するには、filesタブの右上、「More」から「Set As Working Directory」を選択します。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/filestab_options.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2" title="図2：MoreのリストからSet As Working Directoryを選ぶ"><img src="./image/filestab_options.png" class="img-fluid figure-img" alt="図2：MoreのリストからSet As Working Directoryを選ぶ"></a></p>
+<figcaption>図2：MoreのリストからSet As Working Directoryを選ぶ</figcaption>
+</figure>
+</div>
+<p>Fileに表示されているディレクトリをワーキングディレクトリに変更する場合には、同じ「More」から「Go To Working Directory」を選択します。</p>
+<p>ワーキングディレクトリの変更は、上の「Session」から「Set Working Directory」を選択することでも変更できます。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/Session_SetWD.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3" title="図3：「Session」からワーキングディレクトリを変更する"><img src="./image/Session_SetWD.png" class="img-fluid figure-img" alt="図3：「Session」からワーキングディレクトリを変更する"></a></p>
+<figcaption>図3：「Session」からワーキングディレクトリを変更する</figcaption>
+</figure>
+</div>
+<p>デフォルトのワーキングディレクトリ（Rstudioを開いた時に設定されているワーキングディレクトリ）を変更する場合には、「Tools」→「Option」を選択し、「Default working directory」に任意のフォルダを指定します。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/DefaultWD.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4" title="図4：デフォルトのワーキングディレクトリを変更する"><img src="./image/DefaultWD.png" class="img-fluid figure-img" alt="図4：デフォルトのワーキングディレクトリを変更する"></a></p>
+<figcaption>図4：デフォルトのワーキングディレクトリを変更する</figcaption>
+</figure>
+</div>
+<section id="getwd関数とsetwd関数" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="getwd関数とsetwd関数"><span class="header-section-number">13.1.1</span> getwd関数とsetwd関数</h3>
+<p>上記のように、RStudioの機能を使えばワーキングディレクトリを簡単に変更することができます。ただし、データのフォルダ構造によっては、Rでの演算中にワーキングディレクトリを変更したい、といった場合もあります。</p>
+<p>ワーキングディレクトリの確認と設定は、<code>getwd</code>関数と<code>setwd</code>関数を用いて行うことができます。</p>
+<p><code>getwd</code>関数は現在のワーキングディレクトリを確認するための関数です。<code>getwd</code>関数は引数を取らず、実行すると現在のワーキングディレクトリのアドレスを文字列で返します。</p>
+<p><code>setwd</code>関数はワーキングディレクトリを変更するための関数です。<code>setwd</code>関数は<strong>文字列のディレクトリのアドレス</strong>を引数に取ります。<code>setwd</code>関数を実行すると、アドレスで指定したフォルダにワーキングディレクトリが変更されます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ワーキングディレクトリの確認と設定</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>() <span class="co"># ワーキングディレクトリを確認</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"directory/name/as/character"</span>) <span class="co"># ワーキングディレクトリを変更</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="絶対パスと相対パス" class="level3" data-number="13.1.2">
+<h3 data-number="13.1.2" class="anchored" data-anchor-id="絶対パスと相対パス"><span class="header-section-number">13.1.2</span> 絶対パスと相対パス</h3>
+<p>ディレクトリを指定する際には、<strong>ディレクトリのアドレス</strong>を用います。Windowsでは、フォルダを開き、上のアドレスバーを右クリックすると、アドレスをテキストとしてコピーすることができます。この方法でコピーできるアドレスのことを<strong>絶対パス</strong>と呼びます。絶対パスには、ルートディレクトリ（大元のフォルダ）からそのフォルダまでのアドレスが全て記載されています。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/directory_address.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" data-glightbox="description: .lightbox-desc-5" title="図5：ディレクトリのアドレス（Windowsの場合）"><img src="./image/directory_address.png" class="img-fluid figure-img" alt="図5：ディレクトリのアドレス（Windowsの場合）"></a></p>
+<figcaption>図5：ディレクトリのアドレス（Windowsの場合）</figcaption>
+</figure>
+</div>
+<p>ディレクトリのアドレスには、<strong>相対パス</strong>と呼ばれるものもあります。相対パスは、現在のディレクトリの上位や下位といった、現在のディレクトリからの位置を相対的に表すものです。</p>
+<p><code>setwd</code>関数は、この絶対パス、相対パスのいずれも使用することができます。絶対パスの場合には、ルートからのすべてのアドレスを文字列で指定します。一方、相対パスの場合は、.（ピリオド）を用いて、現在のディレクトリからの位置を以下のように指定します。</p>
+<ul>
+<li><strong>「./」</strong>は今のディレクトリのアドレスを示す記号</li>
+<li><strong>「../」</strong>は今のディレクトリの一つ上位のディレクトリを示す記号</li>
+</ul>
+<p>上の記号を用いて、一つ下位にあるディレクトリは以下のように示すことができます。</p>
+<p><strong>“./一つ下のフォルダ名”</strong></p>
+<p>また、<code>setwd</code>関数は、下位のフォルダであれば、そのフォルダまでのパスを記載するだけでもディレクトリを指定することができます。ただし、Windowsではフォルダのつなぎ文字がバックスラッシュ（\）になっています。Rでのつなぎ文字はスラッシュ（/）ですので、Windowsではアドレスの記法が異なることに注意が必要です。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>相対パスと絶対パス</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"../"</span>) <span class="co"># 一つ上のフォルダにワーキングディレクトリを移動</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"./NameF"</span>) <span class="co"># 一つ下の「NameF」というフォルダにワーキングディレクトリを移動</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"NameF"</span>) <span class="co"># 上と同じ</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"NameF/NameF2"</span>) <span class="co"># NameFフォルダ内のNameF2というフォルダに移動</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="ディレクトリ内のファイルの確認" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="ディレクトリ内のファイルの確認"><span class="header-section-number">13.2</span> ディレクトリ内のファイルの確認</h2>
+<p>ワーキングディレクトリ内のファイルやフォルダは、Rで開いたり、確認したりすることができます。<code>dir</code>関数と<code>list.files</code>関数はワーキングディレクトリ内のファイル・フォルダの一覧を表示するための関数です。いずれもファイル・フォルダ名の一覧を文字列のベクターとして返します。<code>list.dirs</code>関数はワーキングディレクトリ内にあるフォルダのアドレスの一覧を文字列のベクターとして返します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ディレクトリ内のファイル・フォルダの確認</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir</span>() <span class="co"># ディレクトリ名とファイル名が返ってくる</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>() <span class="co"># dir関数と同じ</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">list.dirs</span>() <span class="co"># ディレクトリ名のみ返ってくる</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="フォルダとファイルの作成" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="フォルダとファイルの作成"><span class="header-section-number">13.3</span> フォルダとファイルの作成</h2>
+<p>現在のワーキングディレクトリにフォルダを作成する際には、<code>dir.create</code>関数を用います。<code>dir.create</code>関数は作成するフォルダ名の文字列を引数に取ります。ワーキングディレクトリ内にファイルを作成する関数はいくつもあります。単にファイルを作るのであれば<code>file.create</code>関数を、文字列をテキストで保存する場合には<code>cat</code>関数を用います。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ディレクトリとファイルの作成</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"tmp"</span>) <span class="co"># 現在のワーキングディレクトリに「tmp」というフォルダを作成</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"tmp"</span>) <span class="co"># 作成したフォルダにワーキングディレクトリを移動</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">file.create</span>(<span class="st">"filename.txt"</span>) <span class="co"># 空のテキストファイルを作成</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Hello world"</span>, <span class="at">file=</span><span class="st">"helloworld.txt"</span>) <span class="co"># Hello worldと書き込まれたテキストファイルを作成</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="ワークスペースイメージ.rdataの保存" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="ワークスペースイメージ.rdataの保存"><span class="header-section-number">13.4</span> ワークスペースイメージ（.Rdata）の保存</h2>
+<p><strong>ワークスペース</strong>とは、Rを実行している時に取り扱っているオブジェクトなどの環境のことです。RGUIやRStudioを閉じるときには、下の図のようなウインドウが表示され、ワークスペースのイメージを保存するかどうか尋ねられます。ワークスペースを保存すると、現在のワーキングディレクトリに「<strong>.RData</strong>」というファイルが作成されます。この.RDataがワークスペースのイメージです。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/save_workspace.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" data-glightbox="description: .lightbox-desc-6" title="図6：Rstudio終了時のワークスペース保存"><img src="./image/save_workspace.png" class="img-fluid figure-img" alt="図6：Rstudio終了時のワークスペース保存"></a></p>
+<figcaption>図6：Rstudio終了時のワークスペース保存</figcaption>
+</figure>
+</div>
+<p>.RDataファイルはRStudioを閉じるときだけでなく、RStudioのメニューから「Session → Save Workspace As…」を選ぶことでも保存できます。また、<code>save.image</code>関数を用いても、.RDataファイルを作成することができます。</p>
+<p>現在のワークスペースの情報は、RStudio右上のパネルの「Environment」で確認できます。このパネルでは、現在Rで取り扱っている変数（オブジェクト）の一覧を確認することができます。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/environment_pane.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" data-glightbox="description: .lightbox-desc-7" title="図7：Environmentパネル"><img src="./image/environment_pane.png" class="img-fluid figure-img" alt="図7：Environmentパネル"></a></p>
+<figcaption>図7：Environmentパネル</figcaption>
+</figure>
+</div>
+<p>このパネルに表示されているのと同じ、オブジェクトのリストをR上で取得する場合には、<code>ls</code>関数を用います。</p>
+<p>Rを閉じると、オブジェクトはメモリから削除されます。次にRStudioを起動したときには、デフォルトのワーキングディレクトリに存在する.RDataから自動的にワークスペースのイメージが読み込まれます。別途、.RDataファイルを指定してワークスペースを読み込む場合には、<code>load</code>関数を用います。<code>load</code>関数で.RDataファイルを読み込むことで、.RDataファイルを保存した際に使用していたオブジェクトがメモリ上に展開されます。</p>
+<p>このように、ワークスペースを保存・読み込むことで、以前のデータ分析環境を読み込み、データ分析の続きを行うことができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ワークスペースの保存と読み込み</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>() <span class="co"># 現在メモリ上にある全てのオブジェクトを表示</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">save.image</span>() <span class="co"># ワークスペースのイメージを保存する</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">".Rdata"</span>) <span class="co"># ワークスペースのイメージを読み込む</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="オブジェクトの保存と読み込み" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="オブジェクトの保存と読み込み"><span class="header-section-number">13.5</span> オブジェクトの保存と読み込み</h2>
+<p>ワークスペース全体ではなく、個別のオブジェクトも、一時的に保存し、読み込むことができます。オブジェクトの保存と読み込みには、<code>save</code>関数と<code>load</code>関数を用います。</p>
+<p><code>save</code>関数はオブジェクトと文字列のファイル名の2つを引数に取り、オブジェクトを引数で指定したファイル名で保存する関数です。ファイル名は何でもよく、ファイルの拡張子にも特に指定はないのですが、<strong>「.rda」</strong>を拡張子としたファイル名とするのが一般的です。</p>
+<p>保存したオブジェクトを読み込む関数が、<code>load</code>関数です。<code>load</code>関数はファイル名の文字列を引数に取り、<code>save</code>関数で保存した.rdaファイルを読み込みます。<code>load</code>関数で読み込むと、Rのワークスペースには保存したオブジェクトが現れます。</p>
+<p><code>save</code>・<code>load</code>関数と同様の関数として、<code>dput</code>関数と<code>dget</code>関数というものもあります。<code>dput</code>関数で保存したファイルは<code>load</code>関数で読み込めず、<code>save</code>関数で保存したファイルは<code>dget</code>関数で読み込めないため、<code>dput</code>関数でオブジェクトを保存した場合には、<code>dget</code>関数で読み込む必要があります。<code>dget</code>関数はオブジェクトを返す関数ですので、ワークスペースにオブジェクトが再現されるわけではありません。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>オブジェクトの保存と読み込み</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(x, <span class="at">file =</span> <span class="st">"Robject.rda"</span>) <span class="co"># オブジェクトを保存</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(x) <span class="co"># xを削除する</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"Robject.rda"</span>) <span class="co"># オブジェクトの読み込み</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>x <span class="co"># xが読み込まれている</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dput</span>(x, <span class="st">"Robject_dput.rda"</span>) <span class="co"># オブジェクトを保存</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dget</span>(<span class="st">"Robject_dput.rda"</span>) <span class="co"># オブジェクトが返ってくる</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">dget</span>(<span class="st">"Robject.rda"</span>) <span class="co"># エラー。saveで保存するとdgetで読み込めない</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"Robject_dput.rda"</span>) <span class="co"># エラー。dputで保存するとloadで読み込めない</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<section id="プログラムを呼び出す" class="level3" data-number="13.5.1">
+<h3 data-number="13.5.1" class="anchored" data-anchor-id="プログラムを呼び出す"><span class="header-section-number">13.5.1</span> プログラムを呼び出す</h3>
+<p>保存したプログラムを他のプログラムで呼び出すときには、<code>source</code>関数を用います。<code>source</code>関数の引数はファイル名の文字列です。<a href="./chapter2.html">2章</a>で説明した通り、Rのプログラムは通常「.R」の拡張子を付けて取り扱いますので、拡張子を含めたファイル名を指定します。現在のワーキングディレクトリに保存されているファイルを呼び出す場合はそのファイル名を、他のディレクトリに保存されているファイルを呼び出す場合はそのファイルのパスを含む文字列を<code>source</code>関数の引数に取ります。。<code>source</code>関数でプログラムを呼び出すと、プログラムが実行されます。複雑なプログラムでは、関数などを別ファイルで定義しておいて、そのファイルを呼び出して用いることもあります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>source関数でプログラムの呼び出し</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"code_hello_world.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="データの読み込み" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="データの読み込み"><span class="header-section-number">13.6</span> データの読み込み</h2>
+<section id="excelからデータを読み込む古典的な方法" class="level3" data-number="13.6.1">
+<h3 data-number="13.6.1" class="anchored" data-anchor-id="excelからデータを読み込む古典的な方法"><span class="header-section-number">13.6.1</span> Excelからデータを読み込む（古典的な方法）</h3>
+<p>統計を行うデータは、通常Excelのような表計算ソフトか、データベースで準備するのが一般的です。このようなデータをRで取り込む際には、一昔前までは<strong>「テキストファイルに変換」</strong>してから読み込むのが一般的でした。</p>
+<p>最近ではライブラリを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、ライブラリなしのRではこのような読み込みはできません。ライブラリが使用できないときには、以下のような方法でExcelファイルをテキストで保存し、Rで読み込むことになります。</p>
+<p>また、Web上に保存されているデータがテキストである場合も少なくありません。このような、Web上のテキストファイルの読み込みにも、以下に示すテキスト読み込みの方法を用いることができます。</p>
+<section id="excelcsvタブ切りテキストへの変換" class="level4" data-number="13.6.1.1">
+<h4 data-number="13.6.1.1" class="anchored" data-anchor-id="excelcsvタブ切りテキストへの変換"><span class="header-section-number">13.6.1.1</span> Excel：csv・タブ切りテキストへの変換</h4>
+<p>まずは、Excelでのテキストファイルの変換について説明します。Rで読み込むことができるテキストは、大きく分けると以下の4種類です。</p>
+<ul>
+<li><strong>コンマ切りテキスト</strong>（comma-separated values, <strong>csv</strong>）</li>
+<li><strong>タブ切りテキスト</strong>（tab-separated values, <strong>tsv</strong>）</li>
+<li>スペース切りテキスト</li>
+<li>固定幅テキスト</li>
+</ul>
+<p>これらのうち、スペース切りテキストについてはデータにスペースが入っていると読み込みが難しくなるため、通常は避けられます。固定幅テキストはやや取り扱いにくいため、Excelからの変換には用いません。したがって、Excelファイルは主にコンマ切りテキストかタブ切りテキストに変換して、Rで読み込むことになります。</p>
+<p>Excelファイルからコンマ切り・タブ切りテキストへの変換はExcel上で行います。Excelの「ファイル」メニューから「名前を付けて保存」を選択し、ファイル名の下のドロップダウンリストから「CSV UTF-8 (コンマ区切り)(*.csv)」もしくは「テキスト (タブ区切り)(*.txt)」を選択します。拡張子である「.csv」や「.txt」は自動的に付与されます。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+エンコーディング
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>テキストには<strong>エンコーディング</strong>というものがあり、日本語テキストは<strong>UTF-8、Shift-JIS（CP932）、EUC-JP</strong>のいずれかのエンコーディングを持ちます。エンコーディングが異なると文字化けを起こします。RのデフォルトのエンコーディングはUTF-8です。WindowsではShift-JISが用いられている場合があるため、エンコーディングに注意が必要となります。</p>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/excel_changeformats.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" data-glightbox="description: .lightbox-desc-8" title="図8：Excelでコンマ切り・タブ切りテキストを作成する"><img src="./image/excel_changeformats.png" class="img-fluid figure-img" alt="図8：Excelでコンマ切り・タブ切りテキストを作成する"></a></p>
+<figcaption>図8：Excelでコンマ切り・タブ切りテキストを作成する</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Excelの空欄データ
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Excelには「データをセルから消したのに何らかのデータが残る」という謎仕様があります。 空のExcelファイルを作成し（Book1）、G7までを1で埋めます（Book2、下図9）。数値をバックスペースで消して保存すると（Book3）、何故かBook1よりBook3の方がファイルサイズが大きくなります（下図10）。Rからテキスト変換したファイルを読み込むと、この「無いけど残っているデータ」を読み込んでしまうので、エラーが生じることがあります。データをDeleteで削除、もしくは右クリックから削除を選ぶと、この残ったデータを削除することができます。</p>
+<p>長い歴史を持つ、代々受け継がれたExcelファイルではこのような謎データがファイルサイズを大きくし、動作を遅くしている場合もありますので、データ数に比べてファイルサイズが大きいExcelファイルがあれば空欄をDeleteしてみることをおすすめします。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/book2_excel.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" data-glightbox="description: .lightbox-desc-9" title="図9：Excelのセルに1を入力し、バックスペースで削除する"><img src="./image/book2_excel.png" class="img-fluid figure-img" alt="図9：Excelのセルに1を入力し、バックスペースで削除する"></a></p>
+<figcaption>図9：Excelのセルに1を入力し、バックスペースで削除する</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./image/filesize_excel.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" data-glightbox="description: .lightbox-desc-10" title="図10：バックスペースで削除すると、ファイルサイズが増える"><img src="./image/filesize_excel.png" class="img-fluid figure-img" alt="図10：バックスペースで削除すると、ファイルサイズが増える"></a></p>
+<figcaption>図10：バックスペースで削除すると、ファイルサイズが増える</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="scan関数" class="level3" data-number="13.6.2">
+<h3 data-number="13.6.2" class="anchored" data-anchor-id="scan関数"><span class="header-section-number">13.6.2</span> scan関数</h3>
+<p>まずは、1行のデータを読み込む場合について説明します。1行のデータであれば、<code>scan</code>関数を用いて読み込むことができます。<code>scan</code>関数の第一引数は文字列のファイル名です。ファイル名を指定するときには、必ず<strong>拡張子を含めて記載します</strong>。<code>scan</code>関数には、「<code>sep</code>」という引数を指定することができます。<code>sep</code>はデータ間の区切り文字を指定するものです。コンマ切りテキスト、CSVであれば「<code>sep = ","</code>」、タブ切りテキストであれば「<code>sep = "\t"</code>」を指定します。<code>scan</code>関数の返り値はベクターとなります。</p>
+<p>ただし、<code>what</code>という引数を設定すると、返り値をリストにすることができます。<code>what</code>は空のリストを指定する引数で、リストの要素の個数に従い、<code>scan</code>で読み取った結果が代入されます。代入の順番は、1つ目がリストの1要素目、2つ目がリストの2要素目…となります。リストの長さより多い要素は再びリストの1要素目に代入されます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>scan関数でテキストファイルを読み込む</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scan</span>(<span class="st">"./data/scansample.txt"</span>, <span class="at">sep =</span> <span class="st">","</span>) <span class="co"># コンマ切りテキストを読み込む</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 2 3 4 5 6 7 8</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">scan</span>(<span class="st">"./data/scansample.txt"</span>, <span class="at">sep =</span> <span class="st">","</span>, <span class="at">what =</span> <span class="fu">list</span>(<span class="st">""</span>, <span class="st">""</span>)) <span class="co"># 出力をリストにする</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "1" "3" "5" "7"</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "2" "4" "6" "8"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="read.table関数" class="level3" data-number="13.6.3">
+<h3 data-number="13.6.3" class="anchored" data-anchor-id="read.table関数"><span class="header-section-number">13.6.3</span> read.table関数</h3>
+<p>Excelから読み込む表は、通常行と列を持つ、テーブルの形をしていますので、データフレームにできると便利です。テキストに変換したExcelの表をデータフレームとして読み込む関数が<code>read.table</code>関数です。<code>read.table</code>関数は第一引数にテキストファイルのファイル名を取ります。<code>scan</code>関数と同様に、ファイル名には拡張子を含める必要があります。</p>
+<p><code>read.table</code>関数は<code>scan</code>関数と同じく、「<code>sep</code>」引数を取ります。<code>sep</code>引数には、コンマ切りテキスト、CSVであれば「<code>sep = ","</code>」、タブ切りテキストであれば「<code>sep = "\t"</code>」を指定します。</p>
+<p><code>read.table</code>関数はさらに、「<code>header</code>」という引数を取ります。この引数に<code>TRUE</code>を指定すると（「<code>header = T</code>」）、読み込むテキストの1行目を列名として、データを読み込みます。</p>
+<p><code>read.table</code>関数でよく用いられる引数はファイル名、<code>sep</code>、<code>header</code>の3つですが、その他たくさんの引数を取ることができます。<code>read.table</code>関数の引数の一覧を以下の表1に示します。</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>表1：read.table関数の引数</caption>
+<colgroup>
+<col style="width: 18%">
+<col style="width: 16%">
+<col style="width: 45%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">引数</th>
+<th style="text-align: left;">データ型</th>
+<th style="text-align: left;">意味</th>
+<th style="text-align: left;">デフォルト値</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">file</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">ファイル名</td>
+<td style="text-align: left;">ー</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">header</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">1行目を列名とするか</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sep</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">区切り文字（コンマやタブ)</td>
+<td style="text-align: left;">ー</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">quote</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">文字列が囲まれている文字（“など）</td>
+<td style="text-align: left;">“"’”</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dec</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">小数点の文字</td>
+<td style="text-align: left;">“.”</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">numerals</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">文字列を数値に変換するときの正確性</td>
+<td style="text-align: left;">ー</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">row.names</td>
+<td style="text-align: left;">文字列ベクター</td>
+<td style="text-align: left;">行名</td>
+<td style="text-align: left;">ー</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">col.names</td>
+<td style="text-align: left;">文字列ベクター</td>
+<td style="text-align: left;">列名</td>
+<td style="text-align: left;">ー</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">as.is</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">文字列を因子に変えるときのルール</td>
+<td style="text-align: left;">!stringAsFactors</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tryLogical</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">TRUEなどを論理型に変換するか</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">na.strings</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">NAとして取り扱う文字列</td>
+<td style="text-align: left;">“NA”</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">colClasses</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">列のクラスを指定</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nrows</td>
+<td style="text-align: left;">数値</td>
+<td style="text-align: left;">読み込む行数</td>
+<td style="text-align: left;">-1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">skip</td>
+<td style="text-align: left;">数値</td>
+<td style="text-align: left;">読み込まない行数</td>
+<td style="text-align: left;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">check.names</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">列名をチェックするか</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fill</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">空きになっている要素をスペースで埋めるか</td>
+<td style="text-align: left;">!blank.lines.skip</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">strip.white</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">スペースを取り除くか</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">blank.lines.skip</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">空行をスキップするか</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">comment.char</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">コメントの開始文字</td>
+<td style="text-align: left;">“#”</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">allowEscapes</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">エスケープ記号を変換するか</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">flush</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">1行1データかどうか</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">stringAsFactors</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">文字列を因子に自動変換するか</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fileEncoding</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">エンコーディングの指定</td>
+<td style="text-align: left;">“”</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">encoding</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">エンコーディング（変更はしない）</td>
+<td style="text-align: left;">“unknown”</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">text</td>
+<td style="text-align: left;">文字列</td>
+<td style="text-align: left;">fileから読み込まず，直接データを入力</td>
+<td style="text-align: left;">ー</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">skipNul</td>
+<td style="text-align: left;">論理型</td>
+<td style="text-align: left;">空データをスキップするか</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="read.csv関数read.delim関数" class="level3" data-number="13.6.4">
+<h3 data-number="13.6.4" class="anchored" data-anchor-id="read.csv関数read.delim関数"><span class="header-section-number">13.6.4</span> read.csv関数、read.delim関数</h3>
+<p><code>read.table</code>関数の仲間として、csvの読み込み用の<code>read.csv</code>関数、タブ切りテキスト読み込み用の<code>read.delim</code>関数、固定幅テキストの読み込み用の<code>read.fwf</code>関数がRには準備されています。<code>read.csv</code>関数は<code>sep</code>引数にコンマ、<code>read.delim</code>関数は<code>sep</code>引数にタブがデフォルト値として設定されており、<code>sep</code>引数を入力することなくデータを読み込むことができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>テキストファイルの読み込み</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.table</span>(<span class="st">"filename.txt"</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span>T)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">read.table</span>(<span class="st">"filename.txt"</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span>T, <span class="at">stringAsFactors =</span> T)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"filename.csv"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv2</span>(<span class="st">"filename.csv"</span>) <span class="co"># ヨーロッパ仕様</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">read.delim</span>(<span class="st">"filename.tsv"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">read.delim2</span>(<span class="st">"filename.tsv"</span>) <span class="co"># ヨーロッパ仕様</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">read.fwf</span>(<span class="st">"filename.txt"</span>) <span class="co"># 固定幅テキスト</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+ヨーロッパで準備されたファイルのデータ読み込み
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>ヨーロッパではコンマ（,）をセミコロン（;）、小数点（ピリオド .）をコンマ（,）で記載するため、通常の<code>read.csv</code>関数、<code>read.delim</code>関数ではテキストファイルをまともに読み込むことができません。ヨーロッパで生成されるテキストファイルの読み込みには、専用の関数（<code>read.csv2</code>、<code>read.delim2</code>）が設けられています。</p>
+</div>
+</div>
+</div>
+<section id="stringasfactorsとfileencoding" class="level4" data-number="13.6.4.1">
+<h4 data-number="13.6.4.1" class="anchored" data-anchor-id="stringasfactorsとfileencoding"><span class="header-section-number">13.6.4.1</span> stringAsFactorsとfileEncoding</h4>
+<p><code>read.table</code>関数の「<code>stringAsFactors</code>」という引数は、昔はTRUEがデフォルトとされており、<code>read.table</code>関数で読み込んだ文字列はすべて因子に変換されていました。Rのバージョン4.0.0より<code>stringAsFactors</code>のデフォルト値が<code>FALSE</code>に変更されたため、現在の<code>read.table</code>関数では、文字列は文字列のまま読み込まれます。</p>
+<p>WindowsではテキストファイルのエンコーディングがShift JIS（CP932）になっている場合がありますので、「<code>fileEncoding = "CP932"</code>」を引数に指定しないと読み込めないことがあります。エンコーディングがUTF-8であれば、<code>fileEncoding</code>を指定する必要はありません。</p>
+</section>
+</section>
+<section id="クリップボードからの読み込み" class="level3" data-number="13.6.5">
+<h3 data-number="13.6.5" class="anchored" data-anchor-id="クリップボードからの読み込み"><span class="header-section-number">13.6.5</span> クリップボードからの読み込み</h3>
+<p>Rでは、コピーしたテキストをクリップボードから読み込むこともできます。Ctrl+Cなどでコピーしたテキストを読み込む場合には、<code>read.table</code>関数の引数に<code>"clipboard"</code>を指定します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>クリップボードの内容を読み込む</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.table</span>(<span class="st">"clipboard"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="データの書き出し" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="データの書き出し"><span class="header-section-number">13.7</span> データの書き出し</h2>
+<p>Rからのデータの書き出しでは、通常テキストファイルが書き出されます。Excelファイルに直接書き出すこともできなくは無いのですが（<a href="https://cran.r-project.org/web/packages/xlsx/index.html">xlsxパッケージ</a> <span class="citation" data-cites="xlsx_bib">(<a href="references.html#ref-xlsx_bib" role="doc-biblioref">Dragulescu and Arendt 2020</a>)</span>を利用する）、それほど一般的ではありません。データの書き出しに用いられる関数には、<code>write</code>関数、<code>write.table</code>関数などがあります。</p>
+<section id="writecat関数" class="level3" data-number="13.7.1">
+<h3 data-number="13.7.1" class="anchored" data-anchor-id="writecat関数"><span class="header-section-number">13.7.1</span> write・cat関数</h3>
+<p>ベクターや行列などのデータの書き出しには、<code>write</code>関数・<code>cat</code>関数を用います。<code>write</code>関数は<code>cat</code>関数のラッパーで、2つの関数の間には大きな差はありません。<code>cat</code>関数はオブジェクトをコンソールに表示するために用いられますが、ファイルを出力する事もできます。<code>print</code>関数を用いてもコンソールへ表示することはできますが、ファイルを保存することはできません。</p>
+<p><code>cat</code>関数、<code>write</code>関数は、オブジェクトとファイル名を引数に取ります。共に<code>sep</code>引数で区切り文字を指定することができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>cat・write関数でのオブジェクトの表示</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(vec) <span class="co"># consoleにvecを表示</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write</span>(vec, <span class="st">""</span>) <span class="co"># cat関数と同じ（第2引数が無いとファイル保存が行われる）</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(vec) <span class="co"># print関数でも表示できる</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>cat・write関数でのファイルの保存</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(vec, <span class="at">file=</span><span class="st">"cat.txt"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write</span>(vec, <span class="at">file=</span><span class="st">"vector.txt"</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(vec, <span class="st">"print.txt"</span>) <span class="co"># エラー</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="write.table関数" class="level3" data-number="13.7.2">
+<h3 data-number="13.7.2" class="anchored" data-anchor-id="write.table関数"><span class="header-section-number">13.7.2</span> write.table関数</h3>
+<p>Rでは、データ処理の多くはデータフレームを用いて行います。テキストファイルをデータフレームとして取り込む<code>read.table</code>関数とは逆に、データフレームをテキストファイルとして書き出す関数が<code>write.table</code>関数です。</p>
+<p><code>write.table</code>関数はデータフレームとファイル名を引数に取り、データフレームをそのファイル名のテキストファイルとして書き出します。</p>
+<p><code>write.table</code>関数の代表的な引数は、<code>sep</code>、<code>col.names</code>、<code>row.names</code>、<code>quote</code>の4つです。<code>sep</code>は<code>read.table</code>関数と同じく区切り文字を指定する引数です。<code>col.names</code>と<code>row.names</code>は論理型を取り、<code>TRUE</code>であれば列名・行名を保存し、<code>FALSE</code>であれば列名・行名を省いて保存します。<code>quote</code>も論理型を取り、文字列・因子をダブルクオーテーションで囲むするかどうかを指定します。</p>
+<p><code>read.table</code>関数に<code>read.csv</code>関数があったように、<code>write.table</code>関数にはCSV用の<code>write.csv</code>関数があります。<code>write.csv</code>関数は<code>sep</code>のデフォルト値にコンマが設定されています。ヨーロッパ仕様の<code>write.csv2</code>関数もありますが、日本で使用することはまれです。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>write.table関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(df_obj, <span class="st">"filename.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 列名あり、行名なし、ダブルクオーテーションなしで保存</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(df_obj, <span class="st">"filename.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col.names =</span> T, <span class="at">row.names =</span> F, <span class="at">quote =</span> F) </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df_obj, <span class="st">"filename.csv"</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv2</span>(df_obj, <span class="st">"filename.csv"</span>) <span class="co">#  ヨーロッパ仕様</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="readr" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="readr"><span class="header-section-number">13.8</span> readr</h2>
+<p>RのデフォルトのI/Oは上記の通りですが、<code>read.table</code>関数、<code>write.table</code>関数を用いると、指定する引数が多かったり、読み込んだ列のデータ型が思うように設定されなかったりすることがよく起こります。また、デフォルトの関数群ではその実行速度が遅く、大きなデータを取り扱う場合には読み込みにとても時間がかかる、という問題もあります。</p>
+<p>これらの不都合を解決するI/Oに関するライブラリが<code>readr</code>パッケージ <span class="citation" data-cites="readr_bib">(<a href="references.html#ref-readr_bib" role="doc-biblioref">Wickham, Hester, and Bryan 2023</a>)</span>です。<code>readr</code>パッケージは、Rのデフォルトの関数名のピリオドをアンダースコア（<code>_</code>）に変換した関数群を備えており、列の型をうまく設定してくれる仕組みを備えています。また、デフォルトの関数よりも実行速度が速いため、大きなデータを取り扱う場合には、<code>readr</code>の関数群を用いたほうが良いでしょう。</p>
+<p><code>readr</code>パッケージは<code>tidyverse</code> <span class="citation" data-cites="tidyverse_bib">(<a href="references.html#ref-tidyverse_bib" role="doc-biblioref">Wickham et al. 2019</a>)</span>を構成するライブラリの一つであり、インストール・ロードは<code>tidyverse</code>ライブラリのインストール・ロードと同時に行うことができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>readrの読み込み</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<section id="readrテキストデータの読み込み" class="level3" data-number="13.8.1">
+<h3 data-number="13.8.1" class="anchored" data-anchor-id="readrテキストデータの読み込み"><span class="header-section-number">13.8.1</span> readr：テキストデータの読み込み</h3>
+<p><code>readr</code>でのテキストデータの読み込みには、<code>read_table</code>関数を用います。<code>read_table</code>関数の使い方は<code>read.table</code>関数とほぼ同じです。<code>read.table</code>関数と同じく、<code>read_table</code>関数も区切り文字を<code>sep</code>引数で設定します。<code>read_table</code>関数のデフォルトの区切り文字はスペースですので、<code>sep</code>を設定しない場合にはスペース切りテキストの読み込みに対応しています。読み込まれたファイルは、<code>tibble</code>というデータ型の、データフレームに変換されます。</p>
+<p>コンマ切りテキスト（CSV）の読み込みには、<code>read_csv</code>が、タブ切りテキスト（TSV）の読み込みには<code>read_tsv</code>関数が準備されています。これらの他に、ヨーロッパ仕様のCSVを読み込む<code>read_csv2</code>関数、区切り文字を指定する必要がある<code>read_delim</code>関数、固定幅テキストの読み込みを行う<code>read_fwf</code>関数などがあります。</p>
+<p><code>readr</code>パッケージの読み込み関数は圧縮ファイルの読み込みにも対応しており、gzip（.gz）、bzip2（.bz2）、lzma（.xz）、zip（.zip）などの圧縮ファイルを直接読み込むことができます。また、インターネットからテキストファイルを直接読み込むこともできます。インターネットから直接読み込む場合には、テキストファイルが保存されているwebアドレス（<code>http://</code>, <code>https://</code>, <code>ftp://</code> など）をファイル名として設定します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>readrでテキストファイルを読み込む</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_table</span>(<span class="st">"filename.txt"</span>) <span class="co"># sep=" "（スペース切り）がデフォルト</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"filename.csv"</span>) <span class="co"># コンマ切りテキスト</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">read_tsv</span>(<span class="st">"filename.tsv"</span>) <span class="co"># タブ切りテキスト</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">read_delim</span>(<span class="st">"filename.txt"</span>, <span class="at">delim=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>) <span class="co"># delim引数に区切りを指定</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">read_fwf</span>(<span class="st">"filename.txt"</span>) <span class="co"># 固定幅テキスト</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv2</span>(<span class="st">"filename.csv"</span>) <span class="co"># ヨーロッパ仕様</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">read_delim</span>(<span class="fu">clipboard</span>()) <span class="co"># クリップボードの読み込み</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">read_table</span>(<span class="st">"filename.zip"</span>) <span class="co"># zipファイルも直接読み込める</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="tibble" class="level3" data-number="13.8.2">
+<h3 data-number="13.8.2" class="anchored" data-anchor-id="tibble"><span class="header-section-number">13.8.2</span> tibble</h3>
+<p><code>readr</code>の読み込み関数は、読み込んだデータを<code>tibble</code>というデータ型に変換します。この<code>tibble</code>は概ねデータフレームと同じで、取り扱いもデータフレームと同様に行うことができます。</p>
+<p><code>tibble</code>は<code>tibble</code>関数で、データフレームと同じように作成することができます。また、<code>as_tibble</code>関数を用いることで、行列や通常のデータフレームを<code>tibble</code>に変換することができます。</p>
+<p><code>readr</code>に限らず、<code>tidyverse</code>のライブラリ群の関数では返り値を<code>tibble</code>とするものが多いです。<code>tibble</code>のデータフレームは、表示した時に列のデータ型を表示する、10行以上の行は省略する、列も省略する等の特徴があります。<code>tibble</code>については、<a href="./chapter16.html">16章</a>で詳しく説明します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>tibble</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">y =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>), <span class="at">z =</span> <span class="fu">c</span>(T, F, T))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 3</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">##       x y     z    </span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;int&gt; &lt;chr&gt; &lt;lgl&gt;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1     1 a     TRUE </span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2     2 b     FALSE</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3     3 c     TRUE</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(iris)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 150 × 5</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  </span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  1          5.1         3.5          1.4         0.2 setosa </span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  2          4.9         3            1.4         0.2 setosa </span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  3          4.7         3.2          1.3         0.2 setosa </span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  4          4.6         3.1          1.5         0.2 setosa </span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  5          5           3.6          1.4         0.2 setosa </span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  6          5.4         3.9          1.7         0.4 setosa </span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  7          4.6         3.4          1.4         0.3 setosa </span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  8          5           3.4          1.5         0.2 setosa </span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="do">##  9          4.4         2.9          1.4         0.2 setosa </span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 10          4.9         3.1          1.5         0.1 setosa </span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 140 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="readrテキストファイルの書き出し" class="level3" data-number="13.8.3">
+<h3 data-number="13.8.3" class="anchored" data-anchor-id="readrテキストファイルの書き出し"><span class="header-section-number">13.8.3</span> readr：テキストファイルの書き出し</h3>
+<p><code>readr</code>パッケージは<code>write.table</code>関数に当たる、テキスト書き出しの関数を備えています。<code>readr</code>が備えている関数は、データフレームをCSVとして保存する<code>write_csv</code>関数、タブ切りテキストとして保存する<code>write_tsv</code>関数、スペース切りテキストとして保存する<code>write_delim</code>関数があります。</p>
+<p><code>read_table</code>関数と同様に、<code>write_</code>関数もテキストの圧縮ファイルの保存に対応しています。対応している圧縮ファイルはgzip（.gz）、bzip2（.bz2）、lzma（.xz）です。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>readrでのファイル書き出し</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.csv"</span>) <span class="co"># コンマ切り</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(x, <span class="st">"filename.tsv"</span>) <span class="co"># タブ切り</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_delim</span>(x, <span class="st">"filename.txt"</span>) <span class="co"># スペース切り</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv2</span>(x, <span class="st">"filename.csv"</span>) <span class="co"># ヨーロッパ仕様</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.gz"</span>) <span class="co"># gzipで圧縮して出力</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.bz2"</span>) <span class="co"># bzip2で圧縮して出力</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.xz"</span>) <span class="co"># lzmaで圧縮して出力</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="readxl" class="level2" data-number="13.9">
+<h2 data-number="13.9" class="anchored" data-anchor-id="readxl"><span class="header-section-number">13.9</span> readxl</h2>
+<p>私のようなヘボいR使いは昔から上記のようにExcelをテキストファイルに変換してはRに読み込むというステップを踏み続けてきました。このExcelからテキストへの変換の手間を無くすライブラリが<code>readxl</code>パッケージ <span class="citation" data-cites="readxl_bib">(<a href="references.html#ref-readxl_bib" role="doc-biblioref">Wickham and Bryan 2023</a>)</span>です。</p>
+<p><code>readxl</code>パッケージも<code>tidyverse</code>と同じく、<a href="https://posit.co/">Posit Software</a>が開発しているライブラリですが、<code>tidyverse</code>には含まれていません。<code>tidyverse</code>とは別に、<code>readxl</code>パッケージを独立に読み込む必要があります。</p>
+<p><code>readxl</code>パッケージで使用する関数は、ほぼ<code>read_excel</code>関数だけです。<code>read_excel</code>関数は、.xlsおよび.xlsxファイルの読み込みに対応しており、ファイル名で指定したExcelファイルからテーブルを<code>tibble</code>として読み込みます。<code>read_excel</code>関数では<code>sheet</code>という引数を設定することができます。<code>read_excel</code>関数は<code>sheet</code>に設定した番号（もしくはシート名）のシートを読み込みます。</p>
+<p><code>readxl</code>パッケージは<code>read_excel</code>関数以外に、Excelファイルのメタデータ読み込みのための関数などを備えています。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>readxlでExcelファイルを読み込む</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(readxl)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(<span class="st">"filename.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">1</span>) <span class="co"># read_xlsxが読み込まれる</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(<span class="st">"filename.xls"</span>, <span class="at">sheet =</span> <span class="dv">1</span>) <span class="co"># read_xlsが読み込まれる</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="excelファイルの種類" class="level2 Callout-tip" data-collapse="true" data-number="13.10">
+<h2 data-number="13.10" class="anchored" data-anchor-id="excelファイルの種類"><span class="header-section-number">13.10</span> Excelファイルの種類</h2>
+<p>Excelには昔使用されていたファイルである.xlsファイルと、Excel2007から使われている.xlsxファイルがあります。</p>
+<p>.xlsファイルはバイナリファイルで、内部的には1と0でデータが表現されています。</p>
+<p>.xlsxファイルは実際にはzipファイルで、xmlというフォーマットで記載されたデータがzipファイルのフォルダ内に含まれています。.xlsxファイルは拡張子を.zipに書き換えるとzipファイルとして解凍することができ、中身を確認することができます。</p>
+<p>.xlsと.xlsxは全然違うファイルですが、<code>read_excel</code>関数は拡張子によって.xlsを読み込む<code>read_xls</code>関数と.xlsxを読み込む<code>read_xlsx</code>関数を切り替えて呼び出しています。</p>
+</section>
+<section id="その他のデータ読み込みライブラリ" class="level4" data-number="13.10.0.1">
+<h4 data-number="13.10.0.1" class="anchored" data-anchor-id="その他のデータ読み込みライブラリ"><span class="header-section-number">13.10.0.1</span> その他のデータ読み込みライブラリ</h4>
+<p><a href="https://posit.co/">Posit Software</a>は<code>readxl</code>の他にも、多数のデータ読み込み用ライブラリを開発しています。以下に示したライブラリを利用することで、様々なデータ型のファイルをRで読み込み、統計に用いることができます。</p>
+<ul>
+<li><a href="https://googlesheets4.tidyverse.org/"><code>googlesheets4</code></a>：Googleスプレッドシートの読み込み <span class="citation" data-cites="googlesheets4_bib">(<a href="references.html#ref-googlesheets4_bib" role="doc-biblioref">Bryan 2023</a>)</span></li>
+<li><a href="https://haven.tidyverse.org/"><code>haven</code></a>：SAS、SPSS、Stataファイルの読み込み <span class="citation" data-cites="haven_bib">(<a href="references.html#ref-haven_bib" role="doc-biblioref">Wickham, Miller, and Smith 2023</a>)</span></li>
+<li><a href="https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html"><code>jsonlite</code></a>：jsonファイルの読み込み <span class="citation" data-cites="jsonlite_bib">(<a href="references.html#ref-jsonlite_bib" role="doc-biblioref">Ooms 2014</a>)</span></li>
+<li><a href="https://httr2.r-lib.org/"><code>httr2</code></a>：Webからの読み込み <span class="citation" data-cites="httr2_bib">(<a href="references.html#ref-httr2_bib" role="doc-biblioref">Wickham 2023</a>)</span></li>
+<li><a href="https://rvest.tidyverse.org/"><code>rvest</code></a>：スクレイピング用ライブラリ <span class="citation" data-cites="rvest_bib">(<a href="references.html#ref-rvest_bib" role="doc-biblioref">Wickham 2022</a>)</span></li>
+<li><a href="https://dbi.r-dbi.org/"><code>DBI</code></a>：データベースの読み込み <span class="citation" data-cites="DBI_bib">(<a href="references.html#ref-DBI_bib" role="doc-biblioref">R Special Interest Group on Databases (R-SIG-DB), Wickham, and Müller 2024</a>)</span></li>
+</ul>
+</section>
+<section id="data.table" class="level2" data-number="13.11">
+<h2 data-number="13.11" class="anchored" data-anchor-id="data.table"><span class="header-section-number">13.11</span> data.table</h2>
+<p>近年のデータサイエンスでは、時に数百万～数千億程度のデータを取り扱うこともあります。個人のPCでRを使ってこのような超大規模のデータを取り扱うのは現実的ではありませんが、数万～数十万行ぐらいのデータをPCで取り扱うことは増えてきています。例えば、生物分野では<a href="https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%A2%E3%83%AC%E3%82%A4">マイクロアレイ</a>や<a href="https://jp.illumina.com/content/dam/illumina-marketing/apac/japan/documents/pdf/primer_illumina_sequencing_introduction-j.pdf">高速シークエンサー</a>のデータは数万～数十万行で、分析を個人が、自分のPCで取り扱うこともあるかと思います。自分でマイクロアレイやシークエンサーを使ってデータを出さなくても、<a href="https://www.ncbi.nlm.nih.gov/gds">GEO Dataset</a>などからデータを取得して、解析してみることも一般的に行われています。</p>
+<p>このような超巨大データを取り扱う場合、R謹製の<code>read.table</code>関数では手に余りますし、<code>read_table</code>関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労します。このような大規模データの読み込みに特化したライブラリが、<code>data.table</code>パッケージ <span class="citation" data-cites="datatable_bib">(<a href="references.html#ref-datatable_bib" role="doc-biblioref">Barrett, Dowle, and Srinivasan 2023</a>)</span>です。</p>
+<p><a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html"><code>data.table</code></a>パッケージは、大規模データを読み込み、Rで高速に利用できるよう設計されたライブラリです。</p>
+<p><code>data.table</code>パッケージでデータを読み込むときには、<code>fread</code>関数を用います。<code>fread</code>関数はhtmlからの読み込みにも対応しています。読み込んだデータは<code>data.table</code>クラスのオブジェクトとなります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>data.tableパッケージのfread関数でファイルを読み込む</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(data.table)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># flights14（NYのフライトデータ、25万行11列）をinputとする</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv"</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># freadで読み込む</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>flights <span class="ot">&lt;-</span> <span class="fu">fread</span>(input) <span class="co"># 219MBのデータ読み込み</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(flights)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p><code>data.table</code>の取り扱いの方法はほぼデータフレームと同じです。<code>data.table</code>はインデックスからデータの要約ができる機構を備えています。ただし、後の章で説明する<code>tidyr</code>・<code>dplyr</code>の関数も適用できますので、データの要約は<code>tidyr</code>・<code>dplyr</code>で行ってもよいでしょう。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>data.tableクラスの取り扱い</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>flights[<span class="dv">5</span>, <span class="dv">1</span>] <span class="co"># 通常のインデックスに対応</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>flights[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="co"># 行列を指定しない場合は、行のインデックスになる</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>flights[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>] <span class="co"># ベクターでの読み出しにも対応</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flights[origin <span class="sc">==</span> <span class="st">"JFK"</span>, ]) <span class="co"># originがJFKの行を選択</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flights[, .(month, day)]) <span class="co"># monthとdayの列を選択</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flights<span class="sc">$</span>origin) <span class="co"># originの列を抽出</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+data.tableでのデータ取り扱い
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>data.table</code>が使われ始めた頃は、<code>data.table</code>オブジェクトの取り扱い方がデータフレームとは大きく異なっており、かなりとっつきにくかったのですが、現在ではデータフレームとほぼ同じ取り扱いができるようになっています。</p>
+</div>
+</div>
+</div>
+
+
+<!-- -->
+
+<div class="hidden" aria-hidden="true">
+<span class="glightbox-desc lightbox-desc-1">図1：ワーキングディレクトリをfilesタブで確認する</span>
+<span class="glightbox-desc lightbox-desc-2">図2：MoreのリストからSet As Working Directoryを選ぶ</span>
+<span class="glightbox-desc lightbox-desc-3">図3：「Session」からワーキングディレクトリを変更する</span>
+<span class="glightbox-desc lightbox-desc-4">図4：デフォルトのワーキングディレクトリを変更する</span>
+<span class="glightbox-desc lightbox-desc-5">図5：ディレクトリのアドレス（Windowsの場合）</span>
+<span class="glightbox-desc lightbox-desc-6">図6：Rstudio終了時のワークスペース保存</span>
+<span class="glightbox-desc lightbox-desc-7">図7：Environmentパネル</span>
+<span class="glightbox-desc lightbox-desc-8">図8：Excelでコンマ切り・タブ切りテキストを作成する</span>
+<span class="glightbox-desc lightbox-desc-9">図9：Excelのセルに1を入力し、バックスペースで削除する</span>
+<span class="glightbox-desc lightbox-desc-10">図10：バックスペースで削除すると、ファイルサイズが増える</span>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-datatable_bib" class="csl-entry" role="listitem">
+Barrett, Tyson, Matt Dowle, and Arun Srinivasan. 2023. <em>Data.table: Extension of ‘Data.frame‘</em>. <a href="https://CRAN.R-project.org/package=data.table">https://CRAN.R-project.org/package=data.table</a>.
+</div>
+<div id="ref-googlesheets4_bib" class="csl-entry" role="listitem">
+Bryan, Jennifer. 2023. <em>Googlesheets4: Access Google Sheets Using the Sheets API V4</em>. <a href="https://CRAN.R-project.org/package=googlesheets4">https://CRAN.R-project.org/package=googlesheets4</a>.
+</div>
+<div id="ref-xlsx_bib" class="csl-entry" role="listitem">
+Dragulescu, Adrian, and Cole Arendt. 2020. <em>Xlsx: Read, Write, Format Excel 2007 and Excel 97/2000/XP/2003 Files</em>. <a href="https://CRAN.R-project.org/package=xlsx">https://CRAN.R-project.org/package=xlsx</a>.
+</div>
+<div id="ref-jsonlite_bib" class="csl-entry" role="listitem">
+Ooms, Jeroen. 2014. <span>“The Jsonlite Package: A Practical and Consistent Mapping Between JSON Data and r Objects.”</span> <em>arXiv:1403.2805 [Stat.CO]</em>. <a href="https://arxiv.org/abs/1403.2805">https://arxiv.org/abs/1403.2805</a>.
+</div>
+<div id="ref-DBI_bib" class="csl-entry" role="listitem">
+R Special Interest Group on Databases (R-SIG-DB), Hadley Wickham, and Kirill Müller. 2024. <em>DBI: R Database Interface</em>. <a href="https://CRAN.R-project.org/package=DBI">https://CRAN.R-project.org/package=DBI</a>.
+</div>
+<div id="ref-rvest_bib" class="csl-entry" role="listitem">
+Wickham, Hadley. 2022. <em>Rvest: Easily Harvest (Scrape) Web Pages</em>. <a href="https://CRAN.R-project.org/package=rvest">https://CRAN.R-project.org/package=rvest</a>.
+</div>
+<div id="ref-httr2_bib" class="csl-entry" role="listitem">
+———. 2023. <em>Httr2: Perform HTTP Requests and Process the Responses</em>. <a href="https://CRAN.R-project.org/package=httr2">https://CRAN.R-project.org/package=httr2</a>.
+</div>
+<div id="ref-tidyverse_bib" class="csl-entry" role="listitem">
+Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+</div>
+<div id="ref-readxl_bib" class="csl-entry" role="listitem">
+Wickham, Hadley, and Jennifer Bryan. 2023. <em>Readxl: Read Excel Files</em>. <a href="https://CRAN.R-project.org/package=readxl">https://CRAN.R-project.org/package=readxl</a>.
+</div>
+<div id="ref-readr_bib" class="csl-entry" role="listitem">
+Wickham, Hadley, Jim Hester, and Jennifer Bryan. 2023. <em>Readr: Read Rectangular Text Data</em>. <a href="https://CRAN.R-project.org/package=readr">https://CRAN.R-project.org/package=readr</a>.
+</div>
+<div id="ref-haven_bib" class="csl-entry" role="listitem">
+Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Export ’SPSS’, ’Stata’ and ’SAS’ Files</em>. <a href="https://CRAN.R-project.org/package=haven">https://CRAN.R-project.org/package=haven</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./chapter12.html" class="pagination-link" aria-label="リスト・データフレーム・行列">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">リスト・データフレーム・行列</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./chapter14.html" class="pagination-link" aria-label="データセット">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">データセット</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb21" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># データの読み込みと書き出し（I/O）</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::opts_chunk$set(</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="in">  collapse = TRUE</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>統計に用いるデータは、通常Excelのような表計算ソフトや、データベースなどで作成されます。Rを用いてデータ解析・統計解析を行うためには、まずRに表計算ソフトやデータベースからデータを読み込む必要があります。</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>データ解析・統計解析が終われば、Rでの解析結果を書き出し、Excelなどで取り扱う必要があります。</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>このように、Rで解析を行うためには、データの読み込み・書き出しが必須となります。Rはこのような、データの読み込み・書き出し（Input/Output、**I/O**）のための関数を多数備えています。</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## ディレクトリの操作</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>データを読み込み、書き出すためには、まず読み込む・書き出すためのフォルダが必要となります。フォルダのことを**ディレクトリ**とも呼びます。Rでは、**ワーキングディレクトリ（working directory）**というものが設定されています。Rからはこのワーキングディレクトリの中のファイルを確認することができます。</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>ワーキングディレクトリは通常、RStudioを起動した時に、右下のカラムのFilesタブに表示されています。</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="al">![図1：ワーキングディレクトリをfilesタブで確認する](./image/filestab.png)</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>このfilesタブでは、任意のフォルダに移動することができます。上図の右上、...と記載されている部分をクリックするとウインドウが開きます。このウインドウ上で任意のフォルダに移動すれば、filesタブに示されるフォルダが変わります。ただし、表示するフォルダを変えるだけではワーキングディレクトリを変更することはできません。</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>filesタブに表示されたフォルダをワーキングディレクトリに設定するには、filesタブの右上、「More」から「Set As Working Directory」を選択します。</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="al">![図2：MoreのリストからSet As Working Directoryを選ぶ](./image/filestab_options.png)</span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>Fileに表示されているディレクトリをワーキングディレクトリに変更する場合には、同じ「More」から「Go To Working Directory」を選択します。</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>ワーキングディレクトリの変更は、上の「Session」から「Set Working Directory」を選択することでも変更できます。</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="al">![図3：「Session」からワーキングディレクトリを変更する](./image/Session_SetWD.png)</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>デフォルトのワーキングディレクトリ（Rstudioを開いた時に設定されているワーキングディレクトリ）を変更する場合には、「Tools」→「Option」を選択し、「Default working directory」に任意のフォルダを指定します。</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a><span class="al">![図4：デフォルトのワーキングディレクトリを変更する](./image/DefaultWD.png)</span></span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### getwd関数とsetwd関数</span></span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>上記のように、RStudioの機能を使えばワーキングディレクトリを簡単に変更することができます。ただし、データのフォルダ構造によっては、Rでの演算中にワーキングディレクトリを変更したい、といった場合もあります。</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>ワーキングディレクトリの確認と設定は、<span class="in">`getwd`</span>関数と<span class="in">`setwd`</span>関数を用いて行うことができます。</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a><span class="in">`getwd`</span>関数は現在のワーキングディレクトリを確認するための関数です。<span class="in">`getwd`</span>関数は引数を取らず、実行すると現在のワーキングディレクトリのアドレスを文字列で返します。</span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a><span class="in">`setwd`</span>関数はワーキングディレクトリを変更するための関数です。<span class="in">`setwd`</span>関数は**文字列のディレクトリのアドレス**を引数に取ります。<span class="in">`setwd`</span>関数を実行すると、アドレスで指定したフォルダにワーキングディレクトリが変更されます。</span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="ワーキングディレクトリの確認と設定"}</span></span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a><span class="in">getwd() # ワーキングディレクトリを確認</span></span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a><span class="in">setwd("directory/name/as/character") # ワーキングディレクトリを変更</span></span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a><span class="fu">### 絶対パスと相対パス</span></span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>ディレクトリを指定する際には、**ディレクトリのアドレス**を用います。Windowsでは、フォルダを開き、上のアドレスバーを右クリックすると、アドレスをテキストとしてコピーすることができます。この方法でコピーできるアドレスのことを**絶対パス**と呼びます。絶対パスには、ルートディレクトリ（大元のフォルダ）からそのフォルダまでのアドレスが全て記載されています。</span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a><span class="al">![図5：ディレクトリのアドレス（Windowsの場合）](./image/directory_address.png)</span></span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>ディレクトリのアドレスには、**相対パス**と呼ばれるものもあります。相対パスは、現在のディレクトリの上位や下位といった、現在のディレクトリからの位置を相対的に表すものです。</span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a><span class="in">`setwd`</span>関数は、この絶対パス、相対パスのいずれも使用することができます。絶対パスの場合には、ルートからのすべてのアドレスを文字列で指定します。一方、相対パスの場合は、.（ピリオド）を用いて、現在のディレクトリからの位置を以下のように指定します。</span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**「./」**は今のディレクトリのアドレスを示す記号</span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**「../」**は今のディレクトリの一つ上位のディレクトリを示す記号</span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>上の記号を用いて、一つ下位にあるディレクトリは以下のように示すことができます。</span>
+<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>**"./一つ下のフォルダ名"**</span>
+<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`setwd`</span>関数は、下位のフォルダであれば、そのフォルダまでのパスを記載するだけでもディレクトリを指定することができます。ただし、Windowsではフォルダのつなぎ文字がバックスラッシュ（<span class="sc">\\</span>）になっています。Rでのつなぎ文字はスラッシュ（/）ですので、Windowsではアドレスの記法が異なることに注意が必要です。</span>
+<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="相対パスと絶対パス"}</span></span>
+<span id="cb21-74"><a href="#cb21-74" aria-hidden="true" tabindex="-1"></a><span class="in">setwd("../") # 一つ上のフォルダにワーキングディレクトリを移動</span></span>
+<span id="cb21-75"><a href="#cb21-75" aria-hidden="true" tabindex="-1"></a><span class="in">setwd("./NameF") # 一つ下の「NameF」というフォルダにワーキングディレクトリを移動</span></span>
+<span id="cb21-76"><a href="#cb21-76" aria-hidden="true" tabindex="-1"></a><span class="in">setwd("NameF") # 上と同じ</span></span>
+<span id="cb21-77"><a href="#cb21-77" aria-hidden="true" tabindex="-1"></a><span class="in">setwd("NameF/NameF2") # NameFフォルダ内のNameF2というフォルダに移動</span></span>
+<span id="cb21-78"><a href="#cb21-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-79"><a href="#cb21-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-80"><a href="#cb21-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## ディレクトリ内のファイルの確認</span></span>
+<span id="cb21-81"><a href="#cb21-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-82"><a href="#cb21-82" aria-hidden="true" tabindex="-1"></a>ワーキングディレクトリ内のファイルやフォルダは、Rで開いたり、確認したりすることができます。<span class="in">`dir`</span>関数と<span class="in">`list.files`</span>関数はワーキングディレクトリ内のファイル・フォルダの一覧を表示するための関数です。いずれもファイル・フォルダ名の一覧を文字列のベクターとして返します。<span class="in">`list.dirs`</span>関数はワーキングディレクトリ内にあるフォルダのアドレスの一覧を文字列のベクターとして返します。</span>
+<span id="cb21-83"><a href="#cb21-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-84"><a href="#cb21-84" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="ディレクトリ内のファイル・フォルダの確認"}</span></span>
+<span id="cb21-85"><a href="#cb21-85" aria-hidden="true" tabindex="-1"></a><span class="in">dir() # ディレクトリ名とファイル名が返ってくる</span></span>
+<span id="cb21-86"><a href="#cb21-86" aria-hidden="true" tabindex="-1"></a><span class="in">list.files() # dir関数と同じ</span></span>
+<span id="cb21-87"><a href="#cb21-87" aria-hidden="true" tabindex="-1"></a><span class="in">list.dirs() # ディレクトリ名のみ返ってくる</span></span>
+<span id="cb21-88"><a href="#cb21-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-89"><a href="#cb21-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-90"><a href="#cb21-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## フォルダとファイルの作成</span></span>
+<span id="cb21-91"><a href="#cb21-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-92"><a href="#cb21-92" aria-hidden="true" tabindex="-1"></a>現在のワーキングディレクトリにフォルダを作成する際には、<span class="in">`dir.create`</span>関数を用います。<span class="in">`dir.create`</span>関数は作成するフォルダ名の文字列を引数に取ります。ワーキングディレクトリ内にファイルを作成する関数はいくつもあります。単にファイルを作るのであれば<span class="in">`file.create`</span>関数を、文字列をテキストで保存する場合には<span class="in">`cat`</span>関数を用います。</span>
+<span id="cb21-93"><a href="#cb21-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-94"><a href="#cb21-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="ディレクトリとファイルの作成"}</span></span>
+<span id="cb21-95"><a href="#cb21-95" aria-hidden="true" tabindex="-1"></a><span class="in">dir.create("tmp") # 現在のワーキングディレクトリに「tmp」というフォルダを作成</span></span>
+<span id="cb21-96"><a href="#cb21-96" aria-hidden="true" tabindex="-1"></a><span class="in">setwd("tmp") # 作成したフォルダにワーキングディレクトリを移動</span></span>
+<span id="cb21-97"><a href="#cb21-97" aria-hidden="true" tabindex="-1"></a><span class="in">file.create("filename.txt") # 空のテキストファイルを作成</span></span>
+<span id="cb21-98"><a href="#cb21-98" aria-hidden="true" tabindex="-1"></a><span class="in">cat("Hello world", file="helloworld.txt") # Hello worldと書き込まれたテキストファイルを作成</span></span>
+<span id="cb21-99"><a href="#cb21-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-100"><a href="#cb21-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-101"><a href="#cb21-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## ワークスペースイメージ（.Rdata）の保存</span></span>
+<span id="cb21-102"><a href="#cb21-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-103"><a href="#cb21-103" aria-hidden="true" tabindex="-1"></a>**ワークスペース**とは、Rを実行している時に取り扱っているオブジェクトなどの環境のことです。RGUIやRStudioを閉じるときには、下の図のようなウインドウが表示され、ワークスペースのイメージを保存するかどうか尋ねられます。ワークスペースを保存すると、現在のワーキングディレクトリに「**.RData**」というファイルが作成されます。この.RDataがワークスペースのイメージです。</span>
+<span id="cb21-104"><a href="#cb21-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-105"><a href="#cb21-105" aria-hidden="true" tabindex="-1"></a><span class="al">![図6：Rstudio終了時のワークスペース保存](./image/save_workspace.png)</span></span>
+<span id="cb21-106"><a href="#cb21-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-107"><a href="#cb21-107" aria-hidden="true" tabindex="-1"></a>.RDataファイルはRStudioを閉じるときだけでなく、RStudioのメニューから「Session → Save Workspace As...」を選ぶことでも保存できます。また、<span class="in">`save.image`</span>関数を用いても、.RDataファイルを作成することができます。</span>
+<span id="cb21-108"><a href="#cb21-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-109"><a href="#cb21-109" aria-hidden="true" tabindex="-1"></a>現在のワークスペースの情報は、RStudio右上のパネルの「Environment」で確認できます。このパネルでは、現在Rで取り扱っている変数（オブジェクト）の一覧を確認することができます。</span>
+<span id="cb21-110"><a href="#cb21-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-111"><a href="#cb21-111" aria-hidden="true" tabindex="-1"></a><span class="al">![図7：Environmentパネル](./image/environment_pane.png)</span></span>
+<span id="cb21-112"><a href="#cb21-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-113"><a href="#cb21-113" aria-hidden="true" tabindex="-1"></a>このパネルに表示されているのと同じ、オブジェクトのリストをR上で取得する場合には、<span class="in">`ls`</span>関数を用います。</span>
+<span id="cb21-114"><a href="#cb21-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-115"><a href="#cb21-115" aria-hidden="true" tabindex="-1"></a>Rを閉じると、オブジェクトはメモリから削除されます。次にRStudioを起動したときには、デフォルトのワーキングディレクトリに存在する.RDataから自動的にワークスペースのイメージが読み込まれます。別途、.RDataファイルを指定してワークスペースを読み込む場合には、<span class="in">`load`</span>関数を用います。<span class="in">`load`</span>関数で.RDataファイルを読み込むことで、.RDataファイルを保存した際に使用していたオブジェクトがメモリ上に展開されます。</span>
+<span id="cb21-116"><a href="#cb21-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-117"><a href="#cb21-117" aria-hidden="true" tabindex="-1"></a>このように、ワークスペースを保存・読み込むことで、以前のデータ分析環境を読み込み、データ分析の続きを行うことができます。</span>
+<span id="cb21-118"><a href="#cb21-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-119"><a href="#cb21-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="ワークスペースの保存と読み込み"}</span></span>
+<span id="cb21-120"><a href="#cb21-120" aria-hidden="true" tabindex="-1"></a><span class="in">ls() # 現在メモリ上にある全てのオブジェクトを表示</span></span>
+<span id="cb21-121"><a href="#cb21-121" aria-hidden="true" tabindex="-1"></a><span class="in">save.image() # ワークスペースのイメージを保存する</span></span>
+<span id="cb21-122"><a href="#cb21-122" aria-hidden="true" tabindex="-1"></a><span class="in">load(".Rdata") # ワークスペースのイメージを読み込む</span></span>
+<span id="cb21-123"><a href="#cb21-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-124"><a href="#cb21-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-125"><a href="#cb21-125" aria-hidden="true" tabindex="-1"></a><span class="fu">## オブジェクトの保存と読み込み</span></span>
+<span id="cb21-126"><a href="#cb21-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-127"><a href="#cb21-127" aria-hidden="true" tabindex="-1"></a>ワークスペース全体ではなく、個別のオブジェクトも、一時的に保存し、読み込むことができます。オブジェクトの保存と読み込みには、<span class="in">`save`</span>関数と<span class="in">`load`</span>関数を用います。</span>
+<span id="cb21-128"><a href="#cb21-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-129"><a href="#cb21-129" aria-hidden="true" tabindex="-1"></a><span class="in">`save`</span>関数はオブジェクトと文字列のファイル名の2つを引数に取り、オブジェクトを引数で指定したファイル名で保存する関数です。ファイル名は何でもよく、ファイルの拡張子にも特に指定はないのですが、**「.rda」**を拡張子としたファイル名とするのが一般的です。</span>
+<span id="cb21-130"><a href="#cb21-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-131"><a href="#cb21-131" aria-hidden="true" tabindex="-1"></a>保存したオブジェクトを読み込む関数が、<span class="in">`load`</span>関数です。<span class="in">`load`</span>関数はファイル名の文字列を引数に取り、<span class="in">`save`</span>関数で保存した.rdaファイルを読み込みます。<span class="in">`load`</span>関数で読み込むと、Rのワークスペースには保存したオブジェクトが現れます。</span>
+<span id="cb21-132"><a href="#cb21-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-133"><a href="#cb21-133" aria-hidden="true" tabindex="-1"></a><span class="in">`save`</span>・<span class="in">`load`</span>関数と同様の関数として、<span class="in">`dput`</span>関数と<span class="in">`dget`</span>関数というものもあります。<span class="in">`dput`</span>関数で保存したファイルは<span class="in">`load`</span>関数で読み込めず、<span class="in">`save`</span>関数で保存したファイルは<span class="in">`dget`</span>関数で読み込めないため、<span class="in">`dput`</span>関数でオブジェクトを保存した場合には、<span class="in">`dget`</span>関数で読み込む必要があります。<span class="in">`dget`</span>関数はオブジェクトを返す関数ですので、ワークスペースにオブジェクトが再現されるわけではありません。</span>
+<span id="cb21-134"><a href="#cb21-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-135"><a href="#cb21-135" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, error=TRUE, filename="オブジェクトの保存と読み込み"}</span></span>
+<span id="cb21-136"><a href="#cb21-136" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- c(1, 2, 3)</span></span>
+<span id="cb21-137"><a href="#cb21-137" aria-hidden="true" tabindex="-1"></a><span class="in">save(x, file = "Robject.rda") # オブジェクトを保存</span></span>
+<span id="cb21-138"><a href="#cb21-138" aria-hidden="true" tabindex="-1"></a><span class="in">rm(x) # xを削除する</span></span>
+<span id="cb21-139"><a href="#cb21-139" aria-hidden="true" tabindex="-1"></a><span class="in">load("Robject.rda") # オブジェクトの読み込み</span></span>
+<span id="cb21-140"><a href="#cb21-140" aria-hidden="true" tabindex="-1"></a><span class="in">x # xが読み込まれている</span></span>
+<span id="cb21-141"><a href="#cb21-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-142"><a href="#cb21-142" aria-hidden="true" tabindex="-1"></a><span class="in">dput(x, "Robject_dput.rda") # オブジェクトを保存</span></span>
+<span id="cb21-143"><a href="#cb21-143" aria-hidden="true" tabindex="-1"></a><span class="in">dget("Robject_dput.rda") # オブジェクトが返ってくる</span></span>
+<span id="cb21-144"><a href="#cb21-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-145"><a href="#cb21-145" aria-hidden="true" tabindex="-1"></a><span class="in">dget("Robject.rda") # エラー。saveで保存するとdgetで読み込めない</span></span>
+<span id="cb21-146"><a href="#cb21-146" aria-hidden="true" tabindex="-1"></a><span class="in">load("Robject_dput.rda") # エラー。dputで保存するとloadで読み込めない</span></span>
+<span id="cb21-147"><a href="#cb21-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-148"><a href="#cb21-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-149"><a href="#cb21-149" aria-hidden="true" tabindex="-1"></a><span class="fu">### プログラムを呼び出す</span></span>
+<span id="cb21-150"><a href="#cb21-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-151"><a href="#cb21-151" aria-hidden="true" tabindex="-1"></a>保存したプログラムを他のプログラムで呼び出すときには、<span class="in">`source`</span>関数を用います。<span class="in">`source`</span>関数の引数はファイル名の文字列です。<span class="co">[</span><span class="ot">2章</span><span class="co">](./chapter2.html)</span>で説明した通り、Rのプログラムは通常「.R」の拡張子を付けて取り扱いますので、拡張子を含めたファイル名を指定します。現在のワーキングディレクトリに保存されているファイルを呼び出す場合はそのファイル名を、他のディレクトリに保存されているファイルを呼び出す場合はそのファイルのパスを含む文字列を<span class="in">`source`</span>関数の引数に取ります。。<span class="in">`source`</span>関数でプログラムを呼び出すと、プログラムが実行されます。複雑なプログラムでは、関数などを別ファイルで定義しておいて、そのファイルを呼び出して用いることもあります。</span>
+<span id="cb21-152"><a href="#cb21-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-153"><a href="#cb21-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="source関数でプログラムの呼び出し", eval=FALSE}</span></span>
+<span id="cb21-154"><a href="#cb21-154" aria-hidden="true" tabindex="-1"></a><span class="in">source("code_hello_world.R")</span></span>
+<span id="cb21-155"><a href="#cb21-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-156"><a href="#cb21-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-157"><a href="#cb21-157" aria-hidden="true" tabindex="-1"></a><span class="fu">## データの読み込み</span></span>
+<span id="cb21-158"><a href="#cb21-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-159"><a href="#cb21-159" aria-hidden="true" tabindex="-1"></a><span class="fu">### Excelからデータを読み込む（古典的な方法）</span></span>
+<span id="cb21-160"><a href="#cb21-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-161"><a href="#cb21-161" aria-hidden="true" tabindex="-1"></a>統計を行うデータは、通常Excelのような表計算ソフトか、データベースで準備するのが一般的です。このようなデータをRで取り込む際には、一昔前までは**「テキストファイルに変換」**してから読み込むのが一般的でした。</span>
+<span id="cb21-162"><a href="#cb21-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-163"><a href="#cb21-163" aria-hidden="true" tabindex="-1"></a>最近ではライブラリを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、ライブラリなしのRではこのような読み込みはできません。ライブラリが使用できないときには、以下のような方法でExcelファイルをテキストで保存し、Rで読み込むことになります。</span>
+<span id="cb21-164"><a href="#cb21-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-165"><a href="#cb21-165" aria-hidden="true" tabindex="-1"></a>また、Web上に保存されているデータがテキストである場合も少なくありません。このような、Web上のテキストファイルの読み込みにも、以下に示すテキスト読み込みの方法を用いることができます。</span>
+<span id="cb21-166"><a href="#cb21-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-167"><a href="#cb21-167" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Excel：csv・タブ切りテキストへの変換</span></span>
+<span id="cb21-168"><a href="#cb21-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-169"><a href="#cb21-169" aria-hidden="true" tabindex="-1"></a>まずは、Excelでのテキストファイルの変換について説明します。Rで読み込むことができるテキストは、大きく分けると以下の4種類です。</span>
+<span id="cb21-170"><a href="#cb21-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-171"><a href="#cb21-171" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**コンマ切りテキスト**（comma-separated values, **csv**）</span>
+<span id="cb21-172"><a href="#cb21-172" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**タブ切りテキスト**（tab-separated values, **tsv**）</span>
+<span id="cb21-173"><a href="#cb21-173" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>スペース切りテキスト</span>
+<span id="cb21-174"><a href="#cb21-174" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>固定幅テキスト</span>
+<span id="cb21-175"><a href="#cb21-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-176"><a href="#cb21-176" aria-hidden="true" tabindex="-1"></a>これらのうち、スペース切りテキストについてはデータにスペースが入っていると読み込みが難しくなるため、通常は避けられます。固定幅テキストはやや取り扱いにくいため、Excelからの変換には用いません。したがって、Excelファイルは主にコンマ切りテキストかタブ切りテキストに変換して、Rで読み込むことになります。</span>
+<span id="cb21-177"><a href="#cb21-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-178"><a href="#cb21-178" aria-hidden="true" tabindex="-1"></a>Excelファイルからコンマ切り・タブ切りテキストへの変換はExcel上で行います。Excelの「ファイル」メニューから「名前を付けて保存」を選択し、ファイル名の下のドロップダウンリストから「CSV UTF-8 (コンマ区切り)(<span class="sc">\*</span>.csv)」もしくは「テキスト (タブ区切り)(<span class="sc">\*</span>.txt)」を選択します。拡張子である「.csv」や「.txt」は自動的に付与されます。</span>
+<span id="cb21-179"><a href="#cb21-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-180"><a href="#cb21-180" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb21-181"><a href="#cb21-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-182"><a href="#cb21-182" aria-hidden="true" tabindex="-1"></a><span class="fu">## エンコーディング</span></span>
+<span id="cb21-183"><a href="#cb21-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-184"><a href="#cb21-184" aria-hidden="true" tabindex="-1"></a>テキストには**エンコーディング**というものがあり、日本語テキストは**UTF-8、Shift-JIS（CP932）、EUC-JP**のいずれかのエンコーディングを持ちます。エンコーディングが異なると文字化けを起こします。RのデフォルトのエンコーディングはUTF-8です。WindowsではShift-JISが用いられている場合があるため、エンコーディングに注意が必要となります。</span>
+<span id="cb21-185"><a href="#cb21-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-186"><a href="#cb21-186" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb21-187"><a href="#cb21-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-188"><a href="#cb21-188" aria-hidden="true" tabindex="-1"></a><span class="al">![図8：Excelでコンマ切り・タブ切りテキストを作成する](./image/excel_changeformats.png)</span></span>
+<span id="cb21-189"><a href="#cb21-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-190"><a href="#cb21-190" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb21-191"><a href="#cb21-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-192"><a href="#cb21-192" aria-hidden="true" tabindex="-1"></a><span class="fu">## Excelの空欄データ</span></span>
+<span id="cb21-193"><a href="#cb21-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-194"><a href="#cb21-194" aria-hidden="true" tabindex="-1"></a>Excelには「データをセルから消したのに何らかのデータが残る」という謎仕様があります。 空のExcelファイルを作成し（Book1）、G7までを1で埋めます（Book2、下図9）。数値をバックスペースで消して保存すると（Book3）、何故かBook1よりBook3の方がファイルサイズが大きくなります（下図10）。Rからテキスト変換したファイルを読み込むと、この「無いけど残っているデータ」を読み込んでしまうので、エラーが生じることがあります。データをDeleteで削除、もしくは右クリックから削除を選ぶと、この残ったデータを削除することができます。</span>
+<span id="cb21-195"><a href="#cb21-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-196"><a href="#cb21-196" aria-hidden="true" tabindex="-1"></a>長い歴史を持つ、代々受け継がれたExcelファイルではこのような謎データがファイルサイズを大きくし、動作を遅くしている場合もありますので、データ数に比べてファイルサイズが大きいExcelファイルがあれば空欄をDeleteしてみることをおすすめします。</span>
+<span id="cb21-197"><a href="#cb21-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-198"><a href="#cb21-198" aria-hidden="true" tabindex="-1"></a><span class="al">![図9：Excelのセルに1を入力し、バックスペースで削除する](./image/book2_excel.png)</span></span>
+<span id="cb21-199"><a href="#cb21-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-200"><a href="#cb21-200" aria-hidden="true" tabindex="-1"></a><span class="al">![図10：バックスペースで削除すると、ファイルサイズが増える](./image/filesize_excel.png)</span></span>
+<span id="cb21-201"><a href="#cb21-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-202"><a href="#cb21-202" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb21-203"><a href="#cb21-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-204"><a href="#cb21-204" aria-hidden="true" tabindex="-1"></a><span class="fu">### scan関数</span></span>
+<span id="cb21-205"><a href="#cb21-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-206"><a href="#cb21-206" aria-hidden="true" tabindex="-1"></a>まずは、1行のデータを読み込む場合について説明します。1行のデータであれば、<span class="in">`scan`</span>関数を用いて読み込むことができます。<span class="in">`scan`</span>関数の第一引数は文字列のファイル名です。ファイル名を指定するときには、必ず**拡張子を含めて記載します**。<span class="in">`scan`</span>関数には、「<span class="in">`sep`</span>」という引数を指定することができます。<span class="in">`sep`</span>はデータ間の区切り文字を指定するものです。コンマ切りテキスト、CSVであれば「<span class="in">`sep = ","`</span>」、タブ切りテキストであれば「<span class="in">`sep = "\t"`</span>」を指定します。<span class="in">`scan`</span>関数の返り値はベクターとなります。</span>
+<span id="cb21-207"><a href="#cb21-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-208"><a href="#cb21-208" aria-hidden="true" tabindex="-1"></a>ただし、<span class="in">`what`</span>という引数を設定すると、返り値をリストにすることができます。<span class="in">`what`</span>は空のリストを指定する引数で、リストの要素の個数に従い、<span class="in">`scan`</span>で読み取った結果が代入されます。代入の順番は、1つ目がリストの1要素目、2つ目がリストの2要素目...となります。リストの長さより多い要素は再びリストの1要素目に代入されます。</span>
+<span id="cb21-209"><a href="#cb21-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-210"><a href="#cb21-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="scan関数でテキストファイルを読み込む"}</span></span>
+<span id="cb21-211"><a href="#cb21-211" aria-hidden="true" tabindex="-1"></a><span class="in">scan("./data/scansample.txt", sep = ",") # コンマ切りテキストを読み込む</span></span>
+<span id="cb21-212"><a href="#cb21-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-213"><a href="#cb21-213" aria-hidden="true" tabindex="-1"></a><span class="in">scan("./data/scansample.txt", sep = ",", what = list("", "")) # 出力をリストにする</span></span>
+<span id="cb21-214"><a href="#cb21-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-215"><a href="#cb21-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-216"><a href="#cb21-216" aria-hidden="true" tabindex="-1"></a><span class="fu">### read.table関数</span></span>
+<span id="cb21-217"><a href="#cb21-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-218"><a href="#cb21-218" aria-hidden="true" tabindex="-1"></a>Excelから読み込む表は、通常行と列を持つ、テーブルの形をしていますので、データフレームにできると便利です。テキストに変換したExcelの表をデータフレームとして読み込む関数が<span class="in">`read.table`</span>関数です。<span class="in">`read.table`</span>関数は第一引数にテキストファイルのファイル名を取ります。<span class="in">`scan`</span>関数と同様に、ファイル名には拡張子を含める必要があります。</span>
+<span id="cb21-219"><a href="#cb21-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-220"><a href="#cb21-220" aria-hidden="true" tabindex="-1"></a><span class="in">`read.table`</span>関数は<span class="in">`scan`</span>関数と同じく、「<span class="in">`sep`</span>」引数を取ります。<span class="in">`sep`</span>引数には、コンマ切りテキスト、CSVであれば「<span class="in">`sep = ","`</span>」、タブ切りテキストであれば「<span class="in">`sep = "\t"`</span>」を指定します。</span>
+<span id="cb21-221"><a href="#cb21-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-222"><a href="#cb21-222" aria-hidden="true" tabindex="-1"></a><span class="in">`read.table`</span>関数はさらに、「<span class="in">`header`</span>」という引数を取ります。この引数に<span class="in">`TRUE`</span>を指定すると（「<span class="in">`header = T`</span>」）、読み込むテキストの1行目を列名として、データを読み込みます。</span>
+<span id="cb21-223"><a href="#cb21-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-224"><a href="#cb21-224" aria-hidden="true" tabindex="-1"></a><span class="in">`read.table`</span>関数でよく用いられる引数はファイル名、<span class="in">`sep`</span>、<span class="in">`header`</span>の3つですが、その他たくさんの引数を取ることができます。<span class="in">`read.table`</span>関数の引数の一覧を以下の表1に示します。</span>
+<span id="cb21-225"><a href="#cb21-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-226"><a href="#cb21-226" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb21-227"><a href="#cb21-227" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- readxl::read_excel("./data/chapter13_augs_readtable.xlsx")</span></span>
+<span id="cb21-228"><a href="#cb21-228" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表1：read.table関数の引数")</span></span>
+<span id="cb21-229"><a href="#cb21-229" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-230"><a href="#cb21-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-231"><a href="#cb21-231" aria-hidden="true" tabindex="-1"></a><span class="fu">### read.csv関数、read.delim関数</span></span>
+<span id="cb21-232"><a href="#cb21-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-233"><a href="#cb21-233" aria-hidden="true" tabindex="-1"></a><span class="in">`read.table`</span>関数の仲間として、csvの読み込み用の<span class="in">`read.csv`</span>関数、タブ切りテキスト読み込み用の<span class="in">`read.delim`</span>関数、固定幅テキストの読み込み用の<span class="in">`read.fwf`</span>関数がRには準備されています。<span class="in">`read.csv`</span>関数は<span class="in">`sep`</span>引数にコンマ、<span class="in">`read.delim`</span>関数は<span class="in">`sep`</span>引数にタブがデフォルト値として設定されており、<span class="in">`sep`</span>引数を入力することなくデータを読み込むことができます。</span>
+<span id="cb21-234"><a href="#cb21-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-235"><a href="#cb21-235" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="テキストファイルの読み込み"}</span></span>
+<span id="cb21-236"><a href="#cb21-236" aria-hidden="true" tabindex="-1"></a><span class="in">read.table("filename.txt", sep="\t", header=T)</span></span>
+<span id="cb21-237"><a href="#cb21-237" aria-hidden="true" tabindex="-1"></a><span class="in">read.table("filename.txt", sep="\t", header=T, stringAsFactors = T)</span></span>
+<span id="cb21-238"><a href="#cb21-238" aria-hidden="true" tabindex="-1"></a><span class="in">read.csv("filename.csv")</span></span>
+<span id="cb21-239"><a href="#cb21-239" aria-hidden="true" tabindex="-1"></a><span class="in">read.csv2("filename.csv") # ヨーロッパ仕様</span></span>
+<span id="cb21-240"><a href="#cb21-240" aria-hidden="true" tabindex="-1"></a><span class="in">read.delim("filename.tsv")</span></span>
+<span id="cb21-241"><a href="#cb21-241" aria-hidden="true" tabindex="-1"></a><span class="in">read.delim2("filename.tsv") # ヨーロッパ仕様</span></span>
+<span id="cb21-242"><a href="#cb21-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-243"><a href="#cb21-243" aria-hidden="true" tabindex="-1"></a><span class="in">read.fwf("filename.txt") # 固定幅テキスト</span></span>
+<span id="cb21-244"><a href="#cb21-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-245"><a href="#cb21-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-246"><a href="#cb21-246" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb21-247"><a href="#cb21-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-248"><a href="#cb21-248" aria-hidden="true" tabindex="-1"></a><span class="fu">## ヨーロッパで準備されたファイルのデータ読み込み</span></span>
+<span id="cb21-249"><a href="#cb21-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-250"><a href="#cb21-250" aria-hidden="true" tabindex="-1"></a>ヨーロッパではコンマ（,）をセミコロン（;）、小数点（ピリオド .）をコンマ（,）で記載するため、通常の<span class="in">`read.csv`</span>関数、<span class="in">`read.delim`</span>関数ではテキストファイルをまともに読み込むことができません。ヨーロッパで生成されるテキストファイルの読み込みには、専用の関数（<span class="in">`read.csv2`</span>、<span class="in">`read.delim2`</span>）が設けられています。</span>
+<span id="cb21-251"><a href="#cb21-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-252"><a href="#cb21-252" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb21-253"><a href="#cb21-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-254"><a href="#cb21-254" aria-hidden="true" tabindex="-1"></a><span class="fu">#### stringAsFactorsとfileEncoding</span></span>
+<span id="cb21-255"><a href="#cb21-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-256"><a href="#cb21-256" aria-hidden="true" tabindex="-1"></a><span class="in">`read.table`</span>関数の「<span class="in">`stringAsFactors`</span>」という引数は、昔はTRUEがデフォルトとされており、<span class="in">`read.table`</span>関数で読み込んだ文字列はすべて因子に変換されていました。Rのバージョン4.0.0より<span class="in">`stringAsFactors`</span>のデフォルト値が<span class="in">`FALSE`</span>に変更されたため、現在の<span class="in">`read.table`</span>関数では、文字列は文字列のまま読み込まれます。</span>
+<span id="cb21-257"><a href="#cb21-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-258"><a href="#cb21-258" aria-hidden="true" tabindex="-1"></a>WindowsではテキストファイルのエンコーディングがShift JIS（CP932）になっている場合がありますので、「<span class="in">`fileEncoding = "CP932"`</span>」を引数に指定しないと読み込めないことがあります。エンコーディングがUTF-8であれば、<span class="in">`fileEncoding`</span>を指定する必要はありません。</span>
+<span id="cb21-259"><a href="#cb21-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-260"><a href="#cb21-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-261"><a href="#cb21-261" aria-hidden="true" tabindex="-1"></a><span class="fu">### クリップボードからの読み込み</span></span>
+<span id="cb21-262"><a href="#cb21-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-263"><a href="#cb21-263" aria-hidden="true" tabindex="-1"></a>Rでは、コピーしたテキストをクリップボードから読み込むこともできます。Ctrl+Cなどでコピーしたテキストを読み込む場合には、<span class="in">`read.table`</span>関数の引数に<span class="in">`"clipboard"`</span>を指定します。</span>
+<span id="cb21-264"><a href="#cb21-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-265"><a href="#cb21-265" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="クリップボードの内容を読み込む"}</span></span>
+<span id="cb21-266"><a href="#cb21-266" aria-hidden="true" tabindex="-1"></a><span class="in">read.table("clipboard")</span></span>
+<span id="cb21-267"><a href="#cb21-267" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-268"><a href="#cb21-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-269"><a href="#cb21-269" aria-hidden="true" tabindex="-1"></a><span class="fu">## データの書き出し</span></span>
+<span id="cb21-270"><a href="#cb21-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-271"><a href="#cb21-271" aria-hidden="true" tabindex="-1"></a>Rからのデータの書き出しでは、通常テキストファイルが書き出されます。Excelファイルに直接書き出すこともできなくは無いのですが（<span class="co">[</span><span class="ot">xlsxパッケージ</span><span class="co">](https://cran.r-project.org/web/packages/xlsx/index.html)</span> <span class="co">[</span><span class="ot">@xlsx_bib</span><span class="co">]</span>を利用する）、それほど一般的ではありません。データの書き出しに用いられる関数には、<span class="in">`write`</span>関数、<span class="in">`write.table`</span>関数などがあります。</span>
+<span id="cb21-272"><a href="#cb21-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-273"><a href="#cb21-273" aria-hidden="true" tabindex="-1"></a><span class="fu">### write・cat関数</span></span>
+<span id="cb21-274"><a href="#cb21-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-275"><a href="#cb21-275" aria-hidden="true" tabindex="-1"></a>ベクターや行列などのデータの書き出しには、<span class="in">`write`</span>関数・<span class="in">`cat`</span>関数を用います。<span class="in">`write`</span>関数は<span class="in">`cat`</span>関数のラッパーで、2つの関数の間には大きな差はありません。<span class="in">`cat`</span>関数はオブジェクトをコンソールに表示するために用いられますが、ファイルを出力する事もできます。<span class="in">`print`</span>関数を用いてもコンソールへ表示することはできますが、ファイルを保存することはできません。</span>
+<span id="cb21-276"><a href="#cb21-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-277"><a href="#cb21-277" aria-hidden="true" tabindex="-1"></a><span class="in">`cat`</span>関数、<span class="in">`write`</span>関数は、オブジェクトとファイル名を引数に取ります。共に<span class="in">`sep`</span>引数で区切り文字を指定することができます。</span>
+<span id="cb21-278"><a href="#cb21-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-279"><a href="#cb21-279" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="cat・write関数でのオブジェクトの表示"}</span></span>
+<span id="cb21-280"><a href="#cb21-280" aria-hidden="true" tabindex="-1"></a><span class="in">vec &lt;- c(1, 2, 3)</span></span>
+<span id="cb21-281"><a href="#cb21-281" aria-hidden="true" tabindex="-1"></a><span class="in">cat(vec) # consoleにvecを表示</span></span>
+<span id="cb21-282"><a href="#cb21-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-283"><a href="#cb21-283" aria-hidden="true" tabindex="-1"></a><span class="in">write(vec, "") # cat関数と同じ（第2引数が無いとファイル保存が行われる）</span></span>
+<span id="cb21-284"><a href="#cb21-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-285"><a href="#cb21-285" aria-hidden="true" tabindex="-1"></a><span class="in">print(vec) # print関数でも表示できる</span></span>
+<span id="cb21-286"><a href="#cb21-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-287"><a href="#cb21-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-288"><a href="#cb21-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, error=TRUE, filename="cat・write関数でのファイルの保存"}</span></span>
+<span id="cb21-289"><a href="#cb21-289" aria-hidden="true" tabindex="-1"></a><span class="in">cat(vec, file="cat.txt")</span></span>
+<span id="cb21-290"><a href="#cb21-290" aria-hidden="true" tabindex="-1"></a><span class="in">write(vec, file="vector.txt", sep="\t")</span></span>
+<span id="cb21-291"><a href="#cb21-291" aria-hidden="true" tabindex="-1"></a><span class="in">print(vec, "print.txt") # エラー</span></span>
+<span id="cb21-292"><a href="#cb21-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-293"><a href="#cb21-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-294"><a href="#cb21-294" aria-hidden="true" tabindex="-1"></a><span class="fu">### write.table関数</span></span>
+<span id="cb21-295"><a href="#cb21-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-296"><a href="#cb21-296" aria-hidden="true" tabindex="-1"></a>Rでは、データ処理の多くはデータフレームを用いて行います。テキストファイルをデータフレームとして取り込む<span class="in">`read.table`</span>関数とは逆に、データフレームをテキストファイルとして書き出す関数が<span class="in">`write.table`</span>関数です。</span>
+<span id="cb21-297"><a href="#cb21-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-298"><a href="#cb21-298" aria-hidden="true" tabindex="-1"></a><span class="in">`write.table`</span>関数はデータフレームとファイル名を引数に取り、データフレームをそのファイル名のテキストファイルとして書き出します。</span>
+<span id="cb21-299"><a href="#cb21-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-300"><a href="#cb21-300" aria-hidden="true" tabindex="-1"></a><span class="in">`write.table`</span>関数の代表的な引数は、<span class="in">`sep`</span>、<span class="in">`col.names`</span>、<span class="in">`row.names`</span>、<span class="in">`quote`</span>の4つです。<span class="in">`sep`</span>は<span class="in">`read.table`</span>関数と同じく区切り文字を指定する引数です。<span class="in">`col.names`</span>と<span class="in">`row.names`</span>は論理型を取り、<span class="in">`TRUE`</span>であれば列名・行名を保存し、<span class="in">`FALSE`</span>であれば列名・行名を省いて保存します。<span class="in">`quote`</span>も論理型を取り、文字列・因子をダブルクオーテーションで囲むするかどうかを指定します。</span>
+<span id="cb21-301"><a href="#cb21-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-302"><a href="#cb21-302" aria-hidden="true" tabindex="-1"></a><span class="in">`read.table`</span>関数に<span class="in">`read.csv`</span>関数があったように、<span class="in">`write.table`</span>関数にはCSV用の<span class="in">`write.csv`</span>関数があります。<span class="in">`write.csv`</span>関数は<span class="in">`sep`</span>のデフォルト値にコンマが設定されています。ヨーロッパ仕様の<span class="in">`write.csv2`</span>関数もありますが、日本で使用することはまれです。</span>
+<span id="cb21-303"><a href="#cb21-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-304"><a href="#cb21-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="write.table関数"}</span></span>
+<span id="cb21-305"><a href="#cb21-305" aria-hidden="true" tabindex="-1"></a><span class="in">write.table(df_obj, "filename.txt", sep = "\t")</span></span>
+<span id="cb21-306"><a href="#cb21-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-307"><a href="#cb21-307" aria-hidden="true" tabindex="-1"></a><span class="in"># 列名あり、行名なし、ダブルクオーテーションなしで保存</span></span>
+<span id="cb21-308"><a href="#cb21-308" aria-hidden="true" tabindex="-1"></a><span class="in">write.table(df_obj, "filename.txt", sep = "\t", col.names = T, row.names = F, quote = F) </span></span>
+<span id="cb21-309"><a href="#cb21-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-310"><a href="#cb21-310" aria-hidden="true" tabindex="-1"></a><span class="in">write.csv(df_obj, "filename.csv")</span></span>
+<span id="cb21-311"><a href="#cb21-311" aria-hidden="true" tabindex="-1"></a><span class="in">write.csv2(df_obj, "filename.csv") #  ヨーロッパ仕様</span></span>
+<span id="cb21-312"><a href="#cb21-312" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-313"><a href="#cb21-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-314"><a href="#cb21-314" aria-hidden="true" tabindex="-1"></a><span class="fu">## readr</span></span>
+<span id="cb21-315"><a href="#cb21-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-316"><a href="#cb21-316" aria-hidden="true" tabindex="-1"></a>RのデフォルトのI/Oは上記の通りですが、<span class="in">`read.table`</span>関数、<span class="in">`write.table`</span>関数を用いると、指定する引数が多かったり、読み込んだ列のデータ型が思うように設定されなかったりすることがよく起こります。また、デフォルトの関数群ではその実行速度が遅く、大きなデータを取り扱う場合には読み込みにとても時間がかかる、という問題もあります。</span>
+<span id="cb21-317"><a href="#cb21-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-318"><a href="#cb21-318" aria-hidden="true" tabindex="-1"></a>これらの不都合を解決するI/Oに関するライブラリが<span class="in">`readr`</span>パッケージ <span class="co">[</span><span class="ot">@readr_bib</span><span class="co">]</span>です。<span class="in">`readr`</span>パッケージは、Rのデフォルトの関数名のピリオドをアンダースコア（<span class="in">`_`</span>）に変換した関数群を備えており、列の型をうまく設定してくれる仕組みを備えています。また、デフォルトの関数よりも実行速度が速いため、大きなデータを取り扱う場合には、<span class="in">`readr`</span>の関数群を用いたほうが良いでしょう。</span>
+<span id="cb21-319"><a href="#cb21-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-320"><a href="#cb21-320" aria-hidden="true" tabindex="-1"></a><span class="in">`readr`</span>パッケージは<span class="in">`tidyverse`</span> <span class="co">[</span><span class="ot">@tidyverse_bib</span><span class="co">]</span>を構成するライブラリの一つであり、インストール・ロードは<span class="in">`tidyverse`</span>ライブラリのインストール・ロードと同時に行うことができます。</span>
+<span id="cb21-321"><a href="#cb21-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-322"><a href="#cb21-322" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="readrの読み込み"}</span></span>
+<span id="cb21-323"><a href="#cb21-323" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(tidyverse)</span></span>
+<span id="cb21-324"><a href="#cb21-324" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-325"><a href="#cb21-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-326"><a href="#cb21-326" aria-hidden="true" tabindex="-1"></a><span class="fu">### readr：テキストデータの読み込み</span></span>
+<span id="cb21-327"><a href="#cb21-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-328"><a href="#cb21-328" aria-hidden="true" tabindex="-1"></a><span class="in">`readr`</span>でのテキストデータの読み込みには、<span class="in">`read_table`</span>関数を用います。<span class="in">`read_table`</span>関数の使い方は<span class="in">`read.table`</span>関数とほぼ同じです。<span class="in">`read.table`</span>関数と同じく、<span class="in">`read_table`</span>関数も区切り文字を<span class="in">`sep`</span>引数で設定します。<span class="in">`read_table`</span>関数のデフォルトの区切り文字はスペースですので、<span class="in">`sep`</span>を設定しない場合にはスペース切りテキストの読み込みに対応しています。読み込まれたファイルは、<span class="in">`tibble`</span>というデータ型の、データフレームに変換されます。</span>
+<span id="cb21-329"><a href="#cb21-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-330"><a href="#cb21-330" aria-hidden="true" tabindex="-1"></a>コンマ切りテキスト（CSV）の読み込みには、<span class="in">`read_csv`</span>が、タブ切りテキスト（TSV）の読み込みには<span class="in">`read_tsv`</span>関数が準備されています。これらの他に、ヨーロッパ仕様のCSVを読み込む<span class="in">`read_csv2`</span>関数、区切り文字を指定する必要がある<span class="in">`read_delim`</span>関数、固定幅テキストの読み込みを行う<span class="in">`read_fwf`</span>関数などがあります。</span>
+<span id="cb21-331"><a href="#cb21-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-332"><a href="#cb21-332" aria-hidden="true" tabindex="-1"></a><span class="in">`readr`</span>パッケージの読み込み関数は圧縮ファイルの読み込みにも対応しており、gzip（.gz）、bzip2（.bz2）、lzma（.xz）、zip（.zip）などの圧縮ファイルを直接読み込むことができます。また、インターネットからテキストファイルを直接読み込むこともできます。インターネットから直接読み込む場合には、テキストファイルが保存されているwebアドレス（<span class="in">`http://`</span>, <span class="in">`https://`</span>, <span class="in">`ftp://`</span> など）をファイル名として設定します。</span>
+<span id="cb21-333"><a href="#cb21-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-334"><a href="#cb21-334" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="readrでテキストファイルを読み込む"}</span></span>
+<span id="cb21-335"><a href="#cb21-335" aria-hidden="true" tabindex="-1"></a><span class="in">read_table("filename.txt") # sep=" "（スペース切り）がデフォルト</span></span>
+<span id="cb21-336"><a href="#cb21-336" aria-hidden="true" tabindex="-1"></a><span class="in">read_csv("filename.csv") # コンマ切りテキスト</span></span>
+<span id="cb21-337"><a href="#cb21-337" aria-hidden="true" tabindex="-1"></a><span class="in">read_tsv("filename.tsv") # タブ切りテキスト</span></span>
+<span id="cb21-338"><a href="#cb21-338" aria-hidden="true" tabindex="-1"></a><span class="in">read_delim("filename.txt", delim="\t") # delim引数に区切りを指定</span></span>
+<span id="cb21-339"><a href="#cb21-339" aria-hidden="true" tabindex="-1"></a><span class="in">read_fwf("filename.txt") # 固定幅テキスト</span></span>
+<span id="cb21-340"><a href="#cb21-340" aria-hidden="true" tabindex="-1"></a><span class="in">read_csv2("filename.csv") # ヨーロッパ仕様</span></span>
+<span id="cb21-341"><a href="#cb21-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-342"><a href="#cb21-342" aria-hidden="true" tabindex="-1"></a><span class="in">read_delim(clipboard()) # クリップボードの読み込み</span></span>
+<span id="cb21-343"><a href="#cb21-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-344"><a href="#cb21-344" aria-hidden="true" tabindex="-1"></a><span class="in">read_table("filename.zip") # zipファイルも直接読み込める</span></span>
+<span id="cb21-345"><a href="#cb21-345" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-346"><a href="#cb21-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-347"><a href="#cb21-347" aria-hidden="true" tabindex="-1"></a><span class="fu">### tibble</span></span>
+<span id="cb21-348"><a href="#cb21-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-349"><a href="#cb21-349" aria-hidden="true" tabindex="-1"></a><span class="in">`readr`</span>の読み込み関数は、読み込んだデータを<span class="in">`tibble`</span>というデータ型に変換します。この<span class="in">`tibble`</span>は概ねデータフレームと同じで、取り扱いもデータフレームと同様に行うことができます。</span>
+<span id="cb21-350"><a href="#cb21-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-351"><a href="#cb21-351" aria-hidden="true" tabindex="-1"></a><span class="in">`tibble`</span>は<span class="in">`tibble`</span>関数で、データフレームと同じように作成することができます。また、<span class="in">`as_tibble`</span>関数を用いることで、行列や通常のデータフレームを<span class="in">`tibble`</span>に変換することができます。</span>
+<span id="cb21-352"><a href="#cb21-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-353"><a href="#cb21-353" aria-hidden="true" tabindex="-1"></a><span class="in">`readr`</span>に限らず、<span class="in">`tidyverse`</span>のライブラリ群の関数では返り値を<span class="in">`tibble`</span>とするものが多いです。<span class="in">`tibble`</span>のデータフレームは、表示した時に列のデータ型を表示する、10行以上の行は省略する、列も省略する等の特徴があります。<span class="in">`tibble`</span>については、<span class="co">[</span><span class="ot">16章</span><span class="co">](./chapter16.html)</span>で詳しく説明します。</span>
+<span id="cb21-354"><a href="#cb21-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-355"><a href="#cb21-355" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="tibble"}</span></span>
+<span id="cb21-356"><a href="#cb21-356" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(tidyverse)</span></span>
+<span id="cb21-357"><a href="#cb21-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-358"><a href="#cb21-358" aria-hidden="true" tabindex="-1"></a><span class="in">tibble(x = 1:3, y = c("a", "b", "c"), z = c(T, F, T))</span></span>
+<span id="cb21-359"><a href="#cb21-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-360"><a href="#cb21-360" aria-hidden="true" tabindex="-1"></a><span class="in">as_tibble(iris)</span></span>
+<span id="cb21-361"><a href="#cb21-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-362"><a href="#cb21-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-363"><a href="#cb21-363" aria-hidden="true" tabindex="-1"></a><span class="fu">### readr：テキストファイルの書き出し</span></span>
+<span id="cb21-364"><a href="#cb21-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-365"><a href="#cb21-365" aria-hidden="true" tabindex="-1"></a><span class="in">`readr`</span>パッケージは<span class="in">`write.table`</span>関数に当たる、テキスト書き出しの関数を備えています。<span class="in">`readr`</span>が備えている関数は、データフレームをCSVとして保存する<span class="in">`write_csv`</span>関数、タブ切りテキストとして保存する<span class="in">`write_tsv`</span>関数、スペース切りテキストとして保存する<span class="in">`write_delim`</span>関数があります。</span>
+<span id="cb21-366"><a href="#cb21-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-367"><a href="#cb21-367" aria-hidden="true" tabindex="-1"></a><span class="in">`read_table`</span>関数と同様に、<span class="in">`write_`</span>関数もテキストの圧縮ファイルの保存に対応しています。対応している圧縮ファイルはgzip（.gz）、bzip2（.bz2）、lzma（.xz）です。</span>
+<span id="cb21-368"><a href="#cb21-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-369"><a href="#cb21-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="readrでのファイル書き出し"}</span></span>
+<span id="cb21-370"><a href="#cb21-370" aria-hidden="true" tabindex="-1"></a><span class="in">write_csv(x, "filename.csv") # コンマ切り</span></span>
+<span id="cb21-371"><a href="#cb21-371" aria-hidden="true" tabindex="-1"></a><span class="in">write_tsv(x, "filename.tsv") # タブ切り</span></span>
+<span id="cb21-372"><a href="#cb21-372" aria-hidden="true" tabindex="-1"></a><span class="in">write_delim(x, "filename.txt") # スペース切り</span></span>
+<span id="cb21-373"><a href="#cb21-373" aria-hidden="true" tabindex="-1"></a><span class="in">write_csv2(x, "filename.csv") # ヨーロッパ仕様</span></span>
+<span id="cb21-374"><a href="#cb21-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-375"><a href="#cb21-375" aria-hidden="true" tabindex="-1"></a><span class="in">write_csv(x, "filename.gz") # gzipで圧縮して出力</span></span>
+<span id="cb21-376"><a href="#cb21-376" aria-hidden="true" tabindex="-1"></a><span class="in">write_csv(x, "filename.bz2") # bzip2で圧縮して出力</span></span>
+<span id="cb21-377"><a href="#cb21-377" aria-hidden="true" tabindex="-1"></a><span class="in">write_csv(x, "filename.xz") # lzmaで圧縮して出力</span></span>
+<span id="cb21-378"><a href="#cb21-378" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-379"><a href="#cb21-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-380"><a href="#cb21-380" aria-hidden="true" tabindex="-1"></a><span class="fu">## readxl</span></span>
+<span id="cb21-381"><a href="#cb21-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-382"><a href="#cb21-382" aria-hidden="true" tabindex="-1"></a>私のようなヘボいR使いは昔から上記のようにExcelをテキストファイルに変換してはRに読み込むというステップを踏み続けてきました。このExcelからテキストへの変換の手間を無くすライブラリが<span class="in">`readxl`</span>パッケージ <span class="co">[</span><span class="ot">@readxl_bib</span><span class="co">]</span>です。</span>
+<span id="cb21-383"><a href="#cb21-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-384"><a href="#cb21-384" aria-hidden="true" tabindex="-1"></a><span class="in">`readxl`</span>パッケージも<span class="in">`tidyverse`</span>と同じく、<span class="co">[</span><span class="ot">Posit Software</span><span class="co">](https://posit.co/)</span>が開発しているライブラリですが、<span class="in">`tidyverse`</span>には含まれていません。<span class="in">`tidyverse`</span>とは別に、<span class="in">`readxl`</span>パッケージを独立に読み込む必要があります。</span>
+<span id="cb21-385"><a href="#cb21-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-386"><a href="#cb21-386" aria-hidden="true" tabindex="-1"></a><span class="in">`readxl`</span>パッケージで使用する関数は、ほぼ<span class="in">`read_excel`</span>関数だけです。<span class="in">`read_excel`</span>関数は、.xlsおよび.xlsxファイルの読み込みに対応しており、ファイル名で指定したExcelファイルからテーブルを<span class="in">`tibble`</span>として読み込みます。<span class="in">`read_excel`</span>関数では<span class="in">`sheet`</span>という引数を設定することができます。<span class="in">`read_excel`</span>関数は<span class="in">`sheet`</span>に設定した番号（もしくはシート名）のシートを読み込みます。</span>
+<span id="cb21-387"><a href="#cb21-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-388"><a href="#cb21-388" aria-hidden="true" tabindex="-1"></a><span class="in">`readxl`</span>パッケージは<span class="in">`read_excel`</span>関数以外に、Excelファイルのメタデータ読み込みのための関数などを備えています。</span>
+<span id="cb21-389"><a href="#cb21-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-390"><a href="#cb21-390" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="readxlでExcelファイルを読み込む"}</span></span>
+<span id="cb21-391"><a href="#cb21-391" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(readxl)</span></span>
+<span id="cb21-392"><a href="#cb21-392" aria-hidden="true" tabindex="-1"></a><span class="in">read_excel("filename.xlsx", sheet = 1) # read_xlsxが読み込まれる</span></span>
+<span id="cb21-393"><a href="#cb21-393" aria-hidden="true" tabindex="-1"></a><span class="in">read_excel("filename.xls", sheet = 1) # read_xlsが読み込まれる</span></span>
+<span id="cb21-394"><a href="#cb21-394" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-395"><a href="#cb21-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-396"><a href="#cb21-396" aria-hidden="true" tabindex="-1"></a>::: {.Callout-tip collapse="true"}</span>
+<span id="cb21-397"><a href="#cb21-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-398"><a href="#cb21-398" aria-hidden="true" tabindex="-1"></a><span class="fu">## Excelファイルの種類</span></span>
+<span id="cb21-399"><a href="#cb21-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-400"><a href="#cb21-400" aria-hidden="true" tabindex="-1"></a>Excelには昔使用されていたファイルである.xlsファイルと、Excel2007から使われている.xlsxファイルがあります。</span>
+<span id="cb21-401"><a href="#cb21-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-402"><a href="#cb21-402" aria-hidden="true" tabindex="-1"></a>.xlsファイルはバイナリファイルで、内部的には1と0でデータが表現されています。</span>
+<span id="cb21-403"><a href="#cb21-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-404"><a href="#cb21-404" aria-hidden="true" tabindex="-1"></a>.xlsxファイルは実際にはzipファイルで、xmlというフォーマットで記載されたデータがzipファイルのフォルダ内に含まれています。.xlsxファイルは拡張子を.zipに書き換えるとzipファイルとして解凍することができ、中身を確認することができます。</span>
+<span id="cb21-405"><a href="#cb21-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-406"><a href="#cb21-406" aria-hidden="true" tabindex="-1"></a>.xlsと.xlsxは全然違うファイルですが、<span class="in">`read_excel`</span>関数は拡張子によって.xlsを読み込む<span class="in">`read_xls`</span>関数と.xlsxを読み込む<span class="in">`read_xlsx`</span>関数を切り替えて呼び出しています。</span>
+<span id="cb21-407"><a href="#cb21-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-408"><a href="#cb21-408" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb21-409"><a href="#cb21-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-410"><a href="#cb21-410" aria-hidden="true" tabindex="-1"></a><span class="fu">#### その他のデータ読み込みライブラリ</span></span>
+<span id="cb21-411"><a href="#cb21-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-412"><a href="#cb21-412" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Posit Software</span><span class="co">](https://posit.co/)</span>は<span class="in">`readxl`</span>の他にも、多数のデータ読み込み用ライブラリを開発しています。以下に示したライブラリを利用することで、様々なデータ型のファイルをRで読み込み、統計に用いることができます。</span>
+<span id="cb21-413"><a href="#cb21-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-414"><a href="#cb21-414" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`googlesheets4`</span><span class="co">](https://googlesheets4.tidyverse.org/)</span>：Googleスプレッドシートの読み込み <span class="co">[</span><span class="ot">@googlesheets4_bib</span><span class="co">]</span></span>
+<span id="cb21-415"><a href="#cb21-415" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`haven`</span><span class="co">](https://haven.tidyverse.org/)</span>：SAS、SPSS、Stataファイルの読み込み <span class="co">[</span><span class="ot">@haven_bib</span><span class="co">]</span></span>
+<span id="cb21-416"><a href="#cb21-416" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`jsonlite`</span><span class="co">](https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html)</span>：jsonファイルの読み込み <span class="co">[</span><span class="ot">@jsonlite_bib</span><span class="co">]</span></span>
+<span id="cb21-417"><a href="#cb21-417" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`httr2`</span><span class="co">](https://httr2.r-lib.org/)</span>：Webからの読み込み <span class="co">[</span><span class="ot">@httr2_bib</span><span class="co">]</span></span>
+<span id="cb21-418"><a href="#cb21-418" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`rvest`</span><span class="co">](https://rvest.tidyverse.org/)</span>：スクレイピング用ライブラリ <span class="co">[</span><span class="ot">@rvest_bib</span><span class="co">]</span></span>
+<span id="cb21-419"><a href="#cb21-419" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`DBI`</span><span class="co">](https://dbi.r-dbi.org/)</span>：データベースの読み込み <span class="co">[</span><span class="ot">@DBI_bib</span><span class="co">]</span></span>
+<span id="cb21-420"><a href="#cb21-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-421"><a href="#cb21-421" aria-hidden="true" tabindex="-1"></a><span class="fu">## data.table</span></span>
+<span id="cb21-422"><a href="#cb21-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-423"><a href="#cb21-423" aria-hidden="true" tabindex="-1"></a>近年のデータサイエンスでは、時に数百万～数千億程度のデータを取り扱うこともあります。個人のPCでRを使ってこのような超大規模のデータを取り扱うのは現実的ではありませんが、数万～数十万行ぐらいのデータをPCで取り扱うことは増えてきています。例えば、生物分野では<span class="co">[</span><span class="ot">マイクロアレイ</span><span class="co">](https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%A2%E3%83%AC%E3%82%A4)</span>や<span class="co">[</span><span class="ot">高速シークエンサー</span><span class="co">](https://jp.illumina.com/content/dam/illumina-marketing/apac/japan/documents/pdf/primer_illumina_sequencing_introduction-j.pdf)</span>のデータは数万～数十万行で、分析を個人が、自分のPCで取り扱うこともあるかと思います。自分でマイクロアレイやシークエンサーを使ってデータを出さなくても、<span class="co">[</span><span class="ot">GEO Dataset</span><span class="co">](https://www.ncbi.nlm.nih.gov/gds)</span>などからデータを取得して、解析してみることも一般的に行われています。</span>
+<span id="cb21-424"><a href="#cb21-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-425"><a href="#cb21-425" aria-hidden="true" tabindex="-1"></a>このような超巨大データを取り扱う場合、R謹製の<span class="in">`read.table`</span>関数では手に余りますし、<span class="in">`read_table`</span>関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労します。このような大規模データの読み込みに特化したライブラリが、<span class="in">`data.table`</span>パッケージ <span class="co">[</span><span class="ot">@datatable_bib</span><span class="co">]</span>です。</span>
+<span id="cb21-426"><a href="#cb21-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-427"><a href="#cb21-427" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`data.table`</span><span class="co">](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)</span>パッケージは、大規模データを読み込み、Rで高速に利用できるよう設計されたライブラリです。</span>
+<span id="cb21-428"><a href="#cb21-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-429"><a href="#cb21-429" aria-hidden="true" tabindex="-1"></a><span class="in">`data.table`</span>パッケージでデータを読み込むときには、<span class="in">`fread`</span>関数を用います。<span class="in">`fread`</span>関数はhtmlからの読み込みにも対応しています。読み込んだデータは<span class="in">`data.table`</span>クラスのオブジェクトとなります。</span>
+<span id="cb21-430"><a href="#cb21-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-431"><a href="#cb21-431" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="data.tableパッケージのfread関数でファイルを読み込む"}</span></span>
+<span id="cb21-432"><a href="#cb21-432" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(data.table)</span></span>
+<span id="cb21-433"><a href="#cb21-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-434"><a href="#cb21-434" aria-hidden="true" tabindex="-1"></a><span class="in"># flights14（NYのフライトデータ、25万行11列）をinputとする</span></span>
+<span id="cb21-435"><a href="#cb21-435" aria-hidden="true" tabindex="-1"></a><span class="in">input &lt;- "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv"</span></span>
+<span id="cb21-436"><a href="#cb21-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-437"><a href="#cb21-437" aria-hidden="true" tabindex="-1"></a><span class="in"># freadで読み込む</span></span>
+<span id="cb21-438"><a href="#cb21-438" aria-hidden="true" tabindex="-1"></a><span class="in">flights &lt;- fread(input) # 219MBのデータ読み込み</span></span>
+<span id="cb21-439"><a href="#cb21-439" aria-hidden="true" tabindex="-1"></a><span class="in">class(flights)</span></span>
+<span id="cb21-440"><a href="#cb21-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-441"><a href="#cb21-441" aria-hidden="true" tabindex="-1"></a><span class="in">dim(flights)</span></span>
+<span id="cb21-442"><a href="#cb21-442" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-443"><a href="#cb21-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-444"><a href="#cb21-444" aria-hidden="true" tabindex="-1"></a><span class="in">`data.table`</span>の取り扱いの方法はほぼデータフレームと同じです。<span class="in">`data.table`</span>はインデックスからデータの要約ができる機構を備えています。ただし、後の章で説明する<span class="in">`tidyr`</span>・<span class="in">`dplyr`</span>の関数も適用できますので、データの要約は<span class="in">`tidyr`</span>・<span class="in">`dplyr`</span>で行ってもよいでしょう。</span>
+<span id="cb21-445"><a href="#cb21-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-446"><a href="#cb21-446" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="data.tableクラスの取り扱い"}</span></span>
+<span id="cb21-447"><a href="#cb21-447" aria-hidden="true" tabindex="-1"></a><span class="in">flights[5, 1] # 通常のインデックスに対応</span></span>
+<span id="cb21-448"><a href="#cb21-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-449"><a href="#cb21-449" aria-hidden="true" tabindex="-1"></a><span class="in">flights[1:5] # 行列を指定しない場合は、行のインデックスになる</span></span>
+<span id="cb21-450"><a href="#cb21-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-451"><a href="#cb21-451" aria-hidden="true" tabindex="-1"></a><span class="in">flights[1:5, 2:5] # ベクターでの読み出しにも対応</span></span>
+<span id="cb21-452"><a href="#cb21-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-453"><a href="#cb21-453" aria-hidden="true" tabindex="-1"></a><span class="in">head(flights[origin == "JFK", ]) # originがJFKの行を選択</span></span>
+<span id="cb21-454"><a href="#cb21-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-455"><a href="#cb21-455" aria-hidden="true" tabindex="-1"></a><span class="in">head(flights[, .(month, day)]) # monthとdayの列を選択</span></span>
+<span id="cb21-456"><a href="#cb21-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-457"><a href="#cb21-457" aria-hidden="true" tabindex="-1"></a><span class="in">head(flights$origin) # originの列を抽出</span></span>
+<span id="cb21-458"><a href="#cb21-458" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-459"><a href="#cb21-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-460"><a href="#cb21-460" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb21-461"><a href="#cb21-461" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-462"><a href="#cb21-462" aria-hidden="true" tabindex="-1"></a><span class="fu">## data.tableでのデータ取り扱い</span></span>
+<span id="cb21-463"><a href="#cb21-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-464"><a href="#cb21-464" aria-hidden="true" tabindex="-1"></a> <span class="in">`data.table`</span>が使われ始めた頃は、<span class="in">`data.table`</span>オブジェクトの取り扱い方がデータフレームとは大きく異なっており、かなりとっつきにくかったのですが、現在ではデータフレームとほぼ同じ取り扱いができるようになっています。</span>
+<span id="cb21-465"><a href="#cb21-465" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-466"><a href="#cb21-466" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+</div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
+
+
+
+
+</body></html>

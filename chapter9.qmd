@@ -1,0 +1,400 @@
+# 文字列
+
+```{r, setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+```
+
+多くのプログラミング言語では、**文字列（character）**の取り扱いが非常に重要視されます。住所や氏名は文字列ですし、電話番号も通常は数値というより文字列のような取り扱いを受けます。フォルダの位置（ディレクトリ）やウェブページ（html）なども文字列で構築されています。Rは統計の言語ですので、文字列には数値ほど色々な関数は実装されていませんが、Rにも基本的な文字列処理の関数は備わっています。現代では文字列を統計で取り扱う機会も増えていますので（[Word2Vec](https://ja.wikipedia.org/wiki/Word2vec)や生成AIなど）、文字列の取り扱いは統計においても重要性を増してきています。
+
+## 文字列を取り扱う関数
+
+### 文字列の結合：pasteとpaste0関数
+
+Rには文字列を取り扱う関数が一通り備わっています。まずは`paste`関数について紹介します。`paste`関数は引数の文字列をつないで、1つの文字列にする関数です。各引数の文字列をつなぐ部分には、`sep`引数で指定した文字列が入ります。`paste`関数では、`sep`のデフォルトがスペースとなっているので、`sep`を設定しなければスペースが自動的に文字列の間に入ります。`paste0`関数では`sep`が空、つまり文字列のつなぎには何も入力されない形となります。
+
+```{r, filename="文字列をつなぐ"}
+paste("A dog", "is running") # 引数同士をスペースを挟んでつなぐ
+
+paste("A", "dog", "is", "running") # 引数は2つ以上でもよい
+
+paste("A dog", "is running", sep="/") # sepに指定した文字が引数の間に入る
+
+paste0("A dog", "is running") # sepに何も追加したくない場合
+```
+
+### sprintf関数
+
+他のプログラミング言語と同様に、`sprintf`関数と呼ばれる、文字列に変数を挿入する関数をRでも用いることができます。`sprintf`関数は第一引数に文字列を取り、この文字列中の`"%s"`や`"%f"`の部分に第二引数で指定した変数を挿入する関数です。`"%s"`には文字列、`"%f"`には数値が入ります。第二引数以降の変数は挿入する順番に指定する必要があります。
+
+```{r, error=TRUE, filename="sprintf関数"}
+sprintf("%f", pi)
+
+# .2fで小数点2桁まで表示
+sprintf("%sは%.2fです。", "円周率", pi)
+
+# 文字列の部分に数値、数値の部分に文字列が来るのでエラー
+sprintf("%sは%.2fです。", pi, "円周率") 
+```
+
+### 文字数をカウントする：nchar
+
+文字数をカウントする関数が`nchar`関数です。`nchar`関数は引数に取った文字列の文字数を返します。`type`引数を指定すると、文字列のバイト数や文字幅を求める事もできます。
+
+```{r, filename="文字数を数える"}
+nchar("Hello R") # スペースを含めて7文字
+
+x <- c("A dog is running", "A cat is running")
+nchar(x) # ベクターの要素それぞれについて計算
+
+nchar("日本語") # 日本語でも文字列はカウントされる
+
+nchar("日本語", type="bytes") # バイト数は3倍
+
+nchar("日本語", type="width") # 等角文字は半角文字の2倍幅
+```
+
+### 文字列から一部抜き出す：substr
+
+文字列の一部を抜き出す関数が`substr`関数です。文字列のうち、`start`で指定した位置の文字から`stop`で指定した位置の文字までを返します。位置の指定はインデックスと同じで、1文字目が1、2文字目が2、という形を取ります。`substr`関数によく似た`substring`関数もほぼ同じ機能を持ちますが、引数名が`first`と`last`になっており、`last`のデフォルト値がとても大きく(1000000L) なっています。ですので、`first`だけを引数として指定し、それ以降の文字列を返す形で利用するものになっています。
+
+```{r, filename="文字列の抜き出し"}
+x
+
+substr(x, start = 3, stop = 5) # xの3文字目から5文字目
+
+substring(x, 3) # 3文字目以降を取得
+```
+
+### 文字列を分割する：strsplit
+
+`strsplit`関数は、文字列をある特定の文字で分割し、リストの要素として返す関数です。文字は1文字でも、複数の文字でも問題ありません。
+
+```{r, filename="文字列の分割"}
+x
+
+strsplit(x, " ") # スペースで分離。リストが返ってくる
+
+strsplit(x, "i") # i で分離
+```
+
+### パターンにあう位置を調べる：grepとmatch
+
+文字列が一定のパターン（例えば英単語など）を含むかどうかを調べるのが、`grep`関数と`match`関数です。
+
+`grep`関数は文字列のベクターに適用し、パターンを含むインデックスを返します。ベクターの要素がパターンを含まない場合には、長さ0のベクター（`integer(0)`）が返ってきます。
+
+`match`関数は、パターンが全部一致する要素のインデックスを返す関数です。一部が一致する場合にはインデックスは返ってきません。どの要素にも全部一致するものがなければ、`NA`が返ってきます。パターンが部分一致する場合にインデックスを返すのが`pmatch`関数です。`pmatch`関数では、パターンが部分一致する要素が複数あると`NA`が返ってきます。
+
+```{r, filename="パターンに一致するものを調べる"}
+x
+
+grep(pattern = "dog", x)
+
+grep(pattern = "cat", x)
+
+grep(pattern = "is", x)
+
+grep(pattern = "rat", x)
+
+
+match("median",   c("mean", "median", "mode")) # 全文マッチするベクターの位置を返す
+
+match("med",   c("mean", "median", "mode")) # 一部マッチではNA
+
+
+pmatch("mo",   c("mean", "median", "mode")) # 一部マッチするベクターの位置を返す
+
+pmatch("me",   c("mean", "median", "mode")) # マッチするものが2つ以上あるとNA
+```
+
+### 文字列の置き換え：subとgsub
+
+文字列の中で、パターンが一致したものを別のパターンに置き換えるのが、`sub`関数、`gsub`関数です。`sub`関数、`gsub`関数は引数として、パターン（`pattern`）、置き換える文字列（`replacement`）、文字列のベクターを取ります。`sub`関数が文字列のうち、前からサーチして一番始めのパターンのみを置き換えるのに対して、`gsub`関数はパターンが一致した部分をすべて置き換えるものとなっています。`gsub`関数と同じような働きを持つ`chartr`関数というものもあります。
+
+```{r, filename="文字列の置き換え"}
+x
+
+sub(pattern = "n", replacement = "N", x) # 始めの要素だけ置き換え
+
+gsub(pattern = "n", replacement = "N", x) # すべて置き換え
+
+chartr("n", "N", x) # 上のgsub関数と同じ結果
+```
+
+### 小文字、大文字に変換：tolower toupper
+
+文字列を小文字に置き換えるのが`tolower`関数、大文字に置き換えるのが`toupper`関数です。
+
+```{r, filename="小文字・大文字の変換"}
+tolower("A CAT IS RUNNING") # 小文字に変換
+
+x
+
+toupper(x) # 大文字に変換
+```
+
+```{r, echo=FALSE}
+d <- data.frame(
+  func = c("paste(x, y, sep = z)", "paste0(x, y)", "nchar(x)", "substr(x, start, stop)", "substring(x, y)", "strsplit(x, pattern)", "grep(pattern, x)", "match(pattern, x)", "pmatch(pattern, x)", "sub(x, pattern, replacement)", "gsub(x, pattern, replacement)", "chartr(old, new, x)", "tolower(x)", "toupper(x)"),
+  meaning = c("xとyをzを挟んで結合", "xとyを何も挟まず結合", "xの文字数をカウントする", "xから文字を切り出す", "xのy文字目以降を切り出す", "xをpatternで分割する", "patternを含むxのインデックスを返す", "pattern全文を含む要素のインデックスを返す", "patternを一部含む要素のインデックスを返す", "始めに一致するpatternをreplacementに置き換える", "patternをreplacementにすべて置き換える", "oldをnewにすべて置き換える", "大文字を小文字に変換", "小文字を大文字に変換")
+)
+
+colnames(d) <- c("関数名", "文字列xに適用される演算")
+knitr::kable(d, caption="表1：Rの文字列に関する関数")
+```
+
+## stringr
+
+Rのデフォルトの文字列関連の関数だけでも色々な文字列の操作ができますが、名前に統一感がなく、返ってくるものがリストだったりするものもあり、なかなか覚えにくく、使いにくいところがあります。
+
+この使いにくさを解消し、統一感のある関数名を付けたライブラリが[`stringr`](https://stringr.tidyverse.org/)[@stringr_bib]です。`stringr`には文字列を操作する関数が40程度登録されており、ほぼいずれの関数も「`str_`」から名前が始まります。Rstudioでは、「`str_`」と入力すると入力候補と入力候補の説明文が示されるため、比較的簡単に関数を検索し、利用することができます。文字列を取り扱う場合にRのデフォルトの関数群を用いても特に問題はありませんが、`stringr`の関数群を用いると返り値の利便性や速度に利点があります。
+
+`stringr`は`tidyverse`に含まれるライブラリです。`stringr`のインストール、ロードには`pacman::p_load`関数を用います。
+
+```{r, filename="stringrのインストールおよびロード"}
+pacman::p_load(tidyverse) # あらかじめpacmanのインストールが必要
+```
+
+以下に、`stringr`の代表的な関数の使い方を示します。
+
+```{r, echo=FALSE}
+d <- data.frame(
+  func = c("str_detect(x, pattern)", "str_which(x, pattern)", "str_locate(x, pattern)", "str_locate_all(x, pattern)", "str_count(x, pattern)", "str_length(x)", "str_trim(x)", "str_trunc(x, width)", "str_sub(x, start, end)", "str_subset(x, pattern)", "str_extract(x, pattern)", "str_extract_all(x, pattern)", "str_match(x, pattern)", "str_match_all(x, pattern)", "str_c(x, y, sep)", "str_flatten(x, y, collapse)", "str_split(x, pattern)", "str_split_fixed(x, pattern, n)", "str_split_i(x, pattern, i)", "str_replace(x, pattern, replacement)", "str_replace_all(x, pattern, replacement)", "str_to_lower(x)", "str_to_upper(x)"),
+  meaning = c("patternがあるとTRUEを返す", "patternを含むインデックスを返す", "patternの位置を調べる", "patternの位置をすべて調べる", "patternが含まれる数を返す", "文字数を返す", "xの前後のスペースを取り除く", "xをwidthの長さに省略する", "startからendの位置までの文字列を取り出す", "patternを含む要素を取り出す", "patternを取り出す",  "patternをすべて取り出す", "patternを行列で取り出す", "patternを行列ですべて取り出す", "xとyをsepを挟んで結合する", "xとyをcollapseを挟んで結合する", "xをpatternで分割する", "xをpatternでn個に分割する", "xをpatternで分割し、i番目の要素を返す", "始めに一致するpatternをreplacementに置き換える", "patternをreplacementにすべて置き換える", "大文字を小文字に変換する", "小文字を大文字に変換する")
+)
+
+colnames(d) <- c("関数名", "文字列xに適用される演算")
+knitr::kable(d, caption="表2：stringrの関数")
+```
+
+:::{.callout-tip collapse="true"}
+
+## stringrとラッパー（wrapper）
+
+`stringr`は[`stringi`](https://stringi.gagolewski.com/)[@stringi_bib]というライブラリのラッパー（wrapper）です。ラッパーとは既存の関数の名前や引数の順序を統一したり、使用頻度の高い関数を選んだり、部分的に機能を追加することで利用しやすくしたものです。`stringi`はC言語由来の文字列処理を取り込んでいるため、Rのデフォルトの関数よりも計算が速いという特徴があります。
+
+:::
+
+### パターンの検出：str_detect
+
+`str_detect`関数はパターンを検索し、論理型を返す関数です。パターンが含まれる要素には`TRUE`、含まれない要素には`FALSE`が返ってきます。
+
+```{r, filename="パターンの検出"}
+x
+
+str_detect(x, "dog")
+```
+
+### パターンの検出：str_which
+
+`str_which`関数は上記の`grep`関数と同じく、パターンに一致するベクターのインデックスを返す関数です。複数の要素が一致する場合には、一致するすべてのインデックスを返します。
+
+```{r, filename="パターンを検出する：str_which関数"}
+x
+
+str_which(x, "dog")
+
+str_which(x, "cat")
+
+str_which(x, "is")
+```
+
+### パターンの位置を調べる：str_locate
+
+もっと厳密に、そのパターンが存在する文字列上の位置を特定するための関数が`str_locate`関数です。`str_locate`関数は行列、もしくは行列のリストを返します。行列のstart列がパターンの開始位置、endが終了位置を示します。パターンが複数含まれる場合には、行列のリストが返ってきます。
+
+```{r, filename="パターンの位置を返す：str_locate関数"}
+x
+
+str_locate(x, "dog") # 1つ目の要素のみにパターンが含まれる時
+
+str_locate_all(x, "n") # 2つの要素にパターンが複数含まれる時
+```
+
+### パターンが含まれる数を数える：str_count
+
+パターンが何回含まれるかを数える関数が`str_count`関数です。パターンが含まれていればそのパターンの個数を、含まれていなければ0を返します。
+
+```{r, filename="パターンの個数を数える：str_count関数"}
+x
+
+str_count(x, "dog") # 1つ目の要素に1つだけパターンが含まれる場合
+
+str_count(x, "n") # 2つの要素に3つずつパターンが含まれる場合
+```
+
+### 文字数を数える：str_length
+
+`str_length`関数は`nchar`関数と同じく、文字数を返す関数です。どちらを使っても結果は同じですが、他の言語では文字数を数える関数に「`length`」関数を当てることが多いため、`str_length`の方が直感的に使い方がわかりやすい名前になっています。
+
+```{r, filename="文字数をカウントする：str_length関数"}
+x
+
+str_length(x)
+
+nchar(x)
+```
+
+### 文字列を整える：str_trim、str_trunc
+
+`str_trim`関数は文字列の前と後ろのスペースを取り除く関数です。文字列の演算では、スペースが前後に残って邪魔になることがよくあります。このような場合には`str_trim`でスペースを取り除き、形を整えることができます。
+
+`str_trunc`関数は、文字列の前や後ろを切り取り、「...」で置き換えて省略してくれる関数です。長い文字列をラベル等に用いるときに使用します。
+
+```{r, filename="文字列を整形する：str_trim, str_trunc関数"}
+str_trim(" x ") # スペースを取り除く
+
+x
+
+str_trunc(x, 12) # 後ろを切り取って...で省略
+
+str_trunc(x, 12, side="left") # 前を切り取って...で省略
+```
+
+### 文字を切り出す：str_subとstr_subset
+
+`str_sub`関数は`substr`関数とほぼ同じ働きを持つ関数で、`start`の位置から`end`の位置までの文字列を抜き出します。
+
+`str_subset`関数はやや異なり、パターンを含むベクターの要素のみを取り出す関数です。
+
+```{r, filename="パターンを含む文字列を取り出す：str_sub、str_subset関数"}
+x
+
+str_sub(x, start=3, end=5) # 位置を特定して抽出
+
+str_subset(x, "cat") # 文字を含む要素を抽出
+
+str_subset(x, "is")
+
+str_subset(x, "rat")
+```
+
+### 文字列を抽出する：str_extract
+
+`str_extract`関数は、パターンがマッチしたときに、そのパターンを返す関数です。パターンに一致する部分がない場合には、`NA`を返します。`str_extract`関数はマッチした始めのパターンのみを返し、`str_extract_all`関数はマッチしたパターンをすべて返します。`str_extract_all`関数の返り値はリストになります。
+
+```{r, filename="パターンを抽出する：str_extract関数"}
+x
+
+str_extract(x, "is") # 特定の文字列を抽出
+
+str_extract(x, "dog") # 抽出できないとNAを返す
+
+str_extract_all(x, "n") # パターン一致するものをすべて抽出
+```
+
+### パターンマッチング：str_match
+
+`str_match`関数も一致したパターンを返す関数です。`str_match`関数は始めにマッチしたパターンを行列で返し、`str_match_all`関数はマッチしたすべてのパターンを行列のリストで返します。
+
+```{r, filename="マッチしたパターンを返す：str_match関数"}
+x
+
+str_match(x, "dog") # パターンがあれば、そのパターンを返す
+
+str_match_all(x, "n") # パターンがあれば、それをすべて返す
+```
+
+### 文字列をつなぐ：str_cとstr_flatten
+
+`str_c`関数と`str_flatten`関数はいずれも文字列をつなぐ関数です。ともに`paste`関数と`paste0`関数とほぼ同じですが、`NA`の取り扱いが少しだけ異なります。
+
+```{r, filename="文字列をつなぐ：str_c関数"}
+x
+
+str_c(x[1], x[2]) # paste0と同じ
+
+str_c(x[1], x[2], sep=" ") # pasteと同じ
+
+str_flatten(c("a", "dog", "is", "running")) # paste0と同じ
+
+str_flatten(c("a", "dog", "is", "running"), collapse= " ") # pasteと同じ
+```
+
+### 文字列を分割する：str_split、str_split_fixed、str_split_i
+
+`str_split`関数はパターンで文字列を分割する関数で、`strsplit`関数とほぼ同じ機能を持ちます。
+
+`str_split_fixed`関数はパターンで分割するときに、分割後の要素の数を指定することができる関数です。
+
+`str_split_i`関数は、パターンで分割した後に、数値で指定したインデックスの要素のみを取り出す関数です。
+
+```{r, filename="文字列を分割する：str_split関数"}
+x
+
+str_split(x, " ") # パターンで分割
+
+str_split_fixed(x, " ", 2) # 始めのパターンで2つに分割
+
+str_split_i(x, " ", 2) # パターンで分割し、2つ目の要素を取り出す
+```
+
+### 文字列を置き換える：str_replace、str_replace_all
+
+`str_replace`関数は文字列のパターンを別の文字列に置き換える関数です。`sub`関数とほぼ同等の機能を持ちます。`str_replace_all`関数は`gsub`関数とほぼ同じで、`str_replace`関数が始めにマッチしたパターンのみを置き換えるのに対し、`str_replace_all`関数はマッチしたパターンをすべて置き換えます。
+
+```{r, filename="文字列を置き換える：str_replace関数"}
+x
+
+str_replace(x, "running", "walking") # 前のパターンを後ろの文字列に置き換える
+
+str_replace_all(x, " ", ",") # 前のパターンをすべて、後ろの文字列に置き換える
+```
+
+### 大文字・小文字の操作：str_to_lower、str_to_upper
+
+`str_to_lower`関数は大文字を小文字に、`str_to_upper`関数は小文字を大文字に変換する関数です。どちらも`tolower`関数、`toupper`関数とほぼ同等の機能を持ちます。`str_to_lower`、`str_to_upper`関数は言語による小文字・大文字の違いによる変換にも対応していますが、日本人がこの機能を使うことはほぼ無いでしょう。
+
+```{r, filename="大文字・小文字の操作：str_to_lower、str_to_upper"}
+str_to_lower("A DOG IS RUNNING")
+
+x
+
+str_to_upper(x)
+```
+
+## 正規表現
+
+文字列中に含まれる特定の文字や単語を取り出す・検出する際に、1つの文字や単語だけでなく、条件に適合した複数の文字列を対象としたい場合もあります。また、文字列の特定の並び（`"would"`, `"like"`, `"to"`が順番に並んでいるなど）のみを特定し、検出したいといった場合もあるでしょう。このような場合に文字列のマッチングに用いられるものが、**正規表現**です。正規表現では、文字列と記号を合わせて複雑な文字列のパターンを特定し、マッチングを行うことができます。
+
+Rで用いることができる正規表現には、Rを含めて汎用されている規格（POSIX 1003.2 standard）のものと、Perl言語で用いられる正規表現の主に2つがあります。ここでは前者のみについて簡単に説明します。
+
+Rで用いることができる正規表現の例を以下の表3に示します。
+
+```{r, echo=FALSE}
+d <- readxl::read_excel("./data/regexp.xlsx")
+knitr::kable(d, caption="表3：Rの正規表現の一覧")
+```
+
+### 関数での正規表現の利用
+
+正規表現はこの章で述べたR言語の文字列を対象とする関数や、`stringr`の関数でパターンとして指定し、用いることができます。以下は`grep`関数の`pattern`引数に正規表現を指定した場合の例です。正規表現を用いることで、例えばhtmlのアドレスやe-mailのアドレスとして正しい記載であるかなど、複雑な文字列のパターンでも検出し、評価することができます。
+
+```{r, filename="正規表現による文字列の検出"}
+v <- c("dog", "cat", "pig", "rat", "egg")
+grep("[abc]", v, value=TRUE) # abcのいずれかを含む
+
+grep("[^crat]", v, value=TRUE) # crat以外を含む
+
+grep("^c", v, value=TRUE) # cから始まる
+
+grep("[(o|g)][(p|g)]", v, value=TRUE) # op、og、gp、ggのいずれかを含む
+
+grep("g{2}", v, value=TRUE) # ggを含む
+```
+
+### rexパッケージ
+
+とは言っても、正規表現をまるまる覚えるのは大変ですし、いちいち検索して正規表現でパターンを表現するのも場合によってはかなり大変です。[`rex`](https://rex.r-lib.org/index.html)パッケージ[@rex_bib]はこのような複雑な正規表現を人にも理解しやすい形で作成できるようにするためのパッケージです。よく用いられる正規表現は`shortcuts`というオブジェクト（リストと同じように取り扱えます）に含まれていますし、`rex`関数を用いてより複雑な正規表現を作成することもできます。
+
+```{r, filename="rexパッケージ"}
+pacman::p_load(rex)
+
+shortcuts$letter # アルファベット
+
+shortcuts$non_puncts # 句読点以外
+
+rex(none_of("a", "e", "i", "o", "u")) # aeiou以外
+```

@@ -1,0 +1,287 @@
+# 回帰
+
+```{r, setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+
+pacman::p_load(tidyverse)
+```
+
+```{r}
+# 線形回帰（単回帰）
+head(iris)
+lm(iris$Sepal.Length ~ iris$Sepal.Width)
+```
+
+```{r}
+# predict関数の使い方
+x <- rnorm(15)
+y <- x + rnorm(15)
+lmr <- lm(y~x)
+new <- data.frame(x=1:5)
+predict(lmr, new, interval = "confidence")
+```
+
+
+```{r}
+# 線形回帰（重回帰）
+lm(iris$Sepal.Length ~ iris$Sepal.Width + iris$Petal.Length)
+lm(iris$Sepal.Length ~ iris$Sepal.Width * iris$Petal.Length)
+```
+
+
+```{r}
+# 一般線形モデル
+lm(iris$Sepal.Length ~ iris$Sepal.Width + iris$Petal.Length + iris$Species)
+```
+
+
+```{r}
+## 一般化線形モデル
+# 正規分布（identityをリンク関数とする）
+glm(Sepal.Length~Sepal.Width, data=iris, family="gaussian")
+```
+
+
+```{r}
+counts <- c(18,17,15,20,10,20,25,13,12)
+outcome <- gl(3,1,9)
+treatment <- gl(3,3)
+# ポアソン分布（logをリンク関数とする）
+data.frame(treatment, outcome, counts)
+glm_out <- glm(counts ~ outcome + treatment, family = "poisson")
+glm_out
+summary(glm_out)
+```
+
+
+```{r}
+# 二項分布（logitをリンク関数とする）
+set.seed(0)
+logistic <- 
+  function(x){
+    1/(1+exp(-3*x+150))+rbeta(length(x),0.5,1.5)
+  }
+x <- 1:100
+y <- if_else(logistic(x)>0.5, 1, 0)
+plot(x,y)
+glm(y~x, family="binomial")
+```
+
+[nlme](https://cran.r-project.org/web/packages/nlme/index.html) [@nlme_bib, @nlme_book], [lme4](https://cran.r-project.org/web/packages/lme4/index.html) [@lme4_bib], [lmerTest](https://cran.r-project.org/web/packages/lmerTest/index.html) [@lmerTest_bib]
+nlme -> lme4 -> lmerTest の順で修正が入っているみたい。LMMはlmerTestで実行できるが，GLMMはlme4のglmer関数でないと計算できない。
+GLMMでは，[glmm](https://cran.r-project.org/web/packages/glmm/index.html)や[MCMCglmm](https://cran.r-project.org/web/packages/MCMCglmm/index.html)を使うのが一般的。[brms](https://cran.r-project.org/web/packages/brms/index.html)や[rstanarm](https://cran.r-project.org/web/packages/rstanarm/index.html)なども使えるが，どちらもStanの実行環境が必要。
+
+```{r}
+# 線形混合モデル
+pacman::p_load(lmerTest)
+data("sleepstudy", package="lme4")
+head(sleepstudy)
+lmer(Reaction ~ Days + (Days | Subject), sleepstudy) %>% summary()
+ggplot(sleepstudy, aes(x=Days, y=Reaction, color=Subject))+
+  geom_point(size=2, alpha=0.5)+theme(legend.position = "none")+
+  geom_line()
+```
+
+
+```{r}
+# AICでのモデル選択
+lm_iris <- 
+  lm(iris$Sepal.Length ~ 
+       iris$Sepal.Width * 
+       iris$Petal.Length * 
+       iris$Petal.Width * 
+       iris$Species)
+step(lm_iris)
+```
+
+[glmnet](https://cran.r-project.org/web/packages/glmnet/index.html) [@glmnet_bib1, @glmnet_bib2, @glmnet_bib3]
+
+```{r}
+## スパース回帰
+pacman::p_load(glmnet, mlbench)
+data("BostonHousing")
+head(BostonHousing)
+```
+
+
+```{r}
+# とりあえずlmとStepでやってみる
+tempBoston <- BostonHousing
+tempBoston$chas <- as.numeric(tempBoston$chas)
+tempBoston[1:13] <- tempBoston[1:13] |>  scale()
+lm_model <- lm(medv~ ., data=tempBoston)
+step(lm_model) %>% summary()
+aicselect <- step(lm_model)
+aicselect$coefficients %>% as.data.frame
+```
+
+
+```{r}
+# ラッソ回帰
+cvlasso_m <- 
+  cv.glmnet(
+    x=tempBoston[,1:13] |> as.matrix(), y=tempBoston$medv, family="gaussian", alpha=1)
+plot(cvlasso_m)
+cvlasso_m$lambda.min %>% log
+lasso_m <- 
+  glmnet(x=tempBoston[,1:13], 
+         y=tempBoston$medv, 
+         family="gaussian", 
+         lambda=cvlasso_m$lambda.min, 
+         alpha=1)
+lasso_m$beta
+```
+
+
+```{r}
+# リッジ回帰
+cvridge_m <- cv.glmnet(x=tempBoston[,1:13] |> as.matrix(), y=tempBoston$medv, family="gaussian", alpha=0)
+plot(cvridge_m)
+cvridge_m$lambda.min %>% log
+ridge_m <- 
+  glmnet(
+    x=tempBoston[,1:13], 
+    y=tempBoston$medv, 
+    family="gaussian", 
+    lambda=cvridge_m$lambda.min, 
+    alpha=0)
+ridge_m$beta
+```
+
+
+```{r}
+# エラスティックネット（実際にはアルファを最適化して利用する）
+cven_m <- cv.glmnet(x=tempBoston[,1:13] |> as.matrix(), y=tempBoston$medv, family="gaussian", alpha=0.5)
+plot(cven_m)
+cven_m$lambda.min %>% log
+en_m <- 
+  glmnet(
+    x=tempBoston[,1:13], 
+    y=tempBoston$medv, family="gaussian", 
+    lambda=cven_m$lambda.min, 
+    alpha=0.5)
+en_m$beta
+```
+
+
+```{r}
+# カーネル回帰
+head(faithful)
+x <- faithful$waiting
+pacman::p_load(KernSmooth)
+est <- bkde(faithful$waiting, bandwidth=3) %>% as.data.frame
+ggplot()+
+  geom_line(data=est, aes(x=x, y=y*950))+
+  geom_histogram(data=faithful, aes(x=waiting, fill=1), alpha=0.5)+
+  theme(legend.position="none")
+```
+
+
+```{r}
+# ニューラルネットワーク（これは分類）
+pacman::p_load(nnet, neuralnet)
+formula_iris <- 
+  as.formula(
+    "Species ~
+      Sepal.Length +
+      Sepal.Width +
+      Petal.Length +
+      Petal.Width"
+  )
+```
+
+
+```{r}
+set.seed(0)
+nn_iris <- neuralnet(
+  formula=formula_iris,
+  data=iris,
+  hidden=c(3,3),
+  act.fct="logistic", 
+  linear.output = F
+)
+plot(nn_iris, rep="best")
+```
+
+
+```{r}
+set.seed(0)
+nn_iris <- neuralnet(
+  formula=formula_iris,
+  data=iris,
+  hidden=c(3,2),
+  act.fct="logistic", 
+  linear.output = F
+)
+plot(nn_iris, rep="best")
+```
+
+
+```{r}
+set.seed(0)
+nn_iris <- neuralnet(
+  formula=formula_iris,
+  data=iris,
+  hidden=c(2,3),
+  act.fct="logistic", 
+  linear.output = F
+)
+plot(nn_iris, rep="best")
+```
+
+
+```{r, eval = FALSE}
+# ベイズモデルでの回帰（Stanが必要・走らない）
+pacman::p_load(brms)
+fit1 <- brm(rating ~ period + carry + cs(treat),
+            data = inhaler, family = sratio("logit"),
+            prior = set_prior("normal(0,5)"), chains = 2)
+summary(fit1)
+plot(fit1, ask = FALSE)
+```
+
+
+```{r}
+# ガウス過程回帰
+pacman::p_load(kernlab)
+x <- seq(-20,20,0.1)
+d1 <- data.frame(x=x, y=sin(x)/x + rnorm(401,sd=0.03))
+fit <- gausspr(d1$x, d1$y, variance.model=T)
+d <-data.frame(x, pred=predict(fit, x))
+d$sd <- predict(fit, x, type="sdeviation") # SD
+ggplot()+
+  geom_point(data=d1, aes(x=x, y=y, color=1), size=1)+
+  geom_ribbon(data=d, aes(x=x, ymax=pred+sd, ymin=pred-sd, color=2, fill=2), alpha=0.5)+
+  geom_line(data=d, aes(x=x, y=pred, color=2, alpha=0.5), linewidth=1)
+```
+
+
+```{r}
+# 主成分回帰（PCR）
+pc <- iris[,2:4] %>% prcomp(scale=T)
+pc1 <- predict(pc, iris[,2:4]) %>% as.data.frame
+pc1$Sepal.Length <- iris$Sepal.Length
+lm(Sepal.Length~., data=pc1)
+```
+
+
+```{r}
+# 部分的最小二乗回帰
+pacman::p_load(pls)
+data(yarn) # ポリエステル繊維のNIR（近赤外吸収）データ
+yarn.pcr <- pcr(density ~ NIR, 6, data = yarn, validation = "CV") # こっちはPCR
+yarn.pls <- plsr(density ~ NIR, 6, data = yarn, validation = "CV") # これがPLS
+yarn.pcr %>% summary()
+yarn.pls %>% summary()
+```
+
+
+```{r}
+# モデルにデータを与えてpredictすることで用いる
+predict(
+  yarn.pls, 
+  comps = 1:4, 
+  newdata = yarn[!yarn$train,])
+```

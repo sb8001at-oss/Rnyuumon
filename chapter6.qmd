@@ -1,0 +1,165 @@
+# ライブラリ
+
+```{r, setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+```
+
+## ライブラリとは？
+
+Rは統計のプログラミング言語であり、インストールしてすぐに統計の計算を行うことができるよう設計されています。例えば、代表的な統計処理である、平均値や標準偏差の計算、t検定や分散分析、グラフの作図等は、Rをインストールし、起動した次の瞬間から実行することができます。
+
+しかし、この素の（nativeな）Rでは、近年開発された現代的な統計手法や、優れたデザインやインタラクティブ性を持つグラフの作成、複雑なデータの効率的な整理、Webページの作成など、現代のプログラミング言語に備わる機能のすべてを用いることはできません。
+
+Rを含めた多くのプログラミング言語では、nativeな言語ではできない機能を後から追加することができます。この追加する機能のセットのことを、**ライブラリ**と呼びます（**パッケージ**と呼ぶこともあります）。
+
+Rのライブラリは（基本的には）[**CRAN**](https://cran.r-project.org/)で管理されており、審査が行われた上で登録されています。ライブラリはCRANのリポジトリ（データを格納する場所のこと）に保存されており、RのユーザーはこのCRANのリポジトリから、必要なライブラリを**インストール**して用いることになります。
+
+ライブラリは、インストールしただけでは用いることができません。ライブラリを**読み込み（ロード、load）**、メモリ上に展開しておくことでライブラリの機能を用いることができるようになります。この読み込みはRを起動するたびに行います。ライブラリの機能は関連する関数群として実装されていますので、ロードすることでライブラリに登録されている関数を用いることができるようになります。
+
+:::{.callout-tip collapse="true"}
+
+## ライブラリを毎回読み込む
+
+ライブラリをいちいち読み込むのは面倒ではありますが、必要ないライブラリを読み込んでしまうと、その分メモリを食うことになります。必要ないライブラリは読み込まないことで、メモリを節約し、プログラムの動作を軽くすることができます。他の言語にも同様の機能が備わっており、必要なライブラリのみを読み込んで用いるのが一般的です。
+
+Rでは、デフォルトのワーキングディレクトリに.Rprofileというファイルを保存しておけば、この中身のプログラムをR起動時に実行してくれるという仕組みがあります。.Rprofileにいつも使うライブラリをロードするように、スクリプトを準備しておいてもよいかもしれません。
+
+:::
+
+## ライブラリのインストール
+
+### CRANからのインストール
+
+上記のように、ライブラリはまず**インストール**しないと用いることはできません。Rでライブラリをインストールする時には、`install.packages`関数を用います。`install.packages`関数の引数は**文字列のライブラリ名**です。ですので、ライブラリ名をダブルクオーテーションで囲う必要があります。ライブラリは自動的にダウンロードされ、`.libPaths`関数で表示されるフォルダにインストールされます。
+
+```{r, filename="ライブラリのインストール", error=TRUE, eval=FALSE}
+install.packages("tidyverse") # tidyverseというライブラリをインストールする
+install.packages(c("tidyverse", "pacman")) # 複数のパッケージ名をベクターで与えることもできる
+
+install.packages(tidyverse) # エラーが出る。ライブラリ名は文字列でないとダメ
+
+.libPaths() # ライブラリのインストール先を表示
+```
+
+## ライブラリをロードする
+
+ライブラリをロードするときには、`library`関数を用います。`library`関数の引数は、**文字列ではない**ライブラリ名です。文字列のライブラリ名でも読み込みはできますが、ダブルクオーテーションで囲う必要はありません。
+
+同様に`require`関数でもライブラリを読み込むことができます。`require`関数では、ライブラリの読み込みに成功すると`TRUE`が、失敗すると`FALSE`が返り値として返ってくるという特徴があります。
+
+`library`関数を引数なしで実行すると、インストールされているライブラリの一覧が表示されます。
+
+```{r, filename="ライブラリをロードする", eval=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse) # tidyverseパッケージを読み込む
+library("pacman") # pacmanパッケージを読み込む（文字列）
+
+require(pacman) # requireによる読み込み（読み込みができたらTRUEが返ってくる）
+
+library() # ライブラリの一覧を表示する
+```
+
+### ライブラリをロードせずに使用する
+
+ライブラリに登録されている関数を用いるには、通常ロードする必要がありますが、ライブラリをロードしなくても個別の機能（関数）を用いることはできます。ライブラリをロードせずにそのライブラリの関数を用いるときには、**「ライブラリ名::関数名」**という形で関数を呼び出します。
+
+```{r, filename="ライブラリをロードせずに関数を用いる", error=TRUE}
+# install.packages("lubridate") であらかじめライブラリのインストールが必要
+
+ymd("2023-10-10") # lubridateパッケージの関数はライブラリをロードしないと使えない
+
+lubridate::ymd("2023-10-10") # パッケージ名::関数名でロードしなくても関数が使える
+```
+
+### githubからのインストール
+
+最近では、最新のライブラリはCRANだけでなく、[**GitHub**](https://github.co.jp/)というプログラム開発プラットフォームからインストールすることもあります。ただし、**GitHubのライブラリはCRANによるチェックを受けていない**ものですので、インストールする際には注意が必要です。GitHubからのライブラリのインストールには、`devtools` [@devtools_bib]パッケージの`install_github`関数を用います。引数には、ライブラリの**リポジトリ**というものを文字列で取ります。
+
+例えば、[Displayr](https://www.displayr.com/)という会社が開発している`flipPlots`というライブラリをGitHubからインストールする場合には、GitHubの対象のページのアドレス（https://github.com/Displayr/flipPlots）のうち、後ろの2つの項目（`Displayr/flipPlots`）をリポジトリとして取り扱います。GitHubのページにはリポジトリ名が記載されています。
+
+![図1：GitHubのリポジトリ名](./image/github_reponame.png)
+
+
+```{r, filename="GitHubからのライブラリのインストール", eval=FALSE}
+# flipPlotsというライブラリをGitHubからインストールする(インストールは自己責任で)
+# devtools::install_github("Displayr/flipPlots") 
+```
+
+:::{.callout-tip collapse="true"}
+
+## GitとGithub
+
+GitHubは、[Git](https://git-scm.com/)（バージョン管理システム）というものと連携して用いる、リモートリポジトリと呼ばれるものです。RstudioからGit及びGitHubを利用することもできます。
+
+:::
+
+### Bioconductorからのインストール
+
+生物系の統計手法（DNAのアライメントやシーケンサーデータの処理、系統樹の計算等）のライブラリを専門的に取り扱っているのが、[**Bioconductor**](https://www.bioconductor.org/)です。Bioconductorに設定されているライブラリはCRANやgithubのものとは取り扱いが少し異なります。
+
+Bioconductorのライブラリを利用するには、`BiocManager` [@BiocManager_bib]というライブラリをあらかじめインストールする必要があります。Bioconductorのライブラリのインストールにはこの`BiocManeger`パッケージの`install`関数を用います。`install`関数を引数なしで用いると、Bioconductorのコアライブラリをすべてインストールすることができます。特定のライブラリをインストールするときには、引数に文字列のライブラリ名を入力します。
+
+インストールしたBioconductorライブラリのロードは通常のライブラリと同様に`library`関数で行うことができます。
+
+```{r, filename="Bioconductorのライブラリをインストール", eval=FALSE}
+install.packages("BiocManager") # BioManagerパッケージのインストール
+BiocManager::install() # Bioconductorのコアライブラリをインストールする
+BiocManager::install(c("GenomicFeatures", "AnnotationDbi"))
+```
+
+## ライブラリを簡単に取り扱う：pacman
+
+ライブラリはインストールしないとロードすることができません。ですので、インストールしていないライブラリをロードしようとするととエラーが出ます。`if`文を用いると、ライブラリがインストールされていないときにはインストールしてロード、インストールされているときにはロードが実行されるようにすることもできます。
+
+```{r, filename="pacman::p_load関数によるライブラリのロード", eval=FALSE}
+# climetricsパッケージ（気候変化に関するライブラリ）は
+# インストールされていないので、エラーが出る
+library(climetrics) 
+
+require(climetrics) # インストールしないと読み込めないので、FALSEが返ってくる
+
+# require関数でFALSEが返ってきたら、パッケージをインストールする
+if(!require(climetrics)) install.packages("climetrics")
+```
+
+この`if`文と`require`関数を用いる書き方は長い間使用されてきましたが、やや複雑で覚えにくいものです。このようなライブラリの取り扱いを簡単にしてくれるのが`pacman` [@pacman_bib]パッケージです。近年では、この`pacman`パッケージの`p_load`関数を用いてパッケージをロードすることも増えてきています。`p_load`関数を用いるには、`pacman`パッケージをロードする必要があります。ライブラリのロードのために別途`pacman`だけロードするのは面倒ですので、`pacman::p_load`という形で、ライブラリをロードすることなく関数だけ用いるのが一般的です。この他に、[pak](https://pak.r-lib.org/index.html)[@pak_bib]と呼ばれるパッケージ管理のライブラリも最近では用いられています。
+
+```{r, filename="pacman::p_load関数を用いたライブラリのロード"}
+# ライブラリをロードする（インストールされてなければインストールしてからロードする）
+pacman::p_load(tidyverse, lubridate)
+```
+
+## tidyverse
+
+近年のRでは、[**Posit**](https://posit.co/)（旧Rstudio、IDEであるRstudioの開発元）およびPositのチーフサイエンティストである**Hadley Wickham**が中心となって作成された複数のライブラリのセットである、[`tidyverse`](https://www.tidyverse.org/) [@tidyverse_bib]を用いるのがほぼ常識となっています。`tidyverse`のライブラリ群を用いなくてもRを使うことはできますが、このライブラリ群を用いることでデータの整理・グラフ作成・文字列の処理等を簡単に行うことができるようになります。`tidyverse`のライブラリ群は以下のように一度にインストール・ロードすることができます。
+
+```{r, filename="tidyverseのインストールと読み込み", message=FALSE, warning=FALSE}
+pacman::p_load(tidyverse) # tideverseのインストール・ロード(install.packages・library関数でも可)
+```
+
+`tidyverse`に含まれているライブラリを以下に示します。個別の、重要なライブラリに関しては別章で説明します。
+
+```{r, echo=FALSE}
+d <- data.frame(
+  libraries <- c("dpylr", "tidyr", "ggplot2", "tibble", "stringr", "purrr", "readr", "forcats"),
+  description <- c("データフレームの編集", "データフレームの変形（縦・横持ち）", "現代的なデザインのグラフ作成", "使いやすいデータフレームの提供", "文字列の処理", "リストへの関数の適用", "データ読み込み", "因子（factor）の処理")
+)
+
+colnames(d) <- c("ライブラリ名", "ライブラリの主な機能")
+knitr::kable(d, caption="表1：tidyverseに含まれるライブラリ群")
+```
+
+## その他の便利なライブラリ
+
+`tidyverse`の他にも、データ処理を簡単にしたり、インタラクティブなグラフを作成したり、Rで文書を作成したりするためのライブラリをRは備えています。以下によく用いられるライブラリを示します。統計に関するライブラリも無数に存在します。統計に関するライブラリについては、統計手法の説明の際に紹介します。
+
+```{r, echo=FALSE}
+d <- data.frame(
+  libraries <- c("magrittr", "readxl", "googlesheet4", "lubridate", "broom", "DT", "plotly", "Rmarkdown", "shiny", "pacman"),
+  description <- c("パイプ演算子を提供", "Excelファイルの読み込み", "Googleスプレッドシートの読み込み", "日時データの処理", "統計結果の変形", "美しい表の作成", "インタラクティブなグラフの作成", "文書の作成", "Webアプリケーションの作成", "ライブラリのインストール・ロード")
+)
+
+colnames(d) <- c("ライブラリ名", "ライブラリの主な機能")
+knitr::kable(d, caption="表2：Rで用いられている便利なライブラリ")
+```

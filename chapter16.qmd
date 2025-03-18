@@ -1,0 +1,607 @@
+# tidyr・dplyr
+
+```{r, setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+```
+
+データを取得し、そのデータをそのまま統計に用いることは稀です。データ解析では、**データの整理整頓（data wrangling、data cleaning）**に多くの時間が割かれています。データの整理整頓には様々なツールが用いられます。前述の`apply`関数群もデータの要約等の整理整頓に用いることができます。
+
+ただし、[前章](./chapter15.html)で説明した通り、`apply`関数群は関数ごとに引数の順序や引数に与えるデータ型、返り値のデータ型などが異なっており、使い勝手がよいとは言えません。同様の機能を持つ[plyrパッケージ](https://cran.r-project.org/web/packages/plyr/index.html) [@plyr_bib]というライブラリもありますが、やはり使い勝手が良くなかったため、それほど用いられていません。
+
+現在では、これらの関数・ライブラリに代わり、データの整理整頓には[`tidyr`](https://tidyr.tidyverse.org/) [@tidyr_bib]・[`dplyr`](https://dplyr.tidyverse.org/) [@dplyr_bib]を用いるのがRでは事実上のデフォルトとなっています。`tidyr`・`dplyr`の特徴は以下の通りです。
+
+- **パイプ演算子**を用いることを前提として関数が設計されている
+- 第一引数にはデータフレームを取り、データフレームを加工する
+- 出力もデータフレーム（正確には`tibble`）で統一されている
+
+`tidyr`・`dplyr`を用いることで、パイプ演算子を活用し、余計な変数を作ることなく、データフレームを自由自在に取り扱うことができます。`tidyr`・`dplyr`は共に`tidyverse` [@tidyverse_bib]に含まれるライブラリですので、`tidyverse`をロードすることで使用できます。
+
+```{r, filename="dplyr・tidyrのロード"}
+pacman::p_load(tidyverse)
+```
+
+## メソッドチェーン
+
+`tidyr`・`dplyr`について説明する前に、R以外の言語で用いられている、**メソッドチェーン**について簡単に説明します。
+
+R以外の言語では、オブジェクトに対して演算を行う時、関数以外に**メソッド**を利用することがあります。メソッドは、オブジェクトの後にピリオドで繋いで、オブジェクトに何らかの演算を行うものです。例えばRubyでは文字列に対して、「`.upcase`」というメソッドが設定されています。`.upcase`は文字列を大文字にするメソッドです。例えば「`"Hello world".upcase`」とすると、`"Hello world"`の小文字が大文字に変換され、`"HELLO WORLD"`が返ってきます。
+
+メソッドは2つ以上繋げて用いることができます。例えば、`.reverse`は文字列を逆順にするメソッドですが、「`"Hello world".reverse.upcase`」とすると、`"Hello world"`を逆順にし、続いて大文字に変換することができます。このように、メソッドを繋いで使用することをメソッドチェーンと呼びます。
+
+以下に、Rubyとjavascriptでのメソッドチェーンの例を示します。
+
+```{Ruby, filename="Rubyでのメソッドチェーン", eval=FALSE}
+string = "dlrow olleH"
+string.reverse.upcase # 文字列を逆順にし、大文字に変換する
+#>  "HELLO WORLD"
+```
+
+```{javascript, filename="JavaScriptでのメソッドチェーン", eval=FALSE}
+var firstName = " Rajat "; // firstNameは " Rajat "
+console.log(firstName); 
+#> " Rajat "
+
+var modifiedName = 
+  firstName 
+    .toUpperCase() // 大文字にして
+		.trim(); // 前後のスペースを削除する
+
+console.log(modifiedName)
+#> "RAJAT"
+```
+
+メソッドチェーンのよいところは、**演算の過程を左から右へ、文章を読むように追いかけることができる**ことです。上記のメソッドチェーンと同じような演算をRで行うと、以下のようになります。
+
+```{r, filename="文字列に2つの処理を行う"}
+pacman::p_load(tidyverse) # stringrを使うためtidyverseをロードする
+firstname <- " Rajat "
+
+# 例1
+str_to_upper(str_trim(firstname)) # スペースを取り除いて大文字にする
+
+# 例2
+firstname1 <- str_trim(firstname) # スペースを取り除く
+str_to_upper(firstname1) # 大文字にする
+```
+
+Rではメソッドチェーンは使えないので、複数の演算を行うときには、上の例1のように関数の中に関数を入れる（ネストする）か、例2のように一時的に計算結果を変数に入れておき、その一時的な変数を利用して再度演算（逐次的な演算）をする必要があります。
+
+どちらも実用上大きな問題はないのですが、プログラムとしては理解しにくく、メソッドチェーンのように簡単に複数の処理を行えるものではありません。
+
+このような問題を解決する演算子が、**パイプ演算子**です。
+
+## パイプ演算子（pipe operator）
+
+パイプ演算子とは、**「演算子の前のオブジェクトを、演算子の後ろの関数の引数にする」**演算子です。Rのパイプ演算子には以下の2種類があります。
+
+- `|>`：Rのデフォルトのパイプ演算子
+- `%>%`：`magrittr`パッケージ [@magrittr_bib]に登録されているパイプ演算子
+
+パイプ演算子を用いると、以下の演算は同じ意味を持ちます。
+
+```{r, filename="パイプ演算子"}
+vec <- c(1, 2, 3)
+mean(vec) # 通常の演算
+
+vec |> mean() # パイプ演算子
+```
+
+これだけ見てもパイプ演算子を用いる利点はよくわかりませんが、パイプ演算子を用いることで、上記のメソッドチェーンのような機能をRに与えることができます。
+
+上のjavascriptでのメソッドチェーンと同じ演算をパイプ演算子を用いて行うと、以下のようになります。パイプ演算子を用いることで、「文字列からスペースを取り除き、大文字にする」という、文章と同じ順序でデータを処理することができます。このように順序が変わることで、一度にたくさんの演算を行っても、理解しやすいプログラムを書くことができます。
+
+```{r, filename="パイプ演算子を用いて文字列を処理する"}
+firstname <- " Rajat "
+firstname |> str_trim() |> str_to_upper() # スペースを取り除き、大文字にする
+```
+
+### デフォルトとmagrittrパッケージのパイプ演算子
+
+では、まず2種類のパイプ演算子について見ていきましょう。Rで先に実装されたのは[`magrittr`](https://cran.r-project.org/web/packages/magrittr/index.html)で、2014年にライブラリが公開されています。Rのデフォルトのパイプ演算子はずっと後になって、2021年にR version 4.1.0で実装されました。
+
+Rstudioでは、パイプ演算子を「**Ctrl+Shift+M**」のショートカットで入力することができます。RStudioはRのデフォルトのパイプ演算子が実装される前から存在するため、デフォルトのパイプ演算子は`magrittr`の「`%>%`」になっています。デフォルトのパイプ演算子をRのデフォルトのもの（`|>`）に変更する場合には、「Tools→Global Options」から「Code」を選択し、下の図1の赤線で囲った部分にチェックを入れます。
+
+![図2：ショートカットで入力するパイプ演算子を変更する](./image/chapter16_pipe_shortcut.png)
+
+2種類のパイプ演算子は、記号が異なるだけでなく、使い方も少し異なっています。
+
+-   関数の後の`()`の必要性（`|>`は必要、`%>%`は不要）
+-   引数の位置を指定する文字の違い（`|>`は「`_`」（アンダースコア）、`%>%`は「`.`」（ピリオド））
+-   関数の`return`に使えるかどうか（`|>`は使えず、`%>%`は使える）
+
+また、`%>%`を用いるには`magrittr`パッケージ（`tidyverse`に含まれている）をロードする必要があるのに対し、`|>`はライブラリのロードを必要としません。
+
+### 関数のカッコの有無
+
+`|>`では関数名の後にカッコをつけるのが必須で、カッコが無いとエラーが出ます。
+
+```{r, filename="デフォルトのパイプ演算子"}
+pacman::p_load(tidyverse) # magrittrはtidyverseに含まれる
+
+func1 <- function(x, y = 1){x + y} # xに1を足す関数
+
+func1(1) # 2が帰ってくる
+
+1 |> func1() # |>ではカッコが必須
+```
+
+```{r, error=TRUE, filename="デフォルトのパイプ演算子はカッコ必須"}
+1 |> func1 # カッコが無いとエラー
+```
+
+`%>%`では、カッコがあってもなくても計算をしてくれます。
+
+```{r, filename="magrittrのパイプ演算子はカッコを必須としない"}
+1 %>% func1() # %>%はカッコがあってもなくても計算できる
+
+1 %>% func1
+```
+
+`|>`では、パイプ演算子の前の値を代入する位置をアンダースコア（`_`）で指定できます。`%>%`では、ピリオド（`.`）で指定します。指定しない場合には、パイプ演算子の左辺の値が第一引数となります。
+
+```{r, filename="引数の位置の指定"}
+func1(1, 2) # 引数を2個取り、足し算する関数
+
+1 |> func1(y = 2) # 第一引数に1が入る（第2引数が2）
+
+2 |> func1(x = 1, y = _) # 引数を入る位置を「_」で指定
+
+1 %>% func1(y = 2) # 第一引数に1が入る
+
+2 %>% func1(x = 1, y = .) # 引数を入る位置を「.」で指定
+```
+
+`|>`・`%>%`のどちらでも、ピリオドやアンダースコアにインデックス・列名を付け加えることで、要素を呼び出すことができます。
+
+```{r, error=TRUE, filename="パイプ演算子での要素の呼び出し"}
+4:6 |> _[2] # インデックスで呼び出せる
+
+4:6 %>% .[2]
+
+iris |> _$Species |> head() # 列名で呼び出せる
+
+iris %>% .$Species %>% head
+```
+
+`|>`・`%>%`共に、演算子の後に改行を入れることができます。パイプ演算子を用いるときには、以下のように、パイプ演算子ごとに改行を入れる書き方をするのが一般的です。
+
+```{r, filename="パイプ演算子の後で改行"}
+"Hello world" |> # 文字列の
+  str_replace(pattern = "world", replacement = "R") |> # 一部を置き換え、
+  str_to_upper() # 大文字にする
+```
+
+## tidy data
+
+`tidyr`・`dplyr`の説明の前に、データフレームを取り扱う上で重要な概念である、**「tidy data（整然としたデータ）」**について簡単に説明します。
+
+「[tidy data](https://r4ds.hadley.nz/data-tidy.html)」は`ggplot2`や`tidyr`、`dplyr`を開発しているPOSIT SoftwareのチーフサイエンティストであるHadley Wickhamが2014年に示したデータ構造についての考え方です[@tidy_data_bib]。データフレームのような表形式のデータを対象としたもので、**「データの行は各観察結果、データの列は各列が一つの種類のデータであるように整理し、データの各要素には一つの値しか入力しない」**というルールに従い、データは準備されるべきであるとしています。`tidyr`、`dplyr`はこの概念を念頭に設計されています。
+
+![](./image/chapter16_tidy_table.png)
+
+tidyではないデータは世の中にゴロゴロ転がっています。以下の表1はファイザーの[COVID-19ワクチン（コミナティ筋注）の第3相試験に関するNew England Journal of Medicineの論文](https://www.nejm.org/doi/pdf/10.1056/NEJMoa2034577?articleTools=true)の表1の一部を加工したものです[@doi_10_1056_NEJMoa2034577]。
+
+![](./image/chapter16_nontidy.png)
+
+論文の表は人が見やすいように作成されています。ですので、この表を見て、意味が全くわからない、ということはあまりないでしょう。しかし、この表はtidyではありません。
+
+まず、1つのセル（要素）に人数とその割合（%）の2つのデータが記載されています。また、投薬された治験薬（BNT162b2とPlacebo）は処置（Treatment）という同じカテゴリのデータですので、列名として2つに分けていることで、同じカテゴリのデータを2列に表示していることになっています。
+
+上の2行は性別に関するデータ、下の3行は人種に関するデータですので、2つの別のデータが同じ表に乗っています。したがって、この表は人にとってはわかりやすくても、tidyなデータではありません。
+
+上の表をtidyなデータにしたものが、以下の表2です。人数のデータ、割合のデータは各1列に、治験薬はTreatmentとして1列に表記しています。性別と人種ではデータのカテゴリが異なりますので、表を2つに分けています。Ratioはそのまま変換すると足し合わせて200%となるため、2で割って調整しています。
+
+これが完全にtidyなデータであるかと言われるとやや難しいところもありますが、少なくとも上の表1よりはRで取り扱いしやすいデータとなっています。
+
+![](./image/chapter16_tidy.png)
+
+Rでは、グラフ作成・統計共に、元の表より下のtidyなデータの方が取り扱いやすいです。多くのデータは人が見やすいように収集・準備されており、tidyではありません。R上でデータをtidyに加工・整形するためのツールが、`tidyr`と`dplyr`です。
+
+## tidyr
+
+`tidyr`はデータを**縦持ち・横持ち**に変換するためのライブラリです。この縦持ち・横持ちというのは、以下の図のように、縦長・横長のデータのことを指します。
+
+![縦持ちと横持ちの図](./image/long_wide_data.png)
+
+人が見る分には、横持ちのデータはわかりやすいと思います。しかし、Rで取り扱う場合には、圧倒的に縦持ちのデータの方が取り扱いが簡単です。ですので、人が作ったデータをRで取り扱うために縦持ちに変換する、Rで生成したデータを人が理解しやすいように横持ちに変換する時に、`tidyr`の関数を用いることになります。以下の表3に`tidyr`の関数の一覧を示します。
+
+```{r, echo=FALSE}
+d <- readxl::read_excel("./data/chapter16_tidyr_dpylr.xlsx", sheet=1)
+knitr::kable(d, caption="表1：tidyrの関数群")
+```
+
+### pivot_longerとpivot_wider
+
+データフレームを縦持ちに変換する関数が`pivot_longer`関数、横持ちに変換する関数が`pivot_wider`関数です。共に第一引数がデータフレームで、パイプ演算子を用いて演算を行います。
+
+`pivot_longer`関数も`pivot_wider`関数も、Rでのデータ解析ではとても重要となりますが、共に変換がやや複雑で、挙動がわかりにくい関数でもあります。下の例を参考に、どのようにデータが変換されるのか、よく理解した上で用いるのがよいでしょう。
+
+### 縦持ちへの変換：pivot_longer
+
+`pivot_longer`関数はデータフレームと列番号を引数に取り、列番号で指定した列の名前を`name`という列の要素に変換し、列番号で指定した列の要素を`value`という名前の列として、1列のデータに変換します。このような変換により、データは縦長の構造を取ります。
+
+変換後の列名は引数で指定でき、列の名前に関する列名は「`names_to`」、列の要素に関する列名は「`values_to`」引数に指定します。この`pivot_longer`関数は特に統計・グラフ作成の際によく用います。
+
+`tidyr`が開発されるまでは、`reshape` [@rephape_bib]や`reshape2` [@rephape2_bib]という関数で縦持ち変換を行うのが一般的でした。また、`pivot_longer`関数は`tidyr`開発初期には`gather`という名前で、引数の順番も少し異なっていました。今でも`reshape`や`reshape2`、`gather`を用いて縦持ちへの変換を行うことはできます。
+
+```{r, filename="pivot_longerで縦持ちデータに変換"}
+head(iris)
+
+# pivot_longer 縦持ちデータへの変換（返り値はtibble）
+iris |> pivot_longer(cols = 1:4) 
+
+# 上と同じ（列名を設定）
+iris |> pivot_longer(cols = 1:4, names_to = "category", values_to = "value") 
+
+# gather（返り値はデータフレーム）
+iris |> gather(category, value, 1:4) |> head()
+
+# 上と同じ
+iris |> gather(category, value, -Species) |> head() 
+```
+
+### 横持ちへの変換：pivot_wider
+
+`pivot_wider`関数は、データを横持ちに変換する関数です。`pivot_wider`関数は列名となる列を`names_from`引数に、要素となる列を`values_from`引数に指定します。指定しなかった列はそのまま維持されます。`names_from`で指定した列の要素は各列名となり、`values_from`で指定した列の要素が`names_from`で新しく作られた列の値となります。この変換により、データは横長の、幅の広い構造を取ることになります。
+
+横持ちへの変換も`reshape`を用いて行うことができます。また、`pivot_wider`は以前は`spread`という名前であったため、この`spread`関数を用いて横持ちデータへの変換を行うこともできます。
+
+```{r, filename="pivot_widerで横持ちデータに変換"}
+# pivot_wider 横持ちデータへの変換
+us_rent_income
+
+us_rent_income |> pivot_wider(names_from = variable, values_from = c(estimate, moe)) 
+
+# spread（valueは1つしか値を取れない）
+us_rent_income |> spread(variable, estimate)
+```
+
+### tidyrのその他の関数
+
+`tidyr`には、`pivot_longer`、`pivot_wider`以外にも、データの全組み合わせを作成したり、データフレーム上の`NA`を置き換えるような関数が備わっています。`pivot_longer`/`pivot_wider`ほどには使用頻度は高くありませんが、覚えておくと役に立つ場面もあるかもしれません。
+
+```{r, filename="その他のtidyrの関数"}
+d <- data.frame(x = c(1, 2, NA, 4), y = c(NA, "b", "c", "d"))
+d
+# d |> expand.grid()と同じく、総当たりのデータフレームを作成（tibbleが返ってくる）
+d |> expand(x, y) 
+
+d |> replace_na(list(x = 1, y = "nodata")) # NAの置き換え
+
+d |> fill(x, y) # 一つ上の値でNAを埋める（1番上はNAのまま）
+```
+
+データのグループ化（`group_by`）、ネスト（`nest`）については後ほど説明します。
+
+## dplyr
+
+`tidyr`によって縦持ちに変換したデータフレームを加工し、データの抽出・演算・集計等を行うためのライブラリが、`dplyr`です。`dplyr`の関数群も、基本的にパイプ演算子を用いて使用することが想定されています。`dplyr`と同様の加工ができる関数や方法はたくさんあるのですが、**パイプ演算子で繋いだ演算の中で加工がすべて完了する**のが`dplyr`の特徴になっています。
+
+`dplyr`には非常に沢山の関数が設定されていますが、特に使用頻度が高く、重要な関数は、**`filter`、`select`、`arrange`、`mutate`、`summarise`**の5つです。
+
+以下の表に`dplyr`の関数の一覧を示します。
+
+```{r, echo=FALSE}
+d <- readxl::read_excel("./data/chapter16_tidyr_dpylr.xlsx", sheet=2)
+knitr::kable(d, caption="表2：dplyrの関数群")
+```
+
+### filter関数
+
+`filter`関数は、データフレームから条件に従い行を選択するための関数です。Rにはよく似た`subset`という関数がありますが、他の`tidyverse`の関数と共に用いる場合は`filter`関数を用いたほうが良いでしょう。
+
+`filter`関数はデータフレームを第一引数、条件式を第二引数に取る関数です。第二引数に指定した条件に合致した行のみを選択することができます。下の例では、`Species`の列の要素が`setosa`である行を選択しています。
+
+```{r, filename="filter関数で行を選択"}
+iris |> tibble() |> filter(Species == "setosa")
+```
+
+### select関数
+
+`select`関数は、データフレームから列を選択するための関数です。`select`関数もデータフレームを第一引数にとり、それ以降に列名を引数に取ります。`select`関数を用いると、引数で指定した列のみを含むデータフレームが返ってきます。また、マイナスで列名を指定すると、その列を取り除いたデータフレームが返ってきます。
+
+```{r, filename="select関数で列を選択"}
+iris |> tibble() |> select(Sepal.Length, Sepal.Width, Species)
+
+iris |> tibble() |> select(-Sepal.Length, -Sepal.Width, -Species)
+```
+
+`select`関数では、列を選択するための関数を引数に取ることもできます。
+
+```{r, echo=FALSE, filename="列選択の関数群"}
+d <- readxl::read_excel("./data/chapter16_tidyr_dpylr.xlsx", sheet=3)
+knitr::kable(d, caption="表3：selectに用いる列選択の関数")
+```
+
+### arrange関数
+
+`arrange`関数は、データフレームを指定した列に従い、昇順（小さいものが上）に並べ替える関数です。`order`関数を用いてもデータフレームの並べ替えはできますが、`arrange`関数を用いるとより簡単に並べ替えを行うことができます。
+
+`arrange`関数のヘルパーとして、`desc`関数が設定されています。`desc`関数はデータフレームを降順（大きいものが上）に並べ替える場合に用います。
+
+```{r, filename="arrange関数で並べ替え"}
+iris |> tibble() |> arrange(Sepal.Length) # 昇順に並べ替え
+
+iris |> tibble() |> arrange(desc(Sepal.Length)) # 降順に並べ替え
+```
+
+### mutate関数
+
+`mutate`関数は、データフレームに新しい列を追加する関数です。`mutate`は第一引数にデータフレーム、第二引数に「新しい列の名前 = 値」という形で、追加したい列の名前と値を指定します。値の計算には、すでにデータフレームに存在する列名を用いることができます。したがって、「列のデータを加工・演算して新しい列を作る」場合に`mutate`関数を用いることになります。
+
+データフレームの列のインデックスに値を代入しても同様の列の追加を行うことができますが、パイプ演算子の途中で代入を行うことはできません。`mutate`関数を用いれば、パイプ演算子中で列を追加し、以降の演算に用いることができます。
+
+```{r, filename="mutate関数で列を追加"}
+iris |> tibble() |> mutate(Sepal.ratio = Sepal.Length / Sepal.Width) # Sepal.ratioを列として追加
+```
+
+### summarise関数
+
+`summarise`関数（`summarize`でも可）は、データフレームの列に演算を適用し、結果をデータフレームとして返す関数です。`summarise`関数も第一引数にはデータフレームを取り、以降の引数に「計算結果の列名 = 演算」という形で、適用したい演算を記載します。下の例では、`Sepal.Length`の平均値と標準偏差を返しています。
+
+```{r, filename="summarise関数で列を要約"}
+iris |> summarise(m = mean(Sepal.Length), s=sd(Sepal.Length))
+```
+
+これだけでは`apply`関数より不便ですし、意味が無いように見えます。`summarise`関数が本領を発揮するのは、`group_by`関数により、データをグループ化した後になります。
+
+### group_by関数
+
+`group_by`関数は、文字列か因子の列に従い、データフレームの行をグループ化するための関数です。
+
+`tidyr`・`dplyr`でデータフレームを取り扱うと、データフレームは自動的に**`tibble`に変換**されます。`group_by`関数でデータフレームをグループ化すると、`tibble`に`group`というものが追加され、クラスに「`grouped_df`」というものが追加されます。`group_by`関数の機能はこれだけです。
+
+グループ化した`tibble`は、`ungroup`関数でグループ解除できます。
+
+```{r, filename="group_by関数でグループ化"}
+iris |> group_by(Species) # tibbleの左上にGroups: Species[3]と表示される
+
+iris |> group_by(Species) |> class() # クラスにgrouped_dfが追加
+
+d <- iris |> group_by(Species)
+ungroup(d) # グループの解除
+```
+
+### group_by関数とsummarise関数を同時に用いる
+
+上記のように、`summarise`関数も`group_by`関数も、どちらも単独ではいまいちよく分からない関数ですが、組み合わせて使用することで、[15章](./chapter15.html)で解説した`aggregate`関数と同じように、**カテゴリごとの集計計算**を行うことができます。
+
+まずはデータフレームを`group_by`関数でグループ化します。このグループ化したデータフレームに`summarise`関数で計算を適用すると、計算をグループごとに実行してくれます。下の例では、`Species`でグループ化した後に、`Sepal.Length`の平均を`summarise`関数で計算しています。結果として、`Species`ごとに`Sepal.Length`の平均値を計算したデータフレームが返ってきます。グループ化した場合は、グループ化に用いた列を結果のデータフレームに残してくれます。
+
+この`group_by`と`summarise`を用いると、カテゴリごとに平均値や標準偏差などを求め、その結果をデータフレームとしたものを返り値として得ることができます。
+
+`summarise`には`.by`という引数を指定することができ、この`.by`にグループ化するための列を設定することもできます。ただし、`dplyr`では、`group_by`で明示的にグループ化した後に`summarise`を用いることを推奨しているようです。
+
+`tidyr`の`pivot_longer`関数と組み合わせて用いれば、複数列の要約データを一度に計算することもできます。
+
+```{r, filename="group_byとsummariseでデータを要約する"}
+iris |> group_by(Species) |> summarise(m = mean(Sepal.Length))
+
+iris |> summarise(m = mean(Sepal.Length), .by = Species) # 上と同じ
+
+# 複数列の結果に対して、一度に平均値と標準偏差を求める
+iris |> 
+  pivot_longer(1:4) |> 
+  group_by(Species, name) |> 
+  summarise(m=mean(value), s=sd(value))
+```
+
+### rowwise関数
+
+`rowwise`関数は、`mutate`や`summarise`での演算を行方向に変更してくれる関数で、`apply`関数を`MARGIN = 1`と設定した場合とよく似た計算を行うことができる関数です。`group_by`関数の行方向版と言えるかもしれません。`rowwise`関数をデータフレームに適用すると、`tibble`に「`Rowwise:`」の印がつき、クラスに「`rowwise_df`」が追加されます。`rowwise`関数も`group_by`関数と同じく、`ungroup`関数で解除することができます。
+
+`rowwise`関数を用いることで、例えば`min`や`max`のような関数を、列方向ではなく行方向に対して適用することができます。
+
+```{r, filename="rowwise関数で行方向に演算"}
+iris |> rowwise() # Rowwiseのラベルが付く
+
+iris |> rowwise() |> ungroup() # ungroupでRowwiseが消える
+
+iris |> rowwise() |> mutate(minr = min(c(Sepal.Length, Sepal.Width))) # 横（行）方向への演算
+
+iris |> tibble() |> mutate(minr = min(c(Sepal.Length, Sepal.Width))) # 縦の最小値が出てくる
+```
+
+### データフレームの結合
+
+2つのデータフレームを横に結合する時に用いる関数が、`_join`関数です。`_join`関数には複数の種類があり、それぞれ結合の仕方が少しずつ異なります。
+
+結合する際には、基本的には以下のルールに従います。
+
+- 列名が同じ要素があれば、1つの列とする
+- 列名が異なる要素は、新しく付け加える
+- 行（レコード）に列の要素がなければ、NAで埋める
+
+結合する際に、`NA`の要素を含む行を取り除くのが`inner_join`関数、`NA`の要素を含む行を全て残すのが`full_join`関数です。
+
+`left_join`関数と`right_join`関数は引数の順番により残す行が変わる関数で、`left_join`関数はパイプ演算子の左のデータフレームの行は全て残し、付け加えたデータフレームの行のうち`NA`を含むものを取り除く関数です。`right_join`関数は逆に、付け加えたデータフレームの行をすべて残し、パイプ演算子の左のデータフレームの行のうち`NA`を含むものを削除します。
+
+この他に、2つのデータフレームの要素のすべての組み合わせにデータフレームを作成する`cross_join`、列を指定して両方のデータフレームにその列の要素があるものを残す`semi_join`、逆に片方にのみ存在する要素を残す`anti_join`、後に説明する`nest`されたデータフレームを作成する`nest_join`などがあります。
+
+```{r, filename="join関数でデータフレームを結合する"}
+band_members
+
+band_instruments
+
+band_members |> inner_join(band_instruments) # NAのデータがあると取り除かれる
+
+band_members |> full_join(band_instruments) # すべてのレコードを残す
+
+band_members |> left_join(band_instruments) # 左の要素を元に、右の要素を付け加える
+
+band_members |> right_join(band_instruments) # 右の要素を元に、左の要素を付け加える
+```
+
+### その他のdplyrの関数
+
+`dplyr`には`filter`、`select`、`arrange`、`mutate`、`summarise`以外にも、たくさんの関数が登録されています。`slice`関数は行を一部分選択する関数です。`slice`関数以外にも、「slice_」という名前を持つ複数の関数が`dplyr`には登録されています。
+
+```{r, error=TRUE, filename="slice関数"}
+iris |> slice(5:10)
+
+iris |> _[5:10, ] # 上と同じ
+
+iris %>% .[5:10, ] # 上と同じ
+
+iris |> slice_head(n = 5) # head(iris, 5)と同じ
+
+iris |> slice_tail(n = 5) # tail(iris, 5)と同じ
+
+iris |> slice_min(Sepal.Length, n = 5) # Sepal.Lengthが小さいものから5行
+
+iris |> slice_max(Sepal.Length, n = 5) # Sepal.Lengthが大きいものから5行
+ 
+iris |> slice_sample(n = 5) # ランダムに5行抽出
+```
+
+`glimpse`関数は`str`関数とよく似た機能を持ち、データフレームの構造を表示してくれます。`pull`関数は列をベクターとして返す関数です。`relocate`関数は列の順番を並べ替えて返してくれます。`rename`関数は列名を付け直す関数です。`count`関数と`tally`関数はそれぞれ要素の数と行数を返す関数です。
+
+`relocate`関数や`rename`関数はパイプ演算子に特化した関数で、用いることでパイプ演算の途中で列の順番や名前を変えることができます。
+
+```{r, filename="その他のdplyrの関数"}
+iris |> tibble() |> glimpse()
+
+iris |> head() |> tibble() |> pull(Species) # iris$Speciesと同じ
+
+# 列の並べ替え
+iris |> tibble() |> relocate(Species, Petal.Width, Petal.Length, Sepal.Width, Sepal.Length)
+
+iris |> tibble() |> rename(S = Species) # 列名SpeciesをSに変更
+
+
+iris |> count(Species) # 因子や文字列の数を数える関数
+
+iris |> tally() # 行数を数える関数
+
+iris |> group_by(Species) |> tally() # グループごとに行数を数える関数
+```
+
+## tibble
+
+[データのI/Oの章](./chapter13.html)で説明した通り、`tidyverse`で取り扱う関数は、データフレームを**tibble**というクラスに変換して返り値を返します。tibbleには以下の特徴があります。
+
+- 表示の際に、データフレームの列・行数、各列のデータ型を表示し、上から10行だけ示す
+- クラスにdata.frame、tbl_df、tblを設定する
+- `group_by`や`rowwise`により、グループ化ができる（グループ化したクラスが付け加わる）
+- ネスト（`nest`）したデータを取り扱える
+
+tibbleはデータフレームの作成と同じように、`tibble`関数を用いて作成できます。また、`as_tibble`関数を用いることで、データフレームをtibbleに変換することができます。
+
+```{r, filename="tibble"}
+pacman::p_load(tidyverse)
+d <- tibble(x = 1:3, y = c("a", "b", "c"), z = c(T, F, T)) # tibbleを作成
+d
+
+class(d) # クラスはtbl_df、tbl、data.frame
+
+as_tibble(iris) # データフレームをtibbleに変換
+```
+
+`data.frame`関数でデータフレームを作成する場合、列の要素が他の列より短い場合、recycling（繰り返して採用）されてデータフレームが作成されます。tibbleでは、列の要素が1つだけのときのみrecyclingされ、2つ以上であればエラーとなります。不自然なrecyclingは抑制される仕組みになっています。
+
+```{r, error=TRUE, filename="tibbleでのrecycling"}
+# サイズが2個以上だとrecycleしない。data.frame関数はrecyclingする
+d <- tibble(x = rep(1:3, 5), y = rep(c("a", "b", "c"), rep(5, 3)), z = c(T, F, T)) 
+```
+
+## ネスト（nest）したデータ
+
+tibbleは、**複数のデータを含むもの**を列の要素とする（`nest`、ネストする）ことができます。要は、データフレームやリスト、統計結果のオブジェクトなどを、1つのセルに登録できるということです。「ネストしてしまうとtidyじゃないのでは？」と思わなくは無いのですが、データフレームをコンパクトにして見やすくすることはできます。
+
+この、「複数のデータを含むもの」を作成する場合には、`nest`関数を用います。グループ化したtibbleに`nest`関数を適用すると、グループごとのデータフレームを1つのセルに詰め込むことができます。`nest`したデータを元に戻すときには、`unnest`関数を用います。
+
+```{r, filename="nest関数でネストする"}
+iris |> group_by(Species) # データのグループ化（tibbleに変換される）
+
+iris_nested <- iris |> as_tibble() |> group_by(Species) |> nest() # ネストしたデータ
+
+iris_nested
+
+iris_nested[1, 2] |> unnest() # ネストを解除
+```
+
+これだけでは`nest`する意味があまりわかりませんが、この`nest`と共に、リストに関数を適用するためのライブラリである、`purrr`パッケージ [@purrr_bib]を用いると、統計計算の効率を高めることができます。`purrr`パッケージの`map`関数は、リスト（データフレームはリスト）の要素に対して、関数を適用する関数です。これだけだと`apply`関数群で説明した`lapply`・`sapply`関数と同じなのですが、`map`関数はパイプ演算子の中で、`mutate`関数の引数として用いることができます。
+
+グループ化したtibbleに対して`mutate`関数内でネストした要素に対して`map`関数を用いると、**統計結果をネストしたtibble**が返ってきます。
+
+下の例では、`iris`を種別にあらかじめグループ化・ネストしておき、`iris`の`Sepal.Length`と`Sepal.Width`について線形回帰を行った結果を、`mutate`関数でtibbleに追加しています。このような計算を行うと、追加された列には`<lm>`という要素が登録されます。`<lm>`は線形回帰の結果のオブジェクトですので、グループごと、つまり種ごとに`Sepal.Length`と`Sepal.Width`の線形回帰を行った結果が記録され、保存されていることを示しています。このような形でプログラムを書くことで、3回線形回帰を繰り返すことなく、1行のパイプ演算子の演算により3回の線形回帰結果を得ることができます。
+
+```{r, filename="purrr::mapでネストしたデータを統計解析する"}
+iris |> group_by(Species) |> nest() # nestするとdataの行が追加される
+
+# tibbleは統計結果もnestできる
+(d <- 
+    iris |> 
+    group_by(Species) |> 
+    nest() |> 
+    mutate(lmcalc = map(data, ~lm(Sepal.Length ~ Sepal.Width, data = .))))
+
+d$lmcalc[1] # 線形回帰の結果
+```
+
+## dplyrの条件分岐
+
+### if_else関数
+
+`dplyr`には、データフレームを取り扱う関数の他に、条件分岐に関する機能を提供しています。
+
+`ifelse`関数はデフォルトのRで利用できる関数ですが、`dplyr`には、`if_else`関数という、ほとんど同じ機能を持つ関数が設定されています。`ifelse`と`if_else`の違いは、
+
+- 条件式に`NA`が含まれた時に`missing`引数に設定した値を返す
+- 返り値のデータ型を維持する
+- `TRUE`と`FALSE`の返り値の型が違うとエラー
+
+の3点です。通常の`ifelse`関数では型変換等のトラブルが起こりやすいため、なるべく`if_else`関数を利用したほうがよいでしょう。
+
+```{r, error=TRUE, filename="if_else関数"}
+v <- c(1, 2, NA, 3)
+ifelse(v > 2, "large", "small")
+
+if_else(v > 2, "large", "small") # ifelseと同じ
+
+if_else(v > 2, "large", "small", missing = "missing") # NAだと"missing"が返ってくる
+
+
+ifelse(TRUE, as.Date("2023-10-10"), as.Date("2023-10-11")) # 数値が返ってくる
+
+ifelse(TRUE, as.Date("2023-10-10"), FALSE) # 型が違っても数値が返ってくる
+
+if_else(TRUE, as.Date("2023-10-10"), as.Date("2023-10-11")) # 日時が返ってくる
+
+if_else(TRUE, as.Date("2023-10-10"), FALSE) # 型が違うとエラーが返ってくる
+```
+
+### case_matchとcase_when
+
+`dplyr`には、条件分岐を取り扱う文（関数）として、`case_match`と`case_when`が設定されています。どちらもチルダ（`~`）を返り値の設定に用いるもので、`else if`文や`switch`文を用いなくても、比較的簡単に3つ以上の条件分岐を行うことができます。
+
+`case_match`は第一引数にベクター、それ以降に「`評価する値 ~ 返り値`」という形で引数を取り、ベクターの要素が「評価する値」と一致する場合に、対応する返り値を返す関数です。「評価する値」はベクターで設定することもできます。
+
+```{r, filename="case_matchで条件分岐"}
+c(1, 2, 1, 2) |> 
+  case_match( # ベクターの要素が1ならone、2ならtwoを返す
+    1 ~ "one",
+    2 ~ "two"
+  )
+
+1:10 |> 
+  case_match( # 「評価する値」はベクターでも設定できる
+    c(1, 3, 5, 7, 9) ~ "odd",
+    c(2, 4, 6, 8, 10) ~ "even"
+  )
+```
+
+`case_when`は、引数に「`条件式 ~ 返り値`」を取り、条件式が`TRUE`のときに対応する返り値を返します。`case_match`、`case_when`のいずれもパイプ演算子中で他の`dplyr`の関数と共に用いることを想定して設計されています。`if_else`、`case_match`、`case_when`を用いれば、`mutate`関数内で条件分岐を行うこともできます。また、どの条件にも合わないとき（`if`文における`else`に当たるもの）の返り値を設定する場合には、`default`引数を設定します。
+
+```{r, filename="case_when関数で条件分岐"}
+iris_s <- iris |> slice_sample(n = 5) |> select(Species) |> unlist() |> as.character()
+iris_s
+
+case_when(
+  iris_s == "setosa" ~ 1, # 条件がTRUEなら、~の後ろの値を返す
+  iris_s == "versicolor" ~ 2,
+  iris_s == "virginica" ~ 3
+)
+```

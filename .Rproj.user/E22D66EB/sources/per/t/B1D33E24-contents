@@ -1,0 +1,185 @@
+# 生存時間解析
+
+```{r, setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+
+pacman::p_load(tidyverse)
+```
+
+[survival](https://cran.r-project.org/web/packages/survival/index.html)パッケージ [@survival-package, @survival-book]
+
+```{r}
+pacman::p_load(survival)
+```
+
+```{r}
+head(survival::lung)
+```
+
+```{r}
+Surv(lung$time, lung$status) # 生存時間と打ち切りデータを引数にする
+```
+
+```{r}
+result_km <- survfit(Surv(time, status) ~ 1, data = lung)
+
+result_km
+```
+
+```{r}
+plot(result_km)
+```
+
+[survminer](https://cran.r-project.org/web/packages/survminer/index.html)パッケージ [@survminer_bib]
+
+```{r}
+pacman::p_load(survminer)
+result_km |> survminer::surv_median()
+```
+
+```{r}
+llsurv <- -log(result_km$surv) |> log()
+ltime <- result_km$time |> log()
+lmfit_resultkm <- lm(llsurv ~ ltime)
+
+data.frame(llsurv, ltime) |> 
+  ggplot(aes(x = ltime, y = llsurv)) +
+  geom_point(size = 2, color = "red") +
+  geom_abline(
+    slope = lmfit_resultkm$coefficients[2], 
+    intercept =lmfit_resultkm$coefficients[1], 
+    color="blue")
+```
+
+```{r}
+# ハザード一定モデル
+set.seed(0)
+time_s <- rexp(1000, rate = 0.01) |> round() + 1
+result_km <- survfit(Surv(time_s, rep(1, 1000)) ~ 1)
+
+llsurv <- -log(result_km$surv) |> log()
+ltime <- result_km$time |> log()
+lmfit_resultkm <- lm(llsurv[-length(llsurv)] ~ ltime[-length(ltime)])
+
+hazards <- hazard_f(1:100, lmfit_resultkm$coefficients[1], lmfit_resultkm$coefficients[2])
+plot(1:100, hazards, type = "l", ylim=c(0, 0.0105))
+```
+
+```{r}
+pacman::p_load(muhaz)
+muhaz(lung$time, lung$status) |> plot()
+```
+
+
+```{r}
+# ハザード一定モデル
+set.seed(0)
+time_s <- rexp(1000, rate = 0.01) |> round() + 1
+
+hist(time_s)
+
+muhaz(time_s, rep(1, 1000)) |> plot()
+```
+
+
+```{r}
+pehaz(lung$time, lung$status, max.time = 900) |> plot()
+pehaz(time_s, rep(1, 1000), max.time = 500) |> plot() # ハザード一定モデル
+```
+
+
+```{r}
+result_km2 <- survfit(Surv(time, status) ~ sex, data = lung)
+result_km2
+```
+
+```{r}
+plot(result_km2)
+```
+
+```{r}
+# log-rankテスト
+survdiff(Surv(time, status) ~ sex, data = lung)
+```
+
+```{r}
+# Cox回帰
+result_km2_cox <- coxph(Surv(time, status) ~ sex, data = lung)
+summary(result_km2_cox)
+```
+
+```{r}
+# Cox回帰のモデル選択
+model_All_coxph <- 
+  coxph(Surv(time, status) ~ sex + age + ph.ecog + ph.karno, data = lung |> na.omit())
+
+result_step <- step(model_All_coxph)
+```
+
+```{r}
+result_step
+```
+
+[survivalAnalysis](https://cran.r-project.org/web/packages/survivalAnalysis/index.html)パッケージ  [@survivalAnalysis_bib]
+
+```{r}
+pacman::p_load(survivalAnalysis)
+
+df_step <- 
+survivalAnalysis::cox_as_data_frame(result_step)
+
+df_step
+
+df_step |> 
+  ggplot(aes(x = HR, xmax = Upper_CI, xmin = Lower_CI, y = factor.id, color = factor.id)) +
+  geom_point(size = 3) +
+  geom_linerange(linewidth = 1)
+```
+
+```{r}
+result_km |> 
+  survminer::ggsurvplot()
+```
+
+
+[ggsurvfit](https://www.danieldsjoberg.com/ggsurvfit/)パッケージ [@ggsurvfit_bib]
+
+```{r}
+pacman::p_load(ggsurvfit)
+result_km |> 
+  ggsurvfit() +
+  add_confidence_interval() 
+```
+
+```{r}
+result_km2 |> 
+  ggsurvfit() +
+  add_confidence_interval() 
+```
+
+```{r}
+result_km2 <- survfit2(Surv(time, status) ~ sex, data = lung)
+
+result_km2 |> survfit2_p() # survdiff（log-rank）のp値を表示
+
+result_km2 |> 
+  ggsurvfit() +
+  add_confidence_interval() +
+  add_pvalue() +
+  add_risktable()
+```
+
+
+
+```{r}
+hazard_f <- function(time, intercept, slope){
+  slope * exp(intercept) * time ^ (slope - 1)
+}
+
+hazards <- hazard_f(1:100, lmfit_resultkm$coefficients[1], lmfit_resultkm$coefficients[2])
+plot(1:100, hazards, type = "l", ylim=c(0, 0.0025))
+```
+
+

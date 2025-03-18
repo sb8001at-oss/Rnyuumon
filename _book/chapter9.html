@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>R入門 - 9&nbsp; 文字列</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./chapter10.html" rel="next">
+<link href="./chapter8.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter9.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">文字列</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R入門</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">はじめに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Rプログラミングの基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Rのインストール</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Rを使ってみよう</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">オブジェクトと変数・定数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">条件判断（Control structures）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">繰り返し文（Looping）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">エラー処理（error handler）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">数値</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter9.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">文字列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">因子（factor）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">ベクター</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">リスト・データフレーム・行列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">データの読み込みと書き出し（I/O）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">データセット</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Rでのデータの取り扱い</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">apply関数群</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">tidyr・dplyr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">日時データの取り扱い</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">オブジェクト指向とクラス</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter19.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">コーディング規約</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Rでのグラフ作成</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">グラフ作成：高レベルグラフィック関数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">グラフ作成：低レベルグラフィック関数とグラフィックパラメータ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter22.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">ggplot2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter23.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">plotly</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">統計解析の基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter24.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">確率分布と乱数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter25.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">検定</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter26.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">相関と回帰</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter27.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">分類</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter28.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">教師なし学習</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter29.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">時系列分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter30.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">生存時間解析</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">アドバンスな手法</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter31.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">purrr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter32.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">地理空間情報</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter33.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">ネットワーク解析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter34.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">R markdown・Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter35.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">おわりに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">参考文献</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#文字列を取り扱う関数" id="toc-文字列を取り扱う関数" class="nav-link active" data-scroll-target="#文字列を取り扱う関数"><span class="header-section-number">9.1</span> 文字列を取り扱う関数</a>
+  <ul>
+  <li><a href="#文字列の結合pasteとpaste0関数" id="toc-文字列の結合pasteとpaste0関数" class="nav-link" data-scroll-target="#文字列の結合pasteとpaste0関数"><span class="header-section-number">9.1.1</span> 文字列の結合：pasteとpaste0関数</a></li>
+  <li><a href="#sprintf関数" id="toc-sprintf関数" class="nav-link" data-scroll-target="#sprintf関数"><span class="header-section-number">9.1.2</span> sprintf関数</a></li>
+  <li><a href="#文字数をカウントするnchar" id="toc-文字数をカウントするnchar" class="nav-link" data-scroll-target="#文字数をカウントするnchar"><span class="header-section-number">9.1.3</span> 文字数をカウントする：nchar</a></li>
+  <li><a href="#文字列から一部抜き出すsubstr" id="toc-文字列から一部抜き出すsubstr" class="nav-link" data-scroll-target="#文字列から一部抜き出すsubstr"><span class="header-section-number">9.1.4</span> 文字列から一部抜き出す：substr</a></li>
+  <li><a href="#文字列を分割するstrsplit" id="toc-文字列を分割するstrsplit" class="nav-link" data-scroll-target="#文字列を分割するstrsplit"><span class="header-section-number">9.1.5</span> 文字列を分割する：strsplit</a></li>
+  <li><a href="#パターンにあう位置を調べるgrepとmatch" id="toc-パターンにあう位置を調べるgrepとmatch" class="nav-link" data-scroll-target="#パターンにあう位置を調べるgrepとmatch"><span class="header-section-number">9.1.6</span> パターンにあう位置を調べる：grepとmatch</a></li>
+  <li><a href="#文字列の置き換えsubとgsub" id="toc-文字列の置き換えsubとgsub" class="nav-link" data-scroll-target="#文字列の置き換えsubとgsub"><span class="header-section-number">9.1.7</span> 文字列の置き換え：subとgsub</a></li>
+  <li><a href="#小文字大文字に変換tolower-toupper" id="toc-小文字大文字に変換tolower-toupper" class="nav-link" data-scroll-target="#小文字大文字に変換tolower-toupper"><span class="header-section-number">9.1.8</span> 小文字、大文字に変換：tolower toupper</a></li>
+  </ul></li>
+  <li><a href="#stringr" id="toc-stringr" class="nav-link" data-scroll-target="#stringr"><span class="header-section-number">9.2</span> stringr</a>
+  <ul>
+  <li><a href="#パターンの検出str_detect" id="toc-パターンの検出str_detect" class="nav-link" data-scroll-target="#パターンの検出str_detect"><span class="header-section-number">9.2.1</span> パターンの検出：str_detect</a></li>
+  <li><a href="#パターンの検出str_which" id="toc-パターンの検出str_which" class="nav-link" data-scroll-target="#パターンの検出str_which"><span class="header-section-number">9.2.2</span> パターンの検出：str_which</a></li>
+  <li><a href="#パターンの位置を調べるstr_locate" id="toc-パターンの位置を調べるstr_locate" class="nav-link" data-scroll-target="#パターンの位置を調べるstr_locate"><span class="header-section-number">9.2.3</span> パターンの位置を調べる：str_locate</a></li>
+  <li><a href="#パターンが含まれる数を数えるstr_count" id="toc-パターンが含まれる数を数えるstr_count" class="nav-link" data-scroll-target="#パターンが含まれる数を数えるstr_count"><span class="header-section-number">9.2.4</span> パターンが含まれる数を数える：str_count</a></li>
+  <li><a href="#文字数を数えるstr_length" id="toc-文字数を数えるstr_length" class="nav-link" data-scroll-target="#文字数を数えるstr_length"><span class="header-section-number">9.2.5</span> 文字数を数える：str_length</a></li>
+  <li><a href="#文字列を整えるstr_trimstr_trunc" id="toc-文字列を整えるstr_trimstr_trunc" class="nav-link" data-scroll-target="#文字列を整えるstr_trimstr_trunc"><span class="header-section-number">9.2.6</span> 文字列を整える：str_trim、str_trunc</a></li>
+  <li><a href="#文字を切り出すstr_subとstr_subset" id="toc-文字を切り出すstr_subとstr_subset" class="nav-link" data-scroll-target="#文字を切り出すstr_subとstr_subset"><span class="header-section-number">9.2.7</span> 文字を切り出す：str_subとstr_subset</a></li>
+  <li><a href="#文字列を抽出するstr_extract" id="toc-文字列を抽出するstr_extract" class="nav-link" data-scroll-target="#文字列を抽出するstr_extract"><span class="header-section-number">9.2.8</span> 文字列を抽出する：str_extract</a></li>
+  <li><a href="#パターンマッチングstr_match" id="toc-パターンマッチングstr_match" class="nav-link" data-scroll-target="#パターンマッチングstr_match"><span class="header-section-number">9.2.9</span> パターンマッチング：str_match</a></li>
+  <li><a href="#文字列をつなぐstr_cとstr_flatten" id="toc-文字列をつなぐstr_cとstr_flatten" class="nav-link" data-scroll-target="#文字列をつなぐstr_cとstr_flatten"><span class="header-section-number">9.2.10</span> 文字列をつなぐ：str_cとstr_flatten</a></li>
+  <li><a href="#文字列を分割するstr_splitstr_split_fixedstr_split_i" id="toc-文字列を分割するstr_splitstr_split_fixedstr_split_i" class="nav-link" data-scroll-target="#文字列を分割するstr_splitstr_split_fixedstr_split_i"><span class="header-section-number">9.2.11</span> 文字列を分割する：str_split、str_split_fixed、str_split_i</a></li>
+  <li><a href="#文字列を置き換えるstr_replacestr_replace_all" id="toc-文字列を置き換えるstr_replacestr_replace_all" class="nav-link" data-scroll-target="#文字列を置き換えるstr_replacestr_replace_all"><span class="header-section-number">9.2.12</span> 文字列を置き換える：str_replace、str_replace_all</a></li>
+  <li><a href="#大文字小文字の操作str_to_lowerstr_to_upper" id="toc-大文字小文字の操作str_to_lowerstr_to_upper" class="nav-link" data-scroll-target="#大文字小文字の操作str_to_lowerstr_to_upper"><span class="header-section-number">9.2.13</span> 大文字・小文字の操作：str_to_lower、str_to_upper</a></li>
+  </ul></li>
+  <li><a href="#正規表現" id="toc-正規表現" class="nav-link" data-scroll-target="#正規表現"><span class="header-section-number">9.3</span> 正規表現</a>
+  <ul>
+  <li><a href="#関数での正規表現の利用" id="toc-関数での正規表現の利用" class="nav-link" data-scroll-target="#関数での正規表現の利用"><span class="header-section-number">9.3.1</span> 関数での正規表現の利用</a></li>
+  <li><a href="#rexパッケージ" id="toc-rexパッケージ" class="nav-link" data-scroll-target="#rexパッケージ"><span class="header-section-number">9.3.2</span> rexパッケージ</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter9.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">文字列</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">文字列</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>多くのプログラミング言語では、<strong>文字列（character）</strong>の取り扱いが非常に重要視されます。住所や氏名は文字列ですし、電話番号も通常は数値というより文字列のような取り扱いを受けます。フォルダの位置（ディレクトリ）やウェブページ（html）なども文字列で構築されています。Rは統計の言語ですので、文字列には数値ほど色々な関数は実装されていませんが、Rにも基本的な文字列処理の関数は備わっています。現代では文字列を統計で取り扱う機会も増えていますので（<a href="https://ja.wikipedia.org/wiki/Word2vec">Word2Vec</a>や生成AIなど）、文字列の取り扱いは統計においても重要性を増してきています。</p>
+<section id="文字列を取り扱う関数" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="文字列を取り扱う関数"><span class="header-section-number">9.1</span> 文字列を取り扱う関数</h2>
+<section id="文字列の結合pasteとpaste0関数" class="level3" data-number="9.1.1">
+<h3 data-number="9.1.1" class="anchored" data-anchor-id="文字列の結合pasteとpaste0関数"><span class="header-section-number">9.1.1</span> 文字列の結合：pasteとpaste0関数</h3>
+<p>Rには文字列を取り扱う関数が一通り備わっています。まずは<code>paste</code>関数について紹介します。<code>paste</code>関数は引数の文字列をつないで、1つの文字列にする関数です。各引数の文字列をつなぐ部分には、<code>sep</code>引数で指定した文字列が入ります。<code>paste</code>関数では、<code>sep</code>のデフォルトがスペースとなっているので、<code>sep</code>を設定しなければスペースが自動的に文字列の間に入ります。<code>paste0</code>関数では<code>sep</code>が空、つまり文字列のつなぎには何も入力されない形となります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字列をつなぐ</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"A dog"</span>, <span class="st">"is running"</span>) <span class="co"># 引数同士をスペースを挟んでつなぐ</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"A"</span>, <span class="st">"dog"</span>, <span class="st">"is"</span>, <span class="st">"running"</span>) <span class="co"># 引数は2つ以上でもよい</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"A dog"</span>, <span class="st">"is running"</span>, <span class="at">sep=</span><span class="st">"/"</span>) <span class="co"># sepに指定した文字が引数の間に入る</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog/is running"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">"A dog"</span>, <span class="st">"is running"</span>) <span class="co"># sepに何も追加したくない場合</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dogis running"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="sprintf関数" class="level3" data-number="9.1.2">
+<h3 data-number="9.1.2" class="anchored" data-anchor-id="sprintf関数"><span class="header-section-number">9.1.2</span> sprintf関数</h3>
+<p>他のプログラミング言語と同様に、<code>sprintf</code>関数と呼ばれる、文字列に変数を挿入する関数をRでも用いることができます。<code>sprintf</code>関数は第一引数に文字列を取り、この文字列中の<code>"%s"</code>や<code>"%f"</code>の部分に第二引数で指定した変数を挿入する関数です。<code>"%s"</code>には文字列、<code>"%f"</code>には数値が入ります。第二引数以降の変数は挿入する順番に指定する必要があります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>sprintf関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"%f"</span>, pi)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "3.141593"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># .2fで小数点2桁まで表示</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"%sは%.2fです。"</span>, <span class="st">"円周率"</span>, pi)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "円周率は3.14です。"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 文字列の部分に数値、数値の部分に文字列が来るのでエラー</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"%sは%.2fです。"</span>, pi, <span class="st">"円周率"</span>) </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Error in sprintf("%sは%.2fです。", pi, "円周率"): invalid format '%.2f'; use format %s for character objects</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字数をカウントするnchar" class="level3" data-number="9.1.3">
+<h3 data-number="9.1.3" class="anchored" data-anchor-id="文字数をカウントするnchar"><span class="header-section-number">9.1.3</span> 文字数をカウントする：nchar</h3>
+<p>文字数をカウントする関数が<code>nchar</code>関数です。<code>nchar</code>関数は引数に取った文字列の文字数を返します。<code>type</code>引数を指定すると、文字列のバイト数や文字幅を求める事もできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字数を数える</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(<span class="st">"Hello R"</span>) <span class="co"># スペースを含めて7文字</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 7</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"A dog is running"</span>, <span class="st">"A cat is running"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(x) <span class="co"># ベクターの要素それぞれについて計算</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 16 16</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(<span class="st">"日本語"</span>) <span class="co"># 日本語でも文字列はカウントされる</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(<span class="st">"日本語"</span>, <span class="at">type=</span><span class="st">"bytes"</span>) <span class="co"># バイト数は3倍</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 9</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(<span class="st">"日本語"</span>, <span class="at">type=</span><span class="st">"width"</span>) <span class="co"># 等角文字は半角文字の2倍幅</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字列から一部抜き出すsubstr" class="level3" data-number="9.1.4">
+<h3 data-number="9.1.4" class="anchored" data-anchor-id="文字列から一部抜き出すsubstr"><span class="header-section-number">9.1.4</span> 文字列から一部抜き出す：substr</h3>
+<p>文字列の一部を抜き出す関数が<code>substr</code>関数です。文字列のうち、<code>start</code>で指定した位置の文字から<code>stop</code>で指定した位置の文字までを返します。位置の指定はインデックスと同じで、1文字目が1、2文字目が2、という形を取ります。<code>substr</code>関数によく似た<code>substring</code>関数もほぼ同じ機能を持ちますが、引数名が<code>first</code>と<code>last</code>になっており、<code>last</code>のデフォルト値がとても大きく(1000000L) なっています。ですので、<code>first</code>だけを引数として指定し、それ以降の文字列を返す形で利用するものになっています。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字列の抜き出し</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">substr</span>(x, <span class="at">start =</span> <span class="dv">3</span>, <span class="at">stop =</span> <span class="dv">5</span>) <span class="co"># xの3文字目から5文字目</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "dog" "cat"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">substring</span>(x, <span class="dv">3</span>) <span class="co"># 3文字目以降を取得</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "dog is running" "cat is running"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字列を分割するstrsplit" class="level3" data-number="9.1.5">
+<h3 data-number="9.1.5" class="anchored" data-anchor-id="文字列を分割するstrsplit"><span class="header-section-number">9.1.5</span> 文字列を分割する：strsplit</h3>
+<p><code>strsplit</code>関数は、文字列をある特定の文字で分割し、リストの要素として返す関数です。文字は1文字でも、複数の文字でも問題ありません。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字列の分割</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">strsplit</span>(x, <span class="st">" "</span>) <span class="co"># スペースで分離。リストが返ってくる</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A"       "dog"     "is"      "running"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A"       "cat"     "is"      "running"</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">strsplit</span>(x, <span class="st">"i"</span>) <span class="co"># i で分離</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog " "s runn" "ng"    </span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A cat " "s runn" "ng"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="パターンにあう位置を調べるgrepとmatch" class="level3" data-number="9.1.6">
+<h3 data-number="9.1.6" class="anchored" data-anchor-id="パターンにあう位置を調べるgrepとmatch"><span class="header-section-number">9.1.6</span> パターンにあう位置を調べる：grepとmatch</h3>
+<p>文字列が一定のパターン（例えば英単語など）を含むかどうかを調べるのが、<code>grep</code>関数と<code>match</code>関数です。</p>
+<p><code>grep</code>関数は文字列のベクターに適用し、パターンを含むインデックスを返します。ベクターの要素がパターンを含まない場合には、長さ0のベクター（<code>integer(0)</code>）が返ってきます。</p>
+<p><code>match</code>関数は、パターンが全部一致する要素のインデックスを返す関数です。一部が一致する場合にはインデックスは返ってきません。どの要素にも全部一致するものがなければ、<code>NA</code>が返ってきます。パターンが部分一致する場合にインデックスを返すのが<code>pmatch</code>関数です。<code>pmatch</code>関数では、パターンが部分一致する要素が複数あると<code>NA</code>が返ってきます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パターンに一致するものを調べる</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="at">pattern =</span> <span class="st">"dog"</span>, x)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="at">pattern =</span> <span class="st">"cat"</span>, x)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="at">pattern =</span> <span class="st">"is"</span>, x)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 2</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="at">pattern =</span> <span class="st">"rat"</span>, x)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="do">## integer(0)</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="fu">match</span>(<span class="st">"median"</span>,   <span class="fu">c</span>(<span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"mode"</span>)) <span class="co"># 全文マッチするベクターの位置を返す</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="fu">match</span>(<span class="st">"med"</span>,   <span class="fu">c</span>(<span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"mode"</span>)) <span class="co"># 一部マッチではNA</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] NA</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="fu">pmatch</span>(<span class="st">"mo"</span>,   <span class="fu">c</span>(<span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"mode"</span>)) <span class="co"># 一部マッチするベクターの位置を返す</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="fu">pmatch</span>(<span class="st">"me"</span>,   <span class="fu">c</span>(<span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"mode"</span>)) <span class="co"># マッチするものが2つ以上あるとNA</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字列の置き換えsubとgsub" class="level3" data-number="9.1.7">
+<h3 data-number="9.1.7" class="anchored" data-anchor-id="文字列の置き換えsubとgsub"><span class="header-section-number">9.1.7</span> 文字列の置き換え：subとgsub</h3>
+<p>文字列の中で、パターンが一致したものを別のパターンに置き換えるのが、<code>sub</code>関数、<code>gsub</code>関数です。<code>sub</code>関数、<code>gsub</code>関数は引数として、パターン（<code>pattern</code>）、置き換える文字列（<code>replacement</code>）、文字列のベクターを取ります。<code>sub</code>関数が文字列のうち、前からサーチして一番始めのパターンのみを置き換えるのに対して、<code>gsub</code>関数はパターンが一致した部分をすべて置き換えるものとなっています。<code>gsub</code>関数と同じような働きを持つ<code>chartr</code>関数というものもあります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字列の置き換え</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sub</span>(<span class="at">pattern =</span> <span class="st">"n"</span>, <span class="at">replacement =</span> <span class="st">"N"</span>, x) <span class="co"># 始めの要素だけ置き換え</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is ruNning" "A cat is ruNning"</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="at">pattern =</span> <span class="st">"n"</span>, <span class="at">replacement =</span> <span class="st">"N"</span>, x) <span class="co"># すべて置き換え</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is ruNNiNg" "A cat is ruNNiNg"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">chartr</span>(<span class="st">"n"</span>, <span class="st">"N"</span>, x) <span class="co"># 上のgsub関数と同じ結果</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is ruNNiNg" "A cat is ruNNiNg"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="小文字大文字に変換tolower-toupper" class="level3" data-number="9.1.8">
+<h3 data-number="9.1.8" class="anchored" data-anchor-id="小文字大文字に変換tolower-toupper"><span class="header-section-number">9.1.8</span> 小文字、大文字に変換：tolower toupper</h3>
+<p>文字列を小文字に置き換えるのが<code>tolower</code>関数、大文字に置き換えるのが<code>toupper</code>関数です。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>小文字・大文字の変換</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tolower</span>(<span class="st">"A CAT IS RUNNING"</span>) <span class="co"># 小文字に変換</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "a cat is running"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">toupper</span>(x) <span class="co"># 大文字に変換</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A DOG IS RUNNING" "A CAT IS RUNNING"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>表1：Rの文字列に関する関数</caption>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 61%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">関数名</th>
+<th style="text-align: left;">文字列xに適用される演算</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">paste(x, y, sep = z)</td>
+<td style="text-align: left;">xとyをzを挟んで結合</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">paste0(x, y)</td>
+<td style="text-align: left;">xとyを何も挟まず結合</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nchar(x)</td>
+<td style="text-align: left;">xの文字数をカウントする</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">substr(x, start, stop)</td>
+<td style="text-align: left;">xから文字を切り出す</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">substring(x, y)</td>
+<td style="text-align: left;">xのy文字目以降を切り出す</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">strsplit(x, pattern)</td>
+<td style="text-align: left;">xをpatternで分割する</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">grep(pattern, x)</td>
+<td style="text-align: left;">patternを含むxのインデックスを返す</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">match(pattern, x)</td>
+<td style="text-align: left;">pattern全文を含む要素のインデックスを返す</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pmatch(pattern, x)</td>
+<td style="text-align: left;">patternを一部含む要素のインデックスを返す</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sub(x, pattern, replacement)</td>
+<td style="text-align: left;">始めに一致するpatternをreplacementに置き換える</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">gsub(x, pattern, replacement)</td>
+<td style="text-align: left;">patternをreplacementにすべて置き換える</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">chartr(old, new, x)</td>
+<td style="text-align: left;">oldをnewにすべて置き換える</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tolower(x)</td>
+<td style="text-align: left;">大文字を小文字に変換</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">toupper(x)</td>
+<td style="text-align: left;">小文字を大文字に変換</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="stringr" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="stringr"><span class="header-section-number">9.2</span> stringr</h2>
+<p>Rのデフォルトの文字列関連の関数だけでも色々な文字列の操作ができますが、名前に統一感がなく、返ってくるものがリストだったりするものもあり、なかなか覚えにくく、使いにくいところがあります。</p>
+<p>この使いにくさを解消し、統一感のある関数名を付けたライブラリが<a href="https://stringr.tidyverse.org/"><code>stringr</code></a><span class="citation" data-cites="stringr_bib">(<a href="references.html#ref-stringr_bib" role="doc-biblioref">Wickham 2023</a>)</span>です。<code>stringr</code>には文字列を操作する関数が40程度登録されており、ほぼいずれの関数も「<code>str_</code>」から名前が始まります。Rstudioでは、「<code>str_</code>」と入力すると入力候補と入力候補の説明文が示されるため、比較的簡単に関数を検索し、利用することができます。文字列を取り扱う場合にRのデフォルトの関数群を用いても特に問題はありませんが、<code>stringr</code>の関数群を用いると返り値の利便性や速度に利点があります。</p>
+<p><code>stringr</code>は<code>tidyverse</code>に含まれるライブラリです。<code>stringr</code>のインストール、ロードには<code>pacman::p_load</code>関数を用います。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>stringrのインストールおよびロード</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse) <span class="co"># あらかじめpacmanのインストールが必要</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>以下に、<code>stringr</code>の代表的な関数の使い方を示します。</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>表2：stringrの関数</caption>
+<colgroup>
+<col style="width: 46%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">関数名</th>
+<th style="text-align: left;">文字列xに適用される演算</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">str_detect(x, pattern)</td>
+<td style="text-align: left;">patternがあるとTRUEを返す</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_which(x, pattern)</td>
+<td style="text-align: left;">patternを含むインデックスを返す</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_locate(x, pattern)</td>
+<td style="text-align: left;">patternの位置を調べる</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_locate_all(x, pattern)</td>
+<td style="text-align: left;">patternの位置をすべて調べる</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_count(x, pattern)</td>
+<td style="text-align: left;">patternが含まれる数を返す</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_length(x)</td>
+<td style="text-align: left;">文字数を返す</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_trim(x)</td>
+<td style="text-align: left;">xの前後のスペースを取り除く</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_trunc(x, width)</td>
+<td style="text-align: left;">xをwidthの長さに省略する</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_sub(x, start, end)</td>
+<td style="text-align: left;">startからendの位置までの文字列を取り出す</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_subset(x, pattern)</td>
+<td style="text-align: left;">patternを含む要素を取り出す</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_extract(x, pattern)</td>
+<td style="text-align: left;">patternを取り出す</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_extract_all(x, pattern)</td>
+<td style="text-align: left;">patternをすべて取り出す</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_match(x, pattern)</td>
+<td style="text-align: left;">patternを行列で取り出す</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_match_all(x, pattern)</td>
+<td style="text-align: left;">patternを行列ですべて取り出す</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_c(x, y, sep)</td>
+<td style="text-align: left;">xとyをsepを挟んで結合する</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_flatten(x, y, collapse)</td>
+<td style="text-align: left;">xとyをcollapseを挟んで結合する</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_split(x, pattern)</td>
+<td style="text-align: left;">xをpatternで分割する</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_split_fixed(x, pattern, n)</td>
+<td style="text-align: left;">xをpatternでn個に分割する</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_split_i(x, pattern, i)</td>
+<td style="text-align: left;">xをpatternで分割し、i番目の要素を返す</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_replace(x, pattern, replacement)</td>
+<td style="text-align: left;">始めに一致するpatternをreplacementに置き換える</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_replace_all(x, pattern, replacement)</td>
+<td style="text-align: left;">patternをreplacementにすべて置き換える</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">str_to_lower(x)</td>
+<td style="text-align: left;">大文字を小文字に変換する</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">str_to_upper(x)</td>
+<td style="text-align: left;">小文字を大文字に変換する</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+stringrとラッパー（wrapper）
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>stringr</code>は<a href="https://stringi.gagolewski.com/"><code>stringi</code></a><span class="citation" data-cites="stringi_bib">(<a href="references.html#ref-stringi_bib" role="doc-biblioref">Gagolewski 2022</a>)</span>というライブラリのラッパー（wrapper）です。ラッパーとは既存の関数の名前や引数の順序を統一したり、使用頻度の高い関数を選んだり、部分的に機能を追加することで利用しやすくしたものです。<code>stringi</code>はC言語由来の文字列処理を取り込んでいるため、Rのデフォルトの関数よりも計算が速いという特徴があります。</p>
+</div>
+</div>
+</div>
+<section id="パターンの検出str_detect" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="パターンの検出str_detect"><span class="header-section-number">9.2.1</span> パターンの検出：str_detect</h3>
+<p><code>str_detect</code>関数はパターンを検索し、論理型を返す関数です。パターンが含まれる要素には<code>TRUE</code>、含まれない要素には<code>FALSE</code>が返ってきます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パターンの検出</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(x, <span class="st">"dog"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1]  TRUE FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="パターンの検出str_which" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="パターンの検出str_which"><span class="header-section-number">9.2.2</span> パターンの検出：str_which</h3>
+<p><code>str_which</code>関数は上記の<code>grep</code>関数と同じく、パターンに一致するベクターのインデックスを返す関数です。複数の要素が一致する場合には、一致するすべてのインデックスを返します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パターンを検出する：str_which関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_which</span>(x, <span class="st">"dog"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str_which</span>(x, <span class="st">"cat"</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">str_which</span>(x, <span class="st">"is"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="パターンの位置を調べるstr_locate" class="level3" data-number="9.2.3">
+<h3 data-number="9.2.3" class="anchored" data-anchor-id="パターンの位置を調べるstr_locate"><span class="header-section-number">9.2.3</span> パターンの位置を調べる：str_locate</h3>
+<p>もっと厳密に、そのパターンが存在する文字列上の位置を特定するための関数が<code>str_locate</code>関数です。<code>str_locate</code>関数は行列、もしくは行列のリストを返します。行列のstart列がパターンの開始位置、endが終了位置を示します。パターンが複数含まれる場合には、行列のリストが返ってきます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パターンの位置を返す：str_locate関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate</span>(x, <span class="st">"dog"</span>) <span class="co"># 1つ目の要素のみにパターンが含まれる時</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="do">##      start end</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]     3   5</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]    NA  NA</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate_all</span>(x, <span class="st">"n"</span>) <span class="co"># 2つの要素にパターンが複数含まれる時</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="do">##      start end</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]    12  12</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]    13  13</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,]    15  15</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="do">##      start end</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]    12  12</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]    13  13</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,]    15  15</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="パターンが含まれる数を数えるstr_count" class="level3" data-number="9.2.4">
+<h3 data-number="9.2.4" class="anchored" data-anchor-id="パターンが含まれる数を数えるstr_count"><span class="header-section-number">9.2.4</span> パターンが含まれる数を数える：str_count</h3>
+<p>パターンが何回含まれるかを数える関数が<code>str_count</code>関数です。パターンが含まれていればそのパターンの個数を、含まれていなければ0を返します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パターンの個数を数える：str_count関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_count</span>(x, <span class="st">"dog"</span>) <span class="co"># 1つ目の要素に1つだけパターンが含まれる場合</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 0</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str_count</span>(x, <span class="st">"n"</span>) <span class="co"># 2つの要素に3つずつパターンが含まれる場合</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字数を数えるstr_length" class="level3" data-number="9.2.5">
+<h3 data-number="9.2.5" class="anchored" data-anchor-id="文字数を数えるstr_length"><span class="header-section-number">9.2.5</span> 文字数を数える：str_length</h3>
+<p><code>str_length</code>関数は<code>nchar</code>関数と同じく、文字数を返す関数です。どちらを使っても結果は同じですが、他の言語では文字数を数える関数に「<code>length</code>」関数を当てることが多いため、<code>str_length</code>の方が直感的に使い方がわかりやすい名前になっています。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字数をカウントする：str_length関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_length</span>(x)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 16 16</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(x)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 16 16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字列を整えるstr_trimstr_trunc" class="level3" data-number="9.2.6">
+<h3 data-number="9.2.6" class="anchored" data-anchor-id="文字列を整えるstr_trimstr_trunc"><span class="header-section-number">9.2.6</span> 文字列を整える：str_trim、str_trunc</h3>
+<p><code>str_trim</code>関数は文字列の前と後ろのスペースを取り除く関数です。文字列の演算では、スペースが前後に残って邪魔になることがよくあります。このような場合には<code>str_trim</code>でスペースを取り除き、形を整えることができます。</p>
+<p><code>str_trunc</code>関数は、文字列の前や後ろを切り取り、「…」で置き換えて省略してくれる関数です。長い文字列をラベル等に用いるときに使用します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字列を整形する：str_trim, str_trunc関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_trim</span>(<span class="st">" x "</span>) <span class="co"># スペースを取り除く</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "x"</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str_trunc</span>(x, <span class="dv">12</span>) <span class="co"># 後ろを切り取って...で省略</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is ..." "A cat is ..."</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">str_trunc</span>(x, <span class="dv">12</span>, <span class="at">side=</span><span class="st">"left"</span>) <span class="co"># 前を切り取って...で省略</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "...s running" "...s running"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字を切り出すstr_subとstr_subset" class="level3" data-number="9.2.7">
+<h3 data-number="9.2.7" class="anchored" data-anchor-id="文字を切り出すstr_subとstr_subset"><span class="header-section-number">9.2.7</span> 文字を切り出す：str_subとstr_subset</h3>
+<p><code>str_sub</code>関数は<code>substr</code>関数とほぼ同じ働きを持つ関数で、<code>start</code>の位置から<code>end</code>の位置までの文字列を抜き出します。</p>
+<p><code>str_subset</code>関数はやや異なり、パターンを含むベクターの要素のみを取り出す関数です。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パターンを含む文字列を取り出す：str_sub、str_subset関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_sub</span>(x, <span class="at">start=</span><span class="dv">3</span>, <span class="at">end=</span><span class="dv">5</span>) <span class="co"># 位置を特定して抽出</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "dog" "cat"</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(x, <span class="st">"cat"</span>) <span class="co"># 文字を含む要素を抽出</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A cat is running"</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(x, <span class="st">"is"</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(x, <span class="st">"rat"</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">## character(0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字列を抽出するstr_extract" class="level3" data-number="9.2.8">
+<h3 data-number="9.2.8" class="anchored" data-anchor-id="文字列を抽出するstr_extract"><span class="header-section-number">9.2.8</span> 文字列を抽出する：str_extract</h3>
+<p><code>str_extract</code>関数は、パターンがマッチしたときに、そのパターンを返す関数です。パターンに一致する部分がない場合には、<code>NA</code>を返します。<code>str_extract</code>関数はマッチした始めのパターンのみを返し、<code>str_extract_all</code>関数はマッチしたパターンをすべて返します。<code>str_extract_all</code>関数の返り値はリストになります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パターンを抽出する：str_extract関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_extract</span>(x, <span class="st">"is"</span>) <span class="co"># 特定の文字列を抽出</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "is" "is"</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str_extract</span>(x, <span class="st">"dog"</span>) <span class="co"># 抽出できないとNAを返す</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "dog" NA</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">str_extract_all</span>(x, <span class="st">"n"</span>) <span class="co"># パターン一致するものをすべて抽出</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "n" "n" "n"</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "n" "n" "n"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="パターンマッチングstr_match" class="level3" data-number="9.2.9">
+<h3 data-number="9.2.9" class="anchored" data-anchor-id="パターンマッチングstr_match"><span class="header-section-number">9.2.9</span> パターンマッチング：str_match</h3>
+<p><code>str_match</code>関数も一致したパターンを返す関数です。<code>str_match</code>関数は始めにマッチしたパターンを行列で返し、<code>str_match_all</code>関数はマッチしたすべてのパターンを行列のリストで返します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>マッチしたパターンを返す：str_match関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_match</span>(x, <span class="st">"dog"</span>) <span class="co"># パターンがあれば、そのパターンを返す</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1] </span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] "dog"</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] NA</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">str_match_all</span>(x, <span class="st">"n"</span>) <span class="co"># パターンがあれば、それをすべて返す</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1]</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] "n" </span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] "n" </span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] "n" </span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1]</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] "n" </span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] "n" </span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] "n"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字列をつなぐstr_cとstr_flatten" class="level3" data-number="9.2.10">
+<h3 data-number="9.2.10" class="anchored" data-anchor-id="文字列をつなぐstr_cとstr_flatten"><span class="header-section-number">9.2.10</span> 文字列をつなぐ：str_cとstr_flatten</h3>
+<p><code>str_c</code>関数と<code>str_flatten</code>関数はいずれも文字列をつなぐ関数です。ともに<code>paste</code>関数と<code>paste0</code>関数とほぼ同じですが、<code>NA</code>の取り扱いが少しだけ異なります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字列をつなぐ：str_c関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]) <span class="co"># paste0と同じ</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is runningA cat is running"</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str_c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>], <span class="at">sep=</span><span class="st">" "</span>) <span class="co"># pasteと同じ</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running A cat is running"</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">str_flatten</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"dog"</span>, <span class="st">"is"</span>, <span class="st">"running"</span>)) <span class="co"># paste0と同じ</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "adogisrunning"</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="fu">str_flatten</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"dog"</span>, <span class="st">"is"</span>, <span class="st">"running"</span>), <span class="at">collapse=</span> <span class="st">" "</span>) <span class="co"># pasteと同じ</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "a dog is running"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字列を分割するstr_splitstr_split_fixedstr_split_i" class="level3" data-number="9.2.11">
+<h3 data-number="9.2.11" class="anchored" data-anchor-id="文字列を分割するstr_splitstr_split_fixedstr_split_i"><span class="header-section-number">9.2.11</span> 文字列を分割する：str_split、str_split_fixed、str_split_i</h3>
+<p><code>str_split</code>関数はパターンで文字列を分割する関数で、<code>strsplit</code>関数とほぼ同じ機能を持ちます。</p>
+<p><code>str_split_fixed</code>関数はパターンで分割するときに、分割後の要素の数を指定することができる関数です。</p>
+<p><code>str_split_i</code>関数は、パターンで分割した後に、数値で指定したインデックスの要素のみを取り出す関数です。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字列を分割する：str_split関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_split</span>(x, <span class="st">" "</span>) <span class="co"># パターンで分割</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A"       "dog"     "is"      "running"</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A"       "cat"     "is"      "running"</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">str_split_fixed</span>(x, <span class="st">" "</span>, <span class="dv">2</span>) <span class="co"># 始めのパターンで2つに分割</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1] [,2]            </span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] "A"  "dog is running"</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] "A"  "cat is running"</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="fu">str_split_i</span>(x, <span class="st">" "</span>, <span class="dv">2</span>) <span class="co"># パターンで分割し、2つ目の要素を取り出す</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "dog" "cat"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="文字列を置き換えるstr_replacestr_replace_all" class="level3" data-number="9.2.12">
+<h3 data-number="9.2.12" class="anchored" data-anchor-id="文字列を置き換えるstr_replacestr_replace_all"><span class="header-section-number">9.2.12</span> 文字列を置き換える：str_replace、str_replace_all</h3>
+<p><code>str_replace</code>関数は文字列のパターンを別の文字列に置き換える関数です。<code>sub</code>関数とほぼ同等の機能を持ちます。<code>str_replace_all</code>関数は<code>gsub</code>関数とほぼ同じで、<code>str_replace</code>関数が始めにマッチしたパターンのみを置き換えるのに対し、<code>str_replace_all</code>関数はマッチしたパターンをすべて置き換えます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>文字列を置き換える：str_replace関数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_replace</span>(x, <span class="st">"running"</span>, <span class="st">"walking"</span>) <span class="co"># 前のパターンを後ろの文字列に置き換える</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is walking" "A cat is walking"</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str_replace_all</span>(x, <span class="st">" "</span>, <span class="st">","</span>) <span class="co"># 前のパターンをすべて、後ろの文字列に置き換える</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A,dog,is,running" "A,cat,is,running"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="大文字小文字の操作str_to_lowerstr_to_upper" class="level3" data-number="9.2.13">
+<h3 data-number="9.2.13" class="anchored" data-anchor-id="大文字小文字の操作str_to_lowerstr_to_upper"><span class="header-section-number">9.2.13</span> 大文字・小文字の操作：str_to_lower、str_to_upper</h3>
+<p><code>str_to_lower</code>関数は大文字を小文字に、<code>str_to_upper</code>関数は小文字を大文字に変換する関数です。どちらも<code>tolower</code>関数、<code>toupper</code>関数とほぼ同等の機能を持ちます。<code>str_to_lower</code>、<code>str_to_upper</code>関数は言語による小文字・大文字の違いによる変換にも対応していますが、日本人がこの機能を使うことはほぼ無いでしょう。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>大文字・小文字の操作：str_to_lower、str_to_upper</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_to_lower</span>(<span class="st">"A DOG IS RUNNING"</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "a dog is running"</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A dog is running" "A cat is running"</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str_to_upper</span>(x)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "A DOG IS RUNNING" "A CAT IS RUNNING"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="正規表現" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="正規表現"><span class="header-section-number">9.3</span> 正規表現</h2>
+<p>文字列中に含まれる特定の文字や単語を取り出す・検出する際に、1つの文字や単語だけでなく、条件に適合した複数の文字列を対象としたい場合もあります。また、文字列の特定の並び（<code>"would"</code>, <code>"like"</code>, <code>"to"</code>が順番に並んでいるなど）のみを特定し、検出したいといった場合もあるでしょう。このような場合に文字列のマッチングに用いられるものが、<strong>正規表現</strong>です。正規表現では、文字列と記号を合わせて複雑な文字列のパターンを特定し、マッチングを行うことができます。</p>
+<p>Rで用いることができる正規表現には、Rを含めて汎用されている規格（POSIX 1003.2 standard）のものと、Perl言語で用いられる正規表現の主に2つがあります。ここでは前者のみについて簡単に説明します。</p>
+<p>Rで用いることができる正規表現の例を以下の表3に示します。</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>表3：Rの正規表現の一覧</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">正規表現</th>
+<th style="text-align: left;">意味</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">\a</td>
+<td style="text-align: left;">ビープ音（BEL）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e</td>
+<td style="text-align: left;">エスケープ（ESC）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\f</td>
+<td style="text-align: left;">フォームフィード（FF，書式送り）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\n</td>
+<td style="text-align: left;">ラインフィード（LF，改行）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\r</td>
+<td style="text-align: left;">キャリッジリターン（CR，改行）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\t</td>
+<td style="text-align: left;">タブ（TAB）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\w</td>
+<td style="text-align: left;">すべての英数字（アルファベット＋数値）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\W</td>
+<td style="text-align: left;">すべての英数字を含まない</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\&lt;，\&gt;</td>
+<td style="text-align: left;">文書の端の空欄（&lt;が始め，&gt;が終わり）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\b</td>
+<td style="text-align: left;">文書の端の空欄</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\B</td>
+<td style="text-align: left;">文書中の空欄（端を除く）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[abc]</td>
+<td style="text-align: left;">a，b，cを含む</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[^abc]</td>
+<td style="text-align: left;">a，b，cを含まない</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[0-9]</td>
+<td style="text-align: left;">0～9の数字</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[:digit:]⁠</td>
+<td style="text-align: left;">数字</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[:xdigit:]⁠</td>
+<td style="text-align: left;">16進数の数字（1<sub>9，A</sub>F）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[A-Z]</td>
+<td style="text-align: left;">A～Zの大文字アルファベット</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[a-z]</td>
+<td style="text-align: left;">a～zの小文字アルファベット</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[:alnum:]⁠</td>
+<td style="text-align: left;">すべての英数字（アルファベット＋数値）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">⁠[:alpha:]</td>
+<td style="text-align: left;">すべてのアルファベット</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">⁠[:lower:]⁠</td>
+<td style="text-align: left;">すべての小文字アルファベット</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">⁠[:upper:]⁠</td>
+<td style="text-align: left;">すべての大文字アルファベット</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[:blank:]⁠</td>
+<td style="text-align: left;">スペースもしくはタブ</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[:space:]</td>
+<td style="text-align: left;">スペース文字（FFやCRを含む）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[:graph:]⁠</td>
+<td style="text-align: left;">表示可能な文字（図形文字）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">⁠[:print:]⁠</td>
+<td style="text-align: left;">表示可能な文字（スペース含む）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[:punct:]⁠</td>
+<td style="text-align: left;">句読点など</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[:cntrl:]⁠</td>
+<td style="text-align: left;">制御文字</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">?a</td>
+<td style="text-align: left;">aが0～1回マッチする</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">*a</td>
+<td style="text-align: left;">aが0回以上マッチする</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">+a</td>
+<td style="text-align: left;">aが1回以上マッチする</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">{5}a</td>
+<td style="text-align: left;">aaaaaがマッチする</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">{5,}a</td>
+<td style="text-align: left;">aaaaaよりaが続く文字列がマッチする</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">{2,4}a</td>
+<td style="text-align: left;">aa，aaa，aaaaのいずれかがマッチする</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">(abc|def)</td>
+<td style="text-align: left;">abcかdefのどちらかにマッチする</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[あ-ん]</td>
+<td style="text-align: left;">すべてのひらがな</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[ア-ン]</td>
+<td style="text-align: left;">すべてのカタカナ</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="関数での正規表現の利用" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="関数での正規表現の利用"><span class="header-section-number">9.3.1</span> 関数での正規表現の利用</h3>
+<p>正規表現はこの章で述べたR言語の文字列を対象とする関数や、<code>stringr</code>の関数でパターンとして指定し、用いることができます。以下は<code>grep</code>関数の<code>pattern</code>引数に正規表現を指定した場合の例です。正規表現を用いることで、例えばhtmlのアドレスやe-mailのアドレスとして正しい記載であるかなど、複雑な文字列のパターンでも検出し、評価することができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>正規表現による文字列の検出</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"rat"</span>, <span class="st">"egg"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">"[abc]"</span>, v, <span class="at">value=</span><span class="cn">TRUE</span>) <span class="co"># abcのいずれかを含む</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "cat" "rat"</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">"[^crat]"</span>, v, <span class="at">value=</span><span class="cn">TRUE</span>) <span class="co"># crat以外を含む</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "dog" "pig" "egg"</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">"^c"</span>, v, <span class="at">value=</span><span class="cn">TRUE</span>) <span class="co"># cから始まる</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "cat"</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">"[(o|g)][(p|g)]"</span>, v, <span class="at">value=</span><span class="cn">TRUE</span>) <span class="co"># op、og、gp、ggのいずれかを含む</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "dog" "egg"</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">"g{2}"</span>, v, <span class="at">value=</span><span class="cn">TRUE</span>) <span class="co"># ggを含む</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "egg"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="rexパッケージ" class="level3" data-number="9.3.2">
+<h3 data-number="9.3.2" class="anchored" data-anchor-id="rexパッケージ"><span class="header-section-number">9.3.2</span> rexパッケージ</h3>
+<p>とは言っても、正規表現をまるまる覚えるのは大変ですし、いちいち検索して正規表現でパターンを表現するのも場合によってはかなり大変です。<a href="https://rex.r-lib.org/index.html"><code>rex</code></a>パッケージ<span class="citation" data-cites="rex_bib">(<a href="references.html#ref-rex_bib" role="doc-biblioref">Ushey, Hester, and Krzyzanowski 2021</a>)</span>はこのような複雑な正規表現を人にも理解しやすい形で作成できるようにするためのパッケージです。よく用いられる正規表現は<code>shortcuts</code>というオブジェクト（リストと同じように取り扱えます）に含まれていますし、<code>rex</code>関数を用いてより複雑な正規表現を作成することもできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>rexパッケージ</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(rex)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>shortcuts<span class="sc">$</span>letter <span class="co"># アルファベット</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [:alpha:]</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>shortcuts<span class="sc">$</span>non_puncts <span class="co"># 句読点以外</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [^[:punct:]]+</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rex</span>(<span class="fu">none_of</span>(<span class="st">"a"</span>, <span class="st">"e"</span>, <span class="st">"i"</span>, <span class="st">"o"</span>, <span class="st">"u"</span>)) <span class="co"># aeiou以外</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [^aeiou]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-stringi_bib" class="csl-entry" role="listitem">
+Gagolewski, Marek. 2022. <span>“<span class="nocase">stringi</span>: <span>F</span>ast and Portable Character String Processing in <span>R</span>.”</span> <em>Journal of Statistical Software</em> 103 (2): 1–59. <a href="https://doi.org/10.18637/jss.v103.i02">https://doi.org/10.18637/jss.v103.i02</a>.
+</div>
+<div id="ref-rex_bib" class="csl-entry" role="listitem">
+Ushey, Kevin, Jim Hester, and Robert Krzyzanowski. 2021. <em>Rex: Friendly Regular Expressions</em>. <a href="https://CRAN.R-project.org/package=rex">https://CRAN.R-project.org/package=rex</a>.
+</div>
+<div id="ref-stringr_bib" class="csl-entry" role="listitem">
+Wickham, Hadley. 2023. <em>Stringr: Simple, Consistent Wrappers for Common String Operations</em>. <a href="https://CRAN.R-project.org/package=stringr">https://CRAN.R-project.org/package=stringr</a>.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./chapter8.html" class="pagination-link" aria-label="数値">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">数値</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./chapter10.html" class="pagination-link" aria-label="因子（factor）">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">因子（factor）</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb25" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 文字列</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::opts_chunk$set(</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="in">  collapse = TRUE</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>多くのプログラミング言語では、**文字列（character）**の取り扱いが非常に重要視されます。住所や氏名は文字列ですし、電話番号も通常は数値というより文字列のような取り扱いを受けます。フォルダの位置（ディレクトリ）やウェブページ（html）なども文字列で構築されています。Rは統計の言語ですので、文字列には数値ほど色々な関数は実装されていませんが、Rにも基本的な文字列処理の関数は備わっています。現代では文字列を統計で取り扱う機会も増えていますので（<span class="co">[</span><span class="ot">Word2Vec</span><span class="co">](https://ja.wikipedia.org/wiki/Word2vec)</span>や生成AIなど）、文字列の取り扱いは統計においても重要性を増してきています。</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 文字列を取り扱う関数</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字列の結合：pasteとpaste0関数</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>Rには文字列を取り扱う関数が一通り備わっています。まずは<span class="in">`paste`</span>関数について紹介します。<span class="in">`paste`</span>関数は引数の文字列をつないで、1つの文字列にする関数です。各引数の文字列をつなぐ部分には、<span class="in">`sep`</span>引数で指定した文字列が入ります。<span class="in">`paste`</span>関数では、<span class="in">`sep`</span>のデフォルトがスペースとなっているので、<span class="in">`sep`</span>を設定しなければスペースが自動的に文字列の間に入ります。<span class="in">`paste0`</span>関数では<span class="in">`sep`</span>が空、つまり文字列のつなぎには何も入力されない形となります。</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字列をつなぐ"}</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="in">paste("A dog", "is running") # 引数同士をスペースを挟んでつなぐ</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="in">paste("A", "dog", "is", "running") # 引数は2つ以上でもよい</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="in">paste("A dog", "is running", sep="/") # sepに指定した文字が引数の間に入る</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="in">paste0("A dog", "is running") # sepに何も追加したくない場合</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="fu">### sprintf関数</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>他のプログラミング言語と同様に、<span class="in">`sprintf`</span>関数と呼ばれる、文字列に変数を挿入する関数をRでも用いることができます。<span class="in">`sprintf`</span>関数は第一引数に文字列を取り、この文字列中の<span class="in">`"%s"`</span>や<span class="in">`"%f"`</span>の部分に第二引数で指定した変数を挿入する関数です。<span class="in">`"%s"`</span>には文字列、<span class="in">`"%f"`</span>には数値が入ります。第二引数以降の変数は挿入する順番に指定する必要があります。</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="sprintf関数"}</span></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a><span class="in">sprintf("%f", pi)</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a><span class="in"># .2fで小数点2桁まで表示</span></span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a><span class="in">sprintf("%sは%.2fです。", "円周率", pi)</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a><span class="in"># 文字列の部分に数値、数値の部分に文字列が来るのでエラー</span></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a><span class="in">sprintf("%sは%.2fです。", pi, "円周率") </span></span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字数をカウントする：nchar</span></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>文字数をカウントする関数が<span class="in">`nchar`</span>関数です。<span class="in">`nchar`</span>関数は引数に取った文字列の文字数を返します。<span class="in">`type`</span>引数を指定すると、文字列のバイト数や文字幅を求める事もできます。</span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字数を数える"}</span></span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a><span class="in">nchar("Hello R") # スペースを含めて7文字</span></span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- c("A dog is running", "A cat is running")</span></span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a><span class="in">nchar(x) # ベクターの要素それぞれについて計算</span></span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a><span class="in">nchar("日本語") # 日本語でも文字列はカウントされる</span></span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a><span class="in">nchar("日本語", type="bytes") # バイト数は3倍</span></span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a><span class="in">nchar("日本語", type="width") # 等角文字は半角文字の2倍幅</span></span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字列から一部抜き出す：substr</span></span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a>文字列の一部を抜き出す関数が<span class="in">`substr`</span>関数です。文字列のうち、<span class="in">`start`</span>で指定した位置の文字から<span class="in">`stop`</span>で指定した位置の文字までを返します。位置の指定はインデックスと同じで、1文字目が1、2文字目が2、という形を取ります。<span class="in">`substr`</span>関数によく似た<span class="in">`substring`</span>関数もほぼ同じ機能を持ちますが、引数名が<span class="in">`first`</span>と<span class="in">`last`</span>になっており、<span class="in">`last`</span>のデフォルト値がとても大きく(1000000L) なっています。ですので、<span class="in">`first`</span>だけを引数として指定し、それ以降の文字列を返す形で利用するものになっています。</span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字列の抜き出し"}</span></span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a><span class="in">substr(x, start = 3, stop = 5) # xの3文字目から5文字目</span></span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a><span class="in">substring(x, 3) # 3文字目以降を取得</span></span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字列を分割する：strsplit</span></span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a><span class="in">`strsplit`</span>関数は、文字列をある特定の文字で分割し、リストの要素として返す関数です。文字は1文字でも、複数の文字でも問題ありません。</span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字列の分割"}</span></span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a><span class="in">strsplit(x, " ") # スペースで分離。リストが返ってくる</span></span>
+<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a><span class="in">strsplit(x, "i") # i で分離</span></span>
+<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a><span class="fu">### パターンにあう位置を調べる：grepとmatch</span></span>
+<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-84"><a href="#cb25-84" aria-hidden="true" tabindex="-1"></a>文字列が一定のパターン（例えば英単語など）を含むかどうかを調べるのが、<span class="in">`grep`</span>関数と<span class="in">`match`</span>関数です。</span>
+<span id="cb25-85"><a href="#cb25-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-86"><a href="#cb25-86" aria-hidden="true" tabindex="-1"></a><span class="in">`grep`</span>関数は文字列のベクターに適用し、パターンを含むインデックスを返します。ベクターの要素がパターンを含まない場合には、長さ0のベクター（<span class="in">`integer(0)`</span>）が返ってきます。</span>
+<span id="cb25-87"><a href="#cb25-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-88"><a href="#cb25-88" aria-hidden="true" tabindex="-1"></a><span class="in">`match`</span>関数は、パターンが全部一致する要素のインデックスを返す関数です。一部が一致する場合にはインデックスは返ってきません。どの要素にも全部一致するものがなければ、<span class="in">`NA`</span>が返ってきます。パターンが部分一致する場合にインデックスを返すのが<span class="in">`pmatch`</span>関数です。<span class="in">`pmatch`</span>関数では、パターンが部分一致する要素が複数あると<span class="in">`NA`</span>が返ってきます。</span>
+<span id="cb25-89"><a href="#cb25-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-90"><a href="#cb25-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パターンに一致するものを調べる"}</span></span>
+<span id="cb25-91"><a href="#cb25-91" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-92"><a href="#cb25-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-93"><a href="#cb25-93" aria-hidden="true" tabindex="-1"></a><span class="in">grep(pattern = "dog", x)</span></span>
+<span id="cb25-94"><a href="#cb25-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-95"><a href="#cb25-95" aria-hidden="true" tabindex="-1"></a><span class="in">grep(pattern = "cat", x)</span></span>
+<span id="cb25-96"><a href="#cb25-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-97"><a href="#cb25-97" aria-hidden="true" tabindex="-1"></a><span class="in">grep(pattern = "is", x)</span></span>
+<span id="cb25-98"><a href="#cb25-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-99"><a href="#cb25-99" aria-hidden="true" tabindex="-1"></a><span class="in">grep(pattern = "rat", x)</span></span>
+<span id="cb25-100"><a href="#cb25-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-101"><a href="#cb25-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-102"><a href="#cb25-102" aria-hidden="true" tabindex="-1"></a><span class="in">match("median",   c("mean", "median", "mode")) # 全文マッチするベクターの位置を返す</span></span>
+<span id="cb25-103"><a href="#cb25-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-104"><a href="#cb25-104" aria-hidden="true" tabindex="-1"></a><span class="in">match("med",   c("mean", "median", "mode")) # 一部マッチではNA</span></span>
+<span id="cb25-105"><a href="#cb25-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-106"><a href="#cb25-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-107"><a href="#cb25-107" aria-hidden="true" tabindex="-1"></a><span class="in">pmatch("mo",   c("mean", "median", "mode")) # 一部マッチするベクターの位置を返す</span></span>
+<span id="cb25-108"><a href="#cb25-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-109"><a href="#cb25-109" aria-hidden="true" tabindex="-1"></a><span class="in">pmatch("me",   c("mean", "median", "mode")) # マッチするものが2つ以上あるとNA</span></span>
+<span id="cb25-110"><a href="#cb25-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-111"><a href="#cb25-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-112"><a href="#cb25-112" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字列の置き換え：subとgsub</span></span>
+<span id="cb25-113"><a href="#cb25-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-114"><a href="#cb25-114" aria-hidden="true" tabindex="-1"></a>文字列の中で、パターンが一致したものを別のパターンに置き換えるのが、<span class="in">`sub`</span>関数、<span class="in">`gsub`</span>関数です。<span class="in">`sub`</span>関数、<span class="in">`gsub`</span>関数は引数として、パターン（<span class="in">`pattern`</span>）、置き換える文字列（<span class="in">`replacement`</span>）、文字列のベクターを取ります。<span class="in">`sub`</span>関数が文字列のうち、前からサーチして一番始めのパターンのみを置き換えるのに対して、<span class="in">`gsub`</span>関数はパターンが一致した部分をすべて置き換えるものとなっています。<span class="in">`gsub`</span>関数と同じような働きを持つ<span class="in">`chartr`</span>関数というものもあります。</span>
+<span id="cb25-115"><a href="#cb25-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-116"><a href="#cb25-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字列の置き換え"}</span></span>
+<span id="cb25-117"><a href="#cb25-117" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-118"><a href="#cb25-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-119"><a href="#cb25-119" aria-hidden="true" tabindex="-1"></a><span class="in">sub(pattern = "n", replacement = "N", x) # 始めの要素だけ置き換え</span></span>
+<span id="cb25-120"><a href="#cb25-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-121"><a href="#cb25-121" aria-hidden="true" tabindex="-1"></a><span class="in">gsub(pattern = "n", replacement = "N", x) # すべて置き換え</span></span>
+<span id="cb25-122"><a href="#cb25-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-123"><a href="#cb25-123" aria-hidden="true" tabindex="-1"></a><span class="in">chartr("n", "N", x) # 上のgsub関数と同じ結果</span></span>
+<span id="cb25-124"><a href="#cb25-124" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-125"><a href="#cb25-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-126"><a href="#cb25-126" aria-hidden="true" tabindex="-1"></a><span class="fu">### 小文字、大文字に変換：tolower toupper</span></span>
+<span id="cb25-127"><a href="#cb25-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-128"><a href="#cb25-128" aria-hidden="true" tabindex="-1"></a>文字列を小文字に置き換えるのが<span class="in">`tolower`</span>関数、大文字に置き換えるのが<span class="in">`toupper`</span>関数です。</span>
+<span id="cb25-129"><a href="#cb25-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-130"><a href="#cb25-130" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="小文字・大文字の変換"}</span></span>
+<span id="cb25-131"><a href="#cb25-131" aria-hidden="true" tabindex="-1"></a><span class="in">tolower("A CAT IS RUNNING") # 小文字に変換</span></span>
+<span id="cb25-132"><a href="#cb25-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-133"><a href="#cb25-133" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-134"><a href="#cb25-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-135"><a href="#cb25-135" aria-hidden="true" tabindex="-1"></a><span class="in">toupper(x) # 大文字に変換</span></span>
+<span id="cb25-136"><a href="#cb25-136" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-137"><a href="#cb25-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-138"><a href="#cb25-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb25-139"><a href="#cb25-139" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
+<span id="cb25-140"><a href="#cb25-140" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("paste(x, y, sep = z)", "paste0(x, y)", "nchar(x)", "substr(x, start, stop)", "substring(x, y)", "strsplit(x, pattern)", "grep(pattern, x)", "match(pattern, x)", "pmatch(pattern, x)", "sub(x, pattern, replacement)", "gsub(x, pattern, replacement)", "chartr(old, new, x)", "tolower(x)", "toupper(x)"),</span></span>
+<span id="cb25-141"><a href="#cb25-141" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("xとyをzを挟んで結合", "xとyを何も挟まず結合", "xの文字数をカウントする", "xから文字を切り出す", "xのy文字目以降を切り出す", "xをpatternで分割する", "patternを含むxのインデックスを返す", "pattern全文を含む要素のインデックスを返す", "patternを一部含む要素のインデックスを返す", "始めに一致するpatternをreplacementに置き換える", "patternをreplacementにすべて置き換える", "oldをnewにすべて置き換える", "大文字を小文字に変換", "小文字を大文字に変換")</span></span>
+<span id="cb25-142"><a href="#cb25-142" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb25-143"><a href="#cb25-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-144"><a href="#cb25-144" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "文字列xに適用される演算")</span></span>
+<span id="cb25-145"><a href="#cb25-145" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表1：Rの文字列に関する関数")</span></span>
+<span id="cb25-146"><a href="#cb25-146" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-147"><a href="#cb25-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-148"><a href="#cb25-148" aria-hidden="true" tabindex="-1"></a><span class="fu">## stringr</span></span>
+<span id="cb25-149"><a href="#cb25-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-150"><a href="#cb25-150" aria-hidden="true" tabindex="-1"></a>Rのデフォルトの文字列関連の関数だけでも色々な文字列の操作ができますが、名前に統一感がなく、返ってくるものがリストだったりするものもあり、なかなか覚えにくく、使いにくいところがあります。</span>
+<span id="cb25-151"><a href="#cb25-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-152"><a href="#cb25-152" aria-hidden="true" tabindex="-1"></a>この使いにくさを解消し、統一感のある関数名を付けたライブラリが<span class="co">[</span><span class="ot">`stringr`</span><span class="co">](https://stringr.tidyverse.org/)[</span><span class="ot">@stringr_bib</span><span class="co">]</span>です。<span class="in">`stringr`</span>には文字列を操作する関数が40程度登録されており、ほぼいずれの関数も「<span class="in">`str_`</span>」から名前が始まります。Rstudioでは、「<span class="in">`str_`</span>」と入力すると入力候補と入力候補の説明文が示されるため、比較的簡単に関数を検索し、利用することができます。文字列を取り扱う場合にRのデフォルトの関数群を用いても特に問題はありませんが、<span class="in">`stringr`</span>の関数群を用いると返り値の利便性や速度に利点があります。</span>
+<span id="cb25-153"><a href="#cb25-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-154"><a href="#cb25-154" aria-hidden="true" tabindex="-1"></a><span class="in">`stringr`</span>は<span class="in">`tidyverse`</span>に含まれるライブラリです。<span class="in">`stringr`</span>のインストール、ロードには<span class="in">`pacman::p_load`</span>関数を用います。</span>
+<span id="cb25-155"><a href="#cb25-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-156"><a href="#cb25-156" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="stringrのインストールおよびロード"}</span></span>
+<span id="cb25-157"><a href="#cb25-157" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(tidyverse) # あらかじめpacmanのインストールが必要</span></span>
+<span id="cb25-158"><a href="#cb25-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-159"><a href="#cb25-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-160"><a href="#cb25-160" aria-hidden="true" tabindex="-1"></a>以下に、<span class="in">`stringr`</span>の代表的な関数の使い方を示します。</span>
+<span id="cb25-161"><a href="#cb25-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-162"><a href="#cb25-162" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb25-163"><a href="#cb25-163" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
+<span id="cb25-164"><a href="#cb25-164" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("str_detect(x, pattern)", "str_which(x, pattern)", "str_locate(x, pattern)", "str_locate_all(x, pattern)", "str_count(x, pattern)", "str_length(x)", "str_trim(x)", "str_trunc(x, width)", "str_sub(x, start, end)", "str_subset(x, pattern)", "str_extract(x, pattern)", "str_extract_all(x, pattern)", "str_match(x, pattern)", "str_match_all(x, pattern)", "str_c(x, y, sep)", "str_flatten(x, y, collapse)", "str_split(x, pattern)", "str_split_fixed(x, pattern, n)", "str_split_i(x, pattern, i)", "str_replace(x, pattern, replacement)", "str_replace_all(x, pattern, replacement)", "str_to_lower(x)", "str_to_upper(x)"),</span></span>
+<span id="cb25-165"><a href="#cb25-165" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("patternがあるとTRUEを返す", "patternを含むインデックスを返す", "patternの位置を調べる", "patternの位置をすべて調べる", "patternが含まれる数を返す", "文字数を返す", "xの前後のスペースを取り除く", "xをwidthの長さに省略する", "startからendの位置までの文字列を取り出す", "patternを含む要素を取り出す", "patternを取り出す",  "patternをすべて取り出す", "patternを行列で取り出す", "patternを行列ですべて取り出す", "xとyをsepを挟んで結合する", "xとyをcollapseを挟んで結合する", "xをpatternで分割する", "xをpatternでn個に分割する", "xをpatternで分割し、i番目の要素を返す", "始めに一致するpatternをreplacementに置き換える", "patternをreplacementにすべて置き換える", "大文字を小文字に変換する", "小文字を大文字に変換する")</span></span>
+<span id="cb25-166"><a href="#cb25-166" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb25-167"><a href="#cb25-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-168"><a href="#cb25-168" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "文字列xに適用される演算")</span></span>
+<span id="cb25-169"><a href="#cb25-169" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表2：stringrの関数")</span></span>
+<span id="cb25-170"><a href="#cb25-170" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-171"><a href="#cb25-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-172"><a href="#cb25-172" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb25-173"><a href="#cb25-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-174"><a href="#cb25-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## stringrとラッパー（wrapper）</span></span>
+<span id="cb25-175"><a href="#cb25-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-176"><a href="#cb25-176" aria-hidden="true" tabindex="-1"></a><span class="in">`stringr`</span>は<span class="co">[</span><span class="ot">`stringi`</span><span class="co">](https://stringi.gagolewski.com/)[</span><span class="ot">@stringi_bib</span><span class="co">]</span>というライブラリのラッパー（wrapper）です。ラッパーとは既存の関数の名前や引数の順序を統一したり、使用頻度の高い関数を選んだり、部分的に機能を追加することで利用しやすくしたものです。<span class="in">`stringi`</span>はC言語由来の文字列処理を取り込んでいるため、Rのデフォルトの関数よりも計算が速いという特徴があります。</span>
+<span id="cb25-177"><a href="#cb25-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-178"><a href="#cb25-178" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-179"><a href="#cb25-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-180"><a href="#cb25-180" aria-hidden="true" tabindex="-1"></a><span class="fu">### パターンの検出：str_detect</span></span>
+<span id="cb25-181"><a href="#cb25-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-182"><a href="#cb25-182" aria-hidden="true" tabindex="-1"></a><span class="in">`str_detect`</span>関数はパターンを検索し、論理型を返す関数です。パターンが含まれる要素には<span class="in">`TRUE`</span>、含まれない要素には<span class="in">`FALSE`</span>が返ってきます。</span>
+<span id="cb25-183"><a href="#cb25-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-184"><a href="#cb25-184" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パターンの検出"}</span></span>
+<span id="cb25-185"><a href="#cb25-185" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-186"><a href="#cb25-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-187"><a href="#cb25-187" aria-hidden="true" tabindex="-1"></a><span class="in">str_detect(x, "dog")</span></span>
+<span id="cb25-188"><a href="#cb25-188" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-189"><a href="#cb25-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-190"><a href="#cb25-190" aria-hidden="true" tabindex="-1"></a><span class="fu">### パターンの検出：str_which</span></span>
+<span id="cb25-191"><a href="#cb25-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-192"><a href="#cb25-192" aria-hidden="true" tabindex="-1"></a><span class="in">`str_which`</span>関数は上記の<span class="in">`grep`</span>関数と同じく、パターンに一致するベクターのインデックスを返す関数です。複数の要素が一致する場合には、一致するすべてのインデックスを返します。</span>
+<span id="cb25-193"><a href="#cb25-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-194"><a href="#cb25-194" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パターンを検出する：str_which関数"}</span></span>
+<span id="cb25-195"><a href="#cb25-195" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-196"><a href="#cb25-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-197"><a href="#cb25-197" aria-hidden="true" tabindex="-1"></a><span class="in">str_which(x, "dog")</span></span>
+<span id="cb25-198"><a href="#cb25-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-199"><a href="#cb25-199" aria-hidden="true" tabindex="-1"></a><span class="in">str_which(x, "cat")</span></span>
+<span id="cb25-200"><a href="#cb25-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-201"><a href="#cb25-201" aria-hidden="true" tabindex="-1"></a><span class="in">str_which(x, "is")</span></span>
+<span id="cb25-202"><a href="#cb25-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-203"><a href="#cb25-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-204"><a href="#cb25-204" aria-hidden="true" tabindex="-1"></a><span class="fu">### パターンの位置を調べる：str_locate</span></span>
+<span id="cb25-205"><a href="#cb25-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-206"><a href="#cb25-206" aria-hidden="true" tabindex="-1"></a>もっと厳密に、そのパターンが存在する文字列上の位置を特定するための関数が<span class="in">`str_locate`</span>関数です。<span class="in">`str_locate`</span>関数は行列、もしくは行列のリストを返します。行列のstart列がパターンの開始位置、endが終了位置を示します。パターンが複数含まれる場合には、行列のリストが返ってきます。</span>
+<span id="cb25-207"><a href="#cb25-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-208"><a href="#cb25-208" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パターンの位置を返す：str_locate関数"}</span></span>
+<span id="cb25-209"><a href="#cb25-209" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-210"><a href="#cb25-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-211"><a href="#cb25-211" aria-hidden="true" tabindex="-1"></a><span class="in">str_locate(x, "dog") # 1つ目の要素のみにパターンが含まれる時</span></span>
+<span id="cb25-212"><a href="#cb25-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-213"><a href="#cb25-213" aria-hidden="true" tabindex="-1"></a><span class="in">str_locate_all(x, "n") # 2つの要素にパターンが複数含まれる時</span></span>
+<span id="cb25-214"><a href="#cb25-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-215"><a href="#cb25-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-216"><a href="#cb25-216" aria-hidden="true" tabindex="-1"></a><span class="fu">### パターンが含まれる数を数える：str_count</span></span>
+<span id="cb25-217"><a href="#cb25-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-218"><a href="#cb25-218" aria-hidden="true" tabindex="-1"></a>パターンが何回含まれるかを数える関数が<span class="in">`str_count`</span>関数です。パターンが含まれていればそのパターンの個数を、含まれていなければ0を返します。</span>
+<span id="cb25-219"><a href="#cb25-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-220"><a href="#cb25-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パターンの個数を数える：str_count関数"}</span></span>
+<span id="cb25-221"><a href="#cb25-221" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-222"><a href="#cb25-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-223"><a href="#cb25-223" aria-hidden="true" tabindex="-1"></a><span class="in">str_count(x, "dog") # 1つ目の要素に1つだけパターンが含まれる場合</span></span>
+<span id="cb25-224"><a href="#cb25-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-225"><a href="#cb25-225" aria-hidden="true" tabindex="-1"></a><span class="in">str_count(x, "n") # 2つの要素に3つずつパターンが含まれる場合</span></span>
+<span id="cb25-226"><a href="#cb25-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-227"><a href="#cb25-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-228"><a href="#cb25-228" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字数を数える：str_length</span></span>
+<span id="cb25-229"><a href="#cb25-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-230"><a href="#cb25-230" aria-hidden="true" tabindex="-1"></a><span class="in">`str_length`</span>関数は<span class="in">`nchar`</span>関数と同じく、文字数を返す関数です。どちらを使っても結果は同じですが、他の言語では文字数を数える関数に「<span class="in">`length`</span>」関数を当てることが多いため、<span class="in">`str_length`</span>の方が直感的に使い方がわかりやすい名前になっています。</span>
+<span id="cb25-231"><a href="#cb25-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-232"><a href="#cb25-232" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字数をカウントする：str_length関数"}</span></span>
+<span id="cb25-233"><a href="#cb25-233" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-234"><a href="#cb25-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-235"><a href="#cb25-235" aria-hidden="true" tabindex="-1"></a><span class="in">str_length(x)</span></span>
+<span id="cb25-236"><a href="#cb25-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-237"><a href="#cb25-237" aria-hidden="true" tabindex="-1"></a><span class="in">nchar(x)</span></span>
+<span id="cb25-238"><a href="#cb25-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-239"><a href="#cb25-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-240"><a href="#cb25-240" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字列を整える：str_trim、str_trunc</span></span>
+<span id="cb25-241"><a href="#cb25-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-242"><a href="#cb25-242" aria-hidden="true" tabindex="-1"></a><span class="in">`str_trim`</span>関数は文字列の前と後ろのスペースを取り除く関数です。文字列の演算では、スペースが前後に残って邪魔になることがよくあります。このような場合には<span class="in">`str_trim`</span>でスペースを取り除き、形を整えることができます。</span>
+<span id="cb25-243"><a href="#cb25-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-244"><a href="#cb25-244" aria-hidden="true" tabindex="-1"></a><span class="in">`str_trunc`</span>関数は、文字列の前や後ろを切り取り、「...」で置き換えて省略してくれる関数です。長い文字列をラベル等に用いるときに使用します。</span>
+<span id="cb25-245"><a href="#cb25-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-246"><a href="#cb25-246" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字列を整形する：str_trim, str_trunc関数"}</span></span>
+<span id="cb25-247"><a href="#cb25-247" aria-hidden="true" tabindex="-1"></a><span class="in">str_trim(" x ") # スペースを取り除く</span></span>
+<span id="cb25-248"><a href="#cb25-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-249"><a href="#cb25-249" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-250"><a href="#cb25-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-251"><a href="#cb25-251" aria-hidden="true" tabindex="-1"></a><span class="in">str_trunc(x, 12) # 後ろを切り取って...で省略</span></span>
+<span id="cb25-252"><a href="#cb25-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-253"><a href="#cb25-253" aria-hidden="true" tabindex="-1"></a><span class="in">str_trunc(x, 12, side="left") # 前を切り取って...で省略</span></span>
+<span id="cb25-254"><a href="#cb25-254" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-255"><a href="#cb25-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-256"><a href="#cb25-256" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字を切り出す：str_subとstr_subset</span></span>
+<span id="cb25-257"><a href="#cb25-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-258"><a href="#cb25-258" aria-hidden="true" tabindex="-1"></a><span class="in">`str_sub`</span>関数は<span class="in">`substr`</span>関数とほぼ同じ働きを持つ関数で、<span class="in">`start`</span>の位置から<span class="in">`end`</span>の位置までの文字列を抜き出します。</span>
+<span id="cb25-259"><a href="#cb25-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-260"><a href="#cb25-260" aria-hidden="true" tabindex="-1"></a><span class="in">`str_subset`</span>関数はやや異なり、パターンを含むベクターの要素のみを取り出す関数です。</span>
+<span id="cb25-261"><a href="#cb25-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-262"><a href="#cb25-262" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パターンを含む文字列を取り出す：str_sub、str_subset関数"}</span></span>
+<span id="cb25-263"><a href="#cb25-263" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-264"><a href="#cb25-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-265"><a href="#cb25-265" aria-hidden="true" tabindex="-1"></a><span class="in">str_sub(x, start=3, end=5) # 位置を特定して抽出</span></span>
+<span id="cb25-266"><a href="#cb25-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-267"><a href="#cb25-267" aria-hidden="true" tabindex="-1"></a><span class="in">str_subset(x, "cat") # 文字を含む要素を抽出</span></span>
+<span id="cb25-268"><a href="#cb25-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-269"><a href="#cb25-269" aria-hidden="true" tabindex="-1"></a><span class="in">str_subset(x, "is")</span></span>
+<span id="cb25-270"><a href="#cb25-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-271"><a href="#cb25-271" aria-hidden="true" tabindex="-1"></a><span class="in">str_subset(x, "rat")</span></span>
+<span id="cb25-272"><a href="#cb25-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-273"><a href="#cb25-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-274"><a href="#cb25-274" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字列を抽出する：str_extract</span></span>
+<span id="cb25-275"><a href="#cb25-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-276"><a href="#cb25-276" aria-hidden="true" tabindex="-1"></a><span class="in">`str_extract`</span>関数は、パターンがマッチしたときに、そのパターンを返す関数です。パターンに一致する部分がない場合には、<span class="in">`NA`</span>を返します。<span class="in">`str_extract`</span>関数はマッチした始めのパターンのみを返し、<span class="in">`str_extract_all`</span>関数はマッチしたパターンをすべて返します。<span class="in">`str_extract_all`</span>関数の返り値はリストになります。</span>
+<span id="cb25-277"><a href="#cb25-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-278"><a href="#cb25-278" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パターンを抽出する：str_extract関数"}</span></span>
+<span id="cb25-279"><a href="#cb25-279" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-280"><a href="#cb25-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-281"><a href="#cb25-281" aria-hidden="true" tabindex="-1"></a><span class="in">str_extract(x, "is") # 特定の文字列を抽出</span></span>
+<span id="cb25-282"><a href="#cb25-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-283"><a href="#cb25-283" aria-hidden="true" tabindex="-1"></a><span class="in">str_extract(x, "dog") # 抽出できないとNAを返す</span></span>
+<span id="cb25-284"><a href="#cb25-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-285"><a href="#cb25-285" aria-hidden="true" tabindex="-1"></a><span class="in">str_extract_all(x, "n") # パターン一致するものをすべて抽出</span></span>
+<span id="cb25-286"><a href="#cb25-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-287"><a href="#cb25-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-288"><a href="#cb25-288" aria-hidden="true" tabindex="-1"></a><span class="fu">### パターンマッチング：str_match</span></span>
+<span id="cb25-289"><a href="#cb25-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-290"><a href="#cb25-290" aria-hidden="true" tabindex="-1"></a><span class="in">`str_match`</span>関数も一致したパターンを返す関数です。<span class="in">`str_match`</span>関数は始めにマッチしたパターンを行列で返し、<span class="in">`str_match_all`</span>関数はマッチしたすべてのパターンを行列のリストで返します。</span>
+<span id="cb25-291"><a href="#cb25-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-292"><a href="#cb25-292" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="マッチしたパターンを返す：str_match関数"}</span></span>
+<span id="cb25-293"><a href="#cb25-293" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-294"><a href="#cb25-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-295"><a href="#cb25-295" aria-hidden="true" tabindex="-1"></a><span class="in">str_match(x, "dog") # パターンがあれば、そのパターンを返す</span></span>
+<span id="cb25-296"><a href="#cb25-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-297"><a href="#cb25-297" aria-hidden="true" tabindex="-1"></a><span class="in">str_match_all(x, "n") # パターンがあれば、それをすべて返す</span></span>
+<span id="cb25-298"><a href="#cb25-298" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-299"><a href="#cb25-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-300"><a href="#cb25-300" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字列をつなぐ：str_cとstr_flatten</span></span>
+<span id="cb25-301"><a href="#cb25-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-302"><a href="#cb25-302" aria-hidden="true" tabindex="-1"></a><span class="in">`str_c`</span>関数と<span class="in">`str_flatten`</span>関数はいずれも文字列をつなぐ関数です。ともに<span class="in">`paste`</span>関数と<span class="in">`paste0`</span>関数とほぼ同じですが、<span class="in">`NA`</span>の取り扱いが少しだけ異なります。</span>
+<span id="cb25-303"><a href="#cb25-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-304"><a href="#cb25-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字列をつなぐ：str_c関数"}</span></span>
+<span id="cb25-305"><a href="#cb25-305" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-306"><a href="#cb25-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-307"><a href="#cb25-307" aria-hidden="true" tabindex="-1"></a><span class="in">str_c(x[1], x[2]) # paste0と同じ</span></span>
+<span id="cb25-308"><a href="#cb25-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-309"><a href="#cb25-309" aria-hidden="true" tabindex="-1"></a><span class="in">str_c(x[1], x[2], sep=" ") # pasteと同じ</span></span>
+<span id="cb25-310"><a href="#cb25-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-311"><a href="#cb25-311" aria-hidden="true" tabindex="-1"></a><span class="in">str_flatten(c("a", "dog", "is", "running")) # paste0と同じ</span></span>
+<span id="cb25-312"><a href="#cb25-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-313"><a href="#cb25-313" aria-hidden="true" tabindex="-1"></a><span class="in">str_flatten(c("a", "dog", "is", "running"), collapse= " ") # pasteと同じ</span></span>
+<span id="cb25-314"><a href="#cb25-314" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-315"><a href="#cb25-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-316"><a href="#cb25-316" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字列を分割する：str_split、str_split_fixed、str_split_i</span></span>
+<span id="cb25-317"><a href="#cb25-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-318"><a href="#cb25-318" aria-hidden="true" tabindex="-1"></a><span class="in">`str_split`</span>関数はパターンで文字列を分割する関数で、<span class="in">`strsplit`</span>関数とほぼ同じ機能を持ちます。</span>
+<span id="cb25-319"><a href="#cb25-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-320"><a href="#cb25-320" aria-hidden="true" tabindex="-1"></a><span class="in">`str_split_fixed`</span>関数はパターンで分割するときに、分割後の要素の数を指定することができる関数です。</span>
+<span id="cb25-321"><a href="#cb25-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-322"><a href="#cb25-322" aria-hidden="true" tabindex="-1"></a><span class="in">`str_split_i`</span>関数は、パターンで分割した後に、数値で指定したインデックスの要素のみを取り出す関数です。</span>
+<span id="cb25-323"><a href="#cb25-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-324"><a href="#cb25-324" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字列を分割する：str_split関数"}</span></span>
+<span id="cb25-325"><a href="#cb25-325" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-326"><a href="#cb25-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-327"><a href="#cb25-327" aria-hidden="true" tabindex="-1"></a><span class="in">str_split(x, " ") # パターンで分割</span></span>
+<span id="cb25-328"><a href="#cb25-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-329"><a href="#cb25-329" aria-hidden="true" tabindex="-1"></a><span class="in">str_split_fixed(x, " ", 2) # 始めのパターンで2つに分割</span></span>
+<span id="cb25-330"><a href="#cb25-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-331"><a href="#cb25-331" aria-hidden="true" tabindex="-1"></a><span class="in">str_split_i(x, " ", 2) # パターンで分割し、2つ目の要素を取り出す</span></span>
+<span id="cb25-332"><a href="#cb25-332" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-333"><a href="#cb25-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-334"><a href="#cb25-334" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文字列を置き換える：str_replace、str_replace_all</span></span>
+<span id="cb25-335"><a href="#cb25-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-336"><a href="#cb25-336" aria-hidden="true" tabindex="-1"></a><span class="in">`str_replace`</span>関数は文字列のパターンを別の文字列に置き換える関数です。<span class="in">`sub`</span>関数とほぼ同等の機能を持ちます。<span class="in">`str_replace_all`</span>関数は<span class="in">`gsub`</span>関数とほぼ同じで、<span class="in">`str_replace`</span>関数が始めにマッチしたパターンのみを置き換えるのに対し、<span class="in">`str_replace_all`</span>関数はマッチしたパターンをすべて置き換えます。</span>
+<span id="cb25-337"><a href="#cb25-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-338"><a href="#cb25-338" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="文字列を置き換える：str_replace関数"}</span></span>
+<span id="cb25-339"><a href="#cb25-339" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-340"><a href="#cb25-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-341"><a href="#cb25-341" aria-hidden="true" tabindex="-1"></a><span class="in">str_replace(x, "running", "walking") # 前のパターンを後ろの文字列に置き換える</span></span>
+<span id="cb25-342"><a href="#cb25-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-343"><a href="#cb25-343" aria-hidden="true" tabindex="-1"></a><span class="in">str_replace_all(x, " ", ",") # 前のパターンをすべて、後ろの文字列に置き換える</span></span>
+<span id="cb25-344"><a href="#cb25-344" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-345"><a href="#cb25-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-346"><a href="#cb25-346" aria-hidden="true" tabindex="-1"></a><span class="fu">### 大文字・小文字の操作：str_to_lower、str_to_upper</span></span>
+<span id="cb25-347"><a href="#cb25-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-348"><a href="#cb25-348" aria-hidden="true" tabindex="-1"></a><span class="in">`str_to_lower`</span>関数は大文字を小文字に、<span class="in">`str_to_upper`</span>関数は小文字を大文字に変換する関数です。どちらも<span class="in">`tolower`</span>関数、<span class="in">`toupper`</span>関数とほぼ同等の機能を持ちます。<span class="in">`str_to_lower`</span>、<span class="in">`str_to_upper`</span>関数は言語による小文字・大文字の違いによる変換にも対応していますが、日本人がこの機能を使うことはほぼ無いでしょう。</span>
+<span id="cb25-349"><a href="#cb25-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-350"><a href="#cb25-350" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="大文字・小文字の操作：str_to_lower、str_to_upper"}</span></span>
+<span id="cb25-351"><a href="#cb25-351" aria-hidden="true" tabindex="-1"></a><span class="in">str_to_lower("A DOG IS RUNNING")</span></span>
+<span id="cb25-352"><a href="#cb25-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-353"><a href="#cb25-353" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb25-354"><a href="#cb25-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-355"><a href="#cb25-355" aria-hidden="true" tabindex="-1"></a><span class="in">str_to_upper(x)</span></span>
+<span id="cb25-356"><a href="#cb25-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-357"><a href="#cb25-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-358"><a href="#cb25-358" aria-hidden="true" tabindex="-1"></a><span class="fu">## 正規表現</span></span>
+<span id="cb25-359"><a href="#cb25-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-360"><a href="#cb25-360" aria-hidden="true" tabindex="-1"></a>文字列中に含まれる特定の文字や単語を取り出す・検出する際に、1つの文字や単語だけでなく、条件に適合した複数の文字列を対象としたい場合もあります。また、文字列の特定の並び（<span class="in">`"would"`</span>, <span class="in">`"like"`</span>, <span class="in">`"to"`</span>が順番に並んでいるなど）のみを特定し、検出したいといった場合もあるでしょう。このような場合に文字列のマッチングに用いられるものが、**正規表現**です。正規表現では、文字列と記号を合わせて複雑な文字列のパターンを特定し、マッチングを行うことができます。</span>
+<span id="cb25-361"><a href="#cb25-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-362"><a href="#cb25-362" aria-hidden="true" tabindex="-1"></a>Rで用いることができる正規表現には、Rを含めて汎用されている規格（POSIX 1003.2 standard）のものと、Perl言語で用いられる正規表現の主に2つがあります。ここでは前者のみについて簡単に説明します。</span>
+<span id="cb25-363"><a href="#cb25-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-364"><a href="#cb25-364" aria-hidden="true" tabindex="-1"></a>Rで用いることができる正規表現の例を以下の表3に示します。</span>
+<span id="cb25-365"><a href="#cb25-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-366"><a href="#cb25-366" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb25-367"><a href="#cb25-367" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- readxl::read_excel("./data/regexp.xlsx")</span></span>
+<span id="cb25-368"><a href="#cb25-368" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表3：Rの正規表現の一覧")</span></span>
+<span id="cb25-369"><a href="#cb25-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-370"><a href="#cb25-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-371"><a href="#cb25-371" aria-hidden="true" tabindex="-1"></a><span class="fu">### 関数での正規表現の利用</span></span>
+<span id="cb25-372"><a href="#cb25-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-373"><a href="#cb25-373" aria-hidden="true" tabindex="-1"></a>正規表現はこの章で述べたR言語の文字列を対象とする関数や、<span class="in">`stringr`</span>の関数でパターンとして指定し、用いることができます。以下は<span class="in">`grep`</span>関数の<span class="in">`pattern`</span>引数に正規表現を指定した場合の例です。正規表現を用いることで、例えばhtmlのアドレスやe-mailのアドレスとして正しい記載であるかなど、複雑な文字列のパターンでも検出し、評価することができます。</span>
+<span id="cb25-374"><a href="#cb25-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-375"><a href="#cb25-375" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="正規表現による文字列の検出"}</span></span>
+<span id="cb25-376"><a href="#cb25-376" aria-hidden="true" tabindex="-1"></a><span class="in">v &lt;- c("dog", "cat", "pig", "rat", "egg")</span></span>
+<span id="cb25-377"><a href="#cb25-377" aria-hidden="true" tabindex="-1"></a><span class="in">grep("[abc]", v, value=TRUE) # abcのいずれかを含む</span></span>
+<span id="cb25-378"><a href="#cb25-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-379"><a href="#cb25-379" aria-hidden="true" tabindex="-1"></a><span class="in">grep("[^crat]", v, value=TRUE) # crat以外を含む</span></span>
+<span id="cb25-380"><a href="#cb25-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-381"><a href="#cb25-381" aria-hidden="true" tabindex="-1"></a><span class="in">grep("^c", v, value=TRUE) # cから始まる</span></span>
+<span id="cb25-382"><a href="#cb25-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-383"><a href="#cb25-383" aria-hidden="true" tabindex="-1"></a><span class="in">grep("[(o|g)][(p|g)]", v, value=TRUE) # op、og、gp、ggのいずれかを含む</span></span>
+<span id="cb25-384"><a href="#cb25-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-385"><a href="#cb25-385" aria-hidden="true" tabindex="-1"></a><span class="in">grep("g{2}", v, value=TRUE) # ggを含む</span></span>
+<span id="cb25-386"><a href="#cb25-386" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-387"><a href="#cb25-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-388"><a href="#cb25-388" aria-hidden="true" tabindex="-1"></a><span class="fu">### rexパッケージ</span></span>
+<span id="cb25-389"><a href="#cb25-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-390"><a href="#cb25-390" aria-hidden="true" tabindex="-1"></a>とは言っても、正規表現をまるまる覚えるのは大変ですし、いちいち検索して正規表現でパターンを表現するのも場合によってはかなり大変です。<span class="co">[</span><span class="ot">`rex`</span><span class="co">](https://rex.r-lib.org/index.html)</span>パッケージ<span class="co">[</span><span class="ot">@rex_bib</span><span class="co">]</span>はこのような複雑な正規表現を人にも理解しやすい形で作成できるようにするためのパッケージです。よく用いられる正規表現は<span class="in">`shortcuts`</span>というオブジェクト（リストと同じように取り扱えます）に含まれていますし、<span class="in">`rex`</span>関数を用いてより複雑な正規表現を作成することもできます。</span>
+<span id="cb25-391"><a href="#cb25-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-392"><a href="#cb25-392" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="rexパッケージ"}</span></span>
+<span id="cb25-393"><a href="#cb25-393" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(rex)</span></span>
+<span id="cb25-394"><a href="#cb25-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-395"><a href="#cb25-395" aria-hidden="true" tabindex="-1"></a><span class="in">shortcuts$letter # アルファベット</span></span>
+<span id="cb25-396"><a href="#cb25-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-397"><a href="#cb25-397" aria-hidden="true" tabindex="-1"></a><span class="in">shortcuts$non_puncts # 句読点以外</span></span>
+<span id="cb25-398"><a href="#cb25-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-399"><a href="#cb25-399" aria-hidden="true" tabindex="-1"></a><span class="in">rex(none_of("a", "e", "i", "o", "u")) # aeiou以外</span></span>
+<span id="cb25-400"><a href="#cb25-400" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

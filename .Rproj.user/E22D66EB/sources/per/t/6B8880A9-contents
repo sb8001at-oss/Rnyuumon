@@ -1,0 +1,273 @@
+# 検定
+
+## パラメトリックな検定
+
+```{r, setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+
+pacman::p_load(tidyverse)
+```
+
+### t検定
+
+```{r}
+x <- rnorm(10, mean = 0, sd = 1)
+y <- rnorm(10, mean = 1, sd = 0.5)
+
+t.test(x)
+
+t.test(x, y)
+
+t.test(x, y, alternative = c("less"))
+
+t.test(x, y, alternative = c("greater"))
+
+t.test(x, y, paired = TRUE)
+
+t.test(x, y, conf.level = 0.9)
+
+f <- rep(c("a", "b"), c(5, 5)) |> factor()
+```
+
+
+```{r}
+t.test(x ~ f)
+
+formula("x ~ f")
+```
+
+
+```{r}
+t_result <- t.test(x, y)
+
+str(t_result)
+
+t_result$p.value # p値
+
+t_result$conf.int # 95%信頼区間
+
+t_result$estimate # 平均値
+```
+
+### フィッシャーの正確検定・カイ2乗検定
+
+```{r}
+x <- matrix(c(8, 8, 1, 11), nrow = 2)
+
+fisher.test(x)
+chisq.test(x)
+
+y <- matrix(c(4, 8, 8, 4), nrow = 2)
+
+fisher.test(y)
+chisq.test(y)
+
+z <- matrix(c(4, 8, 4, 8), nrow = 2)
+
+fisher.test(z)
+chisq.test(z)
+```
+
+```{r}
+set.seed(0)
+d <- data.frame(
+  x = rep(c("A", "B"), c(40, 40)) |> factor() |> sample(size = 25),
+  y = rep(c("C", "D"), c(35, 45)) |> factor() |> sample(size = 25)
+)
+
+head(d)
+
+d |> dplyr::arrange(x, y) |> table()
+
+fisher.test(d$x, d$y)
+chisq.test(d$x, d$y)
+
+z <- matrix(c(5, 6, 9, 5), nrow = 2)
+z
+
+fisher.test(z)
+chisq.test(z)
+```
+
+### Cochran-Mantel-Haenszelのカイ 2 乗検定
+
+```{r}
+mantelhaen.test(UCBAdmissions) #  Cochran-Mantel-Haenszelのカイ 2 乗検定
+```
+
+## 分散分析
+
+### 一元分散分析
+
+```{r}
+oneway.test(iris$Sepal.Length ~ iris$Species)
+# oneway.test(Sepal.Length ~ Species, data = iris) # 上と同じ
+```
+
+```{r}
+aov_iris <- aov(iris$Sepal.Length ~ iris$Species)
+aov_iris
+summary(aov_iris)
+```
+
+
+```{r}
+anova_iris <- anova(lm(iris$Sepal.Length ~ iris$Species))
+anova_iris
+```
+
+### 2元分散分析
+
+```{r}
+head(ToothGrowth)
+
+aov_toothgrowth <- aov(len ~ supp * factor(dose), data = ToothGrowth)
+
+summary(aov_toothgrowth)
+```
+
+```{r}
+aov_toothgrowth <- aov(len ~ supp + factor(dose), data = ToothGrowth)
+
+summary(aov_toothgrowth)
+```
+
+### 共分散分析
+
+```{r}
+aov_ToothGrowth <- aov(len ~ supp * dose, data = ToothGrowth)
+
+summary(aov_ToothGrowth)
+```
+
+```{r, echo=FALSE}
+ToothGrowth |> 
+  ggplot(aes(x=dose, y=len, color=supp)) +
+  geom_point(size = 2) +
+  geom_abline(intercept = 11.55, slope = 7.811, color = "red") +
+  geom_abline(intercept = 3.295, slope = 11.716, color = "blue")
+```
+
+### 多重比較
+
+[DescTools](https://cran.r-project.org/web/packages/DescTools/index.html)パッケージ [@DescTools_bib]
+
+```{r}
+pacman::p_load(DescTools)
+ScheffeTest(aov(iris$Sepal.Length ~ iris$Species))
+```
+
+
+```{r}
+TukeyHSD(aov(iris$Sepal.Length ~ iris$Species))
+```
+
+```{r}
+pacman::p_load(DescTools)
+
+DunnettTest(iris$Sepal.Length, iris$Species)
+
+DunnettTest(iris$Sepal.Length, iris$Species, control = "virginica")
+```
+
+
+```{r}
+# formulaは使えない
+pairwise.t.test(iris$Sepal.Length, iris$Species, p.adjust.method = "holm")
+```
+
+```{r}
+p_vec <- seq(0.005, 0.06, by = 0.005)
+p_vec
+
+p.adjust(p_vec, method = "holm")
+```
+
+```{r, echo = FALSE}
+d <- tibble(
+  x=1:length(p_vec),
+  p_vec, 
+  holm_p = p.adjust(p_vec, "holm"),
+  hochberg_p = p.adjust(p_vec, "hochberg"),
+  hommel_p = p.adjust(p_vec, "hommel"),
+  bonferroni_p = p.adjust(p_vec, "bonferroni"),
+  BH_p = p.adjust(p_vec, "BH"), # Benjamini & Hochberg（"fdr"も同じ）
+  BY_p = p.adjust(p_vec, "BY"), # Benjamini & Yekutieli
+  )
+
+d |> 
+  pivot_longer(2:8) |> 
+  ggplot(aes(x=x, y=value, color=name)) +
+  geom_point(size = 2) +
+  geom_line(size = 1)  +
+  geom_hline(yintercept = 0.05) +
+  facet_wrap(~ name)
+```
+
+gatekeeping法 [Mediana](https://gpaux.github.io/Mediana/)パッケージ [@Mediana_bib] [gMCP](https://gsrmtp.r-forge.r-project.org/)パッケージ [@gMCP_bib]
+
+## ノンパラメトリック検定
+
+### Wilcoxonの順位和検定
+
+```{r}
+x <- rnorm(10, mean = 0, sd = 1)
+y <- rnorm(10, mean = 1, sd = 0.5)
+f <- rep(c("a", "b"), c(5, 5)) |> factor()
+
+wilcox.test(x, y)
+wilcox.test(x ~ f)
+```
+
+### Friedmanのランク和検定
+
+```{r}
+wb <- warpbreaks |> group_by(wool, tension) |> summarise(breaks = mean(breaks))
+
+friedman.test(breaks ~ wool | tension, data = wb)
+```
+
+
+### Kruskal-Wallisのランク和検定
+
+```{r}
+kruskal.test(iris$Sepal.Length ~ iris$Species)
+```
+
+## その他の検定
+
+### 正規性の検定：Shapiro-Wilk検定
+
+```{r}
+rnorm(100) |> shapiro.test()
+runif(100) |> shapiro.test()
+```
+
+### 分散の同一性の検定
+
+```{r}
+var.test(rnorm(10), rnorm(10))
+
+var.test(rnorm(10), runif(10))
+```
+
+```{r}
+x <- rnorm(30)
+f <- rep(c("A", "B", "C"), 10) |> factor()
+bartlett.test(x, f)
+```
+
+### 外れ値の検定
+
+[outlier](https://cran.r-project.org/web/packages/outliers/outliers.pdf)パッケージ [@outliers_bib]
+
+```{r}
+pacman::p_load(outliers)
+x <- c(rnorm(10), 10)
+chisq.out.test(x)
+grubbs.test(x)
+dixon.test(x)
+```
+

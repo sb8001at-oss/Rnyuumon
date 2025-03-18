@@ -1,0 +1,96 @@
+# データセット
+
+```{r, setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+```
+
+Rには、データ処理や統計の計算、関数などを試すために、**データセット**と呼ばれる、あらかじめ準備されているデータがあります。このデータセットの多くは、データセットを指定する変数名を用いればいつでも呼び出すことができます。また、多くのライブラリには、そのライブラリの機能を試すためのデータセットが備わっています。Rにあらかじめ備わっているデータセットの一覧は、`data`関数を用いて確認することができます。`data`関数を引数なしで実行するとRのデフォルトのデータセットのリストが、`package`引数にライブラリ名を指定するとそのライブラリが持つデータセットのリストが表示されます。
+
+`data`関数は、ライブラリに含まれているデータセットを呼び出す際にも使用します。呼び出すときには、ライブラリ名（ライブラリをロードしているときは省略可）とそのデータセット名を引数に取ります。
+
+```{r, eval=FALSE, filename="data関数とデータセット"}
+# Rのデータセット一覧を表示
+data()
+
+# インストールされているパッケージすべてのデータセット一覧を表示
+data(package = .packages(all.available = TRUE))
+
+# ggplot2パッケージに含まれるデータセット一覧を表示
+data(package = "ggplot2")
+
+# ggplot2パッケージのdiamondsというデータセットを読み込む
+data(package = "ggplot2", "diamonds")
+```
+
+以下の表1に、Rにあらかじめ備わっているデータセットの一覧とその説明を示します。
+
+```{r, echo=FALSE}
+pacman::p_load(tidyverse)
+d <- readxl::read_excel("./data/datasetsinR.xlsx")
+
+knitr::kable(d |> select("データセット", "データセットの説明", "データ型"), caption="表1 Rのデータセットの一覧")
+```
+
+:::{.callout-note collapse="true"}
+
+## データセットの詳細をグラフで確認する
+
+Rの各データセットについては、[中央大学理工学部の酒折先生のページ](https://www.math.chuo-u.ac.jp/~sakaori/Rdata.html)に詳しく記載されています。
+
+:::
+
+## 代表的なデータセット
+
+### iris
+
+`iris`は3種のアヤメ（[ヒオウギアヤメ](https://ja.wikipedia.org/wiki/%E3%83%92%E3%82%AA%E3%82%A6%E3%82%AE%E3%82%A2%E3%83%A4%E3%83%A1)（*Iris setosa*）、[blue flag](https://en.wikipedia.org/wiki/Iris_versicolor)（*Iris versicolor*）、[Virginia blueflag](https://en.wikipedia.org/wiki/Iris_virginica)（*Iris virginica*））の花弁とがく片の長さと幅を記録したデータです。[Ronald Fisher](https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%8A%E3%83%AB%E3%83%89%E3%83%BB%E3%83%95%E3%82%A3%E3%83%83%E3%82%B7%E3%83%A3%E3%83%BC)がこのデータを利用したことで有名で、Rでは最も見かけることが多いデータセットです。`iris`は150行のデータフレームで、左の列から、`Sepal.Length`（がく片の長さ）、`Sepal.Width`（がく片の幅）、`Petal.Length`（花弁の長さ）、`Petal.Width`（花弁の幅）、`Species`（種小名）の5列が登録されています。`iris`の初めの6行は以下の通りです。
+
+```{r, filename="iris"}
+head(iris)
+```
+
+### Nile
+
+`Nile`はナイル川の水量を1871～1970年にかけて、年次で測定したデータです（単位は10^8^ m^3^）。ナイル川では1902年に[アスワン・ダム](https://ja.wikipedia.org/wiki/%E3%82%A2%E3%82%B9%E3%83%AF%E3%83%B3%E3%83%BB%E3%83%AD%E3%82%A6%E3%83%BB%E3%83%80%E3%83%A0)が、1970年に[アスワン・ハイ・ダム](https://ja.wikipedia.org/wiki/%E3%82%A2%E3%82%B9%E3%83%AF%E3%83%B3%E3%83%BB%E3%83%8F%E3%82%A4%E3%83%BB%E3%83%80%E3%83%A0)が完成しています。この`Nile`のデータセットでは、1898年頃（イギリスによるアスワン・ダムの建設開始時期）から水量が減っていることで有名で、非連続的な時系列データを取り扱うときの参考にされています。`Nile`は時系列型（ts）のデータセットです。
+
+```{r, filename="Nile"}
+Nile
+plot(Nile)
+```
+
+### Titanic
+
+`Titanic`は、タイタニック号に乗船していた旅客とクルーの性別・船室（一等船室、二等船室、三等船室、クルー）・年齢区分（大人・子供）・生死に関する人数を4次元のarrayとしたものです。Rでは`Titanic`を用いることはそれほどありませんが、[kaggle](https://www.kaggle.com/)という、機械学習の性能コンテストサイトでは機械学習の手習いとしてこのデータを用い、どのような性質の旅客であれば生存率が高いか、といった予測を行うモデルを作成するのによく用いられています。
+
+```{r, filename="Titanic"}
+Titanic
+```
+
+### BostonHousing
+
+`BostonHousing`も、Rでというよりは機械学習の分野で、家賃の予測モデル作成の手習いとしてよく用いられています。`BostonHousing`は、その名の通りボストンの住宅価格と地域周辺の犯罪率・住宅の部屋数・税率・高速道路へのアクセスなどを、1970年のセンサス（国勢調査）から収集してまとめたものです。Rでは、`mlbench`パッケージ [@mlbench_bib; @mlbench_dataset_bib]（機械学習のベンチマークデータセットを集めたもの）に含まれており、使用するためには`mlbench`パッケージをインストール・ロードする必要があります。`BostonHousing`のデータ型はデータフレームです。
+
+```{r, filename="BostonHousing"}
+pacman::p_load(mlbench)
+data("BostonHousing")
+head(BostonHousing)
+```
+
+### diamonds
+
+`diamonds`はグラフ作成ライブラリである、`ggplot2`に含まれるデータセットです。`ggplot2` [@ggplot2_bib]を用いたグラフ作成例ではよく用いられています。`diamonds`はダイヤモンドのカラット数、透明性、カット、価格などをまとめたデータフレームです。
+
+```{r, filename="diamonds"}
+head(ggplot2::diamonds)
+```
+
+### Gapminder
+
+`Gapminder`は1952～2007年の各国のGDP、一人当たりGDP、寿命、人口をデータフレームとしてまとめたものです。このデータは、[Gapminder Foundation](https://www.gapminder.org/)（スウェーデンのNPO、所得格差の認知を推進する活動を行っている）が提供しているデータです。このデータも、Rでのグラフ作成の例でよく用いられているものです。Rでは、`gapminder`パッケージ [@gapminder_bib]にデータセットが含まれています。
+
+```{r, filename="gapminder"}
+pacman::p_load(gapminder)
+head(gapminder::gapminder)
+```
