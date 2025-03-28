@@ -888,13 +888,13 @@ div.csl-indent {
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_shuffle</span>(fx) <span class="co"># レベルをランダムに並べ替える</span></span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   pig   pig   pig  </span></span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="do">## [13] horse horse</span></span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: cat dog horse pig</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: dog cat horse pig</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
 <section id="レベル名の変更" class="level3" data-number="10.4.4">
 <h3 data-number="10.4.4" class="anchored" data-anchor-id="レベル名の変更"><span class="header-section-number">10.4.4</span> レベル名の変更</h3>
-<p><code>fct_recode</code>関数は因子名を別名に付け替え、<code>fct_anon</code>関数は因子名を匿名化（anonymize）するものです。<code>fct_collapse</code>関数は因子の複数のレベルを1つにまとめ、<code>fct_lump_min</code>関数は定めた数のレベル以外のレベルをすべてotherに変えます。<code>fct_other</code>関数は<code>keep</code>引数で指定したレベル以外をotherに変えます。</p>
+<p><code>fct_recode</code>関数は因子名を別名に付け替え、<code>fct_anon</code>関数は因子名を匿名化（anonymize）するものです。<code>fct_collapse</code>関数は因子の複数のレベルを1つにまとめ、<code>fct_lump_min</code>関数は<code>min</code>引数で指定した数より個数が少ない因子をすべてotherに変えます。<code>fct_other</code>関数は<code>keep</code>引数で指定したレベル以外をotherに変えます。</p>
 <p>いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したりするために用いるものです。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -907,7 +907,7 @@ div.csl-indent {
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: rat mouse cow monkey</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_anon</span>(fx) <span class="co"># 因子を匿名化（anonymize）する</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] 4 4 4 4 4 2 2 2 2 1 1 1 3 3</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] 1 1 1 1 1 3 3 3 3 2 2 2 4 4</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: 1 2 3 4</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_collapse</span>(fx, <span class="at">dogcat =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>)) <span class="co"># レベルを結合する</span></span>
@@ -915,10 +915,10 @@ div.csl-indent {
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [11] pig    pig    horse  horse </span></span>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: dogcat horse pig</span></span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_lump_min</span>(fx, <span class="at">min=</span><span class="dv">2</span>) <span class="co"># 2つ以外のレベルをotherに変える</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   pig   pig   pig  </span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [13] horse horse</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: cat dog horse pig</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_lump_min</span>(fx, <span class="at">min=</span><span class="dv">4</span>) <span class="co"># 2つより少ない個数しかない因子をotherに変える</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   Other Other Other</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [13] Other Other</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: cat dog Other</span></span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_other</span>(fx, <span class="at">keep=</span><span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>)) <span class="co"># keep以外のレベルをotherに変える</span></span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   Other Other Other</span></span>
@@ -1756,7 +1756,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a><span class="fu">### レベル名の変更</span></span>
 <span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_recode`</span>関数は因子名を別名に付け替え、<span class="in">`fct_anon`</span>関数は因子名を匿名化（anonymize）するものです。<span class="in">`fct_collapse`</span>関数は因子の複数のレベルを1つにまとめ、<span class="in">`fct_lump_min`</span>関数は定めた数のレベル以外のレベルをすべてotherに変えます。<span class="in">`fct_other`</span>関数は<span class="in">`keep`</span>引数で指定したレベル以外をotherに変えます。</span>
+<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_recode`</span>関数は因子名を別名に付け替え、<span class="in">`fct_anon`</span>関数は因子名を匿名化（anonymize）するものです。<span class="in">`fct_collapse`</span>関数は因子の複数のレベルを1つにまとめ、<span class="in">`fct_lump_min`</span>関数は<span class="in">`min`</span>引数で指定した数より個数が少ない因子をすべてotherに変えます。<span class="in">`fct_other`</span>関数は<span class="in">`keep`</span>引数で指定したレベル以外をotherに変えます。</span>
 <span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したりするために用いるものです。</span>
 <span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a></span>
@@ -1767,7 +1767,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a><span class="in">fct_collapse(fx, dogcat = c("dog", "cat")) # レベルを結合する</span></span>
 <span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a><span class="in">fct_lump_min(fx, min=2) # 2つ以外のレベルをotherに変える</span></span>
+<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a><span class="in">fct_lump_min(fx, min=4) # 2つより少ない個数しかない因子をotherに変える</span></span>
 <span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a><span class="in">fct_other(fx, keep=c("dog", "cat")) # keep以外のレベルをotherに変える</span></span>
 <span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

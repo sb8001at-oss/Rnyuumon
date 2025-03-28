@@ -196,7 +196,7 @@ fct_shuffle(fx) # レベルをランダムに並べ替える
 
 ### レベル名の変更
 
-`fct_recode`関数は因子名を別名に付け替え、`fct_anon`関数は因子名を匿名化（anonymize）するものです。`fct_collapse`関数は因子の複数のレベルを1つにまとめ、`fct_lump_min`関数は定めた数のレベル以外のレベルをすべてotherに変えます。`fct_other`関数は`keep`引数で指定したレベル以外をotherに変えます。
+`fct_recode`関数は因子名を別名に付け替え、`fct_anon`関数は因子名を匿名化（anonymize）するものです。`fct_collapse`関数は因子の複数のレベルを1つにまとめ、`fct_lump_min`関数は`min`引数で指定した数より個数が少ない因子をすべてotherに変えます。`fct_other`関数は`keep`引数で指定したレベル以外をotherに変えます。
 
 いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したりするために用いるものです。
 
@@ -207,7 +207,7 @@ fct_anon(fx) # 因子を匿名化（anonymize）する
 
 fct_collapse(fx, dogcat = c("dog", "cat")) # レベルを結合する
 
-fct_lump_min(fx, min=2) # 2つ以外のレベルをotherに変える
+fct_lump_min(fx, min=4) # 2つより少ない個数しかない因子をotherに変える
 
 fct_other(fx, keep=c("dog", "cat")) # keep以外のレベルをotherに変える
 ```
