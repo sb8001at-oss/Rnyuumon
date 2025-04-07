@@ -743,7 +743,7 @@ div.csl-indent {
 <p><code>apply</code>関数の演算では、（特に行方向、<code>MARGIN = 1</code>の時には）データ型が一致していることが必要となります。<code>apply</code>関数の使い方を以下の図1に示します。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="./image/chapter15_apply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1" title="図1：apply関数の使い方"><img src="./image/chapter15_apply.png" class="img-fluid figure-img" alt="図1：apply関数の使い方"></a></p>
+<p><a href="./image/chapter15_apply.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1" title="図1：apply関数の使い方"><img src="./image/chapter15_apply.png" class="img-fluid figure-img" alt="図1：apply関数の使い方"></a></p>
 <figcaption>図1：apply関数の使い方</figcaption>
 </figure>
 </div>
@@ -880,7 +880,7 @@ div.csl-indent {
 <p><code>mapply</code>関数は、関数が2種類以上の引数を取る場合に用います。<code>mapply</code>関数は<code>apply</code>関数とは引数の順番が異なり、適用する関数が第一引数になります。続いて適用する関数の引数をベクターで取ります。<code>mapply</code>関数の返り値は適用する関数により異なり、関数の返り値が1つなら<code>mapply</code>関数の返り値はベクター、返り値が2つ以上なら<code>mapply</code>関数の返り値はリストになります。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="./image/chapter15_mapply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2" title="図2：mapply関数の使い方"><img src="./image/chapter15_mapply.png" class="img-fluid figure-img" alt="図2：mapply関数の使い方"></a></p>
+<p><a href="./image/chapter15_mapply.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2" title="図2：mapply関数の使い方"><img src="./image/chapter15_mapply.png" class="img-fluid figure-img" alt="図2：mapply関数の使い方"></a></p>
 <figcaption>図2：mapply関数の使い方</figcaption>
 </figure>
 </div>
@@ -889,26 +889,30 @@ div.csl-indent {
 <div class="code-with-filename-file">
 <pre><strong>mapply関数</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mapply</span>(mean, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 2 3 4</span></span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 足し算をする関数</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sum2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y){x <span class="sc">+</span> y}</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">mapply</span>(rep, <span class="at">times =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">x =</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">1</span>) <span class="co"># 関数の引数を指定して、ベクターで与える 複数の引数を取れる</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>lst</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3 3</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [[3]]</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2 2 2</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [[4]]</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 1 1 1</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 無名関数も使える</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">mapply</span>(\(x, y){x <span class="sc">/</span> y}, <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">y =</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">1</span>)</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.2 0.5 1.0 2.0 5.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1:4 + 2:5と同じ計算</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mapply</span>(sum2, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3 5 7 9</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">mapply</span>(rep, <span class="at">times =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">x =</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">1</span>) <span class="co"># 関数の引数を指定して、ベクターで与える 複数の引数を取れる</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>lst</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3 3</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [[3]]</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2 2 2</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [[4]]</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 1 1 1</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 無名関数も使える</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="fu">mapply</span>(\(x, y){x <span class="sc">/</span> y}, <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">y =</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">1</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.2 0.5 1.0 2.0 5.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -918,7 +922,7 @@ div.csl-indent {
 <p><code>sapply</code>関数は返り値がベクターになった<code>lapply</code>関数です。関数の返り値が2つ以上の値であれば、<code>sapply</code>関数は行列を返します。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="./image/chapter15_lapply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3" title="図3：lapply/sapply関数の使い方"><img src="./image/chapter15_lapply.png" class="img-fluid figure-img" alt="図3：lapply/sapply関数の使い方"></a></p>
+<p><a href="./image/chapter15_lapply.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3" title="図3：lapply/sapply関数の使い方"><img src="./image/chapter15_lapply.png" class="img-fluid figure-img" alt="図3：lapply/sapply関数の使い方"></a></p>
 <figcaption>図3：lapply/sapply関数の使い方</figcaption>
 </figure>
 </div>
@@ -985,7 +989,7 @@ div.csl-indent {
 <p><code>vapply</code>関数は関数が複数の返り値を持つときに用いる関数です。<code>vapply</code>関数の第一引数はベクターやリスト、第二引数は複数の返り値を取る関数です。<code>vapply</code>関数はこの返り値を行列に変換するのですが、この変換時の行名を<code>FUN.VALUE</code>という第三引数で設定します。<code>FUN.VALUE</code>の設定は名前付きベクターで、値は0とします。かなり癖が強いので、使われているところをほとんど見たことがない関数です。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="./image/chapter15_vapply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4" title="図3：vapply関数の使い方"><img src="./image/chapter15_vapply.png" class="img-fluid figure-img" alt="図3：vapply関数の使い方"></a></p>
+<p><a href="./image/chapter15_vapply.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4" title="図3：vapply関数の使い方"><img src="./image/chapter15_vapply.png" class="img-fluid figure-img" alt="図3：vapply関数の使い方"></a></p>
 <figcaption>図3：vapply関数の使い方</figcaption>
 </figure>
 </div>
@@ -1012,7 +1016,7 @@ div.csl-indent {
 <p><code>replicate</code>関数は、第一引数に繰り返し計算の回数、第二引数に関数を取ります。<code>replicate</code>関数は関数の計算を繰り返し計算の回数だけ繰り返し、結果をベクターで返します。指定する関数の引数を変えることはできないので、一見あまり意味がなさそうに見えます。しかし、Rでは乱数（ランダムな数値）を用いた計算を行うことが多く、乱数計算を繰り返すと同じ関数の返り値でも変化することがあります。したがって、<code>replicate</code>関数は乱数を使った計算で利用すると生きる関数となっています。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="./image/chapter15_replicate.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" data-glightbox="description: .lightbox-desc-5" title="図5：replicate関数の使い方"><img src="./image/chapter15_replicate.png" class="img-fluid figure-img" alt="図5：replicate関数の使い方"></a></p>
+<p><a href="./image/chapter15_replicate.png" class="lightbox" data-glightbox="description: .lightbox-desc-5" data-gallery="quarto-lightbox-gallery-5" title="図5：replicate関数の使い方"><img src="./image/chapter15_replicate.png" class="img-fluid figure-img" alt="図5：replicate関数の使い方"></a></p>
 <figcaption>図5：replicate関数の使い方</figcaption>
 </figure>
 </div>
@@ -1037,7 +1041,7 @@ div.csl-indent {
 <p><code>tapply</code>関数はベクターと因子を引数に取り、因子のグループごとに関数をベクターに適用します。ベクターに測定値、因子にカテゴリ（たとえば男性・女性など）を取っておけば、カテゴリごとの集計値を計算するのに使えます。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="./image/chapter15_tapply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" data-glightbox="description: .lightbox-desc-6" title="図6：tapply関数の使い方"><img src="./image/chapter15_tapply.png" class="img-fluid figure-img" alt="図6：tapply関数の使い方"></a></p>
+<p><a href="./image/chapter15_tapply.png" class="lightbox" data-glightbox="description: .lightbox-desc-6" data-gallery="quarto-lightbox-gallery-6" title="図6：tapply関数の使い方"><img src="./image/chapter15_tapply.png" class="img-fluid figure-img" alt="図6：tapply関数の使い方"></a></p>
 <figcaption>図6：tapply関数の使い方</figcaption>
 </figure>
 </div>
@@ -1089,7 +1093,7 @@ div.csl-indent {
 <p><code>by</code>関数も<code>aggregate</code>関数と類似した関数ですが、<code>by</code>は関数の引数に各列のベクターではなく、因子で区切ったデータフレームを指定します。ですので、データフレームを処理できない関数を用いると、計算ができない場合があります。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="./image/chapter15_aggregate.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" data-glightbox="description: .lightbox-desc-7" title="図7：aggregate関数の使い方"><img src="./image/chapter15_aggregate.png" class="img-fluid figure-img" alt="図7：aggregate関数の使い方"></a></p>
+<p><a href="./image/chapter15_aggregate.png" class="lightbox" data-glightbox="description: .lightbox-desc-7" data-gallery="quarto-lightbox-gallery-7" title="図7：aggregate関数の使い方"><img src="./image/chapter15_aggregate.png" class="img-fluid figure-img" alt="図7：aggregate関数の使い方"></a></p>
 <figcaption>図7：aggregate関数の使い方</figcaption>
 </figure>
 </div>
@@ -2028,119 +2032,123 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a><span class="al">![図2：mapply関数の使い方](./image/chapter15_mapply.png)</span></span>
 <span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="mapply関数"}</span></span>
-<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a><span class="in">mapply(mean, 1:4, 2:5)</span></span>
-<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a><span class="in">lst &lt;- mapply(rep, times = 1:4, x = 4:1) # 関数の引数を指定して、ベクターで与える 複数の引数を取れる</span></span>
-<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a><span class="in">lst</span></span>
-<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="in"># 無名関数も使える</span></span>
-<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a><span class="in">mapply(\(x, y){x / y}, x = 1:5, y = 5:1)</span></span>
-<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a><span class="in"># 足し算をする関数</span></span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a><span class="in">sum2 &lt;- function(x, y){x + y}</span></span>
+<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a><span class="in"># 1:4 + 2:5と同じ計算</span></span>
+<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a><span class="in">mapply(sum2, 1:4, 2:5)</span></span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a><span class="in">lst &lt;- mapply(rep, times = 1:4, x = 4:1) # 関数の引数を指定して、ベクターで与える 複数の引数を取れる</span></span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a><span class="in">lst</span></span>
 <span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a><span class="fu">### lapply関数/sapply関数</span></span>
-<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a><span class="in">`lapply`</span>関数はリストを引数に取る関数です。<span class="in">`lapply`</span>関数は第一引数にリスト、第二引数に関数を取り、リストの各要素に関数を適用します。<span class="in">`lapply`</span>関数は返り値にリストを取ります。データフレームはリストですので、<span class="in">`lapply`</span>関数は<span class="in">`apply(x, 2, FUN)`</span>、つまり列方向に関数を適用するのと同じ計算を行うことができます。</span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a><span class="in"># 無名関数も使える</span></span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a><span class="in">mapply(\(x, y){x / y}, x = 1:5, y = 5:1)</span></span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a><span class="in">`sapply`</span>関数は返り値がベクターになった<span class="in">`lapply`</span>関数です。関数の返り値が2つ以上の値であれば、<span class="in">`sapply`</span>関数は行列を返します。</span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a><span class="fu">### lapply関数/sapply関数</span></span>
 <span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="al">![図3：lapply/sapply関数の使い方](./image/chapter15_lapply.png)</span></span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="in">`lapply`</span>関数はリストを引数に取る関数です。<span class="in">`lapply`</span>関数は第一引数にリスト、第二引数に関数を取り、リストの各要素に関数を適用します。<span class="in">`lapply`</span>関数は返り値にリストを取ります。データフレームはリストですので、<span class="in">`lapply`</span>関数は<span class="in">`apply(x, 2, FUN)`</span>、つまり列方向に関数を適用するのと同じ計算を行うことができます。</span>
 <span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="lapply関数とsapply関数"}</span></span>
-<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a><span class="in">lapply(lst, sum) # リストの各要素に関数を適用する（返り値はリスト）</span></span>
-<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a><span class="in">lapply(iris[, 1:4], sum) # データフレームは列方向のリストなので、適用可能</span></span>
-<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a><span class="in">lapply(lst, summary)</span></span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a><span class="in">`sapply`</span>関数は返り値がベクターになった<span class="in">`lapply`</span>関数です。関数の返り値が2つ以上の値であれば、<span class="in">`sapply`</span>関数は行列を返します。</span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a><span class="al">![図3：lapply/sapply関数の使い方](./image/chapter15_lapply.png)</span></span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="lapply関数とsapply関数"}</span></span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a><span class="in">lapply(lst, sum) # リストの各要素に関数を適用する（返り値はリスト）</span></span>
 <span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a><span class="in">sapply(lst, sum) # 返り値がベクターのlapply</span></span>
-<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a><span class="in">sapply(iris[, 1:4], sum)</span></span>
-<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a><span class="fu">### vapply関数</span></span>
-<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="in">`vapply`</span>関数は関数が複数の返り値を持つときに用いる関数です。<span class="in">`vapply`</span>関数の第一引数はベクターやリスト、第二引数は複数の返り値を取る関数です。<span class="in">`vapply`</span>関数はこの返り値を行列に変換するのですが、この変換時の行名を<span class="in">`FUN.VALUE`</span>という第三引数で設定します。<span class="in">`FUN.VALUE`</span>の設定は名前付きベクターで、値は0とします。かなり癖が強いので、使われているところをほとんど見たことがない関数です。</span>
+<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a><span class="in">lapply(iris[, 1:4], sum) # データフレームは列方向のリストなので、適用可能</span></span>
+<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a><span class="in">lapply(lst, summary)</span></span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a><span class="in">sapply(lst, sum) # 返り値がベクターのlapply</span></span>
+<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="in">sapply(iris[, 1:4], sum)</span></span>
+<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a><span class="al">![図3：vapply関数の使い方](./image/chapter15_vapply.png)</span></span>
+<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a><span class="fu">### vapply関数</span></span>
 <span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="vapply関数"}</span></span>
-<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a><span class="in">fivenum(1:10) # データを5つに集約する関数（最小値、第一四分位、中央値、第三四分位、最大値）</span></span>
-<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a><span class="in">vapply(iris[, 1:4], fivenum, c(Min. = 0, "1st Qu" = 0, Median = 0, "3rd Qu" = 0, Max. = 0)) # 集約値をそれぞれ表示</span></span>
-<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a><span class="fu">### replicate関数</span></span>
-<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="in">`replicate`</span>関数は、第一引数に繰り返し計算の回数、第二引数に関数を取ります。<span class="in">`replicate`</span>関数は関数の計算を繰り返し計算の回数だけ繰り返し、結果をベクターで返します。指定する関数の引数を変えることはできないので、一見あまり意味がなさそうに見えます。しかし、Rでは乱数（ランダムな数値）を用いた計算を行うことが多く、乱数計算を繰り返すと同じ関数の返り値でも変化することがあります。したがって、<span class="in">`replicate`</span>関数は乱数を使った計算で利用すると生きる関数となっています。</span>
+<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a><span class="in">`vapply`</span>関数は関数が複数の返り値を持つときに用いる関数です。<span class="in">`vapply`</span>関数の第一引数はベクターやリスト、第二引数は複数の返り値を取る関数です。<span class="in">`vapply`</span>関数はこの返り値を行列に変換するのですが、この変換時の行名を<span class="in">`FUN.VALUE`</span>という第三引数で設定します。<span class="in">`FUN.VALUE`</span>の設定は名前付きベクターで、値は0とします。かなり癖が強いので、使われているところをほとんど見たことがない関数です。</span>
+<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a><span class="al">![図3：vapply関数の使い方](./image/chapter15_vapply.png)</span></span>
+<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="vapply関数"}</span></span>
+<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a><span class="in">fivenum(1:10) # データを5つに集約する関数（最小値、第一四分位、中央値、第三四分位、最大値）</span></span>
+<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a><span class="in">vapply(iris[, 1:4], fivenum, c(Min. = 0, "1st Qu" = 0, Median = 0, "3rd Qu" = 0, Max. = 0)) # 集約値をそれぞれ表示</span></span>
+<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a><span class="al">![図5：replicate関数の使い方](./image/chapter15_replicate.png)</span></span>
+<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a><span class="fu">### replicate関数</span></span>
 <span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(0)</span></span>
-<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="in">`replicate`</span>関数は、第一引数に繰り返し計算の回数、第二引数に関数を取ります。<span class="in">`replicate`</span>関数は関数の計算を繰り返し計算の回数だけ繰り返し、結果をベクターで返します。指定する関数の引数を変えることはできないので、一見あまり意味がなさそうに見えます。しかし、Rでは乱数（ランダムな数値）を用いた計算を行うことが多く、乱数計算を繰り返すと同じ関数の返り値でも変化することがあります。したがって、<span class="in">`replicate`</span>関数は乱数を使った計算で利用すると生きる関数となっています。</span>
+<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a><span class="al">![図5：replicate関数の使い方](./image/chapter15_replicate.png)</span></span>
 <span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="replicate関数"}</span></span>
-<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:6, 10, replace=T) # サイコロを10回ふる</span></span>
-<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a><span class="in">sum(sample(1:6, 10, replace=T)) # サイコロを10回ふり、合計値を求める</span></span>
-<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a><span class="in">replicate(20, sum(sample(1:6, 10, replace=T))) # 上の試行を20回繰り返す</span></span>
-<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a><span class="fu">### tapply関数</span></span>
-<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a><span class="in">`tapply`</span>関数はベクターと因子を引数に取り、因子のグループごとに関数をベクターに適用します。ベクターに測定値、因子にカテゴリ（たとえば男性・女性など）を取っておけば、カテゴリごとの集計値を計算するのに使えます。</span>
+<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(0)</span></span>
+<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="replicate関数"}</span></span>
+<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:6, 10, replace=T) # サイコロを10回ふる</span></span>
+<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a><span class="in">sum(sample(1:6, 10, replace=T)) # サイコロを10回ふり、合計値を求める</span></span>
+<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a><span class="in">replicate(20, sum(sample(1:6, 10, replace=T))) # 上の試行を20回繰り返す</span></span>
+<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a><span class="al">![図6：tapply関数の使い方](./image/chapter15_tapply.png)</span></span>
+<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a><span class="fu">### tapply関数</span></span>
 <span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="tapply関数"}</span></span>
-<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="in">v &lt;- 1:10</span></span>
-<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a><span class="in">cutv &lt;- factor(c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4))</span></span>
-<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a><span class="in">tapply(v, cutv, sum) # ベクターを因子で切り分け、関数を適用する</span></span>
-<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a><span class="fu">### sweep関数</span></span>
-<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a><span class="in">`sweep`</span>関数は、<span class="in">`apply`</span>関数に似ていますが、第三引数が関数ではなく、ベクターであるところが異なります。<span class="in">`MARGIN`</span>は1が行方向、2が列方向であるのは<span class="in">`apply`</span>関数と同じですが、第三引数が引き算に使われるのが特徴です。</span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="in">`tapply`</span>関数はベクターと因子を引数に取り、因子のグループごとに関数をベクターに適用します。ベクターに測定値、因子にカテゴリ（たとえば男性・女性など）を取っておけば、カテゴリごとの集計値を計算するのに使えます。</span>
+<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a><span class="al">![図6：tapply関数の使い方](./image/chapter15_tapply.png)</span></span>
+<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="tapply関数"}</span></span>
+<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a><span class="in">v &lt;- 1:10</span></span>
+<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a><span class="in">cutv &lt;- factor(c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4))</span></span>
+<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a><span class="in">tapply(v, cutv, sum) # ベクターを因子で切り分け、関数を適用する</span></span>
+<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="sweep関数"}</span></span>
-<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a><span class="in">matrix(1:15, nrow=3)</span></span>
-<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a><span class="in">sweep(matrix(1:15, nrow=3), 1, 1:3) # 列方向に1, 2, 3を引く</span></span>
-<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a><span class="in">sweep(matrix(1:15, nrow=3), 2, 1:5) # 行方向に1, 2, 3, 4, 5を引く</span></span>
-<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a><span class="fu">### aggregate関数</span></span>
-<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a><span class="in">`aggregate`</span>関数は、<span class="in">`dplyr`</span>が出てくるまではデータフレームの結果を集計するのによく用いられてきた関数です。<span class="in">`aggregate`</span>関数の第一引数はデータフレーム、第二引数には<span class="in">`by`</span>（因子のリスト）、第三引数に関数を取ります。<span class="in">`aggregate`</span>関数は<span class="in">`by`</span>に指定した因子に従い、各列に関数を適用します。因子にカテゴリ（下の例では<span class="in">`iris`</span>の種、<span class="in">`Species`</span>）を指定することで、因子ごとにデータを集計するのに用いることができます。</span>
+<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a><span class="fu">### sweep関数</span></span>
+<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a><span class="in">`sweep`</span>関数は、<span class="in">`apply`</span>関数に似ていますが、第三引数が関数ではなく、ベクターであるところが異なります。<span class="in">`MARGIN`</span>は1が行方向、2が列方向であるのは<span class="in">`apply`</span>関数と同じですが、第三引数が引き算に使われるのが特徴です。</span>
+<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="sweep関数"}</span></span>
+<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a><span class="in">matrix(1:15, nrow=3)</span></span>
+<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a><span class="in">sweep(matrix(1:15, nrow=3), 1, 1:3) # 列方向に1, 2, 3を引く</span></span>
+<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a><span class="in">sweep(matrix(1:15, nrow=3), 2, 1:5) # 行方向に1, 2, 3, 4, 5を引く</span></span>
+<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a><span class="in">`aggregate`</span>関数は引数にデータフレームだけでなく、**formula（式）**というものを取ることもできます。このformulaはRでは統計でよく用いられる表現で、`~`（チルダ）を演算子として用いるものです。**`~`の左側には目的変数、右側には説明変数を足し算・掛け算で記入する**形をとるのが最も一般的です。<span class="in">`aggregate`</span>関数では、左側に関数を適用する列名、右側に<span class="in">`by`</span>にあたる因子を指定します。また、formulaでは、~の左側または右側に.（ピリオド）を置くことがあります。このピリオドは、「従属変数または独立変数に使用しなかったすべての列」を表す表現です。このformulaについては、統計の章で詳しく説明します。</span>
+<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a><span class="fu">### aggregate関数</span></span>
 <span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a><span class="in">`by`</span>関数も<span class="in">`aggregate`</span>関数と類似した関数ですが、<span class="in">`by`</span>は関数の引数に各列のベクターではなく、因子で区切ったデータフレームを指定します。ですので、データフレームを処理できない関数を用いると、計算ができない場合があります。</span>
+<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a><span class="in">`aggregate`</span>関数は、<span class="in">`dplyr`</span>が出てくるまではデータフレームの結果を集計するのによく用いられてきた関数です。<span class="in">`aggregate`</span>関数の第一引数はデータフレーム、第二引数には<span class="in">`by`</span>（因子のリスト）、第三引数に関数を取ります。<span class="in">`aggregate`</span>関数は<span class="in">`by`</span>に指定した因子に従い、各列に関数を適用します。因子にカテゴリ（下の例では<span class="in">`iris`</span>の種、<span class="in">`Species`</span>）を指定することで、因子ごとにデータを集計するのに用いることができます。</span>
 <span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="al">![図7：aggregate関数の使い方](./image/chapter15_aggregate.png)</span></span>
+<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="in">`aggregate`</span>関数は引数にデータフレームだけでなく、**formula（式）**というものを取ることもできます。このformulaはRでは統計でよく用いられる表現で、`~`（チルダ）を演算子として用いるものです。**`~`の左側には目的変数、右側には説明変数を足し算・掛け算で記入する**形をとるのが最も一般的です。<span class="in">`aggregate`</span>関数では、左側に関数を適用する列名、右側に<span class="in">`by`</span>にあたる因子を指定します。また、formulaでは、~の左側または右側に.（ピリオド）を置くことがあります。このピリオドは、「従属変数または独立変数に使用しなかったすべての列」を表す表現です。このformulaについては、統計の章で詳しく説明します。</span>
 <span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, warning=FALSE, filename="aggregate関数とby関数"}</span></span>
-<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a><span class="in">aggregate(iris[,1:4], by=list(iris$Species), FUN = "mean") # byはリスト、Speciesごとの平均値</span></span>
-<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a><span class="in">aggregate(iris[,1:4], by=list(iris$Species), FUN = "min") # Speciesごとの最小値</span></span>
-<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a><span class="in"># formulaでも演算ができる（.はirisのSpecies以外の列）</span></span>
-<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a><span class="in">aggregate(.~Species, data = iris, max) </span></span>
-<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a><span class="in">head(ToothGrowth) # ラットの歯の成長のデータ</span></span>
-<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a><span class="in"># 与えるサプリの種類と量ごとの歯の長さの平均値</span></span>
-<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a><span class="in">aggregate(len~., data = ToothGrowth, mean) </span></span>
-<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a><span class="in">by(iris[, 1], list(iris$Species), mean) # 1列目のSpeciesごとの平均値</span></span>
-<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a><span class="in">by(iris[, 1:2], list(iris$Species), mean) # meanは2列のデータを処理できない</span></span>
+<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a><span class="in">`by`</span>関数も<span class="in">`aggregate`</span>関数と類似した関数ですが、<span class="in">`by`</span>は関数の引数に各列のベクターではなく、因子で区切ったデータフレームを指定します。ですので、データフレームを処理できない関数を用いると、計算ができない場合があります。</span>
+<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a><span class="al">![図7：aggregate関数の使い方](./image/chapter15_aggregate.png)</span></span>
+<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, warning=FALSE, filename="aggregate関数とby関数"}</span></span>
+<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a><span class="in">aggregate(iris[,1:4], by=list(iris$Species), FUN = "mean") # byはリスト、Speciesごとの平均値</span></span>
+<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a><span class="in">aggregate(iris[,1:4], by=list(iris$Species), FUN = "min") # Speciesごとの最小値</span></span>
+<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a><span class="in"># formulaでも演算ができる（.はirisのSpecies以外の列）</span></span>
+<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a><span class="in">aggregate(.~Species, data = iris, max) </span></span>
+<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a><span class="in">head(ToothGrowth) # ラットの歯の成長のデータ</span></span>
+<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a><span class="in"># 与えるサプリの種類と量ごとの歯の長さの平均値</span></span>
+<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a><span class="in">aggregate(len~., data = ToothGrowth, mean) </span></span>
 <span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a><span class="in">by(iris[, 1:4], list(iris$Species), summary) # summaryはデータフレームを引数にできるので、計算できる</span></span>
-<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a><span class="in">by(iris[, 1], list(iris$Species), mean) # 1列目のSpeciesごとの平均値</span></span>
+<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a><span class="in">by(iris[, 1:2], list(iris$Species), mean) # meanは2列のデータを処理できない</span></span>
+<span id="cb15-317"><a href="#cb15-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-318"><a href="#cb15-318" aria-hidden="true" tabindex="-1"></a><span class="in">by(iris[, 1:4], list(iris$Species), summary) # summaryはデータフレームを引数にできるので、計算できる</span></span>
+<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
@@ -2156,7 +2164,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

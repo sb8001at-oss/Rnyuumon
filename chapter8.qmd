@@ -1,9 +1,11 @@
 # 数値
 
-```{r, setup, include=FALSE, echo=FALSE}
+```{r, setup, include=FALSE, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE
 )
+
+library(tidyverse)
 ```
 
 Rの型で最もよく利用するものが**数値（numeric）**です。以下では、数値を取り扱う際に用いる関数や手法を紹介します。
@@ -212,7 +214,7 @@ $$var(x)=\frac{\sum_{i=1}^{n}(x_{i}-\bar{x})^2}{n-1}$$
 
 $$sd(x)=\sqrt{\frac{\sum_{i=1}^{n}(x_{i}-\bar{x})^2}{n-1}}$$
 
-標準誤差（standard error）、x~1~～x~n~の標準誤差は以下の式で表されます。
+標準誤差（standard error）、x~1~～x~n~の標準誤差は以下の式で表されます。標準偏差はばらつきの指標であり、標準誤差は平均値の推定範囲を表す指標となります。
 
 $$se(x)=\frac{1}{\sqrt{n}} \cdot sd(x)=\frac{1}{\sqrt{n}}\sqrt{\frac{\sum_{i=1}^{n}(x_{i}-\bar{x})^2}{n-1}}$$
 
@@ -226,6 +228,52 @@ $$cor(x,y)=\frac{cov(x,y)}{var(x) \cdot var(y)}=\frac{\sum_{i=1}^{n}(x_{i}-\bar{
 
 :::
 
+:::{.callout-tip collapse="true"}
+
+## 標準偏差と標準誤差
+
+標準誤差（standard error）は（不偏）標準偏差（sample standard deviation）をデータ数（n）の平方根で割った統計量です。標準偏差と標準誤差は共にばらつきに関与しており、よく似ている指標に見えますが、意味が異なります。標準偏差、標準誤差は互いに間違えて利用されやすい指標ですので、簡単に意味を説明しております。
+
+標準偏差はデータのばらつきを反映する指標です。データのばらつきはデータ数が増えても、集団が同じであれば一定であるはずです。ですので、標準偏差はデータ数nが増えても変化しません（正確には不偏分散が母分散に近づいていくこと、nが大きくなると標準偏差自体の信頼性は高くなることから、ほんの少しだけ変化します）。
+
+標準誤差はデータ数nが増えるとどんどん小さくなっていきます。上記の通り、データのばらつきはnが増えても変化しませんので、ばらつきの指標ではない、ということになります。では標準誤差は何かというと、平均値の信頼区間に関わるパラメータ、つまり、平均値の推定範囲を反映するパラメータとなります。平均値の信頼区間には通常95%信頼区間が用いられますが、標準誤差は約68.3%信頼区間に当たります。
+
+データ数nが増えると、ばらつきは減りませんが、平均値の信頼性が高まっていきます。日本人の身長の平均値を知りたいとき、2人の身長の平均値と2万人の身長の平均値のどちらが信用できるか、ということを考えると標準誤差の意味を直感的に理解できると思います。
+
+したがって、データのばらつきを示したいときには標準偏差、平均値に興味がある場合には標準誤差を用いるのがよいでしょう。以下にデータ数と母標準偏差（population standard deviation）、不偏標準偏差、標準誤差及び平均値の95%信頼区間（上側）の関係を示します。
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+set.seed(0)
+
+data <- NULL
+
+for(j in 1:2000){
+  mat <- matrix(nrow=100, ncol=5)
+  for(i in 2:100){
+    v <- rnorm(i)
+    msdv <- (sum(((v - mean(v)) ^ 2)) / i) ^ 0.5
+    sdv <- sd(v)
+    sev <- sd(v) / i ^ 0.5
+    conf_int <- t.test(v) |> _$conf.int |> _[2]
+    mat[i,] <- c(i, msdv, sdv, sev, conf_int)
+  }
+  data <- rbind(data, mat)
+}
+
+data <- as.data.frame(data)
+colnames(data) <- c("n","population_SD", "sample_SD", "SE", "confidence_interval")
+
+data |> 
+  na.omit() |> 
+  pivot_longer(2:5) |> 
+  group_by(n, name) |> 
+  summarise(m =mean(value)) |> 
+  ggplot(aes(x=n, y=m, color=name))+
+  geom_line(linewidth=1)+
+  labs(x="データ数", y="各統計量の値", caption="confidence_interval：95%信頼区間の上側\npopulation_SD：母標準偏差\nsample_SD：不偏標準偏差\nSE：標準誤差\n結果は平均0、標準偏差1の正規乱数からの計算で求めているので、nが小さいときは結果が不正確")
+```
+
+:::
 
 ### 度数分布の計算
 
