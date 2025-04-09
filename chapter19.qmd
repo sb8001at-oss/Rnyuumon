@@ -24,7 +24,7 @@ Rでのコーディング規約については、基本的には上記の[tidyve
 
 ファイル名はPCにも読みやすく、ヒトにも読みやすいようにしましょう。スペースやシンボルを使うのは避け、文字の区切りには-（ハイフン）もしくは_（アンダースコア）を使うことが推奨されます。ファイル名は意味のある言葉とし、同じ種類のファイルは同じルールで名前を付けましょう。
 
-```{txt, filename="ファイル名の付け方"}
+```{r, eval=FALSE, filename="ファイル名の付け方"}
 # 良い例
 ## 拡張子のRは大文字、アンダースコアで単語を繋ぐ
 fit_models.R  
@@ -50,7 +50,7 @@ fig_iris.png
 
 また、ファイル名にはその順番が分かるような指標（01、02などの番号、日付など）を加えて、ファイルの順序が分かるようにしましょう。
 
-```{txt, filename="ファイルの順番が分かるようにする"}
+```{r, eval=FALSE, filename="ファイルの順番が分かるようにする"}
 # 良い例
 01-lm-analysis.R
 02-glm-analysis.R
@@ -67,7 +67,7 @@ file_image_240501.txt
 
 ファイル名に「最終」などを付けないようにしましょう。大体の場合、「最終2」などができます。
 
-```{txt, filename="最終などのファイル名の使用"}
+```{r, eval=FALSE, filename="最終などのファイル名の使用"}
 # 悪い例
 lm_analysis_final.R
 lm_analysis_final2.R
@@ -82,7 +82,7 @@ lm_analysis_final_revisited.R
 
 変数名は単語をアンダースコアでつないで記載しましょう。変数名にはその変数の意味の分かる名前を用い、あまり長くならないようにします。また、Rに定義されている変数や関数などを上書きしないよう気を付けましょう。キャメルケース（`dayOne`、`DayOne`のように単語の区切りを大文字にする）は基本的に使用しません。
 
-```{txt, filename="変数名"}
+```{r, eval=FALSE, filename="変数名"}
 # 良い例
 day_1
 mean_leaf_length
@@ -101,7 +101,7 @@ pi <- "円周率" # 既存の変数に代入
 
 （私は`if`文や`){`の間にはスペースを入れない主義ですが、コーディング規約にはスペースを入れるよう記載されています）
 
-```{txt, filename="スペースの使用"}
+```{r, eval=FALSE, filename="スペースの使用"}
 # 良い例
 x[1, ]
 c(1, 2, 3)
@@ -122,7 +122,7 @@ function(x){print(x)}
 
 改行の代わりにセミコロン（`;`）を使うのは避けましょう。また、代入は`<-`で行い、`=`は使わないようにしましょう。文字列にシングルクォーテーション（`'`）を使うのもやめましょう。
 
-```{r, filename="セミコロン、代入、文字列の準備"}
+```{r, eval=FALSE, filename="セミコロン、代入、文字列の準備"}
 # 良い例
 x <- 1
 y <- 2
@@ -139,7 +139,7 @@ x = 1 ; y = 2
 
 関数名は基本的に変数と同じように、意味が分かるように、アンダースコアで単語を繋いだものとします。ただし、関数名は動詞を使うこととされています。
 
-```{txt, filename="関数名"}
+```{r, eval=FALSE, filename="関数名"}
 # 良い例
 bind_row()
 mutate()
@@ -155,7 +155,7 @@ mutation()
 
 無名関数を用いるときは、`function`を用いても、`\`を用いても問題ありません。ただし、`\`は改行のある関数では使わない、名前付き関数（通常の関数名を使う関数のこと）では使用しないようにします。
 
-```{txt, filename="無名関数とバックスラッシュ"}
+```{r, eval=FALSE, filename="無名関数とバックスラッシュ"}
 # 良い例
 apply(iris, 1, \(x){sum(x)/length(x)})
 
@@ -175,7 +175,7 @@ mean_bs <- \(x) sum(x) / length(x)
 
 関数の返り値は他の言語では通常`return`関数で明示的に示すのが一般的だと思います。Rでも`return`関数で指定することはできますが、Tidyverse style guideでは`function`の返り値は`return`関数で示すのではなく、最後に変数を宣言する形で設定するとしています。ただし、`function`の最後ではない場所で返り値を返す場合には`return`関数を使いましょう。
 
-```{txt, filename="functionの返り値"}
+```{r, eval=FALSE, filename="functionの返り値"}
 # 良い例
 sum_2_value <- function(x, y){
   z <- x + y
@@ -200,7 +200,7 @@ sum_2_value <- function(x, y){
 
 パイプ演算子の前にはスペースを入れ、パイプ演算子の後で改行します。改行した場合にはインデントを入れます。Rstudioではパイプ演算子をショートカット（ctrl+shift+M）で入力すると自動的にスペースが加えられ、改行するとインデントされるので、Rstudioを使っていると特に気にすることはないでしょう。
 
-```{txt, filename="パイプ演算子の利用と改行・インデント"}
+```{r, eval=FALSE, filename="パイプ演算子の利用と改行・インデント"}
 # 良い例
 iris |> 
   group_by(Species) |> 
@@ -212,7 +212,7 @@ iris|>group_by(Species)|>summarise(m=mean(value))
 
 パイプ演算子の演算内で別のパイプ演算子の演算を行うとわかりにくくなるので避けましょう。また、Rのデフォルトのパイプ演算子（|>）が推奨されており、magrittrのパイプ演算子（%>%）は避けるようにしましょう。
 
-```{txt, filename="パイプ演算子の入れ子（ネスト）は避ける"}
+```{r, eval=FALSE, filename="パイプ演算子の入れ子（ネスト）は避ける"}
 # 良い例
 x_join <- x |> select(a, b, w)
 y_join <- y |> select(a, b, v)
@@ -228,7 +228,7 @@ x |>
 
 `ggplot2`では、`+`演算子ごとに改行を入れます。また、引数がたくさんある場合には改行を入れるようにしましょう。
 
-```{txt, filename="ggplot2：+演算子ごとに改行"}
+```{r, eval=FALSE, filename="ggplot2：+演算子ごとに改行"}
 iris |> 
   ggplot(aes(x=Sepal.Length, y = Sepal.Width, color = Species, fill = Species)) +
   geom_point(size = 1) +

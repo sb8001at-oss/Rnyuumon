@@ -475,7 +475,7 @@ window.Quarto = {
   <li><a href="#インデックスの位置を特定する" id="toc-インデックスの位置を特定する" class="nav-link" data-scroll-target="#インデックスの位置を特定する"><span class="header-section-number">11.6</span> インデックスの位置を特定する</a></li>
   <li><a href="#ベクターの要素に名前を付ける" id="toc-ベクターの要素に名前を付ける" class="nav-link" data-scroll-target="#ベクターの要素に名前を付ける"><span class="header-section-number">11.7</span> ベクターの要素に名前を付ける</a></li>
   <li><a href="#ベクターの長さを調べる" id="toc-ベクターの長さを調べる" class="nav-link" data-scroll-target="#ベクターの長さを調べる"><span class="header-section-number">11.8</span> ベクターの長さを調べる</a></li>
-  <li><a href="#ベクターの並べ替え" id="toc-ベクターの並べ替え" class="nav-link" data-scroll-target="#ベクターの並べ替え"><span class="header-section-number">11.9</span> ベクターの並べ替え</a></li>
+  <li><a href="#ベクターの並べ替えと要素の順番" id="toc-ベクターの並べ替えと要素の順番" class="nav-link" data-scroll-target="#ベクターの並べ替えと要素の順番"><span class="header-section-number">11.9</span> ベクターの並べ替えと要素の順番</a></li>
   <li><a href="#重複する要素を取り除く" id="toc-重複する要素を取り除く" class="nav-link" data-scroll-target="#重複する要素を取り除く"><span class="header-section-number">11.10</span> 重複する要素を取り除く</a>
   <ul>
   <li><a href="#アトリビュートattributeを付ける" id="toc-アトリビュートattributeを付ける" class="nav-link" data-scroll-target="#アトリビュートattributeを付ける"><span class="header-section-number">11.10.0.1</span> アトリビュート（attribute）を付ける</a></li>
@@ -874,13 +874,14 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="ベクターの並べ替え" class="level2" data-number="11.9">
-<h2 data-number="11.9" class="anchored" data-anchor-id="ベクターの並べ替え"><span class="header-section-number">11.9</span> ベクターの並べ替え</h2>
+<section id="ベクターの並べ替えと要素の順番" class="level2" data-number="11.9">
+<h2 data-number="11.9" class="anchored" data-anchor-id="ベクターの並べ替えと要素の順番"><span class="header-section-number">11.9</span> ベクターの並べ替えと要素の順番</h2>
 <p>ベクターの要素を順番に並べ替える場合には、<code>sort</code>関数を用います。<code>sort</code>関数はベクターを昇順に並べ替える関数ですが、<code>decreasing=TRUE</code>を指定すると降順に並べ替えることができます。ベクターを逆順に並べ替える場合には、<code>rev</code>関数を用います。</p>
+<p>また、<code>order</code>関数と<code>rank</code>関数は要素の順番を返す関数です。<code>order</code>関数と<code>rank</code>関数ではタイデータの取り扱いが異なります。<code>order</code>関数はデータフレームの順番の並べ替えに使われます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>ベクターの並べ替え</strong></pre>
+<pre><strong>ベクターの並べ替えと要素の順番</strong></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -893,7 +894,13 @@ window.Quarto = {
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 5 4 3 2 1</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rev</span>(x) <span class="co"># 逆順</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 2 4 3 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 2 4 3 5</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 要素の順番を評価する</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="co"># タイデータに順番を付ける</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 5 2 6 4 1 3</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rank</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="co"># タイデータを真ん中の順番にする</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 5.0 2.5 6.0 4.0 1.0 2.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -959,19 +966,19 @@ window.Quarto = {
 <pre><strong>sample関数と復元・非復元抽出</strong></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">5</span>) <span class="co"># 1~10の整数から5つをランダムに取り出す</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 10  9  6  7  1</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 7 6 9 3 2</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">5</span>) <span class="co"># ランダムに取り出すので、上とは異なる結果となる</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 10  4  6  2  3</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 7 3 1 5 2</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">5</span>, <span class="at">replace=</span><span class="cn">FALSE</span>) <span class="co"># 非復元抽出</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 7 5 2 4 6</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1]  3  9  1  4 10</span></span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">15</span>, <span class="at">replace=</span><span class="cn">FALSE</span>) <span class="co"># エラー（1度しか取り出せない）</span></span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Error in sample.int(length(x), size, replace, prob): cannot take a sample larger than the population when 'replace = FALSE'</span></span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">15</span>, <span class="at">replace=</span><span class="cn">TRUE</span>) <span class="co"># 復元抽出ではエラーとならない</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] 7 7 5 7 8 4 5 7 5 6 6 5 2 6 8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] 3 7 4 3 2 6 6 2 7 4 7 6 9 4 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -2039,145 +2046,152 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-261"><a href="#cb18-261" aria-hidden="true" tabindex="-1"></a><span class="in">dim(x) # ベクターは次元（dimension）を持たない</span></span>
 <span id="cb18-262"><a href="#cb18-262" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-263"><a href="#cb18-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-264"><a href="#cb18-264" aria-hidden="true" tabindex="-1"></a><span class="fu">## ベクターの並べ替え</span></span>
+<span id="cb18-264"><a href="#cb18-264" aria-hidden="true" tabindex="-1"></a><span class="fu">## ベクターの並べ替えと要素の順番</span></span>
 <span id="cb18-265"><a href="#cb18-265" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-266"><a href="#cb18-266" aria-hidden="true" tabindex="-1"></a>ベクターの要素を順番に並べ替える場合には、<span class="in">`sort`</span>関数を用います。<span class="in">`sort`</span>関数はベクターを昇順に並べ替える関数ですが、<span class="in">`decreasing=TRUE`</span>を指定すると降順に並べ替えることができます。ベクターを逆順に並べ替える場合には、<span class="in">`rev`</span>関数を用います。</span>
 <span id="cb18-267"><a href="#cb18-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-268"><a href="#cb18-268" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ベクターの並べ替え"}</span></span>
-<span id="cb18-269"><a href="#cb18-269" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- c(5, 3, 4, 2, 1)</span></span>
-<span id="cb18-270"><a href="#cb18-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-271"><a href="#cb18-271" aria-hidden="true" tabindex="-1"></a><span class="in"># 昇順に並べ替え</span></span>
-<span id="cb18-272"><a href="#cb18-272" aria-hidden="true" tabindex="-1"></a><span class="in">sort(x)</span></span>
-<span id="cb18-273"><a href="#cb18-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-274"><a href="#cb18-274" aria-hidden="true" tabindex="-1"></a><span class="in"># 降順に並べ替え</span></span>
-<span id="cb18-275"><a href="#cb18-275" aria-hidden="true" tabindex="-1"></a><span class="in">sort(x, decreasing=TRUE)</span></span>
-<span id="cb18-276"><a href="#cb18-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-277"><a href="#cb18-277" aria-hidden="true" tabindex="-1"></a><span class="in">rev(x) # 逆順</span></span>
-<span id="cb18-278"><a href="#cb18-278" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-279"><a href="#cb18-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-280"><a href="#cb18-280" aria-hidden="true" tabindex="-1"></a><span class="fu">## 重複する要素を取り除く</span></span>
-<span id="cb18-281"><a href="#cb18-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-282"><a href="#cb18-282" aria-hidden="true" tabindex="-1"></a>ベクター内の重複する要素を取り除く場合には、<span class="in">`unique`</span>関数を用います。</span>
-<span id="cb18-283"><a href="#cb18-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-284"><a href="#cb18-284" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="unique関数で重複を取り除く"}</span></span>
-<span id="cb18-285"><a href="#cb18-285" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- c("cat", "dog", "cat", "cat")</span></span>
-<span id="cb18-286"><a href="#cb18-286" aria-hidden="true" tabindex="-1"></a><span class="in">unique(x)</span></span>
-<span id="cb18-287"><a href="#cb18-287" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-268"><a href="#cb18-268" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`order`</span>関数と<span class="in">`rank`</span>関数は要素の順番を返す関数です。<span class="in">`order`</span>関数と<span class="in">`rank`</span>関数ではタイデータの取り扱いが異なります。<span class="in">`order`</span>関数はデータフレームの順番の並べ替えに使われます。</span>
+<span id="cb18-269"><a href="#cb18-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-270"><a href="#cb18-270" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ベクターの並べ替えと要素の順番"}</span></span>
+<span id="cb18-271"><a href="#cb18-271" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- c(5, 3, 4, 2, 1)</span></span>
+<span id="cb18-272"><a href="#cb18-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-273"><a href="#cb18-273" aria-hidden="true" tabindex="-1"></a><span class="in"># 昇順に並べ替え</span></span>
+<span id="cb18-274"><a href="#cb18-274" aria-hidden="true" tabindex="-1"></a><span class="in">sort(x)</span></span>
+<span id="cb18-275"><a href="#cb18-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-276"><a href="#cb18-276" aria-hidden="true" tabindex="-1"></a><span class="in"># 降順に並べ替え</span></span>
+<span id="cb18-277"><a href="#cb18-277" aria-hidden="true" tabindex="-1"></a><span class="in">sort(x, decreasing=TRUE)</span></span>
+<span id="cb18-278"><a href="#cb18-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-279"><a href="#cb18-279" aria-hidden="true" tabindex="-1"></a><span class="in">rev(x) # 逆順</span></span>
+<span id="cb18-280"><a href="#cb18-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-281"><a href="#cb18-281" aria-hidden="true" tabindex="-1"></a><span class="in"># 要素の順番を評価する</span></span>
+<span id="cb18-282"><a href="#cb18-282" aria-hidden="true" tabindex="-1"></a><span class="in">order(c(4, 2, 5, 3, 1, 2)) # タイデータに順番を付ける</span></span>
+<span id="cb18-283"><a href="#cb18-283" aria-hidden="true" tabindex="-1"></a><span class="in">rank(c(4, 2, 5, 3, 1, 2)) # タイデータを真ん中の順番にする</span></span>
+<span id="cb18-284"><a href="#cb18-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-285"><a href="#cb18-285" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-286"><a href="#cb18-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-287"><a href="#cb18-287" aria-hidden="true" tabindex="-1"></a><span class="fu">## 重複する要素を取り除く</span></span>
 <span id="cb18-288"><a href="#cb18-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-289"><a href="#cb18-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-290"><a href="#cb18-290" aria-hidden="true" tabindex="-1"></a><span class="fu">#### アトリビュート（attribute）を付ける</span></span>
-<span id="cb18-291"><a href="#cb18-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-292"><a href="#cb18-292" aria-hidden="true" tabindex="-1"></a>Rでは、ベクターに名前以外のアトリビュートをつけることもできます。アトリビュートをつけるとき、アトリビュートを呼び出すときには<span class="in">`attr`</span>関数を用います。ただし、<span class="in">`names`</span>以外のアトリビュートをベクターの要素の呼び出しに用いることはできません。</span>
-<span id="cb18-293"><a href="#cb18-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-294"><a href="#cb18-294" aria-hidden="true" tabindex="-1"></a>ベクターのアトリビュートを調べるときには、<span class="in">`str`</span>関数を用いることもできます。<span class="in">`str`</span>は「structure」の略で、様々なオブジェクトの構造を調べることができる便利な関数です。</span>
+<span id="cb18-289"><a href="#cb18-289" aria-hidden="true" tabindex="-1"></a>ベクター内の重複する要素を取り除く場合には、<span class="in">`unique`</span>関数を用います。</span>
+<span id="cb18-290"><a href="#cb18-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-291"><a href="#cb18-291" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="unique関数で重複を取り除く"}</span></span>
+<span id="cb18-292"><a href="#cb18-292" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- c("cat", "dog", "cat", "cat")</span></span>
+<span id="cb18-293"><a href="#cb18-293" aria-hidden="true" tabindex="-1"></a><span class="in">unique(x)</span></span>
+<span id="cb18-294"><a href="#cb18-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-295"><a href="#cb18-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-296"><a href="#cb18-296" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="attributeの確認"}</span></span>
-<span id="cb18-297"><a href="#cb18-297" aria-hidden="true" tabindex="-1"></a><span class="in">attr(x, "hoge") &lt;- c("rat", "hat", "mat")</span></span>
-<span id="cb18-298"><a href="#cb18-298" aria-hidden="true" tabindex="-1"></a><span class="in">x$hoge # 呼び出せない</span></span>
-<span id="cb18-299"><a href="#cb18-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-300"><a href="#cb18-300" aria-hidden="true" tabindex="-1"></a><span class="in">attr(x, "hoge") # 呼び出せる</span></span>
-<span id="cb18-301"><a href="#cb18-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-302"><a href="#cb18-302" aria-hidden="true" tabindex="-1"></a><span class="in">str(x) # アトリビュートにhogeがあることを確認</span></span>
-<span id="cb18-303"><a href="#cb18-303" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-304"><a href="#cb18-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-305"><a href="#cb18-305" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb18-296"><a href="#cb18-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-297"><a href="#cb18-297" aria-hidden="true" tabindex="-1"></a><span class="fu">#### アトリビュート（attribute）を付ける</span></span>
+<span id="cb18-298"><a href="#cb18-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-299"><a href="#cb18-299" aria-hidden="true" tabindex="-1"></a>Rでは、ベクターに名前以外のアトリビュートをつけることもできます。アトリビュートをつけるとき、アトリビュートを呼び出すときには<span class="in">`attr`</span>関数を用います。ただし、<span class="in">`names`</span>以外のアトリビュートをベクターの要素の呼び出しに用いることはできません。</span>
+<span id="cb18-300"><a href="#cb18-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-301"><a href="#cb18-301" aria-hidden="true" tabindex="-1"></a>ベクターのアトリビュートを調べるときには、<span class="in">`str`</span>関数を用いることもできます。<span class="in">`str`</span>は「structure」の略で、様々なオブジェクトの構造を調べることができる便利な関数です。</span>
+<span id="cb18-302"><a href="#cb18-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-303"><a href="#cb18-303" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="attributeの確認"}</span></span>
+<span id="cb18-304"><a href="#cb18-304" aria-hidden="true" tabindex="-1"></a><span class="in">attr(x, "hoge") &lt;- c("rat", "hat", "mat")</span></span>
+<span id="cb18-305"><a href="#cb18-305" aria-hidden="true" tabindex="-1"></a><span class="in">x$hoge # 呼び出せない</span></span>
 <span id="cb18-306"><a href="#cb18-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-307"><a href="#cb18-307" aria-hidden="true" tabindex="-1"></a><span class="fu">## アトリビュートの使い道</span></span>
+<span id="cb18-307"><a href="#cb18-307" aria-hidden="true" tabindex="-1"></a><span class="in">attr(x, "hoge") # 呼び出せる</span></span>
 <span id="cb18-308"><a href="#cb18-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-309"><a href="#cb18-309" aria-hidden="true" tabindex="-1"></a>ベクターに<span class="in">`names`</span>以外の<span class="in">`attribute`</span>を設定しても特に利点はないため、アトリビュートの設定を行うことはほぼありません。<span class="in">`attribute`</span>には、<span class="in">`names`</span>の他にクラス名などが登録されます。</span>
-<span id="cb18-310"><a href="#cb18-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-311"><a href="#cb18-311" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-312"><a href="#cb18-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-313"><a href="#cb18-313" aria-hidden="true" tabindex="-1"></a><span class="fu">## ランダムサンプリング</span></span>
-<span id="cb18-314"><a href="#cb18-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-315"><a href="#cb18-315" aria-hidden="true" tabindex="-1"></a>Rは統計の言語です。統計と確率は密接に関係しているため、統計の取り扱いにおいては、時に確率論的な現象を再現したい、という場合があります。確率論的な現象はランダムなものを取り扱うため、Rではベクターからランダムに要素を取り出す関数、<span class="in">`sample`</span>関数が備わっています。</span>
-<span id="cb18-316"><a href="#cb18-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-317"><a href="#cb18-317" aria-hidden="true" tabindex="-1"></a>この<span class="in">`sample`</span>関数では、第一引数にベクター、第二引数にベクターから要素を取り出す回数を指定します。このランダムな取り出しには、**復元抽出**（1つの要素を何度も取り出すことができる）と**非復元抽出**（1つの要素を一度取り出すと、再度取り出されることがない）があります。復元抽出と非復元抽出の指定には、<span class="in">`sample`</span>関数の<span class="in">`replace`</span>引数を用います。<span class="in">`replace`</span>引数のデフォルトは<span class="in">`FALSE`</span>で、<span class="in">`replace`</span>を指定しない場合には非復元抽出が行われます。復元抽出を行う場合には、<span class="in">`replace`</span>に<span class="in">`TRUE`</span>を指定します。</span>
-<span id="cb18-318"><a href="#cb18-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-319"><a href="#cb18-319" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="sample関数と復元・非復元抽出"}</span></span>
-<span id="cb18-320"><a href="#cb18-320" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 5) # 1~10の整数から5つをランダムに取り出す</span></span>
+<span id="cb18-309"><a href="#cb18-309" aria-hidden="true" tabindex="-1"></a><span class="in">str(x) # アトリビュートにhogeがあることを確認</span></span>
+<span id="cb18-310"><a href="#cb18-310" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-311"><a href="#cb18-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-312"><a href="#cb18-312" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb18-313"><a href="#cb18-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-314"><a href="#cb18-314" aria-hidden="true" tabindex="-1"></a><span class="fu">## アトリビュートの使い道</span></span>
+<span id="cb18-315"><a href="#cb18-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-316"><a href="#cb18-316" aria-hidden="true" tabindex="-1"></a>ベクターに<span class="in">`names`</span>以外の<span class="in">`attribute`</span>を設定しても特に利点はないため、アトリビュートの設定を行うことはほぼありません。<span class="in">`attribute`</span>には、<span class="in">`names`</span>の他にクラス名などが登録されます。</span>
+<span id="cb18-317"><a href="#cb18-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-318"><a href="#cb18-318" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-319"><a href="#cb18-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-320"><a href="#cb18-320" aria-hidden="true" tabindex="-1"></a><span class="fu">## ランダムサンプリング</span></span>
 <span id="cb18-321"><a href="#cb18-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-322"><a href="#cb18-322" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 5) # ランダムに取り出すので、上とは異なる結果となる</span></span>
+<span id="cb18-322"><a href="#cb18-322" aria-hidden="true" tabindex="-1"></a>Rは統計の言語です。統計と確率は密接に関係しているため、統計の取り扱いにおいては、時に確率論的な現象を再現したい、という場合があります。確率論的な現象はランダムなものを取り扱うため、Rではベクターからランダムに要素を取り出す関数、<span class="in">`sample`</span>関数が備わっています。</span>
 <span id="cb18-323"><a href="#cb18-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-324"><a href="#cb18-324" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 5, replace=FALSE) # 非復元抽出</span></span>
+<span id="cb18-324"><a href="#cb18-324" aria-hidden="true" tabindex="-1"></a>この<span class="in">`sample`</span>関数では、第一引数にベクター、第二引数にベクターから要素を取り出す回数を指定します。このランダムな取り出しには、**復元抽出**（1つの要素を何度も取り出すことができる）と**非復元抽出**（1つの要素を一度取り出すと、再度取り出されることがない）があります。復元抽出と非復元抽出の指定には、<span class="in">`sample`</span>関数の<span class="in">`replace`</span>引数を用います。<span class="in">`replace`</span>引数のデフォルトは<span class="in">`FALSE`</span>で、<span class="in">`replace`</span>を指定しない場合には非復元抽出が行われます。復元抽出を行う場合には、<span class="in">`replace`</span>に<span class="in">`TRUE`</span>を指定します。</span>
 <span id="cb18-325"><a href="#cb18-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-326"><a href="#cb18-326" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 15, replace=FALSE) # エラー（1度しか取り出せない）</span></span>
-<span id="cb18-327"><a href="#cb18-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-328"><a href="#cb18-328" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 15, replace=TRUE) # 復元抽出ではエラーとならない</span></span>
-<span id="cb18-329"><a href="#cb18-329" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-326"><a href="#cb18-326" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="sample関数と復元・非復元抽出"}</span></span>
+<span id="cb18-327"><a href="#cb18-327" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 5) # 1~10の整数から5つをランダムに取り出す</span></span>
+<span id="cb18-328"><a href="#cb18-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-329"><a href="#cb18-329" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 5) # ランダムに取り出すので、上とは異なる結果となる</span></span>
 <span id="cb18-330"><a href="#cb18-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-331"><a href="#cb18-331" aria-hidden="true" tabindex="-1"></a><span class="fu">## ベクターを切り分ける：split</span></span>
+<span id="cb18-331"><a href="#cb18-331" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 5, replace=FALSE) # 非復元抽出</span></span>
 <span id="cb18-332"><a href="#cb18-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-333"><a href="#cb18-333" aria-hidden="true" tabindex="-1"></a>ベクターを同じ長さの因子で切り分けるのが、<span class="in">`split`</span>関数です。<span class="in">`split`</span>関数は2つの引数を取り、第一引数にはベクター、第二引数にはベクターと同じ長さの因子を取ります。因子の<span class="in">`levels`</span>に従い、第一引数で指定したベクターを2つ以上のグループに切り分けます。<span class="in">`split`</span>関数では、グループで切り分けたベクターがリストで返ってきます。</span>
+<span id="cb18-333"><a href="#cb18-333" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 15, replace=FALSE) # エラー（1度しか取り出せない）</span></span>
 <span id="cb18-334"><a href="#cb18-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-335"><a href="#cb18-335" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="split関数"}</span></span>
-<span id="cb18-336"><a href="#cb18-336" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- rep(1:5, 5) # xは1~5を5回繰り返すベクター</span></span>
-<span id="cb18-337"><a href="#cb18-337" aria-hidden="true" tabindex="-1"></a><span class="in">y &lt;- factor(c(rep(1, 10), rep(2, 15))) # xを切り分けるための因子</span></span>
-<span id="cb18-338"><a href="#cb18-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-339"><a href="#cb18-339" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
-<span id="cb18-340"><a href="#cb18-340" aria-hidden="true" tabindex="-1"></a><span class="in">y</span></span>
+<span id="cb18-335"><a href="#cb18-335" aria-hidden="true" tabindex="-1"></a><span class="in">sample(1:10, 15, replace=TRUE) # 復元抽出ではエラーとならない</span></span>
+<span id="cb18-336"><a href="#cb18-336" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-337"><a href="#cb18-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-338"><a href="#cb18-338" aria-hidden="true" tabindex="-1"></a><span class="fu">## ベクターを切り分ける：split</span></span>
+<span id="cb18-339"><a href="#cb18-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-340"><a href="#cb18-340" aria-hidden="true" tabindex="-1"></a>ベクターを同じ長さの因子で切り分けるのが、<span class="in">`split`</span>関数です。<span class="in">`split`</span>関数は2つの引数を取り、第一引数にはベクター、第二引数にはベクターと同じ長さの因子を取ります。因子の<span class="in">`levels`</span>に従い、第一引数で指定したベクターを2つ以上のグループに切り分けます。<span class="in">`split`</span>関数では、グループで切り分けたベクターがリストで返ってきます。</span>
 <span id="cb18-341"><a href="#cb18-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-342"><a href="#cb18-342" aria-hidden="true" tabindex="-1"></a><span class="in">split(x, y) # リストが返ってくる</span></span>
-<span id="cb18-343"><a href="#cb18-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-344"><a href="#cb18-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-345"><a href="#cb18-345" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb18-346"><a href="#cb18-346" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
-<span id="cb18-347"><a href="#cb18-347" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("head(x)", "tail(x)", "names(x)", "names(x) &lt;- y", "length(x)", "attr(x, which)", "attr(x, which) &lt;- y", "str(x)", "sample(x, size, replace)", "split(x, f)", "sort(x)", "sort(x, decreasing=TRUE)", "rev(x)", "unique(x)"),</span></span>
-<span id="cb18-348"><a href="#cb18-348" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("始めの6つの要素を返す", "最後の6つの要素を返す", "名前を表示する", "yを名前に設定する", "要素の数を返す", "attribute(which)を返す", "attribute(which)をyに設定する", "詳細な情報（構造、structure）を表示する",  "xからsizeの個数の要素をランダムに取り出す", "因子fに従ってベクターを分割する", "昇順に並べ替える", "降順に並べ替える", "逆順に並べ替える", "重複を取り除く")</span></span>
-<span id="cb18-349"><a href="#cb18-349" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb18-350"><a href="#cb18-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-351"><a href="#cb18-351" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "ベクターに適用される演算")</span></span>
-<span id="cb18-352"><a href="#cb18-352" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表1：ベクターに関する関数")</span></span>
-<span id="cb18-353"><a href="#cb18-353" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-354"><a href="#cb18-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-355"><a href="#cb18-355" aria-hidden="true" tabindex="-1"></a><span class="fu">## 集合としてのベクター</span></span>
-<span id="cb18-356"><a href="#cb18-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-357"><a href="#cb18-357" aria-hidden="true" tabindex="-1"></a>統計では、集合を取り扱う場合があります。集合としてベクターを取り扱い、積集合や和集合を取り扱う関数がRには備わっています。</span>
-<span id="cb18-358"><a href="#cb18-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-359"><a href="#cb18-359" aria-hidden="true" tabindex="-1"></a>ベクターの要素のうち、重複したものを取り除く関数が<span class="in">`unique`</span>関数です。<span class="in">`unique`</span>関数はベクターを引数に取り、引数に含まれる重複した要素を1つだけ残して取り除きます。</span>
-<span id="cb18-360"><a href="#cb18-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-361"><a href="#cb18-361" aria-hidden="true" tabindex="-1"></a>和集合と積集合を求める関数が<span class="in">`union`</span>関数と<span class="in">`intersect`</span>関数です。<span class="in">`union`</span>関数も<span class="in">`intersect`</span>関数も共に2つのベクターを引数に取り、<span class="in">`union`</span>関数は和集合（ベクターが<span class="in">`x`</span>と<span class="in">`y`</span>の時、$x \cup y$）、<span class="in">`intersect`</span>関数は積集合（ベクターが<span class="in">`x`</span>と<span class="in">`y`</span>の時、$x \cap y$）を返します。</span>
-<span id="cb18-362"><a href="#cb18-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-363"><a href="#cb18-363" aria-hidden="true" tabindex="-1"></a>集合の差を示す関数が<span class="in">`setdiff`</span>関数です。<span class="in">`setdiff`</span>関数も2つのベクターを引数に取り、第一引数にあって第二引数に無い要素を返します。</span>
-<span id="cb18-364"><a href="#cb18-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-365"><a href="#cb18-365" aria-hidden="true" tabindex="-1"></a>集合が同一とみなせるかどうか判断する関数が<span class="in">`setequal`</span>関数です。2つのベクターを引数に取り、2つのベクターの要素が同一であれば<span class="in">`TRUE`</span>、異なっていれば<span class="in">`FALSE`</span>を返します。</span>
-<span id="cb18-366"><a href="#cb18-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-367"><a href="#cb18-367" aria-hidden="true" tabindex="-1"></a>最後に、集合に関与する演算子である、<span class="in">`%in%`</span>について説明します。<span class="in">`%in%`</span>は前と後ろにベクターを取る演算子で、前のベクターにも後ろのベクターにもある要素（積集合の要素）には<span class="in">`TRUE`</span>、前のベクターにはあり、後ろのベクターには無い要素には<span class="in">`FALSE`</span>を返す関数です。</span>
-<span id="cb18-368"><a href="#cb18-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-369"><a href="#cb18-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb18-370"><a href="#cb18-370" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
-<span id="cb18-371"><a href="#cb18-371" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("union(x, y)", "intersect(x, y)", "setdiff(x, y)", "setequal(x, y)", "x %in% y"),</span></span>
-<span id="cb18-372"><a href="#cb18-372" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("xとyの和集合", "xとyの積集合", "xにあってyに無い集合", "xとyが同一かどうかを評価", "xのうち、yにある要素はTRUEを返す")</span></span>
-<span id="cb18-373"><a href="#cb18-373" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb18-374"><a href="#cb18-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-375"><a href="#cb18-375" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "集合に適用する演算")</span></span>
-<span id="cb18-376"><a href="#cb18-376" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表2：集合に関する関数")</span></span>
-<span id="cb18-377"><a href="#cb18-377" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-378"><a href="#cb18-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-379"><a href="#cb18-379" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ベクターと集合の演算"}</span></span>
-<span id="cb18-380"><a href="#cb18-380" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- rep(1:5, 5)</span></span>
+<span id="cb18-342"><a href="#cb18-342" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="split関数"}</span></span>
+<span id="cb18-343"><a href="#cb18-343" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- rep(1:5, 5) # xは1~5を5回繰り返すベクター</span></span>
+<span id="cb18-344"><a href="#cb18-344" aria-hidden="true" tabindex="-1"></a><span class="in">y &lt;- factor(c(rep(1, 10), rep(2, 15))) # xを切り分けるための因子</span></span>
+<span id="cb18-345"><a href="#cb18-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-346"><a href="#cb18-346" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb18-347"><a href="#cb18-347" aria-hidden="true" tabindex="-1"></a><span class="in">y</span></span>
+<span id="cb18-348"><a href="#cb18-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-349"><a href="#cb18-349" aria-hidden="true" tabindex="-1"></a><span class="in">split(x, y) # リストが返ってくる</span></span>
+<span id="cb18-350"><a href="#cb18-350" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-351"><a href="#cb18-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-352"><a href="#cb18-352" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb18-353"><a href="#cb18-353" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
+<span id="cb18-354"><a href="#cb18-354" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("head(x)", "tail(x)", "names(x)", "names(x) &lt;- y", "length(x)", "attr(x, which)", "attr(x, which) &lt;- y", "str(x)", "sample(x, size, replace)", "split(x, f)", "sort(x)", "sort(x, decreasing=TRUE)", "rev(x)", "unique(x)"),</span></span>
+<span id="cb18-355"><a href="#cb18-355" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("始めの6つの要素を返す", "最後の6つの要素を返す", "名前を表示する", "yを名前に設定する", "要素の数を返す", "attribute(which)を返す", "attribute(which)をyに設定する", "詳細な情報（構造、structure）を表示する",  "xからsizeの個数の要素をランダムに取り出す", "因子fに従ってベクターを分割する", "昇順に並べ替える", "降順に並べ替える", "逆順に並べ替える", "重複を取り除く")</span></span>
+<span id="cb18-356"><a href="#cb18-356" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb18-357"><a href="#cb18-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-358"><a href="#cb18-358" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "ベクターに適用される演算")</span></span>
+<span id="cb18-359"><a href="#cb18-359" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表1：ベクターに関する関数")</span></span>
+<span id="cb18-360"><a href="#cb18-360" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-361"><a href="#cb18-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-362"><a href="#cb18-362" aria-hidden="true" tabindex="-1"></a><span class="fu">## 集合としてのベクター</span></span>
+<span id="cb18-363"><a href="#cb18-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-364"><a href="#cb18-364" aria-hidden="true" tabindex="-1"></a>統計では、集合を取り扱う場合があります。集合としてベクターを取り扱い、積集合や和集合を取り扱う関数がRには備わっています。</span>
+<span id="cb18-365"><a href="#cb18-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-366"><a href="#cb18-366" aria-hidden="true" tabindex="-1"></a>ベクターの要素のうち、重複したものを取り除く関数が<span class="in">`unique`</span>関数です。<span class="in">`unique`</span>関数はベクターを引数に取り、引数に含まれる重複した要素を1つだけ残して取り除きます。</span>
+<span id="cb18-367"><a href="#cb18-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-368"><a href="#cb18-368" aria-hidden="true" tabindex="-1"></a>和集合と積集合を求める関数が<span class="in">`union`</span>関数と<span class="in">`intersect`</span>関数です。<span class="in">`union`</span>関数も<span class="in">`intersect`</span>関数も共に2つのベクターを引数に取り、<span class="in">`union`</span>関数は和集合（ベクターが<span class="in">`x`</span>と<span class="in">`y`</span>の時、$x \cup y$）、<span class="in">`intersect`</span>関数は積集合（ベクターが<span class="in">`x`</span>と<span class="in">`y`</span>の時、$x \cap y$）を返します。</span>
+<span id="cb18-369"><a href="#cb18-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-370"><a href="#cb18-370" aria-hidden="true" tabindex="-1"></a>集合の差を示す関数が<span class="in">`setdiff`</span>関数です。<span class="in">`setdiff`</span>関数も2つのベクターを引数に取り、第一引数にあって第二引数に無い要素を返します。</span>
+<span id="cb18-371"><a href="#cb18-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-372"><a href="#cb18-372" aria-hidden="true" tabindex="-1"></a>集合が同一とみなせるかどうか判断する関数が<span class="in">`setequal`</span>関数です。2つのベクターを引数に取り、2つのベクターの要素が同一であれば<span class="in">`TRUE`</span>、異なっていれば<span class="in">`FALSE`</span>を返します。</span>
+<span id="cb18-373"><a href="#cb18-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-374"><a href="#cb18-374" aria-hidden="true" tabindex="-1"></a>最後に、集合に関与する演算子である、<span class="in">`%in%`</span>について説明します。<span class="in">`%in%`</span>は前と後ろにベクターを取る演算子で、前のベクターにも後ろのベクターにもある要素（積集合の要素）には<span class="in">`TRUE`</span>、前のベクターにはあり、後ろのベクターには無い要素には<span class="in">`FALSE`</span>を返す関数です。</span>
+<span id="cb18-375"><a href="#cb18-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-376"><a href="#cb18-376" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb18-377"><a href="#cb18-377" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
+<span id="cb18-378"><a href="#cb18-378" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("union(x, y)", "intersect(x, y)", "setdiff(x, y)", "setequal(x, y)", "x %in% y"),</span></span>
+<span id="cb18-379"><a href="#cb18-379" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("xとyの和集合", "xとyの積集合", "xにあってyに無い集合", "xとyが同一かどうかを評価", "xのうち、yにある要素はTRUEを返す")</span></span>
+<span id="cb18-380"><a href="#cb18-380" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
 <span id="cb18-381"><a href="#cb18-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-382"><a href="#cb18-382" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
-<span id="cb18-383"><a href="#cb18-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-384"><a href="#cb18-384" aria-hidden="true" tabindex="-1"></a><span class="in">unique(x)</span></span>
+<span id="cb18-382"><a href="#cb18-382" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "集合に適用する演算")</span></span>
+<span id="cb18-383"><a href="#cb18-383" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表2：集合に関する関数")</span></span>
+<span id="cb18-384"><a href="#cb18-384" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-385"><a href="#cb18-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-386"><a href="#cb18-386" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- 1:10</span></span>
-<span id="cb18-387"><a href="#cb18-387" aria-hidden="true" tabindex="-1"></a><span class="in">y &lt;- 7:16</span></span>
+<span id="cb18-386"><a href="#cb18-386" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ベクターと集合の演算"}</span></span>
+<span id="cb18-387"><a href="#cb18-387" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- rep(1:5, 5)</span></span>
 <span id="cb18-388"><a href="#cb18-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-389"><a href="#cb18-389" aria-hidden="true" tabindex="-1"></a><span class="in">union(x, y) # xとyの和集合</span></span>
+<span id="cb18-389"><a href="#cb18-389" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
 <span id="cb18-390"><a href="#cb18-390" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-391"><a href="#cb18-391" aria-hidden="true" tabindex="-1"></a><span class="in">intersect(x, y) # xとyの積集合</span></span>
+<span id="cb18-391"><a href="#cb18-391" aria-hidden="true" tabindex="-1"></a><span class="in">unique(x)</span></span>
 <span id="cb18-392"><a href="#cb18-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-393"><a href="#cb18-393" aria-hidden="true" tabindex="-1"></a><span class="in">setdiff(x, y) # xにあってyに無いもの</span></span>
-<span id="cb18-394"><a href="#cb18-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-395"><a href="#cb18-395" aria-hidden="true" tabindex="-1"></a><span class="in">setdiff(y, x) # yにあってxに無いもの</span></span>
-<span id="cb18-396"><a href="#cb18-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-397"><a href="#cb18-397" aria-hidden="true" tabindex="-1"></a><span class="in">setequal(x, y) # xとyが同一かどうかを評価</span></span>
-<span id="cb18-398"><a href="#cb18-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-399"><a href="#cb18-399" aria-hidden="true" tabindex="-1"></a><span class="in">setequal(x, 10:1) # 要素が同一なのでTRUE</span></span>
-<span id="cb18-400"><a href="#cb18-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-401"><a href="#cb18-401" aria-hidden="true" tabindex="-1"></a><span class="in">x %in% y # xのうち、yにあるものはTRUE</span></span>
-<span id="cb18-402"><a href="#cb18-402" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-393"><a href="#cb18-393" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- 1:10</span></span>
+<span id="cb18-394"><a href="#cb18-394" aria-hidden="true" tabindex="-1"></a><span class="in">y &lt;- 7:16</span></span>
+<span id="cb18-395"><a href="#cb18-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-396"><a href="#cb18-396" aria-hidden="true" tabindex="-1"></a><span class="in">union(x, y) # xとyの和集合</span></span>
+<span id="cb18-397"><a href="#cb18-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-398"><a href="#cb18-398" aria-hidden="true" tabindex="-1"></a><span class="in">intersect(x, y) # xとyの積集合</span></span>
+<span id="cb18-399"><a href="#cb18-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-400"><a href="#cb18-400" aria-hidden="true" tabindex="-1"></a><span class="in">setdiff(x, y) # xにあってyに無いもの</span></span>
+<span id="cb18-401"><a href="#cb18-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-402"><a href="#cb18-402" aria-hidden="true" tabindex="-1"></a><span class="in">setdiff(y, x) # yにあってxに無いもの</span></span>
+<span id="cb18-403"><a href="#cb18-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-404"><a href="#cb18-404" aria-hidden="true" tabindex="-1"></a><span class="in">setequal(x, y) # xとyが同一かどうかを評価</span></span>
+<span id="cb18-405"><a href="#cb18-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-406"><a href="#cb18-406" aria-hidden="true" tabindex="-1"></a><span class="in">setequal(x, 10:1) # 要素が同一なのでTRUE</span></span>
+<span id="cb18-407"><a href="#cb18-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-408"><a href="#cb18-408" aria-hidden="true" tabindex="-1"></a><span class="in">x %in% y # xのうち、yにあるものはTRUE</span></span>
+<span id="cb18-409"><a href="#cb18-409" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
