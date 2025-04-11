@@ -105,14 +105,23 @@ t1$zone # タイムゾーン
 
 POSIXltにはタイムゾーンがアトリビュートとして設定されており、POSIXctには設定されていませんが、いずれも`as.POSIXlt`、`as.POSIXct`関数の`tz`引数を設定することで、タイムゾーンを変更することができます。
 
+ただし、POSIXltクラスのオブジェクトを`as.POSIXlt`関数の引数とした場合にはタイムゾーンが変更されない仕様になっています。
+
 ```{r, error=TRUE, filename="タイムゾーンの設定"}
+Sys.time() |> class() # POSIXctクラスのオブジェクト
 as.POSIXct(Sys.time(), tz = "GMT") # POSIXct型のSys.time()をUTCに変換
 
 as.POSIXct(Sys.time(), tz = "EST") # アメリカ東時間に変換
 
-as.POSIXlt(t1, tz = "GMT") # POSIXlt型をUTCに変換
+as.POSIXlt(Sys.time(), "GMT") # POSIXlt型をUTCに変換
 
-as.POSIXlt(t1, tz = "EST") # アメリカ東時間に変換
+as.POSIXlt(Sys.time(), "EST") # アメリカ東時間に変換
+
+class(t1) # POSIXltクラスのオブジェクト
+# 引数がPOSIXltだとタイムゾーンの変更ができない
+as.POSIXlt(t1, tz = "EST")
+# POSIXltからPOSIXctに変換するとタイムゾーンが変更できる
+as.POSIXct(t1, tz = "EST")
 ```
 
 POSIXct、POSIXltクラスのオブジェクトは、共にRの日時データに関する関数の引数として設定し、演算を行うことができます。
@@ -283,7 +292,7 @@ Sys.sleep(3) # 3秒スリープ
 Sys.time() - t # 現在時刻と記録した時刻の差を計算
 
 # system.time関数でも演算時間を計測できる
-system.time(for(i in 1:1000000){i^2})
+system.time(for(i in 1:100000){mean(1:i)})
 ```
 
 ### tictocパッケージ
@@ -420,7 +429,7 @@ ym("2023/10") # yearとmonthだけのデータも対応できる
 
 ### 日時データの変換：ymd_hms関数
 
-時間を含むデータの場合には、`ymd_hms`関数などの関数群を用います。こちらも、かなりいい加減な記載の日時データでも、簡単にPOSIXctクラスに変換してくれます（デフォルトのタイムゾーンはUTC、グリニッジ標準時）。タイムゾーンはtz引数に文字列で指定（[TZ identifier](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)で指定）することで変更できます。
+時間を含むデータの場合には、`ymd_hms`関数などの関数群を用います。こちらも、かなりいい加減な記載の日時データでも、簡単にPOSIXctクラスに変換してくれます（デフォルトのタイムゾーンはUTC、グリニッジ標準時）。タイムゾーンは`tz`引数に文字列で指定（[TZ identifier](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)で指定）することで変更できます。
 
 ```{r, error=TRUE, filename="ymd_hms関数でPOSIXctに変換"}
 ymd_hms("2023/10/20 22:22:22") # POSIXctに変換
