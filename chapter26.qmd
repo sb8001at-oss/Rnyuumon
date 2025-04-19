@@ -516,7 +516,7 @@ $$ y = exp(0.03425 + 0.33310x + 0.22131 \cdot fertilizer)$$
 
 データに繰り返しの測定がある場合、例えば、実験で同じ個体を数日間おきに調べ、データを取るような場合には、個体間のばらつきが大きくて正しい線形回帰を得るのが難しい場合があります。また、線形回帰ではデータの各点は独立の（関連性のない）事象として扱われますが、繰り返しの測定がある場合、例えば同じ個体から繰り返し得られたデータは明確に独立ではありません。
 
-このように、繰り返しがある場合、個体間に正規分布に従うばらつきがあると仮定して回帰を行う方法が、**線形混合モデル（Linear Mixed Model（LMM）またはMixed Model for Repeated Measures（MMRM））**です。線形混合モデルは、切片のみにばらつきがある場合（ランダム切片、下図1参照）と、切片にも傾きにもばらつきがある場合（ランダム傾き）の2つに対応し、それぞれ直線で回帰を計算します。線形混合モデルを用いることで、ランダム切片やランダム傾き（合わせて**ランダム効果**）を回帰の結果（**固定効果**）と分けて評価することで、回帰結果をうまく評価することができます。
+このように、繰り返しがある場合、個体間に正規分布に従うばらつきがあると仮定して回帰を行う方法が、**線形混合モデル（Linear Mixed Model（LMM）またはMixed Model for Repeated Measures（MMRM））**です。線形混合モデルは、切片のみにばらつきがある場合（ランダム切片、下図1参照）と、切片にも傾きにもばらつきがある場合（ランダム傾き）の2つに対応し、それぞれ直線で回帰を計算します。線形混合モデルを用いることで、ランダム切片やランダム傾き（合わせて**ランダム効果**）を回帰の結果（**固定効果**）と分けて評価することで、各個体ごとの回帰結果をうまく評価することができます。
 
 ![図1：ランダム切片とランダム傾き](./image/randomeffects.jpg)
 
@@ -539,9 +539,7 @@ ggplot(sleepstudy, aes(x = Days, y = Reaction, color = Subject, alpha = 0.5)) +
 
 ### ランダム切片モデル
 
-Rで線形混合モデルの計算を行う場合には、`lmerTest`パッケージ（もしくは`lme4`パッケージ）の`lmer`関数を用います。`lmer`関数の使い方は`lm`関数とほぼ同じですが、ランダム切片とランダム傾きの項をformulaで表す必要があります。formulaは`目的変数+説明変数+(ランダム傾き|ランダム切片)`という形で設定し、縦線（`|`）の左にランダム傾き、右にランダム切片の項を入力します。ランダム切片のみの場合には`目的変数+説明変数+(1|ランダム切片)`という形で、ランダム傾きの部分に1を入れます。計算結果はFixed effects（固定効果）の部分で示されており、以下の式となります。Random effectsで示されている部分がランダム切片（ランダム効果）で、Subject間の切片の分散が示されています。
-
-$$Reaction = 251.4051 + 10.4673 \cdot Days$$
+Rで線形混合モデルの計算を行う場合には、`lmerTest`パッケージ（もしくは`lme4`パッケージ）の`lmer`関数を用います。`lmer`関数の使い方は`lm`関数とほぼ同じですが、ランダム切片とランダム傾きの項をformulaで表す必要があります。formulaは`目的変数+説明変数+(ランダム傾き|ランダム切片)`という形で設定し、縦線（`|`）の左にランダム傾き、右にランダム切片の項を入力します。ランダム切片のみの場合には`目的変数+説明変数+(1|ランダム切片)`という形で、ランダム傾きの部分に1を入れます。
 
 ```{r, filename="lmer関数でランダム切片モデルを計算"}
 lmer_sleepstudy <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
@@ -550,27 +548,89 @@ lmer_sleepstudy %>% summary()
 
 ### ランダム傾きモデル
 
-ランダム傾きの項には、傾きを生じる軸（x軸）の値を入力します。上の`sleepstudy`の場合では、`Days`の方向にランダムな傾きが生じるため、ランダム傾きの項に`Days`を指定して計算します。演算結果は以下の式となります。ほぼランダム切片モデルと同じになっています。
-
-$$Reaction = 251.405 + 10.467 \cdot Days$$
+ランダム傾きの項には、傾きを生じる軸（x軸）の値を入力します。上の`sleepstudy`の場合では、`Days`の方向にランダムな傾きが生じるため、ランダム傾きの項に`Days`を指定して計算します。
 
 ```{r, filename="lmer関数でランダム傾きモデルを計算"}
 lmer(Reaction ~ Days + (Days | Subject), sleepstudy) %>% summary()
 ```
 
+### 線形回帰と線形混合モデルの比較
+
+以上のように、線形混合モデルではランダム切片モデルやランダム傾きモデルを用いて回帰を行います。結果のうち、Fixed Effects（固定効果）を線形回帰と比較すると、以下のようになります。
+
+```{r, filename="線形回帰、ランダム切片モデル、ランダム傾きモデルの比較"}
+lm_sleepstudy <- lm(Reaction ~ Days, data = sleepstudy) # 線形モデル
+llm_ri_sleepstudy <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy) # ランダム切片モデル
+llm_rs_sleepstudy <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy) # ランダム傾きモデル
+
+# 固定効果はすべて同じ
+lm_sleepstudy$coefficients
+llm_ri_sleepstudy@beta
+llm_rs_sleepstudy@beta
+```
+
+見ての通り、線形回帰の結果と線形混合モデル（固定効果）の結果は一致します。また、固定効果の信頼区間は以下の通りとなります。少し信頼区間の形が違いますが、線形回帰も線形混合モデルの固定効果も同じような信頼区間に収まります。要は、線形混合モデルの固定効果は線形回帰とそれほど変わらないことを示しています。
+
+```{r, filename="固定効果の信頼区間"}
+d <- data.frame(Days = seq(0, 9, by = 0.1), Subject = 308)
+
+lm_ci <- 
+  data.frame(
+    d,
+    predict(lm_sleepstudy, d, interval = "confidence"))
+
+llm_ri_ci <- 
+  data.frame(
+    Days = sleepstudy$Days,
+    predict(llm_ri_sleepstudy, re.form = NA, se.fit = TRUE, allow.new.levels = TRUE))
+
+llm_rs_ci <- 
+  data.frame(
+    Days = sleepstudy$Days,
+    predict(llm_rs_sleepstudy, re.form = NA, se.fit = TRUE, allow.new.levels = TRUE))
+
+p1 <- ggplot() +
+  geom_ribbon(aes(x = Days, ymax = upr, ymin = lwr), data = lm_ci, color = 1, fill = 1) +
+  labs(title = "線形回帰")
+p2 <- ggplot() + 
+  geom_ribbon(aes(x = Days, ymax = fit + se.fit, ymin = fit - se.fit), data = llm_ri_ci[1:10, ], color = 2, fill = 2) +
+  labs(title = "ランダム切片モデル")
+p3 <- ggplot() + 
+  geom_ribbon(aes(x = Days, ymax = fit + se.fit, ymin = fit - se.fit), data = llm_rs_ci[1:10, ], color = 3, fill = 3) +
+  labs(title = "ランダム傾きモデル")
+
+library(patchwork)
+p1 + p2 + p3
+```
+
+固定効果を求めるだけであれば、線形混合モデルは必要ありません。したがって、線形混合モデルで重要になってくるのは、ランダム効果の方ということになります。ランダム効果、つまり`sleepstudy`の例では各被験者ごとの反応時間の変化を求めるのに、線形混合モデルが有用であるということです。
+
+### coef関数で個別の傾き・切片を求める
+
+線形混合モデルから、`coef`関数を用いて個別の被験者の傾き・切片を求めることができます。線形混合モデルでは、この個別の被験者の傾き・切片を演算するときに、固定効果、つまり他の被験者のデータを「借りて」傾き・切片を計算することで、より正確に個別被験者の傾き・切片を求めることができます。
+
+ランダム切片モデルとランダム傾きモデルでの個別被験者の傾き・切片を求めると、ランダム切片モデルでは傾きが一定、ランダム傾きモデルでは傾きが被験者ごとに変化していることがわかります。始めに述べたランダム切片モデルとランダム傾きモデルの図の通り、ランダム切片モデルでは被験者間の傾きは一定、ランダム傾きモデルでは被験者間の切片も傾きも変化するとしていることが、`coef`関数の返り値に表れています。
+
+```{r, filename="coef関数を用いて個別の被験者の傾き・切片を求める"}
+# ランダム切片モデル
+coef(llm_ri_sleepstudy)$Subject |> head() # Days（傾き）が一定
+
+# ランダム傾きモデル
+coef(llm_rs_sleepstudy) $Subject |> head() # Days（傾き）が個々に異なる
+```
+
+
 :::{.callout-tip collapse="true"}
 
 ## lmer関数の返り値の取り扱い方
 
-`lmerTest::lmer`関数の返り値はS4オブジェクトなので、`@`や`$`を用いて計算結果にアクセスすることができます。また、関数を用いて計算結果にアクセスすることもできます。
+`lmerTest::lmer`関数の返り値はS4オブジェクトなので、`@`や`$`を用いて計算結果にアクセスすることができます。また、`coef`関数のような関数（アクセサ）を用いて計算結果にアクセスすることもできます。
 
 ```{r}
 result_lmer <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 result_lmer@sigma # 残差の標準偏差
 
 anova(result_lmer, type = "I") # type Iの分散分析結果
-
-coef(result_lmer) # 個々の被験者の傾きと切片
 ```
 
 :::

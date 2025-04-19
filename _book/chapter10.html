@@ -615,7 +615,7 @@ div.csl-indent {
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: cat dog horse pig</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>因子の各レベルの要素の個数を数える場合には、<code>table</code>関数を用います。<code>table</code>関数を用いると、各レベルと、そのレベルの要素の数が返ってきます。同様に、<code>summary</code>関数でも要素の数を数えることができます。</p>
+<p>因子の各レベルの要素の個数を数える場合には、<code>table</code>関数を用います。<code>table</code>関数を用いると、各レベルと、そのレベルの要素の数が返ってきます。<code>table</code>関数は複数の因子や、因子のリスト、データフレームなどを引数に取ることもできます。同様に、<code>summary</code>関数でも要素の数を数えることができます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -626,9 +626,20 @@ div.csl-indent {
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   cat   dog horse   pig </span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">##     4     5     2     3</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fx)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   cat   dog horse   pig </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">##     4     5     2     3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>factor1 <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"cat"</span>, <span class="st">"dog"</span>), <span class="dv">10</span>))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>factor2 <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>), <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">13</span>)))</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># table関数は因子のベクターを2つ取ることもできる</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(factor1, factor2)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="do">##        factor2</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="do">## factor1 female male</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="do">##     cat      6    4</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="do">##     dog      7    3</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># summary関数でもレベルの要素の数を得ることができる</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fx)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="do">##   cat   dog horse   pig </span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="do">##     4     5     2     3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -888,7 +899,7 @@ div.csl-indent {
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_shuffle</span>(fx) <span class="co"># レベルをランダムに並べ替える</span></span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   pig   pig   pig  </span></span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="do">## [13] horse horse</span></span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: pig cat dog horse</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: horse cat dog pig</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -907,7 +918,7 @@ div.csl-indent {
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: rat mouse cow monkey</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_anon</span>(fx) <span class="co"># 因子を匿名化（anonymize）する</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] 1 1 1 1 1 4 4 4 4 3 3 3 2 2</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] 3 3 3 3 3 1 1 1 1 2 2 2 4 4</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Levels: 1 2 3 4</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_collapse</span>(fx, <span class="at">dogcat =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>)) <span class="co"># レベルを結合する</span></span>
@@ -1645,132 +1656,139 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a><span class="in">fx1 # 名前付きベクターの因子</span></span>
 <span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>因子の各レベルの要素の個数を数える場合には、<span class="in">`table`</span>関数を用います。<span class="in">`table`</span>関数を用いると、各レベルと、そのレベルの要素の数が返ってきます。同様に、<span class="in">`summary`</span>関数でも要素の数を数えることができます。</span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>因子の各レベルの要素の個数を数える場合には、<span class="in">`table`</span>関数を用います。<span class="in">`table`</span>関数を用いると、各レベルと、そのレベルの要素の数が返ってきます。<span class="in">`table`</span>関数は複数の因子や、因子のリスト、データフレームなどを引数に取ることもできます。同様に、<span class="in">`summary`</span>関数でも要素の数を数えることができます。</span>
 <span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="因子の個数を数える：table関数"}</span></span>
 <span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a><span class="in">table(fx)</span></span>
 <span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a><span class="in">summary(fx)</span></span>
-<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a><span class="in">factor1 &lt;- factor(rep(c("cat", "dog"), 10))</span></span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a><span class="in">factor2 &lt;- factor(rep(c("male", "female"), c(7, 13)))</span></span>
 <span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a><span class="fu">## レベルの順序を変更する</span></span>
-<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>レベルの順序は、因子を作成するときに<span class="in">`factor`</span>関数の引数に<span class="in">`levels`</span>を指定することで変更できます。<span class="in">`levels`</span>には因子の要素のベクターで指定します。この<span class="in">`levels`</span>に指定した順番に、レベルの順序が決まります。</span>
-<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="レベルの順序を変更する"}</span></span>
-<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a><span class="in">fx</span></span>
-<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a><span class="in">fx2 &lt;- factor(fx, levels = c("cat", "horse", "pig", "dog"))</span></span>
-<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a><span class="in">levels(fx) # レベル順はcat, dog, horse, pig</span></span>
-<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a><span class="in">levels(fx2) # レベルの順序が上のlevelsの順に変更されている</span></span>
-<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="in">as.numeric(fx) # 元の順序</span></span>
-<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="in">as.numeric(fx2) # 変更後の順序</span></span>
-<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a><span class="in"># table関数は因子のベクターを2つ取ることもできる</span></span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a><span class="in">table(factor1, factor2)</span></span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a><span class="in"># summary関数でもレベルの要素の数を得ることができる</span></span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a><span class="in">summary(fx)</span></span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## レベルの順序を変更する</span></span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a>レベルの順序は、因子を作成するときに<span class="in">`factor`</span>関数の引数に<span class="in">`levels`</span>を指定することで変更できます。<span class="in">`levels`</span>には因子の要素のベクターで指定します。この<span class="in">`levels`</span>に指定した順番に、レベルの順序が決まります。</span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="レベルの順序を変更する"}</span></span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="in">fx</span></span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a><span class="in">fx2 &lt;- factor(fx, levels = c("cat", "horse", "pig", "dog"))</span></span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a><span class="in">levels(fx) # レベル順はcat, dog, horse, pig</span></span>
 <span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
-<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("factor(x, levels)", "levels(x)", "nlevels(x)", "table(x)"),</span></span>
-<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("因子を作成する・レベルの順序を変える", "レベルを表示する", "レベルの数を表示する", "各レベルの要素数を表示する")</span></span>
-<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "因子xに適用される演算")</span></span>
-<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表1：因子に関連する関数")</span></span>
-<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## forcats</span></span>
-<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a>Rでは因子のレベル順を変更し、グラフや統計結果の表示順を定める場合があります。特に統計学的検定の計算では、対照群（Control）と処理群（Treatment）が因子の順番によって決まる場合があり、因子の順序が計算上重要となります。</span>
-<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>デフォルトのRの関数群でも因子の順序などを編集することはできますが、因子の演算を行う専門のライブラリである<span class="in">`forcats`</span> <span class="co">[</span><span class="ot">@forcats_bib</span><span class="co">]</span>を用いると、より簡潔に、統一感のある因子の演算を行うことができます。<span class="in">`forcats`</span>も<span class="in">`tidyverse`</span> <span class="co">[</span><span class="ot">@tidyverse_bib</span><span class="co">]</span>に含まれるライブラリの一つです。</span>
-<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
-<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("fct_count(x)", "fct_match(x, pattern)", "fct_unique(x)", "fct_c(x, y)", "fct_unify(list(x, y))", "fct_relevel(x, levels)", "fct_infreq(x)", "fct_inorder(x)", "fct_rev(x)", "fct_shift(x)", "fct_shuffle(x)", "fct_recode(x, newlevel=\"oldlevel\")", "fct_anon(x)", "fct_collupse(x, newlevel=c(levels))", "fct_lump_min(x, min)", "fct_other(x, keep)"),</span></span>
-<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("各レベルの要素の数を返す", "patternのレベルであればTRUEを返す", "各レベルから要素を1つずつ返す", "因子を結合する", "リスト内の因子間でレベルを追加する", "レベルを付け直す", "レベルの要素の数順にレベルをつけ直す", "前にある要素ほど前のレベルにする", "レベルを逆順にする", "レベルの順を1つずらす", "レベルをランダムに並べ替える", "oldlevelのラベルをnewlevelにつけ直す", "レベル名を匿名化する", "2つ以上のレベルを1つにまとめる", "minで指定した数以上のレベルをotherにする", "keepで指定したレベル以外の因子をotherにする")</span></span>
-<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "因子xに適用される演算")</span></span>
-<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表2：forcatsの関数")</span></span>
-<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a><span class="fu">### 因子の確認</span></span>
-<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_count`</span>関数は<span class="in">`table`</span>関数とほぼ同じ関数で、因子の要素数を返しますが、結果をデータフレーム（正確にはtibbleというもの）で返す点が<span class="in">`table`</span>関数とは異なります。</span>
-<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_match`</span>関数は、パターンとしてレベル名を設定し、そのレベルと一致する要素では<span class="in">`TRUE`</span>、一致しない要素には<span class="in">`FALSE`</span>を返します。</span>
-<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_unique`</span>関数は<span class="in">`levels`</span>関数とほぼ同じですが、<span class="in">`levels`</span>関数の返り値が文字列なのに対して、<span class="in">`fct_unique`</span>関数は因子を返す点が異なります。</span>
-<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats 因子を確認する"}</span></span>
-<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a><span class="in"># tidyverseをロードすると、forcatもロードされる</span></span>
-<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(tidyverse)</span></span>
-<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a><span class="in">fx</span></span>
-<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a><span class="in"># table関数と同じ変換をデータフレーム（正確にはtibble）を出力として行う</span></span>
-<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a><span class="in">fct_count(fx) </span></span>
-<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a><span class="in">fct_match(fx, "dog") # 因子dogを探す関数</span></span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a><span class="in">levels(fx2) # レベルの順序が上のlevelsの順に変更されている</span></span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a><span class="in">as.numeric(fx) # 元の順序</span></span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a><span class="in">as.numeric(fx2) # 変更後の順序</span></span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("factor(x, levels)", "levels(x)", "nlevels(x)", "table(x)"),</span></span>
+<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("因子を作成する・レベルの順序を変える", "レベルを表示する", "レベルの数を表示する", "各レベルの要素数を表示する")</span></span>
+<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "因子xに適用される演算")</span></span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表1：因子に関連する関数")</span></span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a><span class="fu">## forcats</span></span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>Rでは因子のレベル順を変更し、グラフや統計結果の表示順を定める場合があります。特に統計学的検定の計算では、対照群（Control）と処理群（Treatment）が因子の順番によって決まる場合があり、因子の順序が計算上重要となります。</span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>デフォルトのRの関数群でも因子の順序などを編集することはできますが、因子の演算を行う専門のライブラリである<span class="in">`forcats`</span> <span class="co">[</span><span class="ot">@forcats_bib</span><span class="co">]</span>を用いると、より簡潔に、統一感のある因子の演算を行うことができます。<span class="in">`forcats`</span>も<span class="in">`tidyverse`</span> <span class="co">[</span><span class="ot">@tidyverse_bib</span><span class="co">]</span>に含まれるライブラリの一つです。</span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;- data.frame(</span></span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a><span class="in">  func = c("fct_count(x)", "fct_match(x, pattern)", "fct_unique(x)", "fct_c(x, y)", "fct_unify(list(x, y))", "fct_relevel(x, levels)", "fct_infreq(x)", "fct_inorder(x)", "fct_rev(x)", "fct_shift(x)", "fct_shuffle(x)", "fct_recode(x, newlevel=\"oldlevel\")", "fct_anon(x)", "fct_collupse(x, newlevel=c(levels))", "fct_lump_min(x, min)", "fct_other(x, keep)"),</span></span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a><span class="in">  meaning = c("各レベルの要素の数を返す", "patternのレベルであればTRUEを返す", "各レベルから要素を1つずつ返す", "因子を結合する", "リスト内の因子間でレベルを追加する", "レベルを付け直す", "レベルの要素の数順にレベルをつけ直す", "前にある要素ほど前のレベルにする", "レベルを逆順にする", "レベルの順を1つずらす", "レベルをランダムに並べ替える", "oldlevelのラベルをnewlevelにつけ直す", "レベル名を匿名化する", "2つ以上のレベルを1つにまとめる", "minで指定した数以上のレベルをotherにする", "keepで指定したレベル以外の因子をotherにする")</span></span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(d) &lt;- c("関数名", "因子xに適用される演算")</span></span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable(d, caption="表2：forcatsの関数")</span></span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a><span class="fu">### 因子の確認</span></span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_count`</span>関数は<span class="in">`table`</span>関数とほぼ同じ関数で、因子の要素数を返しますが、結果をデータフレーム（正確にはtibbleというもの）で返す点が<span class="in">`table`</span>関数とは異なります。</span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_match`</span>関数は、パターンとしてレベル名を設定し、そのレベルと一致する要素では<span class="in">`TRUE`</span>、一致しない要素には<span class="in">`FALSE`</span>を返します。</span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_unique`</span>関数は<span class="in">`levels`</span>関数とほぼ同じですが、<span class="in">`levels`</span>関数の返り値が文字列なのに対して、<span class="in">`fct_unique`</span>関数は因子を返す点が異なります。</span>
+<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats 因子を確認する"}</span></span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a><span class="in"># tidyverseをロードすると、forcatもロードされる</span></span>
+<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(tidyverse)</span></span>
 <span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a><span class="in">fct_unique(fx) # levelsとほとんど同じ関数(因子を返す、levelsは文字列を返す)</span></span>
-<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a><span class="fu">### 因子を結合する</span></span>
+<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a><span class="in">fx</span></span>
+<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a><span class="in"># table関数と同じ変換をデータフレーム（正確にはtibble）を出力として行う</span></span>
+<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a><span class="in">fct_count(fx) </span></span>
 <span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a>因子をつなぐときに用いるのが、<span class="in">`fct_c`</span>関数と<span class="in">`fct_unity`</span>関数です。<span class="in">`fct_c`</span>関数は<span class="in">`c`</span>関数と同じですが、因子のリストを引数に取れるという特徴があります。<span class="in">`fact_unify`</span>関数は引数にリストを取り、お互いにレベルを追加するところが異なります。</span>
+<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a><span class="in">fct_match(fx, "dog") # 因子dogを探す関数</span></span>
 <span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats：因子を結合する"}</span></span>
-<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a><span class="in">fx3 &lt;- factor(rep(c("rat", "mouse", "sheep"), c(3, 4, 5)))</span></span>
+<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a><span class="in">fct_unique(fx) # levelsとほとんど同じ関数(因子を返す、levelsは文字列を返す)</span></span>
+<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a><span class="in">c(fx, fx3)</span></span>
+<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a><span class="fu">### 因子を結合する</span></span>
 <span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a><span class="in">fct_c(fx, fx3) # レベルが追加される(c関数でつないでもほぼ同じ)</span></span>
+<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>因子をつなぐときに用いるのが、<span class="in">`fct_c`</span>関数と<span class="in">`fct_unity`</span>関数です。<span class="in">`fct_c`</span>関数は<span class="in">`c`</span>関数と同じですが、因子のリストを引数に取れるという特徴があります。<span class="in">`fact_unify`</span>関数は引数にリストを取り、お互いにレベルを追加するところが異なります。</span>
 <span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a><span class="in">fct_unify(list(fx, fx3)) # 因子のリストにそれぞれレベルを追加する</span></span>
-<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats：因子を結合する"}</span></span>
+<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a><span class="in">fx3 &lt;- factor(rep(c("rat", "mouse", "sheep"), c(3, 4, 5)))</span></span>
 <span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a><span class="fu">### レベルの操作</span></span>
+<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a><span class="in">c(fx, fx3)</span></span>
 <span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>因子のレベルを付け直すのが<span class="in">`fct_relevel`</span>関数です。<span class="in">`factor`</span>関数に<span class="in">`levels`</span>引数を取るのとほぼ同じことができます。</span>
+<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a><span class="in">fct_c(fx, fx3) # レベルが追加される(c関数でつないでもほぼ同じ)</span></span>
 <span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_infreq`</span>関数は因子のレベルを因子の個数順（多いものが前、少ないものが後）に、<span class="in">`fct_inorder`</span>関数は因子のベクターで前に出てきたものをより前にする形でレベルを変更するものです。</span>
-<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_rev`</span>関数はレベルを逆順に、<span class="in">`fct_shift`</span>関数は一番前のレベルを一番最後にシフトし、<span class="in">`fct_shuffle`</span>関数はレベルの順序をランダムに入れ替える関数です。</span>
-<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats：レベルを操作する"}</span></span>
-<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a><span class="in">fct_relevel(fx, c("dog", "cat", "pig", "horse")) # factor(fx, levels=c("dog", "cat", "pig", "horse"))と同じ</span></span>
+<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a><span class="in">fct_unify(list(fx, fx3)) # 因子のリストにそれぞれレベルを追加する</span></span>
+<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a><span class="fu">### レベルの操作</span></span>
+<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>因子のレベルを付け直すのが<span class="in">`fct_relevel`</span>関数です。<span class="in">`factor`</span>関数に<span class="in">`levels`</span>引数を取るのとほぼ同じことができます。</span>
 <span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a><span class="in">fct_infreq(fx) # 要素が多いものから順番に並べ替える</span></span>
+<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_infreq`</span>関数は因子のレベルを因子の個数順（多いものが前、少ないものが後）に、<span class="in">`fct_inorder`</span>関数は因子のベクターで前に出てきたものをより前にする形でレベルを変更するものです。</span>
 <span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a><span class="in">fct_inorder(fx) # 要素が前にあるものをレベルの前に変更する</span></span>
+<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_rev`</span>関数はレベルを逆順に、<span class="in">`fct_shift`</span>関数は一番前のレベルを一番最後にシフトし、<span class="in">`fct_shuffle`</span>関数はレベルの順序をランダムに入れ替える関数です。</span>
 <span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a><span class="in">fct_rev(fx) # レベルを逆順にする</span></span>
-<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a><span class="in">fct_shift(fx) # レベルを1つずらす</span></span>
-<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a><span class="in">fct_shuffle(fx) # レベルをランダムに並べ替える</span></span>
-<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats：レベルを操作する"}</span></span>
+<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a><span class="in">fct_relevel(fx, c("dog", "cat", "pig", "horse")) # factor(fx, levels=c("dog", "cat", "pig", "horse"))と同じ</span></span>
+<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a><span class="in">fct_infreq(fx) # 要素が多いものから順番に並べ替える</span></span>
+<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a><span class="in">fct_inorder(fx) # 要素が前にあるものをレベルの前に変更する</span></span>
 <span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a><span class="fu">### レベル名の変更</span></span>
+<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a><span class="in">fct_rev(fx) # レベルを逆順にする</span></span>
 <span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_recode`</span>関数は因子名を別名に付け替え、<span class="in">`fct_anon`</span>関数は因子名を匿名化（anonymize）するものです。<span class="in">`fct_collapse`</span>関数は因子の複数のレベルを1つにまとめ、<span class="in">`fct_lump_min`</span>関数は<span class="in">`min`</span>引数で指定した数より個数が少ない因子をすべてotherに変えます。<span class="in">`fct_other`</span>関数は<span class="in">`keep`</span>引数で指定したレベル以外をotherに変えます。</span>
+<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a><span class="in">fct_shift(fx) # レベルを1つずらす</span></span>
 <span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したりするために用いるものです。</span>
-<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats：レベル名を変更する"}</span></span>
-<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a><span class="in">fct_recode(fx, mouse="dog", rat="cat", monkey="pig", cow="horse") # ラベルを付け替える</span></span>
+<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a><span class="in">fct_shuffle(fx) # レベルをランダムに並べ替える</span></span>
+<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a><span class="fu">### レベル名の変更</span></span>
 <span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a><span class="in">fct_anon(fx) # 因子を匿名化（anonymize）する</span></span>
+<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_recode`</span>関数は因子名を別名に付け替え、<span class="in">`fct_anon`</span>関数は因子名を匿名化（anonymize）するものです。<span class="in">`fct_collapse`</span>関数は因子の複数のレベルを1つにまとめ、<span class="in">`fct_lump_min`</span>関数は<span class="in">`min`</span>引数で指定した数より個数が少ない因子をすべてotherに変えます。<span class="in">`fct_other`</span>関数は<span class="in">`keep`</span>引数で指定したレベル以外をotherに変えます。</span>
 <span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a><span class="in">fct_collapse(fx, dogcat = c("dog", "cat")) # レベルを結合する</span></span>
+<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a>いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したりするために用いるものです。</span>
 <span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a><span class="in">fct_lump_min(fx, min=4) # 2つより少ない個数しかない因子をotherに変える</span></span>
-<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a><span class="in">fct_other(fx, keep=c("dog", "cat")) # keep以外のレベルをotherに変える</span></span>
-<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats：レベル名を変更する"}</span></span>
+<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a><span class="in">fct_recode(fx, mouse="dog", rat="cat", monkey="pig", cow="horse") # ラベルを付け替える</span></span>
+<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a><span class="in">fct_anon(fx) # 因子を匿名化（anonymize）する</span></span>
+<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a><span class="in">fct_collapse(fx, dogcat = c("dog", "cat")) # レベルを結合する</span></span>
+<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a><span class="in">fct_lump_min(fx, min=4) # 2つより少ない個数しかない因子をotherに変える</span></span>
+<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a><span class="in">fct_other(fx, keep=c("dog", "cat")) # keep以外のレベルをotherに変える</span></span>
+<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

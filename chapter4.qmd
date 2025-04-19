@@ -81,12 +81,6 @@ knitr::kable(d, caption="表3：Rで使える比較演算子")
 
 3 >= 2 # 3は2より大きいのでTRUE
 2 >= 2 # 2は2と等しいのでTRUE
-
-1 == 1 & 2 == 2 # TRUEかつTRUEなのでTRUE
-1 == 1 & 2 == 3 # TRUEかつFALSEなのでFALSE
-
-1 == 1 | 2 == 2 # TRUEまたはTRUEなのでTRUE
-1 == 1 | 2 == 3 # TRUEまたはFALSEなのでTRUE
 ```
 
 ## 論理演算子
@@ -94,6 +88,8 @@ knitr::kable(d, caption="表3：Rで使える比較演算子")
 論理型は、**論理演算子**による計算に使うことができます。論理演算子とは、論理型のオブジェクト2つ以上を用いた演算（論理演算）を行うために用いるものです。
 
 論理演算として主要なものは、論理和（AとBのどちらか片方がTRUEならTRUE、どちらもFALSEならFALSE）、論理積（AとBのどちらもTRUEならTRUE、どちらかがFALSEならFALSE）、否定論理和（AとBのどちらかがTRUEならFALSE、どちらもFALSEならTRUE）、否定論理積（AとBのどちらもTRUEならFALSE、どちらかがFALSEならTRUE）、排他的論理和（AとBのどちらかがTRUEならTRUE、両方がFALSEまたはTRUEならFALSE）などで、これらを用いることで論理型を用いた様々な表現を行うことができます。
+
+![論理演算子](./image/Logical_operators.png)
 
 Rで最もよく用いられる論理演算子は**`&`、`|`**の2つです。`&`は論理積（`A & B`でAかB）、`|`は論理和（`A | B`でAまたはB）を示す演算子です。
 
@@ -112,8 +108,8 @@ knitr::kable(d, caption="表1：Rで使える論理演算子")
 ```
 
 ```{r, filename="論理演算子による演算", error=TRUE}
-logic1 <- c(T, F)
-logic2 <- c(F, F)
+logic1 <- c(T, F, T, F)
+logic2 <- c(T, T, F, F)
 logic1 & logic2 # & は論理積（AND）
 
 logic1 | logic2 # | は論理和（OR）
@@ -125,7 +121,7 @@ logic1 || logic2
 xor(logic1, logic2) # 排他的論理和
 xor(T, T) # 両方がTRUEならFALSEを返す
 
-any(logic1) # 片方がTRUEなのでTRUE
+any(logic1) # いずれか1つがTRUEなのでTRUE
 
 all(logic1) # すべてがTRUEでは無いのでFALSE
 ```
