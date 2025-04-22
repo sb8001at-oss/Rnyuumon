@@ -152,7 +152,22 @@ Rで線形回帰を行う場合には、`lm`関数を用います。`lm`関数�
 lm(iris$Sepal.Length ~ iris$Sepal.Width)
 ```
 
-### lmオブジェクトの取り扱い
+`lm`関数では、`t.test`関数（[25章](./chapter25.html)参照）と同様に`data`引数にデータフレームを取り、formulaにはデータフレームの列名を用いることができます。
+
+```{r, filename="data引数"}
+head(cars)
+
+lm(dist ~ speed, data = cars)
+```
+
+また、`lm`関数で切片を0、つまり原点を通る線で回帰したい場合には、formulaに`+0`や`-1`を加えます。
+
+```{r, filename="切片0の回帰"}
+lm(dist ~ speed + 0, data = cars)
+lm(dist ~ speed - 1, data = cars) # 上と同じ
+```
+
+### lmクラスのオブジェクトの取り扱い
 
 線形回帰の結果を変数に代入すると、lmクラスの変数となります。lmクラスのオブジェクトからは、`$coefficients`で切片と傾きを取り出すことができます。また、`summary`関数の引数とすると、回帰の詳細が表示されます。
 
@@ -247,13 +262,19 @@ lm(iris$Sepal.Length ~ iris$Sepal.Width + iris$Petal.Length)
 # Sepal.Length = 1.4044 + 0.8500 * Sepal.Width + 
 # 0.7185 * Petal.Length - 0.07701 * Sepal.Width * Petal.Length
 lm(iris$Sepal.Length ~ iris$Sepal.Width * iris$Petal.Length)
+
+# 口語作用はコロン（:）を用いて以下のように書くこともできる
+lm(
+  iris$Sepal.Length ~ 
+    iris$Sepal.Width + iris$Petal.Length + iris$Sepal.Width:iris$Petal.Length
+  )
 ```
 
 ## 一般線形モデル
 
 **一般線形モデル**は、1つの目的変数に対して、数値や因子からなる複数の説明変数がある場合の回帰のことです。重回帰や共分散分析の拡張だと考えるとよいかと思います。Rでは一般線形モデルの計算も`lm`関数を用いて行います。一般線形モデルも重回帰とほぼ同じで、説明変数同士を`+`か`*`でつなぐだけです。
 
-一般線形モデルでは説明変数として非常にたくさんの数値や因子を登録できますが、すべての説明変数に対して交互作用ありにしてしまうと交互作用項が非常に多くなり、理解が難しくなるので、本当に必要がある部分にだけ交互作用を入れる方がよいでしょう。
+一般線形モデルでは説明変数として非常にたくさんの数値や因子を登録できますが、すべての説明変数に対して交互作用ありにしてしまうと交互作用項が非常に多くなり、理解が難しくなるので、本当に必要がある部分にだけ交互作用を入れる方がよいでしょう。個別に交互作用を加えたい場合には、上の重回帰で示したように`:`（コロン）を用いるとよいでしょう。
 
 ```{r, filename="一般線形モデル"}
 # 一般線形モデル
