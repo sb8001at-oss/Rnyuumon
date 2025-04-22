@@ -204,10 +204,35 @@ ggplot()+
     )
 ```
 
-```{r, filename="切片と傾きの95％信頼区間"}
-confint(lmr)
+:::{.callout-tip collapse="true"}
+
+## lmオブジェクトを引数とする関数について
+
+上に述べた`predict`関数、`summary`関数以外にも、`lm`関数の結果（lmクラスのオブジェクト）にはいろいろな取り扱いの方法があります。まずは、`names`関数の引数にすると、パラメータの取り出しに用いる名前を呼び出すことができます。
+
+```{r, filename="lmクラスのオブジェクトをnames関数の引数に取る"}
+names(lmr)
 ```
 
+また、`plot`関数の引数に取ると、残差（residuals）の分析に関する図を表示することができます。
+
+```{r, filename="plot関数：残差プロットの表示", fig.height=8, fig.width=6}
+# 上の2つは分散の正規性、左下は分散の一様性、
+# 右下はCook's distance (https://en.wikipedia.org/wiki/Cook%27s_distance)と呼ばれる
+# パラメータを示す図で、0.5の点線を超える点は回帰に大きな影響を与えることを示す
+par(mfrow = c(2, 2))
+plot(lmr)
+```
+
+他にも`coef`関数でcoefficients（切片と傾き）、`confint`関数で切片と傾きの信頼区間、`residuals`関数で残差を求めることができます。詳しくは`?lm`のヘルプを参照してください。
+
+```{r, filename="パラメータを演算するための関数"}
+coef(lmr) # 切片と傾きの推定値
+confint(lmr) # 切片と傾きの95％信頼区間
+residuals(lmr) # 残差
+```
+
+:::
 
 ## 重回帰
 
