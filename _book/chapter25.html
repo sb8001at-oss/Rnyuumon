@@ -1934,7 +1934,7 @@ gatekeeping法
 </section>
 <section id="ポアソン分布の確率を演算poisson.test関数" class="level3" data-number="25.8.3">
 <h3 data-number="25.8.3" class="anchored" data-anchor-id="ポアソン分布の確率を演算poisson.test関数"><span class="header-section-number">25.8.3</span> ポアソン分布の確率を演算：poisson.test関数</h3>
-<p>ポアソン分布の発生確率に関する検定（ポアソン検定）を提供しているのが<code>poisson.test</code>関数です。poisson.test(x, T, r)という形で、<code>x</code>回のイベントが時間単位<code>T</code>の間に起こったときの発生率（<code>T</code>/<code>x</code>）が発生率<code>r</code>と一致しているのかを評価します。<code>T</code>のデフォルト値は<code>1</code>、<code>r</code>のデフォルト値も<code>1</code>です。ですので、引数なしで用いると、時間単位1の間に1回起こるイベントとの差を検定することになります。<code>binom.test</code>と同様にイベントが起こる確率の95%信頼区間も表示されます。</p>
+<p>ポアソン分布の発生確率に関する検定（ポアソン検定）を提供しているのが<code>poisson.test</code>関数です。<code>poisson.test(x, T, r)</code>という形で、<code>x</code>回のイベントが時間単位<code>T</code>の間に起こったときの発生率（<code>T</code>/<code>x</code>）が発生率<code>r</code>と一致しているのかを評価します。<code>T</code>のデフォルト値は<code>1</code>、<code>r</code>のデフォルト値も<code>1</code>です。ですので、引数なしで用いると、時間単位1の間に1回起こるイベントとの差を検定することになります。<code>binom.test</code>と同様にイベントが起こる確率の95%信頼区間も表示されます。</p>
 <p>同様に<code>x</code>、<code>T</code>に数値2つのベクターをそれぞれ取り、2つのポアソン分布するイベントの発生率を比較することもできます。数値2つを取った場合には、イベントの発生率の比と、その95%信頼区間が表示されます。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -1973,7 +1973,7 @@ gatekeeping法
 </section>
 <section id="多元の分散分析manova関数" class="level3" data-number="25.8.4">
 <h3 data-number="25.8.4" class="anchored" data-anchor-id="多元の分散分析manova関数"><span class="header-section-number">25.8.4</span> 多元の分散分析：manova関数</h3>
-<p>多変量分散分析（MANOVA）は複数の目的変数を用いて統計的な有意差を検定するための関数です。目的変数はすべて数値、説明変数には因子や数値を取ります。複数の目的変数の平均値に説明変数間で差があるかを調べる際に用いるようです（が、あまり用いられているのを見たことがありません）。下の例では、がく片の長さと幅（Sepal.LengthとSepal.Width）に種（Species）による差があるかどうかを検定しています。</p>
+<p>多変量分散分析（MANOVA）は複数の目的変数を用いて統計的な有意差を検定するための関数です。目的変数はすべて数値、説明変数には因子や数値を取ります。複数の目的変数の平均値に説明変数間で差があるかを調べる際に用いるようです（が、あまり用いられているのを見たことがありません）。下の例では、がく片の長さと幅（<code>Sepal.Length</code>と<code>Sepal.Width</code>）に種（<code>Species</code>）による差があるかどうかを検定しています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1999,37 +1999,39 @@ gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>正規性の検定</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">100</span>) <span class="sc">|&gt;</span> <span class="fu">shapiro.test</span>() <span class="co"># 正規乱数は正規分布しているので棄却されない</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  Shapiro-Wilk normality test</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  rnorm(100)</span></span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="do">## W = 0.97824, p-value = 0.09687</span></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">LillieTest</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>)) <span class="co"># Kolmogorov-Smirnov検定</span></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  Lilliefors (Kolmogorov-Smirnov) normality test</span></span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  rnorm(100)</span></span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="do">## D = 0.08583, p-value = 0.0665</span></span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">100</span>) <span class="sc">|&gt;</span> <span class="fu">shapiro.test</span>() <span class="co"># 一様乱数は正規分布していないので棄却される</span></span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  Shapiro-Wilk normality test</span></span>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>rn <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>rn <span class="sc">|&gt;</span> <span class="fu">shapiro.test</span>() <span class="co"># 正規乱数は正規分布しているので棄却されない</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  Shapiro-Wilk normality test</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  rn</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="do">## W = 0.97824, p-value = 0.09687</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">LillieTest</span>(rn) <span class="co"># Kolmogorov-Smirnov検定</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  Lilliefors (Kolmogorov-Smirnov) normality test</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  rn</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="do">## D = 0.10213, p-value = 0.01198</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>ru <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">100</span>)</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>ru <span class="sc">|&gt;</span> <span class="fu">shapiro.test</span>() <span class="co"># 一様乱数は正規分布していないので棄却される</span></span>
 <span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  runif(100)</span></span>
-<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a><span class="do">## W = 0.95184, p-value = 0.001099</span></span>
-<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">LillieTest</span>(<span class="fu">runif</span>(<span class="dv">100</span>)) <span class="co"># Kolmogorov-Smirnov検定</span></span>
-<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  Lilliefors (Kolmogorov-Smirnov) normality test</span></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  Shapiro-Wilk normality test</span></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  ru</span></span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a><span class="do">## W = 0.94017, p-value = 0.0001973</span></span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">LillieTest</span>(ru) <span class="co"># Kolmogorov-Smirnov検定</span></span>
 <span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  runif(100)</span></span>
-<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a><span class="do">## D = 0.082713, p-value = 0.08833</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a><span class="do">##  Lilliefors (Kolmogorov-Smirnov) normality test</span></span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  ru</span></span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a><span class="do">## D = 0.096454, p-value = 0.02274</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
 <section id="分散の均一性の検定" class="level3" data-number="25.8.6">
 <h3 data-number="25.8.6" class="anchored" data-anchor-id="分散の均一性の検定"><span class="header-section-number">25.8.6</span> 分散の均一性の検定</h3>
-<p>分散の均一性の検定は、2つの群で分散が同じであるかどうかを検定するための検定手法です。分散の均一性の検定はvar.test関数で計算することができます。帰無仮説は「2つの分散が同じ」ですので、p&lt;0.05であれば帰無仮説を棄却し、2つの群で分散が異なると結論します。</p>
+<p>分散の均一性の検定は、2つの群で分散が同じであるかどうかを検定するための検定手法です。分散の均一性の検定は<code>var.test</code>関数で計算することができます。帰無仮説は「2つの分散が同じ」ですので、p&lt;0.05であれば帰無仮説を棄却し、2つの群で分散が異なると結論します。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -2041,13 +2043,13 @@ gatekeeping法
 <span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  F test to compare two variances</span></span>
 <span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  rnorm(10) and rnorm(10)</span></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="do">## F = 0.94631, num df = 9, denom df = 9, p-value = 0.9358</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="do">## F = 0.69878, num df = 9, denom df = 9, p-value = 0.602</span></span>
 <span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative hypothesis: true ratio of variances is not equal to 1</span></span>
 <span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 95 percent confidence interval:</span></span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.2350501 3.8098391</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.1735671 2.8132844</span></span>
 <span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a><span class="do">## sample estimates:</span></span>
 <span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="do">## ratio of variances </span></span>
-<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="do">##          0.9463101</span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="do">##            0.69878</span></span>
 <span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 正規分布と一様分布の分散の均一性の検定</span></span>
 <span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(<span class="fu">rnorm</span>(<span class="dv">10</span>), <span class="fu">runif</span>(<span class="dv">10</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>))</span>
@@ -2055,13 +2057,13 @@ gatekeeping法
 <span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  F test to compare two variances</span></span>
 <span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  rnorm(10) and runif(10, min = -1, max = 1)</span></span>
-<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a><span class="do">## F = 3.4849, num df = 9, denom df = 9, p-value = 0.07697</span></span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a><span class="do">## F = 4.9289, num df = 9, denom df = 9, p-value = 0.02628</span></span>
 <span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative hypothesis: true ratio of variances is not equal to 1</span></span>
 <span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 95 percent confidence interval:</span></span>
-<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a><span class="do">##   0.8655999 14.0301881</span></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a><span class="do">##   1.224275 19.843813</span></span>
 <span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a><span class="do">## sample estimates:</span></span>
 <span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a><span class="do">## ratio of variances </span></span>
-<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a><span class="do">##             3.4849</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a><span class="do">##           4.928922</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -2085,7 +2087,7 @@ gatekeeping法
 <span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  chi-squared test for outlier</span></span>
 <span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  x</span></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="do">## X-squared = 8.5375, p-value = 0.003479</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="do">## X-squared = 7.9438, p-value = 0.004825</span></span>
 <span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative hypothesis: highest value 10 is an outlier</span></span>
 <span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="fu">grubbs.test</span>(x)</span>
@@ -2093,7 +2095,7 @@ gatekeeping法
 <span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  Grubbs test for one outlier</span></span>
 <span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  x</span></span>
-<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a><span class="do">## G = 2.921907, U = 0.060871, p-value = 4.944e-06</span></span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a><span class="do">## G = 2.81847, U = 0.12618, p-value = 0.0001353</span></span>
 <span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative hypothesis: highest value 10 is an outlier</span></span>
 <span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a><span class="fu">dixon.test</span>(x)</span>
@@ -2101,7 +2103,7 @@ gatekeeping法
 <span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a><span class="do">##  Dixon test for outliers</span></span>
 <span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  x</span></span>
-<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a><span class="do">## Q = 0.82821, p-value &lt; 2.2e-16</span></span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a><span class="do">## Q = 0.81998, p-value &lt; 2.2e-16</span></span>
 <span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative hypothesis: highest value 10 is an outlier</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -3485,7 +3487,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb45-729"><a href="#cb45-729" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-730"><a href="#cb45-730" aria-hidden="true" tabindex="-1"></a><span class="fu">### ポアソン分布の確率を演算：poisson.test関数</span></span>
 <span id="cb45-731"><a href="#cb45-731" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-732"><a href="#cb45-732" aria-hidden="true" tabindex="-1"></a>ポアソン分布の発生確率に関する検定（ポアソン検定）を提供しているのが<span class="in">`poisson.test`</span>関数です。poisson.test(x, T, r)という形で、<span class="in">`x`</span>回のイベントが時間単位<span class="in">`T`</span>の間に起こったときの発生率（<span class="in">`T`</span>/<span class="in">`x`</span>）が発生率<span class="in">`r`</span>と一致しているのかを評価します。<span class="in">`T`</span>のデフォルト値は<span class="in">`1`</span>、<span class="in">`r`</span>のデフォルト値も<span class="in">`1`</span>です。ですので、引数なしで用いると、時間単位1の間に1回起こるイベントとの差を検定することになります。<span class="in">`binom.test`</span>と同様にイベントが起こる確率の95%信頼区間も表示されます。</span>
+<span id="cb45-732"><a href="#cb45-732" aria-hidden="true" tabindex="-1"></a>ポアソン分布の発生確率に関する検定（ポアソン検定）を提供しているのが<span class="in">`poisson.test`</span>関数です。<span class="in">`poisson.test(x, T, r)`</span>という形で、<span class="in">`x`</span>回のイベントが時間単位<span class="in">`T`</span>の間に起こったときの発生率（<span class="in">`T`</span>/<span class="in">`x`</span>）が発生率<span class="in">`r`</span>と一致しているのかを評価します。<span class="in">`T`</span>のデフォルト値は<span class="in">`1`</span>、<span class="in">`r`</span>のデフォルト値も<span class="in">`1`</span>です。ですので、引数なしで用いると、時間単位1の間に1回起こるイベントとの差を検定することになります。<span class="in">`binom.test`</span>と同様にイベントが起こる確率の95%信頼区間も表示されます。</span>
 <span id="cb45-733"><a href="#cb45-733" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-734"><a href="#cb45-734" aria-hidden="true" tabindex="-1"></a>同様に<span class="in">`x`</span>、<span class="in">`T`</span>に数値2つのベクターをそれぞれ取り、2つのポアソン分布するイベントの発生率を比較することもできます。数値2つを取った場合には、イベントの発生率の比と、その95%信頼区間が表示されます。</span>
 <span id="cb45-735"><a href="#cb45-735" aria-hidden="true" tabindex="-1"></a></span>
@@ -3499,7 +3501,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb45-743"><a href="#cb45-743" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-744"><a href="#cb45-744" aria-hidden="true" tabindex="-1"></a><span class="fu">### 多元の分散分析：manova関数</span></span>
 <span id="cb45-745"><a href="#cb45-745" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-746"><a href="#cb45-746" aria-hidden="true" tabindex="-1"></a>多変量分散分析（MANOVA）は複数の目的変数を用いて統計的な有意差を検定するための関数です。目的変数はすべて数値、説明変数には因子や数値を取ります。複数の目的変数の平均値に説明変数間で差があるかを調べる際に用いるようです（が、あまり用いられているのを見たことがありません）。下の例では、がく片の長さと幅（Sepal.LengthとSepal.Width）に種（Species）による差があるかどうかを検定しています。</span>
+<span id="cb45-746"><a href="#cb45-746" aria-hidden="true" tabindex="-1"></a>多変量分散分析（MANOVA）は複数の目的変数を用いて統計的な有意差を検定するための関数です。目的変数はすべて数値、説明変数には因子や数値を取ります。複数の目的変数の平均値に説明変数間で差があるかを調べる際に用いるようです（が、あまり用いられているのを見たことがありません）。下の例では、がく片の長さと幅（<span class="in">`Sepal.Length`</span>と<span class="in">`Sepal.Width`</span>）に種（<span class="in">`Species`</span>）による差があるかどうかを検定しています。</span>
 <span id="cb45-747"><a href="#cb45-747" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-748"><a href="#cb45-748" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="多変量分散分析：manova関数"}</span></span>
 <span id="cb45-749"><a href="#cb45-749" aria-hidden="true" tabindex="-1"></a><span class="in"># 目的変数はcbind関数で行列として渡す</span></span>
@@ -3515,45 +3517,47 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb45-759"><a href="#cb45-759" aria-hidden="true" tabindex="-1"></a>ただし、この検定よりは、qqプロットのような正規性を図から調べるような方法や、ヒストグラムでの左右対称性の確認、データが連続的であるかどうかなどを指標にして判別する方がよいように思います。</span>
 <span id="cb45-760"><a href="#cb45-760" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-761"><a href="#cb45-761" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="正規性の検定"}</span></span>
-<span id="cb45-762"><a href="#cb45-762" aria-hidden="true" tabindex="-1"></a><span class="in">rnorm(100) |&gt; shapiro.test() # 正規乱数は正規分布しているので棄却されない</span></span>
-<span id="cb45-763"><a href="#cb45-763" aria-hidden="true" tabindex="-1"></a><span class="in">DescTools::LillieTest(rnorm(100)) # Kolmogorov-Smirnov検定</span></span>
-<span id="cb45-764"><a href="#cb45-764" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-765"><a href="#cb45-765" aria-hidden="true" tabindex="-1"></a><span class="in">runif(100) |&gt; shapiro.test() # 一様乱数は正規分布していないので棄却される</span></span>
-<span id="cb45-766"><a href="#cb45-766" aria-hidden="true" tabindex="-1"></a><span class="in">DescTools::LillieTest(runif(100)) # Kolmogorov-Smirnov検定</span></span>
-<span id="cb45-767"><a href="#cb45-767" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-768"><a href="#cb45-768" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-769"><a href="#cb45-769" aria-hidden="true" tabindex="-1"></a><span class="fu">### 分散の均一性の検定</span></span>
+<span id="cb45-762"><a href="#cb45-762" aria-hidden="true" tabindex="-1"></a><span class="in">rn &lt;- rnorm(100)</span></span>
+<span id="cb45-763"><a href="#cb45-763" aria-hidden="true" tabindex="-1"></a><span class="in">rn |&gt; shapiro.test() # 正規乱数は正規分布しているので棄却されない</span></span>
+<span id="cb45-764"><a href="#cb45-764" aria-hidden="true" tabindex="-1"></a><span class="in">DescTools::LillieTest(rn) # Kolmogorov-Smirnov検定</span></span>
+<span id="cb45-765"><a href="#cb45-765" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-766"><a href="#cb45-766" aria-hidden="true" tabindex="-1"></a><span class="in">ru &lt;- runif(100)</span></span>
+<span id="cb45-767"><a href="#cb45-767" aria-hidden="true" tabindex="-1"></a><span class="in">ru |&gt; shapiro.test() # 一様乱数は正規分布していないので棄却される</span></span>
+<span id="cb45-768"><a href="#cb45-768" aria-hidden="true" tabindex="-1"></a><span class="in">DescTools::LillieTest(ru) # Kolmogorov-Smirnov検定</span></span>
+<span id="cb45-769"><a href="#cb45-769" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb45-770"><a href="#cb45-770" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-771"><a href="#cb45-771" aria-hidden="true" tabindex="-1"></a>分散の均一性の検定は、2つの群で分散が同じであるかどうかを検定するための検定手法です。分散の均一性の検定はvar.test関数で計算することができます。帰無仮説は「2つの分散が同じ」ですので、p&lt;0.05であれば帰無仮説を棄却し、2つの群で分散が異なると結論します。</span>
+<span id="cb45-771"><a href="#cb45-771" aria-hidden="true" tabindex="-1"></a><span class="fu">### 分散の均一性の検定</span></span>
 <span id="cb45-772"><a href="#cb45-772" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-773"><a href="#cb45-773" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="分散の均一性の検定"}</span></span>
-<span id="cb45-774"><a href="#cb45-774" aria-hidden="true" tabindex="-1"></a><span class="in"># 正規分布同士の分散の均一性の検定（異なっていれば帰無仮説を棄却）</span></span>
-<span id="cb45-775"><a href="#cb45-775" aria-hidden="true" tabindex="-1"></a><span class="in">var.test(rnorm(10), rnorm(10))</span></span>
-<span id="cb45-776"><a href="#cb45-776" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-777"><a href="#cb45-777" aria-hidden="true" tabindex="-1"></a><span class="in"># 正規分布と一様分布の分散の均一性の検定</span></span>
-<span id="cb45-778"><a href="#cb45-778" aria-hidden="true" tabindex="-1"></a><span class="in">var.test(rnorm(10), runif(10, min = -1, max = 1))</span></span>
-<span id="cb45-779"><a href="#cb45-779" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-780"><a href="#cb45-780" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-781"><a href="#cb45-781" aria-hidden="true" tabindex="-1"></a><span class="fu">### 外れ値の検定</span></span>
+<span id="cb45-773"><a href="#cb45-773" aria-hidden="true" tabindex="-1"></a>分散の均一性の検定は、2つの群で分散が同じであるかどうかを検定するための検定手法です。分散の均一性の検定は<span class="in">`var.test`</span>関数で計算することができます。帰無仮説は「2つの分散が同じ」ですので、p&lt;0.05であれば帰無仮説を棄却し、2つの群で分散が異なると結論します。</span>
+<span id="cb45-774"><a href="#cb45-774" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-775"><a href="#cb45-775" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="分散の均一性の検定"}</span></span>
+<span id="cb45-776"><a href="#cb45-776" aria-hidden="true" tabindex="-1"></a><span class="in"># 正規分布同士の分散の均一性の検定（異なっていれば帰無仮説を棄却）</span></span>
+<span id="cb45-777"><a href="#cb45-777" aria-hidden="true" tabindex="-1"></a><span class="in">var.test(rnorm(10), rnorm(10))</span></span>
+<span id="cb45-778"><a href="#cb45-778" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-779"><a href="#cb45-779" aria-hidden="true" tabindex="-1"></a><span class="in"># 正規分布と一様分布の分散の均一性の検定</span></span>
+<span id="cb45-780"><a href="#cb45-780" aria-hidden="true" tabindex="-1"></a><span class="in">var.test(rnorm(10), runif(10, min = -1, max = 1))</span></span>
+<span id="cb45-781"><a href="#cb45-781" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb45-782"><a href="#cb45-782" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-783"><a href="#cb45-783" aria-hidden="true" tabindex="-1"></a>データが外れ値（outlier）かどうかを判別する場合には、外れ値の検定というものを用いる場合もあります。この検定では、代表値（平均など）から一番外れたデータが外れ値かどうかを検定し、外れ値であれば帰無仮説を棄却するものとなっています。Rでは<span class="co">[</span><span class="ot">outlier</span><span class="co">](https://cran.r-project.org/web/packages/outliers/outliers.pdf)</span>パッケージ <span class="co">[</span><span class="ot">@outliers_bib</span><span class="co">]</span>の関数である<span class="in">`chisq.out.test`</span>、<span class="in">`grubbs.test`</span>、<span class="in">`dixon.test`</span>で検定を行うことができます。</span>
+<span id="cb45-783"><a href="#cb45-783" aria-hidden="true" tabindex="-1"></a><span class="fu">### 外れ値の検定</span></span>
 <span id="cb45-784"><a href="#cb45-784" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-785"><a href="#cb45-785" aria-hidden="true" tabindex="-1"></a>ただし、この検定で**外れ値であると判断されても、データは取り除いてはいけません**。これらの検定はデータが正規分布していることを仮定しており、正規分布していないデータでは外れ値とはならない場合があります。検定は外れ値を取り除くためのものではなく、外れ値である可能性を把握し、データの取得に問題がなかったか検討したり、分布が正規性を持つかどうかを評価しなおしたりするためのものです。</span>
+<span id="cb45-785"><a href="#cb45-785" aria-hidden="true" tabindex="-1"></a>データが外れ値（outlier）かどうかを判別する場合には、外れ値の検定というものを用いる場合もあります。この検定では、代表値（平均など）から一番外れたデータが外れ値かどうかを検定し、外れ値であれば帰無仮説を棄却するものとなっています。Rでは<span class="co">[</span><span class="ot">outlier</span><span class="co">](https://cran.r-project.org/web/packages/outliers/outliers.pdf)</span>パッケージ <span class="co">[</span><span class="ot">@outliers_bib</span><span class="co">]</span>の関数である<span class="in">`chisq.out.test`</span>、<span class="in">`grubbs.test`</span>、<span class="in">`dixon.test`</span>で検定を行うことができます。</span>
 <span id="cb45-786"><a href="#cb45-786" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-787"><a href="#cb45-787" aria-hidden="true" tabindex="-1"></a>基礎研究などで極端な外れ値が取れた場合には何か理由を付けてデータを取り除きたくなるものですが、この検定を用いてもデータを取り除くことはできません。このような検定を用いずに、データと向き合う方が良いように思います。</span>
+<span id="cb45-787"><a href="#cb45-787" aria-hidden="true" tabindex="-1"></a>ただし、この検定で**外れ値であると判断されても、データは取り除いてはいけません**。これらの検定はデータが正規分布していることを仮定しており、正規分布していないデータでは外れ値とはならない場合があります。検定は外れ値を取り除くためのものではなく、外れ値である可能性を把握し、データの取得に問題がなかったか検討したり、分布が正規性を持つかどうかを評価しなおしたりするためのものです。</span>
 <span id="cb45-788"><a href="#cb45-788" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-789"><a href="#cb45-789" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="外れ値の検定"}</span></span>
-<span id="cb45-790"><a href="#cb45-790" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(outliers)</span></span>
-<span id="cb45-791"><a href="#cb45-791" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-792"><a href="#cb45-792" aria-hidden="true" tabindex="-1"></a><span class="in"># 正規乱数</span></span>
-<span id="cb45-793"><a href="#cb45-793" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- c(rnorm(10), 10)</span></span>
-<span id="cb45-794"><a href="#cb45-794" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-795"><a href="#cb45-795" aria-hidden="true" tabindex="-1"></a><span class="in">chisq.out.test(x)</span></span>
+<span id="cb45-789"><a href="#cb45-789" aria-hidden="true" tabindex="-1"></a>基礎研究などで極端な外れ値が取れた場合には何か理由を付けてデータを取り除きたくなるものですが、この検定を用いてもデータを取り除くことはできません。このような検定を用いずに、データと向き合う方が良いように思います。</span>
+<span id="cb45-790"><a href="#cb45-790" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-791"><a href="#cb45-791" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="外れ値の検定"}</span></span>
+<span id="cb45-792"><a href="#cb45-792" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(outliers)</span></span>
+<span id="cb45-793"><a href="#cb45-793" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-794"><a href="#cb45-794" aria-hidden="true" tabindex="-1"></a><span class="in"># 正規乱数</span></span>
+<span id="cb45-795"><a href="#cb45-795" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- c(rnorm(10), 10)</span></span>
 <span id="cb45-796"><a href="#cb45-796" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-797"><a href="#cb45-797" aria-hidden="true" tabindex="-1"></a><span class="in">grubbs.test(x)</span></span>
+<span id="cb45-797"><a href="#cb45-797" aria-hidden="true" tabindex="-1"></a><span class="in">chisq.out.test(x)</span></span>
 <span id="cb45-798"><a href="#cb45-798" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-799"><a href="#cb45-799" aria-hidden="true" tabindex="-1"></a><span class="in">dixon.test(x)</span></span>
-<span id="cb45-800"><a href="#cb45-800" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb45-799"><a href="#cb45-799" aria-hidden="true" tabindex="-1"></a><span class="in">grubbs.test(x)</span></span>
+<span id="cb45-800"><a href="#cb45-800" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-801"><a href="#cb45-801" aria-hidden="true" tabindex="-1"></a><span class="in">dixon.test(x)</span></span>
+<span id="cb45-802"><a href="#cb45-802" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
@@ -3573,7 +3577,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
