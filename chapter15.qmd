@@ -234,6 +234,20 @@ sapply(lst, sum) # 返り値がベクターのlapply
 sapply(iris[, 1:4], sum)
 ```
 
+### with・within関数
+
+[12章](./chapter12.html)で紹介した通り、データフレームの列同士の演算には`with`・`within`関数を用いても計算することができます。`with`・`within`関数はデータフレームと列の演算を引数に取ります。`with`関数がベクターを返すのに対し、`within`関数は列が追加されたデータフレームを返します。`within`関数を`apply`関数群と同時に使うことで、より複雑なデータフレームの演算を行うことができます。
+
+```{r, filename="列の演算：with関数とwithin関数"}
+iris6 <- head(iris) # 始めの6行を選択
+
+# Sepal.Lengthの列とSepal.Widthの列の値を掛ける
+with(iris6, Sepal.Length * Sepal.Width) 
+
+# Sepal.Lengthの列とSepal.Widthの列の値を掛けて、値を列として登録する
+within(iris6, Sepal_multiple <- Sepal.Length * Sepal.Width) #代入は<-、=だとエラー
+```
+
 ### vapply関数
 
 `vapply`関数は関数が複数の返り値を持つときに用いる関数です。`vapply`関数の第一引数はベクターやリスト、第二引数は複数の返り値を取る関数です。`vapply`関数はこの返り値を行列に変換するのですが、この変換時の行名を`FUN.VALUE`という第三引数で設定します。`FUN.VALUE`の設定は名前付きベクターで、値は0とします。かなり癖が強いので、使われているところをほとんど見たことがない関数です。

@@ -375,8 +375,8 @@ knitr::kable(d, caption="表1：ベクターに関する関数")
 
 ```{r, echo=FALSE}
 d <- data.frame(
-  func = c("union(x, y)", "intersect(x, y)", "setdiff(x, y)", "setequal(x, y)", "x %in% y"),
-  meaning = c("xとyの和集合", "xとyの積集合", "xにあってyに無い集合", "xとyが同一かどうかを評価", "xのうち、yにある要素はTRUEを返す")
+  func = c("union(x, y)", "intersect(x, y)", "setdiff(x, y)", "setequal(x, y)", "x %in% y", "duplicated", "anyDulricated"),
+  meaning = c("xとyの和集合", "xとyの積集合", "xにあってyに無い集合", "xとyが同一かどうかを評価", "xのうち、yにある要素はTRUEを返す", "重複した要素はTRUEを返す", "重複した要素が出現する最小のインデックスを返す")
 )
 
 colnames(d) <- c("関数名", "集合に適用する演算")
@@ -406,4 +406,10 @@ setequal(x, y) # xとyが同一かどうかを評価
 setequal(x, 10:1) # 要素が同一なのでTRUE
 
 x %in% y # xのうち、yにあるものはTRUE
+
+duplicated(c(1, 2, 3, 4, 4, 4)) # 4が5番目から重複しているのでTRUE、それ以外はFALSE
+
+anyDuplicated(c(1, 2, 3, 4, 4, 4)) # 5番目の要素で重複があるので5を返す
+
+anyDuplicated(c(1, 2, 3, 4)) # 重複がないので0が返ってくる
 ```
