@@ -1,8 +1,4 @@
-# 教師なし学習
-
-**教師なし学習**は、データの特徴を捉えるためにデータを変換したり、群に分ける方法の総称です。教師なし学習の特徴は、以前に取ったデータと新しく取得したデータを分けて用いる教師あり学習とは異なり、すべてのデータを一度に用いて学習を行うことです。教師なし学習には、以下の図1のように、データをグループに分ける**クラスタリング**と、多次元のデータを理解しやすいように変換する**次元圧縮**の2つが含まれます。
-
-![](./image/classification_category2.png)
+# 確率分布と乱数
 
 ```{r, setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(
@@ -12,580 +8,1531 @@ knitr::opts_chunk$set(
 pacman::p_load(tidyverse)
 ```
 
-## クラスタリング
+## 乱数と種（seed）
 
-**クラスタリング**とは、1つの要素にたくさんのデータが付随している、多次元データを用いて、要素間が互いに似ているかどうかを判断し、互いに似ているもの同士を一つのグループにまとめる方法です。類似した要素のまとまりを見つけるときに用いられます。
+プログラミングでは、ランダムに生成された数値、**乱数**を使った処理を行うことがあります。例えばゲームなどで偶然性を表現する場合には、整数の乱数が用いられています。Rで整数の乱数を得る時には、`sample`関数を用います。`sample`関数は数列のベクターから引数で指定した数だけ要素をランダムに取り出し、ベクターとして返す関数です。
 
-「1つの要素にたくさんのデータ」というのはイメージしにくいかもしれませんが、例えば、ある個人について付随しているデータを考えると、年齢、性別、身長、体重、職業、趣味など、1人にたくさんのデータがくっついてきます。ある個人Aさんと別の個人Bさんでは、異なるデータがくっついていることになります。AさんとBさんの属性が似ているかどうかは、そのデータがどれぐらい似ているかを調べればわかります。このように1人あたりのデータがたくさんある状態のことを**多次元データ**であると考えることができます。
-
-多次元データがどの程度似ているのかを表現できれば、個々人が似ている・似ていないを判断することができ、似ている人をグループとして分けることができます。この似ている人同士をグループにすることがクラスタリングに当たります。
-
-クラスタリングするときに、似ているものから順番に線でつないでいく方法のことを**階層ありクラスタリング**、似ているものを大まかにグループ分けする方法を**階層なしクラスタリング**と呼びます。
-
-## 階層ありクラスタリング
-
-### 距離行列
-
-階層ありクラスタリングとは、多次元データ間の**距離**を計算することで、個々のデータについて似ている度合いを評価し、評価に従って似ているものから**クラスター**に分けていく手法のことです。まずは、データを**距離行列**に変換する必要があります。
-
-距離行列とは、たくさんあるデータとデータの距離を行列としてまとめたものです。最も単純な距離行列は2つのデータの直線距離（ユークリッド距離）です。
-
-距離行列についてイメージしやすいように、まずは、都道府県の県庁所在地の緯度・経度のデータを用いて距離行列を計算します。都道府県の緯度経度情報は[Github Gistのページ](https://gist.github.com/ctsaran/42728dad3c7d8bd91f1d)からダウンロードしています。
-
-簡便化のために、関西の都道府県のみを用います。緯度・経度から、関西の都道府県は下のグラフに示すように位置していることがわかります。この時、各県から別の県までの直線距離をそれぞれ求めることができます。これを行列にまとめたのが距離行列です。Rでは、`dist`関数というものを用いて、緯度・経度のデータからユークリッド距離の距離行列を求めることができます。
-
-```{r, filename="データの準備"}
-kansai <- read.csv("./data/pref_lat_lon.csv", header = T, fileEncoding = "CP932")
-
-# 関西の都道府県データのみ取得する
-kansai <- kansai[24:30, ]
-kansai # 各県の緯度と経度
-
-ggplot(
-  kansai, 
-  aes(x = lon, y = lat, color = pref_name, label = pref_name)) + 
-  geom_text() # 県庁所在地の位置
+```{r, filename="1～100の整数からランダムに20個取り出す"}
+sample(1:100, 20, replace=TRUE)
 ```
 
+乱数は完全にランダムな数値というわけではなく、ランダムに見える繰り返し計算から生成されています（**疑似乱数**）。この疑似乱数を生成するアルゴリズムにはいろいろなものがあるのですが、Rではデフォルトの乱数生成アルゴリズムとして、**[メルセンヌ・ツイスター法](http://www.math.sci.hiroshima-u.ac.jp/m-mat/TEACH/ichimura-sho-koen.pdf)（mersenne twister）** [@10.1145/272991.272995]
+が用いられています。メルセンヌ・ツイスターは乱数生成アルゴリズムの中でも偏りのない乱数を得られるもので、現在ではExcelでも用いられています。
 
-```{r, filename="データを距離行列に変換"}
-# ユークリッド距離（数値は24から順に三重、滋賀、京都、大阪、兵庫、奈良、和歌山）
-dist(kansai[, 2:3], method="euclidean") 
+Rでの乱数生成アルゴリズムを確認、設定する場合には、`RNGkind`関数を用います。`RNGkind`関数を用いて乱数生成アルゴリズムを変更することもできますが、メルセンヌ・ツイスターから変更する必要は特にないでしょう。
+
+```{r, filename="乱数生成アルゴリズムの確認"}
+# ?RNGkindで利用可能な乱数生成アルゴリズムの一覧を確認できる
+RNGkind()
 ```
 
-上の例では緯度・経度の2つのデータから距離行列を計算していますが、もっとたくさんの列があるデータにおいても同様に距離行列を計算することができます。また、距離行列には、距離の計算の仕方によってさまざまな種類のものがあります。距離としてよく用いられるものは、**ユークリッド距離**（2点間の直線の距離）と**マンハッタン距離**（2点間を移動するときの横と縦の移動距離を足したもの）の2つです。
+乱数生成アルゴリズムは繰り返し計算で乱数を生成するため、乱数を生成するときに乱数の初期値が必要となります。この乱数の初期値のことを**乱数の種（seed）**と呼びます。Rでは乱数の種を`set.seed`関数で指定することができます。乱数の種をある値に設定しておくと、乱数を何度生成しても同じ結果を得ることができます。乱数を用いた計算で統計を行う場合には、計算の再現性を保つためにseedを設定しておく方がよいでしょう。
 
-この距離行列を用いて、距離が近いもの同士をクラスターにまとめていくものが、**階層ありクラスタリング（hierarchical clustering）**です。
-
-::: {.panel-tabset}
-
-## ユークリッド距離
-
-```{r}
-# ユークリッド距離
-#（軸の数値は24から順に三重、滋賀、京都、大阪、兵庫、奈良、和歌山）
-dist(kansai[, 2:3], method = "euclidean") 
-```
-
-## 最大距離
-
-```{r}
-# 縦と横の距離の最大値を取る
-dist(kansai[, 2:3], method = "maximum") 
-```
-
-## マンハッタン距離
-
-```{r}
-# マンハッタン距離
-dist(kansai[, 2:3], method = "manhattan") 
-```
-
-## キャンベラ距離
-
-```{r}
-# キャンベラ距離
-#（原点近くの距離を大きく見積もる、2点の距離を原点からの距離の絶対値の和で割る）
-dist(kansai[, 2:3], method = "canberra")
-```
-
-## バイナリ距離
-
-```{r}
-# バイナリ距離（距離が0なら1、0でなければ0を返す）
-dist(kansai[, 2:3], method = "binary") 
-```
-
-## ミンコフスキー距離
-
-```{r}
-# ミンコフスキー距離
-#（ユークリッドとマンハッタンの中間的なもの、pという引数を別途取る。pのデフォルトは2）
-dist(kansai[, 2:3], method = "minkowski") 
-```
-
-:::
-
-### Rでの階層ありクラスタリング
-
-Rでは、この階層ありクラスタリングを`hclust`関数を用いて行います。`hclust`関数の第一引数は距離行列で、上に述べた通り`dist`関数を用いて計算できるものです。`method`引数には、クラスタリングの方法を選択します。クラスタリングの方法は、`"complete"`（デフォルト）、`"ward.D"`、`"ward.D2"`、`"single"`、`"average"`、`"mcquitty"`、`"median"`、`"centroid"`の8つから選択します。
-
-この、`hclust`関数の返り値を`plot`することで、クラスタリングの結果を確認することができます。`hclust`関数の返り値自体を確認することはあまりないため、基本的には`plot`して使うものだと考えてもらうとよいと思います。`plot`関数において、`hang`引数を`-1`に指定すると、クラスタリングする要素の下端をそろえることができます。
-
-`plot`関数で表示されるのは、より近いもの同士も線でつないだ樹形上の図です。線でつながった距離が近いほど、データがよく似ていることを示しています。上記の都道府県の緯度・経度でクラスタリングを行うと、距離の近さとクラスタリングの図上の近さが対応しているのがわかるかと思います。
-
-::: {.panel-tabset}
-
-## 下揃えなし
-
-```{r, filename="階層ありクラスタリング", fig.width=10}
-JPll <- read.csv("./data/pref_lat_lon.csv", header = T, row.names = 1, fileEncoding = "CP932")
-hc <- hclust(dist(JPll), method = "complete") # 引数は距離行列
-plot(hc) # 樹形図の作図
-```
-
-## 下揃えあり
-
-```{r, filename="階層ありクラスタリング：下を揃える", fig.width=10}
-plot(hc, hang = -1)
-```
-
-:::
-
-## 階層なしクラスタリング
-
-階層ありクラスタリングでは、距離の近いデータ同士をつなぐため、各データのクラスタの近さは厳密に計算されています。一方で、この方法では距離行列を必ず計算する必要があり、データが増えると計算回数がどんどん増えていきます。
-
-データ同士の距離ではなく、「クラスターの中心」を定め、この中心からの距離が近いものを同じクラスターであるとしてグループ分けする方法のことを**階層なしクラスタリング**と呼びます。こちらの方法であれば、計算回数はクラスター数に依存するため、データが増えても大きくは計算回数が増えず、比較的単純な計算でグループ分けを行うことができます。一方で、厳密にデータ間の距離を計算しているわけではないので、階層ありクラスタリングのように細かなデータの類似性を評価することはできません。
-
-この階層なしクラスタリングの最も代表的なものが、**k-mean法**です。
-
-## k-means
-
-**k-means法**では、あらかじめ乱数に従い「クラスターの中心」を設定します。このクラスターの中心の数は解析する人が設定する必要があります。次に、このクラスターの中心からの距離が近いデータを、そのクラスターのデータであるとします。この仮のクラスターができたら、次にクラスター内のデータの重心を求めます。重心が定まったら、この重心を新しい「クラスターの中心」として、クラスターの中心の位置を更新します。
-
-このクラスターの中心を重心に更新する試行を、重心が移動しなくなるまで繰り返した時のクラスター内のデータをクラスターのメンバーとします。言葉ではわかりにくいので、以下にk-meansによるクラスタリングの図を示します。また、[こちらのリンク](http://tech.nitoyon.com/ja/blog/2013/11/07/k-means/)、もしくは[このWebアプリケーション](https://xjorv.shinyapps.io/kmeans_animate/)を見ていただくと、k-meansをよりイメージしやすいかと思います。WebアプリケーションはRで、`if(!require(shiny)){install.packages("shiny")};runGitHub("kmeans_animated", "sb8001at-oss")`を実行することでも利用することができます。
-
-:::{.callout-tip collapse="true"}
-
-## k-mean：下グラフ描画のスクリプト
-
-```{r, eval=FALSE}
+```{r, filename="set.seed関数で乱数のシードを設定"}
 set.seed(0)
+sample(1:100, 20, replace=TRUE) # seedが0のときの乱数
 
-# データにはirisのがく片データを使用
-data <- iris[, 1:2]
-colnames(data) <- c("x", "y")
-
-# クラスターの中心の初期値
-center_means <- 
-  data.frame(
-    x = rnorm(3, mean(data[ ,1]), sd(data[ ,1])), 
-    y = rnorm(3, mean(data[ ,2]), sd(data[ ,2])),
-    clus = 1:3)
-
-# アウトプットを保存する変数
-data_for_gganimate <- NULL
-
-for(i in 1:20){ # おそらくi=16ぐらいで収束している
-  
-  # 各中心からの距離の計算
-  dist_d <- data.frame(
-    dist_1 = (data$x - center_means[1, 1]) ^ 2 + (data$y - center_means[1, 2]) ^ 2,
-    dist_2 = (data$x - center_means[2, 1]) ^ 2 + (data$y - center_means[2, 2]) ^ 2,
-    dist_3 = (data$x - center_means[3, 1]) ^ 2 + (data$y - center_means[3, 2]) ^ 2
-  )
-  
-  # 最も近いクラスターを探す
-  min_dist <- apply(dist_d, 1, min)
-  
-  clus <- 
-    case_when(
-      dist_d$dist_1 == min_dist ~ 1,
-      dist_d$dist_2 == min_dist ~ 2,
-      dist_d$dist_3 == min_dist ~ 3,
-    )
-  
-  # グラフ用データを準備
-  data_temp <- data.frame(data, clus, xcenter = center_means[clus,]$x, ycenter = center_means[clus,]$y, timestate = 2 * i - 1)
-  
-  data_for_gganimate <- rbind(data_for_gganimate, data_temp)
-  
-  # 重心でクラスターの中心を更新する
-  center_means2 <- data_temp |> group_by(factor(clus)) |> summarise(x = mean(x), y = mean(y))
-  center_means$x <- center_means2$x
-  center_means$y <- center_means2$y
-    
-  # グラフ用データを準備
-  data_temp <- data.frame(data, clus, xcenter = center_means[clus,]$x, ycenter = center_means[clus,]$y, timestate = 2 * i)
-  
-  data_for_gganimate <- rbind(data_for_gganimate, data_temp)
-}
-
-pacman::p_load(gganimate)
-
-# gganimateでグラフ化
-p <- ggplot()+
-  geom_point(data = data_for_gganimate, aes(x = x, y = y, color = factor(clus), size = 2), alpha = 0.5) +
-  geom_point(data = data_for_gganimate, aes(x = xcenter, y = ycenter, color = factor(clus), size = 3), alpha = 0.7)+
-  geom_segment(data = data_for_gganimate, aes(x = x, y = y, xend = xcenter, yend = ycenter, color = factor(clus)), alpha = 0.5)+
-  theme(legend.position = "none")+
-  transition_states(timestate, transition_length = 1, state_length = 1, wrap = TRUE)+
-  ease_aes('linear')
-
-anim_save("./image/p_kmeans.gif", animate(p, renderer = gifski_renderer()))
+set.seed(0)
+sample(1:100, 20, replace=TRUE) # seedを0にしているので、値が上と同じ
 ```
 
-:::
+## 復元抽出と非復元抽出
 
-![](./image/p_kmeans.gif)
+`sample`関数では、第1引数として設定したベクターからある値が選択された後、その値をもう一度選択することができる場合（復元抽出）と、できない場合（非復元抽出）の設定を`replace`引数で設定することができます。`replace=TRUE`の場合は復元抽出、`replace=FALSE`の場合は非復元抽出となります。非復元抽出の場合には、第1引数の長さ以上には値を呼び出すことはできません。`replace`引数のデフォルトは`FALSE`ですので、`replece`引数を指定しない場合には非復元抽出が行われます。
 
-Rではk-meansでのクラスタリングを`kmeans`関数を用いて行うことができます。`kmeans`関数の引数はデータフレームとクラスターの数（`centers`）です。以下の例では、`iris`のデータを3つのクラスターに分けています。k-meansのクラスター中心の初期値は乱数で決められますので、クラスターの結果は計算のたびに少しずつ変化します。また、初期値を特定の値として`centers`引数に行列で与えることもできます。
+```{r, filename="復元抽出と非復元抽出", error=TRUE}
+# 復元抽出
+sample(1:3, 5, replace = TRUE)
 
-```{r, filename="kmeans関数でクラスタリング"}
-## k-means
-set.seed(0) # k-meansは乱数計算なので、シードを設定
-k.cent3 <- kmeans(iris[ ,1:4], centers = 3) # 3つのクラスタに分ける
-k.cent3$cluster # 計算結果
+# 非復元抽出
+sample(1:3, 3, replace = FALSE)
+
+# 非復元抽出で取り出す値の数がベクターより長いと、エラーとなる
+sample(1:3, 5, replace = FALSE)
 ```
 
+また、統計では乱数を使った計算（**[モンテカルロ法](https://ja.wikipedia.org/wiki/%E3%83%A2%E3%83%B3%E3%83%86%E3%82%AB%E3%83%AB%E3%83%AD%E6%B3%95)**）を用いることがあります。特に**確率分布に従った乱数**を用いた計算が統計では有用です。このような確率分布に従った乱数計算を行う場合には、`sample`関数ではなく、確率分布に関連した一連の関数を用いるのが一般的です。
 
-```{r, filename="クラスターの中心を指定"}
-k.cents <- kmeans(iris[ ,1:4], centers = iris[c(1, 51, 101), 1:4]) # 初期値を各種の始めの値に設定
-k.cents$cluster
+**確率分布**とは、ランダムに起こる事象（例えばコイントスや身長・体重の大きさなど）がそれぞれの値を取る確率を関数の形で表現したものです。もっとも一般的に用いられている確率分布は、**正規分布（Normal distribution）**です。正規分布は平均値と標準偏差をパラメータとした確率分布で、平均値を取る確率が最も高く、平均値から離れるほど確率が低くなっていく、釣鐘型の形を取る分布です。
+
+Rでは、この正規分布の**確率密度**、**累積分布**、**分位点での値**、**乱数**をそれぞれ**`dnorm`、`pnorm`、`qnorm`、`rnorm`**関数を用いて計算することができます。
+
+## 確率密度
+
+**確率密度**は上で述べた通り、ランダムに起こる事象がそれぞれの値を取る確率を示したものです。この確率密度は**確率密度関数**（離散的な分布では**確率質量関数**）という関数で表現されます。この確率密度関数を返すのが、**「`d` + 分布の名前」**で示される関数です。正規分布の確率密度関数は、`dnorm`関数で計算することができます。この`dnorm`関数は、`mean`引数で指定した平均値、`sd`引数で指定した標準編差の正規分布において、第一引数で指定した値（`x`）における確率密度を返す関数です。ただし、確率密度はその値が確率なのではなく、確率密度の積分が確率となりますので、この`dnorm`の返り値は確率ではありません（ただし、確率質量分布、つまり離散的な分布では確率質量分布の返り値が確率となります）。
+
+確率密度には連続的なものと離散的なものがあり、確率分布ごとに値を取りうる範囲があります。例えば正規分布は$+\infty$から$-\infty$の範囲の実数すべてを取ることができる連続的な分布です。別の分布、例えばポアソン分布は正の整数のみを取ることができる、離散的な分布となります。
+
+```{r, filename="正規分布の確率密度"}
+dnorm(x = 1, mean = 0, sd = 1) # 正規分布の確率密度
 ```
-
-以下では、k-meansでクラスター分けしたデータと、`iris`の`Species`の関係を示しています。k-meansでクラスター分けした結果が`Species`とほぼ重なることを確認できます。
-
-```{r, filename="クラスターとirisの種の比較", warning=FALSE}
-spvec <- iris$Species |> levels()
-
-k.cent3$cluster <- k.cent3$cluster - 1
-k.cent3$cluster <- if_else(k.cent3$cluster == 0, 3, k.cent3$cluster)
-
-cbind(iris, cluster = spvec[k.cent3$cluster]) |> 
-  gather(tag, value, 5:6) |> 
-  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = value))+
-    geom_point(size = 3)+
-    facet_wrap(~ tag)
-```
-
-## c-means
-
-**c-means法**はfuzzy c-means法とも呼ばれる、クラスターへの所属を確率で求める手法です。c-means法もk-means法と同じく、データとクラスターの距離をもとにクラスタリングを行う手法の一つです。Rでは、c-means法の計算を[`e1071`](https://cran.r-project.org/web/packages/e1071/index.html)パッケージ [@e1071_bib]の`cmeans`関数で行うことができます。`cmeans`関数も`kmeans`関数と同様に、データフレームと中心の数（`centers`）を引数に取ります。クラスターの中心の初期値は行列で与えることもできます。
-
-```{r, filename="c-means法", warnings=FALSE, message=FALSE}
-pacman::p_load(e1071)
-# クラスタリングの計算（中心を指定）
-iris.c <- cmeans(iris[,1:4], centers = iris[c(1, 51, 101), 1:4])
-
-# クラスターとirisの種の比較
-cbind(iris, cluster = spvec[iris.c$cluster]) |>  
-  gather(tag, value, 5:6) |> 
-  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = value))+
-  geom_point(size = 3)+
-  facet_wrap(~ tag)
-```
-
-## スペクトラルクラスタリング
-
-スペクトラルクラスタリングは、上記のk-meansやc-meansのように、中心からの距離だけでは分離するのが難しいようなクラスタリングを行うときに有効な手法です。スペクトラルクラスタリングでは、近くにあるデータは同じクラスターに分類されやすくするようにアルゴリズムが組まれていて、k-meansやc-meansでは分離不能なクラスタをきれいに分けることができます。
-
-Rではスペクトラルクラスタリングを[`kernlab`](https://cran.r-project.org/web/packages/kernlab/index.html)パッケージ [@kernlab_bib1; @kernlab_bib2]の`specc`関数を用いて行うことができます。`specc`関数の使い方は`kmeans`関数や`cmeans`関数とほぼ同じで、データフレームと`centers`を引数に取ります。また、返り値を`plot`関数の引数にすることで、簡単にクラスターをグラフにすることもできます。
-
-```{r, filename="スペクトラルクラスタリング"}
-pacman::p_load(kernlab)
-
-# データにはkernlabのspiralsを用いる
-data(spirals)
-head(spirals)
-
-sc <- specc(spirals, centers = 2) # スペクトラルクラスタリング
-plot(spirals, col = sc) # 結果の表示（色がクラスターを示す）
-```
-
-ただし、このスペクトラルクラスタリングは必ずしも良いクラスタリングの方法ではなく、例えば`iris`のクラスタリングに用いると、3クラスターを指定しても、ほとんど2クラスターしか出てこなくなってしまいます。クラスター同士の距離が近く、接していると正しくクラスタリングできないようです。スペクトラルクラスタリングを用いる時にはデータの構造をよく確認する必要があります。
-
-```{r, filename="irisでスペクトラルクラスタリング"}
-# 3クラスタとなるよう設定
-sc.iris <- specc(iris[,1:4] |> as.matrix(), centers = 3)
-
-# 結果に1がほとんどなく、ほぼ2クラスターになっている
-sc.iris@.Data 
-```
-
-## 主成分分析
-
-**主成分分析**は、多次元のデータを第一主成分・第二主成分…という主成分にデータ変換する手法です。この**第一主成分**というのは、データを空間に配置したときに、ばらつきが最も大きくなる軸に沿った値を指します。このようにばらつきが最も大きくなる軸を選んで主成分とすることで、多次元のデータからデータの損失を抑えつつ、そのデータの特徴を残したようなパラメータに変換することができます。要は、多次元のデータだと特徴を捉えにくい場合においても、主成分に変換することでデータの特徴を捉えやすくすることができます。
-
-第二主成分は、第一主成分を定めた軸に垂直な面において、最もばらつきが多い軸に沿った値となります。第一主成分の軸と第二主成分の軸は互いに直行している、90度に交わっているので、**第一主成分と第二主成分の相関はほぼゼロ**になります。この特徴のため、[26章](./chapter26.html)で説明した主成分回帰では説明変数同士が相関しているときに起こる問題、多重共線性を避けることができます。
-
-以下に、主成分分析の軸のイメージを示します。軸は互いに垂直に交わっているのがわかると思います。PC1を横に、PC2を縦になるように回転させたのが、下の第一主成分と第二主成分でのプロットのイメージとなります。
 
 :::{.callout-tip collapse="true"}
 
-## 主成分分析における主成分の軸のイメージ（スクリプト）
+## 確率分布の平均と分散
 
-```{r, eval=FALSE}
-iris_temp <- iris |> filter(Species != "setosa") |> _[ ,1:3]
-iris.pc2 <- prcomp(iris_temp)
+確率分布f(x)はその積分が確率となる関数で表されます。確率は合計すると必ず1となるため、確率分布をその分布の範囲で積分すると1になります。また、積分すると1となることが確率分布であることの条件にもなります。
 
-pc1 <- iris.pc2$x[ ,1]
-pc2 <- iris.pc2$x[ ,2]
-pc3 <- iris.pc2$x[ ,2]
-center1 <- iris.pc2$center[1]
-center2 <- iris.pc2$center[2]
-center3 <- iris.pc2$center[3]
+$$\int_{-\infty}^{\infty}f(x)dx=1$$
 
-iris_temp$pc1_Sepal.Length <- pc1 * iris.pc2$rotation[1, 1] + center1
-iris_temp$pc1_Sepal.Width <- pc1 * iris.pc2$rotation[2, 1] + center2
-iris_temp$pc1_Petal.Length <- pc1 * iris.pc2$rotation[3, 1] + center3
-iris_temp$pc2_Sepal.Length <- pc2 * iris.pc2$rotation[1, 2] + center1
-iris_temp$pc2_Sepal.Width <- pc2 * iris.pc2$rotation[2, 2] + center2
-iris_temp$pc2_Petal.Length <- pc2 * iris.pc2$rotation[3, 2] + center3
-iris_temp$pc3_Sepal.Length <- pc3 * iris.pc2$rotation[1, 3] + center1
-iris_temp$pc3_Sepal.Width <- pc3 * iris.pc2$rotation[2, 3] + center2
-iris_temp$pc3_Petal.Length <- pc3 * iris.pc2$rotation[3, 3] + center3
+確率分布の平均値（$E[f(x)]$）と分散（$V[f(x)]$）は以下の積分で計算できます。
 
-pacman::p_load(plotly)
+$$E[f(x)]=\int_{-\infty}^{\infty}x \cdot f(x)dx$$
 
-fig <- 
-  plot_ly(
-    iris_temp, 
-    x =~ Sepal.Length, 
-    y =~ Sepal.Width, 
-    z =~ Petal.Length, 
-    type = "scatter3d",
-    mode = "markers",
-    name = 'data',  
-    marker = list(size = 2)) |> 
-  add_trace(
-    x =~ pc1_Sepal.Length, 
-    y =~ pc1_Sepal.Width, 
-    z =~ pc1_Petal.Length, 
-    type = "scatter3d", 
-    mode = "markers+lines",
-    name = 'PC1', 
-    marker = list(color = "red", size = 0.1),
-    line = list(color = "red", width = 5)) |> 
-  add_trace(
-    x =~ pc2_Sepal.Length, 
-    y =~ pc2_Sepal.Width, 
-    z =~ pc2_Petal.Length, 
-    type = "scatter3d",
-    mode = "markers+lines",
-    name = 'PC2',
-    marker = list(color = "red", size = 0.1),
-    line = list(color = "blue", width = 5)) |> 
-  add_trace(
-    x =~ pc3_Sepal.Length, 
-    y =~ pc3_Sepal.Width, 
-    z =~ pc3_Petal.Length, 
-    type = "scatter3d", 
-    mode = "markers+lines",
-    name = 'PC3',
-    marker = list(color="red", size=0.1),
-    line = list(color="green", width=5))
+$$V[f(x)]=\int_{-\infty}^{\infty}(x-\mu)^2 \cdot f(x)dx$$
 
-fig
-```
+また、分散は以下の式でも表すことができます。
+
+$$V[X] = E[X^2] - (E[X])^2 $$
 
 :::
 
-```{r, echo=FALSE}
-iris_temp <- iris |> filter(Species != "setosa") |> _[,1:3]
-iris.pc2 <- prcomp(iris_temp)
+## 累積分布
 
-pc1 <- iris.pc2$x[,1]
-pc2 <- iris.pc2$x[,2]
-pc3 <- iris.pc2$x[,2]
-center1 <- iris.pc2$center[1]
-center2 <- iris.pc2$center[2]
-center3 <- iris.pc2$center[3]
+確率密度をx軸方向に積分して得られる関数のことを、**累積分布関数**と呼びます。上に述べた通り、確率密度を積分したものが確率となりますので、累積分布関数を用いると、正規分布する値がある一定の範囲を取る確率を計算することができます。Rで累積分布関数を返すのが、**「`p` + 分布の名前」**で示される関数です。
 
-iris_temp$pc1_Sepal.Length <- pc1 * iris.pc2$rotation[1, 1] + center1
-iris_temp$pc1_Sepal.Width <- pc1 * iris.pc2$rotation[2, 1] + center2
-iris_temp$pc1_Petal.Length <- pc1 * iris.pc2$rotation[3, 1] + center3
-iris_temp$pc2_Sepal.Length <- pc2 * iris.pc2$rotation[1, 2] + center1
-iris_temp$pc2_Sepal.Width <- pc2 * iris.pc2$rotation[2, 2] + center2
-iris_temp$pc2_Petal.Length <- pc2 * iris.pc2$rotation[3, 2] + center3
-iris_temp$pc3_Sepal.Length <- pc3 * iris.pc2$rotation[1, 3] + center1
-iris_temp$pc3_Sepal.Width <- pc3 * iris.pc2$rotation[2, 3] + center2
-iris_temp$pc3_Petal.Length <- pc3 * iris.pc2$rotation[3, 3] + center3
+正規分布の累積分布関数は、`pnorm`関数で計算することができます。正規分布の累積分布関数では、正規分布する値が$-\infty$からその値までの範囲を取る確率が計算されるため、正規分布する値が第一引数`q`で指定した値以下となる確率を計算することになります。平均値を`mean`引数、標準偏差を`sd`引数で指定するのはすべての`norm`関数で共通しています。
 
-pacman::p_load(plotly)
+```{r, filename="正規分布の累積分布関数"}
+pnorm(q = 1, mean = 0, sd = 1) # 正規分布の累積分布関数（q（1）以下となる確率）
 
-fig <- 
-  plot_ly(
-    iris_temp, 
-    x=~Sepal.Length, 
-    y=~Sepal.Width, 
-    z=~Petal.Length, 
-    type="scatter3d",
-    mode="markers",
-    name = 'data',  
-    marker=list(color="orange", size=3)) |> 
-  add_trace(
-    x=~pc1_Sepal.Length, 
-    y=~pc1_Sepal.Width, 
-    z=~pc1_Petal.Length, 
-    type="scatter3d", 
-    mode="markers+lines",
-    name = 'PC1', 
-    marker=list(color="red", size=0.1),
-    line=list(color="red", width=5)) |> 
-  add_trace(
-    x=~pc2_Sepal.Length, 
-    y=~pc2_Sepal.Width, 
-    z=~pc2_Petal.Length, 
-    type="scatter3d",
-    mode="markers+lines",
-    name = 'PC2',
-    marker=list(color="red", size=0.1),
-    line=list(color="blue", width=5)) |> 
-  add_trace(
-    x=~pc3_Sepal.Length, 
-    y=~pc3_Sepal.Width, 
-    z=~pc3_Petal.Length, 
-    type="scatter3d", 
-    mode="markers+lines",
-    name = 'PC3',
-    marker=list(color="red", size=0.1),
-    line=list(color="green", width=5))
+# 平均0、標準偏差1の正規分布での標準偏差の区間（-1 ~ 1）の値が得られる確率
+pnorm(1, mean = 0, sd = 1) - pnorm(-1, mean = 0, sd = 1) 
 
-fig
+# 平均0、標準偏差1の正規分布で、-1.96~1.96の値が得られる確率（95％区間）
+pnorm(1.96, mean = 0, sd = 1) - pnorm(-1.96, mean = 0, sd = 1) 
+
+# 累積分布関数の形（正規分布）
+plot(seq(-3, 3, by = 0.1), pnorm(seq(-3, 3, by = 0.1)), type = "l")
 ```
 
-```{r, echo=FALSE}
-data.frame(pc1, pc2) |> 
-  ggplot(aes(x=pc1, y=pc2))+
-  geom_point(size=2, color="orange")+
-  geom_hline(yintercept=0, color="red")+
-  geom_vline(xintercept=0, color="blue")+
-  labs(title="PC1とPC2の2次元グラフ")
+## 分位点
+
+逆に、累積分布関数で求まる確率から、その確率となる値を求める関数が、**「`q` + 分布の名前」**で示される関数です。第一引数である`p`には確率（0～1）を指定し、その確率が得られる累積分布関数でのx軸上の値を得ることができます。正規分布では、`qnorm`関数でこの計算を行うことができます。`pnorm`関数と`qnorm`関数では、第一引数と返り値の関係がちょうど逆になります。
+
+引数`p`に対して、`qnorm`関数で得られる値のことを、「`100*p`%分位点」と呼ぶのが一般的です。`p=0.25`なら25％分位点、`p=0.75`なら75％分位点が得られることになります。
+
+```{r, filename="正規分布の分位点"}
+qnorm(p = 0.975, mean = 0, sd = 1) # 正規分布の97.5%分位点における値
+
+# qnormの形はpnorm（累積分布関数）のx、yが入れ替わったものとなる
+plot(seq(0, 1, by = 0.01), qnorm(seq(0, 1, by = 0.01)), type = "l")
 ```
 
-主成分分析は、主成分回帰のようなデータの前処理の他に、次元を圧縮することでデータの類似性や違いを分かりやすく示す場合に用いられています。
+確率密度（`dnorm`）、累積分布（`pnorm`）、分位点（`qnorm`）の関係を図で示すと、以下のような関係になっています。
 
-主成分分析では、多次元のデータを第一主成分、第二主成分といった、データのばらつきの大きさに従った少数のパラメータに変換することで、データ全体の特徴を捉えやすくすることができます。ただし、この第一主成分や第二主成分などの主成分が何を意味しているのかは、その時々によって異なりますし、理解が難しいことも多いです。「主成分が近いものは類似している」ぐらいの意味しかわからない場合もあると考えるとよいでしょう。
+![確率密度、累積分布、分位点の関係](./image/dpqnorm_image.png)
+
+## 確率分布に従った乱数
+
+確率分布に従った乱数を得ることができれば、その確率分布に従う現象をシミュレートすることができます。Rで確率分布に従った乱数を求める関数が、**「`r` + 分布の名前」**で示される関数です。正規分布では、`rnorm`関数で乱数（正規乱数）を得ることができます。第一引数（`n`）で、乱数の個数を指定します。
+
+```{r, filename="正規分布の確率密度"}
+rnorm(n = 10, mean = 0, sd = 1) # 正規分布の乱数
+
+# 乱数をたくさん生成し、ヒストグラムを描画する
+rnorm(10000, mean = 0, sd = 1) |> hist() 
+```
 
 :::{.callout-tip collapse="true"}
 
-## 主成分分析の典型的な利用例
+## 確率分布に従う乱数を得る
 
-ヒトのDNAには無数のSNP（Single Nucleotide polymorphism、一塩基多型）があります。このSNPというのは、DNAの塩基が置き換わっているもの（例えば、AがCに代わっている）を指し、置き換わりが各個々人によって異なることを意味しています。私のDNAのある位置の塩基がAで、別の方ではCになっている、というように、多型を示すことがSNPです。ヒトのDNAの長さは大体3×10^9^塩基あります。この長いDNAには、SNPが6000万個ぐらいあります。
-
-ヒトを含め、分子系統樹と呼ばれる祖先からの遺伝子変化の流れを調べる場合には、近年ではこのSNPを指標に系統樹を書きます（以前はミトコンドリアDNAやリボソーム蛋白のDNAのSNPや反復配列の長さが使われていたような気がします）。もちろんこの6000万個のすべてのSNPを用いるわけではありませんが、通常取り扱うSNPは非常に多くなります。
-
-このたくさんあるSNPを用いて、例えば日本人と韓国人の違いを示すことを考えると、ひとつづつSNPを見て特徴を捉えていては、いつまでたっても違いはわかりません。このように、膨大なデータ（の次元）がある場合に、主成分分析は力を発揮します。膨大なデータを第一主成分と第二主成分に変換してしまえば、2次元のプロットを利用して日本人と韓国人の違いを表すことができます。ヒトの歴史的な移動に関して、このSNPと主成分分析を用いて[論文](https://www.nature.com/articles/jhg2012114#citeas)が発表されています[@1523106605673180672]。この論文を見ていただければわかる通り、主成分分析を用いれば膨大なSNPのデータを2次元に集約し、わかりやすい表現で説明することができます。
+通常、確率分布に従う形の乱数を得る場合には、累積分布関数の**[逆関数](https://ja.wikipedia.org/wiki/%E9%80%86%E9%96%A2%E6%95%B0%E6%B3%95)**というものを用います。逆関数はy=f(x)の関数をx=g(y)という形に、xについて解いたものを指します。確率密度関数の逆関数に一様乱数を入れると、確率分布に従った乱数を得ることができます。`rnorm`などの乱数生成アルゴリズムはC言語で記載されていて、逆関数を用いているのかはわかりませんが、メルセンヌ・ツイスターで生成されるのは一様乱数ですので、内部的には同様の変換が行われているのだと思います。
 
 :::
 
-### Rで主成分分析
+## Rで用いることのできる確率分布の一覧
 
-Rでは、`prcomp`関数で主成分分析の計算を行うことができます。`prcomp`関数は引数に行列やデータフレームを取ります。`prcomp`関数の返り値は各主成分方向の標準偏差（standard deviations）と、回転（Rotation）です。回転は、データを主成分に変換するときの係数を示します。
+Rでは、norm（正規分布）の他に、以下の表1で示す確率分布に関する関数が登録されています。各確率分布の「記号」の前に`d`を付けると確率密度関数、`p`を付けると累積分布関数、`q`を付けると分位点、`r`を付けると乱数を得る関数となります。
 
-```{r, filename="主成分分析"}
-iris.pc <- prcomp(iris[ ,1:4])
-
-iris.pc
+```{r, echo=FALSE}
+d <- readxl::read_excel("./data/chapter24_distributions.xlsx", sheet=1)
+knitr::kable(d, label="表1：分布を表す記号")
 ```
 
-`prcomp`関数の返り値を`summary`関数の引数に取ると、標準偏差、分散の配分（Proportion of Variance）、積算の分配の配分（Cumulative Proportion）が示されます。このうち、分散の配分はその主成分によってばらつきをどれだけ説明できているかを示すものです。下の例では、PC1で92.5%程度のばらつきを示すことができている、つまり、PC1でデータの差を十分説明できていることがわかります。
+:::{.callout-tip collapse="true"}
 
-```{r, filename="summaryの結果"}
-iris.pc |> summary()
-```
+## その他の確率分布
 
-主成分分析では、Cumulative Proportionにもよりますが、第一主成分（PC1）と第二主成分（PC2）に変換したデータをプロットして、データの類似性などを示すことが一般的です。変換後の主成分は、`$x`で呼び出すことができます。以下のように、`iris`の種が同じ、つまりよく似たデータであれば、比較的近い位置に変換後のデータが集まるのがわかります。
+上記の表1に示した以外にも、Rではライブラリを用いることで様々な確率分布の関数を用いることができます。ライブラリの一覧に関しては、CRAN Task Viewの[Probability Distributions](https://cran.r-project.org/web/views/Distributions.html)が参考になります。また、それぞれの確率分布の関係については、[Univariate Distribution Relationships](https://www.math.wm.edu/~leemis/chart/UDR/UDR.html)に詳しく記載されているので、興味のある方は一読するとよいでしょう。日本語では、こちらの[三中先生の解説ページ](https://www.yodosha.co.jp/smart-lab-life/statics_pitfalls/statics_pitfalls09.html)に書かれています。また、確率分布を表示する[Webアプリ](https://statdist.ksmzn.com/)を触ってみるのも良いでしょう。
 
-```{r, filename="第一主成分と第二主成分をプロット"}
-iris.pc <- prcomp(iris[ ,1:4])
-irispcd <- iris.pc$x |> as.data.frame()
-irispcd$Species <- iris$Species
-ggplot(irispcd, aes(x = PC1, y = PC2, color = Species)) + geom_point(size = 2)
-```
+:::
 
-## 因子分析
+以下に、各確率分布の簡単な説明と、各関数を用いたグラフを示します。
 
-**因子分析**も主成分分析と同じく、多次元のデータをいくつかの因子に変換することで、データの性質を簡単に理解できるようにするための手法です。主成分分析との違いは、主成分分析では主成分の意味を理解するのが難しいのに対して、因子分析では因子の意味付けが比較的容易であること、因子間の相関は必ずしも0とはならないこと、主成分分析が射影の計算であるのにたいして、因子分析は回転の計算を行うことなどです。
+## 二項分布
 
-Rでは、因子分析を`factanal`関数を用いて行うことができます。以下の例では、鹿児島大学が[成績サンプルデータ](https://estat.sci.kagoshima-u.ac.jp/data/cgi-bin/data/whats_data/data/img/932722923_9821.xls)として提供しているデータを用いて因子分析を行っています。
+**二項分布**は**ベルヌーイ試行**（コイントスのように、1と0だけが確率的に結果として得られる試行）の試行回数（`size`）と成功確率（`prob`）から、成功回数`x`が得られる確率を示したものです。二項分布の確率質量関数は以下の式で表されます。
 
-`factanal`関数はデータフレームまたは行列を第一引数に取り、因子の数（`factors`）、回転の方法（`rotation`）、算出するスコアのタイプ（`scores`）を引数として設定して用います。
+$$Binom(x,n,p)=_{n}C_{x} \cdot p^{x} \cdot (1-p)^{n-x}$$
 
-`factors`には、出力として得たい因子の数を指定します。以下の例では、理系・文系科目の得意・不得意を評価する因子を作成するため、因子数を`2`としています。
-
-`rotation`には`"varimax"`か`"promax"`のどちらかを選択するのが一般的です。`varimax`回転はデータをそのまま回転させる方法（直交回転）、`promax`回転はデータの軸の角度を変換させて回転させる方法（斜交回転）です。`promax`回転では因子間に相関が生じるのが特徴です。
-
-`scores`には計算して得られる数値（因子スコア）の計算方法を指定します。方法には`"none"`、`"Bartlett"`、`"regression"`のいずれかを選択します。`"none"`を指定するとスコアが算出されないので、`"Bartlett"`か`"regression"`のいずれかを選択します。
-
-`factanal`関数の返り値のうち、Loadingが各データの寄与率を示す値となります。以下のvarimax変換の例では、Factor1（因子1）では数学、物理、化学、Factor2では国語、英語の値が高いため、Factor1は理系科目の、Factor2は文系科目の評価を反映していることがわかります。
-
-```{r, filename="因子分析：バリマックス変換"}
-m1 <- read.csv("./data/testresult.csv", fileEncoding = "CP932")
-m1v <- factanal(m1[ ,2:6], factors = 2, scores = "Bartlett") # varimax変換
-m1v
-```
-
-同様にpromax回転での因子分析でも、Factor1が理系科目、Factor2が文系科目の成績を反映していることがわかります。ただし、寄与率はバリマックスとは異なり、Factor1での理系科目の寄与率もFactor2での文系科目の寄与率もvarimax回転より高いため、こちらの方がより理系度・文系度を反映していることがわかります。
-
-```{r, filename="因子分析：プロマックス変換"}
-m1p <- factanal(m1[,2:6], factors = 2, rotation = "promax", scores = "Bartlett") # promax変換
-m1p
-```
-
-以下に、varimax回転、promax回転それぞれでの因子のスコアをプロットした結果を示します。スコアは`$scores`で呼び出すことができます。varimax回転でもpromax回転でも、概ね理系・文系科目の得意さを因子で評価できています。
+nが試行回数、pが成功確率、xが成功回数を表しています。Rでは、nを`size`引数、pを`prob`引数で指定します。コイントスですので、整数でない成功回数（4.21回成功など）が起こることはありませんし、マイナスの試行数も取りません。ですので、二項分布は成功回数`x`が正の整数のみの離散的な確率分布になります。分布の範囲は**0～試行回数**です。
 
 ::: {.panel-tabset}
 
-## varimax回転
+## 確率質量
 
-```{r}
-m1vs <- m1v$scores |> as.data.frame() # 計算したスコアをデータフレームに変換
-m1vs$student <- 1:nrow(m1vs) # 生徒のIDを追加
+```{r, filename="二項分布の確率密度をプロット"}
+x <- 0:20
+d <- tibble(
+  x,
+  s20p01 = dbinom(x, size = 20, prob = 0.1), # サイズ20、確率0.1
+  s20p05 = dbinom(x, size = 20, prob = 0.5), # サイズ20、確率0.5
+  s20p08 = dbinom(x, size = 20, prob = 0.8) # サイズ20、確率0.8
+)
 
-ggplot(m1vs, aes(x = Factor1, y = Factor2, color = student, label = student))+
-  geom_text(size = 3)+
-  theme(legend.position = "none")+
-  labs(title = "バリマックス回転", x = "理系度", y = "文系度")
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
 ```
 
-## promax回転
+## 累積分布関数
 
-```{r}
-m1ps <- m1p$scores |> as.data.frame()
-m1ps$student <- 1:nrow(m1ps)
+```{r, filename="二項分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  s20p01 = pbinom(x, size = 20, prob = 0.1), # サイズ20、確率0.1
+  s20p05 = pbinom(x, size = 20, prob = 0.5), # サイズ20、確率0.5
+  s20p08 = pbinom(x, size = 20, prob = 0.8) # サイズ20、確率0.8
+)
 
-ggplot(m1ps, aes(x = Factor1, y = Factor2, color = student, label = student))+
-  geom_text(size = 3)+
-  theme(legend.position = "none")+
-  labs(title = "プロマックス回転", x = "理系度", y = "文系度")
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqbinomでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s20p01 = qbinom(x, size = 20, prob = 0.1), # サイズ20、確率0.1
+  s20p05 = qbinom(x, size = 20, prob = 0.5), # サイズ20、確率0.5
+  s20p08 = qbinom(x, size = 20, prob = 0.8) # サイズ20、確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 二項乱数
+
+```{r, filename="乱数のヒストグラムをプロット"}
+d <- tibble(
+  s20p01 = rbinom(1000, size = 20, prob = 0.1), # サイズ20、確率0.1
+  s20p05 = rbinom(1000, size = 20, prob = 0.5), # サイズ20、確率0.5
+  s20p08 = rbinom(1000, size = 20, prob = 0.8) # サイズ20、確率0.8
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 1, position = "identity")
 ```
 
 :::
 
-## 多次元尺度法
+## 幾何分布
 
-多次元尺度法は主成分分析や因子分析とは少し異なる次元圧縮の方法です。多次元尺度法は、距離行列から互いの点の位置を求める、距離行列演算の逆のような変換を行う手法です。
+**幾何分布**は、ベルヌーイ試行を始めて成功させたときの試行数が`x`となる確率を指します。2項分布との違いは、成功回数が必ず1回であるところになります。`x`以外には、成功確率（`prob`）のみをパラメータとして設定します。分布の範囲は0～$+\infty$です。幾何分布の確率質量関数は以下の式で表されます。
 
-以下の例では、都道府県の県庁所在地の緯度・経度を`dist`関数で距離行列に変換し、距離行列を多次元尺度法で位置の情報に変換しています。
+$$Geom(x,p)=p  \cdot (1-p)^{x-1}$$
 
-```{r, filename="緯度・経度を距離行列に変換"}
-JPD <- read.csv("./data/pref_lat_lon.csv", header = T, fileEncoding = "CP932")
+Rでは、pを`prob`引数で設定します。
 
-prefecture <- JPD[,1] %>% unlist()
-JPD <- JPD[,-1] %>% dist() # 距離行列を計算
+1回成功するまでに失敗した回数も同じく幾何分布で表現することができます。失敗した回数とする場合には、上の式のx-1をxとするだけです。Rの`geom`関数で計算されるのは上の式の結果です。
+
+$$Geom(x,p)=p \cdot (1-p)^{x}$$
+
+試行数`x`は必ず整数となるため、幾何分布も二項分布と同じく、離散的な分布で、`x`は正の整数を取ります。
+
+::: {.panel-tabset}
+
+## 確率質量
+
+```{r, filename="幾何分布の確率密度をプロット"}
+x <- 1:50
+d <- tibble(
+  x,
+  r01 = dgeom(x, prob = 0.1), # 確率0.1
+  r05 = dgeom(x, prob = 0.5), # 確率0.5
+  r08 = dgeom(x, prob = 0.8) # 確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
 ```
 
-Rでは多次元尺度法の計算を`MASS`パッケージの`sammon`関数を用いて行うことができます。`sammon`関数の引数は距離行列です。距離行列を`sammon`関数で変換すると、`x`と`y`という、位置を示す2つの変数が求まります。
+## 累積分布関数
 
-```{r}
-pacman::p_load(MASS)
-JPpos <- JPD |> sammon() |> _$points
-head(JPpos)
+```{r, filename="幾何分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  r01 = pgeom(x, prob = 0.1), # 確率0.1
+  r05 = pgeom(x, prob = 0.5), # 確率0.5
+  r08 = pgeom(x, prob = 0.8) # 確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
 ```
 
-以下に、`sammon`関数の返り値をプロットしたものを示します。`x`と`y`の単位はありませんが、都道府県の位置関係を正確に反映していることが見て取れると思います。ただし、距離行列には方角のデータが含まれていないため、東西南北の方向は回転したり反転したりすることになります。
+## 分位点の値
 
-```{r, filename="多次元尺度法の結果をプロットする"}
-JPpos <- as.data.frame(JPpos)
-colnames(JPpos) <- c("x", "y")
-JPpos$prefecture <- prefecture
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  r01 = qgeom(x, prob = 0.1), # 確率0.1
+  r05 = qgeom(x, prob = 0.5), # 確率0.5
+  r08 = qgeom(x, prob = 0.8) # 確率0.8
+)
 
-ggplot(JPpos, aes(x = -x, y = -y, label = prefecture, color = prefecture))+
-  geom_text(size = 3)+
-  theme(legend.position = "none")
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
 ```
 
-`cmdscale`関数を用いても多次元尺度法の計算を行うことができます。
+## 幾何乱数
 
-```{r, filename="cmdscale関数で多次元尺度法"}
-JPpos2 <- JPD %>% cmdscale %>% as.data.frame
-colnames(JPpos2) <-  c("x", "y")
-JPpos2$prefecture <- prefecture
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  r01 = rgeom(1000, prob = 0.1), # 確率0.1
+  r05 = rgeom(1000, prob = 0.5), # 確率0.5
+  r08 = rgeom(1000, prob = 0.8) # 確率0.8
+)
 
-ggplot(JPpos2, aes(x = x, y = y, label = prefecture, color = prefecture))+
-  geom_text(size = 3)+
-  theme(legend.position = "none")
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 5, position = "identity")
+```
+
+:::
+
+## 超幾何分布
+
+**超幾何分布**は、ツボの中に白と黒のボールが入っていて、このツボからボールを取り出す試行（**非復元抽出**）を表現した確率分布です。超幾何分布の確率質量関数は以下の式で表されます。
+
+$$ Hyper(x,m,n,k)= \frac{_{m}C_{k} \cdot _{n}C_{x-k}}{_{m+n}C_{x}}$$
+
+Rの`hyper`関数では、白ボール`m`個、黒ボール`n`個が入ったツボから`k`個ボールを取ったとき、`x`個の白ボールが取れる確率を計算します。`dhyper`関数の引数は`m`、`n`、`k`で、`x`は整数のみを取る離散的な分布です。分布の範囲は0～kとなります。
+
+::: {.panel-tabset}
+
+## 確率質量
+
+```{r, filename="超幾何分布の確率密度をプロット"}
+x <- 1:6
+d <- tibble(
+  x,
+  m5n5k5 = dhyper(x, m = 5, n = 5, k = 5), # 白 5, 黒 5, 取るボールの数 5
+  m10n5k5 = dhyper(x, m = 10, n = 5, k = 5), # 白 10, 黒 5, 取るボールの数 5
+  m5n20k10 = dhyper(x, m = 5, n = 20, k = 10) # 白 5, 黒 20, 取るボールの数 10
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="超幾何分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  m5n5k5 = phyper(x, m = 5, n = 5, k = 5), # 白 5, 赤 5, 取るボールの数 5
+  m10n5k5 = phyper(x, m = 10, n = 5, k = 5), # 白 10, 赤 5, 取るボールの数 5
+  m5n20k10 = phyper(x, m = 5, n = 20, k = 10) # 白 5, 赤 20, 取るボールの数 10
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  m5n5k5 = qhyper(x, m = 5, n = 5, k = 5), # 白 5, 赤 5, 取るボールの数 5
+  m10n5k5 = qhyper(x, m = 10, n = 5, k = 5), # 白 10, 赤 5, 取るボールの数 5
+  m5n20k10 = qhyper(x, m = 5, n = 20, k = 10) # 白 5, 赤 20, 取るボールの数 10
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 超幾何乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  m5n5k5 = rhyper(1000, m = 5, n = 5, k = 5), # 白 5, 赤 5, 取るボールの数 5
+  m10n5k5 = rhyper(1000, m = 10, n = 5, k = 5), # 白 10, 赤 5, 取るボールの数 5
+  m5n20k10 = rhyper(1000, m = 5, n = 20, k = 10) # 白 5, 赤 20, 取るボールの数 10
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 0.1, position = "identity")
+```
+
+:::
+
+## 負の二項分布
+
+**負の二項分布**は、ベルヌーイ試行を行ったとき、n回成功する間にx回失敗する確率を反映した確率分布です。成功の回数がn、失敗回数をx、成功確率をpとしたとき、負の二項分布の確率質量関数は以下の式で表されます。
+
+$$Nbinom(x,n,p)=_{x+n+1}C_{x} \cdot p^x(1-p)^n$$
+
+Rでの負の二項分布の確率質量関数は`dnbinom`関数で計算することができます。成功の回数nは`size`引数、成功確率pは`prob`引数で設定します。負の二項分布は正の整数のみを取る離散的な分布で、その範囲は0～$\infty$となります。
+
+::: {.panel-tabset}
+
+## 確率質量
+
+```{r, filename="負の二項分布の確率密度をプロット"}
+x <- 0:100
+d <- tibble(
+  x,
+  p01 = dnbinom(x, size = 5, prob = 0.1), # サイズ5、確率0.1
+  p05 = dnbinom(x, size = 5, prob = 0.5), # サイズ5、確率0.5
+  p08 = dnbinom(x, size = 5, prob = 0.8) # サイズ5、確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="負の二項分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  p01 = pnbinom(x, size = 5, prob = 0.1), # サイズ5、確率0.1
+  p05 = pnbinom(x, size = 5, prob = 0.5), # サイズ5、確率0.5
+  p08 = pnbinom(x, size = 5, prob = 0.8) # サイズ5、確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  p01 = qnbinom(x, size = 5, prob = 0.1), # サイズ5、確率0.1
+  p05 = qnbinom(x, size = 5, prob = 0.5), # サイズ5、確率0.5
+  p08 = qnbinom(x, size = 5, prob = 0.8) # サイズ5、確率0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 負の二項乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  p01 = rnbinom(1000, size = 5, prob = 0.1), # サイズ5、確率0.1
+  p05 = rnbinom(1000, size = 5, prob = 0.5), # サイズ5、確率0.5
+  p08 = rnbinom(1000, size = 5, prob = 0.8) # サイズ5、確率0.8
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 10, position = "identity")
+```
+
+:::
+
+## ポアソン分布
+
+**ポアソン分布**は、起こる確率が非常に低い現象が、ある一定の時間に何回起こるかを確率として表した確率分布です。ポアソン分布の確率質量関数は二項分布の確率を0に、試行回数を$\infty$に近づけた極限として計算されます。ポアソン分布のパラメータはλのみで、ポアソン分布は平均値も標準偏差もλとなる特徴があります。ポアソン分布の確率質量関数は以下の式で表されます。分布が取りうる範囲は0～$\infty$となります。
+
+$$Poisson(x, \lambda)=\frac{\lambda^x \cdot \exp(-\lambda)}{x!}$$
+
+Rではポアソン分布の確率質量関数は`dpois`関数で計算することができます。`dpois`関数のλは引数`lambda`で設定します。
+
+::: {.panel-tabset}
+
+## 確率質量
+
+```{r, filename="ポアソン分布の確率密度をプロット"}
+x <- 0:25
+d <- tibble(
+  x,
+  l3 = dpois(x, lambda = 3), # ラムダ3
+  l8 = dpois(x, lambda = 8), # ラムダ8
+  l11 = dpois(x, lambda = 11) # ラムダ11
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="ポアソン分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  l3 = ppois(x, lambda = 3), # ラムダ3
+  l8 = ppois(x, lambda = 8), # ラムダ8
+  l11 = ppois(x, lambda = 11) # ラムダ11
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  l3 = qpois(x, lambda = 3), # ラムダ3
+  l8 = qpois(x, lambda = 8), # ラムダ8
+  l11 = qpois(x, lambda = 11) # ラムダ11
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## ポアソン乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  l3 = rpois(1000, lambda = 3), # ラムダ3
+  l8 = rpois(1000, lambda = 8), # ラムダ8
+  l11 = rpois(1000, lambda = 11) # ラムダ11
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 1, position = "identity")
+```
+
+:::
+
+## 正規分布
+
+**正規分布**は、様々な分布での値の平均値の分布を反映したもので（[中心極限定理](https://ja.wikipedia.org/wiki/%E4%B8%AD%E5%BF%83%E6%A5%B5%E9%99%90%E5%AE%9A%E7%90%86)）、統計では最も一般的に用いられているものです。正規分布のパラメータは平均値（μ）と標準偏差（σ）です。正規分布の確率密度関数は以下の式で表されます。
+
+$$ Norm(x, \mu, \sigma)=\frac{1}{\sqrt{2\pi \sigma^2}} \cdot \exp \left( \frac{(x-\mu)^2}{2\sigma^2} \right) $$
+
+Rでは、正規分布の確率密度関数は`dnorm`関数で計算することができます。`dnorm`関数では、平均値は`mean`引数、標準偏差は`sd`引数で設定します。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="正規分布の確率密度をプロット"}
+x <- seq(-5, 5, by = 0.01)
+d <- tibble(
+  x,
+  m0s1 = dnorm(x, mean = 0, sd = 1), # 平均0、標準偏差1
+  m1s2 = dnorm(x, mean = 1, sd = 2), # 平均1、標準偏差2
+  m2s05 = dnorm(x, mean = 2, sd = 0.5) # 平均2、標準偏差0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="正規分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  m0s1 = pnorm(x, mean = 0, sd = 1), # 平均0、標準偏差1
+  m1s2 = pnorm(x, mean = 1, sd = 2), # 平均1、標準偏差2
+  m2s05 = pnorm(x, mean = 2, sd = 0.5) # 平均2、標準偏差0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqnormでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  m0s1 = qnorm(x, mean = 0, sd = 1), # 平均0、標準偏差1
+  m1s2 = qnorm(x, mean = 1, sd = 2), # 平均1、標準偏差2
+  m2s05 = qnorm(x, mean = 2, sd = 0.5) # 平均2、標準偏差0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 正規乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  m0s1 = rnorm(1000, mean = 0, sd = 1), # 平均0、標準偏差1
+  m1s2 = rnorm(1000, mean = 1, sd = 2), # 平均1、標準偏差2
+  m2s05 = rnorm(1000, mean = 2, sd = 0.5) # 平均2、標準偏差0.5
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 1, position = "identity")
+```
+
+:::
+
+## t分布
+
+**t分布**は標本サイズが小さいときの母平均と標本平均の差の分布を反映した確率分布です。t分布は**t統計量**と呼ばれるものの分布を示します。t統計量は以下の式で計算できます。
+
+$$t=\frac{x-\mu}{s \sqrt n}$$
+
+この式で、xはサンプルの平均値、μは母平均値、sは標準偏差、nはサンプルの数を指します。t分布は主にt検定（平均値の差の検定）に用いられます。t分布の確率密度関数は以下の式で表されます。
+
+$$t(x, \nu)=\frac{\Gamma(\nu+1)/2}{\sqrt{\nu \pi} \cdot \Gamma(\nu/2)} \cdot (1+x^2/\nu)^{-(\nu+1)/2}$$
+
+上の式のνは自由度で、サンプル数から1を引いたものとなります。Rでは、`dt`関数でt分布の確率密度関数を計算することができます。`dt`関数の引数には、自由度`df`を設定します。t分布は$-\infty$～$\infty$の範囲を持つ連続値を取り、平均値は0です。t分布は正規分布とよく似た釣鐘型の分布ですが、正規分布と比較して裾が重い、0から遠い値の確率が大きくなる性質を持ちます。自由度`df`が$-\infty$に近づくと、t分布の形は正規分布と一致します。
+
+また、t分布には検出力の計算等に用いられる非心パラメータと呼ばれるものがあり、`ncp`という引数で非心パラメータを指定することもできます。非心パラメータを0よりも大きく設定すると、t分布は左にゆがみ、平均値が0よりも大きくなります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="t分布の確率密度をプロット"}
+x <- seq(-5, 15, by = 0.01)
+d <- tibble(
+  x,
+  d3n0 = dt(x, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d8n0 = dt(x, df = 8, ncp = 0), # 自由度8、非心パラメータ0
+  d3n3 = dt(x, df = 3, ncp = 3) # 自由度3、非心パラメータ3
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="t分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  d3n0 = pt(x, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d8n0 = pt(x, df = 8, ncp = 0), # 自由度8、非心パラメータ0
+  d3n3 = pt(x, df = 3, ncp = 3) # 自由度3、非心パラメータ3
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  d3n0 = qt(x, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d8n0 = qt(x, df = 8, ncp = 0), # 自由度8、非心パラメータ0
+  d3n3 = qt(x, df = 3, ncp = 3) # 自由度3、非心パラメータ3
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## t分布の乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  d3n0 = rt(1000, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d8n0 = rt(1000, df = 8, ncp = 0), # 自由度8、非心パラメータ0
+  d3n3 = rt(1000, df = 3, ncp = 3) # 自由度3、非心パラメータ3
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 1, position = "identity")
+```
+
+:::
+
+## コーシー分布
+
+**コーシー分布**はt分布で自由度が1のときの分布です。コーシー分布はt分布よりもさらに裾が重く、平均値も標準偏差も定義できない分布です。コーシー分布のパラメータは中央値であるtとスケールパラメータであるsの2つです。コーシー分布の確率密度関数は以下の式で表されます。
+
+$$Cauchy(x, t, s)=\frac{1}{s \cdot \pi (1+((x-t)/s)^2)} $$
+
+Rでは、コーシー分布の確率密度関数は`dcauchy`関数で計算することができます。`dcauchy`関数の引数は中央値tである`location`とスケールパラメータsである`scale`の2つです。コーシー分布も正規分布やt分布と同じく、$-\infty$～$\infty$の範囲を持つ連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="コーシー分布の確率密度をプロット"}
+x <- seq(-5, 5, by = 0.01)
+d <- tibble(
+  x,
+  l0s1 = dcauchy(x, location = 0, scale = 1), # 中央値0、スケール1
+  lm2s05 = dcauchy(x, location = -2, scale = 0.5), # 中央値-2、スケール0.5
+  l2s2 = dcauchy(x, location = 2, scale = 2) # 中央値2、スケール2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="コーシー分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  l0s1 = pcauchy(x, location = 0, scale = 1), # 中央値20、スケール0.1
+  lm2s05 = pcauchy(x, location = -2, scale = 0.5), # 中央値20、スケール0.5
+  l2s2 = pcauchy(x, location = 2, scale = 2) # 中央値20、スケール0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()+
+  expand_limits(y=0)
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqcauchyでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  l0s1 = qcauchy(x, location = 0, scale = 1), # 中央値20、スケール0.1
+  lm2s05 = qcauchy(x, location = -2, scale = 0.5), # 中央値20、スケール0.5
+  l2s2 = qcauchy(x, location = 2, scale = 2) # 中央値20、スケール0.8
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## コーシー乱数
+
+```{r, filename="乱数のヒストグラムをプロット"}
+set.seed(0)
+d <- tibble(
+  l0s1 = rcauchy(1000, location = 0, scale = 1), # 中央値20、スケール0.1
+  lm2s05 = rcauchy(1000, location = -2, scale = 0.5), # 中央値20、スケール0.5
+  l2s2 = rcauchy(1000, location = 2, scale = 2) # 中央値20、スケール0.8
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.2)) +
+  geom_histogram(binwidth = 50, position = "identity")
+```
+
+:::
+
+## ロジスティック分布
+
+**ロジスティック分布**は**ロジスティック関数**を微分したものを分布としたもの、つまり、ロジスティック分布の積分である累積分布関数がロジスティック関数を取る分布のことを指します。ロジスティック関数は線形回帰で用いられる関数で、以下の式で表されます。
+
+$$logis(x)=\frac{1}{(1+\exp(-(ax+b))}$$
+
+ロジスティック関数は[個体群モデル](https://ja.wikipedia.org/wiki/%E5%80%8B%E4%BD%93%E7%BE%A4%E5%8B%95%E6%85%8B%E8%AB%96)の数式化と関連のある関数です。統計では、逆関数である**ロジット関数**から導出されます。ロジット関数は以下の式で表されます。
+
+$$log(\frac{p}{1-p})=ax+b$$
+
+ロジット関数のpはベルヌーイ試行の成功確率p、ax+bは線形回帰の式です。$p/1-p$は**オッズ比**と呼ばれるもので、成功確率と失敗確率の比を指します。
+
+ロジスティック分布は以下の式で表されます。
+
+$$Logistic(x, \mu, s)=\frac{\exp(-x)}{s(1+\exp(-(x-\mu)/s)^2)}$$
+
+上の式のμは中央値、sはスケールパラメータです。Rでは、ロジスティック分布の確率密度関数は`dlogis`関数で計算することができます。`dlogis`関数の引数には、中央値μである`location`とスケールパラメータsである`scale`を指定します。ロジスティック分布は$-\infty$～$\infty$の範囲を持つ連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="ロジスティック分布の確率密度をプロット"}
+x <- seq(-5, 5, by = 0.01)
+d <- tibble(
+  x,
+  l0s1 = dlogis(x, location = 0, scale = 1), # location 0、scale1
+  l1s2 = dlogis(x, location = 1, scale = 2), # location 1、scale2
+  l2s05 = dlogis(x, location = 2, scale = 0.5) # location 2、scale0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="ロジスティック分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  l0s1 = plogis(x, location = 0, scale = 1), # location 0、scale1
+  l1s2 = plogis(x, location = 1, scale = 2), # location 1、scale2
+  l2s05 = plogis(x, location = 2, scale = 0.5) # location 2、scale0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqlogisでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  l0s1 = qlogis(x, location = 0, scale = 1), # location 0、scale1
+  l1s2 = qlogis(x, location = 1, scale = 2), # location 1、scale2
+  l2s05 = qlogis(x, location = 2, scale = 0.5) # location 2、scale0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## ロジスティック乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  l0s1 = rlogis(1000, location = 0, scale = 1), # location 0、scale1
+  l1s2 = rlogis(1000, location = 1, scale = 2), # location 1、scale2
+  l2s05 = rlogis(1000, location = 2, scale = 0.5) # location 2、scale0.5
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 1, position = "identity")
+```
+
+:::
+
+## 対数正規分布
+
+**対数正規分布**は正規分布を指数変換した分布です。年収がこの分布に従うことで有名です。パラメータは正規分布と同じくμとσですが、μとσは分布の平均値・標準偏差ではありません。対数正規分布の確率密度関数は以下の式で表されます。
+
+$$Lognorm(x, \mu, \sigma)=\frac{1}{x\sigma\sqrt{2\pi}} \cdot \exp(-\frac{(\ln x-\mu)^2}{2\sigma^2})$$
+
+Rで対数正規分布の確率密度関数を計算するには、`dlnorm`関数を用います。`dlnorm`関数の引数には、μとして`meanlog`、σとして`sdlog`を指定します。対数正規分布は左に歪み、右側の裾が長い分布を示し、0～$\infty$の範囲を持つ連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="対数正規分布の確率密度をプロット"}
+x <- seq(0, 5, by = 0.01)
+d <- tibble(
+  x,
+  m0s1 = dlnorm(x, meanlog = 0, sdlog = 1), # 平均（対数）0、標準偏差（対数）1
+  m2s2 = dlnorm(x, meanlog = 2, sdlog = 2), # 平均（対数）2、標準偏差（対数）2
+  mm2s05 = dlnorm(x, meanlog = -2, sdlog = 0.5) # 平均（対数）-2、標準偏差（対数）0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="対数正規分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  m0s1 = plnorm(x, meanlog = 0, sdlog = 1), # 平均（対数）0、標準偏差（対数）1
+  m2s2 = plnorm(x, meanlog = 2, sdlog = 2), # 平均（対数）2、標準偏差（対数）2
+  mm2s05 = plnorm(x, meanlog = -2, sdlog = 0.5) # 平均（対数）-2、標準偏差（対数）0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  m0s1 = qlnorm(x, meanlog = 0, sdlog = 1), # 平均（対数）0、標準偏差（対数）1
+  m2s2 = qlnorm(x, meanlog = 2, sdlog = 2), # 平均（対数）2、標準偏差（対数）2
+  mm2s05 = qlnorm(x, meanlog = -2, sdlog = 0.5) # 平均（対数）-2、標準偏差（対数）0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 対数正規乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  m0s1 = rlnorm(1000, meanlog = 0, sdlog = 1), # 平均（対数）0、標準偏差（対数）1
+  m2s2 = rlnorm(1000, meanlog = 2, sdlog = 2), # 平均（対数）2、標準偏差（対数）2
+  mm2s05 = rlnorm(1000, meanlog = -2, sdlog = 0.5) # 平均（対数）-2、標準偏差（対数）0.5
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 100, position = "identity")
+```
+
+:::
+
+## ベータ分布
+
+**ベータ分布**は、ベルヌーイ試行などの成功確率をモデル化する際に用いられる分布です。ベータ分布の確率密度関数には2つのパラメータがあり、それぞれα、βと呼ばれます。どちらも形状パラメータを意味しています。ベータ分布の確率密度関数は以下の式で表されます。
+
+$$Beta(x, \alpha, \beta)=\frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \cdot x^{\alpha-1} \cdot (1-x)^{\beta-1}$$
+
+Rでは、ベータ分布の確率密度関数は`dbeta`関数で計算することができます。`dbeta`分布の引数として、αを`shape1`、βを`shape2`として指定します。ベータ分布は0～1までの連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="ベータ分布の確率密度をプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s05s075 = dbeta(x, shape1 = 0.5, shape2 = 0.75), # shape1が0.5、shape2が0.75
+  s1s1  = dbeta(x, shape1 = 1, shape2 = 1), # shape1が1、shape2が1
+  s3s2 = dbeta(x, shape1 = 3, shape2 = 2) # shape1が3、shape2が2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="ベータ分布の累積分布関数をプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s05s075 = pbeta(x, shape1 = 0.5, shape2 = 0.75), # shape1が0.5、shape2が0.75
+  s1s1  = pbeta(x, shape1 = 1, shape2 = 1), # shape1が1、shape2が1
+  s3s2 = pbeta(x, shape1 = 3, shape2 = 2) # shape1が3、shape2が2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqbetaでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s05s075 = qbeta(x, shape1 = 0.5, shape2 = 0.75), # shape1が0.5、shape2が0.75
+  s1s1  = qbeta(x, shape1 = 1, shape2 = 1), # shape1が1、shape2が1
+  s3s2 = qbeta(x, shape1 = 3, shape2 = 2) # shape1が3、shape2が2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## ベータ分布乱数
+
+```{r, filename="乱数のヒストグラムをプロット"}
+d <- tibble(
+  s05s075 = rbeta(1000, shape1 = 0.5, shape2 = 0.75), # shape1が0.5、shape2が0.75
+  s1s1  = rbeta(1000, shape1 = 1, shape2 = 1), # shape1が1、shape2が1
+  s3s2 = rbeta(1000, shape1 = 3, shape2 = 2) # shape1が3、shape2が2
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 0.1, position = "identity")
+```
+
+:::
+
+## カイ二乗分布
+
+**カイ二乗分布**は正規分布に従う確率変数の二乗和の確率分布です。カイ二乗分布は度数の検定に用いられる分布で、そのパラメータは自由度νのみです。カイ二乗分布の確率密度関数は以下の式で表されます。
+
+$$Chisq(x, \nu)=\frac{\exp(-x/2) \cdot \exp(\nu/2-1)}{2^{\nu/2} \cdot \Gamma(\nu/2)}$$
+
+Rでは、カイ二乗分布は`dchisq`関数で計算することができます。`dchisq`関数の引数として、自由度νを`df`として指定します。カイ二乗分布は右側の裾が長い分布を示し、0～$\infty$の範囲を持つ連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="カイ二乗分布の確率密度をプロット"}
+x <- seq(0, 30, by = 0.01)
+d <- tibble(
+  x,
+  d3n0 = dchisq(x, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d5n05 = dchisq(x, df = 5, ncp = 0.5), # 自由度5、非心パラメータ0.5
+  d10n2 = dchisq(x, df = 10, ncp = 2) # 自由度10、非心パラメータ2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="カイ二乗分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  d3n0 = pchisq(x, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d5n05 = pchisq(x, df = 5, ncp = 0.5), # 自由度5、非心パラメータ0.5
+  d10n2 = pchisq(x, df = 10, ncp = 2) # 自由度10、非心パラメータ2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqchisqでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  d3n0 = qchisq(x, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d5n05 = qchisq(x, df = 5, ncp = 0.5), # 自由度5、非心パラメータ0.5
+  d10n2 = qchisq(x, df = 10, ncp = 2) # 自由度10、非心パラメータ2
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## カイ二乗乱数
+
+```{r, filename="乱数のヒストグラムをプロット"}
+d <- tibble(
+  d3n0 = rchisq(1000, df = 3, ncp = 0), # 自由度3、非心パラメータ0
+  d5n05 = rchisq(1000, df = 5, ncp = 0.5), # 自由度5、非心パラメータ0.5
+  d10n2 = rchisq(1000, df = 10, ncp = 2) # 自由度10、非心パラメータ2
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 1, position = "identity")
+```
+
+:::
+
+## F分布
+
+**F分布**はカイ二乗に従う2つの独立な変数の比の分布です。F分布は**分散分析**で用いられる分布です。F分布のパラメータは独立の2変数それぞれの自由度（ν~1~とν~2~）です。F分布の確率密度関数は以下の式で表されます。
+
+$$F(x, \nu_{1}, \nu_{2})=
+\frac{\Gamma(\frac{\nu_{1}+\nu_{2}}{2}) \cdot (\frac{\nu_{1}}{\nu_{2}})^{\nu_{1}/2 \cdot x^{\nu_{1}/2-1}}}
+{\Gamma(\frac{\nu_{1}}{2}) \cdot \Gamma(\frac{\nu_{2}}{2}) \cdot (1+\frac{\nu_{1}x}{\nu_{2}})^{\frac{\nu_{1}+\nu_{2}}{2}}}$$
+
+RではF分布の確率密度関数を`df`関数で計算することができます。`df`関数では自由度2つをそれぞれ`df1`、`df2`引数として指定します。F分布も右側の裾が長い分布を示し、0～$\infty$の範囲を持つ連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="F分布の確率密度をプロット"}
+x <- seq(0, 10, by = 0.01)
+d <- tibble(
+  x,
+  df5df5 = df(x, df1 = 5, df2 = 5), # 自由度1 5、自由度2 5
+  df10df15 = df(x, df1 = 10, df2 = 15), # 自由度1 10、自由度2 15
+  df15df20 = df(x, df1 = 20, df2 = 15) # 自由度1 20、自由度2 15
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="F分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  df5df5 = pf(x, df1 = 5, df2 = 5), # 自由度1 5、自由度2 5
+  df10df15 = pf(x, df1 = 10, df2 = 15), # 自由度1 10、自由度2 15
+  df15df20 = pf(x, df1 = 20, df2 = 15) # 自由度1 20、自由度2 15
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  df5df5 = qf(x, df1 = 5, df2 = 5), # 自由度1 5、自由度2 5
+  df10df15 = qf(x, df1 = 10, df2 = 15), # 自由度1 10、自由度2 15
+  df15df20 = qf(x, df1 = 20, df2 = 15) # 自由度1 20、自由度2 15
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## F乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  df5df5 = rf(1000, df1 = 5, df2 = 5), # 自由度1 5、自由度2 5
+  df10df15 = rf(1000, df1 = 10, df2 = 15), # 自由度1 10、自由度2 15
+  df15df20 = rf(1000, df1 = 20, df2 = 15) # 自由度1 20、自由度2 15
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 1, position = "identity")
+```
+
+:::
+
+:::{.callout-tip collapse="true"}
+
+## データフレームの変数名
+
+Rでデータフレームを変数に代入する場合、`data.frame`から変数名を`df`とする場合があるのですが、この`df`にデータフレームを代入してしまうと、F関数の確率密度関数である`df`関数を上書きしてしまいます。正直`df`関数を使う機会はほとんどないのですが、データフレームの変数名には`d`の一文字を用いたり、きちんと意味のある名前を用いた方がよいでしょう。
+
+:::
+
+## ガンマ分布
+
+**ガンマ分布**は機械の信頼性や降雨量などの説明に用いられる分布です。ガンマ分布のパラメータは形状パラメータγとスケールパラメータβの2つです。ガンマ分布の確率密度関数は以下の式で表されます。
+
+$$Gamma(x, \gamma, \beta)=\frac{(\frac{x}{\beta})^{\gamma-1} \cdot \exp(-\frac{x}{\beta})}{\beta \cdot \Gamma(\gamma)}$$
+
+Rでのガンマ分布の確率密度関数は`dgamma`関数で計算することができます。ガンマ分布のパラメータである形状パラメータは`shape`引数、スケールパラメータは`scale`引数で指定します。ガンマ分布は右側の裾が長い分布で、最頻値が0以上となる形状を示し、0～$\infty$の範囲を持つ連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="ガンマ分布の確率密度をプロット"}
+x <- seq(0, 100, by = 0.1)
+d <- tibble(
+  x,
+  df5df5 = dgamma(x, shape = 5, scale = 2), # shape 5 scale 2
+  df10df15 = dgamma(x, shape = 10, scale = 4), # shape 10 scale 4
+  df15df20 = dgamma(x, shape = 1, scale = 6) # shape 1 scale 6
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="ガンマ分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  df5df5 = pgamma(x, shape = 5, scale = 2), # shape 5 scale 2
+  df10df15 = pgamma(x, shape = 10, scale = 4), # shape 10 scale 4
+  df15df20 = pgamma(x, shape = 1, scale = 6) # shape 1 scale 6
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  df5df5 = qgamma(x, shape = 5, scale = 2), # shape 5 scale 2
+  df10df15 = qgamma(x, shape = 10, scale = 4), # shape 10 scale 4
+  df15df20 = qgamma(x, shape = 1, scale = 6) # shape 1 scale 6
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## ガンマ乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  df5df5 = rgamma(1000, shape = 5, scale = 2), # shape 5 scale 2
+  df10df15 = rgamma(1000, shape = 10, scale = 4), # shape 10 scale 4
+  df15df20 = rgamma(1000, shape = 1, scale = 6) # shape 1 scale 6
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 5, position = "identity")
+```
+
+:::
+
+## 指数分布
+
+**指数分布**はポアソン分布する事象（まれに起こる事象）が起こる時間間隔の分布を示す確率分布です。指数分布は**生存時間解析**などの、イベントの発生数と時間の関係を解析するのに用いられています。指数分布のパラメータはλのみで、λは正の値を取ります。指数分布の確率密度関数は以下の式で表されます。
+
+$$Exp(x, \lambda)=\lambda \cdot \exp(-\lambda x)$$
+
+Rでは指数分布の確率密度関数は`dexp`関数で計算することができます。`dexp`関数では、λを`rate`引数で指定します。指数分布は単調減少で、0～$\infty$の範囲を持つ連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="指数分布の確率密度をプロット"}
+x <- seq(0, 10, by = 0.01)
+d <- tibble(
+  x,
+  r1 = dexp(x, rate = 1), # ラムダ1
+  r3 = dexp(x, rate = 3), # ラムダ3
+  r5 = dexp(x, rate = 5) # ラムダ5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="指数分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  r1 = pexp(x, rate = 1), # ラムダ1
+  r3 = pexp(x, rate = 3), # ラムダ3
+  r5 = pexp(x, rate = 5) # ラムダ5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqexpでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  r1 = qexp(x, rate = 1), # ラムダ1
+  r3 = qexp(x, rate = 3), # ラムダ3
+  r5 = qexp(x, rate = 5) # ラムダ5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 指数乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  r1 = rexp(1000, rate = 1), # ラムダ1
+  r3 = rexp(1000, rate = 3), # ラムダ3
+  r5 = rexp(1000, rate = 5) # ラムダ5
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 0.1, position = "identity")
+```
+
+:::
+
+## ワイブル分布
+
+**ワイブル分布**は指数分布を拡張したような確率分布です。指数分布では、ポアソン分布する事象（イベント）が起きる確率は常に一定であることを仮定していますが、ワイブル分布を用いると単調増加・単調減少でイベントが起きる確率が変化する場合を表現することができます。ワイブル分布のパラメータは形状パラメータのλとスケールパラメータのkの2つです。ワイブル分布の確率密度関数は以下の式で表されます。
+
+$$Weibull(x, \lambda, k)=\frac{k}{\lambda}(\frac{x}{\lambda})^{k-1} \cdot \exp(-\frac{x}{\lambda})^k$$
+
+Rでは、ワイブル分布の確率密度関数を`dweibull`関数で計算することができます。`dweibull`関数の引数は形状パラメータλである`shape`と、スケールパラメータkである`scale`の2つです。ワイブル分布はガンマ分布と同じく、右側の裾が長い分布で、最頻値が0以上となる形状を示し、0～$\infty$の範囲を持つ連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="ワイブル分布の確率密度をプロット"}
+x <- seq(0, 5, by = 0.01)
+d <- tibble(
+  x,
+  s1s1 = dweibull(x, shape = 1, scale = 1), # shape 1、scale 1
+  s2s2 = dweibull(x, shape = 2, scale = 2), # shape 2、scale 2
+  s05s05 = dweibull(x, shape = 0.5, scale = 0.5) # shape 0.5、scale 0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="ワイブル分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  s1s1 = pweibull(x, shape = 1, scale = 1), # shape 1、scale 1
+  s2s2 = pweibull(x, shape = 2, scale = 2), # shape 2、scale 2
+  s05s05 = pweibull(x, shape = 0.5, scale = 0.5) # shape 0.5、scale 0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  s1s1 = qweibull(x, shape = 1, scale = 1), # shape 1、scale 1
+  s2s2 = qweibull(x, shape = 2, scale = 2), # shape 2、scale 2
+  s05s05 = qweibull(x, shape = 0.5, scale = 0.5) # shape 0.5、scale 0.5
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## ワイブル乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  s1s1 = rweibull(1000, shape = 1, scale = 1), # shape 1、scale 1
+  s2s2 = rweibull(1000, shape = 2, scale = 2), # shape 2、scale 2
+  s05s05 = rweibull(1000, shape = 0.5, scale = 0.5) # shape 0.5、scale 0.5
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 0.2, position = "identity")
+```
+
+:::
+
+## 一様分布
+
+**一様分布**は、最小値（a）から最大値（b）まで、一定の確率で現れる現象を示す分布です。この章の始めに示した`sample`関数の乱数やサイコロなどが一様分布の典型的な例です。一様分布のパラメータは最小値aと最大値bの2つです。一様分布の確率密度関数は以下の式で表されます。
+
+$$Unif(x, a, b)=\frac{1}{b-a}$$
+
+Rでは、一様分布の確率密度関数を`dunif`関数で計算することができます。`dunif`関数では最小値aとして`min`、最大値bとして`max`の2つのパラメータを引数に指定します。一様分布はその名の通り確率密度が一定で、a～bの範囲を持つ連続値を取ります。
+
+::: {.panel-tabset}
+
+## 確率密度
+
+```{r, filename="一様分布の確率密度をプロット"}
+x <- seq(-1.5, 4.5, by = 0.01)
+d <- tibble(
+  x,
+  m0m1 = dunif(x, min = 0, max = 1), # 最小0、最大1
+  mm1m1 = dunif(x, min = -1, max = 1), # 最小-1、最大1
+  m2m4 = dunif(x, min = 2, max = 4) # 最小2、最大4
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 累積分布関数
+
+```{r, filename="一様分布の累積分布関数をプロット"}
+d <- tibble(
+  x,
+  m0m1 = punif(x, min = 0, max = 1), # 最小0、最大1
+  mm1m1 = punif(x, min = -1, max = 1), # 最小-1、最大1
+  m2m4 = punif(x, min = 2, max = 4) # 最小2、最大4
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 分位点の値
+
+```{r, filename="累積分布関数の分位点と値の関係をqfでプロット"}
+x <- seq(0, 1, by = 0.01)
+d <- tibble(
+  x,
+  m0m1 = qunif(x, min = 0, max = 1), # 最小0、最大1
+  mm1m1 = qunif(x, min = -1, max = 1), # 最小-1、最大1
+  m2m4 = qunif(x, min = 2, max = 4) # 最小2、最大4
+)
+
+d |> 
+  pivot_longer(2:4) |> 
+  ggplot(aes(x = x, y = value, color = name)) +
+  geom_line()
+```
+
+## 一様乱数
+
+```{r, filename="乱数の確率密度をプロット"}
+d <- tibble(
+  m0m1 = runif(1000, min = 0, max = 1), # 最小0、最大1
+  mm1m1 = runif(1000, min = -1, max = 1), # 最小-1、最大1
+  m2m4 = runif(1000, min = 2, max = 4) # 最小2、最大4
+)
+
+d |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5)) +
+  geom_histogram(binwidth = 1, position="identity")
+```
+
+:::
+
+## 多項分布
+
+多項分布はここまでに示した確率分布とは異なり、Rには累積分布関数や分位点の関数が設定されていない確率分布です。多項分布は、複数の事象、例えばツボに白・赤・黒のボールを違う数で入れておき、取り出しては戻すような試行（**復元抽出**）を行うとき、それぞれの色のボールを特定の数だけ取り出す確率を計算するときに用います。各色のボールを取り出す確率はそれぞれ異なりますが、足し合わせれば確率が1となるような状況で多項分布は用いられます。
+
+多項分布の確率質量関数のパラメータはボールの色がk色の時、ボールを取り出す回数n、各色のボールを取り出す数x~1~～x~k~、各色のボールを取り出す確率p~1~p~k~の4種類となります。nはx~1~～x~k~の和となります。
+
+$$Multinomial(n, x_{1}, x_{2}, \cdots x_{k}, p_{1}, p_{2}, \cdots p_{k})=\frac{n!}{x_{1}! \cdot x_{2}! \cdot \cdots \cdot x_{k}!} \cdot p_{1}^{x_{1}} \cdot p_{2}^{x_{2}} \cdot \cdots p_{k}^{x_{k}}$$
+
+Rでは、`dmultinom`関数で多項分布の確率質量関数を計算することができます。`dmultinom`関数の引数はボールを取り出す回数nを表す`size`、各色のボールを取り出す数のx~1~～x~k~をベクターで表した`x`、各色のボールを取り出す確率であるp~1~p~k~を同じくベクターで表した`prob`の3つとなります。
+
+また、多項分布の乱数を得る関数である`rmultinom`関数も他の確率分布を示す乱数の関数とはやや使い方が異なります。`size`と`prob`の2つの引数を指定するのは上と同じですが、返り値は合計が`size`で指定した数値となるボールの数k個の乱数です。`prob`で確率を指定したそれぞれに対する値（ボールの数のようなもの）が第一引数（`n`）で示した数だけ、列として並ぶ行列が返ってきます。
+
+```{r, warning=FALSE, filename="多項分布の関数"}
+# 0.1、0.3、0.6の確率で起こる事象がそれぞれ1、2、4回同時に起こる確率
+dmultinom(x = c(1, 2, 4), size = 7, prob = c(0.1, 0.3, 0.6))
+
+# 足し合わせると20になるものが10個、列として返ってくる。
+# 行の上から、0.1、0.3、0.6の確率で現れている
+rmultinom(10, size=20, prob = c(0.1, 0.3, 0.6))
+```
+
+
+```{r, warning=FALSE, filename="多項分布の乱数をグラフで示す"}
+rmnom <- rmultinom(1000, size=20, prob = c(0.1, 0.3, 0.6))
+rmnom |> 
+  t() |> 
+  as_tibble() |> 
+  pivot_longer(1:3) |> 
+  ggplot(aes(x = value, color = name, fill = name, alpha = 0.5))+
+  geom_histogram(binwidth = 1, position = "identity")
 ```

@@ -1,4 +1,8 @@
-# 地理空間情報
+# 教師なし学習
+
+**教師なし学習**は、データの特徴を捉えるためにデータを変換したり、群に分ける方法の総称です。教師なし学習の特徴は、以前に取ったデータと新しく取得したデータを分けて用いる教師あり学習とは異なり、すべてのデータを一度に用いて学習を行うことです。教師なし学習には、以下の図1のように、データをグループに分ける**クラスタリング**と、多次元のデータを理解しやすいように変換する**次元圧縮**の2つが含まれます。
+
+![](./image/classification_category2.png)
 
 ```{r, setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(
@@ -6,1057 +10,582 @@ knitr::opts_chunk$set(
 )
 
 pacman::p_load(tidyverse)
+```
 
+## クラスタリング
+
+**クラスタリング**とは、1つの要素にたくさんのデータが付随している、多次元データを用いて、要素間が互いに似ているかどうかを判断し、互いに似ているもの同士を一つのグループにまとめる方法です。類似した要素のまとまりを見つけるときに用いられます。
+
+「1つの要素にたくさんのデータ」というのはイメージしにくいかもしれませんが、例えば、ある個人について付随しているデータを考えると、年齢、性別、身長、体重、職業、趣味など、1人にたくさんのデータがくっついてきます。ある個人Aさんと別の個人Bさんでは、異なるデータがくっついていることになります。AさんとBさんの属性が似ているかどうかは、そのデータがどれぐらい似ているかを調べればわかります。このように1人あたりのデータがたくさんある状態のことを**多次元データ**であると考えることができます。
+
+多次元データがどの程度似ているのかを表現できれば、個々人が似ている・似ていないを判断することができ、似ている人をグループとして分けることができます。この似ている人同士をグループにすることがクラスタリングに当たります。
+
+クラスタリングするときに、似ているものから順番に線でつないでいく方法のことを**階層ありクラスタリング**、似ているものを大まかにグループ分けする方法を**階層なしクラスタリング**と呼びます。
+
+## 階層ありクラスタリング
+
+### 距離行列
+
+階層ありクラスタリングとは、多次元データ間の**距離**を計算することで、個々のデータについて似ている度合いを評価し、評価に従って似ているものから**クラスター**に分けていく手法のことです。まずは、データを**距離行列**に変換する必要があります。
+
+距離行列とは、たくさんあるデータとデータの距離を行列としてまとめたものです。最も単純な距離行列は2つのデータの直線距離（ユークリッド距離）です。
+
+距離行列についてイメージしやすいように、まずは、都道府県の県庁所在地の緯度・経度のデータを用いて距離行列を計算します。都道府県の緯度経度情報は[Github Gistのページ](https://gist.github.com/ctsaran/42728dad3c7d8bd91f1d)からダウンロードしています。
+
+簡便化のために、関西の都道府県のみを用います。緯度・経度から、関西の都道府県は下のグラフに示すように位置していることがわかります。この時、各県から別の県までの直線距離をそれぞれ求めることができます。これを行列にまとめたのが距離行列です。Rでは、`dist`関数というものを用いて、緯度・経度のデータからユークリッド距離の距離行列を求めることができます。
+
+```{r, filename="データの準備"}
+kansai <- read.csv("./data/pref_lat_lon.csv", header = T, fileEncoding = "CP932")
+
+# 関西の都道府県データのみ取得する
+kansai <- kansai[24:30, ]
+kansai # 各県の緯度と経度
+
+ggplot(
+  kansai, 
+  aes(x = lon, y = lat, color = pref_name, label = pref_name)) + 
+  geom_text() # 県庁所在地の位置
+```
+
+
+```{r, filename="データを距離行列に変換"}
+# ユークリッド距離（数値は24から順に三重、滋賀、京都、大阪、兵庫、奈良、和歌山）
+dist(kansai[, 2:3], method="euclidean") 
+```
+
+上の例では緯度・経度の2つのデータから距離行列を計算していますが、もっとたくさんの列があるデータにおいても同様に距離行列を計算することができます。また、距離行列には、距離の計算の仕方によってさまざまな種類のものがあります。距離としてよく用いられるものは、**ユークリッド距離**（2点間の直線の距離）と**マンハッタン距離**（2点間を移動するときの横と縦の移動距離を足したもの）の2つです。
+
+この距離行列を用いて、距離が近いもの同士をクラスターにまとめていくものが、**階層ありクラスタリング（hierarchical clustering）**です。
+
+::: {.panel-tabset}
+
+## ユークリッド距離
+
+```{r}
+# ユークリッド距離
+#（軸の数値は24から順に三重、滋賀、京都、大阪、兵庫、奈良、和歌山）
+dist(kansai[, 2:3], method = "euclidean") 
+```
+
+## 最大距離
+
+```{r}
+# 縦と横の距離の最大値を取る
+dist(kansai[, 2:3], method = "maximum") 
+```
+
+## マンハッタン距離
+
+```{r}
+# マンハッタン距離
+dist(kansai[, 2:3], method = "manhattan") 
+```
+
+## キャンベラ距離
+
+```{r}
+# キャンベラ距離
+#（原点近くの距離を大きく見積もる、2点の距離を原点からの距離の絶対値の和で割る）
+dist(kansai[, 2:3], method = "canberra")
+```
+
+## バイナリ距離
+
+```{r}
+# バイナリ距離（距離が0なら1、0でなければ0を返す）
+dist(kansai[, 2:3], method = "binary") 
+```
+
+## ミンコフスキー距離
+
+```{r}
+# ミンコフスキー距離
+#（ユークリッドとマンハッタンの中間的なもの、pという引数を別途取る。pのデフォルトは2）
+dist(kansai[, 2:3], method = "minkowski") 
+```
+
+:::
+
+### Rでの階層ありクラスタリング
+
+Rでは、この階層ありクラスタリングを`hclust`関数を用いて行います。`hclust`関数の第一引数は距離行列で、上に述べた通り`dist`関数を用いて計算できるものです。`method`引数には、クラスタリングの方法を選択します。クラスタリングの方法は、`"complete"`（デフォルト）、`"ward.D"`、`"ward.D2"`、`"single"`、`"average"`、`"mcquitty"`、`"median"`、`"centroid"`の8つから選択します。
+
+この、`hclust`関数の返り値を`plot`することで、クラスタリングの結果を確認することができます。`hclust`関数の返り値自体を確認することはあまりないため、基本的には`plot`して使うものだと考えてもらうとよいと思います。`plot`関数において、`hang`引数を`-1`に指定すると、クラスタリングする要素の下端をそろえることができます。
+
+`plot`関数で表示されるのは、より近いもの同士も線でつないだ樹形上の図です。線でつながった距離が近いほど、データがよく似ていることを示しています。上記の都道府県の緯度・経度でクラスタリングを行うと、距離の近さとクラスタリングの図上の近さが対応しているのがわかるかと思います。
+
+::: {.panel-tabset}
+
+## 下揃えなし
+
+```{r, filename="階層ありクラスタリング", fig.width=10}
+JPll <- read.csv("./data/pref_lat_lon.csv", header = T, row.names = 1, fileEncoding = "CP932")
+hc <- hclust(dist(JPll), method = "complete") # 引数は距離行列
+plot(hc) # 樹形図の作図
+```
+
+## 下揃えあり
+
+```{r, filename="階層ありクラスタリング：下を揃える", fig.width=10}
+plot(hc, hang = -1)
+```
+
+:::
+
+## 階層なしクラスタリング
+
+階層ありクラスタリングでは、距離の近いデータ同士をつなぐため、各データのクラスタの近さは厳密に計算されています。一方で、この方法では距離行列を必ず計算する必要があり、データが増えると計算回数がどんどん増えていきます。
+
+データ同士の距離ではなく、「クラスターの中心」を定め、この中心からの距離が近いものを同じクラスターであるとしてグループ分けする方法のことを**階層なしクラスタリング**と呼びます。こちらの方法であれば、計算回数はクラスター数に依存するため、データが増えても大きくは計算回数が増えず、比較的単純な計算でグループ分けを行うことができます。一方で、厳密にデータ間の距離を計算しているわけではないので、階層ありクラスタリングのように細かなデータの類似性を評価することはできません。
+
+この階層なしクラスタリングの最も代表的なものが、**k-mean法**です。
+
+## k-means
+
+**k-means法**では、あらかじめ乱数に従い「クラスターの中心」を設定します。このクラスターの中心の数は解析する人が設定する必要があります。次に、このクラスターの中心からの距離が近いデータを、そのクラスターのデータであるとします。この仮のクラスターができたら、次にクラスター内のデータの重心を求めます。重心が定まったら、この重心を新しい「クラスターの中心」として、クラスターの中心の位置を更新します。
+
+このクラスターの中心を重心に更新する試行を、重心が移動しなくなるまで繰り返した時のクラスター内のデータをクラスターのメンバーとします。言葉ではわかりにくいので、以下にk-meansによるクラスタリングの図を示します。また、[こちらのリンク](http://tech.nitoyon.com/ja/blog/2013/11/07/k-means/)、もしくは[このWebアプリケーション](https://xjorv.shinyapps.io/kmeans_animate/)を見ていただくと、k-meansをよりイメージしやすいかと思います。WebアプリケーションはRで、`if(!require(shiny)){install.packages("shiny")};runGitHub("kmeans_animated", "sb8001at-oss")`を実行することでも利用することができます。
+
+:::{.callout-tip collapse="true"}
+
+## k-mean：下グラフ描画のスクリプト
+
+```{r, eval=FALSE}
 set.seed(0)
-```
 
-**地理空間情報**は、マップ、つまり地図情報とそれに紐づけられた特性や値（人口や面積など）からなるデータです。Rには、この地理空間情報を取り扱うためのライブラリが一通り備わっており、地理空間情報を地図上に表示したり、緯度・経度の位置情報から地理空間情報に変換し取り扱うことができます。
-
-## ベクタとラスタ
-
-地理空間情報は**ベクタ**と**ラスタ**の2つに大きく分けることができます。
-
-**ベクタ**とは、座標上で始点と終点が定まっており、その間を直線などで結ぶ形で構成される地理情報です。始点と終点の座標だけが定められているため、拡大・縮小しても線が滑らかなままであるという特徴があります。
-
-**ラスタ**とは、格子状に空間を分け、その格子ごとに値が設定されているようなデータを指します。空間を格子状に分けているため、拡大するとその格子のサイズによっては荒く見えることになります。デジタル写真などが典型的なラスタデータです。
-
-時と場合によりますが、地理空間上で区域がはっきり決まっているもの、例えば国や県、市町村などはベクタで、区域が決まっていないもの、例えば降雨量や人口密度などはラスタで取り扱うとよいかと思います。
-
-ベクタは画像ソフトでの「ドロー系」（Adobe Illustratorなど）、ラスタは「ペイント系」（Adobe PhotoshopやWindows標準のペイントなど）に相当します。
-
-Rで地理空間情報を取り扱う場合、ベクタもラスタも利用可能ですが、用いるライブラリは異なります。ベクタを取り扱う最も代表的なパッケージは[`sf`](https://r-spatial.github.io/sf/)パッケージ[@sf_bib1; @sf_bib2]です。ラスタを取り扱うパッケージはいくつかありますが、2023年現在では[`stars`](https://r-spatial.github.io/stars/)パッケージ[@stars_bib]か、[`terra`](https://rspatial.github.io/terra/)パッケージ[@terra_bib]を用いるのが一般的になっています。
-
-## sfパッケージ
-
-`sf`は「simple feature」の略で、地理空間をベクタで表記するISOの規格（[ISO 19125](http://www.iso.org/iso/catalogue_detail.htm?csnumber=40114)）を指します。このISO規格に従い地理空間情報を表現し、データフレームと同じような形で地理空間情報を取り扱えるようにしたライブラリが`sf`です。
-
-```{r, filename="sfの読み込み"}
-pacman::p_load(sf)
-```
-
-`sf`でのデータの例を以下に示します。`world`は[`spData`](https://cran.r-project.org/web/packages/spData/index.html)パッケージ[@spData_bib]によって提供されている`sf`クラスのデータで、各国家の面積、人口、平均寿命、一人当たりGDPと地理空間情報を結び付けたデータとなっています。
-
-`world`の中身を見ると、ほぼデータフレームと同じような表が表示されますが、追加で様々な情報が表示されています。データは177行11列のデータで、各行が各国の情報、列がその国のデータを表します。また、11列目は`geom`（geometryの略）という列になっており、MULTIPOLYGONという型である、という形で表示されています。この地理情報の列についての説明は後ほど行います。
-
-```{r, filename="sfの例：world"}
-pacman::p_load(spData)
-
-world
-```
-
-`world`のクラスは`sf`及びデータフレーム（正確には`tibble`）で、各列には国名や短縮した国の記号などが記載されています。`sf`クラスはデータフレームでもあるため、おおむね通常のデータフレームと同じように取り扱うことができます。最後の列にある`geom`が地理空間情報で、`summary`関数の結果を見ると`epsg:4326`と記載されています。`epsg:4326`というのは**世界測地系（WGS84）**と呼ばれるものです。測地系については後ほど説明します。
-
-```{r, filename="sfデータのクラス"}
-class(world)
-
-summary(world)
-```
-
-`sf`クラスのデータは`plot`関数（`plot.sf`）や`ggplot2`の`geom_sf`関数を用いることで地図として表示することができます。以下の例では、世界地図に一人当たりGDPの対数を色で示した地図（**コロプレス図、choropleth map**）を表示しています。
-
-```{r, filename="ggplot2でsfをプロットする"}
-world |> 
-  ggplot() +
-  geom_sf(aes(fill = log(gdpPercap)))
-```
-
-### GeoJSONを取り扱う
-
-地理データの一部はインターネットで公開されており、ダウンロードして用いることができます。例えば[smartnews-smri/japan-topography](https://github.com/smartnews-smri/japan-topography)や、[国土数値情報ダウンロードサイト](https://nlftp.mlit.go.jp/)では、日本の地理情報を**[GeoJSON](https://ja.wikipedia.org/wiki/GeoJSON)**と呼ばれる形式で公開しています。GeoJSONとは、他言語ではよく用いられているデータの形式である**javascript object notation（json）**を使って地理空間情報を表現したものです。`sf`では、このGeoJSONを読み込み、`sf`オブジェクトに変換することができます。読み込みには`st_read`関数を用います。
-
-```{r, warning=FALSE, filename="geojsonをsfに変換する"}
-# 上記のsmartnewsのgithubからGeoJSONをダウンロードする
-url <- "https://raw.githubusercontent.com/smartnews-smri/japan-topography/main/data/municipality/geojson/s0010/N03-21_210101.json"
-
-# GeoJSONを読み込み、sfオブジェクトとする
-sfobj <- st_read(url)
-
-summary(sfobj)
-```
-
-### 日本のGeoJSONデータの取得
-
-日本のGeoJSONデータを取り扱う場合には、[国土数値情報ダウンロードサイト（国土交通省）](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html)からGeoJSONをダウンロードするのが最も正確でよいでしょう。このGeoJSONデータは日本測地系2011（JGD2011）と呼ばれる、日本の測地系での値が指定されています（JGD2011は世界測地系WGS84とほぼ同一です）。国土数値情報ダウンロードサイトからダウンロードした地理情報を用いた解析結果を公表する場合には、以下のような形で[出典を記載](https://nlftp.mlit.go.jp/ksj/other/agreement_01.html)する必要があります。
-
-出典：[「国土数値情報（行政区域データ）」（国土交通省）](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html)を加工して作成
-
-```{r, filename="国土数値情報ダウンロードサイトからのデータを利用する"}
-# あらかじめダウンロードしたGeoJSONファイルをst_read関数で読み込む
-Nara_sfobj <- st_read("./data/N03-23_29_230101.geojson")
-Nara_sfobj
-
-plot(Nara_sfobj)
-```
-
-### sfオブジェクトの保存と読み込み
-
-上記のように、GeoJSONファイルは`st_read`関数で読み込み、`sf`オブジェクトに変換することができます。逆に、この`sf`オブジェクトをファイルとして保存する際には`st_write`関数を用います。`st_write`関数はファイル名の拡張子によりファイル形式を判別して保存してくれる、`ggplot2`における`ggsave`関数のような働きを持ちます。`sf`オブジェクトは通常`.shp`ファイルとして保存します。また、`st_write`関数はGeoJSONへの書き出しにも対応しています。Rや`sf`だけでなく、他の原語やライブラリを利用する際には、GeoJSONの方が取り扱いやすいでしょう。
-
-```{r, filename="sfオブジェクトのI/O", eval=FALSE, error=TRUE, warning=FALSE, message=FALSE}
-# .shp（シェープファイル）で保存
-st_write(sfobj, "./data/smartnews-smri_japan-topography.shp",  layer_options = "ENCODING=UTF-8", append = FALSE)　
-
-# geojsonで保存
-st_write(sfobj, "./data/smartnews-smri_japan-topography.geojson",  layer_options = "ENCODING=UTF-8", append = FALSE)　
-
-# shpファイルの読み込み
-jpsf <- st_read("./data/smartnews-smri_japan-topography.shp")
-jpsf
-
-# geojsonも読み込める
-jpsf <- st_read("./data/smartnews-smri_japan-topography.geojson")
-
-# urlからjsonを読み込むこともできる
-sfobj <- st_read(url)
-```
-
-### 他の地理情報データとの統合
-
-`sf`オブジェクトはデータフレームでもあるため、地理情報と関連付けられたデータがあれば、`sf`オブジェクトの列として登録し、データとして利用することができます。地理情報と関連されたデータを自分で集めるのは難しいですが、政府統計であれば[e-stat](https://www.e-stat.go.jp/)から簡単にダウンロードできます。
-
-以下の例では、2020年の国勢調査のデータをダウンロードし、上記の国土数値情報から作成した`sf`オブジェクトに国勢調査データの2020年人口を登録しています。e-statのデータを用いた解析結果を公表する場合には下のような[出典の記載](https://www.e-stat.go.jp/help/surveyitems/search-3-5)が必要です。
-
-出典：「政府統計の総合窓口(e-Stat)」、調査項目を調べる－国勢調査（総務省）「令和２年国勢調査 / 人口等基本集計」
-
-e-statのデータはそのデータの種類ごとにファイル形式や列名の記載方法が異なるため、Rではやや読み込みにくいです。
-
-e-statのデータを整理して読み込みます。読み込んだデータフレームと`sf`オブジェクトを結合させるためには、両方のオブジェクトに共通する列が必要となります。下の例では、`sf`オブジェクトに含まれる`N03_004`（市町村名）の列をデータフレーム側にも準備することで、市町村名を用いてデータを結合できるようにしています。
-
-データフレームと`sf`オブジェクトの結合には、[16章](./chapter16.html)で説明した`dplyr`の`join`関数を用いるのが良いでしょう。この際に、`join`で結合する先を`sf`オブジェクトとすること、共通する列を`by=join_by(列名)`で指定することが重要となります。`sf`オブジェクト側ではなく、データフレーム側を結合先にしてしまうと`geometry`の列がなくなります。
-
-下の例では、`sf`オブジェクト（`Nara_sfobj`）を第一引数、データフレームを第二引数とし、`left_join`関数で結合することで、データフレームのデータを左側の`sf`オブジェクトに結合しています。
-
-```{r, messager=FALSE, warning=FALSE, filename="sfオブジェクトへのデータの登録"}
-d <- read.csv("./data/FEH_00200521_240321113104.csv", header = T, skip = 12) # 人口データを読み込み
-
-# 文字列となっている列を数値に変換
-d$`総数` <- d$`総数` |> str_remove_all(",") |> as.numeric()
-d$`男` <- d$`男` |> str_remove_all(",") |> as.numeric()
-d$`女` <- d$`女` |> str_remove_all(",") |> as.numeric()
-d <- d[, c(4, 6:8)]
-
-# 共通の列として、市町村名を設定（N03_004）
-colnames(d) <- c("N03_004", "total_pop", "male_pop", "female_pop") 
-
-# left_join関数でデータをsfに結合
-Nara_sfobj <- left_join(Nara_sfobj, d, by = join_by(N03_004)) # sfが前、結合するデータフレームが後
-Nara_sfobj <- Nara_sfobj |> select(N03_001, N03_004, total_pop, male_pop, female_pop)
-
-# データ登録されたsfオブジェクト
-Nara_sfobj
-```
-
-### geometryの種類と変換の方法
-
-`sf`における最も基本的なgeometryは以下の3種類です。
-
-* **POINT**：地図上の点
-* **LINESTRING**：地図上の線
-* **POLYGON**：地図上の平面
-
-それぞれのgeometryにおいて、地図上の位置はX（経度（longitude））、Y（緯度（latitude））の2次元（XY）、Z（高度）を加えた3次元（XYZ）、M（データの精度や時間）を加えた3次元（XYM）、ZとMを加えた4次元のデータ（XYZM）のいずれかで指定されます。
-
-また、複数のPOINT、LINESTRING、POLYGONをまとめたgeometryとして以下の3種類があります。
-
-* **MULTIPOINT**：地図上の複数の点
-* **MULTILINESTRING**：地図上の複数の線
-* **MULTIPOLYGON**：地図上の複数の平面
-
-また、1つのgeometryではなく、別々のgeometry（POINTとPOLYGONなど）をまとめたものがGEOMETRYCOLLECTIONです。
-
-この他にもCITCULARSTRINGやCOMPOUNDCURVE、CURVEPOLYGONなどの曲線を示すgeometryもありますが、とりあえず上の7つを理解しておけば`sf`の取り扱いには困らないでしょう。
-
-最も単純な3つのgeometryは`st_point`、`st_linestring`、`st_polygon`関数で作成することができます。`st_point`はX（経度）とY（緯度）のベクター、`st_linestring`、`st_polygon`は1列目にX（経度）、2列目にY（緯度）を設定した行列を引数とすることで作成することができます。
-
-```{r, filename="geometryの作成"}
-# st_pointの引数はベクター
-st_point(c(135, 35), dim = "XY") 
-
-# st_linestringの引数は行列
-st_linestring(rbind(c(135, 35), c(130, 30))) 
-
-# st_polygonの引数は行列のリスト（平面が閉じていないとエラーになる）
-st_polygon(list(rbind(c(135, 35), c(135, 30), c(130, 30), c(130, 35), c(135, 35))))
-
-## 左からPOINT、LINESTRING、POLYGONをplotする
-par(mfrow = c(1, 3))
-st_point(c(135, 35), dim = "XY") |> plot()
-st_linestring(rbind(c(135, 35), c(130, 30))) |> plot()
-st_polygon(list(rbind(c(135, 35), c(135, 30), c(130, 30), c(130, 35), c(135, 35)))) |> plot()
-```
-
-MULTIPOINT、MULTILINESTRING、MULTIPOLYGONはそれぞれ`st_multipoint`、`st_multilinestring`、`st_multipolygon`関数で作成することができます。
-
-```{r, filename="geometryの作成:MULTI"}
-# st_multipointの引数は行列
-st_multipoint(rbind(c(135, 35), c(130, 30))) 
-
-# c関数でPOINTを結合してもMULTIPOINTを作成できる
-c(st_point(c(135, 35), dim = "XY"), st_point(c(130, 30), dim = "XY"))
-
-# st_multilinestringの引数は行列のリスト
-st_multilinestring(list(rbind(c(135, 35), c(130, 30)), rbind(c(130, 30), c(125, 20)))) 
-
-# st_multipolygonの引数は行列のリストのリスト（平面が閉じていないとエラーとなる）
-st_multipolygon(
-  list(
-    list(rbind(c(135, 35), c(135, 30), c(130, 30), c(130, 35), c(135, 35))),
-    list(rbind(c(100, 50), c(100, 40), c(120, 40), c(120, 50), c(100, 50)))
-    )
+# データにはirisのがく片データを使用
+data <- iris[, 1:2]
+colnames(data) <- c("x", "y")
+
+# クラスターの中心の初期値
+center_means <- 
+  data.frame(
+    x = rnorm(3, mean(data[ ,1]), sd(data[ ,1])), 
+    y = rnorm(3, mean(data[ ,2]), sd(data[ ,2])),
+    clus = 1:3)
+
+# アウトプットを保存する変数
+data_for_gganimate <- NULL
+
+for(i in 1:20){ # おそらくi=16ぐらいで収束している
+  
+  # 各中心からの距離の計算
+  dist_d <- data.frame(
+    dist_1 = (data$x - center_means[1, 1]) ^ 2 + (data$y - center_means[1, 2]) ^ 2,
+    dist_2 = (data$x - center_means[2, 1]) ^ 2 + (data$y - center_means[2, 2]) ^ 2,
+    dist_3 = (data$x - center_means[3, 1]) ^ 2 + (data$y - center_means[3, 2]) ^ 2
   )
-
-# MULTIPOINT、MULTISTRING、MULTIPOLYGONをプロットする
-par(mfrow = c(1, 3))
-st_multipoint(rbind(c(135, 35), c(130, 30))) |> plot()
-st_multilinestring(list(rbind(c(135, 35), c(130, 30)), rbind(c(130, 30), c(125, 20)))) |> plot()
-st_multipolygon(
-  list(
-    list(rbind(c(135, 35), c(135, 30), c(130, 30), c(130, 35), c(135, 35))),
-    list(rbind(c(100, 50), c(100, 40), c(120, 40), c(120, 50), c(100, 50)))
+  
+  # 最も近いクラスターを探す
+  min_dist <- apply(dist_d, 1, min)
+  
+  clus <- 
+    case_when(
+      dist_d$dist_1 == min_dist ~ 1,
+      dist_d$dist_2 == min_dist ~ 2,
+      dist_d$dist_3 == min_dist ~ 3,
     )
-  ) |> plot()
+  
+  # グラフ用データを準備
+  data_temp <- data.frame(data, clus, xcenter = center_means[clus,]$x, ycenter = center_means[clus,]$y, timestate = 2 * i - 1)
+  
+  data_for_gganimate <- rbind(data_for_gganimate, data_temp)
+  
+  # 重心でクラスターの中心を更新する
+  center_means2 <- data_temp |> group_by(factor(clus)) |> summarise(x = mean(x), y = mean(y))
+  center_means$x <- center_means2$x
+  center_means$y <- center_means2$y
+    
+  # グラフ用データを準備
+  data_temp <- data.frame(data, clus, xcenter = center_means[clus,]$x, ycenter = center_means[clus,]$y, timestate = 2 * i)
+  
+  data_for_gganimate <- rbind(data_for_gganimate, data_temp)
+}
+
+pacman::p_load(gganimate)
+
+# gganimateでグラフ化
+p <- ggplot()+
+  geom_point(data = data_for_gganimate, aes(x = x, y = y, color = factor(clus), size = 2), alpha = 0.5) +
+  geom_point(data = data_for_gganimate, aes(x = xcenter, y = ycenter, color = factor(clus), size = 3), alpha = 0.7)+
+  geom_segment(data = data_for_gganimate, aes(x = x, y = y, xend = xcenter, yend = ycenter, color = factor(clus)), alpha = 0.5)+
+  theme(legend.position = "none")+
+  transition_states(timestate, transition_length = 1, state_length = 1, wrap = TRUE)+
+  ease_aes('linear')
+
+anim_save("./image/p_kmeans.gif", animate(p, renderer = gifski_renderer()))
 ```
 
-### geometryの編集
+:::
 
-`st_point`の返り値に足し算を行うことで、その点の位置を変更することができます。単に数値を足した場合にはXとYの両方に、要素が2つのベクターで足した場合にはインデックス`[1]`の要素がXに、インデックス`[2]`の要素がYに足されて位置を更新することになります。
+![](./image/p_kmeans.gif)
 
-```{r, filename="POINTの移動"}
-st_point(c(1, 1)) + 1 # 数値を足すことができる
+Rではk-meansでのクラスタリングを`kmeans`関数を用いて行うことができます。`kmeans`関数の引数はデータフレームとクラスターの数（`centers`）です。以下の例では、`iris`のデータを3つのクラスターに分けています。k-meansのクラスター中心の初期値は乱数で決められますので、クラスターの結果は計算のたびに少しずつ変化します。また、初期値を特定の値として`centers`引数に行列で与えることもできます。
 
-st_point(c(1, 1)) + c(1, 4) # ベクターで足すと要素ごとの足し算になる
-```
-
-また、`sf`クラスのうち、`geometry`の列に関しては、掛け算することで拡大・縮小を行うこともできます。
-
-```{r, filename="geometryの拡大・縮小"}
-# わかりにくいが、地域の中心を基準に0.85倍に縮小している
-((Nara_sfobj |> st_geometry() - st_centroid(Nara_sfobj |> st_geometry())) * 0.85 + st_centroid(Nara_sfobj |> st_geometry())) |> plot()
-```
-
-### geometryのクラス：sfg
-
-`st_point`や`st_polygon`で作成したgeometryは`sfg`クラスのオブジェクトとなります。`sfg`は`sf`パッケージで定義されているクラスで、`plot`関数の引数とすることで描画することができます。
-
-```{r, filename="sfgクラスとplot関数による描画"}
-st_point(c(1, 1)) |> class() # sfgクラスのオブジェクト
-
-st_point(c(1, 1)) |> plot() # sfgクラスはplot関数で描画できる
-```
-
-### geometryのクラス：sfc
-
-`sfg`をいくつか合わせてひとまとまりのgeometryとしたものが`sfc`クラスのオブジェクトです。`sfc`は`st_sfc`関数に1個～複数の`sfg`クラスのオブジェクトを引数とすることで作成することができます。`sf`クラスのgeometryの列がこの`sfc`クラスです。
-
-```{r, filename="sfcクラス"}
-st_point(c(1, 1)) |> st_sfc() |> class() # sfcクラスに変換
-
-st_point(c(1, 1)) |> st_sfc() |> st_sf() |> class() # sfクラスに変換
-```
-
-### sfオブジェクトの構造
-
-`sfc`クラスは`sfg`クラスのリストとして実装されており、`sfg`もリストですので、`sfc`は「リストのリスト」になっています。この`sfc`をさらに`st_sf`関数の引数とすると、`sf`クラスのオブジェクトとなります。`sf`クラスはデータフレーム、つまりリストですので、`sf`クラスは「リストのリストのリスト」になっています。`sf`、`sfc`、`sfg`オブジェクトは基本的にはすべてリストですので、二重カッコ（`[[]]`）で下位の要素（`sf`から`sfc`、`sfc`から`sfg`）を取り出すことができます。
-
-また、`sf`オブジェクトから`geometry`だけを取り出す場合には、`st_geometry`関数を用います。`st_geometry`関数の返り値は`sfc`クラスのオブジェクトとなります。
-
-```{r, filename="sfオブジェクトの構造"}
-# geometryを選択
-sfobj[[6]]
-
-# 2重リストは個別のgeometry
-sfobj[[6]][[1]] |> head()
-
-# 4重リストに緯度・経度の行列が保存されている
-sfobj[[6]][[1]][[1]][[1]] |> head() 
-
-sfobj |> st_geometry() # geometryだけ取り出す（クラスはsfc）
+```{r, filename="kmeans関数でクラスタリング"}
+## k-means
+set.seed(0) # k-meansは乱数計算なので、シードを設定
+k.cent3 <- kmeans(iris[ ,1:4], centers = 3) # 3つのクラスタに分ける
+k.cent3$cluster # 計算結果
 ```
 
 
-```{r, filename="sfオブジェクトのクラス"}
-sfobj[[6]] |> class() # sfcクラスのオブジェクト
-
-sfobj[[6]][[1]] |> class() # sfgクラスのオブジェクト
+```{r, filename="クラスターの中心を指定"}
+k.cents <- kmeans(iris[ ,1:4], centers = iris[c(1, 51, 101), 1:4]) # 初期値を各種の始めの値に設定
+k.cents$cluster
 ```
 
-### sfオブジェクトを作成する
+以下では、k-meansでクラスター分けしたデータと、`iris`の`Species`の関係を示しています。k-meansでクラスター分けした結果が`Species`とほぼ重なることを確認できます。
 
-緯度・経度のデータから`sf`オブジェクトを作成する場合には、上記の`st_point`、`st_linestring`、`st_polygon`を使うことになります。下の例では、都道府県の県庁所在地のデータを`sfc`オブジェクトに変換しています。
+```{r, filename="クラスターとirisの種の比較", warning=FALSE}
+spvec <- iris$Species |> levels()
 
-データフレームをMULTIPOINTの`sfg`に変換する場合には、まずデータフレームの列を経度・緯度の順に並べ替え、次に`as.matrix`関数で行列に変換します。この行列を`st_multipoint`関数の引数とすれば、MULTIPOINTの`sfg`を作成することができます。
+k.cent3$cluster <- k.cent3$cluster - 1
+k.cent3$cluster <- if_else(k.cent3$cluster == 0, 3, k.cent3$cluster)
 
-また、この`sfg`を`st_sfc`関数の引数に取ることでMULTIPOINTの`sfc`オブジェクトを作成することができます。
-
-MULTIPOINTからPOINTの`sfg`を作成する場合には、`st_cast`関数を用います。`st_cast`関数はgeometryの変換を行うための関数です。`st_cast`の第二引数に`"POINT"`を指定することで、MULTIPOINTからPOINTへの変換を行うことができます。ただし、`st_cast`で変換すると、MULTIPOINTの一番初めの点のみがPOINTに変換され、残りのPOINTは削除されてしまいます。
-
-```{r, error=TRUE, filename="データからsfcを作成する"}
-# 県庁所在地の緯度・経度
-d <- read.csv("./data/pref_lat_lon.csv", header=T, fileEncoding = "CP932")
-head(d) # latが緯度、lonが経度
-
-# sfgクラス（経度、緯度の順に並べ替えている）
-d[,c(3, 2)] |> 
-  as.matrix() |> 
-  st_multipoint() 
-
-# sfcクラス（1つのMULTIPOINTとなる）
-d[,c(3, 2)] |> 
-  as.matrix() |> 
-  st_multipoint() |> 
-  st_sfc() 
-
-# sfcクラス（始めの1点だけになる
-d[,c(3, 2)] |> 
-  as.matrix() |> 
-  st_multipoint() |> 
-  st_cast("POINT") |> 
-  st_sfc()
+cbind(iris, cluster = spvec[k.cent3$cluster]) |> 
+  gather(tag, value, 5:6) |> 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = value))+
+    geom_point(size = 3)+
+    facet_wrap(~ tag)
 ```
 
-そもそも上の例では、各都道府県の県庁所在地の位置ですので、MULTIPOINTではなく、POINTの集合となっている`sfc`オブジェクトを作成したいところです。
+## c-means
 
-このような変換には、`lapply`関数や`purrr::pmap`関数を用います。`lapply`の場合にはデータフレーム（リスト）を引数にして`st_point`関数を適用する形で、`purrr::pmap`関数では`st_point`の引数の位置を`.x`、`.y`で指定する形で設定します。
+**c-means法**はfuzzy c-means法とも呼ばれる、クラスターへの所属を確率で求める手法です。c-means法もk-means法と同じく、データとクラスターの距離をもとにクラスタリングを行う手法の一つです。Rでは、c-means法の計算を[`e1071`](https://cran.r-project.org/web/packages/e1071/index.html)パッケージ [@e1071_bib]の`cmeans`関数で行うことができます。`cmeans`関数も`kmeans`関数と同様に、データフレームと中心の数（`centers`）を引数に取ります。クラスターの中心の初期値は行列で与えることもできます。
 
-```{r, error=TRUE, filename="lapply/purrr::pmapでsfcを作成"}
-# applyではうまく計算できない（返り値がベクターだから）
-apply(d[,c(3, 2)], 1, st_point) |> st_sfc() 
+```{r, filename="c-means法", warnings=FALSE, message=FALSE}
+pacman::p_load(e1071)
+# クラスタリングの計算（中心を指定）
+iris.c <- cmeans(iris[,1:4], centers = iris[c(1, 51, 101), 1:4])
 
-# lapplyを使うと複数のPOINTをsfcに変換できる
-d[,c(3, 2)] |> t() |> data.frame() |> lapply(st_point) |> st_sfc() 
-
-# pmapを使うと複数のPOINTをsfcに変換できる
-purrr::pmap(d[,c(3, 2)], ~st_point(c(.x, .y))) |> st_sfc()
+# クラスターとirisの種の比較
+cbind(iris, cluster = spvec[iris.c$cluster]) |>  
+  gather(tag, value, 5:6) |> 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = value))+
+  geom_point(size = 3)+
+  facet_wrap(~ tag)
 ```
 
-`sfc`を`lapply`関数や`purrr::pmap`関数を用いて作成した後、この作成した`sfc`を`st_sf`関数の引数とすることで、`sf`オブジェクトを作成することができます。`sf`オブジェクトはデータフレームと同じように取り扱うことができるので、この`sf`オブジェクトに情報を追加していく形でデータを整理することができます。
+## スペクトラルクラスタリング
 
-```{r, error=TRUE, filename="sfcからsfに変換する"}
-# sfcをsfに変換
-d1 <- pmap(d[,c(3, 2)], ~st_point(c(.x, .y))) |> st_sfc() |> st_sf()
+スペクトラルクラスタリングは、上記のk-meansやc-meansのように、中心からの距離だけでは分離するのが難しいようなクラスタリングを行うときに有効な手法です。スペクトラルクラスタリングでは、近くにあるデータは同じクラスターに分類されやすくするようにアルゴリズムが組まれていて、k-meansやc-meansでは分離不能なクラスタをきれいに分けることができます。
 
-# sfにはデータフレームと同様に情報を追加することができる
-d1$pref <- d$pref_name
-d1$flag <- rep(c(0, 1), c(25, 22))
+Rではスペクトラルクラスタリングを[`kernlab`](https://cran.r-project.org/web/packages/kernlab/index.html)パッケージ [@kernlab_bib1; @kernlab_bib2]の`specc`関数を用いて行うことができます。`specc`関数の使い方は`kmeans`関数や`cmeans`関数とほぼ同じで、データフレームと`centers`を引数に取ります。また、返り値を`plot`関数の引数にすることで、簡単にクラスターをグラフにすることもできます。
 
-d1 |>  ggplot() + geom_sf(aes(color = factor(flag)))
+```{r, filename="スペクトラルクラスタリング"}
+pacman::p_load(kernlab)
+
+# データにはkernlabのspiralsを用いる
+data(spirals)
+head(spirals)
+
+sc <- specc(spirals, centers = 2) # スペクトラルクラスタリング
+plot(spirals, col = sc) # 結果の表示（色がクラスターを示す）
 ```
 
-### WKT、WKB
+ただし、このスペクトラルクラスタリングは必ずしも良いクラスタリングの方法ではなく、例えば`iris`のクラスタリングに用いると、3クラスターを指定しても、ほとんど2クラスターしか出てこなくなってしまいます。クラスター同士の距離が近く、接していると正しくクラスタリングできないようです。スペクトラルクラスタリングを用いる時にはデータの構造をよく確認する必要があります。
 
-[well-known-text](https://ja.wikipedia.org/wiki/Well-known_text)（WKT）とwell-known-binary (WKB)は、`sf`で示されているgeometryをテキストやバイナリ（16進法の数値）で表す方法です。`sf`パッケージにはgeometryをWKT・WKBの形に変換する方法と、逆にWKTやWKBを`sf`オブジェクトとする方法を備えています。
+```{r, filename="irisでスペクトラルクラスタリング"}
+# 3クラスタとなるよう設定
+sc.iris <- specc(iris[,1:4] |> as.matrix(), centers = 3)
 
-`sfg`をWKTに変換するための関数が`st_as_text`関数、`sfg`をWKBに変換するための関数が`st_as_binary`関数です。WKT、WKBのいずれも`st_as_sfc`関数の引数とすることで、`sfc`オブジェクトに変換することができます。
-
-```{r, filename="WKT、WKBの変換"}
-# sfgをテキストに変換
-st_point(c(135, 35), dim="XY") |> st_as_text() 
-
-# テキストからsfcを作成
-st_point(c(135, 35), dim="XY") |> st_as_text() |> st_as_sfc()
-
-# sfgをバイナリに変換
-st_point(c(135, 35), dim="XY") |> st_as_binary() 
-
-# バイナリからsfcを作成
-st_point(c(135, 35), dim="XY") |> st_as_binary() |> st_as_sfc()
+# 結果に1がほとんどなく、ほぼ2クラスターになっている
+sc.iris@.Data 
 ```
 
-### sfcオブジェクトの演算
+## 主成分分析
 
-`sfc`オブジェクトを用いると、その地形データから面積、重心、周辺の長さ、各点の距離などを計算することができます。
+**主成分分析**は、多次元のデータを第一主成分・第二主成分…という主成分にデータ変換する手法です。この**第一主成分**というのは、データを空間に配置したときに、ばらつきが最も大きくなる軸に沿った値を指します。このようにばらつきが最も大きくなる軸を選んで主成分とすることで、多次元のデータからデータの損失を抑えつつ、そのデータの特徴を残したようなパラメータに変換することができます。要は、多次元のデータだと特徴を捉えにくい場合においても、主成分に変換することでデータの特徴を捉えやすくすることができます。
 
-POLYGONの面積を計算する関数が`st_area`関数です。`st_area`関数はPOLYGONからなる`sfc`オブジェクトを引数に取り、そのPOLYGONで示される面積を返します。
+第二主成分は、第一主成分を定めた軸に垂直な面において、最もばらつきが多い軸に沿った値となります。第一主成分の軸と第二主成分の軸は互いに直行している、90度に交わっているので、**第一主成分と第二主成分の相関はほぼゼロ**になります。この特徴のため、[30章](./chapter30.html)で説明した主成分回帰では説明変数同士が相関しているときに起こる問題、多重共線性を避けることができます。
 
-`st_area`関数の返り値は`units`クラスのオブジェクトになります。この`units`クラスは[`units`](https://r-quantities.github.io/units/)パッケージ[@units_bib]で設定されているクラスです。`units`パッケージは数値に単位を付けた`units`クラスと、その単位の変換に関する演算の方法を提供しています。
+以下に、主成分分析の軸のイメージを示します。軸は互いに垂直に交わっているのがわかると思います。PC1を横に、PC2を縦になるように回転させたのが、下の第一主成分と第二主成分でのプロットのイメージとなります。
 
-```{r, filename="geometryの演算:st_area関数"}
-st_area(Nara_sfobj$geometry) # 面積の計算（classはunits）
+:::{.callout-tip collapse="true"}
 
-# sfはデータフレームと同じように取り扱うことができる
-# sfの列に計算した面積を設定している
-Nara_sfobj$area <- st_area(Nara_sfobj$geometry) |> as.numeric()
+## 主成分分析における主成分の軸のイメージ（スクリプト）
 
-Nara_sfobj |> 
-  ggplot()+
-  geom_sf(aes(fill = log(area)))
+```{r, eval=FALSE}
+iris_temp <- iris |> filter(Species != "setosa") |> _[ ,1:3]
+iris.pc2 <- prcomp(iris_temp)
+
+pc1 <- iris.pc2$x[ ,1]
+pc2 <- iris.pc2$x[ ,2]
+pc3 <- iris.pc2$x[ ,2]
+center1 <- iris.pc2$center[1]
+center2 <- iris.pc2$center[2]
+center3 <- iris.pc2$center[3]
+
+iris_temp$pc1_Sepal.Length <- pc1 * iris.pc2$rotation[1, 1] + center1
+iris_temp$pc1_Sepal.Width <- pc1 * iris.pc2$rotation[2, 1] + center2
+iris_temp$pc1_Petal.Length <- pc1 * iris.pc2$rotation[3, 1] + center3
+iris_temp$pc2_Sepal.Length <- pc2 * iris.pc2$rotation[1, 2] + center1
+iris_temp$pc2_Sepal.Width <- pc2 * iris.pc2$rotation[2, 2] + center2
+iris_temp$pc2_Petal.Length <- pc2 * iris.pc2$rotation[3, 2] + center3
+iris_temp$pc3_Sepal.Length <- pc3 * iris.pc2$rotation[1, 3] + center1
+iris_temp$pc3_Sepal.Width <- pc3 * iris.pc2$rotation[2, 3] + center2
+iris_temp$pc3_Petal.Length <- pc3 * iris.pc2$rotation[3, 3] + center3
+
+pacman::p_load(plotly)
+
+fig <- 
+  plot_ly(
+    iris_temp, 
+    x =~ Sepal.Length, 
+    y =~ Sepal.Width, 
+    z =~ Petal.Length, 
+    type = "scatter3d",
+    mode = "markers",
+    name = 'data',  
+    marker = list(size = 2)) |> 
+  add_trace(
+    x =~ pc1_Sepal.Length, 
+    y =~ pc1_Sepal.Width, 
+    z =~ pc1_Petal.Length, 
+    type = "scatter3d", 
+    mode = "markers+lines",
+    name = 'PC1', 
+    marker = list(color = "red", size = 0.1),
+    line = list(color = "red", width = 5)) |> 
+  add_trace(
+    x =~ pc2_Sepal.Length, 
+    y =~ pc2_Sepal.Width, 
+    z =~ pc2_Petal.Length, 
+    type = "scatter3d",
+    mode = "markers+lines",
+    name = 'PC2',
+    marker = list(color = "red", size = 0.1),
+    line = list(color = "blue", width = 5)) |> 
+  add_trace(
+    x =~ pc3_Sepal.Length, 
+    y =~ pc3_Sepal.Width, 
+    z =~ pc3_Petal.Length, 
+    type = "scatter3d", 
+    mode = "markers+lines",
+    name = 'PC3',
+    marker = list(color="red", size=0.1),
+    line = list(color="green", width=5))
+
+fig
 ```
 
-geometryがPOINTである場合には、`st_distance`で各POINT間の距離行列を求めることができます（距離行列については[28章](./chapter28.html)を参照）。また、geometryがLINESTRINGである場合には、`st_length`でそのLINESTRINGの長さを計算することができます。POLIGON間の距離や、POINTの長さ、LINESTRINGの面積は求めることができない、つまりgeometryが関数の設定と異なると計算はできません。
-
-```{r, filename="geometryの演算2"}
-# 距離行列（地理空間上の距離）、POINTのみ計算できる
-d1 |> st_distance() |> _[1:4, 1:4]
-
-d1[[1]] |> st_distance() |> _[1:4, 1:4] # stcでも計算できる
-
-# 地理空間上の距離、LINESTRINGのみ計算できる
-st_linestring(rbind(c(135, 35), c(130, 30))) |> st_length()
-
-# 地理空間上の面積、POLYGONのみ計算できる
-st_area(Nara_sfobj$geometry) |> head()
-```
-
-`st_centroid`はgeometryの重心を求める関数です。また、`st_point_on_surface`は重心ではなく、[POLYGON内にある中心に近い点](https://gis.stackexchange.com/questions/76498/how-is-st-pointonsurface-calculated)を求める関数です。コロプレス図のPOLYGON内にバブルチャートでデータを表示する場合には、`st_centroid`より`st_point_on_surface`の方が使いやすいでしょう。
-
-また、同様の演算を`ggplot2`中で行うこともできます。`geom`関数内で`stat="st_coordinates"`を引数に取ることで、`st_point_on_surface`に相当する演算を行うことができます。
-
-```{r, filename="重心を求める"}
-# 重心を求める
-st_centroid(Nara_sfobj |> st_geometry())
-
-# 重心に近いPOLYGON中の点を求める
-st_point_on_surface(Nara_sfobj |> st_geometry())
-
-# ggplot2ではstat="sf_coordinates"で計算できる（st_point_on_surfaceを利用）
-Nara_sfobj |> 
-  ggplot()+
-  geom_sf()+
-  geom_point(
-    aes(geometry = geometry, color = total_pop, size = total_pop), 
-    stat="sf_coordinates")
-```
-
-### 境界線の演算
-
-あるPOINTやLINESTRING、POLYGONから一定の距離にある、境界を演算するための関数が`st_buffer`関数です。`st_buffer`関数はそのPOINTやPOLYGONからの距離である`dist`を引数に取ります。`st_buffer`の返り値はPOLYGONになります。
-
-```{r, filename="st_buffer・st_simplify関数"}
-# 135, 35からの距離が5の境界線（POLYGONが返ってくる）
-st_point(c(135, 35), dim="XY") |> st_buffer(dist = 5) |> st_simplify(dTolerance = 0.5)
-
-# 点からの距離が5の円
-st_point(c(135, 35), dim="XY") |> st_buffer(dist = 5) |> plot()
-```
-
-### geometryの単純化
-
-日本全体の市町村のPOLYGONを取り扱う場合、高解像度のPOLYGONを用いるとデータサイズがとても大きくなることがあります。例えば、上で紹介した[国土数値情報ダウンロードサイト（国土交通省）](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html)からダウンロードできる日本全国のGeoJSONデータは427MBもあり、コロプレス図などにそのまま用いると演算に時間がかかります。このようなgeometryデータを簡素化し、データサイズを減らす関数が`st_simplify`関数です。簡素化の程度は`dTolerance`引数で指定します。
-
-```{r, filename="st_buffer・st_simplify関数"}
-# st_simplifyでPOLYGONの解像度を下げる
-st_point(c(135, 35), dim="XY") |> st_buffer(dist = 5) |> st_simplify(dTolerance = 0.5) |> plot()
-```
-
-### geometryの接触の判定
-
-geometry同士が重なっている・接触しているかどうかを判別するための関数が`st_intersects`関数・`st_touches`関数です。`st_intersects`関数はgeometryが重なっている場合には`TRUE`、重なっていない場合には`FALSE`を返します。また、`st_touches`関数はgeometry同士が接触していれば`TRUE`を、接触していなければ`FALSE`を返します。
-
-```{r, filename="geometryの重なり・接触の評価"}
-d1 <- st_polygon(list(rbind(c(135, 35), c(135, 25), c(130, 25), c(130, 35), c(135, 35))))
-d2 <- st_polygon(list(rbind(c(137.5, 32.5), c(137.5, 30), c(125, 30), c(125, 32.5), c(137.5, 32.5))))
-d3 <- st_polygon(list(rbind(c(135, 35), c(135, 25), c(140, 25), c(140, 35), c(135, 35))))
-
-# 上の3つのPOLYGONをプロットする
-par(mfrow = c(1, 2))
-st_sfc(d1, d2) %>% plot()
-st_sfc(d1, d3) %>% plot()
-
-# sfg間に重なりがあるかどうかを評価
-st_intersects(d1, d2, sparse = FALSE) 
-st_intersects(d1, d3, sparse = FALSE)
-
-# sfg間に接触があるかどうかを評価
-st_touches(d1, d2, sparse = FALSE) 
-st_touches(d1, d3, sparse = FALSE)
-```
-### geometry同士の差分
-
-geometry同士の差分を取るための関数が`st_difference`関数です。`st_difference`関数は第一引数に指定したgeometryから、第二引数に指定したgeometryの部分を取り除きます。ですので、`st_difference(d1, d2)`では`d1`から`d2`の部分を除き、`st_difference(d2, d1)`では`d2`から`d1`の部分を除く形となっています。
-
-```{r, filename="geometryの差分"}
-# d1は縦長、d2は横長で、d1からd2の部分を取り除く
-st_difference(d1, d2) %>% plot() 
-
-# d2からd1の部分を取り除く
-st_difference(d2, d1) %>% plot()
-```
-
-### CRS（測地系）
-
-[**測地系**](https://ja.wikipedia.org/wiki/%E6%B8%AC%E5%9C%B0%E7%B3%BB)（CRS：Coordinate Reference System）は緯度・経度で地表上の座標を示すための系です。測地系が異なると同じ緯度・経度の点でも地表上の位置が異なります。現在ではWGS84（世界測地系）を用いるのが最も一般的です。日本の測地系としてはJPD2024（[測地成果2024](https://www.gsi.go.jp/sokuchikijun/datum-main.html)、最近更新された測地系。以前は東日本大震災後の地形変化を考慮した測地系である、測地成果2011が用いられていました）が用いられていますが、このJPD2024はWGS84とほぼ同じものとなっています。GeoJSONなどの地理データでは、使用した測地系が何であるか通常表記されていますので、正しい測地系が設定されているか確認し、異なっている場合には測地系を変更するとよいでしょう。
-
-データの測地系を確認する場合には、`st_crs`関数を用います。`st_crs()<-`という形で測地系の名前を代入することにより、`sf`オブジェクトの測地系を変更することもできます。
-
-```{r, filename="測地系の表示"}
-st_crs(Nara_sfobj) # JGD2011のデータ（JGD2024発表前のデータ）
-st_crs(Nara_sfobj) <- 4326 # WGS84に変更する（warningが出るが、変換される）
-```
-
-
-## ラスタデータの取り扱い：stars
-
-現在（2023年）ではRでのベクタの取り扱いにはほぼ`sf`が用いられていると思いますが、ラスタデータの取り扱いでは、[`terra`](https://rspatial.github.io/terra/)パッケージ[@terra_bib]と[`stars`](https://r-spatial.github.io/stars/)パッケージ[@stars_bib]が両方用いられています。
-
-`terra`は昔から用いられているラスタデータの取り扱いに関するライブラリである[`raster`](https://cran.r-project.org/web/packages/raster/index.html)パッケージ[@raster_bib]を更新したライブラリで、`sf`との連携が組み込まれています。
-
-`stars`は`sf`の開発者が作成したラスタデータの取り扱いに関数ライブラリです。`terra`と比べるとやや[ダウンロードされていないパッケージ](https://www.datasciencemeta.com/rpackages)ではありますが、ココでは`terra`ではなく`stars`について説明することとします。
-
-```{r, filename="starsパッケージのロード"}
-pacman::p_load(stars)
-```
-
-まずは、`stars`パッケージに登録されている、[ランドサット7号](https://ja.wikipedia.org/wiki/%E3%83%A9%E3%83%B3%E3%83%89%E3%82%B5%E3%83%83%E3%83%887%E5%8F%B7)が撮影したブラジルの[Olinda](https://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%AA%E3%83%B3%E3%83%80_(%E3%83%96%E3%83%A9%E3%82%B8%E3%83%AB))という都市の衛星画像を`stars`のオブジェクトとした`L7_ETMs`を示します。このデータは位置を表す`x`、`y`と、その位置における値を示す`band`からなるデータです。
-
-```{r, filename="starsオブジェクト"}
-L7_ETMs # ランドサット7号の衛星写真データ
-
-L7_ETMs |> class() # クラスはstars_proxyとstars
-
-dim(L7_ETMs) # L7_ETMsはx、y、bandの3次元データ
-```
-
-`L7_ETMs`を呼び出すと、以下のように`x`、`y`、`band`に関する表が示されます。
-
-`x`、`y`で示される位置は、`from`の位置から`to`の位置まで`delta`の間隔で示されています。`x`は横（東西）方向の位置、`y`は縦（南北）方向の位置を意味します。`x`と`y`の`delta`の絶対値が同じですので、このラスタデータは正方形の位置データの集まりとなっています。`stars`のルールとして、`x`の`delta`はプラス、`y`の`delta`はマイナスで示します。
-
-`offset`は`from`に当たる位置の情報です。他のgeometryデータと共に利用する場合にはこの位置を参照して位置合わせを行うことになります。
-
-`refsys`は参照系、上で説明した測地系の情報です。このデータでは[SIRGAS 2000（EPSG:4674）](https://epsg.io/4674)という南米地域の測地系のデータになっています。
-
-`point`は位置情報が点であるか（`TRUE`）、面であるか（`FLASE`）を示しており、最後の`x/y`はその列が`x`（東西方向の位置）であるか、`y`（南北方向の位置）であるかを示しています。
-
-最後の行に示されている`band`は`L7_ETMs`に含まれているラスタデータの値を示すもので、1から6、つまり各位置に値が6つずつ存在することを示しています。`L7_ETMs`の場合では、光の波長ごとに撮影した6つの衛星写真となっています（詳しくは`?L7_ETMs`で確認してみて下さい）。
-
-`stars`の表の各列の意味を以下の表にまとめます。
+:::
 
 ```{r, echo=FALSE}
-d <- data.frame(
-  field = c("from", "to", "offset", "delta", "refsys", "point", "values"),
-  meaning = c("はじめのインデックス", "最後のインデックス", "インデックス1の位置", "ピクセルのサイズ", "測地系", "セルが点であるかどうか", "その他の値")
-)
+iris_temp <- iris |> filter(Species != "setosa") |> _[,1:3]
+iris.pc2 <- prcomp(iris_temp)
 
-knitr::kable(d, col.names = c("列名", "意味"))
+pc1 <- iris.pc2$x[,1]
+pc2 <- iris.pc2$x[,2]
+pc3 <- iris.pc2$x[,2]
+center1 <- iris.pc2$center[1]
+center2 <- iris.pc2$center[2]
+center3 <- iris.pc2$center[3]
+
+iris_temp$pc1_Sepal.Length <- pc1 * iris.pc2$rotation[1, 1] + center1
+iris_temp$pc1_Sepal.Width <- pc1 * iris.pc2$rotation[2, 1] + center2
+iris_temp$pc1_Petal.Length <- pc1 * iris.pc2$rotation[3, 1] + center3
+iris_temp$pc2_Sepal.Length <- pc2 * iris.pc2$rotation[1, 2] + center1
+iris_temp$pc2_Sepal.Width <- pc2 * iris.pc2$rotation[2, 2] + center2
+iris_temp$pc2_Petal.Length <- pc2 * iris.pc2$rotation[3, 2] + center3
+iris_temp$pc3_Sepal.Length <- pc3 * iris.pc2$rotation[1, 3] + center1
+iris_temp$pc3_Sepal.Width <- pc3 * iris.pc2$rotation[2, 3] + center2
+iris_temp$pc3_Petal.Length <- pc3 * iris.pc2$rotation[3, 3] + center3
+
+pacman::p_load(plotly)
+
+fig <- 
+  plot_ly(
+    iris_temp, 
+    x=~Sepal.Length, 
+    y=~Sepal.Width, 
+    z=~Petal.Length, 
+    type="scatter3d",
+    mode="markers",
+    name = 'data',  
+    marker=list(color="orange", size=3)) |> 
+  add_trace(
+    x=~pc1_Sepal.Length, 
+    y=~pc1_Sepal.Width, 
+    z=~pc1_Petal.Length, 
+    type="scatter3d", 
+    mode="markers+lines",
+    name = 'PC1', 
+    marker=list(color="red", size=0.1),
+    line=list(color="red", width=5)) |> 
+  add_trace(
+    x=~pc2_Sepal.Length, 
+    y=~pc2_Sepal.Width, 
+    z=~pc2_Petal.Length, 
+    type="scatter3d",
+    mode="markers+lines",
+    name = 'PC2',
+    marker=list(color="red", size=0.1),
+    line=list(color="blue", width=5)) |> 
+  add_trace(
+    x=~pc3_Sepal.Length, 
+    y=~pc3_Sepal.Width, 
+    z=~pc3_Petal.Length, 
+    type="scatter3d", 
+    mode="markers+lines",
+    name = 'PC3',
+    marker=list(color="red", size=0.1),
+    line=list(color="green", width=5))
+
+fig
 ```
 
-`stars`オブジェクトを`plot`関数の引数にすることで、`stars`オブジェクトが示すラスタデータをプロットすることができます。上に示した通り、`L7_ETMs`には6つの`band`データが含まれるため、それぞれの`band`に対する画像がプロットされます。
-
-```{r, filename="plot関数でラスタデータをプロットする"}
-plot(L7_ETMs)
+```{r, echo=FALSE}
+data.frame(pc1, pc2) |> 
+  ggplot(aes(x=pc1, y=pc2))+
+  geom_point(size=2, color="orange")+
+  geom_hline(yintercept=0, color="red")+
+  geom_vline(xintercept=0, color="blue")+
+  labs(title="PC1とPC2の2次元グラフ")
 ```
 
-### GeoTIFFデータの読み込み
+主成分分析は、主成分回帰のようなデータの前処理の他に、次元を圧縮することでデータの類似性や違いを分かりやすく示す場合に用いられています。
 
-ラスタデータは衛星などからの写真・画像として得られることもあります。`stars`では、[GeoTIFF](https://ja.wikipedia.org/wiki/GeoTIFF)ファイル（地理情報を含むTIFFファイル）を読み込んで`stars`ファイルとすることができます。以下の例では、ライブラリのフォルダから`L7_ETMs`のGeoTIFF画像を`read_stars`関数で読み込んでいます。読み込んだデータのクラスは`stars`のみで、上で示した`stars_proxy`とは少し表示が異なります。`stars`はS3クラスで、中身はリストです。
+主成分分析では、多次元のデータを第一主成分、第二主成分といった、データのばらつきの大きさに従った少数のパラメータに変換することで、データ全体の特徴を捉えやすくすることができます。ただし、この第一主成分や第二主成分などの主成分が何を意味しているのかは、その時々によって異なりますし、理解が難しいことも多いです。「主成分が近いものは類似している」ぐらいの意味しかわからない場合もあると考えるとよいでしょう。
 
-```{r, filename="tiff画像をstarsとして読み込む"}
-# ライブラリのフォルダ内のファイルへのパスを取得
-tif <- system.file("tif/L7_ETMs.tif", package = "stars") 
+:::{.callout-tip collapse="true"}
 
-# 読み込み
-x <- read_stars(tif)
-x # GeoTIFFには測地系などの情報が付随している
+## 主成分分析の典型的な利用例
 
-class(x) # クラスはstars
+ヒトのDNAには無数のSNP（Single Nucleotide polymorphism、一塩基多型）があります。このSNPというのは、DNAの塩基が置き換わっているもの（例えば、AがCに代わっている）を指し、置き換わりが各個々人によって異なることを意味しています。私のDNAのある位置の塩基がAで、別の方ではCになっている、というように、多型を示すことがSNPです。ヒトのDNAの長さは大体3×10^9^塩基あります。この長いDNAには、SNPが6000万個ぐらいあります。
 
-mode(x) # starsはリスト(S3オブジェクト)
+ヒトを含め、分子系統樹と呼ばれる祖先からの遺伝子変化の流れを調べる場合には、近年ではこのSNPを指標に系統樹を書きます（以前はミトコンドリアDNAやリボソーム蛋白のDNAのSNPや反復配列の長さが使われていたような気がします）。もちろんこの6000万個のすべてのSNPを用いるわけではありませんが、通常取り扱うSNPは非常に多くなります。
+
+このたくさんあるSNPを用いて、例えば日本人と韓国人の違いを示すことを考えると、ひとつづつSNPを見て特徴を捉えていては、いつまでたっても違いはわかりません。このように、膨大なデータ（の次元）がある場合に、主成分分析は力を発揮します。膨大なデータを第一主成分と第二主成分に変換してしまえば、2次元のプロットを利用して日本人と韓国人の違いを表すことができます。ヒトの歴史的な移動に関して、このSNPと主成分分析を用いて[論文](https://www.nature.com/articles/jhg2012114#citeas)が発表されています[@1523106605673180672]。この論文を見ていただければわかる通り、主成分分析を用いれば膨大なSNPのデータを2次元に集約し、わかりやすい表現で説明することができます。
+
+:::
+
+### Rで主成分分析
+
+Rでは、`prcomp`関数で主成分分析の計算を行うことができます。`prcomp`関数は引数に行列やデータフレームを取ります。`prcomp`関数の返り値は各主成分方向の標準偏差（standard deviations）と、回転（Rotation）です。回転は、データを主成分に変換するときの係数を示します。
+
+```{r, filename="主成分分析"}
+iris.pc <- prcomp(iris[ ,1:4])
+
+iris.pc
 ```
 
-### starsのデータ構造
+`prcomp`関数の返り値を`summary`関数の引数に取ると、標準偏差、分散の配分（Proportion of Variance）、積算の分配の配分（Cumulative Proportion）が示されます。このうち、分散の配分はその主成分によってばらつきをどれだけ説明できているかを示すものです。下の例では、PC1で92.5%程度のばらつきを示すことができている、つまり、PC1でデータの差を十分説明できていることがわかります。
 
-`stars`のリストの要素は3次元の`array`です。また、`stars`をデータフレームに変換すると、`x`と`y`、`band`の番号とその値からなる、4列のデータフレームになります。
-
-```{r, filename="starsの構造"}
-class(x[[1]]) # starsの要素はarray
-
-dim(x[[1]]) # 3次元アレイになっている
-
-as.data.frame(x) |> head() # データフレームに変換できる
+```{r, filename="summaryの結果"}
+iris.pc |> summary()
 ```
 
-### netCDFの読み込み
+主成分分析では、Cumulative Proportionにもよりますが、第一主成分（PC1）と第二主成分（PC2）に変換したデータをプロットして、データの類似性などを示すことが一般的です。変換後の主成分は、`$x`で呼び出すことができます。以下のように、`iris`の種が同じ、つまりよく似たデータであれば、比較的近い位置に変換後のデータが集まるのがわかります。
 
-[netCDF](https://ja.wikipedia.org/wiki/NetCDF)（Network Common Data Form）は、気象や海洋などのラスタデータを取り扱う際に広く用いられているバイナリ形式のファイルです。`read_stars`関数でこの`netCDF`をstarsオブジェクトとして読み込むことで、R上で取り扱うことができます。
+```{r, filename="第一主成分と第二主成分をプロット"}
+iris.pc <- prcomp(iris[ ,1:4])
+irispcd <- iris.pc$x |> as.data.frame()
+irispcd$Species <- iris$Species
+ggplot(irispcd, aes(x = PC1, y = PC2, color = Species)) + geom_point(size = 2)
+```
 
-下の例では、[北米の降雨量・気温・時間をまとめたnetCDFデータ](https://gdo-dcp.ucllnl.org/downscaled_cmip_projections/dcpInterface.html#About)をライブラリのフォルダから`read_stars`関数で読み込み、`stars`オブジェクトとしています。`bcsd_obs_1999.nc`というファイルがnetCDFファイルで、拡張子には.ncが用いられます。読み込み時には登録されているデータの名前（`pr`：降雨量、`tas`：気温）が返ってきます。
+## 因子分析
+
+**因子分析**も主成分分析と同じく、多次元のデータをいくつかの因子に変換することで、データの性質を簡単に理解できるようにするための手法です。主成分分析との違いは、主成分分析では主成分の意味を理解するのが難しいのに対して、因子分析では因子の意味付けが比較的容易であること、因子間の相関は必ずしも0とはならないこと、主成分分析が射影の計算であるのにたいして、因子分析は回転の計算を行うことなどです。
+
+Rでは、因子分析を`factanal`関数を用いて行うことができます。以下の例では、鹿児島大学が[成績サンプルデータ](https://estat.sci.kagoshima-u.ac.jp/data/cgi-bin/data/whats_data/data/img/932722923_9821.xls)として提供しているデータを用いて因子分析を行っています。
+
+`factanal`関数はデータフレームまたは行列を第一引数に取り、因子の数（`factors`）、回転の方法（`rotation`）、算出するスコアのタイプ（`scores`）を引数として設定して用います。
+
+`factors`には、出力として得たい因子の数を指定します。以下の例では、理系・文系科目の得意・不得意を評価する因子を作成するため、因子数を`2`としています。
+
+`rotation`には`"varimax"`か`"promax"`のどちらかを選択するのが一般的です。`varimax`回転はデータをそのまま回転させる方法（直交回転）、`promax`回転はデータの軸の角度を変換させて回転させる方法（斜交回転）です。`promax`回転では因子間に相関が生じるのが特徴です。
+
+`scores`には計算して得られる数値（因子スコア）の計算方法を指定します。方法には`"none"`、`"Bartlett"`、`"regression"`のいずれかを選択します。`"none"`を指定するとスコアが算出されないので、`"Bartlett"`か`"regression"`のいずれかを選択します。
+
+`factanal`関数の返り値のうち、Loadingが各データの寄与率を示す値となります。以下のvarimax変換の例では、Factor1（因子1）では数学、物理、化学、Factor2では国語、英語の値が高いため、Factor1は理系科目の、Factor2は文系科目の評価を反映していることがわかります。
+
+```{r, filename="因子分析：バリマックス変換"}
+m1 <- read.csv("./data/testresult.csv", fileEncoding = "CP932")
+m1v <- factanal(m1[ ,2:6], factors = 2, scores = "Bartlett") # varimax変換
+m1v
+```
+
+同様にpromax回転での因子分析でも、Factor1が理系科目、Factor2が文系科目の成績を反映していることがわかります。ただし、寄与率はバリマックスとは異なり、Factor1での理系科目の寄与率もFactor2での文系科目の寄与率もvarimax回転より高いため、こちらの方がより理系度・文系度を反映していることがわかります。
+
+```{r, filename="因子分析：プロマックス変換"}
+m1p <- factanal(m1[,2:6], factors = 2, rotation = "promax", scores = "Bartlett") # promax変換
+m1p
+```
+
+以下に、varimax回転、promax回転それぞれでの因子のスコアをプロットした結果を示します。スコアは`$scores`で呼び出すことができます。varimax回転でもpromax回転でも、概ね理系・文系科目の得意さを因子で評価できています。
+
+::: {.panel-tabset}
+
+## varimax回転
 
 ```{r}
-# pr（降水量）とtas（気温）があることが返ってくる
-w <- system.file("nc/bcsd_obs_1999.nc", package = "stars") |>
-    read_stars()
+m1vs <- m1v$scores |> as.data.frame() # 計算したスコアをデータフレームに変換
+m1vs$student <- 1:nrow(m1vs) # 生徒のIDを追加
 
-# prとtasはstars（S3、リスト）の要素
-w |> str(max.level = 1)
-
-# wは12時点のデータ
-dim(w)
+ggplot(m1vs, aes(x = Factor1, y = Factor2, color = student, label = student))+
+  geom_text(size = 3)+
+  theme(legend.position = "none")+
+  labs(title = "バリマックス回転", x = "理系度", y = "文系度")
 ```
 
-### ggplot2でstarsオブジェクトをプロットする
-
-`stars`ライブラリには`ggplot2`で`stars`オブジェクトをプロットするための`geom`関数である`geom_stars`関数が備わっています。`geom_stars`関数内でデータを設定することで、自動的に`aes`の内容が決定されてプロットされる仕組みになっています。`ggplot2`のその他の関数（下の例では`facet_wrap`や`scale_fill_viridis`関数）は`ggplot2`と同様に利用することができます。
-
-```{r, filename="ggplo2でstarsオブジェクトからプロットを作成する"}
-pacman::p_load(viridis)
-
-ggplot() +
-  geom_stars(data = w[1], alpha = 0.8) +
-  facet_wrap(~ time) +
-  scale_fill_viridis()
-```
-
-### starsクラスの構造
-
-`stars`クラスから特定の要素を抜き出す場合には、`split`関数を用います。`split`関数では、第一引数に`stars`オブジェクト、第二引数に抜き出す要素（`x`、`y`、`band`など）を文字列で指定します。`stars`オブジェクトに要素を追加する場合には`merge`関数を用います。
-
-```{r, filename="split関数で要素を取り出す"}
-st_dimensions(x) # dimensionの情報を取り出す
-
-split(x, "x") |> head(5) # xの要素を取り出す
-
-split(x, "y") |> head(5)
-
-split(x, "band") |> head(5)
-```
-
-### sfでラスタデータを切り抜き（crop）する
-
-`sf`のベクタデータを利用して、`stars`のラスタデータを切り出すこともできます。ラスタデータの位置に対応した`sf`オブジェクト（正確には`sfc`オブジェクト）を準備し、`stars`オブジェクトのインデックスに`sf`オブジェクトを与えると、その`sfc`オブジェクトで指定した範囲のラスタデータのみが抽出されます。下の例では、`circle`はPOLIGONの`sfc`オブジェクトで、`x`が`stars`オブジェクトです。`x[circle]`という形で`stars`のインデックスに`sf`を指定することで、`stars`のラスタデータをクロップ（切り抜き）することができます。
-
-```{r, filename="sfでstarsオブジェクトを切り抜きする"}
-# circleはPOLIGONのsfcオブジェクト
-circle = st_sfc(st_buffer(st_point(c(293749.5, 9115745)), 400), crs = st_crs(x))
-
-# sfcで呼び出すと切り出し（crop）ができる
-plot(x[circle][, , , 1], reset = FALSE) # x[circle]でsfでのcropを行っている
-par(new = T)
-plot(circle, col = NA, border = 'red', add = TRUE, lwd = 2)
-```
-
-### starsオブジェクトの整形
-
-`stars`オブジェクトのデータの整形は、`dplyr`を用いて行うことができます。`stars`オブジェクトは`array`のリストであるため、`array`データの整形に関わるライブラリである[cubelyr](https://cran.r-project.org/web/packages/cubelyr/index.html)パッケージ[@cubelyr_bib]をロードしておいた方がよい場合もあります。
-
-```{r, filename="starsオブジェクトの整形"}
-w # 上でロードした北米の降雨量・気温のラスタデータ
-
-# pacman::p_load(cubelyr) # なくてもよい
-
-# xの範囲を指定する（offset ～ offset + delta * (to - 1)の間を指定する必要がある）
-w |> filter(x > -80, x < -70)
-
-# リストの要素を追加する
-w |> mutate(pr_per_tas = pr / tas) # 降水量を気温で割った値を追加している
-
-# リストの要素を選択する
-w |> select(pr)
-```
-
-### starsオブジェクトを作成する
-
-ラスタデータは`x`、`y`の位置とその位置に対応する値からなるデータです。このようなデータは行列があれば表現することができます。`stars`では行列から`st_as_stars`関数を用いて`stars`オブジェクトを作成することができます。ただし、この行列から`stars`を作成する場合には、行方向が`x`（東西）、列方向が`y`（南北）に相当するとされるため、行列が90度回転した形で`stars`に変換されます。
-
-```{r, filename="matrixからstarsを作成"}
-# matrixからstarsオブジェクトを作成する
-ma <- matrix(1:20, nrow = 4)
-dim(ma) = c(x = 4, y = 5) # 軸名をつける
-ma <- st_as_stars(ma)
-ma # starsオブジェクトの表示、値はattributeとなっている
-
-# dimでは位置情報の次元が返ってくる（転置しているので、縦長になる）
-ma |> dim()
-
-# リストにはmatrixが登録されている
-ma |> _[[1]] 
-
-# 90度回転した結果が帰ってきている（行方向が1次元目、列方向が2次元目となるため）
-ma |> image(text_values = TRUE) 
-```
-
-### ラスタの形状の変更
-
-上記の`L7_ETMs`では、`x`、`y`の`delta`の絶対値が同じ値（28.5）であったため、ラスタの1点の形は正方形でした。一方で、`stars`ではラスタの形状を正方形だけでなく、長方形や平行四辺形のような、ゆがめた形（シアー、shear、ずれた形）を取ったり、ラスタデータを回転させることもできます。
-
-ラスタの形状データはアトリビュートとして設定されており、attributes中の`affine`がシアーの設定となります。この`affine`にベクターを代入することでシアーの角度を調整することができます。また、`curvilinear`は曲面座標系の設定となります。
-
-```{r, filename="シアー・回転等の設定"}
-# rasterの要素にグリッドの回転・シアー(shear)を設定する
-# affineが回転/シアー、curvilinearは曲線座標を示す
-st_dimensions(ma) |> str(list.len = 4)
-
-ma1 <- ma
-
-# affineを変更することで、シアーの角度を設定する
-attr(attr(ma1, "dimensions"), "raster")$affine = c(0.1, 0.2)
-st_dimensions(ma1) |> str(list.len = 4)
-
-image(ma1)
-```
-
-### sfをラスタに変換
-
-`sf`を`stars`に変換するのに用いる関数が、`st_rasterize`関数です。`sf`オブジェクトをそのままラスタにすると、列が自動的に選ばれてデータとして設定されます。`sf`では、インデックスに列名を指定すると、その列とgeometryだけが残った`sf`オブジェクトが得られます。この特徴を利用して、インデックス指定した`sf`を`st_rasterize`の引数とするとよいでしょう。また、`x`、`y`の`delta`はそれぞれ`dx`、`dy`引数で設定することができます。
-
-```{r, filename="sfをラスタに変換"}
-# sfをラスタ化する
-st_rasterize(Nara_sfobj, dx = 0.01, dy = 0.01)
-
-# male_popの列だけ選んでラスタ化する
-st_rasterize(Nara_sfobj["male_pop"], dx = 0.01, dy = 0.01) |> plot()
-```
-
-### starsオブジェクトをsfに変換
-
-#### contour（等高線）への変換
-
-`stars`オブジェクトを`sf`に変換する方法はいくつかあります。まず紹介するのは、`st_contour`関数を用いて、等高線を示すLINESTRINGに変換する方法です。`contour_lines`引数にはLINESTRINGを返すかどうか（`FALSE`ならPOLIGONが返ってきます）、`breaks`引数には等高線の間隔を指定します。
-
-```{r, filename="starsを等高線のLINESTRINGに変換"}
-# 等高線のLINESTRINGに変換
-st_contour(ma, contour_lines = TRUE, breaks = 1:20) |> plot()
-```
-
-#### POINT、POLYGONへの変換
-
-starsオブジェクトをPOINTやPOLYGONに変換する場合には、`st_as_sf`関数を用います。`as_point`引数に`TRUE`を指定した場合にはPOINTの`sf`が、`FALSE`を指定した場合にはPOLYGONの`sf`が返ってきます。
-
-```{r, filename="starsをPOINT・POLYGONのsfに変換"}
-st_as_sf(ma, as_points = TRUE) |> plot() # POINTSに変換
-
-st_as_sf(ma, as_points = FALSE) |> plot() # POLYGONに変換
-```
-
-## インタラクティブなマップの表示
-
-上述のように、`sf`でも`stars`でも、オブジェクトを`plot`関数の引数に取ることで地図を描画することができます。また、`ggplot2`にも`sf`や`stars`オブジェクトを表示するための手法が存在します。一方で地図データでは比較的大きい面積を占める地理空間と、狭い面積を占める空間（参考：[面積が大きい・小さい市町村](https://www.gsi.go.jp/common/000077945.pdf)）があり、どうしても狭い面積を占める空間は見にくくなってしまいます。この問題は、`plot`や`ggplot2`のグラフが静的であることが原因で起こります。
-
-地理情報を表示する場合には、静的な図ではなく、例えばgoogle mapのように、地図を拡大・縮小して確認できた方が情報を利用しやすく、理解しやすくなります。このような拡大・縮小に対応した、インタラクティブな地図を書くライブラリがRにはいくつも備わっています。インタラクティブな地図を描画するライブラリの代表的なものが、[`tmap`](https://r-tmap.github.io/tmap/)パッケージ[@tmap_bib]と[`leaflet`](https://rstudio.github.io/leaflet/)パッケージ[@leaflet_bib]です。
-
-`tmap`は`ggplot2`風に用いることができる、比較的簡単に静的・インタラクティブな地図を描画するパッケージです、一方で`leaflet`はより本格的にインタラクティブな地図を描画することができるパッケージです。以下では、まず`tmap`について紹介し、その後`leaflet`について紹介します。
-
-### tmapパッケージ
-
-`tmap`パッケージは、設定により静的・インタラクティブな地図の描画を切り替えることができる、ggplot2-likeな地図描画ライブラリです。
-
-`tmap`パッケージで地図を描画するときには、まず`sf`オブジェクトを`tm_shape`関数の引数に取ります。`ggplot2`での`ggplot`関数と同様に、`tm_shape`関数だけでは地図を描画することはできず、この関数に`+`で他の関数をつないでいくことで地図を描画することができます。たとえば、POLYGONの中身を埋め、境界線を表示した地図を描画する場合には、以下のように`tm_polygons`関数を`+`でつなぎます。
-
-```{r, filename="tmapで地図を描画する"}
-pacman::p_load(tmap)
-
-Nara_sfobj |> 
-  tm_shape() +
-  tm_polygons()
-```
-
-同様に、POLYGONの境界線を描画する場合には、`tm_borders`関数を`+`でつなぎます。
-
-```{r, filename="境界線を描画する：tm_borders関数"}
-Nara_sfobj |> 
-  tm_shape() +
-  tm_borders()
-```
-
-また、境界線を描画することなくPOLYGONを埋めるように描画する場合には`tm_fill`を用います。`tm_fill`と`tm_borders`を同時に描画しているのが`tm_polygons`になります。
+## promax回転
 
 ```{r}
-Nara_sfobj |> 
-  tm_shape() +
-  tm_fill()
+m1ps <- m1p$scores |> as.data.frame()
+m1ps$student <- 1:nrow(m1ps)
+
+ggplot(m1ps, aes(x = Factor1, y = Factor2, color = student, label = student))+
+  geom_text(size = 3)+
+  theme(legend.position = "none")+
+  labs(title = "プロマックス回転", x = "理系度", y = "文系度")
 ```
 
-### コロプレス図を描画する
+:::
 
-コロプレス図を描画する場合には、`tm_polygons`関数の`col`引数に、描画したい値を文字列で指定します。凡例（legend）や色は自動的に作成され、表示されます。
+## 多次元尺度法
 
-```{r, filename="コロプレス図を描画する"}
-Nara_sfobj |> 
-  tm_shape() +
-  tm_polygons(col = "total_pop")
+多次元尺度法は主成分分析や因子分析とは少し異なる次元圧縮の方法です。多次元尺度法は、距離行列から互いの点の位置を求める、距離行列演算の逆のような変換を行う手法です。
+
+以下の例では、都道府県の県庁所在地の緯度・経度を`dist`関数で距離行列に変換し、距離行列を多次元尺度法で位置の情報に変換しています。
+
+```{r, filename="緯度・経度を距離行列に変換"}
+JPD <- read.csv("./data/pref_lat_lon.csv", header = T, fileEncoding = "CP932")
+
+prefecture <- JPD[,1] %>% unlist()
+JPD <- JPD[,-1] %>% dist() # 距離行列を計算
 ```
 
-#### 静的マップとインタラクティブマップ
+Rでは多次元尺度法の計算を`MASS`パッケージの`sammon`関数を用いて行うことができます。`sammon`関数の引数は距離行列です。距離行列を`sammon`関数で変換すると、`x`と`y`という、位置を示す2つの変数が求まります。
 
-ここまでは`tmap`で描画されているのは静的な、拡大・縮小などができないマップでした。`tmap`では、静的なマップ・インタラクティブなマップを表示するモードを`tmap_mode`関数で変更できます。`tmap_mode("view")`と指定すると、インタラクティブなマップが、`tmap_mode("plot")`と指定すると静的なマップが表示されるようになります。モードの設定を行っていないときは静的なマップが表示されます。インタラクティブな地図の表示には、後ほど説明する`leaflet`パッケージでも利用されている、Javascriptの地図表示ライブラリである[leaflet](https://leafletjs.com/)が使用されています。
-
-```{r, filename="viewモードでインタラクティブな地図を表示"}
-tmap_mode("view")
-Nara_sfobj |> 
-  tm_shape() +
-  tm_polygons(col = "total_pop")
+```{r}
+pacman::p_load(MASS)
+JPpos <- JPD |> sammon() |> _$points
+head(JPpos)
 ```
 
-```{r, filename="plotモードで静的な地図を表示"}
-tmap_mode("plot")
-Nara_sfobj |> 
-  tm_shape() +
-  tm_polygons(col = "total_pop")
+以下に、`sammon`関数の返り値をプロットしたものを示します。`x`と`y`の単位はありませんが、都道府県の位置関係を正確に反映していることが見て取れると思います。ただし、距離行列には方角のデータが含まれていないため、東西南北の方向は回転したり反転したりすることになります。
+
+```{r, filename="多次元尺度法の結果をプロットする"}
+JPpos <- as.data.frame(JPpos)
+colnames(JPpos) <- c("x", "y")
+JPpos$prefecture <- prefecture
+
+ggplot(JPpos, aes(x = -x, y = -y, label = prefecture, color = prefecture))+
+  geom_text(size = 3)+
+  theme(legend.position = "none")
 ```
 
-### legendの表示
+`cmdscale`関数を用いても多次元尺度法の計算を行うことができます。
 
-legend（凡例）の表示方法を変える場合には、`tm_legend`関数を用います。`tm_legend`関数には凡例の表示を変えるためだけでなく、地図のタイトルや位置、色等を変更するための引数を指定することができます。legendの表示をしない場合には、引数に`show=FALSE`を指定します。
+```{r, filename="cmdscale関数で多次元尺度法"}
+JPpos2 <- JPD %>% cmdscale %>% as.data.frame
+colnames(JPpos2) <-  c("x", "y")
+JPpos2$prefecture <- prefecture
 
-```{r, filename="凡例（legend）などの編集"}
-Nara_sfobj |> 
-  tm_shape() +
-  tm_polygons(col = "total_pop") +
-  tm_legend(show = FALSE) # viewモードではshow=FALSEは機能しない
+ggplot(JPpos2, aes(x = x, y = y, label = prefecture, color = prefecture))+
+  geom_text(size = 3)+
+  theme(legend.position = "none")
 ```
-
-### バブルチャートの作成
-
-地図上に値を点のサイズ・色で表現したい場合には、`tm_symbols`関数を用います。`col`引数に`sf`の列を文字列で指定すると点の色が、`size`に指定すると点のサイズがその列の値に従い変更されます。`scale`は点のサイズを調整する引数です。
-
-```{r, filename="バブルチャートを描画する"}
-Nara_sfobj |> 
-  tm_shape() +
-  tm_polygons() +
-  tm_symbols(col = "total_pop", size = "total_pop", scale = 3) +
-  tm_legend(show = FALSE)
-```
-
-### faceting
-
-`ggplot2`と同様に、`tmap`でもfacetingにより複数のマップを簡単に並べて表示することができます。`tmap`ではfacetingの関数として`tm_facets`を用います。`tm_facets`では`by`引数に文字列で`sf`の列を取ることで、その列のラベルに従いグラフが分割されます。
-
-```{r, filename="faceting"}
-# 奈良の市町村を北・南で2分割する
-Nara_sfobj$ns <- rep(c("North", "South"), c(30, 12)) 
-Nara_sfobj$ns[7] <- "South"
-
-# tm_facetsで北部・南部を別のマップとして描画する
-Nara_sfobj |> 
-  tm_shape() +
-  tm_polygons() +
-  tm_symbols(col = "total_pop", size = "total_pop", scale = 3) +
-  tm_legend(show = FALSE)+
-  tm_facets(by = "ns")
-```
-
-### 地図を並べる：tmap_arrange
-
-facetingを用いるのではなく、複数作成した`tmap`の地図を並べて表示することもできます。地図を並べて表示する場合には、`tmap`のオブジェクトを変数に代入し、その変数を`tmap_arrange`関数の引数に取ります。並べ方は`ncol`、`nrow`などの引数で、グラフのサイズは`width`、`heights`などの引数で指定することができます。
-
-```{r, filename="地図を並べて表示する"}
-# tmapのオブジェクトを準備する
-map_north <- Nara_sfobj |> 
-  filter(ns == "North") |> 
-  tm_shape() +
-  tm_polygons()
-
-map_south <- Nara_sfobj |> 
-  filter(ns == "South") |> 
-  tm_shape() +
-  tm_polygons()
-
-# 北側と南側の地図を左右に並べて表示する
-tmap_arrange(map_north, map_south)
-```
-
-### その他の設定
-
-`tmap`にはたくさんの関数・引数が設定されており、うまく用いることで地図の表示を様々にカスタマイズすることができます。以下の例では`tm_layout`関数の`bg.color`引数に色を指定することで、背景色を青色にしています。また、`stars`のラスタデータを描画する場合には`tm_raster`関数を用います。
-
-```{r, filename="背景色を変更する"}
-Nara_sfobj |> 
-  tm_shape() +
-  tm_polygons(col = "total_pop") +
-  tm_layout(bg.color = "blue") +
-  tm_legend(show = FALSE)
-```
-
-```{r, filename="starsを表示する"}
-# sfをラスタに変換
-Nara_raster <- st_rasterize(Nara_sfobj["male_pop"], dx = 0.01, dy = 0.01)
-
-# ラスタを表示する
-Nara_raster |> 
-  tm_shape() +
-  tm_raster() +
-  tm_legend(show = FALSE)
-```
-
-### tmapオブジェクトを保存する
-
-`ggplot2`における`ggsave`のように、`tmap`にはマップを保存するための関数である`tmap_save`関数があります。`tmap_save`関数では`tmap`のオブジェクトと`filename`を引数として指定します。`filename`の拡張子に従い保存する形式を変更することができ、`.png`や`.jpg`などを用いれば画像で、`.html`を指定すればインタラクティブなJavascriptのマップとして保存することができます。
-
-```{r, eval=FALSE, filename="tmapを保存する"}
-tmap_save(map_north, filename = "naramap_north.png")
-
-tmap_save(map_north, filename = "naramap_north.html")
-```
-
-## leafletパッケージ
-
-インタラクティブなマップを作成したい場合には、`tmap`でも紹介したJavascriptのライブラリであるleafletをRで用いることができるようにした、`leaflet`パッケージを用いるのが最もよいでしょう。`tmap`は（部分的に）`leaflet`パッケージのwrapperとなっていて、`tmap`でインタラクティブなマップを書くこともできますが、`leaflet`パッケージでは細かく引数を設定することで、より思い通りのマップを作成することができます。
-
-```{r, filename="leafletを読み込む"}
-pacman::p_load(leaflet)
-```
-
-### 基本のマップ
-
-`leaflet`は`ggplot2`や`tmap`のように`+`でつなぐタイプのグラフィックライブラリではなく、`plotly`に近い、パイプ演算子で繋いでいくタイプのライブラリです。`leaflet`パッケージでのマップ作製は、まず`sf`オブジェクトを`leaflet`関数の引数とするところからスタートします。次に、パイプ演算子で`addTiles`関数を繋ぎます。この形で引数を取らずに実行すると、世界地図が示されます。
-
-```{r, filename="leafletの基本：leafletとaddTiles"}
-Nara_sfobj |> 
-  leaflet() |> 
-  addTiles()
-```
-
-### setView関数
-
-このままではズームが引きすぎですし、日本を中心とした形にもなっていません。デフォルトで表示する位置を表示するための関数が`setView`関数です。`setView`関数は、経度・緯度を引数に取り、その位置を中心としたマップを描画するための関数です。`zoom`引数に数値を設定することで、拡大した地図をデフォルトで表示することもできます。
-
-```{r, filename="setView関数で位置を調整する"}
-Nara_sfobj |> 
-  leaflet() |> 
-  addTiles() |> 
-  setView(137.5, 37.5, zoom = 4)
-```
-
-### POLYGONを描画する
-
-ここまでは`sf`オブジェクトの内容は何も表示されていません。`sf`に設定されているPOLYGONを描画するときには、`addPolygons`関数を用います。`addPolygons`関数をパイプ演算子でつなぐと、`sf`オブジェクトに設定されている`geometry`に従いマップが表示されます。しかし、今まで表示されていたマップの表示がなくなり、POLYGONだけが表示されるようになります。
-
-```{r, filename="addPolygonsでPOLYGONを表示する"}
-Nara_sfobj |> 
-  leaflet() |> 
-  setView(136, 34.25, zoom = 8) |> 
-  addPolygons()
-```
-
-### 背景のマップを描画する
-
-背景のマップを表示する場合には、`addProviderTiles`関数を追加します。`addProviderTiles`では引数でどのようなマップを表示するかを選択します。マップの種類は、[leafletのプレビュー](https://leaflet-extras.github.io/leaflet-providers/preview/)を参考に選びましょう。以下の例では、`"OpenstreetMap.Mapnik"`（地名がその地域の原語に従い表示されるOpenstreetMap）を選択しています。
-
-```{r, filename="背景のマップをaddProviderTilesで設定する"}
-Nara_sfobj |> 
-  leaflet() |> 
-  addProviderTiles("OpenStreetMap.Mapnik") |> 
-  setView(136, 34.25, zoom = 8) |> 
-  addPolygons()
-```
-
-### POLYGONの表示を整える
-
-POLYGONと背景のマップは描画されましたが、どうもPOLYGONの周辺の線が太く、見にくいです。この線の太さや色は`addPolygons`の引数である`weight`や`color`を設定することで変更できます。`weight=1`とするとちょうどよい感じの線の太さになります。
-
-```{r, filename="境界の線の表示を変更する"}
-Nara_sfobj |> 
-  leaflet() |> 
-  addProviderTiles("OpenStreetMap.Mapnik") |> 
-  setView(136, 34.25, zoom = 8) |> 
-  addPolygons(weight = 1, color = "blue")
-```
-
-### POLYGONの中身の色を変更する
-
-コロプレス図を作成するためには、POLYGONの中の色が値に従って変化する必要があります。コロプレス図を描画するためには、`addPolygons`関数の`fillcolor`引数を指定します。この`fillcolor`の設定がやや複雑で、まずは色を指定するルールに関する関数を設定する必要があります。
-
-色を指定する関数には、`colorNumeric`、`colorBin`、`colorQuantile`、`colorFactor`の4つがあります。`colorNumeric`は数値をそのまま色に変換し、`colorBin`と`colorQuantile`は数値を指定した値の間隔、もしくは分位値に従って色分けし、`colorFactor`は因子に色を付ける関数です。下の例では、`colorQuantile`を用いて、`domain`に人口の対数（`log(Nara_sfobj$total_pop)`）を取ります。また、`n=5`を指定することで、人口を分位値で5カテゴリーに分けています。第一引数は色の指定で、赤（`"Reds"`）で値の変化を示すように設定しています。色指定については[Rの色見本](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf)を参考に指定します。
-
-`fillcolor`引数では、チルダ（`~`）を用いて上の色指定関数（下の例では`pal`）を、コロプレス図に記載したいデータを引数として指定します。下の例では`log(total_pop)`を指定し、人口の対数をコロプレス図として示しています。
-
-```{r, filename="コロプレス図としてPOLYGONに色を指定する"}
-# 色指定のための関数
-pal <- colorQuantile("Reds", domain = log(Nara_sfobj$total_pop), n = 5)
-
-# fillcolor引数に色指定関数を設定し、コロプレス図とする
-Nara_sfobj |> 
-  leaflet() |> 
-  addProviderTiles("OpenStreetMap.Mapnik") |> 
-  setView(136, 34.25, zoom = 8) |> 
-  addPolygons(weight = 1, color = "blue", fillColor = ~ pal(log(total_pop)))
-```
-
-### fillcolorの調整
-
-上の例では、全体的にコロプレス図の色が薄く、コントラストがよくありません。少し透明度が高すぎるようです。`addpolygons`関数で色の透明度を指定する場合には、`fillopacity`引数に値を指定します。`fillopacity`のデフォルト値は`0.2`でかなり小さめですので、もう少し大きな値を指定し、透明度を低めにします。透明度を低めに設定することで、コロプレス図のコントラストがはっきりし、分かりやすい図になります。
-
-```{r, filename="fillopacity引数で透明度を調整する"}
-Nara_sfobj |> 
-  leaflet() |> 
-  addProviderTiles("OpenStreetMap.Mapnik") |> 
-  setView(136, 34.25, zoom = 8) |> 
-  addPolygons(
-    weight = 1, 
-    color = "blue", 
-    fillColor = ~ pal(log(total_pop)),
-    fillOpacity = 0.7)
-```
-
-### マウスで選択した位置をハイライトする
-
-`leaflet`では、インタラクティブなマップの表現として、拡大・縮小だけでなく、マウスで選択した位置をハイライトし、選択している位置を分かりやすくすることができます。このハイライトの設定を行う引数が`highlightOptions`です。`highlightoptions`引数には`highlightoptions`関数を指定し、この`highlightoptions`関数内でハイライトされたときの線の太さ（`weight`）、色（`color`）、透明度（`fillopacity`）、前面に表示するかどうか（`bringToFront`）等を指定します。
-
-```{r, filename="マウスで選択した位置をハイライト"}
-Nara_sfobj |> 
-  leaflet() |> 
-  addProviderTiles("OpenStreetMap.Mapnik") |> 
-  setView(136, 34.25, zoom = 8) |> 
-  addPolygons(
-    weight = 1, 
-    color = "blue", 
-    fillColor = ~ pal(log(total_pop)),
-    fillOpacity = 0.7,
-    
-    highlightOptions = highlightOptions(
-      weight = 5,
-      color = "red",
-      fillOpacity = 0.3,
-      bringToFront = TRUE))
-```
-
-### マウスで選択した位置にテキストを表示する
-
-同様に、マウスで選択した位置にテキストでその位置の情報を表示することもできます。表示するテキストの準備には`addPolygons`関数の`label`引数を用います。`label`引数には、`sf`オブジェクトの各列に対応する、表示したい文字列を設定します。
-
-また、`addPolygons`関数の`labelOptions`引数を指定することで、表示する文字列の細かな設定を行うことができます。以下の例では、フォントのサイズやウエイト、空白スペースのサイズ、文字列が表示される位置を指定しています。
-
-```{r, filename="マウスで選択した位置にテキストを表示"}
-Nara_sfobj |> 
-  leaflet() |> 
-  addProviderTiles("OpenStreetMap.Mapnik") |> 
-  setView(136, 34.25, zoom = 8) |> 
-  addPolygons(
-    weight = 1, 
-    color = "blue", 
-    fillColor = ~ pal(log(total_pop)),
-    fillOpacity = 0.7,
-    
-    highlightOptions = highlightOptions(
-      weight = 5,
-      color = "red",
-      fillOpacity = 0.3,
-      bringToFront = TRUE),
-      
-    label = paste(Nara_sfobj$N03_004, ":", (Nara_sfobj$total_pop / 10000) |> round(1), "万人"),
-    labelOptions = labelOptions(
-      style = list("font-weight" = "normal", padding = "3px 8px"),
-      textsize = "15px",
-      direction = "auto"))
-```
-
-### 凡例の表示
-
-さらに凡例を追加する場合には、`addPolygons`関数内で`addLegend`関数を指定します。`addLegend`関数には、`addPolygons`関数にも用いた色指定の関数（以下の例では`pal`）、数値（`values`）、透明度、位置等を`addLegend`関数の引数に指定することで、`addPolygons`関数で指定した色に対応した凡例を追加することができます。
-
-```{r, filename="凡例の表示"}
-Nara_sfobj |> 
-  leaflet() |> 
-  addProviderTiles("OpenStreetMap.Mapnik") |> 
-  setView(136, 34.25, zoom = 8) |> 
-  addPolygons(
-    weight = 1, 
-    color = "blue", 
-    fillColor = ~ pal(log(total_pop)),
-    fillOpacity = 0.7,
-    
-    highlightOptions = highlightOptions(
-      weight = 5,
-      color = "red",
-      fillOpacity = 0.3,
-      bringToFront = TRUE),
-      
-    label = paste(Nara_sfobj$N03_004, ":", (Nara_sfobj$total_pop / 10000) |> round(1), "万人"),
-    labelOptions = labelOptions(
-      style = list("font-weight" = "normal", padding = "3px 8px"),
-      textsize = "15px",
-      direction = "auto")) |> 
-    
-    addLegend(pal = pal, values = ~log(total_pop), opacity = 0.7, title = NULL,
-      position = "bottomright")
-```
-
-`leaflet`には上記の他にも無数の関数が設定されており、駆使することで色々なグラフを作成することができます。`leaflet`の日本語の資料はあまりありませんが（日本語では[このページ](https://kazutan.github.io/JapanR2015/leaflet_d.html)が一番詳しいと思います）、[`leaflet`のreference](https://rstudio.github.io/leaflet/reference/index.html)を読み解きながら作図すれば、思い通りの地図を作成することができます。

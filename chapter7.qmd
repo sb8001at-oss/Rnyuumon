@@ -1,4 +1,4 @@
-# エラー処理（error handler）
+# 型・クラスの確認と変換
 
 ```{r, setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(
@@ -6,124 +6,111 @@ knitr::opts_chunk$set(
 )
 ```
 
-Rでプログラミングを行うと、大抵の場合**エラー**が発生します。プログラミングにエラーはつきものです。プログラミングの途中でエラーが起こっても、それが本当に重大な影響を及ぼすことはほとんどありません。
 
-Rは基本的にad hocな（その場一度限りの）統計処理に用いることを前提としているようなところがあるため、エラーが出たらスクリプトを書き換えて、もう一回実行すればよい、という場合がほとんどです。
+## 型・クラスの確認：is.関数群
 
-しかし、通常のプログラミング言語と同様に、エラーが出たら困る、エラーが出た場合は特殊な処理をしたい、という場合もあります。このような場合に用いられるものが、**エラー処理（error handler）**です。
-
-:::{.callout-tip collapse="true"}
-
-## Rとエラー処理
-
-PythonやRubyなどの汎用プログラミング言語ではエラー処理は非常に重要ですが、Rではそれほど使用頻度は高くありません。エラー処理を今すぐ使いたいという方以外は、この章を飛ばしても問題ありません。
-
-:::
-
-## エラーメッセージの分類
-
-Rではエラーメッセージとして3種類の警告が出る仕組みを持っています。3種類とは、**message、warning、error**の3つです。**message**はプログラムを実行しても特に問題はないが、特別に伝えたいことがある場合に、**warning**はプログラムを実行したときに、問題が起こっている可能性が高い場合に、**error**は実行できない場合にそれぞれ表示されます。
-
-これらのうち、messageはプログラムの実行に影響を与えません。warningはプログラムを実行したときに問題が起こることがあります。errorが起こるとプログラムの実行が止まります。ですので、エラーとして処理が必要となるのは、主にwarningとerrorです。
+Rでは、型やクラスを確認するための関数として、`typeof`関数・`mode`関数・`class`関数以外に、`is.`関数というものを備えています。`is.`関数を用いると、オブジェクトの型が、ある型と一致しているかどうかを確認することができます。引数が数値であるかどうかは、`is.numeric`関数、`is.integer`関数、`is.double`関数を用いて確認することができます。例えば**`is.numeric(1)`は`TRUE`**を返し、**`is.numeric("dog")`は`FALSE`**を返します。この`is.`関数には、文字列や`NA`、`NaN`等を確認する関数もあります。`is.`関数を以下の表2に示します。
 
 ```{r, echo=FALSE}
-write.table(iris, "iris.txt", sep="\t", row.names = F)
+d <- data.frame(
+  isfunc = c("is.numeric(x)", "is.integer(x)", "is.double(x)", "is.complex", "is.character(x)", "is.logical(x)", "is.factor(x)", "is.atomic(x)", "is.list(x)", "is.matrix(x)", "is.data.frame(x)", "is.na(x)", "is.nan(x)", "is.null(x)", "is.infinite(x)"),
+  meaning = c("数値型", "整数型", "double型", "複素数型", "文字列型", "真偽型", "因子型", "ベクター", "リスト", "マトリックス", "データフレーム", "NA", "NaN", "NULL", "無限大")
+)
+
+colnames(d) <- c("is.関数名", "チェックする型")
+knitr::kable(d, caption="表2：xの型の確認に用いる関数")
 ```
 
-```{r, error=TRUE, filename="message, warning, errorの表示"}
-# messageが出る場合
-readr::read_tsv("iris.txt")
+`is.`関数の中では、`is.na`関数の使用頻度が高いです。`is.na`関数を用いると、ベクターやデータフレームからNAを含む要素をうまく取り除くことができます。
 
-# warning（警告）が出る場合
-tibble::as.tibble(iris[1,])
+```{r, filename="is.関数群"}
+c(is.numeric(1), is.numeric("1")) # 文字列（"1"）は数値ではない
 
-# error（エラー）が出る場合
-100 + dog
-```
+c(is.integer(1L), is.integer(1)) # Lが付いていないとdoubleになる
 
-## エラーメッセージ・エラーを表示させる
+c(is.double(1), is.double(1L)) # Lが付いているとintegerになる
 
-自分が作ったプログラムや関数を他人が使う場合には、計算に問題があるときにはエラーメッセージを出す処理を加える時があります。また、errorやwarningが起きたときには特別な処理を行いたいこともあります。このような場合のために、Rにはエラーを表示させるための関数があります。message、warning、errorを表示させるための関数は、それぞれ`message`関数、`warning`関数、`stop`関数です。`stop`関数ではその名の通り、エラーが表示され、プログラムの実行が止まります。エラーは`stopifnot`関数でも表示させることができます。`stopifnot`関数は引数に条件式を取り、**条件式が`FALSE`のとき**にエラーを表示します。
+c(is.complex(1+1i), is.complex(1+1)) # iがあると複素数になる
 
-```{r, filename="エラーを表示させる関数", error=TRUE}
-message("これはメッセージです。実行に問題はありません")
+c(is.character("dog"), is.character(1)) # 数値は文字列ではない
 
-warning("これはwarning（警告）です。実行に問題があるかもしれません")
+# 0はFALSE扱いされるが、logicalではない
+c(is.logical(T), is.logical(0), is.logical("dog")) 
 
-stop("これはerrorです。実行を止めます。")
+c(is.factor(factor(1)), is.factor(1))
 
-stopifnot(FALSE) # 条件がFALSEだとエラーが出る
+c(is.atomic(1), is.atomic(list(1))) # ベクターはTRUE、リストはFALSE
 
-stopifnot("エラーメッセージはこのように設定する" = FALSE) # =の後に条件式を書く
-```
+c(is.vector(1), is.vector(list(1))) # is.vectorもあるが、リストもTRUEになる
 
-## tryとtryCatch
+c(is.list(list(1)), is.list(1))# ベクターはFALSE、リストはTRUE
 
-Rでのエラー処理には、`try`関数と`tryCatch`関数の2つが用いられます。`try`関数はエラーが出る処理を行った場合に、プログラムを止めずにエラーを返す機能を持ちます。`tryCatch`関数はエラーが出る処理に対応して別の処理を行う際に用います。
+c(is.matrix(matrix(1, ncol=1)), is.matrix(1))
 
-`try`関数は第一引数を評価し、エラーならエラーを表示し、続けてプログラムを実行します。下の`for`文では、どちらも`"dog"`に数値を足す計算でエラーが出ます。`try`がない場合にはエラーが出た時点でプログラムが停止しますが、`try`関数の引数にエラーが出る処理がある場合にはエラーが出た後にも計算が継続します。`try`は返り値として第一引数の演算結果を返しますが、エラーが出た場合にはtry-errorクラスのオブジェクトを返します。
+c(is.data.frame(data.frame(1)), is.data.frame(list(1))) # リストはFALSE
 
-```{r, filename="try関数とエラー", error=TRUE}
-d <- data.frame(a=1, b=2, c="dog", d=4, e=5)
-d # 1行5列のデータフレーム
+# NAとNaNはNA扱い、NULLは無いもの扱い
+c(is.na(NA), is.na(1), is.na(NaN), is.na(Inf), is.na(NULL)) 
 
-for(i in 1:5){ # エラーが出るので、評価が中断する
-  print(d[1,i] + 1)
-}
+# NULLは無いもの扱い
+c(is.nan(NA), is.nan(1), is.nan(NaN), is.nan(Inf), is.nan(NULL))
 
-for(i in 1:5){ # エラーが出ても、評価は継続する
-  try(print(d[1,i] + 1))
-}
+# NULLを評価する
+c(is.null(NA), is.null(1), is.null(NaN), is.null(Inf), is.null(NULL)) 
 
-err_ <- try(1+"dog") # エラーが出たとき
-
-class(err_) # エラーのクラス（try-error）を返す
-
-warning_ <- try(as.numeric("dog")) # warningが出たとき
-
-warning_ # 演算はできるので、演算結果（NA）が返ってくる
-
-class(warning_) # クラスはnumeric
+# NULLは無いもの扱い
+c(is.infinite(NA), is.infinite(1), is.infinite(NaN), is.infinite(Inf), is.infinite(NULL)) 
 ```
 
 :::{.callout-tip collapse="true"}
 
-## 返り値のNA
+## atomicなベクター
 
-（`try(as.numeric("dog")`) の結果）のクラスがnumericになっています。NAは内部的にはNA_integer\_（整数のNA）、NA_real\_（実数のNA）、NA_complex\_（複素数のNA）、NA_character\_（文字列のNA）の4種類として扱われており、上記の場合ではNA_real\_、つまり実数タイプのNAが返ってきています。このようにNAには型が複数あるため、ベクター中にNAが埋め込まれていても、ベクター全体の型が変化することはありません。
-
-:::
-
-`try`関数では、エラーが出たときにはtry-errorクラスが返ってくるので、try-errorクラスであることを利用してエラー時に行う処理を設定することができます。また、引数に「`silent = TRUE`」を取ると、エラーメッセージが表示されなくなります。
-
-```{r, filename="try-errorクラスを用いたエラー処理"}
-# tryの結果のクラスがtry-errorなら、文字列を返すif文
-if(class(try(1+"dog"))=="try-error"){"エラーが起きています。"}
-
-try(1+"dog", silent=T) # 何も表示されない
-```
-
-`try`関数でもエラー処理はできますが、通常エラー処理で用いられるのは**`tryCatch`**関数です。`tryCatch`関数では、`error`が起きたときの処理、`warning`が起きたときの処理、最終的に行う処理（`finally`）をそれぞれ設定できます。この時、`error`、`warning`の処理は**関数**で、`finally`は**そのまま**書きます。`warning`や`error`に用いる関数は別途作成しておくこともできますが、下のように`tryCatch`関数内で関数として定義する形でも書くこともできます。
-
-```{r, filename=""}
-errorCatcher <- function(x){ # 対数計算のエラーを捉える関数
-  tryCatch(
-    log(x), # 対数計算を評価する
-    warning = \(w){"警告あり"}, # warningが出たときの処理
-    error = \(e){"エラーあり"}, # errorが出たときの処理
-    finally = print("エラーがあってもなくても表示される") # エラーの有無に関わらず行う処理
-  )
-}
-
-errorCatcher(0) # エラーなし
-errorCatcher(-1) # warning
-errorCatcher("dog") # error
-```
-
-:::{.callout-tip collapse="true"}
-
-## 無名関数
-
- warningやerrorで記載している関数（`\(e)`や`\(w)`）は名前を決めずに用いる関数で、無名関数と呼ばれるものです。用途によってはこのような無名関数を用いて処理を書くことがあります。
+ベクターは`is.atomic`関数で評価します。これは、ベクターのことをatomic vectorと呼ぶためです。atomic vectorはvectorと同じ意味を持ちます。エラーやメッセージには時々このatomic vectorという表記が出てきますが、これは通常のベクターのことを述べているだけで、atomic vectorという特別なものがあるわけではありません。
 
 :::
+
+## 型・クラスの変換：as.関数群
+
+`is.`関数はデータのクラスや型をチェックし、論理型を返す関数です。Rには、関数名がよく似た`as.`関数があります。`as.`関数は、引数の型を指定した型に変換する関数です。例えば、`as.numeric`関数は引数をnumericに変換する関数です。`as.`関数の一覧を以下の表3に示します。
+
+```{r, echo=FALSE}
+d <- data.frame(
+  asfunc = c("as.numeric(x)", "as.integer(x)", "as.double(x)", "as.complex", "as.character(x)", "as.logical(x)", "as.factor(x)", "as.Date", "as.POSIXct", "as.POSIXlt", "as.list(x)", "as.matrix(x)", "as.data.frame(x)", "as.null(x)"),
+  meaning = c("数値型に変換", "整数型に変換", "double型に変換", "複素数型に変換", "文字列型に変換", "真偽型に変換", "因子型に変換", "日時型に変換", "POSIXct型に変換", "POSIXlt型に変換", "リストに変換", "マトリックスに変換", "データフレームに変換", "NULLに変換")
+)
+
+colnames(d) <- c("as.関数名", "変換する型")
+knitr::kable(d, caption="表3：xの型の変換に用いる関数")
+```
+
+```{r, filename="as.関数群"}
+as.numeric(TRUE)
+
+as.integer(1.1)
+
+as.double(1L)
+
+as.complex(1)
+
+as.character(1)
+
+c(as.logical(1), as.logical(0))
+
+as.factor(c("dog", "cat"))
+
+as.Date("2022-02-22") # わかりにくいが、日付型になっている
+
+# わかりにくいが、日時型になっている
+as.POSIXct("2022-02-22 15:00:00")
+
+as.POSIXlt("2022-02-22 15:00:00")
+
+as.list(1)
+
+as.data.frame(list(1, 1))
+
+as.matrix(data.frame(x=1, y=1))
+
+as.null(1)
+```
