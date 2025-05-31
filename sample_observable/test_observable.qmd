@@ -1,0 +1,128 @@
+---
+title: "test_observable"
+format: 
+  html:
+    embed-resources: true  
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+```
+
+## データの読み込み（csv）
+
+```{r}
+#| eval: false
+#| code-fold: true
+write.csv(
+  iris |> 
+    rename(SepalLength=Sepal.Length, SepalWidth=Sepal.Width, PetalLength=Petal.Length, PetalWidth=Petal.Width),
+  "iris.csv"
+  )
+```
+
+```{ojs}
+irisc = FileAttachment("iris.csv").csv({ typed: true })
+irisc
+```
+
+## データ行の選択
+
+```{ojs}
+filtered = irisc.filter(function(data){
+  return min_sl < data.SepalLength &&
+    species.includes(data.Species);
+})
+```
+
+## Control Widgetsの設置
+
+```{ojs}
+viewof min_sl = Inputs.range(
+  [0, 7],
+  {value: 3, step: 0.1, label: "minimum of Sepal.Length"}
+)
+
+viewof species = Inputs.checkbox(
+  ["setosa", "versicolor", "virginica"],
+  {
+    value: ["setosa", "versicolor"],
+    label: "iris Species"
+  }
+)
+```
+
+## Widgetに従いグラフを表示
+
+::: {.panel-tabset}
+
+## 表
+
+```{ojs}
+//| code-fold: true
+Inputs.table(filtered)
+```
+
+## グラフ
+
+```{ojs}
+//| code-fold: true
+Plot.plot({
+  grid: true,
+  inset: 10,
+  color: {legend: true},
+  marks:[
+  Plot.frame(),
+  Plot.dot(filtered, {x: "SepalLength", y: "SepalWidth", stroke: "Species"})
+  ]
+})
+```
+
+:::
+
+## RのデータをObservableに渡す
+
+```{r}
+arrow::write_feather(
+  iris |> 
+    rename(SepalLength=Sepal.Length, SepalWidth=Sepal.Width, PetalLength=Petal.Length, PetalWidth=Petal.Width), 
+  "data.iris", 
+  compression = "uncompressed"
+)
+
+arrow::write_feather(
+  data.frame(time = Nile |> time(), flow = Nile |> as.vector()), 
+  "data.nile", 
+  compression = "uncompressed"
+)
+```
+
+```{ojs}
+iris = FileAttachment("data.iris").arrow()
+nile = FileAttachment("data.nile").arrow()
+
+nile
+```
+
+```{ojs}
+Plot.plot({
+  grid: true,
+  inset: 10,
+  color: {legend: true},
+  marks:[
+    Plot.frame(),
+    Plot.dot(iris, {x: "SepalLength", y: "SepalWidth", stroke: "Species"})
+  ]
+})
+```
+
+```{ojs}
+Plot.plot({
+  marks:[
+    Plot.lineY(nile, {x: "time", y: "flow"})
+  ]
+})
+```
+

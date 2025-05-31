@@ -848,6 +848,51 @@ p <-
 ggsave("plot_iris_Sepal.pdf", p)
 ```
 
+
+:::{.callout-tip collapse=true}
+## ggplot2で日本語を表示する
+
+`ggplot2`では、Rで実行した際には日本語も表示することができます。
+
+```{r}
+p <- 
+  cars |> 
+    ggplot(aes(x = speed, y = dist)) +
+    geom_point(size = 2) +
+    labs(x = "自動車の速度", y = "停止までの距離")
+
+p
+```
+
+ただし、このグラフを`ggsave`関数でPDFとして保存すると、文字化けします。
+
+```{r, warning=FALSE, filename = "PDFで文字化けするggplot2"}
+ggsave("./image/cars.pdf", p)
+```
+
+![](./image/cars_pdf.png){width = 50%}
+
+一方で、PNGのような画像ファイルとして保存すると、日本語がそのまま表示されます。R上で日本語が文字化けせずに表示されるのは、出力がペイント系の画像になっているからです。
+
+```{r, filename = "pngでは文字化けしない"}
+ggsave("./image/cars.png", p)
+```
+
+![](./image/cars.png){width = 50%}
+
+つまり、PDFや[EPS](https://www.adobe.com/jp/creativecloud/file-types/image/vector/eps-file.html)のようなドロー系のファイル形式で日本語を含む`ggplot2`のグラフを保存すると、文字化けします。このPDFにすると文字化けする問題は日本のRユーザーを長く悩ませてきました。
+
+日本語を文字化けさせずに表示させる、様々な手法が提案されていますが、なかなか安定して日本語にすることは難しいです。比較的簡単な方法としては、以下のように引数に`device=cairo_pdf`を指定し、さらに`family`という引数にフォント名を指定する方法があります。
+
+```{r, filename="cairo_pdfをデバイスに指定する方法"}
+ggsave("./image/cars_cairo_pdf.pdf", p, device=cairo_pdf, family = "Meiryo UI")
+```
+
+この他にも様々な日本語を文字化けさせない方法があります。ファイルの保存に関しては[こちらのページ](https://yukiyanai.github.io/stat1/intro-to-ggplot2.html)にも詳しく記載されているので、参考にされるとよいでしょう。
+
+:::
+
+
 ## Extensions
 
 `ggplot2`には、`ggplot2`に機能を追加する[Extensions](https://exts.ggplot2.tidyverse.org/gallery/)というライブラリがたくさん存在します。代表的なExtensionsを以下に紹介します。
