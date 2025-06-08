@@ -1,0 +1,357 @@
+---
+title: "日本の人口統計（1920～2020）"
+echo: false
+format: 
+  dashboard: 
+    embed-resources: true  
+---
+
+# {.sidebar}
+
+```{ojs}
+viewof year = Inputs.range([1920, 2020], {label: "Year", step: 1})
+```
+
+```{ojs}
+viewof sex = Inputs.radio(["male", "female"], {label: "性別", value: "male"})
+```
+
+```{ojs}
+viewof select_pref = Inputs.select(["北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県","茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県",
+"新潟県","富山県","石川県","福井県","山梨県","長野県","岐阜県",
+"静岡県","愛知県","三重県","滋賀県","京都府","大阪府","兵庫県",
+"奈良県","和歌山県","鳥取県","島根県","岡山県","広島県","山口県",
+"徳島県","香川県","愛媛県","高知県","福岡県","佐賀県","長崎県",
+"熊本県","大分県","宮崎県","鹿児島県","沖縄県"], {label: "都道府県"})
+```
+
+<hr>
+
+Geojsonの出典：[47都道府県のポリゴンデータ geojson（Japonyolブログ）](https://japonyol.net/editor/article/47-prefectures-geojson.html)
+
+データの出典：[「政府統計の総合窓口(e-Stat)」、統計データを探す－人口統計「我が国の推計人口（大正9年～平成12年）」](https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200524&bunya_l=02&tstat=000000090001&cycle=0&tclass1=000000090004&tclass2=000000090005&tclass3val=0) 
+
+及び [「政府統計の総合窓口(e-Stat)」、統計データを探す－人口統計「長期的時系列データ（大正9年～平成12年）」](https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200524&tstat=000000090001&cycle=0&tclass1=000000090004&tclass2=000001051180&tclass3val=0)
+
+# 各県の統計データ（棒グラフ）
+
+## Row
+
+```{ojs}
+Plot.plot({
+  style: "overflow: visible;",
+  y: {grid: true, transform: (f) => Math.log10(f)},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(d_pop, {x: "year", y: "value", stroke: "prefectures", tip: "x"}),
+    Plot.text(d_pop, Plot.selectLast({x: "year", y: "value", z: "prefectures", text: "prefectures", textAnchor: "start", dx: 2}))
+  ],
+  caption: "日本の人口の推移（対数変換、1920～2020年）",
+})
+```
+
+### Column
+
+```{ojs}
+Plot.plot({
+  marginBottom: 60,
+  x: {
+    tickRotate: -90,
+  },
+  y: {
+    grid: true,
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.barY(d_pop_year, {x: "prefectures", y: "value", sort: {x: "y", reverse: true},
+    fill: "steelblue", tip: "x"})
+  ],
+  caption: caption_pop,
+})
+```
+
+### Column
+
+
+
+```{ojs}
+Plot.plot({
+  marginBottom: 60,
+  x: {
+    tickRotate: -90,
+  },
+  y: {
+    grid: true,
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.barY(d_sex_year, {x: "prefectures", y: "value", sort: {x: "y", reverse: true},
+    fill: "steelblue", tip: "x"})
+  ],
+  caption: caption_sex,
+})
+```
+
+## Row
+
+### Column
+
+
+```{ojs}
+Plot.plot({
+  marginBottom: 60,
+  x: {
+    tickRotate: -90,
+  },
+  y: {
+    grid: true,
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.barY(d_sex_ratio, {x: "prefectures", y: "value", sort: {x: "y", reverse: true},
+    fill: "steelblue", tip: "x"})
+  ],
+  caption: "性別人口比",
+})
+```
+
+### Column
+
+
+```{ojs}
+Plot.plot({
+  marginBottom: 60,
+  x: {
+    tickRotate: -90,
+  },
+  y: {
+    grid: true,
+    labelAnchor: "center"
+  },
+  color: {
+    scheme: "PiYG",
+    type: "ordinal"
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.barY(d_pinc_year, {x: "prefectures", y: "value", 
+      fill: (d) => d.value > 0, sort: {x: "y", reverse: true}, tip: "x"})
+  ],
+  caption: caption_pinc,
+})
+```
+
+# コロプレス図
+
+## Row
+
+### Column {width=50%}
+
+```{ojs}
+Plot.plot({
+  marks: [
+    Plot.geo(
+      prefectures,
+      {fill: (d) => d_pop_map.get(d.properties.name)}
+    ),
+    Plot.tip(prefectures, Plot.pointer(Plot.geoCentroid({title: (d) => d.properties.name})))
+  ],
+    caption: caption_pop,
+    color: {
+    scheme: "spectral",
+    unknown: "#ddd",
+    type: "linear", 
+    legend: true,
+    label: legend_text_pop,
+  }
+})
+```
+
+### Column
+
+#### Row {height = 10%}
+
+**選択した県・年の統計データ**
+
+#### Row {height = 90%}
+
+```{ojs}
+//| content: valuebox
+//| title: "人口（千人）"
+//| color: primary
+
+d_pop_pref[0].value
+```
+
+```{ojs}
+//| content: valuebox
+//| title: "性別人口（千人）"
+//| color: success
+
+d_sex_pref[0].value
+```
+
+```{ojs}
+//| content: valuebox
+//| title: "人口増加率"
+//| color: info
+
+d_pinc_pref[0].value
+```
+
+## Row
+
+### Column
+
+```{ojs}
+
+Plot.plot({
+  marks: [
+    Plot.geo(
+      prefectures,
+      {fill: (d) => d_sex_map.get(d.properties.name)}
+    ),
+    Plot.tip(prefectures, Plot.pointer(Plot.geoCentroid({title: (d) => d.properties.name})))
+  ],
+    caption: caption_sex,
+    color: {
+    scheme: "spectral",
+    unknown: "#ddd",
+    type: "linear", 
+    legend: true,
+    label: legend_text_sex,
+  }
+})
+```
+
+```{ojs}
+Plot.plot({
+  marks: [
+    Plot.geo(
+      prefectures,
+      {fill: (d) => d_pinc_map.get(d.properties.name)}
+    ),
+    Plot.tip(prefectures, Plot.pointer(Plot.geoCentroid({title: (d) => d.properties.name})))
+  ],
+    caption: caption_pinc,
+    color: {
+    scheme: "spectral",
+    unknown: "#ddd",
+    type: "linear", 
+    legend: true,
+    label: legend_text_pinc,
+  }
+})
+```
+
+
+
+```{r, eval=FALSE, echo=FALSE}
+#| output: false
+# knitrを用いるためにchunkを挿入
+```
+
+
+```{ojs}
+//| output: false
+import { aq, op } from "@uwdata/arquero"
+```
+
+```{ojs}
+//| output: false
+d_pop = FileAttachment("d_pop.csv").csv({ typed: true })
+d_sex = FileAttachment("d_sex.csv").csv({ typed: true })
+d_pinc = FileAttachment("d_pinc.csv").csv({ typed: true })
+```
+
+```{ojs}
+//| output: false
+legend_text_pop = "Population at " + year + " in Japan (thouthand)" 
+```
+
+```{ojs}
+//| output: false
+caption_pop = "Population at " + year + " in Japan (thouthand)" 
+```
+
+```{ojs}
+//| output: false
+legend_text_sex = "Population of " + sex + " at " + year + " in Japan (thouthand)" 
+```
+
+```{ojs}
+//| output: false
+caption_sex = "Population at " + year + " in Japan (thouthand)" 
+```
+
+```{ojs}
+//| output: false
+legend_text_pinc = "Increase rate of population at " + year + " in Japan" 
+```
+
+```{ojs}
+//| output: false
+caption_pinc = "Population at " + year + " in Japan (thouthand)" 
+```
+
+```{ojs}
+//| output: false
+prefectures = FileAttachment("prefectures2.geojson").json()
+```
+
+```{ojs}
+//| output: false
+d_pop_year = d_pop
+  .filter((d) => d.year == year)
+```
+
+```{ojs}
+//| output: false
+d_pop_map = new Map(d_pop_year.map(({prefectures, value}) => [prefectures, value]))
+```
+
+```{ojs}
+//| output: false
+d_sex_year = d_sex
+  .filter((d) => d.year == year && d.sex == sex)
+```
+
+```{ojs}
+//| output: false
+d_sex_ratio = d_sex
+  .filter((d) => d.year == year && d.sex == "ratio")
+```
+
+```{ojs}
+//| output: false
+d_sex_map = new Map(d_sex_year.map(({prefectures, value}) => [prefectures, value]))
+```
+
+```{ojs}
+//| output: false
+d_pinc_year = d_pinc
+  .filter((d) => d.year == year)
+```
+
+```{ojs}
+//| output: false
+d_pinc_map = new Map(d_pinc_year.map(({prefectures, value}) => [prefectures, value]))
+```
+
+```{ojs}
+//| output: false
+d_pop_pref = d_pop_year
+  .filter((d) => d.prefectures == select_pref)
+```
+
+```{ojs}
+//| output: false
+d_sex_pref = d_sex_year
+  .filter((d) => d.prefectures == select_pref)
+```
+
+```{ojs}
+//| output: false
+d_pinc_pref = d_pinc_year
+  .filter((d) => d.prefectures == select_pref)
+```

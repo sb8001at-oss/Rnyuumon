@@ -1,0 +1,577 @@
+# Quarto：プレゼンテーション
+
+```{r, echo = FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+## プレゼンテーションを作成する
+
+Quartoでは、文書だけでなく、プレゼンテーションを作成することもできます。Quartoで作成できるプレゼンテーションは、Powerpoint、[Reveal.js](https://revealjs.com/)（HTMLのプレゼンテーションを作成するツール）、[Beamer](https://ctan.org/pkg/beamer)（LaTeXを利用し、PDFのプレゼンテーションを作成するツール）のいずれかとなります。前章で説明した`format: docx`、`format: html`、`format: pdf`とほぼ対応していると考えてよいでしょう。
+
+### プレゼンテーションのフォーマットを指定する
+
+YAMLに`format`を指定することで、上記の3つ（Powerpoint、Reveal.js、Beamer）のうちから出力するフォーマットを選択することができます。
+
+```{yaml, filename="出力するプレゼンテーションのフォーマットを指定する"}
+format: pptx
+format: revealjs
+format: beamer
+```
+
+上記の`format`以下には、それぞれ`format: docx`、`format: html`、`format: pdf`で出力する場合と同様のYAMLを指定できるようになっていますが、プレゼンテーション特有のYAMLも（特にReveal.jsにはたくさん）準備されています。以下では、Reveal.jsでのプレゼンテーションを作成する手順を主に説明します。Powerpoint、Beamerについては、以下に説明するスライドの構造についてはほぼReveal.jsと同じように記載することで作成することができます。
+
+## スライドの中身を作成する
+
+スライドを作成するときのルールはおおむね以下のようになります。
+
+- 表紙のスライドはYAMLの`title`と`author`から作成されます。
+- header1（`# header1`）を設定すると、タイトルのスライドを別途設定することもできます。 
+- header2（`## header2`）を設定すると、新しいスライドが作成されます。header2以下にそのスライドの内容を記載します。
+- header2を用いずに新しいスライドを作成する場合には、ハイフン3つ（`---`）をスライドの区切りに用いることができます。
+- chunkは実行されますが、コードは表示されません（デフォルトでは`echo=FALSE`になっています）。
+
+上記のルールはReveal.js、Powerpoint、Beamerのいずれでも適用されます。以下にMarkdownの例と、出力されるプレゼンテーション（Reveal.js）を示します。
+
+```{markdown, filename="Reveal.jsのサンプル"}
+---
+title: "Habits"
+author: John Doe
+format: 
+  revealjs:
+    controls: true # 左右の矢印を表示する
+---
+  
+## Getting up
+  
+- Turn off alarm
+- Get out of bed
+
+## Breakfast
+
+- Eat eggs
+- Drink coffee
+
+---
+
+### Lunch 
+  
+- Eat sandwich
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample.html" width="800" height="250"></iframe>
+
+:::{.callout-tip collapse=true}
+## Reveal.jsの埋め込み
+
+上記のようにReveal.jsをQuartoに埋め込む場合には、Markdownの章でGoogle mapの埋め込みの際に説明した`iframe`を用います。
+
+```{markdown, filename="reveal.jsを埋め込む"}
+<iframe class="slide-deck" src="./sample_revealjs/sample.html" width="800" height="250"></iframe>
+```
+
+このとき、Reveal.jsを作成する際には、YAMLで以下のようにスライドの高さを指定するとよいでしょう。
+
+```{yaml, filename="reveal.jsの高さの設定"}
+---
+format: 
+  revealjs:
+    height: 250
+---
+```
+
+スライドの高さと`iframe`で指定する高さを揃え、`width`に700～800pxぐらいの値を指定すると、比較的きれいにスライドを埋め込むことができます。
+
+:::
+
+### 箇条書きをひとつづつ表示する
+
+プレゼンテーションでは、箇条書きにした項目をひとつづつ順番に表示したい場合があります。箇条書きをひとつづつ表示する場合、`:::{.incremental}`と`:::`で箇条書きを囲います。
+
+```{markdown, filename="箇条書きをひとつづつ表示"}
+:::{.incremental}
+- Turn off alarm
+- Get out of bed
+:::
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_incremental.html" width="800" height="250"></iframe>
+
+### 箇条書き以外をひとつづつ表示する
+
+また、Reveal.jsでは箇条書きではない項目もひとつづつ表示することができます。この場合には{.incremental}ではなく、コンマをスペースで区切って3つ連ねたもの（`.  .  .`）を用います。
+
+```{markdown, filename="箇条書きをひとつづつ表示"}
+Turn off alarm
+
+. . .
+
+Get out of bed
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_threedots.html" width="800" height="250"></iframe>
+
+### 複数の列に表示する
+
+スライドに複数列の項目を記載したい場合には、`{.columns}`と`{.column}`をネスト（入れ子）にして用います。また、各列の幅は`{.column width=40%}`と指定することで調整することもできます。
+
+```{markdown}
+## Getting up
+
+:::{.columns} 
+:::{.column}
+Turn off alarm
+:::
+:::{.column}
+Get out of bed
+:::
+:::
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_multicolumn.html" width="800" height="250"></iframe>
+
+### 図の表示
+
+図の表示は、Markdownの章で説明した通り、`![](path/to/image)`で表示させることができます。上の項目で説明した通り、図は`{.columns}`を用いれば横に並べることができます。また、別途画像を重ねて表示したい場合には、以下のように`{.r-stack}`を用います。
+
+```{markdown, filename="図を重ねて表示する"}
+:::{.r-stack}
+![](../image/matsumoto1.jpg){width=300px height=200px}
+
+![](../image/matsumoto2.jpg){.fragment width=200px height=150px}
+
+![](../image/matsumoto3.jpg){.fragment width=100px height=75px}
+
+:::
+```
+
+また、図の位置をスライドの上や左からの距離を数値で指定し、表示する位置やサイズを調整することもできます。図の位置、サイズを設定する場合には、`![](path/to/image)`の後ろに`{.absolute}`で上からの距離（`top`）、左からの距離（`left`）、図の幅（`width`）、図の高さ（`height`）を以下のように指定します。
+
+```{markdown, filename="図の位置を決めて表示する"}
+![](../image/matsumoto1.jpg){.absolute top=0px left=0px width=200px height=150px}
+
+![](../image/matsumoto2.jpg){.absolute top=10px left=250px width=200px height=150px}
+
+![](../image/matsumoto3.jpg){.absolute top=20px left=500px width=200px height=150px}
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_image.html" width="800" height="250"></iframe>
+
+### テーマ（Theme）
+
+Quartoのテーマ（theme、[Bootswitch](https://bootswatch.com/)に従う）とは別に、Reveal.jsには[専用のTheme](https://revealjs.com/themes/)が12種準備されています。これらのうち、[Quartoでは11種を設定可能](https://quarto.org/docs/presentations/revealjs/#themes)と記載されていますが、実際には`dracula`のような記載のないテーマも設定可能です。Themeを設定する場合、YAMLで以下のように`theme`を指定します。
+
+```{yaml, filename="reveal.jsのテーマの設定"}
+format:
+  revealjs: 
+    theme: dracula
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_theme.html" width="800" height="250"></iframe>
+
+テーマはReveal.jsのみ適用できるYAMLです。Powerpointの場合はWordを出力する場合と同様にテンプレートを準備してプレゼンテーションのデザインを指定します。QuartoではBeamerを凝ったデザインで出力することは難しいようです。
+
+### aside（余談）とフッター（footer）
+
+asideは、記載した内容について付与的に説明を加えるときに用いる表記です。スライドの最も下に、重要ではないちょっとした情報を加えることは、通常のプレゼンでよく用いられる方法だと思います。このようなものをasideと呼びます。
+
+```{markdown, filename="asideを追加する"}
+::: aside
+このスライドは[QuartoのGuide](https://quarto.org/docs/presentations/revealjs)に従い作成しています
+:::
+```
+
+また、注釈（footnote）はMarkdownの章で説明したのと同じ方法で追加することができます。
+
+フッターは上記のasideよりさらに下に記載される要素です。組織名などをフッターに加えるのが一般的だと思います。フッターはYAMLで`footer`として設定します。また、YAMLに`logo`を設定し、画像を指定するとロゴを右下に表示することもできます。
+
+```{yaml, filename="footerの設定"}
+format:
+  revealjs: 
+    footer: フッターの表示
+    logo: ./image/favicon_small.png
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_aside.html" width="800" height="250"></iframe>
+
+### 項目の多いスライドの表示：smallerとscrollable
+
+1枚のスライドにたくさんの要素を載せたいときの対応方法には2つあります。1つは要素を小さく表示する方法です。要素を小さく表示したい場合、YAMLに`smaller: true`を設定します。ただし、小さくしても表示できる要素の数には限りがあります。
+
+```{yaml, filename="smallerで要素を小さく表示する"}
+format:
+  revealjs:
+    smaller: true
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_smaller.html" width="800" height="250"></iframe>
+
+別の方法としては、画面をスクロールできるようにする方法があります。画面をスクロールできるようにしたい場合、YAMLに`scrollable: true`を設定します。上記の`smaller`も`scrollable`と同時に設定することが出来ます。
+
+ただし、`smaller`も`scrollable`も、わかりやすいプレゼンテーションのデザインとしてはあまりよろしくないので、極力頼らないようスライドをデザインしたほうがよいでしょう。
+
+```{yaml, filename="scrollableでスライドをスクロールする"}
+format:
+  revealjs:
+    scrollable: true
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_scrollable.html" width="800" height="250"></iframe>
+
+### スライドを縦に配置する
+
+Reveal.jsでは、スライドを横だけでなく、縦に並べることもできます。縦に並べる場合、表紙に当たるheader1（`# header1`）が横に並び、その下にheader2（`## header2`）として記載したスライドが縦に並ぶことになります。
+
+```{markdown, filename="スライドの縦への配置"}
+---
+format: 
+  revealjs:
+    navigation-mode: vertical
+---
+  
+# Getting up
+  
+## Turn off alarm
+
+# Breakfast
+
+## Eat eggs
+
+# Lunch
+
+## Eat sandwich
+
+# Dinner
+
+## Eat spaghetti
+
+# Going to sleep
+
+## Get in bed
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_vertical_transition.html" width="800" height="250"></iframe>
+
+### スライドを表示しない・隠しスライド
+
+スライドを全く表示させない場合には、header2の後ろに`{visibility="hidden"}`を指定します。同様に`{visibility="uncounted"}`を指定すると、プレゼンテーションとしては表示しない、添付資料としてスライドを作成することができる、とされています（ただし、以下の例のように、`knitr`でRenderするとうまくいかない場合もあります）。
+
+```{markdown, filename="スライドの表示の有無"}
+## Breakfast
+
+- Eat eggs
+
+## Lunch {visibility="hidden"}
+
+- Eat sandwich
+
+## Dinner {visibility="uncounted"}
+
+- Eat spaghetti
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_visibility.html" width="800" height="250"></iframe>
+
+### スライドに背景を設置する
+
+Reveal.jsでは、スライドの背景を設定することもできます。背景の設定には、YAMLで設定するタイトルスライドの背景と、個々のスライドに背景を設定する方法の2つがあります。
+
+#### タイトルスライドの背景
+
+タイトルスライドの背景はYAMLで設定します。YAMLに`title-slide-attributes`を設定し、`title-slide-attributes`以下の項目として`data-background-image`、`data-backgroud-size`、`data-background-opacity`を指定します。
+
+`data-background-image`には画像ファイルまでのパスを記載します。`data-backgroud-size`には、`contain`や`cover`などを指定します（[CSSの画像の設定](https://developer.mozilla.org/ja/docs/Web/CSS/background-size)に従うようです）。`data-background-opacity`には画像の透明度を指定します。
+
+```{yaml, filename="タイトルスライドの背景"}
+title: budda
+title-slide-attributes:
+  data-background-image: "../image/budda.jpg"
+  data-background-size: cover
+  data-background-opacity: "0.8"
+```
+
+#### スライドの背景色
+
+各スライドにはそれぞれ背景色を指定することができます。背景色を指定する場合、header2の後ろに`{background-color}`を指定します。また、`{background-gradient}`を用いると、背景色にグラデーションを指定することもできます。
+
+色の指定は色の名前、または6桁のカラーコード（`#000000`など）のいずれかで指定します。色の見本は[こちらのサイト](https://www.colordic.org/)などを参考にするとよいでしょう。
+
+```{markdown, filename="スライドの背景色を設定する"}
+## Getting up {background-color="lightblue"}
+  
+- Turn off alarm
+```
+
+```{markdown, filename="スライドの背景色（グラジエント）"}
+## Breakfast {background-gradient="linear-gradient(to bottom, black, mistyrose)"}
+
+- Eat eggs
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_bgd_image.html" width="800" height="250"></iframe>
+
+### スライドの切り替え
+
+スライドの切り替え時、特に設定をしない場合には瞬時に次のスライドへと移行しますが、この切り替えにアニメーションの表現を加えることもできます。スライドの切り替えを設定する場合には、header2の後ろに`{transition}`を加えます。このtransitionには、`fade`、`slide`、`convex`、`concave`、`zoom`の5種類を設定することができます。また、`transition-speed`を`fast`、`slow`にそれぞれ設定すると切り替えのスピードを調整することもできます。
+
+同様に、YAMLに`transition: slide`や`transition-speed: slow`のように設定すると、プレゼンテーション全体でのスライドの切り替え表示の方法を指定することもできます。
+
+また、スライドが表示される時とスライドから離れる時の切り替えアニメーションを別のものにすることもできます。スライドの表示・離脱時のアニメーションはそれぞれ`{transition="fade-in slide-out"}`といった形で、`-in`と`-out`をつけて設定します。
+
+```{markdown, filename="スライドの切り替えアニメーション"}
+## Getting up (fade) {transition="fade" transition-speed="slow"}
+  
+- Turn off alarm
+
+## Breakfast (slide) {transition="slide" transition-speed="slow"}
+
+- Eat eggs
+
+## Lunch (convex) {transition="convex" transition-speed="slow"}
+
+- Eat sandwich
+
+## Dinner (concave) {transition="concave" transition-speed="slow"}
+
+- Eat spaghetti
+
+## Going to sleep (zoom) {transition="zoom" transition-speed="slow"}
+
+- Get in bed
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_transition.html" width="800" height="250"></iframe>
+
+### スライドの要素のアニメーション
+
+スライド内の要素それぞれにアニメーションを設定することもできます。要素のアニメーションには、`{.fragment}`を用います。`{.fragment}`で指定するとスライド切り替え時には表示されず、次のタイミングで瞬時に表示される形となります。
+
+また、アニメーションの種類は`{.fragment}`内に、`.fade-in`のような形で指定します。設定可能な項目については、[QuartoのGuide](https://quarto.org/docs/presentations/revealjs/advanced.html#fragment-classes)を参照してください。
+
+```{markdown, filename="スライドの要素をアニメーションにする"}
+::: {.fragment}
+- Turn off alarm
+:::
+  
+::: {.fragment .fade-out}
+- Eat eggs
+:::
+  
+::: {.fragment .highlight-red}
+- Eat sandwich
+:::
+
+::: {.fragment .fade-in-then-out}
+- Eat spaghetti
+:::
+  
+::: {.fragment .fade-up}
+- Get in bed
+:::
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_fragment.html" width="800" height="250"></iframe>
+
+### スライド内のアニメーション
+
+#### auto-animate
+
+.fragmentとは別に、表示させる文字列や図をスムーズにアニメーションさせることもできます。このアニメーションの設定には`{auto-animation}`を用います。header2、つまりスライドごとに`{auto-animation=true}`を指定し、指定したスライドの両方に同じような文字列を表示させると、スムーズにアニメーションさせることができます。
+
+```{markdown, filename="auto-animateを設定する"}
+## {auto-animate=true}
+
+::: {style="color: blue;"}
+Turn off alarm
+:::
+
+## {auto-animate=true}
+
+::: {style="font-size: 3em; color: red;"}
+**Turn off alarm**
+:::
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_auto_animate1.html" width="800" height="250"></iframe>
+
+#### auto-animate：コードをアニメーション表示する
+
+同様に、`{auto-animation}`を用いると以下のようにコードの追記をアニメーションで表示させることもできます。
+
+````{markdown, filename="コードのauto-animate"}
+## {auto-animate="true"}
+
+```r
+iris |> 
+  ggplot(aes(x="Sepal.Length", y="Sepal.Width))
+```
+
+## {auto-animate=true}
+
+```r
+iris |> 
+  ggplot(aes(x="Sepal.Length", y="Sepal.Width)) +
+  geom_point(size=2)
+```
+
+## {auto-animate=true}
+
+```r
+iris |> 
+  ggplot(aes(x="Sepal.Length", y="Sepal.Width)) +
+  geom_point(size=2) +
+  labs(x="がく片の長さ", y="がく片の幅")
+```
+````
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_auto_animate2.html" width="800" height="250"></iframe>
+
+#### auto-animate：要素を上に追加する
+
+コードの追加に似ていますが、`{auto-animation}`を用いると文字列を上に追加する表現をアニメーションで行うこともできます。
+
+```{markdown, filename="要素を上に追加するアニメーション"}
+## {auto-animate="true"}
+
+- Eat eggs
+
+## {auto-animate="true"}
+
+- Turn off alarm
+- Eat eggs
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_auto_animate3.html" width="800" height="250"></iframe>
+
+#### auto-animate：図形の変形アニメーション
+
+図形もアニメーションで変形させることができます。ただし、これはやや使いどころが難しいように思います。
+
+```{markdown, filename="図形でアニメーション"}
+## {auto-animate=true auto-animate-easing="ease-in-out"}
+
+::: {.r-hstack}
+::: {data-id="box1" auto-animate-delay="0" style="background: #2780e3; width: 200px; height: 150px; margin: 10px;"}
+:::
+
+::: {data-id="box2" auto-animate-delay="0.1" style="background: #3fb618; width: 200px; height: 150px; margin: 10px;"}
+:::
+
+::: {data-id="box3" auto-animate-delay="0.2" style="background: #e83e8c; width: 200px; height: 150px; margin: 10px;"}
+:::
+:::
+
+## {auto-animate=true auto-animate-easing="ease-in-out"}
+
+::: {.r-stack}
+::: {data-id="box1" style="background: #2780e3; width: 250px; height: 250px; border-radius: 200px;"}
+:::
+
+::: {data-id="box2" style="background: #3fb618; width: 150px; height: 150px; border-radius: 200px;"}
+:::
+
+::: {data-id="box3" style="background: #e83e8c; width: 50px; height: 50px; border-radius: 200px;"}
+:::
+:::
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_auto_animate4.html" width="800" height="250"></iframe>
+
+### parallax
+
+スライド移行時に、背景の画像がアニメーションで少し移動する、parallaxもReveal.jsでは指定可能です。parallaxについては、[このReveal.jsのデモ](https://revealjs.com/demo/?parallaxBackgroundImage=https%3A%2F%2Fs3.amazonaws.com%2Fhakim-static%2Freveal-js%2Freveal-parallax-1.jpg&parallaxBackgroundSize=2100px%20900px)を確認していただけるとイメージしやすいかと思います。
+
+parallaxを利用したいときには、YAMLのrevealjs以下に`parallax-background-image`と`parallax-background-horizontal`、`parallax-background-vertical`を設定します。`parallax-background-image`には背景に表示する画像、`parallax-background-horizontal`と`parallax-background-vertical`にはスライドの切り替え時の背景画像の移動距離を指定します。
+
+ただし、このparallaxは設定がやや難しい上、現状（`knitr` ver.1.50）ではRstudio上のRenderボタンでは表示させることができません。Terminalから`quarto render`を用いてRenderしましょう。また、なぜか`iframe`ではparallaxをうまく表示させることができないようです。
+
+```{yaml, filename="parallaxで背景を設定する"}
+format: 
+  revealjs:
+    parallax-background-image: "../image/sasebo.jpg"
+    parallax-background-size: "450px 300px"
+    parallax-background-horizontal: 200
+```
+
+## Reveal.jsのプレゼンテーションのコントロール
+
+Reveal.jsのプレゼンテーションはHTMLですので、ファイルはHTMLとして保存されます。HTMLをウェブブラウザで開くことでプレゼンテーションを表示させることができます。
+
+このReveal.jsの使い方については、スライドの左下に表示されるメニューから、上の『Tools』を選択した時に表示されるショートカットを見ればわかるようになっています。例えば、フルスクリーン表示したい場合は『F』を押す、スピーカービューを表示したいときには『S』を押す、といった形で用いることができます。
+
+また、Reveal.jsには左右に矢印が付いていますが、この矢印は以下のように`controls: true`を設定することで表示されます。
+
+```{yaml, filename="矢印の表示"}
+format: 
+  revealjs:
+    controls: true
+```
+
+![Reveal.jsのToolsに表示されるショートカット](./image/revaeljs_tools.png)
+
+### タッチナビゲーション
+
+Reveal.jsでは、ケータイやタブレットのようなタッチディスプレイを持つ端末で、スワイプやタッチなどでスライドを移動することができます。このスワイプやタッチによる移動はタッチナビゲーションと呼ばれる機能によるものです。QuartoでReveal.jsのタッチナビゲーションの設定を行う場合、YAMLに`touch`を設定します。おそらく`touch`のデフォルトは`true`だと思いますので、特に設定する必要はありませんが、明示的に示したいときには`true`、タッチナビゲーションを利用したくない場合には`false`に設定するとよいでしょう。
+
+```{yaml, filename="scroll-viewを有効にする"}
+format: 
+  revealjs:
+    touch: true
+```
+
+### scroll-view
+
+Reveal.jsでは、上に示した通り、スライドの左右に矢印が表示され、この矢印を押すことでスライドを移動することが出来ます。また、キーボードの矢印でも移動可能です。ただし、Powerpointのようにスクロールでスライドを移動することはできません。
+
+このスクロールで移動ができるようにするためのYAMLが`scroll-view`です。`scroll-view: true`を設定すると、以下の例のようにスクロールバーが右に表示されるようになり、スクロールでスライドを移動することが出来るようになります。
+
+また、このYAMLを設定していないプレゼンテーションにおいても、キーボードの『O』を押すことでもスクロールできるようにすることができます。
+
+```{yaml, filename="scroll-viewを有効にする"}
+format: 
+  revealjs:
+    scroll-view: true
+```
+
+<iframe class="slide-deck" src="./sample_revealjs/sample_scroll_view.html" width="800" height="250"></iframe>
+
+### スピーカービューにテキストを表示する
+
+Powerpointでプレゼンテーションを行うときに表示されるような画面、スピーカービューもReveal.jsで用いることができます。スピーカービューを用いる場合には、上記の通りキーボードの『S』を押します。
+
+この際に、プレゼンテーションで話す内容をメモしたもの、スピーカーノートを表示させることもできます。スピーカーノートを表示させる場合、そのスライドの要素として、`{.notes}`を以下のように設定します。
+
+```{markdown, filename="Speaker noteを設定する"}
+## スライド
+
+::: {.notes}
+このスライドではスピーカーノートについてお話しします。
+:::
+```
+
+:::{.callout-tip collapse=true}
+## code-line-numbers
+
+[Quartoのreveal.jsのGuide](https://quarto.org/docs/presentations/revealjs/#line-highlighting)には`code-line-numbers`に関する記載がありますが、この`code-line-numbers`に関してはPythonのコードをRenderするときにしか有効ではなく、RのコードをRenderする場合（`knitr` ver.1.50が用いられる場合）には現状有効ではないようです。以下のコードはエラーとなります。また、Rのコードを含まない`.qmd`ファイルに関しては、RstudioでRenderボタンを用いるのではなく、TerminalからQuarto CLIを用い、`quarto render`でRenderを行った方がよいでしょう。
+
+````{markdown, filename="code-line-numbers"}
+```{r, code-line-numbers="1-3"} # 1～3をハイライト、はできない
+x <- matrix(c(4, 12, 8, 8), nrow = 2)
+colnames(x) <- c("observed", "expected")
+rownames(x) <- c("male", "female")
+fisher.test(x)
+```
+
+---
+
+```{r, code-line-numbers="2|4"} # 2と4を順にハイライト、はできない
+x <- matrix(c(4, 12, 8, 8), nrow = 2)
+colnames(x) <- c("observed", "expected")
+rownames(x) <- c("male", "female")
+fisher.test(x)
+```
+````
+
+Quartoは現状（2025年）開発中であり、Rだけ対応していること、Pythonだけ対応していること、Observableではできないことなどがあります。
+
+:::

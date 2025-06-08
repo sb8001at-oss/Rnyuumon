@@ -17,7 +17,7 @@ a
 ```
 ````
 
-```{r}
+```{r, collapse=TRUE}
 # この間にコードを記載する
 a <- c(1, 2, 3, 4, 5)
 a
@@ -32,7 +32,7 @@ print(a)
 ```
 ````
 
-```{python}
+```{python, collapse=TRUE}
 a = [1, 2, 3, 4, 5] # リスト（Rにはない記法）
 print(a)
 ```
@@ -66,7 +66,7 @@ knitr::kable(iris[1:2, ])
 ```
 ````
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, collapse=TRUE}
 # eval = FALSEはコードを実行しない際のchunk option
 knitr::kable(iris[1:2, ])
 ```
@@ -97,7 +97,7 @@ plot(cars)
 ```
 ````
 
-```{r, filename="chunk optionで.column-marginを設定し、右にアウトプットを表示"}
+```{r, filename="chunk optionで.column-marginを設定し、右にアウトプットを表示", collapse=TRUE}
 #| message: false
 #| column: margin
 
@@ -128,9 +128,11 @@ plot(cars)
 
 また、`echo:fenced`の代わりに、括弧を2重（`{{}}`）にすることでもchunkを表示させることができます。この方法では他のオプションを指定しにくいため、`echo:fenced`を用いた方がよいでしょう。
 
+````{markdown, filename="カッコを2重にする"}
 ```{{r}}
 1 + 1
 ```
+````
 
 ### 出力の表示方法の変更：results: asis
 
@@ -216,7 +218,7 @@ a + b
 
 ### 実行結果をキャッシュする：cache
 
-[cache](https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5_(%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0))（キャッシュ）とは、演算結果を保存しておくことで、コードを書き換えない時には以前に保存した結果を、コードを書き換えた時には新たな演算を実行するための、chunkの機能のことです。計算が重いchunkでは`cache:true`と設定しておくと、Renderするときにかかる時間を省略できます。
+[cache](https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5_(%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0))（キャッシュ）とは、演算結果を保存しておくことで、コードを書き換えない時には以前に保存した結果を、コードを書き換えた時には新たな演算を実行するための、chunkの機能のことです。計算が重いchunkでは`cache:true`と設定しておくと、Renderするときにかかる演算の時間を省略できます。
 
 ````{markdown, filename="cacheの設定"}
 ```{r}
@@ -270,13 +272,13 @@ Quartoでは、chunkを書かずに、Markdownの文中でRを実行すること
 temp <- rnorm(1)
 ```
 
-次に、以下のように、\`\{r\}\`で囲い、Markdownの文中に記載することで、その文中のRのコードを実行することが出来ます。
+次に、以下のように、`{r}`で囲い、Markdownの文中に記載することで、その文中のRのコードを実行することが出来ます。
 
-````{markdown, filename="インラインコード"}
+````{markdown, filename="インラインコード", eval=FALSE}
 変数tempには`{\r} temp`が代入されている。 # バックスラッシュは不要
 ````
 
-変数tempには`{r} temp`が代入されている。
+変数`temp`には`{r} temp`が代入されている。
 
 <hr>
 
