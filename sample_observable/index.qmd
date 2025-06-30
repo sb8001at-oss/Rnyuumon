@@ -1,5 +1,5 @@
 ---
-title: "日本の人口統計（1920～2020）"
+title: "日本の人口統計（1920～2024）"
 echo: false
 format: 
   dashboard: 
@@ -9,7 +9,7 @@ format:
 # {.sidebar}
 
 ```{ojs}
-viewof year = Inputs.range([1920, 2020], {label: "Year", step: 1})
+viewof year = Inputs.range([1920, 2024], {label: "Year", step: 1, value: 2024})
 ```
 
 ```{ojs}
@@ -27,11 +27,25 @@ viewof select_pref = Inputs.select(["北海道","青森県","岩手県","宮城�
 
 <hr>
 
+```{ojs}
+//| content: valuebox
+//| title: "年"
+//| color: primary
+
+year
+```
+
+<hr>
+
 Geojsonの出典：[47都道府県のポリゴンデータ geojson（Japonyolブログ）](https://japonyol.net/editor/article/47-prefectures-geojson.html)
 
 データの出典：[「政府統計の総合窓口(e-Stat)」、統計データを探す－人口統計「我が国の推計人口（大正9年～平成12年）」](https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200524&bunya_l=02&tstat=000000090001&cycle=0&tclass1=000000090004&tclass2=000000090005&tclass3val=0) 
 
 及び [「政府統計の総合窓口(e-Stat)」、統計データを探す－人口統計「長期的時系列データ（大正9年～平成12年）」](https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200524&tstat=000000090001&cycle=0&tclass1=000000090004&tclass2=000001051180&tclass3val=0)
+
+及び [「政府統計の総合窓口(e-Stat)」、統計データを探す－人口統計「各年10月1日現在人口 - （年次）」](https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200524&tstat=000000090001&cycle=7&tclass1=000001011679&tclass2val=0)
+
+データは長期にわたるもので、統計取得方法が必ずしも同じではないこと、データ処理の一部は手作業で行っているため、正確ではない場合があります。Quarto - Observableのサンプルとして作成しました。
 
 # 各県の統計データ（棒グラフ）
 
@@ -46,7 +60,7 @@ Plot.plot({
     Plot.lineY(d_pop, {x: "year", y: "value", stroke: "prefectures", tip: "x"}),
     Plot.text(d_pop, Plot.selectLast({x: "year", y: "value", z: "prefectures", text: "prefectures", textAnchor: "start", dx: 2}))
   ],
-  caption: "日本の人口の推移（対数変換、1920～2020年）",
+  caption: "日本の人口の推移（対数変換、1920～2024年）",
 })
 ```
 
@@ -71,8 +85,6 @@ Plot.plot({
 ```
 
 ### Column
-
-
 
 ```{ojs}
 Plot.plot({
@@ -111,7 +123,7 @@ Plot.plot({
     Plot.barY(d_sex_ratio, {x: "prefectures", y: "value", sort: {x: "y", reverse: true},
     fill: "steelblue", tip: "x"})
   ],
-  caption: "性別人口比",
+  caption: "性別人口比（男性/女性）",
 })
 ```
 
@@ -126,7 +138,7 @@ Plot.plot({
   },
   y: {
     grid: true,
-    labelAnchor: "center"
+    labelAnchor: "center",
   },
   color: {
     scheme: "PiYG",
@@ -163,6 +175,7 @@ Plot.plot({
     type: "linear", 
     legend: true,
     label: legend_text_pop,
+    domain: [0, 13000],
   }
 })
 ```
@@ -220,6 +233,7 @@ Plot.plot({
     type: "linear", 
     legend: true,
     label: legend_text_sex,
+    domain: [0, 6500],
   }
 })
 ```
@@ -259,39 +273,39 @@ import { aq, op } from "@uwdata/arquero"
 
 ```{ojs}
 //| output: false
-d_pop = FileAttachment("d_pop.csv").csv({ typed: true })
-d_sex = FileAttachment("d_sex.csv").csv({ typed: true })
-d_pinc = FileAttachment("d_pinc.csv").csv({ typed: true })
+d_pop = FileAttachment("d_pop_24.csv").csv({ typed: true })
+d_sex = FileAttachment("d_sex_24.csv").csv({ typed: true })
+d_pinc = FileAttachment("d_pinc_24.csv").csv({ typed: true })
 ```
 
 ```{ojs}
 //| output: false
-legend_text_pop = "Population at " + year + " in Japan (thouthand)" 
+legend_text_pop = "Population in " + year + " in Japan (thouthand)" 
 ```
 
 ```{ojs}
 //| output: false
-caption_pop = "Population at " + year + " in Japan (thouthand)" 
+caption_pop = "Population in " + year + " in Japan (thouthand)" 
 ```
 
 ```{ojs}
 //| output: false
-legend_text_sex = "Population of " + sex + " at " + year + " in Japan (thouthand)" 
+legend_text_sex = "Population of " + sex + " in " + year + " in Japan (thouthand)" 
 ```
 
 ```{ojs}
 //| output: false
-caption_sex = "Population at " + year + " in Japan (thouthand)" 
+caption_sex = "Population in " + year + " in Japan (thouthand, " + "sex: " + sex + ")" 
 ```
 
 ```{ojs}
 //| output: false
-legend_text_pinc = "Increase rate of population at " + year + " in Japan" 
+legend_text_pinc = "Increase rate of population in " + year + " in Japan" 
 ```
 
 ```{ojs}
 //| output: false
-caption_pinc = "Population at " + year + " in Japan (thouthand)" 
+caption_pinc = "Increase rate of population in " + year + " in Japan (%)" 
 ```
 
 ```{ojs}

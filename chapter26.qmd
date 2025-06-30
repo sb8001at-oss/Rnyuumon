@@ -2,7 +2,7 @@
 
 現在のRでは、デフォルトのグラフ作成関数はデータの確認に用いられていることが多く、プレゼンテーションや論文など、人に見せるためのきれいなグラフを作成する場合には、ほとんどの場合**`ggplot2`**が用いられています。`ggplot2`を用いると、美しいグラフを統一感のある記法で簡単に描画することができます。
 
-`ggplot2`には、その使い方についてのみ書かれた教科書が多数出ているぐらいに沢山の関数・引数が設定されています。この章での解説は`ggplot2`の紹介に留めますが、興味のある方は[リファレンス](https://ggplot2.tidyverse.org/reference/)や[チートシート](https://rstudio.github.io/cheatsheets/data-visualization.pdf)、教科書（[ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html)、[ggplot2: Elegant Graphics for Data Analysis 日本語版](https://www.maruzen-publishing.co.jp/item/?book_no=294192)、[R graphic cookbook](https://r-graphics.org/)、[R graphic cookbook 日本語版](https://www.oreilly.co.jp/books/9784873118925/)など）を読むことをお勧めします。
+`ggplot2`には、その使い方についてのみ書かれた教科書が多数出ているぐらいに沢山の関数・引数が設定されています。この章での解説は`ggplot2`の紹介に留めますが、興味のある方は[リファレンス](https://ggplot2.tidyverse.org/reference/)や[チートシート](https://rstudio.github.io/cheatsheets/data-visualization.pdf)、教科書（[ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html)、[R graphic cookbook](https://r-graphics.org/)、[R graphic cookbook 日本語版](https://www.oreilly.co.jp/books/9784873118925/)など）を読むことをお勧めします。
 
 `ggplot2`は`tidyverse`に含まれるライブラリの一つですので、`tidyverse`を呼び出すことで使用することができます。他の`tidyverese`の機能である、`dplyr`や`tidyr`、パイプ演算子などとも相性が良く、これらを`ggplot2`と同時に用いるのが一般的です。
 
@@ -120,7 +120,7 @@ d |>
 
 ### geom_smooth
 
-`geom_smooth`は`geom_point`等で表示した点に対して、回帰の式をあてはめ、そのグラフを表示するための関数です。特に引数を指定していない場合、[30章](./chapter30.html)で説明するloess回帰をあてはめ、回帰を行った線を表示します。また、95%信頼区間を`geom_ribbon`と同様の表記で示します。
+`geom_smooth`は`geom_point`等で表示した点に対して、回帰の式をあてはめ、そのグラフを表示するための関数です。特に引数を指定していない場合、[30章](chapter30.qmd#loesslowess平滑化)で説明するloess回帰をあてはめ、回帰を行った線を表示します。また、95%信頼区間を`geom_ribbon`と同様の表記で示します。
 
 ```{r, filename="geom_smooth関数"}
 iris |> 
@@ -562,9 +562,9 @@ nc |>
 
 ## Rでの地図描画ライブラリ
 
-`sf`は2018年に発表された、比較的新しいパッケージです。`sf`が出てくるまでは、Rで地図データを取り扱う方法は様々で、統一されているという感はありませんでしたが、今後は`sf`がデフォルトの地図データ取り扱い方法になっていくのではないかと思います。地図データの取扱いに関してはオンラインの英語の教科書（[Geocomputation with R](https://bookdown.org/robinlovelace/geocompr/)）があり、日本語訳（[Geocomputation with R (日本語版)](http://124.219.182.167/geo/)）も公開されています。
+`sf`は2018年に発表された、比較的新しいパッケージです。`sf`が出てくるまでは、Rで地図データを取り扱う方法は様々で、統一されているという感はありませんでしたが、今後は`sf`がデフォルトの地図データ取り扱い方法になっていくのではないかと思います。地図データの取扱いに関してはオンラインの英語の教科書（[Geocomputation with R](https://bookdown.org/robinlovelace/geocompr/)）があり、日本語訳（[Geocomputation with R (日本語版)](https://r.geocompx.org/jp/)）も公開されています。
 
-地図表示のためのライブラリには`ggplot2`だけでなく、[Leaflet for R](https://rstudio.github.io/leaflet/)というJavascriptの地図ライブラリをRで利用できるようにしたものや、`ggplot2`風の記法で色々なデザインのグラフを描画できる[tmap](https://r-tmap.github.io/tmap/)などもあります。`sf`、`leaflet`、`tmap`については[36章](./chapter36.html)で説明します。
+地図表示のためのライブラリには`ggplot2`だけでなく、[Leaflet for R](https://rstudio.github.io/leaflet/)というJavascriptの地図ライブラリをRで利用できるようにしたものや、`ggplot2`風の記法で色々なデザインのグラフを描画できる[tmap](https://r-tmap.github.io/tmap/)などもあります。`sf`、`leaflet`、`tmap`については[45章](chapter45.qmd)で説明します。
 
 :::
 
@@ -892,7 +892,6 @@ ggsave("./image/cars_cairo_pdf.pdf", p, device=cairo_pdf, family = "Meiryo UI")
 
 :::
 
-
 ## Extensions
 
 `ggplot2`には、`ggplot2`に機能を追加する[Extensions](https://exts.ggplot2.tidyverse.org/gallery/)というライブラリがたくさん存在します。代表的なExtensionsを以下に紹介します。
@@ -965,7 +964,7 @@ ggpairs(iris, mapping=aes(color=Species))
 
 ## 他言語のグラフ作成との比較
 
-R以外の言語にも、グラフ作成のライブラリが備わっています。例えばPythonでは、[matplotlib](https://matplotlib.org/stable/)や[seaborn](https://seaborn.pydata.org/index.html)、[plotly](https://plotly.com/graphing-libraries/)などがあります。Juliaでは[Julia Plots](https://docs.juliaplots.org/stable/gallery/gr/)がデフォルトのグラフ作成ライブラリです。いずれもどちらかと言えばRのデフォルトに近い関数を用いてグラフを作成するようです。
+R以外の言語にも、グラフ作成のライブラリが備わっています。例えばPythonでは、[matplotlib](https://matplotlib.org/stable/)や[seaborn](https://seaborn.pydata.org/index.html)、[plotly](https://plotly.com/graphing-libraries/)などがあります。Juliaでは[GR](https://docs.juliaplots.org/stable/gallery/gr/)がデフォルトのグラフ作成ライブラリです。いずれもどちらかと言えばRのデフォルトに近い関数を用いてグラフを作成するようです。
 
 `ggplot2`では、データ、aes、グラフの形をそれぞれ`ggplot`、`aes`、`geom`関数で表現し、ジェネリック関数として設定された`+`で繋ぐ点が特徴です。特徴が他のライブラリとは異なるため、記法に慣れるまでは他のライブラリよりグラフを作成するのが難しく感じるかもしれません。しかし、`ggplot2`の経験を積み、慣れてしまえば表現したいグラフを他のライブラリよりスムーズに作成することができます。
 

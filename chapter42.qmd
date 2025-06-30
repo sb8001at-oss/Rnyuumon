@@ -1,0 +1,680 @@
+# Quarto：WebsiteとBook
+
+```{r, echo = FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+ここまでに、QuartoでHTML、PDF、Wordなどの文書、Reveal.jsなどのプレゼンテーション、インタラクティブなダッシュボードを作成する手法を説明してきました。Quartoでは、HTMLの拡張として、ブログなどを含む**Website**や教科書などの本のHTMLとして表現する、**Book**を作成することもできます。以下にWebsiteやHTMLを作成する手順について、簡単に説明していきます。
+
+## Quarto project
+
+Quartoでは、**QuartoのProject**というものを設定することができます。RStudioを用いる場合、Quarto Projectは[39章](chapter39.qmd)で説明したRStudioのProjectとほぼ同じです。RStudioではProjectを作成するとき、Projectのタイプを選択することができます。
+
+![RStudioでProject typeを選択する](./image/Rstudio_quarto_project.png)
+
+このリストから、「Quarto Project」や「Quarto Website」、「Quarto Book」などを選択すると、そのタイプに従ったプロジェクトと共に、いくつかのqmdファイルがProjectのフォルダに作成されます。
+
+![Quarto Projectで作成されるファイル（Website）](./image/quarto_project_files.png)
+
+RStudioを用いている場合には、このフォルダ内の`.Rproj`ファイルを開くとRStudioでプロジェクトが展開されます。
+
+一方で、VSCodeなどのテキストエディタやJupyter Notebookなどを用いている場合には、RStudioのようにProjectを作成することはできません。そこで、Quarto CLIでは、TerminalからProjectを作成できるようになっています。
+
+```{markdown, filename="Quarto Projectを作成する"}
+quarto create project
+```
+
+TerminalからQuarto Projectを作成すると、まずはプロジェクトのタイプを入力する画面が表示されます。タイプには、default、website、blog、manuscript、book、[confluence](https://quarto.org/docs/publishing/confluence.html)（Wikiみたいなもの）の6つの選択肢が表示されるので、作成する文書に対応したタイプを選択します。
+
+次に、Directory（フォルダ名）を入力します。Directoryを入力すると、そのDirectory内にProjectが作成されます。このProjectのフォルダには、上で示した作成されるファイルから、`.Rproj`ファイルが除かれたものが作成されます。このフォルダに移動し、`quarto render`を行うと、テンプレートの文書（Websiteの場合はHTML）を作成することができます。
+
+RStudioではProjectに従いいろいろな設定が行われるため、複雑な文書を作成する場合にはProjectを作成しておいた方がよいですが、VSCodeなどを用いる場合には特に必須ではなく、`_quarto.yml`にYAMLの設定を行えばWebsiteやBookを特に問題なく作成することができます。ただし、Projectを作成するとテンプレートとなるファイル・フォルダを生成してくれるため、Quartoで文書の作成を始める場合には有用でしょう。
+
+以下に、各タイプのProjectで作成されるファイル・フォルダの構造、_quarto.ymlの設定、Renderで出力されるHTMLの見ためを示します。
+
+:::{.column-page-right}
+
+:::{.panel-tabset}
+
+## default
+
+:::{.grid}
+
+:::{.g-col-4}
+
+```{markdown, filename="フォルダ構造"}
+test_website
+│- about.qmd
+│- index.qmd
+│- styles.css
+└─ _quarto.yml
+```
+
+:::
+
+:::{.g-col-4}
+
+```{yaml, filename="_quarto.yml"}
+project:
+  title: "test_default"
+```
+
+:::
+
+:::{.g-col-4}
+
+![HTMLの見た目](./image/project_default.png)
+
+:::
+
+:::
+
+## website
+
+:::{.grid}
+
+:::{.g-col-4}
+
+```{markdown, filename="フォルダ構造"}
+test_website
+│- about.qmd
+│- index.qmd
+│- styles.css
+└─ _quarto.yml
+```
+
+:::
+
+:::{.g-col-4}
+
+```{yaml, filename="_quarto.yml"}
+project:
+  type: website
+
+website:
+  title: "test_website"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+```
+
+:::
+
+:::{.g-col-4}
+
+![HTMLの見た目](./image/project_website.png)
+
+:::
+
+:::
+
+## manuscript
+
+:::{.grid}
+
+:::{.g-col-4}
+
+```{markdown, filename="フォルダ構造"}
+test_manuscript
+│- references_bib
+│- index.qmd
+└─ _quarto.yml
+```
+
+:::
+
+:::{.g-col-4}
+
+```{yaml, filename="_quarto.yml"}
+project:
+  type: manuscript
+
+manuscript:
+  article: index.qmd
+
+format:
+  html:
+    comments:
+      hypothesis: true
+  docx: default
+  jats: default
+
+  # (other formats)
+  # pdf: default
+
+execute:
+  freeze: true
+```
+
+:::
+
+:::{.g-col-4}
+
+![HTMLの見た目](./image/project_manuscript.png)
+
+:::
+
+:::
+
+## book
+
+:::{.grid}
+
+:::{.g-col-4}
+
+```{markdown, filename="フォルダ構造"}
+test_book
+│- cover.png
+│- index.qmd
+│- intro.qmd
+│- references.bib
+│- references.qmd
+│- summary.qmd
+└─ _quarto.yml
+```
+
+:::
+
+:::{.g-col-4}
+
+```{yaml, filename="_quarto.yml"}
+project:
+  type: book
+
+book:
+  title: "test_book"
+  author: "Norah Jones"
+  date: "2025/6/13"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+  pdf:
+    documentclass: scrreprt
+```
+
+:::
+
+:::{.g-col-4}
+
+![HTMLの見た目](./image/project_book.png)
+
+:::
+
+:::
+
+## confluence
+
+:::{.grid}
+
+:::{.g-col-4}
+
+```{markdown, filename="フォルダ構造"}
+test_confluence
+│- index.qmd
+│- project-roadmap.qmd
+│- _quarto.yml
+│
+└─ reports
+    │- 2022-01.qmd
+    └- 2022-03.qmd    
+```
+
+:::
+
+:::{.g-col-4}
+
+```{yaml, filename="_quarto.yml"}
+project:
+  type: confluence
+  title: "test_confluence"
+```
+
+:::
+
+:::{.g-col-4}
+
+![HTMLの見た目](./image/project_confluence.png)
+
+:::
+
+:::
+
+## blog
+
+:::{.grid}
+
+:::{.g-col-4}
+
+```{markdown, filename="フォルダ構造"}
+test_confluence
+│- about.qmd
+│- index.qmd
+│- profile.jpg
+│- styles.css
+│- _quarto.yml
+│
+└─ posts
+    │- _metadata.yml
+    │
+    ├- post-with-code
+    │  ├- image.jpg
+    │  └- index.qmd
+    │
+    └- welcome
+       ├- index.qmd
+       └- thumbnail.jpg
+```
+
+:::
+
+:::{.g-col-4}
+
+```{yaml, filename="_quarto.yml"}
+project:
+  type: website
+
+website:
+  title: "test_blog"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/
+      - icon: twitter
+        href: https://twitter.com
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+```
+
+:::
+
+:::{.g-col-4}
+
+![HTMLの見た目](./image/project_blog.png)
+
+:::
+
+:::
+
+:::
+
+:::
+
+## HTMLとWebsite、Quarto Bookの違い
+
+Quartoでは、YAMLに出力ファイルを指定せずにRenderを行うと、HTMLが出力されます。ですので、Markdown、YAMLを用いれば、ある程度自由にHTMLを用いたウェブページを作成することができます。
+
+QuartoでWebsiteやBookを指定してWebsite・Bookを作成する利点は、それぞれを指定することである程度出力するHTMLのデザインを固定することができる点にあります。Websiteではある程度自由に、複数の`.qmd`を一つのウェブページに仕立てることができます。また、Bookであれば、`.qmd`を各章とし、本のように一本道のウェブページを作成できます。
+
+### website・bookの設定
+
+Website、Bookを作成する場合、`_quarto.yml`に`project: type: website`または`project: type:  book`を設定します。この`project`は上記のようにQuarto Projectを作成していなくても設定可能です。
+
+また、`.qmd`ファイル内で`project`を設定しても、`project`に応じた設定は利用できません。`project`は`_quarto.yml`内に設定して用います。
+
+```{yaml, filename="project typeの設定"}
+project: 
+  type: website
+project: 
+  type: book
+```
+
+:::{.callout-tip collapse=true}
+## 選択可能なtype
+
+`type`には、`default`、`website`、`book`、`manuscript`の[4つが設定できる](https://quarto.org/docs/reference/projects/options.html)とされていますが、上記のように`confluence`も設定可能です。blogは`website`の一形態となるため、`type`は`website`となります。
+:::
+
+### index.qmd
+
+`website`のトップページとなるのは、`index.qmd`という`.qmd`ファイルです。`index.qmd`は`book`や`blog`でもトップページとなります。
+
+### Renderする.qmdを指定する
+
+projectを設定した`_quarto.yml`と同じフォルダ・サブフォルダ内に保存されている`.qmd`ファイルは、そのprojectのファイルであると認識されます。このフォルダ内の.qmdファイルをRenderすると、基本的にはそのフォルダおよびサブフォルダ内のすべての`.qmd`ファイルがRenderされます。
+
+Projectのフォルダ内のうち、Renderしたい`.qmd`ファイルを指定する場合には、`project: render:`に`.qmd`ファイルを設定します。
+
+```{yaml, filename="Renderするファイルを指定する"}
+project:
+  render:
+    - section1.qmd
+    - section2.qmd
+```
+
+また、ファイル名の前に`!`を置くと、そのファイルのみを除いてRenderすることもできます。ただし、この場合には`*.qmd`という形で、すべての`.qmd`ファイルを指定しておく必要があります。
+
+```{yaml, filename="Renderしないファイルを指定する"}
+project:
+  render:
+    - "*.qmd" # すべての.qmdファイルをRenderしない
+    - "!ignored.qmd" # 選択した.qmdファイルをRenderしない
+    - "!ignored-dir/" # 指定したディレクトリ内の.qmdファイルをRenderしない
+```
+
+### ブログを作成する
+
+blogはwebsiteの特殊な形の一つで、基本的なWebsiteの構造に投稿（posts）を追加していく形となります。blogのフォルダ構造は上に示した通り、以下のようになります。`posts`ディレクトリ内にpostsに当たる.qmdファイルを追加していきます。
+
+また、`posts`ディレクトリ内にサブフォルダを作成し、その中に.qmdファイルを作成することで、各postごとのファイルをそれぞれ別に保存することもできます。
+
+```{markdown, filename="ブログのフォルダ構造"}
+test_confluence
+│- about.qmd
+│- index.qmd
+│- profile.jpg
+│- styles.css
+│- _quarto.yml
+│
+└─ posts
+    │- _metadata.yml
+    │
+    ├- post-with-code
+    │  ├- image.jpg
+    │  └- index.qmd
+    │
+    └- welcome
+       ├- index.qmd
+       └- thumbnail.jpg
+```
+
+#### _metadata.yml
+
+上記のpostsディレクトリ内には、`_metadata.yml`というファイルがあります。これは、`_quarto.yml`に設定したYAMLに加えて、postsのみに設定するためのYAMLを指定するためのファイルです。`blog`に限らず、websiteでも同様にサブフォルダ内に`_metadata.yml`を設定することで、そのサブフォルダ内の.qmdのデザインやchunkの設定などをpost意外とは別の形で設定することができます。
+
+ただし、サブフォルダ内の`.qmd`に適用されるYAMLは`_quarto.yml`と`_metadata.yml`を統合したものになり、`_metadata.yml`の設定のみだけではなく、`_quarto.yml`の内容も同様に適用されます。
+
+#### postsの設定
+
+各postにはタイトルや著者、登校日、ブログのカテゴリ、トップ画像を設定することができます。タイトルや著者、は[39章](./chapter39.html)に記載した通り、`title`や`author`、`date`を設定します。ブログのカテゴリは`categories`に、ブログのトップ画像として用いる画像は`image`にそれぞれ設定します。
+
+```{yaml, filename="Blog：PostのYAML設定"}
+---
+title: "Post With Code"
+author: "Harlow Malloc"
+date: "2025-06-13"
+categories: [news, code, analysis]
+image: "image.jpg"
+---
+```
+
+`categories`は以下のような形で設定することもできます。
+
+```{yaml, filename="Blog：カテゴリの設定"}
+categories:
+  - news
+  - code
+  - analysis
+```
+
+#### Listing
+
+Listingとはブログのpostの一覧を表示することです。Listingはindex.qmdのページに表示されます。このListingについては、YAMLで`listing`を設定することで表示を変更することができます。
+
+```{yaml, filename="Blog：投稿のlistingの設定"}
+---
+title: "myblog"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+---
+```
+
+設定可能なYAMLの一部を以下に示します。その他の設定項目については[QuartoのReference](https://quarto.org/docs/reference/projects/websites.html)をご参照ください。
+
+```{r, echo=FALSE}
+d <- read_excel("./data/Quarto_YAMLs.xlsx", sheet=8)
+knitr::kable(d, caption="Listingに関するYAML")
+```
+
+#### Aboutページの作成
+
+Quartoでは、著者の名前や所属、website、blogの内容などを表示するAboutのページを、[`postcards`](https://cran.r-project.org/web/packages/postcards/readme/README.html)パッケージ[@postcards_bib]のデザインに従い設定することができます。`postcards`のデザインを採用する場合、about.qmdに`about: template:`のYAMLを設定します。templateには、`jolla`、`trestles`、`solana`、`marquee`、`broadside`のいずれかを設定することができます。
+
+```{markdown, filename="Aboutページ"}
+---
+title: "xjorv"
+image: profile.jpg
+about:
+  template: jolla
+---
+
+xjorvはしがない平社員のサラリーマンです。趣味としてRを触り、気まぐれに教科書を書いています。
+
+## Education
+
+University of bakada, Tokyo | Tokyo, Japan
+Ph.D in Tunnel Science | Sept 20XX - June 20XX
+```
+
+:::{.panel-tabset}
+
+## jolla
+
+![](./image/about_jolla.png)
+
+## trestles
+
+![](./image/about_trestles.png)
+
+## solana
+
+![](./image/about_solana.png)
+
+## marquee
+
+![](./image/about_marquee.png)
+
+## broadside
+
+![](./image/about_broadside.png)
+:::
+
+#### RSS
+
+Listingの説明に記載した通り、YAMLに`feed: true`を設定すると、[RSSフィード](https://ja.wikipedia.org/wiki/RSS)を設定することができます。
+
+```{yaml, filename="RSSの設定"}
+---
+title: "a post"
+listing:
+  contents: posts
+  feed: true
+---
+```
+
+ただし、個別の.qmdファイルで`feed: true`と設定しただけでは、RSSを設定することはできず、_quarto.ymlで以下のようにRSSの設定を別途記載する必要があります。
+
+```{yaml, filename="RSSの設定2"}
+website:
+  title: "xjorv's blog"
+  site-url: https://www.myblogexample.io
+  description: "A cheap sample blog"
+```
+
+## Quarto Books
+
+Quartoで教科書などの本を書くときに用いる`project`の`type`が`type: book`です。`book`はR markdownの拡張である、[bookdown](https://bookdown.org/)[@bookdown_bib]を基とした`type`で、YAMLでは以下のように記載することで`book`のスタイルを適用することができます。
+
+```{yaml, filename="type: bookの設定"}
+project:
+  type: book
+```
+
+### Quarto Booksの構造
+
+Quarto Booksの構造は`website`と比較して単純で一本道となります。Booksの基本的な要素は`index.qmd`、各章に当たる`.qmd`ファイル、`summary.qmd`、`reference.qmd`の4つです。Quarto Booksでは`index.qmd`は表紙とまえがき、`summary.qmd`があとがき、`reference.qmd`は参考文献に当たります。この3種類はQuarto Projectを用いる場合にも作成されます。
+
+各章の`.qmd`ファイルにはどのような名前を付けても問題ありませんが、各文書がどの章を構成するのかをYAMLで指定する必要があります。
+
+```{yaml, filename="Bookのchaptersを設定する"}
+book: 
+  chapters:
+    - index.qmd
+    - part: "part 1"
+      chapters: 
+      - chapter1.qmd
+      - chapter2.qmd
+    - part: "part 2"
+      chapters: 
+      - chapter3.qmd
+      - chapter4.qmd
+    - summary.qmd
+    - references.qmd
+```
+
+上記のように設定すると、本の章立てとしては、まず始めのページが`index.qmd`、次に`chapter1.qmd`と`chapter2.qmd`が「part 1」という話題の1章、2章、次の`chapter3.qmd`と`chapter4.qmd`が「part 2」の3章、4章、最後に`summary.qmd`と`references.qmd`が続く形になります。要は、この`chapters`のYAMLに設定した順に章が進むということになります。
+
+ただし、章番号は上記の`chapter1.qmd`が1章にはならず、`index.qmd`が1章とされます。`index.qmd`を1章とせず、`chapter1.qmd`を1章とする場合には、`index.qmd`のheaderに`{.unnumbered}`を設定する必要があります。また、`summary.qmd`や`references.qmd`にも`index.qmd`と同様に章番号が振られるので、番号を振りたくない場合には`{.unnumbered}`を設定するとよいでしょう。
+
+```{markdown, filename="ヘッダーに番号をつけない"}
+## はじめに {.unnumbered}
+```
+
+### 参照（Cross references）
+
+Quarto Bookでは、その章内の図やchunkだけでなく、他の章の記載内容を参照すること（Cross references）ができます。たとえば、以下のようにリンクを記載すると、特定の章の.qmdに対応したページへのリンクを作成できます。
+
+```{markdown, filename="章の参照"}
+[第1章](chapter1.qmd)
+
+[第1章](./chapter1.html) # このような形でも章へのリンクを作成できる
+```
+
+[第1章](chapter1.qmd)
+
+<hr>
+
+また、以下のようなリンクを作成することで、その章の各header（小項目）までのリンクを作成することもできます。
+
+```{markdown, filename="章内のヘッダーの参照"}
+[第1章](chapter1.qmd#rstudioのインストール)
+```
+
+[第1章 Rstudioのインストール](chapter1.qmd#rstudioのインストール)
+
+<hr>
+
+### 図・画像・表への参照
+
+chunk optionとして`label`を設定しておくと、その`label`を参照し、リンクを作成することができます。また、画像や表に対しても参照を行うことができます。
+
+ただし、参照のための`label`の付け方にはルールがあり、図や画像のラベルは`fig-`から、表のラベルは`tbl-`から始める必要があります。また、labelにはアンダースコア（`_`）を用いることはできません。
+
+```{{r}}
+#| label: fig-cars-plot
+#| filename: chunk：ラベルを設定する
+
+plot(cars)
+```
+
+```{r, echo=FALSE}
+#| label: fig-cars-plot
+
+plot(cars)
+```
+
+```{markdown, filename="chunkの出力を参照する"}
+`cars`は自動車のスピードと停止するまでの距離の関係を表したデータです @fig-cars-plot 。
+```
+
+`cars`は自動車のスピードと停止するまでの距離の関係を表したデータです @fig-cars-plot 。
+
+<hr>
+
+```{markdown, filename="図にラベルを設定する"}
+![大仏](./image/bud.png){#fig-bud}
+  
+奈良の大仏 @fig_bud
+```
+
+![大仏](./image/bud.jpg){#fig-bud}
+  
+奈良の大仏 @fig-bud
+
+<hr>
+
+```{markdown, filename="表にラベルを設定する"}
++-----+-----+-----+
+| pet | age | sex |
++=====+=====+=====+
+| dog | 5   | F   |
++-----+-----+-----+
+| cat | 3   | M   |
++-----+-----+-----+
+  
+: 表のラベル {#tbl-dog-cat}
+  
+  
+表を参照する @tbl-dog-cat 。
+```
+
++-----+-----+-----+
+| pet | age | sex |
++=====+=====+=====+
+| dog | 5   | F   |
++-----+-----+-----+
+| cat | 3   | M   |
++-----+-----+-----+
+  
+: 表のラベル {#tbl-dog-cat}
+  
+表を参照する @tbl-dog-cat 。
+
+## Website・BookのRender
+
+WebsiteやBookの.qmdを作成したら、HTMLをRenderします。Website・Bookのいずれの場合も、RStudioでは上に表示されているRenderボタンを押すことでRenderすることができます。
+
+![Renderボタン](./image/Quarto_render_from_Rstudio.png)
+
+また、TerminalでProjectのフォルダに移動し、quarto renderを実行することでもWebsite・BookをRenderすることができます。
+
+![quarto render](./image/Quarto_render_from_terminal.png)
+
+Renderを実行すると、Websiteではそのフォルダとサブフォルダに含まれている`.qmd`ファイルがHTMLに変換されます。一方でBookでは、そのフォルダ内の.qmdファイルのうち、`chapters`で章に設定した`.qmd`ファイルだけがHTMLに変換されます。
+
+### freeze
+
+WebsiteやBookでは、`.qmd`ファイルを指定せずにRenderすると、変換する`.qmd`ファイルに含まれるRのスクリプトがすべて再計算され、Renderされます。すでにHTMLを作成し、`.qmd`に変更がない場合にもこの再計算は実行されます。したがって、WebsiteやBookのサイズが大きくなると、再計算に時間がかかるようになります。
+
+一度HTMLを作成した`.qmd`について、ファイルに変更がない場合にRenderを実施しないようにするには、`freeze: auto`を設定します。また、`freeze: true`を設定すると、`.qmd`のRenderが行われなくなります。
+
+大きなWebsiteを作成する場合には、作成中には`freeze: auto`を用い、以下に述べるデプロイの前には`freeze: false`として全体をRenderするような運用を行うとよいかと思います。
+
+```{yaml, filename="freezeの設定"}
+execute:
+  freeze: auto # true/auto/falseのいずれかを選択する
+```
+
+:::{.callout-tip collapse=true}
+## freeze: autoについて
+
+大きなWebsiteやBookを作成する場合、`freeze: auto`はRenderにかかる時間を短縮できる便利な設定です。ただし、`.qmd`ファイルに変更がないのに内容が変わるような場合、例えば.qmdファイル中で読み込むデータを修正した場合などには、この変更が適用されずにRenderが終了してしまいます。HTMLを共有・公開する前などには、`freeze: false`に設定を変更し、Renderしたほうがよいでしょう。
+:::

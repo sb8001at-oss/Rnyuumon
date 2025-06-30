@@ -9,7 +9,7 @@ pacman::p_load(tidyverse, lubridate, zoo, CADFtest, TSstudio, forecast)
 set.seed(0)
 ```
 
-**時系列**とは、[21章](./chapter21.html)で少し説明した通り、時間と共に変化する量を繰り返し測定したデータのことです。例えば、日経平均株価の推移は典型的な時系列の例です。Rでは、以下に示す`Nile`データセットが時系列の例としてよく用いられています。
+**時系列**とは、[21章](./chapter21.qmd)で少し説明した通り、時間と共に変化する量を繰り返し測定したデータのことです。例えば、日経平均株価の推移は典型的な時系列の例です。Rでは、以下に示す`Nile`データセットが時系列の例としてよく用いられています。
 
 ```{r, filename="時系列データの例：Nileデータセット"}
 Nile |> plot()
@@ -124,7 +124,7 @@ ggplot(
 
 大気中のCO~2~濃度は、北半球の夏に合わせて減少し、冬に合わせて増加する傾向があります（実際には少し遅れて、10月頃に最小、5月頃に最大となります）。これは、北半球の針葉樹林（タイガ）のCO~2~吸収量が夏季に大きく、冬季に小さくなるためです。また、CO~2~濃度は化石燃料の消費と共に増加しており、20世紀末で360ppm、2023年時点では420ppm程度になっています。1960～2000年の伸びが50ppm程度ですので、CO~2~の増加が倍程度に加速していることがわかります。この「夏季に低く冬季に高い」傾向が季節性、「化石燃料の消費と共に増加」の部分がトレンドに当たります。
 
-[`TSstudio`](https://ramikrispin.github.io/TSstudio/)パッケージ[@TSstudio_bib]は時系列データを`plotly`を用いてグラフにする関数を備えたライブラリです。`ts_plot`関数は時系列をそのままプロットする、`ts_seasonal`関数は季節ごとの値を、`ts_heatmap`は年と月の季節性をそれぞれヒートマップとして表示する関数です。いずれも季節性やトレンドを持つデータをグラフにする、データの傾向を捉える場合に便利な関数です。いずれも[21章](./chapter21.html)で紹介した`ts`クラスの時系列データを引数に取ります。
+[`TSstudio`](https://ramikrispin.github.io/TSstudio/)パッケージ[@TSstudio_bib]は時系列データを`plotly`を用いてグラフにする関数を備えたライブラリです。`ts_plot`関数は時系列をそのままプロットする、`ts_seasonal`関数は季節ごとの値を、`ts_heatmap`は年と月の季節性をそれぞれヒートマップとして表示する関数です。いずれも季節性やトレンドを持つデータをグラフにする、データの傾向を捉える場合に便利な関数です。いずれも[21章](chapter21.qmd#時系列データtsクラス)で紹介した`ts`クラスの時系列データを引数に取ります。
 
 ```{r, filename="co2データセット：TSstudioの関数で季節性データを表示", message=FALSE, warning=FALSE}
 co2 |> class() # tsクラスのオブジェクト
@@ -726,7 +726,7 @@ ARIMAモデルの計算では、まず時系列が単位根過程であるかを
 arima(y1, c(1, 0, 0)) # ARIMA(1, 0, 0)として係数を求める
 ```
 
-しかし、時系列データを得た時に、そのデータがARIMA(1,1,0)である、といった風に、次数をあらかじめ決めることは普通はできません。Rには次数を含めてARIMAモデルを計算してくれる、`auto.arima`関数が備わっています。実際に時系列分析を行う際には、`arima`関数を用いることはほぼなく、`auto.arima`関数を用いることになります。`auto.arima`関数はAICに従いモデル選択を行う関数で、[30章](./chapter30.html)で説明したAICによるモデル選択における`step`関数のARIMA版のようなものになります。
+しかし、時系列データを得た時に、そのデータがARIMA(1,1,0)である、といった風に、次数をあらかじめ決めることは普通はできません。Rには次数を含めてARIMAモデルを計算してくれる、`auto.arima`関数が備わっています。実際に時系列分析を行う際には、`arima`関数を用いることはほぼなく、`auto.arima`関数を用いることになります。`auto.arima`関数はAICに従いモデル選択を行う関数で、[30章](chapter30.qmd#aicによるモデル選択)で説明したAICによるモデル選択における`step`関数のARIMA版のようなものになります。
 
 `auto.arima`関数には、モデルを総当り計算するかステップワイズな計算をするかを決定する`stepwise`引数を設定できます。`stepwise=T`とするとステップワイズ計算を行い、計算が速くなります。一方で`stepwise=F`とすると、総当り計算を行うため計算は正確になりますが、モデルが複雑な場合には計算に時間がかかります。また、`trace`引数を`TRUE`に設定すると、繰り返し計算をすべて表示してくれます。
 
@@ -891,7 +891,7 @@ ts(co2, frequency = 12) |> decompose() |> plot()
 ts_decompose(ts(co2, frequency = 12))
 ```
 
-季節性・トレンドの成分をさらに詳しく評価したい場合には、facebook（Meta）の技術者が開発した[`prophet`](https://facebook.github.io/prophet/)パッケージを用いるとよいでしょう。`prophet`は[`rstan`](https://cran.r-project.org/web/packages/rstan/index.html)パッケージ[@rstan_bib]（もしくは[`cmdstanr`](https://github.com/stan-dev/cmdstanr)パッケージ[@cmdstanr_bib]）を用いて時系列を解析するアルゴリズムを使用しています。このアルゴリズムでは、下に説明する状態空間モデルとは少し異なるアプローチ（[論文](https://peerj.com/preprints/3190/#)に記載の通り、一般化加法モデル（[30章参照](./chapter30.html)）で分析）を取っています。`prophet`を用いれば、季節性やトレンドの分離、予測、休日の影響やデータの欠測の処理などを比較的簡単に取り扱うことができます。
+季節性・トレンドの成分をさらに詳しく評価したい場合には、facebook（Meta）の技術者が開発した[`prophet`](https://facebook.github.io/prophet/)パッケージを用いるとよいでしょう。`prophet`は[`rstan`](https://cran.r-project.org/web/packages/rstan/index.html)パッケージ[@rstan_bib]（もしくは[`cmdstanr`](https://github.com/stan-dev/cmdstanr)パッケージ[@cmdstanr_bib]）を用いて時系列を解析するアルゴリズムを使用しています。このアルゴリズムでは、下に説明する状態空間モデルとは少し異なるアプローチ（[論文](https://peerj.com/preprints/3190/#)に記載の通り、一般化加法モデル（[30章参照](chapter30.qmd#加法モデルadditive-model)）で分析）を取っています。`prophet`を用いれば、季節性やトレンドの分離、予測、休日の影響やデータの欠測の処理などを比較的簡単に取り扱うことができます。
 
 ```{r, eval=FALSE, filename="prophetパッケージでデータを取り扱う"}
 pacman::p_load(rstan, prophet)
@@ -920,7 +920,7 @@ prophet_plot_components(m, forecast)
 
 **状態空間モデル（state space model）**は時系列データや地理空間データの統計に用いられる統計モデルの一つです。状態空間モデルでは、時系列データを以下の図のように、真の値の系列である**状態モデル**と、その真の値を我々が観測したときのばらつきを含む**観測モデル**からなるものであるとします。
 
-![](./image/state_space.png)
+![状態空間モデルのイメージ](./image/state_space.png)
 
 真の値を示す状態モデルでは、時点tの値は時点t-1の値によく似ているとする、AR(1)モデルに似たような構造を持つとします。
 

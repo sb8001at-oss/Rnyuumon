@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.31">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>38&nbsp; R markdown – R入門</title>
+
+
+<title>38&nbsp; Quarto：chunkとchunk option – R入門</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -52,7 +55,28 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -82,7 +106,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-contrib/kbd/kbd.css" rel="stylesheet">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,15 +133,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-M8N5QERSYQ"></script><script type="text/javascript">
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-M8N5QERSYQ"></script>
+
+<script type="text/javascript">
 
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </script>
+
+
 </head>
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -281,27 +312,33 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter35.html">アドバンスドな手法</a></li><li class="breadcrumb-item"><a href="./chapter38.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">R markdown</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter35.html">R markdownとQuarto</a></li><li class="breadcrumb-item"><a href="./chapter38.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Quarto：chunkとchunk option</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">R入門</a> 
         <div class="sidebar-tools-main tools-wide">
     <div class="dropdown">
       <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-<li>
+          <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/sb8001at-oss/Rnyuumon">
             ソースコード
             </a>
@@ -312,11 +349,11 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
             </a>
           </li>
       </ul>
-</div>
+    </div>
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
-<li>
+          <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
               <i class="bi bi-twitter pe-1"></i>
             Twitter
@@ -329,7 +366,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
             </a>
           </li>
       </ul>
-</div>
+    </div>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
@@ -341,7 +378,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">はじめに</span></a>
@@ -355,8 +392,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Rのインストール</span></span></a>
@@ -465,7 +502,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -474,8 +511,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter19.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">apply関数群</span></span></a>
@@ -506,7 +543,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
@@ -515,8 +552,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter24.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">グラフ作成：高レベルグラフィック関数</span></span></a>
@@ -541,7 +578,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
@@ -550,8 +587,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter28.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">確率分布と乱数</span></span></a>
@@ -594,83 +631,107 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
- <span class="menu-text">アドバンスドな手法</span></a>
+ <span class="menu-text">R markdownとQuarto</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter35.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">purrr</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">R markdown</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter36.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">地理空間情報</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Quarto：Quartoの始め方</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter37.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">ネットワーク解析</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Quarto：Markdownとレイアウト</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter38.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">R markdown</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Quarto：chunkとchunk option</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter39.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Quarto：YAMLの基礎</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter40.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Quarto：プレゼンテーション</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter41.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Quarto：ダッシュボード</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter42.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Quarto：WebsiteとBook</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter43.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Quarto：デプロイ</span></span></a>
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
- <span class="menu-text">Quarto</span></a>
+ <span class="menu-text">アドバンスドな手法</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter40_1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Quarto：Quartoの始め方</span></span></a>
+  <a href="./chapter44.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">purrr</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter40_2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Quarto：Markdownとレイアウト</span></span></a>
+  <a href="./chapter45.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">地理空間情報</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter40_3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Quarto：chunkとchunk option</span></span></a>
+  <a href="./chapter46.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">ネットワーク解析</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter40_4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Quarto：YAMLの基礎</span></span></a>
+  <a href="./chapter47.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
@@ -684,29 +745,38 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   </div>
 </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#%E3%83%9E%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E8%A8%80%E8%AA%9E%E3%81%A8markdown" id="toc-マークアップ言語とmarkdown" class="nav-link active" data-scroll-target="#%E3%83%9E%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E8%A8%80%E8%AA%9E%E3%81%A8markdown"><span class="header-section-number">38.1</span> マークアップ言語とMarkdown</a></li>
-  <li><a href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E4%BD%9C%E6%88%90" id="toc-ファイルの作成" class="nav-link" data-scroll-target="#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E4%BD%9C%E6%88%90"><span class="header-section-number">38.2</span> ファイルの作成</a></li>
-  <li>
-<a href="#yaml%E3%81%A8chunk" id="toc-yamlとchunk" class="nav-link" data-scroll-target="#yaml%E3%81%A8chunk"><span class="header-section-number">38.3</span> yamlとchunk</a>
+  <li><a href="#chunk" id="toc-chunk" class="nav-link active" data-scroll-target="#chunk"><span class="header-section-number">38.1</span> chunk</a></li>
+  <li><a href="#chunk-option" id="toc-chunk-option" class="nav-link" data-scroll-target="#chunk-option"><span class="header-section-number">38.2</span> chunk option</a>
   <ul>
-<li><a href="#yaml" id="toc-yaml" class="nav-link" data-scroll-target="#yaml"><span class="header-section-number">38.3.1</span> yaml</a></li>
-  <li><a href="#chunk" id="toc-chunk" class="nav-link" data-scroll-target="#chunk"><span class="header-section-number">38.3.2</span> chunk</a></li>
+  <li><a href="#chunk-optionの記載位置について" id="toc-chunk-optionの記載位置について" class="nav-link" data-scroll-target="#chunk-optionの記載位置について"><span class="header-section-number">38.2.1</span> chunk optionの記載位置について</a></li>
+  <li><a href="#図のキャプションやコード表示の指定fig-capecho" id="toc-図のキャプションやコード表示の指定fig-capecho" class="nav-link" data-scroll-target="#図のキャプションやコード表示の指定fig-capecho"><span class="header-section-number">38.2.2</span> 図のキャプションやコード表示の指定：fig-cap/echo</a></li>
+  <li><a href="#出力の表示方法の変更results-asis" id="toc-出力の表示方法の変更results-asis" class="nav-link" data-scroll-target="#出力の表示方法の変更results-asis"><span class="header-section-number">38.2.3</span> 出力の表示方法の変更：results: asis</a></li>
+  <li><a href="#図を複数列に並べて表示するlayout-ncol" id="toc-図を複数列に並べて表示するlayout-ncol" class="nav-link" data-scroll-target="#図を複数列に並べて表示するlayout-ncol"><span class="header-section-number">38.2.4</span> 図を複数列に並べて表示する：layout-ncol</a></li>
+  <li><a href="#コードの表示を折りたたむcode-foldcode-overflow" id="toc-コードの表示を折りたたむcode-foldcode-overflow" class="nav-link" data-scroll-target="#コードの表示を折りたたむcode-foldcode-overflow"><span class="header-section-number">38.2.5</span> コードの表示を折りたたむ：code-fold/code-overflow</a></li>
+  <li><a href="#コードの行に番号を付けるcode-line-numbers" id="toc-コードの行に番号を付けるcode-line-numbers" class="nav-link" data-scroll-target="#コードの行に番号を付けるcode-line-numbers"><span class="header-section-number">38.2.6</span> コードの行に番号を付ける：code-line-numbers</a></li>
+  <li><a href="#実行結果をキャッシュするcache" id="toc-実行結果をキャッシュするcache" class="nav-link" data-scroll-target="#実行結果をキャッシュするcache"><span class="header-section-number">38.2.7</span> 実行結果をキャッシュする：cache</a></li>
+  </ul></li>
+  <li><a href="#code-annotation" id="toc-code-annotation" class="nav-link" data-scroll-target="#code-annotation"><span class="header-section-number">38.3</span> code annotation</a></li>
+  <li><a href="#インラインのコード" id="toc-インラインのコード" class="nav-link" data-scroll-target="#インラインのコード"><span class="header-section-number">38.4</span> インラインのコード</a></li>
   </ul>
-</li>
-  </ul></nav>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter35.html">アドバンスドな手法</a></li><li class="breadcrumb-item"><a href="./chapter38.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">R markdown</span></a></li></ol></nav><div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">
-<span class="chapter-number">38</span>&nbsp; <span class="chapter-title">R markdown</span>
-</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter35.html">R markdownとQuarto</a></li><li class="breadcrumb-item"><a href="./chapter38.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Quarto：chunkとchunk option</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Quarto：chunkとchunk option</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -720,140 +790,46 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   
 
 
-</header><p>Rでスクリプトを書いている時には、コードを書き、コードを説明するコメントを挿入し、コードを逐次実行するのが一般的です。小さな規模のスクリプトを書いている場合にはこのような方法でも大きな問題はありません。</p>
-<p>しかし、1つのRファイルにあれもこれも分析を加えていくと、どこで何を計算しているのか、把握することが難しくなっていきます。また、たくさんの分析を一度に行うと、少しスクリプトを修正しただけでプログラムが走らなくなる、結果が大きく変わってしまう、ということも珍しくありません。</p>
-<p>このような、スクリプトを書いているときに発生する問題のことを、<strong>再現性の問題</strong>と呼ぶことがあります。Rでは主に統計の計算を行うため、誰が、いつ、どのような場所で計算を行っても、同じ結果が得られる、つまり再現性があることが重要となります。単にスクリプトを書いているだけでは、再現性を維持するのが難しい場合もあります。</p>
-<p>また、Rでの計算結果を他の人に説明する場合には、グラフや表を別途保存し、PowerpointやWordなどに張り付ける必要があります。わざわざファイルを保存し、別のファイルに張り付ける作業は無意味ですし、時間を取ります。</p>
-<p>このような再現性の確保、計算結果の共有のためのライブラリが<a href="https://rmarkdown.rstudio.com/"><strong>R markdown</strong></a>です。R markdownでは、マークアップ言語である<strong>Markdown</strong>を用いて、Rのコードとその説明文を同時に文書として作成することができます。</p>
-<section id="マークアップ言語とmarkdown" class="level2" data-number="38.1"><h2 data-number="38.1" class="anchored" data-anchor-id="マークアップ言語とmarkdown">
-<span class="header-section-number">38.1</span> マークアップ言語とMarkdown</h2>
-<p>マークアップ言語とは、主に<a href="https://ja.wikipedia.org/wiki/%E7%B5%84%E7%89%88">組版</a>と呼ばれる、文書や画像を出版・印刷できる形式で出力するために用いられる言語です。組版自体はマークアップ言語が無くても行うことができます（代表的な組版ソフトウェアは<a href="https://ja.wikipedia.org/wiki/Adobe_InDesign">Adobe InDesign</a>や<a href="https://ja.wikipedia.org/wiki/QuarkXPress">QuarkXPress</a>）。これらの有料の組版ソフトはGUIを用いて組版を行うソフトウェアです。同様の機能をCUI、つまりテキストファイルで対応できるようにしたものがマークアップ言語です。マークアップ言語は通常無料で使用することができ、機能的には有料の組版ソフトと大きな差はありません。ただし、学習コストが比較的高めです。</p>
-<p>代表的なマークアップ言語には、<a href="https://ja.wikipedia.org/wiki/TeX">Tex</a>や<a href="https://ja.wikipedia.org/wiki/Markdown">Markdown</a>があります。Texは昔から論文を書く際に用いられてきた言語で、専用のソフトウェアを用いることでTexファイルをPDF等に変換することができます。</p>
-<p>一方でMarkdown は主にhtmlへの変換を目的として作られたマークアップ言語です。Markdownとhtmlの表記は対応しており、変換ツールを用いることでMarkdown のファイルからhtmlを簡単に作成することができます。Markdownの記法について以下の表1に示します。<a href="https://rstudio.github.io/cheatsheets/html/rmarkdown.html?_gl=1*yrxqrc*_ga*MzM5MDIyMTc2LjE3MjkzMjE1MTU.*_ga_2C0WZ1JHG0*MTcyOTMyMTUxNS4xLjAuMTcyOTMyMTUxNS4wLjAuMA..">Rmarkdownのcheatsheet</a>や<a href="https://qiita.com/Qiita/items/c686397e4a0f4f11683d">Qiitaのチートシート</a>も参考になります。</p>
+</header>
+
+
+<section id="chunk" class="level2" data-number="38.1">
+<h2 data-number="38.1" class="anchored" data-anchor-id="chunk"><span class="header-section-number">38.1</span> chunk</h2>
+<p>R markdownでRのコードを書くときには、<strong>chunk</strong>というものを用います。QuartoでもR markdownと同じく、chunkを用いてスクリプトを書きます。chunkではbacktick3つ（<code>```</code>）の後にプログラミング言語の名前（Rの場合は<code>r</code>）を中括弧の中（<code>{}</code>）に記載します。次の行以降にRのスクリプトを書き、最後にbacktick3つ（<code>```</code>）を記載します。backtickの間のコードはQuartoをRenderする際に実行されます。</p>
 <div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>表1：Markdownの記法</caption>
-<colgroup>
-<col style="width: 46%">
-<col style="width: 53%">
-</colgroup>
-<thead><tr class="header">
-<th style="text-align: left;">Markdownの記法</th>
-<th style="text-align: left;">意味</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">_text_</td>
-<td style="text-align: left;">イタリック</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">*text*</td>
-<td style="text-align: left;">イタリック</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">**text**</td>
-<td style="text-align: left;">太字</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">~text~</td>
-<td style="text-align: left;">下付き</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">^text^</td>
-<td style="text-align: left;">上付き</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">`code`</td>
-<td style="text-align: left;">スクリプト表記（インライン）</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">```code```</td>
-<td style="text-align: left;">スクリプト表記</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">`r code`</td>
-<td style="text-align: left;">Rのスクリプトを実行（インライン）</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">```` ```code```` ```</td>
-<td style="text-align: left;">```を表示（```code```）</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">&lt;html/address&gt;</td>
-<td style="text-align: left;">リンク（アドレスを表示）</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">[text](address)</td>
-<td style="text-align: left;">リンク（textを表示）</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">![text](path_to_image)</td>
-<td style="text-align: left;">図の挿入</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">^[text]</td>
-<td style="text-align: left;">脚注（foot note）：別途内容の記載が必要</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">[@bibtex]</td>
-<td style="text-align: left;">文献の参照</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"># header1</td>
-<td style="text-align: left;">ヘッダー（h1）</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">## header2</td>
-<td style="text-align: left;">ヘッダー（h2）</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">### header3</td>
-<td style="text-align: left;">ヘッダー（h3）</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">#### header4</td>
-<td style="text-align: left;">ヘッダー（h4）</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">##### header5</td>
-<td style="text-align: left;">ヘッダー（h5）</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">###### header6</td>
-<td style="text-align: left;">ヘッダー（h6）</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">- item</td>
-<td style="text-align: left;">箇条書き</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">+ item</td>
-<td style="text-align: left;">箇条書き</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">* item</td>
-<td style="text-align: left;">箇条書き</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1. item</td>
-<td style="text-align: left;">箇条書き（数字）</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">&gt; blockquotes</td>
-<td style="text-align: left;">文の引用</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$$ math $$</td>
-<td style="text-align: left;">LaTeXの数式</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$ math $</td>
-<td style="text-align: left;">LaTeXの数式（インライン）</td>
-</tr>
-</tbody>
-</table>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>chunk</strong></pre>
 </div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># この間にコードを記載する</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>a</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># この間にコードを記載する</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>a</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 2 3 4 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>chunkはRだけではなく、Python、Markdown、前章で説明した<a href="https://mermaid.js.org/">Mermaid</a>や<a href="https://graphviz.org/">Graphviz</a>などを用いる場合にも使用します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Pythonを実行する</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>] <span class="co"># リスト（Rにはない記法）</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>] <span class="co"># リスト（Rにはない記法）</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">## [1, 2, 3, 4, 5]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -861,180 +837,59 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-R markdownの発展
+Pythonの実行
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Rは統計に用いる言語ですので、Texを用いた論文にRの統計結果を加えることは昔から重要とされていました。Rが用いられ始めてすぐに、RのスクリプトとTexを合わせることができるRの機能として、<a href="https://stat.ethz.ch/R-manual/R-devel/library/utils/doc/Sweave.pdf">Sweave</a>がR Core Teamにより開発されました（<a href="https://cran.r-project.org/doc/Rnews/Rnews_2002-3.pdf#page=28&amp;zoom=100,73,74">2002年頃</a>のようです）。</p>
-<p>また、このようなRでの流れとは独立に、HTMLを簡単な表記で作成するためのテキスト形式である<a href="https://daringfireball.net/projects/markdown/">Markdown</a>（2004年）、MarkdownをHTMLやPDFに変換できるファイルコンバータとして<a href="https://pandoc.org/">Pandoc</a>（2006年）が開発されました。</p>
-<p>Rでの開発とは別に、PythonではRと同じような対話的実行システムである<a href="https://ipython.readthedocs.io/en/stable/">IPython</a>（2001年）が開発され、更にPython、Rなどを対話的に実行・結果を表示しつつ、Markdownでの文書と同時に記載できるWebアプリケーションである<a href="https://jupyter.org/">Jupyter notebook</a>（2014年頃）が開発されました。</p>
-<p>上記のような流れの中で、RでLaTex、HTML、Markdownなどの文書とコードを作成し、それをRコードを実行した形でLatexやHTMLとして出力するためのライブラリである<a href="https://yihui.org/knitr/">knitr</a>が開発されました（2012年頃）。このknitrをさらにPandocと統合し、Rコードから直接PDFやHTML、Microsoft Wordなどのフォーマットの文書を作成できるようにしたものが<a href="https://rmarkdown.rstudio.com/">R markdown</a>（2016年頃）です。R markdownはすぐにRstudio（<a href="https://posit.co/blog/rstudio-new-open-source-ide-for-r/">2011年頃</a>に開発）と統合され、RstudioからR markdown方式の文書を作成し、それをPDFやHTMLに変換できるようになりました。R markdownのExtensionsも整備され、例えば<a href="https://bookdown.org/">Bookdown</a>（R Markdownで本を書くためのツール）が開発されたことでRでHTML形式の本を比較的簡単に作成することができるようになりました。また、<a href="https://revealjs.com/">Revealjs</a>を 出力することでHTMLベースのプレゼンテーションを作成することもできるようになっています。R studioにはR markdownのVisual mode（Jupyter notebookと見た目が似た形式）も整備され、R markdownを利用することでJupyter notebook風にRを利用することもできます。</p>
-<p>上記のようにRstudioとR markdownは共に発展してきましたが、2010年代には機械学習のライブラリがほとんどPythonで開発されるようになり、RよりもPythonの方がはるかに流行の言語となりました。このPythonユーザーを取り込むためだと思いますが、Rstudio（今は<a href="https://posit.co/">Posit.io</a>という企業）はR markdownをPythonやJuliaなどの統計学・機械学習で用いられる言語でも使える形とし、Rstudioだけでなく、JupyterやテキストエディタであるVisual Studio Codeでも使えるものとした、<a href="https://quarto.org/">Quarto</a>を開発し始めました（おそらく2022年頃）。QuartoがRユーザー以外に注目されているかはかなり疑問ですが、RユーザーとしてはR markdownの機能が単にアップグレードされただけですので、用いない理由はほとんどありません。</p>
-<p>このテキストもR markdown、BookdownおよびQuartoを利用して作成しています。</p>
-<p>以下ではR markdownについて説明していきますが、RstudioではQuartoもR markdownと同様に用いることができます。</p>
+<p>上記のように、PythonのchunkがRのQuartoに含まれている場合には、<a href="https://rstudio.github.io/reticulate/"><code>reticulate</code></a>パッケージ<span class="citation" data-cites="reticulate_bib">(<a href="references.html#ref-reticulate_bib" role="doc-biblioref">Ushey, Allaire, and Tang 2025</a>)</span>（reticulated python、<em>Malayopython reticulatus</em>、和名：<a href="https://en.wikipedia.org/wiki/Reticulated_python">アミメニシキヘビ</a>より）により、Pythonのコードが実行されます。<code>reticulate::repl_python</code>関数を実行すると、コンソールの記号が<code>&gt;&gt;&gt;</code>に変化します。この記号が出ているときには、コンソールはPythonを実行するモードになっています。<code>exit</code>でPython実行モードからRの実行モードに戻すことができます。</p>
 </div>
 </div>
 </div>
-</section><section id="ファイルの作成" class="level2" data-number="38.2"><h2 data-number="38.2" class="anchored" data-anchor-id="ファイルの作成">
-<span class="header-section-number">38.2</span> ファイルの作成</h2>
-<p>R markdownで作成するファイルの拡張子は<code>.rmd</code>、Quartoで作成するファイルの拡張子は<code>.qmd</code>です。Rstudioで.rmd、.qmdファイルを作成する場合、Rstudioの左上のアイコンから、「R markdown…」や「Quarto Document…」を選択します。</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/Rmarkdown_newfile.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="R markdownのファイルを作成する"><img src="./image/Rmarkdown_newfile.png" class="img-fluid figure-img" alt="R markdownのファイルを作成する"></a></p>
-<figcaption>R markdownのファイルを作成する</figcaption></figure>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Markdownのchunk</strong></pre>
 </div>
-<p>R markdownを選択すると、まず「New R Markdown」というウインドウが表示されます。ここでタイトル、著者、作成日、出力する形式（HTML、PDF、Word）を選択できます。このウインドウで設定していなくても後ほど設定することもできるため、すべてを入力しないといけない、ということはありません。</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/new_Rmarkdown.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="R markdownの初期設定"><img src="./image/new_Rmarkdown.png" class="img-fluid figure-img" alt="R markdownの初期設定"></a></p>
-<figcaption>R markdownの初期設定</figcaption></figure>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown}</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="al">![](.image/toba.jpg)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>R markdownファイルを作成すると、以下のようなR markdownの例が表示されます。この表記法はSourceと呼ばれる、すべてテキストで記載された形です。</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/initial_Rmarkdown_source.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="R markdownファイル：Sourceモード"><img src="./image/initial_Rmarkdown_source.png" class="img-fluid figure-img" alt="R markdownファイル：Sourceモード"></a></p>
-<figcaption>R markdownファイル：Sourceモード</figcaption></figure>
 </div>
-<p>また、上の「Visual」を選択すると、Jupyter notebook風のVisualモードを利用することもできます。やや表示に時間がかかり、レスポンスが悪いため、通常はSourceモードを用いる方が使いやすいでしょう。</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/initial_Rmarkdown_visual.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="R Markdownファイル：Visualモード"><img src="./image/initial_Rmarkdown_visual.png" class="img-fluid figure-img" alt="R Markdownファイル：Visualモード"></a></p>
-<figcaption>R Markdownファイル：Visualモード</figcaption></figure>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="al">![](.image/toba.jpg)</span> # 変換されず、そのまま表示される</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>最終的には上のアイコンに含まれている「Knit」（毛糸を編む、ニット）の下矢印をクリックし、選択肢から出力したいファイル形式（HTML、PDF、Word）を選ぶことでRを実行した結果を表示した出力ファイルを得ることができます。</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/knit_Rmarkdown.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="R markdownをknitする"><img src="./image/knit_Rmarkdown.png" class="img-fluid figure-img" alt="R markdownをknitする"></a></p>
-<figcaption>R markdownをknitする</figcaption></figure>
+<p>Rstudioでは、<strong><kbd aria-hidden="true">Ctrl+ALT+I</kbd><span class="visually-hidden">Ctrl+ALT+I</span></strong>のショートカットで文章にチャンクを挿入することができます。</p>
+</section>
+<section id="chunk-option" class="level2 page-columns page-full" data-number="38.2">
+<h2 data-number="38.2" class="anchored" data-anchor-id="chunk-option"><span class="header-section-number">38.2</span> chunk option</h2>
+<p>R markdownの章で説明した通り、chunkには<strong>chunk option</strong>と呼ばれる、chunk実行時の設定を変更することが出来る機能があります。chunk optionは<strong>chunkの<code>{}</code>の中</strong>に以下のように記載し、用います。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>chunk optionの利用</strong></pre>
 </div>
-</section><section id="yamlとchunk" class="level2" data-number="38.3"><h2 data-number="38.3" class="anchored" data-anchor-id="yamlとchunk">
-<span class="header-section-number">38.3</span> yamlとchunk</h2>
-<section id="yaml" class="level3" data-number="38.3.1"><h3 data-number="38.3.1" class="anchored" data-anchor-id="yaml">
-<span class="header-section-number">38.3.1</span> yaml</h3>
-<p>上記の「New R Markdown」ウインドウで設定した内容は、文書の一番始め、<code>---</code>に挟まれた領域に記載されています。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Untitled"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"xjorv"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2024-06-29"</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">output</span><span class="kw">:</span><span class="at"> html_document</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>この<code>---</code>に挟まれた領域には、<a href="https://ja.wikipedia.org/wiki/YAML">YAML</a>と呼ばれるものが記載されています。YAML自体は名前とデータをコロン（<code>:</code>）でつないだだけのデータ形式です。R markdownではこのYAMLを読み込むことで、最終的な出力データに表記する情報・データの出力形式などを設定します。YAMLで設定できる主な要素は以下の表2の通りです。</p>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># eval = FALSEはコードを実行しない際のchunk option</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ])</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># eval = FALSEはコードを実行しない際のchunk option</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>R markdownの章に示した通り、主なchunk optionには以下のようなものがあります。また、Rを用いる場合には、chunk optionとして、R markdownのchunk optionを用いることができます。詳しくは<a href="https://yihui.org/knitr/options/">Dr.&nbsp;Yihui Xieが作成されているページ</a>をご参考下さい。</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>表2：YAMLの指定</caption>
-<thead><tr class="header">
-<th style="text-align: left;">オプション名</th>
-<th style="text-align: left;">取りうる値</th>
-<th style="text-align: left;">意味</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">title</td>
-<td style="text-align: left;">文字列</td>
-<td style="text-align: left;">文書のタイトル</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">author</td>
-<td style="text-align: left;">文字列</td>
-<td style="text-align: left;">著者</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">date</td>
-<td style="text-align: left;">日付</td>
-<td style="text-align: left;">作成日</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">output</td>
-<td style="text-align: left;">html_documentなど</td>
-<td style="text-align: left;">出力の形式</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">code_folding</td>
-<td style="text-align: left;">論理型</td>
-<td style="text-align: left;">スクリプトを折りたたむ</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">css</td>
-<td style="text-align: left;">“style.css”</td>
-<td style="text-align: left;">CSSの指定</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">dev</td>
-<td style="text-align: left;">“png”、“pdf”</td>
-<td style="text-align: left;">グラフィックデバイスの指定</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">df_print</td>
-<td style="text-align: left;">“kable”、“tibble”など</td>
-<td style="text-align: left;">データフレームの表示方法</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">fig_caption</td>
-<td style="text-align: left;">論理型</td>
-<td style="text-align: left;">図のキャプションの有無</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">highlight</td>
-<td style="text-align: left;">“tango”、“pygments”など</td>
-<td style="text-align: left;">コードハイライトの方法</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">latex_engine</td>
-<td style="text-align: left;">“lualatex”など</td>
-<td style="text-align: left;">PDF作成時のLaTeXエンジン</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">reference_docx</td>
-<td style="text-align: left;">“file.docx”など</td>
-<td style="text-align: left;">Wordのテンプレート指定</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">theme</td>
-<td style="text-align: left;">Bootswatchのテーマ名</td>
-<td style="text-align: left;">Bootswatchのテーマ選択</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">toc</td>
-<td style="text-align: left;">論理型</td>
-<td style="text-align: left;">目次の表示</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">toc_depth</td>
-<td style="text-align: left;">数値</td>
-<td style="text-align: left;">目次表示するレベルの指定</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">toc_float</td>
-<td style="text-align: left;">論理型</td>
-<td style="text-align: left;">目次をスクロールで移動するか</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>YAMLの指定では、論理型として<code>true</code>/<code>false</code>という形で、小文字を用います。</p>
-</section><section id="chunk" class="level3" data-number="38.3.2"><h3 data-number="38.3.2" class="anchored" data-anchor-id="chunk">
-<span class="header-section-number">38.3.2</span> chunk</h3>
-<p>R markdown中では、Rのスクリプトは以下のように`3つで囲まれた領域に書くことになります。このコードのかたまりのことを<strong>chunk</strong>と呼びます。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><a href="chapter38_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="chapter38_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
-</div>
-<p>.rmd（.qmd）ファイル中にchunkを書くと、knitするときにchunk内のスクリプトは実行され、上のように評価結果が出力ファイル上に表示されます。chunkに書かれている<code>{r}</code>はRのコードであるということを示しています。Rstudioではchunkを<strong><kbd aria-hidden="true">Ctrl+Alt+I</kbd><span class="visually-hidden">Ctrl+Alt+I</span></strong>で挿入することができます。</p>
-<p>この<code>{r}</code>の部分には、chunkオプションというものを追加し、評価や表示の方法を指定することができます。chunkオプションのリストを以下の表に示します。</p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>表3：chunk optionの一覧</caption>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th style="text-align: left;">オプション名</th>
 <th style="text-align: left;">意味</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">echo</td>
@@ -1088,15 +943,320 @@ R markdownの発展
 </table>
 </div>
 </div>
-<p>チャンクオプションは以下のように記載して用います。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE, eval = FALSE}</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars) <span class="co"># チャンクオプションはコンマで区切って記述する</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>例えば、ライブラリの読み込み時にメッセージが出る場合（<code>tidyverse</code>は読み込み時に必ずメッセージを表示します）には<code>message=FALSE</code>を設定することで、メッセージがRender後に表示されないようにすることができます。エラーが出る処理を出力したいのであれば<code>error=true</code>を、Rでの演算を実行したくない場合は<code>eval=FALSE</code>を、Rのスクリプトを表示したくない場合には<code>echo=FALSE</code>を設定するとよいでしょう。</p>
+<p>また、このテキストでのchunkにはほぼすべて<code>filename</code>が設定されており、Rのコードにはほぼ必ずタイトルがついていると思います。</p>
+<section id="chunk-optionの記載位置について" class="level3 page-columns page-full" data-number="38.2.1">
+<h3 data-number="38.2.1" class="anchored" data-anchor-id="chunk-optionの記載位置について"><span class="header-section-number">38.2.1</span> chunk optionの記載位置について</h3>
+<p>このchunk optionについては、Quartoでは大幅に拡張されています。例えば前章で説明したレイアウトに関しては、chunk optionに記載することでも対応ができるようになっています。</p>
+<p>chunk optionが拡張されたことで、<code>{}</code>の中にたくさん記載すると読みにくく、管理しにくくなるため、Quartoでは以下のように、<code>#|</code>の後に記載し、chunk optionを設定できるようにされています。この場合、<code>=</code>を用いて指定していた値は、YAMLのように<code>:</code>を用いて記載します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>chunk optionをchunk内で宣言する</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: margin</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell page-columns page-full">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>chunk optionで.column-marginを設定し、右にアウトプットを表示</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="chapter38_files/figure-html/unnamed-chunk-12-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="chapter38_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div></div></div>
+<p><code>column</code>に設定する幅には、<code>margin</code>の他に<code>body</code>、<code>page</code>、<code>screen</code>の3つに加えて、<code>-outset</code>、<code>-inset</code>の2種、<code>-right</code>、<code>-left</code>の2つを後につけることで、表示する幅をコントロールすることもできます。詳しくは前章のレイアウトを確認してください。</p>
+</section>
+<section id="図のキャプションやコード表示の指定fig-capecho" class="level3 page-columns page-full" data-number="38.2.2">
+<h3 data-number="38.2.2" class="anchored" data-anchor-id="図のキャプションやコード表示の指定fig-capecho"><span class="header-section-number">38.2.2</span> 図のキャプションやコード表示の指定：fig-cap/echo</h3>
+<p>chunk optionには、出力される図（グラフなど）のキャプション（<code>fig-cap</code>）、図を読み出すことが出来ないときに表示されるテキスト（<code>fig-alt</code>）などを設定することもできます。また、以下のように<code>echo: fenced</code>を設定すると、表示されるコードにchunkが付いた形で表示されます。</p>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>様々なchunk optionの設定</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11" data-cap-location="margin"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: "様々なchunk optionの設定"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "figure caption：出力した図にキャプションが付く（cap-location: marginなので右に表示）"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "図が読みだせません"</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.height: 4</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#| cap-location: margin</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># fig-altは図が表示されない場合に表示されるテキストのこと。</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Rではよほど大きいファイルを取り扱わない限り必要ないかと思います。</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># #| echo: fenced を設定しているので、chunkが表示されています</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#（#| echo: fencedででは表示されません）</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># cap-locationはmarginにfig-capを置くためのoptionです。</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="chapter38_files/figure-html/unnamed-chunk-13-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="figure caption：出力した図にキャプションが付く（cap-location: marginなので右に表示）"><img src="chapter38_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" alt="図が読みだせません" width="672"></a></p>
+<figcaption class="margin-caption">figure caption：出力した図にキャプションが付く（cap-location: marginなので右に表示）</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>また、<code>echo:fenced</code>の代わりに、括弧を2重（<code>{{}}</code>）にすることでもchunkを表示させることができます。この方法では他のオプションを指定しにくいため、<code>echo:fenced</code>を用いた方がよいでしょう。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>カッコを2重にする</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="出力の表示方法の変更results-asis" class="level3" data-number="38.2.3">
+<h3 data-number="38.2.3" class="anchored" data-anchor-id="出力の表示方法の変更results-asis"><span class="header-section-number">38.2.3</span> 出力の表示方法の変更：results: asis</h3>
+<p><code>results: asis</code>はchunkの演算結果を通常の結果の表示方法ではなく、Markdownとしてそのまま出力するためのオプションです。以下の例のように、<code>cat</code>関数の返り値は通常文字列の返り値として、以下のように表示されます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>通常の出力</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "通常の出力", echo="fenced"}</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する</code></pre>
+</div>
+</div>
+<p><code>results: asis</code>を設定すると返り値が通常のMarkdownとして取り扱われ、リンクや太字の表示がMarkdownに従い変換されます。使いどころは難しいのですが、Rの出力の表示を変えたいときには使うことがあるかもしれません。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>results: asis</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo="fenced", filename = "results: asis"}</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: asis</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><a href="https://daringfireball.net/projects/markdown/">マークダウン</a>を<strong>そのまま</strong>表示する</p>
+</div>
+</section>
+<section id="図を複数列に並べて表示するlayout-ncol" class="level3" data-number="38.2.4">
+<h3 data-number="38.2.4" class="anchored" data-anchor-id="図を複数列に並べて表示するlayout-ncol"><span class="header-section-number">38.2.4</span> 図を複数列に並べて表示する：layout-ncol</h3>
+<p>また、<code>layout-ncol</code>を用いることでRの出力するグラフを2列に並べることもできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>layout-ncolでグラフを横に並べる</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">color =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="chapter38_files/figure-html/unnamed-chunk-18-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="chapter38_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="chapter38_files/figure-html/unnamed-chunk-18-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="chapter38_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid" width="672"></a></p>
+</div>
+</div>
+</div>
+</section>
+<section id="コードの表示を折りたたむcode-foldcode-overflow" class="level3" data-number="38.2.5">
+<h3 data-number="38.2.5" class="anchored" data-anchor-id="コードの表示を折りたたむcode-foldcode-overflow"><span class="header-section-number">38.2.5</span> コードの表示を折りたたむ：code-fold/code-overflow</h3>
+<p>また、コードを折りたたむ場合には<code>code-fold: true</code>、長いコードを折り返し表示したい場合には<code>code-overflow: wrap</code>を指定します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>code-foldとcode-overflow</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode markdown code-overflow-wrap code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</code></pre>
+</div>
+</div>
+</section>
+<section id="コードの行に番号を付けるcode-line-numbers" class="level3" data-number="38.2.6">
+<h3 data-number="38.2.6" class="anchored" data-anchor-id="コードの行に番号を付けるcode-line-numbers"><span class="header-section-number">38.2.6</span> コードの行に番号を付ける：code-line-numbers</h3>
+<p><code>code-line-numbers</code>はコードの行に番号をつけるためのオプションです。<code>true</code>に指定することで、コードの行の頭に数字が付きます。後で説明するcode annotationという機能よりは簡潔に行数を表示し、説明しやすくすることができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>code-line-numbers</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "code-line-numbersを指定する"}</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>a <span class="sc">+</span> b</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>code-line-numbersを指定する</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>a <span class="sc">+</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+</section>
+<section id="実行結果をキャッシュするcache" class="level3" data-number="38.2.7">
+<h3 data-number="38.2.7" class="anchored" data-anchor-id="実行結果をキャッシュするcache"><span class="header-section-number">38.2.7</span> 実行結果をキャッシュする：cache</h3>
+<p><a href="https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5_(%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0)">cache</a>（キャッシュ）とは、演算結果を保存しておくことで、コードを書き換えない時には以前に保存した結果を、コードを書き換えた時には新たな演算を実行するための、chunkの機能のことです。計算が重いchunkでは<code>cache:true</code>と設定しておくと、Renderするときにかかる演算の時間を省略できます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>cacheの設定</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: true</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="dv">1000000</span>, <span class="fu">rnorm</span>(<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>cache:trueを指定</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="dv">1000000</span>, <span class="fu">rnorm</span>(<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  0.4020361 -1.0432694  1.1943262  1.3362421 -0.8965265 -0.4314073</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="code-annotation" class="level2" data-number="38.3">
+<h2 data-number="38.3" class="anchored" data-anchor-id="code-annotation"><span class="header-section-number">38.3</span> code annotation</h2>
+<p>code annotationとは、実行するRコードの行に番号を付け、その番号を引用して説明文を加えることができる、chunkの機能のことです。このテキストのように、コードの内容を説明するときに使用すると、わかりやすい文を作成することができます。</p>
+<p>code annotationを用いる場合には、コードの行に<code># &lt;1&gt;</code>などの数値を加え、chunkの下に箇条書き（<code>1. XXX</code>など）を記載します。箇条書きの数値の記載と、<code># &lt;1&gt;</code>の数値が対応し、コードと箇条書きの両方に同じ形の番号が示されます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>code annotation</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>penguins<span class="sc">$</span>species <span class="sc">|&gt;</span> <span class="fu">levels</span>() <span class="co"># &lt;1&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_bm =</span> <span class="fu">mean</span>(<span class="fu">na.omit</span>(body_mass_g))) <span class="co"># &lt;2&gt;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>penguinsには3種のペンギンのデータが含まれる</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>ジェンツーペンギンは一回り大きい</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-23"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-23-1"><a href="#annotated-cell-23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-23-2" class="code-annotation-target"><a href="#annotated-cell-23-2" aria-hidden="true" tabindex="-1"></a>penguins<span class="sc">$</span>species <span class="sc">|&gt;</span> <span class="fu">levels</span>()</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-23-3" class="code-annotation-target"><a href="#annotated-cell-23-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_bm =</span> <span class="fu">mean</span>(<span class="fu">na.omit</span>(body_mass_g)))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-23" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-23" data-code-lines="2" data-code-annotation="1">penguinsには3種のペンギンのデータが含まれる</span>
+</dd>
+<dt data-target-cell="annotated-cell-23" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-23" data-code-lines="3" data-code-annotation="2">ジェンツーペンギンは一回り大きい</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Adelie"    "Chinstrap" "Gentoo"   
+# A tibble: 3 × 2
+  species   mean_bm
+  &lt;fct&gt;       &lt;dbl&gt;
+1 Adelie      3701.
+2 Chinstrap   3733.
+3 Gentoo      5076.</code></pre>
+</div>
+</div>
+<hr>
+<p>説明文と返り値の位置など、調整がやや煩雑なのでこのテキストではcode annotationは用いていません。</p>
+</section>
+<section id="インラインのコード" class="level2" data-number="38.4">
+<h2 data-number="38.4" class="anchored" data-anchor-id="インラインのコード"><span class="header-section-number">38.4</span> インラインのコード</h2>
+<p>Quartoでは、chunkを書かずに、Markdownの文中でRを実行することもできます。例えば、chunkを用いて演算結果を変数に代入します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>インラインコードで出力する変数</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>次に、以下のように、<code>{r}</code>で囲い、Markdownの文中に記載することで、その文中のRのコードを実行することが出来ます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>インラインコード</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>変数tempには<span class="in">`{\r} temp`</span>が代入されている。 # バックスラッシュは不要</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>変数<code>temp</code>には0.2698335が代入されている。</p>
+<hr>
+<p>ただし、このインラインコードに長いスクリプトを書いてしまうと、読みにくく、理解しにくくなるため、上記のように変数を呼びだす程度の利用にとどめる方がよいでしょう。</p>
 
 
 <!-- -->
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-reticulate_bib" class="csl-entry" role="listitem">
+Ushey, Kevin, JJ Allaire, and Yuan Tang. 2025. <em>Reticulate: Interface to ’Python’</em>. <a href="https://CRAN.R-project.org/package=reticulate">https://CRAN.R-project.org/package=reticulate</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1558,158 +1718,317 @@ R markdownの発展
       }
     }
   });
-  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./chapter37.html" class="pagination-link" aria-label="ネットワーク解析">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">ネットワーク解析</span></span>
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./chapter37.html" class="pagination-link" aria-label="Quarto：Markdownとレイアウト">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Quarto：Markdownとレイアウト</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapter39.html" class="pagination-link" aria-label="Shiny">
-        <span class="nav-page-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Shiny</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./chapter39.html" class="pagination-link" aria-label="Quarto：YAMLの基礎">
+        <span class="nav-page-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Quarto：YAMLの基礎</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># R markdown</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>Rでスクリプトを書いている時には、コードを書き、コードを説明するコメントを挿入し、コードを逐次実行するのが一般的です。小さな規模のスクリプトを書いている場合にはこのような方法でも大きな問題はありません。</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>しかし、1つのRファイルにあれもこれも分析を加えていくと、どこで何を計算しているのか、把握することが難しくなっていきます。また、たくさんの分析を一度に行うと、少しスクリプトを修正しただけでプログラムが走らなくなる、結果が大きく変わってしまう、ということも珍しくありません。</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>このような、スクリプトを書いているときに発生する問題のことを、**再現性の問題**と呼ぶことがあります。Rでは主に統計の計算を行うため、誰が、いつ、どのような場所で計算を行っても、同じ結果が得られる、つまり再現性があることが重要となります。単にスクリプトを書いているだけでは、再現性を維持するのが難しい場合もあります。</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>また、Rでの計算結果を他の人に説明する場合には、グラフや表を別途保存し、PowerpointやWordなどに張り付ける必要があります。わざわざファイルを保存し、別のファイルに張り付ける作業は無意味ですし、時間を取ります。</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>このような再現性の確保、計算結果の共有のためのライブラリが<span class="co">[</span><span class="ot">**R markdown**</span><span class="co">](https://rmarkdown.rstudio.com/)</span>です。R markdownでは、マークアップ言語である**Markdown**を用いて、Rのコードとその説明文を同時に文書として作成することができます。</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## マークアップ言語とMarkdown</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>マークアップ言語とは、主に<span class="co">[</span><span class="ot">組版</span><span class="co">](https://ja.wikipedia.org/wiki/%E7%B5%84%E7%89%88)</span>と呼ばれる、文書や画像を出版・印刷できる形式で出力するために用いられる言語です。組版自体はマークアップ言語が無くても行うことができます（代表的な組版ソフトウェアは<span class="co">[</span><span class="ot">Adobe InDesign</span><span class="co">](https://ja.wikipedia.org/wiki/Adobe_InDesign)</span>や<span class="co">[</span><span class="ot">QuarkXPress</span><span class="co">](https://ja.wikipedia.org/wiki/QuarkXPress)</span>）。これらの有料の組版ソフトはGUIを用いて組版を行うソフトウェアです。同様の機能をCUI、つまりテキストファイルで対応できるようにしたものがマークアップ言語です。マークアップ言語は通常無料で使用することができ、機能的には有料の組版ソフトと大きな差はありません。ただし、学習コストが比較的高めです。</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>代表的なマークアップ言語には、<span class="co">[</span><span class="ot">Tex</span><span class="co">](https://ja.wikipedia.org/wiki/TeX)</span>や<span class="co">[</span><span class="ot">Markdown</span><span class="co">](https://ja.wikipedia.org/wiki/Markdown)</span>があります。Texは昔から論文を書く際に用いられてきた言語で、専用のソフトウェアを用いることでTexファイルをPDF等に変換することができます。</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>一方でMarkdown は主にhtmlへの変換を目的として作られたマークアップ言語です。Markdownとhtmlの表記は対応しており、変換ツールを用いることでMarkdown のファイルからhtmlを簡単に作成することができます。Markdownの記法について以下の表1に示します。<span class="co">[</span><span class="ot">Rmarkdownのcheatsheet</span><span class="co">](https://rstudio.github.io/cheatsheets/html/rmarkdown.html?_gl=1*yrxqrc*_ga*MzM5MDIyMTc2LjE3MjkzMjE1MTU.*_ga_2C0WZ1JHG0*MTcyOTMyMTUxNS4xLjAuMTcyOTMyMTUxNS4wLjAuMA..)</span>や<span class="co">[</span><span class="ot">Qiitaのチートシート</span><span class="co">](https://qiita.com/Qiita/items/c686397e4a0f4f11683d)</span>も参考になります。</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, readxl)</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/chapter34_Rmarkdown.xlsx"</span>)</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表1：Markdownの記法"</span>, <span class="at">rownames =</span> <span class="cn">NULL</span>, <span class="at">escape =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## R markdownの発展</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>Rは統計に用いる言語ですので、Texを用いた論文にRの統計結果を加えることは昔から重要とされていました。Rが用いられ始めてすぐに、RのスクリプトとTexを合わせることができるRの機能として、<span class="co">[</span><span class="ot">Sweave</span><span class="co">](https://stat.ethz.ch/R-manual/R-devel/library/utils/doc/Sweave.pdf)</span>がR Core Teamにより開発されました（<span class="co">[</span><span class="ot">2002年頃</span><span class="co">](https://cran.r-project.org/doc/Rnews/Rnews_2002-3.pdf#page=28&amp;zoom=100,73,74)</span>のようです）。</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>また、このようなRでの流れとは独立に、HTMLを簡単な表記で作成するためのテキスト形式である<span class="co">[</span><span class="ot">Markdown</span><span class="co">](https://daringfireball.net/projects/markdown/)</span>（2004年）、MarkdownをHTMLやPDFに変換できるファイルコンバータとして<span class="co">[</span><span class="ot">Pandoc</span><span class="co">](https://pandoc.org/)</span>（2006年）が開発されました。</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>Rでの開発とは別に、PythonではRと同じような対話的実行システムである<span class="co">[</span><span class="ot">IPython</span><span class="co">](https://ipython.readthedocs.io/en/stable/)</span>（2001年）が開発され、更にPython、Rなどを対話的に実行・結果を表示しつつ、Markdownでの文書と同時に記載できるWebアプリケーションである<span class="co">[</span><span class="ot">Jupyter notebook</span><span class="co">](https://jupyter.org/)</span>（2014年頃）が開発されました。</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>上記のような流れの中で、RでLaTex、HTML、Markdownなどの文書とコードを作成し、それをRコードを実行した形でLatexやHTMLとして出力するためのライブラリである<span class="co">[</span><span class="ot">knitr</span><span class="co">](https://yihui.org/knitr/)</span>が開発されました（2012年頃）。このknitrをさらにPandocと統合し、Rコードから直接PDFやHTML、Microsoft Wordなどのフォーマットの文書を作成できるようにしたものが<span class="co">[</span><span class="ot">R markdown</span><span class="co">](https://rmarkdown.rstudio.com/)</span>（2016年頃）です。R markdownはすぐにRstudio（<span class="co">[</span><span class="ot">2011年頃</span><span class="co">](https://posit.co/blog/rstudio-new-open-source-ide-for-r/)</span>に開発）と統合され、RstudioからR markdown方式の文書を作成し、それをPDFやHTMLに変換できるようになりました。R markdownのExtensionsも整備され、例えば<span class="co">[</span><span class="ot">Bookdown</span><span class="co">](https://bookdown.org/)</span>（R Markdownで本を書くためのツール）が開発されたことでRでHTML形式の本を比較的簡単に作成することができるようになりました。また、<span class="co">[</span><span class="ot">Revealjs</span><span class="co">](https://revealjs.com/)</span>を</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>出力することでHTMLベースのプレゼンテーションを作成することもできるようになっています。R studioにはR markdownのVisual mode（Jupyter notebookと見た目が似た形式）も整備され、R markdownを利用することでJupyter notebook風にRを利用することもできます。</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>上記のようにRstudioとR markdownは共に発展してきましたが、2010年代には機械学習のライブラリがほとんどPythonで開発されるようになり、RよりもPythonの方がはるかに流行の言語となりました。このPythonユーザーを取り込むためだと思いますが、Rstudio（今は<span class="co">[</span><span class="ot">Posit.io</span><span class="co">](https://posit.co/)</span>という企業）はR markdownをPythonやJuliaなどの統計学・機械学習で用いられる言語でも使える形とし、Rstudioだけでなく、JupyterやテキストエディタであるVisual Studio Codeでも使えるものとした、<span class="co">[</span><span class="ot">Quarto</span><span class="co">](https://quarto.org/)</span>を開発し始めました（おそらく2022年頃）。QuartoがRユーザー以外に注目されているかはかなり疑問ですが、RユーザーとしてはR markdownの機能が単にアップグレードされただけですので、用いない理由はほとんどありません。</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>このテキストもR markdown、BookdownおよびQuartoを利用して作成しています。</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>以下ではR markdownについて説明していきますが、RstudioではQuartoもR markdownと同様に用いることができます。</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## ファイルの作成</span></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>R markdownで作成するファイルの拡張子は<span class="in">`.rmd`</span>、Quartoで作成するファイルの拡張子は<span class="in">`.qmd`</span>です。Rstudioで.rmd、.qmdファイルを作成する場合、Rstudioの左上のアイコンから、「R markdown...」や「Quarto Document...」を選択します。</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="al">![R markdownのファイルを作成する](./image/Rmarkdown_newfile.png)</span></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>R markdownを選択すると、まず「New R Markdown」というウインドウが表示されます。ここでタイトル、著者、作成日、出力する形式（HTML、PDF、Word）を選択できます。このウインドウで設定していなくても後ほど設定することもできるため、すべてを入力しないといけない、ということはありません。</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="al">![R markdownの初期設定](./image/new_Rmarkdown.png)</span></span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>R markdownファイルを作成すると、以下のようなR markdownの例が表示されます。この表記法はSourceと呼ばれる、すべてテキストで記載された形です。</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="al">![R markdownファイル：Sourceモード](./image/initial_Rmarkdown_source.png)</span></span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>また、上の「Visual」を選択すると、Jupyter notebook風のVisualモードを利用することもできます。やや表示に時間がかかり、レスポンスが悪いため、通常はSourceモードを用いる方が使いやすいでしょう。</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="al">![R Markdownファイル：Visualモード](./image/initial_Rmarkdown_visual.png)</span></span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>最終的には上のアイコンに含まれている「Knit」（毛糸を編む、ニット）の下矢印をクリックし、選択肢から出力したいファイル形式（HTML、PDF、Word）を選ぶことでRを実行した結果を表示した出力ファイルを得ることができます。</span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="al">![R markdownをknitする](./image/knit_Rmarkdown.png)</span></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="fu">## yamlとchunk</span></span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="fu">### yaml</span></span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>上記の「New R Markdown」ウインドウで設定した内容は、文書の一番始め、<span class="in">`---`</span>に挟まれた領域に記載されています。</span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="in">```yaml</span></span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Untitled"</span></span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"xjorv"</span></span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2024-06-29"</span></span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a><span class="fu">output</span><span class="kw">:</span><span class="at"> html_document</span></span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>この<span class="in">`---`</span>に挟まれた領域には、<span class="co">[</span><span class="ot">YAML</span><span class="co">](https://ja.wikipedia.org/wiki/YAML)</span>と呼ばれるものが記載されています。YAML自体は名前とデータをコロン（<span class="in">`:`</span>）でつないだだけのデータ形式です。R markdownではこのYAMLを読み込むことで、最終的な出力データに表記する情報・データの出力形式などを設定します。YAMLで設定できる主な要素は以下の表2の通りです。</span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/chapter34_Rmarkdown.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">2</span>)</span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：YAMLの指定"</span>)</span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>YAMLの指定では、論理型として<span class="in">`true`</span>/<span class="in">`false`</span>という形で、小文字を用います。</span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="fu">### chunk</span></span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>R markdown中では、Rのスクリプトは以下のように<span class="sc">\`</span>3つで囲まれた領域に書くことになります。このコードのかたまりのことを**chunk**と呼びます。</span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a><span class="in">````markdown</span></span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>`r ''````{r}</span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>plot(cars)</span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>.rmd（.qmd）ファイル中にchunkを書くと、knitするときにchunk内のスクリプトは実行され、上のように評価結果が出力ファイル上に表示されます。chunkに書かれている<span class="in">`{r}`</span>はRのコードであるということを示しています。Rstudioではchunkを**{{&lt; kbd Ctrl+Alt+I &gt;}}**で挿入することができます。</span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>この<span class="in">`{r}`</span>の部分には、chunkオプションというものを追加し、評価や表示の方法を指定することができます。chunkオプションのリストを以下の表に示します。</span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/chapter34_Rmarkdown.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">3</span>)</span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表3：chunk optionの一覧"</span>)</span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>チャンクオプションは以下のように記載して用います。</span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a><span class="in">````markdown</span></span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>`r ''````{r, echo = FALSE, eval = FALSE}</span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>plot(cars) # チャンクオプションはコンマで区切って記述する</span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Quarto：chunkとchunk option</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE, message=FALSE}</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## chunk</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>R markdownでRのコードを書くときには、**chunk**というものを用います。QuartoでもR markdownと同じく、chunkを用いてスクリプトを書きます。chunkではbacktick3つ（<span class="in">`` ``` ``</span>）の後にプログラミング言語の名前（Rの場合は<span class="in">`r`</span>）を中括弧の中（<span class="in">`{}`</span>）に記載します。次の行以降にRのスクリプトを書き、最後にbacktick3つ（<span class="in">`` ``` ``</span>）を記載します。backtickの間のコードはQuartoをRenderする際に実行されます。</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="chunk"}</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="co"># この間にコードを記載する</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>a</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, collapse=TRUE}</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a><span class="co"># この間にコードを記載する</span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>a</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>chunkはRだけではなく、Python、Markdown、前章で説明した<span class="co">[</span><span class="ot">Mermaid</span><span class="co">](https://mermaid.js.org/)</span>や<span class="co">[</span><span class="ot">Graphviz</span><span class="co">](https://graphviz.org/)</span>などを用いる場合にも使用します。</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="Pythonを実行する"}</span></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>] <span class="co"># リスト（Rにはない記法）</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{python, collapse=TRUE}</span></span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>] <span class="co"># リスト（Rにはない記法）</span></span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pythonの実行</span></span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>上記のように、PythonのchunkがRのQuartoに含まれている場合には、<span class="co">[</span><span class="ot">`reticulate`</span><span class="co">](https://rstudio.github.io/reticulate/)</span>パッケージ<span class="co">[</span><span class="ot">@reticulate_bib</span><span class="co">]</span>（reticulated python、*Malayopython reticulatus*、和名：<span class="co">[</span><span class="ot">アミメニシキヘビ</span><span class="co">](https://en.wikipedia.org/wiki/Reticulated_python)</span>より）により、Pythonのコードが実行されます。<span class="in">`reticulate::repl_python`</span>関数を実行すると、コンソールの記号が<span class="in">`&gt;&gt;&gt;`</span>に変化します。この記号が出ているときには、コンソールはPythonを実行するモードになっています。<span class="in">`exit`</span>でPython実行モードからRの実行モードに戻すことができます。</span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="Markdownのchunk"}</span></span>
+<span id="cb30-53"><a href="#cb30-53" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown}</span></span>
+<span id="cb30-54"><a href="#cb30-54" aria-hidden="true" tabindex="-1"></a><span class="al">![](.image/toba.jpg)</span></span>
+<span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-56"><a href="#cb30-56" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-57"><a href="#cb30-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-60"><a href="#cb30-60" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown}</span></span>
+<span id="cb30-61"><a href="#cb30-61" aria-hidden="true" tabindex="-1"></a><span class="al">![](.image/toba.jpg)</span> # 変換されず、そのまま表示される</span>
+<span id="cb30-62"><a href="#cb30-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-63"><a href="#cb30-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-64"><a href="#cb30-64" aria-hidden="true" tabindex="-1"></a>Rstudioでは、**{{&lt; kbd Ctrl+ALT+I &gt;}}**のショートカットで文章にチャンクを挿入することができます。</span>
+<span id="cb30-65"><a href="#cb30-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-66"><a href="#cb30-66" aria-hidden="true" tabindex="-1"></a><span class="fu">## chunk option</span></span>
+<span id="cb30-67"><a href="#cb30-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-68"><a href="#cb30-68" aria-hidden="true" tabindex="-1"></a>R markdownの章で説明した通り、chunkには**chunk option**と呼ばれる、chunk実行時の設定を変更することが出来る機能があります。chunk optionは**chunkの`{}`の中**に以下のように記載し、用います。</span>
+<span id="cb30-69"><a href="#cb30-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-70"><a href="#cb30-70" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="chunk optionの利用"}</span></span>
+<span id="cb30-71"><a href="#cb30-71" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
+<span id="cb30-72"><a href="#cb30-72" aria-hidden="true" tabindex="-1"></a><span class="co"># eval = FALSEはコードを実行しない際のchunk option</span></span>
+<span id="cb30-73"><a href="#cb30-73" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ])</span>
+<span id="cb30-74"><a href="#cb30-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-75"><a href="#cb30-75" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-76"><a href="#cb30-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-77"><a href="#cb30-77" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE, collapse=TRUE}</span></span>
+<span id="cb30-78"><a href="#cb30-78" aria-hidden="true" tabindex="-1"></a><span class="co"># eval = FALSEはコードを実行しない際のchunk option</span></span>
+<span id="cb30-79"><a href="#cb30-79" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ])</span>
+<span id="cb30-80"><a href="#cb30-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-81"><a href="#cb30-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-82"><a href="#cb30-82" aria-hidden="true" tabindex="-1"></a>R markdownの章に示した通り、主なchunk optionには以下のようなものがあります。また、Rを用いる場合には、chunk optionとして、R markdownのchunk optionを用いることができます。詳しくは<span class="co">[</span><span class="ot">Dr. Yihui Xieが作成されているページ</span><span class="co">](https://yihui.org/knitr/options/)</span>をご参考下さい。</span>
+<span id="cb30-83"><a href="#cb30-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-84"><a href="#cb30-84" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
+<span id="cb30-85"><a href="#cb30-85" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/chapter34_Rmarkdown.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">3</span>)</span>
+<span id="cb30-86"><a href="#cb30-86" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
+<span id="cb30-87"><a href="#cb30-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-88"><a href="#cb30-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-89"><a href="#cb30-89" aria-hidden="true" tabindex="-1"></a>例えば、ライブラリの読み込み時にメッセージが出る場合（<span class="in">`tidyverse`</span>は読み込み時に必ずメッセージを表示します）には<span class="in">`message=FALSE`</span>を設定することで、メッセージがRender後に表示されないようにすることができます。エラーが出る処理を出力したいのであれば<span class="in">`error=true`</span>を、Rでの演算を実行したくない場合は<span class="in">`eval=FALSE`</span>を、Rのスクリプトを表示したくない場合には<span class="in">`echo=FALSE`</span>を設定するとよいでしょう。</span>
+<span id="cb30-90"><a href="#cb30-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-91"><a href="#cb30-91" aria-hidden="true" tabindex="-1"></a>また、このテキストでのchunkにはほぼすべて<span class="in">`filename`</span>が設定されており、Rのコードにはほぼ必ずタイトルがついていると思います。</span>
+<span id="cb30-92"><a href="#cb30-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-93"><a href="#cb30-93" aria-hidden="true" tabindex="-1"></a><span class="fu">### chunk optionの記載位置について</span></span>
+<span id="cb30-94"><a href="#cb30-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-95"><a href="#cb30-95" aria-hidden="true" tabindex="-1"></a>このchunk optionについては、Quartoでは大幅に拡張されています。例えば前章で説明したレイアウトに関しては、chunk optionに記載することでも対応ができるようになっています。</span>
+<span id="cb30-96"><a href="#cb30-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-97"><a href="#cb30-97" aria-hidden="true" tabindex="-1"></a>chunk optionが拡張されたことで、<span class="in">`{}`</span>の中にたくさん記載すると読みにくく、管理しにくくなるため、Quartoでは以下のように、<span class="in">`#|`</span>の後に記載し、chunk optionを設定できるようにされています。この場合、<span class="in">`=`</span>を用いて指定していた値は、YAMLのように<span class="in">`:`</span>を用いて記載します。</span>
+<span id="cb30-98"><a href="#cb30-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-99"><a href="#cb30-99" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="chunk optionをchunk内で宣言する"}</span></span>
+<span id="cb30-102"><a href="#cb30-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-103"><a href="#cb30-103" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb30-104"><a href="#cb30-104" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: margin</span></span>
+<span id="cb30-105"><a href="#cb30-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-106"><a href="#cb30-106" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb30-107"><a href="#cb30-107" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-108"><a href="#cb30-108" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-109"><a href="#cb30-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-110"><a href="#cb30-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="chunk optionで.column-marginを設定し、右にアウトプットを表示", collapse=TRUE}</span></span>
+<span id="cb30-111"><a href="#cb30-111" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb30-112"><a href="#cb30-112" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: margin</span></span>
+<span id="cb30-113"><a href="#cb30-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-114"><a href="#cb30-114" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb30-115"><a href="#cb30-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-116"><a href="#cb30-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-117"><a href="#cb30-117" aria-hidden="true" tabindex="-1"></a><span class="in">`column`</span>に設定する幅には、<span class="in">`margin`</span>の他に<span class="in">`body`</span>、<span class="in">`page`</span>、<span class="in">`screen`</span>の3つに加えて、<span class="in">`-outset`</span>、<span class="in">`-inset`</span>の2種、<span class="in">`-right`</span>、<span class="in">`-left`</span>の2つを後につけることで、表示する幅をコントロールすることもできます。詳しくは前章のレイアウトを確認してください。</span>
+<span id="cb30-118"><a href="#cb30-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-119"><a href="#cb30-119" aria-hidden="true" tabindex="-1"></a><span class="fu">### 図のキャプションやコード表示の指定：fig-cap/echo</span></span>
+<span id="cb30-120"><a href="#cb30-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-121"><a href="#cb30-121" aria-hidden="true" tabindex="-1"></a>chunk optionには、出力される図（グラフなど）のキャプション（<span class="in">`fig-cap`</span>）、図を読み出すことが出来ないときに表示されるテキスト（<span class="in">`fig-alt`</span>）などを設定することもできます。また、以下のように<span class="in">`echo: fenced`</span>を設定すると、表示されるコードにchunkが付いた形で表示されます。</span>
+<span id="cb30-122"><a href="#cb30-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-125"><a href="#cb30-125" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-126"><a href="#cb30-126" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: "様々なchunk optionの設定"</span></span>
+<span id="cb30-127"><a href="#cb30-127" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "figure caption：出力した図にキャプションが付く（cap-location: marginなので右に表示）"</span></span>
+<span id="cb30-128"><a href="#cb30-128" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "図が読みだせません"</span></span>
+<span id="cb30-129"><a href="#cb30-129" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.height: 4</span></span>
+<span id="cb30-130"><a href="#cb30-130" aria-hidden="true" tabindex="-1"></a><span class="co">#| cap-location: margin</span></span>
+<span id="cb30-131"><a href="#cb30-131" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
+<span id="cb30-132"><a href="#cb30-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-133"><a href="#cb30-133" aria-hidden="true" tabindex="-1"></a><span class="co"># fig-altは図が表示されない場合に表示されるテキストのこと。</span></span>
+<span id="cb30-134"><a href="#cb30-134" aria-hidden="true" tabindex="-1"></a><span class="co"># Rではよほど大きいファイルを取り扱わない限り必要ないかと思います。</span></span>
+<span id="cb30-135"><a href="#cb30-135" aria-hidden="true" tabindex="-1"></a><span class="co"># #| echo: fenced を設定しているので、chunkが表示されています</span></span>
+<span id="cb30-136"><a href="#cb30-136" aria-hidden="true" tabindex="-1"></a><span class="co">#（#| echo: fencedででは表示されません）</span></span>
+<span id="cb30-137"><a href="#cb30-137" aria-hidden="true" tabindex="-1"></a><span class="co"># cap-locationはmarginにfig-capを置くためのoptionです。</span></span>
+<span id="cb30-138"><a href="#cb30-138" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb30-139"><a href="#cb30-139" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb30-140"><a href="#cb30-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-141"><a href="#cb30-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-142"><a href="#cb30-142" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`echo:fenced`</span>の代わりに、括弧を2重（<span class="in">`{{}}`</span>）にすることでもchunkを表示させることができます。この方法では他のオプションを指定しにくいため、<span class="in">`echo:fenced`</span>を用いた方がよいでしょう。</span>
+<span id="cb30-143"><a href="#cb30-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-144"><a href="#cb30-144" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="カッコを2重にする"}</span></span>
+<span id="cb30-145"><a href="#cb30-145" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-146"><a href="#cb30-146" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb30-147"><a href="#cb30-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-148"><a href="#cb30-148" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-149"><a href="#cb30-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-150"><a href="#cb30-150" aria-hidden="true" tabindex="-1"></a><span class="fu">### 出力の表示方法の変更：results: asis</span></span>
+<span id="cb30-151"><a href="#cb30-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-152"><a href="#cb30-152" aria-hidden="true" tabindex="-1"></a><span class="in">`results: asis`</span>はchunkの演算結果を通常の結果の表示方法ではなく、Markdownとしてそのまま出力するためのオプションです。以下の例のように、<span class="in">`cat`</span>関数の返り値は通常文字列の返り値として、以下のように表示されます。</span>
+<span id="cb30-153"><a href="#cb30-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-154"><a href="#cb30-154" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "通常の出力", echo="fenced"}</span></span>
+<span id="cb30-155"><a href="#cb30-155" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb30-156"><a href="#cb30-156" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-157"><a href="#cb30-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-158"><a href="#cb30-158" aria-hidden="true" tabindex="-1"></a><span class="in">`results: asis`</span>を設定すると返り値が通常のMarkdownとして取り扱われ、リンクや太字の表示がMarkdownに従い変換されます。使いどころは難しいのですが、Rの出力の表示を変えたいときには使うことがあるかもしれません。</span>
+<span id="cb30-159"><a href="#cb30-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-160"><a href="#cb30-160" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo="fenced", filename = "results: asis"}</span></span>
+<span id="cb30-161"><a href="#cb30-161" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: asis</span></span>
+<span id="cb30-162"><a href="#cb30-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-163"><a href="#cb30-163" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb30-164"><a href="#cb30-164" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-165"><a href="#cb30-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-166"><a href="#cb30-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-167"><a href="#cb30-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-168"><a href="#cb30-168" aria-hidden="true" tabindex="-1"></a><span class="fu">### 図を複数列に並べて表示する：layout-ncol</span></span>
+<span id="cb30-169"><a href="#cb30-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-170"><a href="#cb30-170" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`layout-ncol`</span>を用いることでRの出力するグラフを2列に並べることもできます。</span>
+<span id="cb30-171"><a href="#cb30-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-172"><a href="#cb30-172" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="layout-ncolでグラフを横に並べる"}</span></span>
+<span id="cb30-173"><a href="#cb30-173" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
+<span id="cb30-174"><a href="#cb30-174" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb30-175"><a href="#cb30-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-176"><a href="#cb30-176" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb30-177"><a href="#cb30-177" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">color =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)</span>
+<span id="cb30-178"><a href="#cb30-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-179"><a href="#cb30-179" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-180"><a href="#cb30-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-181"><a href="#cb30-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
+<span id="cb30-182"><a href="#cb30-182" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb30-183"><a href="#cb30-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-184"><a href="#cb30-184" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb30-185"><a href="#cb30-185" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">color =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)</span>
+<span id="cb30-186"><a href="#cb30-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-187"><a href="#cb30-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-188"><a href="#cb30-188" aria-hidden="true" tabindex="-1"></a><span class="fu">### コードの表示を折りたたむ：code-fold/code-overflow</span></span>
+<span id="cb30-189"><a href="#cb30-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-190"><a href="#cb30-190" aria-hidden="true" tabindex="-1"></a>また、コードを折りたたむ場合には<span class="in">`code-fold: true`</span>、長いコードを折り返し表示したい場合には<span class="in">`code-overflow: wrap`</span>を指定します。</span>
+<span id="cb30-191"><a href="#cb30-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-192"><a href="#cb30-192" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="code-foldとcode-overflow"}</span></span>
+<span id="cb30-195"><a href="#cb30-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-196"><a href="#cb30-196" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
+<span id="cb30-197"><a href="#cb30-197" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
+<span id="cb30-198"><a href="#cb30-198" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb30-199"><a href="#cb30-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-200"><a href="#cb30-200" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</span>)</span>
+<span id="cb30-201"><a href="#cb30-201" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-202"><a href="#cb30-202" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-203"><a href="#cb30-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-206"><a href="#cb30-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-207"><a href="#cb30-207" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
+<span id="cb30-208"><a href="#cb30-208" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
+<span id="cb30-209"><a href="#cb30-209" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb30-210"><a href="#cb30-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-211"><a href="#cb30-211" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</span>)</span>
+<span id="cb30-212"><a href="#cb30-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-213"><a href="#cb30-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-214"><a href="#cb30-214" aria-hidden="true" tabindex="-1"></a><span class="fu">### コードの行に番号を付ける：code-line-numbers</span></span>
+<span id="cb30-215"><a href="#cb30-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-216"><a href="#cb30-216" aria-hidden="true" tabindex="-1"></a><span class="in">`code-line-numbers`</span>はコードの行に番号をつけるためのオプションです。<span class="in">`true`</span>に指定することで、コードの行の頭に数字が付きます。後で説明するcode annotationという機能よりは簡潔に行数を表示し、説明しやすくすることができます。</span>
+<span id="cb30-217"><a href="#cb30-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-218"><a href="#cb30-218" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="code-line-numbers"}</span></span>
+<span id="cb30-219"><a href="#cb30-219" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "code-line-numbersを指定する"}</span></span>
+<span id="cb30-220"><a href="#cb30-220" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb30-221"><a href="#cb30-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-222"><a href="#cb30-222" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb30-223"><a href="#cb30-223" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb30-224"><a href="#cb30-224" aria-hidden="true" tabindex="-1"></a>a <span class="sc">+</span> b</span>
+<span id="cb30-225"><a href="#cb30-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-226"><a href="#cb30-226" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-227"><a href="#cb30-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-228"><a href="#cb30-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "code-line-numbersを指定する"}</span></span>
+<span id="cb30-229"><a href="#cb30-229" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb30-230"><a href="#cb30-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-231"><a href="#cb30-231" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb30-232"><a href="#cb30-232" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb30-233"><a href="#cb30-233" aria-hidden="true" tabindex="-1"></a>a <span class="sc">+</span> b</span>
+<span id="cb30-234"><a href="#cb30-234" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-235"><a href="#cb30-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-236"><a href="#cb30-236" aria-hidden="true" tabindex="-1"></a><span class="fu">### 実行結果をキャッシュする：cache</span></span>
+<span id="cb30-237"><a href="#cb30-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-238"><a href="#cb30-238" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">cache</span><span class="co">]</span>(https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5_(%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0))（キャッシュ）とは、演算結果を保存しておくことで、コードを書き換えない時には以前に保存した結果を、コードを書き換えた時には新たな演算を実行するための、chunkの機能のことです。計算が重いchunkでは<span class="in">`cache:true`</span>と設定しておくと、Renderするときにかかる演算の時間を省略できます。</span>
+<span id="cb30-239"><a href="#cb30-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-240"><a href="#cb30-240" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="cacheの設定"}</span></span>
+<span id="cb30-243"><a href="#cb30-243" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-244"><a href="#cb30-244" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: true</span></span>
+<span id="cb30-245"><a href="#cb30-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-246"><a href="#cb30-246" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="dv">1000000</span>, <span class="fu">rnorm</span>(<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
+<span id="cb30-247"><a href="#cb30-247" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-248"><a href="#cb30-248" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-249"><a href="#cb30-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-250"><a href="#cb30-250" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="cache:trueを指定"}</span></span>
+<span id="cb30-251"><a href="#cb30-251" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: true</span></span>
+<span id="cb30-252"><a href="#cb30-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-253"><a href="#cb30-253" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="dv">1000000</span>, <span class="fu">rnorm</span>(<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
+<span id="cb30-254"><a href="#cb30-254" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-255"><a href="#cb30-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-256"><a href="#cb30-256" aria-hidden="true" tabindex="-1"></a><span class="fu">## code annotation</span></span>
+<span id="cb30-257"><a href="#cb30-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-258"><a href="#cb30-258" aria-hidden="true" tabindex="-1"></a>code annotationとは、実行するRコードの行に番号を付け、その番号を引用して説明文を加えることができる、chunkの機能のことです。このテキストのように、コードの内容を説明するときに使用すると、わかりやすい文を作成することができます。</span>
+<span id="cb30-259"><a href="#cb30-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-260"><a href="#cb30-260" aria-hidden="true" tabindex="-1"></a>code annotationを用いる場合には、コードの行に<span class="in">`# &lt;1&gt;`</span>などの数値を加え、chunkの下に箇条書き（<span class="in">`1. XXX`</span>など）を記載します。箇条書きの数値の記載と、<span class="in">`# &lt;1&gt;`</span>の数値が対応し、コードと箇条書きの両方に同じ形の番号が示されます。</span>
+<span id="cb30-261"><a href="#cb30-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-262"><a href="#cb30-262" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="code annotation"}</span></span>
+<span id="cb30-265"><a href="#cb30-265" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-266"><a href="#cb30-266" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb30-267"><a href="#cb30-267" aria-hidden="true" tabindex="-1"></a>penguins<span class="sc">$</span>species <span class="sc">|&gt;</span> <span class="fu">levels</span>() <span class="co"># &lt;1&gt;</span></span>
+<span id="cb30-268"><a href="#cb30-268" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_bm =</span> <span class="fu">mean</span>(<span class="fu">na.omit</span>(body_mass_g))) <span class="co"># &lt;2&gt;</span></span>
+<span id="cb30-269"><a href="#cb30-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-270"><a href="#cb30-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-271"><a href="#cb30-271" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>penguinsには3種のペンギンのデータが含まれる</span>
+<span id="cb30-272"><a href="#cb30-272" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>ジェンツーペンギンは一回り大きい</span>
+<span id="cb30-273"><a href="#cb30-273" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-274"><a href="#cb30-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-275"><a href="#cb30-275" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE}</span></span>
+<span id="cb30-276"><a href="#cb30-276" aria-hidden="true" tabindex="-1"></a><span class="in">library(palmerpenguins)</span></span>
+<span id="cb30-277"><a href="#cb30-277" aria-hidden="true" tabindex="-1"></a><span class="in">penguins$species |&gt; levels() # &lt;1&gt;</span></span>
+<span id="cb30-278"><a href="#cb30-278" aria-hidden="true" tabindex="-1"></a><span class="in">penguins |&gt; group_by(species) |&gt; summarise(mean_bm = mean(na.omit(body_mass_g))) # &lt;2&gt;</span></span>
+<span id="cb30-279"><a href="#cb30-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-280"><a href="#cb30-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-281"><a href="#cb30-281" aria-hidden="true" tabindex="-1"></a><span class="in">1. penguinsには3種のペンギンのデータが含まれる</span></span>
+<span id="cb30-282"><a href="#cb30-282" aria-hidden="true" tabindex="-1"></a><span class="in">2. ジェンツーペンギンは一回り大きい</span></span>
+<span id="cb30-283"><a href="#cb30-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-284"><a href="#cb30-284" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;hr&gt;</span></span>
+<span id="cb30-285"><a href="#cb30-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-286"><a href="#cb30-286" aria-hidden="true" tabindex="-1"></a><span class="in">説明文と返り値の位置など、調整がやや煩雑なのでこのテキストではcode annotationは用いていません。</span></span>
+<span id="cb30-287"><a href="#cb30-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-288"><a href="#cb30-288" aria-hidden="true" tabindex="-1"></a><span class="in">## インラインのコード</span></span>
+<span id="cb30-289"><a href="#cb30-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-290"><a href="#cb30-290" aria-hidden="true" tabindex="-1"></a><span class="in">Quartoでは、chunkを書かずに、Markdownの文中でRを実行することもできます。例えば、chunkを用いて演算結果を変数に代入します。</span></span>
+<span id="cb30-291"><a href="#cb30-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-292"><a href="#cb30-292" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="インラインコードで出力する変数"}</span></span>
+<span id="cb30-293"><a href="#cb30-293" aria-hidden="true" tabindex="-1"></a><span class="in">temp &lt;- rnorm(1)</span></span>
+<span id="cb30-294"><a href="#cb30-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-295"><a href="#cb30-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-296"><a href="#cb30-296" aria-hidden="true" tabindex="-1"></a><span class="in">次に、以下のように、`{r}`で囲い、Markdownの文中に記載することで、その文中のRのコードを実行することが出来ます。</span></span>
+<span id="cb30-297"><a href="#cb30-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-298"><a href="#cb30-298" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="インラインコード", eval=FALSE}</span></span>
+<span id="cb30-299"><a href="#cb30-299" aria-hidden="true" tabindex="-1"></a><span class="in">変数tempには`{\r} temp`が代入されている。 # バックスラッシュは不要</span></span>
+<span id="cb30-300"><a href="#cb30-300" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb30-301"><a href="#cb30-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-302"><a href="#cb30-302" aria-hidden="true" tabindex="-1"></a>変数<span class="in">`temp`</span>には<span class="in">`{r} temp`</span>が代入されている。</span>
+<span id="cb30-303"><a href="#cb30-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-304"><a href="#cb30-304" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
+<span id="cb30-305"><a href="#cb30-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-306"><a href="#cb30-306" aria-hidden="true" tabindex="-1"></a>ただし、このインラインコードに長いスクリプトを書いてしまうと、読みにくく、理解しにくくなるため、上記のように変数を呼びだす程度の利用にとどめる方がよいでしょう。</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">
       <ul class="footer-items list-unstyled">
-<li class="nav-item">
+    <li class="nav-item">
  © xjorv, 2025
   </li>  
 </ul>
-</div>   
+    </div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
@@ -1717,7 +2036,8 @@ R markdownの発展
 <p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
 </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
@@ -1749,6 +2069,8 @@ R markdownの発展
   
 })();
           </script>
+
+
 
 
 </body></html>

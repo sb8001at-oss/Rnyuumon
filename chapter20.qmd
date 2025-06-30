@@ -8,7 +8,7 @@ knitr::opts_chunk$set(
 
 データを取得し、そのデータをそのまま統計に用いることは稀です。データ解析では、**データの整理整頓（data wrangling、data cleaning）**に多くの時間が割かれています。データの整理整頓には様々なツールが用いられます。前述の`apply`関数群もデータの要約等の整理整頓に用いることができます。
 
-ただし、[前章](./chapter19.html)で説明した通り、`apply`関数群は関数ごとに引数の順序や引数に与えるデータ型、返り値のデータ型などが異なっており、使い勝手がよいとは言えません。同様の機能を持つ[plyrパッケージ](https://cran.r-project.org/web/packages/plyr/index.html) [@plyr_bib]というライブラリもありますが、やはり使い勝手が良くなかったため、それほど用いられていません。
+ただし、[前章](chapter19.qmd)で説明した通り、`apply`関数群は関数ごとに引数の順序や引数に与えるデータ型、返り値のデータ型などが異なっており、使い勝手がよいとは言えません。同様の機能を持つ[plyrパッケージ](https://cran.r-project.org/web/packages/plyr/index.html) [@plyr_bib]というライブラリもありますが、やはり使い勝手が良くなかったため、それほど用いられていません。
 
 現在では、これらの関数・ライブラリに代わり、データの整理整頓には[`tidyr`](https://tidyr.tidyverse.org/) [@tidyr_bib]・[`dplyr`](https://dplyr.tidyverse.org/) [@dplyr_bib]を用いるのがRでは事実上のデフォルトとなっています。`tidyr`・`dplyr`の特徴は以下の通りです。
 
@@ -99,7 +99,7 @@ firstname |> str_trim() |> str_to_upper() # スペースを取り除き、大文
 
 ### デフォルトとmagrittrパッケージのパイプ演算子
 
-では、まず2種類のパイプ演算子について見ていきましょう。Rで先に実装されたのは[`magrittr`](https://cran.r-project.org/web/packages/magrittr/index.html)で、2014年にライブラリが公開されています。Rのデフォルトのパイプ演算子はずっと後になって、2021年にR version 4.1.0で実装されました。
+では、まず2種類のパイプ演算子について見ていきましょう。Rで先に実装されたのは[`magrittr`](https://magrittr.tidyverse.org/)で、2014年にライブラリが公開されています。Rのデフォルトのパイプ演算子はずっと後になって、2021年にR version 4.1.0で実装されました。
 
 Rstudioでは、パイプ演算子を「**{{<kbd Ctrl+Shift+M>}}**」のショートカットで入力することができます。RStudioはRのデフォルトのパイプ演算子が実装される前から存在するため、デフォルトのパイプ演算子は`magrittr`の「`%>%`」になっています。デフォルトのパイプ演算子をRのデフォルトのもの（`|>`）に変更する場合には、「Tools→Global Options」から「Code」を選択し、下の図1の赤線で囲った部分にチェックを入れます。
 
@@ -183,7 +183,7 @@ iris %>% .$Species %>% head
 
 tidyではないデータは世の中にゴロゴロ転がっています。以下の表1はファイザーの[COVID-19ワクチン（コミナティ筋注）の第3相試験に関するNew England Journal of Medicineの論文](https://www.nejm.org/doi/pdf/10.1056/NEJMoa2034577?articleTools=true)の表1の一部を加工したものです[@doi_10_1056_NEJMoa2034577]。
 
-![](./image/chapter16_nontidy.png)
+![Fernando et al. (2020)の表1の一部](./image/chapter16_nontidy.png)
 
 論文の表は人が見やすいように作成されています。ですので、この表を見て、意味が全くわからない、ということはあまりないでしょう。しかし、この表はtidyではありません。
 
@@ -195,7 +195,7 @@ tidyではないデータは世の中にゴロゴロ転がっています。以�
 
 これが完全にtidyなデータであるかと言われるとやや難しいところもありますが、少なくとも上の表1よりはRで取り扱いしやすいデータとなっています。
 
-![](./image/chapter16_tidy.png)
+![Fernando et al. (2020)の表1の一部をtidyに変換](./image/chapter16_tidy.png)
 
 Rでは、グラフ作成・統計共に、元の表より下のtidyなデータの方が取り扱いやすいです。多くのデータは人が見やすいように収集・準備されており、tidyではありません。R上でデータをtidyに加工・整形するためのツールが、`tidyr`と`dplyr`です。
 
@@ -480,12 +480,13 @@ iris |> group_by(Species) |> tally() # グループごとに行数を数える�
 
 ## tibble
 
-[データのI/Oの章](./chapter17.html)で説明した通り、`tidyverse`で取り扱う関数は、データフレームを**tibble**というクラスに変換して返り値を返します。tibbleには以下の特徴があります。
+[データのI/Oの章](chapter17.qmd#tibble)で説明した通り、`tidyverse`で取り扱う関数は、データフレームを**tibble**というクラスに変換して返り値を返します。tibbleには以下の特徴があります。
 
 - 表示の際に、データフレームの列・行数、各列のデータ型を表示し、上から10行だけ示す
 - クラスにdata.frame、tbl_df、tblを設定する
 - `group_by`や`rowwise`により、グループ化ができる（グループ化したクラスが付け加わる）
 - ネスト（`nest`）したデータを取り扱える
+- 行名（row names）は設定できない
 
 tibbleはデータフレームの作成と同じように、`tibble`関数を用いて作成できます。また、`as_tibble`関数を用いることで、データフレームをtibbleに変換することができます。
 
@@ -496,7 +497,23 @@ d
 
 class(d) # クラスはtbl_df、tbl、data.frame
 
-as_tibble(iris) # データフレームをtibbleに変換
+iris_tibble <- as_tibble(iris) # データフレームをtibbleに変換
+iris_tibble
+```
+
+tibbleはインデックスの指定に関してもややdata.frameと異なります。data.frameでは、インデックスで1つの値を指定すると、その列に従った型のデータが返ってきますが、tibbleではtibbleが返ってくるようになっています。1つの値をtibbleではなく、ベクターの1つの値として取得するには、`unlist`関数を用いたり、二十カッコ（`[[]]`）を用いる必要があります。
+
+```{r, filename="tibbleでのインデックスの指定"}
+# 列を選択するとベクターが返ってくるのはdata.frameと同じ
+iris_tibble$Sepal.Length |> head()
+
+# 1つの値を選択すると、tibbleが返ってくる
+iris_tibble[1, 1]
+
+# 1つの値を取得するには、二十カッコを用いるか、unlist関数を用いる
+iris_tibble[[1, 1]]
+
+iris_tibble[1, 1] |> unlist()
 ```
 
 `data.frame`関数でデータフレームを作成する場合、列の要素が他の列より短い場合、recycling（繰り返して採用）されてデータフレームが作成されます。tibbleでは、列の要素が1つだけのときのみrecyclingされ、2つ以上であればエラーとなります。不自然なrecyclingは抑制される仕組みになっています。

@@ -1,131 +1,286 @@
-# R markdown
+# Quarto：chunkとchunk option
 
-```{r, setup, include=FALSE, echo=FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE
-)
-
-pacman::p_load(tidyverse)
+```{r, echo = FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
 ```
 
-Rでスクリプトを書いている時には、コードを書き、コードを説明するコメントを挿入し、コードを逐次実行するのが一般的です。小さな規模のスクリプトを書いている場合にはこのような方法でも大きな問題はありません。
+## chunk
 
-しかし、1つのRファイルにあれもこれも分析を加えていくと、どこで何を計算しているのか、把握することが難しくなっていきます。また、たくさんの分析を一度に行うと、少しスクリプトを修正しただけでプログラムが走らなくなる、結果が大きく変わってしまう、ということも珍しくありません。
+R markdownでRのコードを書くときには、**chunk**というものを用います。QuartoでもR markdownと同じく、chunkを用いてスクリプトを書きます。chunkではbacktick3つ（`` ``` ``）の後にプログラミング言語の名前（Rの場合は`r`）を中括弧の中（`{}`）に記載します。次の行以降にRのスクリプトを書き、最後にbacktick3つ（`` ``` ``）を記載します。backtickの間のコードはQuartoをRenderする際に実行されます。
 
-このような、スクリプトを書いているときに発生する問題のことを、**再現性の問題**と呼ぶことがあります。Rでは主に統計の計算を行うため、誰が、いつ、どのような場所で計算を行っても、同じ結果が得られる、つまり再現性があることが重要となります。単にスクリプトを書いているだけでは、再現性を維持するのが難しい場合もあります。
+````{markdown, filename="chunk"}
+```{r}
+# この間にコードを記載する
+a <- c(1, 2, 3, 4, 5)
+a
+```
+````
 
-また、Rでの計算結果を他の人に説明する場合には、グラフや表を別途保存し、PowerpointやWordなどに張り付ける必要があります。わざわざファイルを保存し、別のファイルに張り付ける作業は無意味ですし、時間を取ります。
+```{r, collapse=TRUE}
+# この間にコードを記載する
+a <- c(1, 2, 3, 4, 5)
+a
+```
 
-このような再現性の確保、計算結果の共有のためのライブラリが[**R markdown**](https://rmarkdown.rstudio.com/)です。R markdownでは、マークアップ言語である**Markdown**を用いて、Rのコードとその説明文を同時に文書として作成することができます。
+chunkはRだけではなく、Python、Markdown、前章で説明した[Mermaid](https://mermaid.js.org/)や[Graphviz](https://graphviz.org/)などを用いる場合にも使用します。
 
-## マークアップ言語とMarkdown
+````{markdown, filename="Pythonを実行する"}
+```{python}
+a = [1, 2, 3, 4, 5] # リスト（Rにはない記法）
+print(a)
+```
+````
 
-マークアップ言語とは、主に[組版](https://ja.wikipedia.org/wiki/%E7%B5%84%E7%89%88)と呼ばれる、文書や画像を出版・印刷できる形式で出力するために用いられる言語です。組版自体はマークアップ言語が無くても行うことができます（代表的な組版ソフトウェアは[Adobe InDesign](https://ja.wikipedia.org/wiki/Adobe_InDesign)や[QuarkXPress](https://ja.wikipedia.org/wiki/QuarkXPress)）。これらの有料の組版ソフトはGUIを用いて組版を行うソフトウェアです。同様の機能をCUI、つまりテキストファイルで対応できるようにしたものがマークアップ言語です。マークアップ言語は通常無料で使用することができ、機能的には有料の組版ソフトと大きな差はありません。ただし、学習コストが比較的高めです。
-
-代表的なマークアップ言語には、[Tex](https://ja.wikipedia.org/wiki/TeX)や[Markdown](https://ja.wikipedia.org/wiki/Markdown)があります。Texは昔から論文を書く際に用いられてきた言語で、専用のソフトウェアを用いることでTexファイルをPDF等に変換することができます。
-
-一方でMarkdown は主にhtmlへの変換を目的として作られたマークアップ言語です。Markdownとhtmlの表記は対応しており、変換ツールを用いることでMarkdown のファイルからhtmlを簡単に作成することができます。Markdownの記法について以下の表1に示します。[Rmarkdownのcheatsheet](https://rstudio.github.io/cheatsheets/html/rmarkdown.html?_gl=1*yrxqrc*_ga*MzM5MDIyMTc2LjE3MjkzMjE1MTU.*_ga_2C0WZ1JHG0*MTcyOTMyMTUxNS4xLjAuMTcyOTMyMTUxNS4wLjAuMA..)や[Qiitaのチートシート](https://qiita.com/Qiita/items/c686397e4a0f4f11683d)も参考になります。
-
-```{r, echo = FALSE}
-pacman::p_load(tidyverse, readxl)
-d <- read_excel("./data/chapter34_Rmarkdown.xlsx")
-knitr::kable(d, caption="表1：Markdownの記法", rownames = NULL, escape = FALSE)
+```{python, collapse=TRUE}
+a = [1, 2, 3, 4, 5] # リスト（Rにはない記法）
+print(a)
 ```
 
 :::{.callout-tip collapse="true"}
+## Pythonの実行
 
-## R markdownの発展
-
-Rは統計に用いる言語ですので、Texを用いた論文にRの統計結果を加えることは昔から重要とされていました。Rが用いられ始めてすぐに、RのスクリプトとTexを合わせることができるRの機能として、[Sweave](https://stat.ethz.ch/R-manual/R-devel/library/utils/doc/Sweave.pdf)がR Core Teamにより開発されました（[2002年頃](https://cran.r-project.org/doc/Rnews/Rnews_2002-3.pdf#page=28&zoom=100,73,74)のようです）。
-
-また、このようなRでの流れとは独立に、HTMLを簡単な表記で作成するためのテキスト形式である[Markdown](https://daringfireball.net/projects/markdown/)（2004年）、MarkdownをHTMLやPDFに変換できるファイルコンバータとして[Pandoc](https://pandoc.org/)（2006年）が開発されました。
-
-Rでの開発とは別に、PythonではRと同じような対話的実行システムである[IPython](https://ipython.readthedocs.io/en/stable/)（2001年）が開発され、更にPython、Rなどを対話的に実行・結果を表示しつつ、Markdownでの文書と同時に記載できるWebアプリケーションである[Jupyter notebook](https://jupyter.org/)（2014年頃）が開発されました。
-
-上記のような流れの中で、RでLaTex、HTML、Markdownなどの文書とコードを作成し、それをRコードを実行した形でLatexやHTMLとして出力するためのライブラリである[knitr](https://yihui.org/knitr/)が開発されました（2012年頃）。このknitrをさらにPandocと統合し、Rコードから直接PDFやHTML、Microsoft Wordなどのフォーマットの文書を作成できるようにしたものが[R markdown](https://rmarkdown.rstudio.com/)（2016年頃）です。R markdownはすぐにRstudio（[2011年頃](https://posit.co/blog/rstudio-new-open-source-ide-for-r/)に開発）と統合され、RstudioからR markdown方式の文書を作成し、それをPDFやHTMLに変換できるようになりました。R markdownのExtensionsも整備され、例えば[Bookdown](https://bookdown.org/)（R Markdownで本を書くためのツール）が開発されたことでRでHTML形式の本を比較的簡単に作成することができるようになりました。また、[Revealjs](https://revealjs.com/)を
-出力することでHTMLベースのプレゼンテーションを作成することもできるようになっています。R studioにはR markdownのVisual mode（Jupyter notebookと見た目が似た形式）も整備され、R markdownを利用することでJupyter notebook風にRを利用することもできます。
-
-上記のようにRstudioとR markdownは共に発展してきましたが、2010年代には機械学習のライブラリがほとんどPythonで開発されるようになり、RよりもPythonの方がはるかに流行の言語となりました。このPythonユーザーを取り込むためだと思いますが、Rstudio（今は[Posit.io](https://posit.co/)という企業）はR markdownをPythonやJuliaなどの統計学・機械学習で用いられる言語でも使える形とし、Rstudioだけでなく、JupyterやテキストエディタであるVisual Studio Codeでも使えるものとした、[Quarto](https://quarto.org/)を開発し始めました（おそらく2022年頃）。QuartoがRユーザー以外に注目されているかはかなり疑問ですが、RユーザーとしてはR markdownの機能が単にアップグレードされただけですので、用いない理由はほとんどありません。
-
-このテキストもR markdown、BookdownおよびQuartoを利用して作成しています。
-
-以下ではR markdownについて説明していきますが、RstudioではQuartoもR markdownと同様に用いることができます。
-
+上記のように、PythonのchunkがRのQuartoに含まれている場合には、[`reticulate`](https://rstudio.github.io/reticulate/)パッケージ[@reticulate_bib]（reticulated python、*Malayopython reticulatus*、和名：[アミメニシキヘビ](https://en.wikipedia.org/wiki/Reticulated_python)より）により、Pythonのコードが実行されます。`reticulate::repl_python`関数を実行すると、コンソールの記号が`>>>`に変化します。この記号が出ているときには、コンソールはPythonを実行するモードになっています。`exit`でPython実行モードからRの実行モードに戻すことができます。
 :::
 
-## ファイルの作成
-
-R markdownで作成するファイルの拡張子は`.rmd`、Quartoで作成するファイルの拡張子は`.qmd`です。Rstudioで.rmd、.qmdファイルを作成する場合、Rstudioの左上のアイコンから、「R markdown...」や「Quarto Document...」を選択します。
-
-![R markdownのファイルを作成する](./image/Rmarkdown_newfile.png)
-
-R markdownを選択すると、まず「New R Markdown」というウインドウが表示されます。ここでタイトル、著者、作成日、出力する形式（HTML、PDF、Word）を選択できます。このウインドウで設定していなくても後ほど設定することもできるため、すべてを入力しないといけない、ということはありません。
-
-![R markdownの初期設定](./image/new_Rmarkdown.png)
-
-R markdownファイルを作成すると、以下のようなR markdownの例が表示されます。この表記法はSourceと呼ばれる、すべてテキストで記載された形です。
-
-![R markdownファイル：Sourceモード](./image/initial_Rmarkdown_source.png)
-
-また、上の「Visual」を選択すると、Jupyter notebook風のVisualモードを利用することもできます。やや表示に時間がかかり、レスポンスが悪いため、通常はSourceモードを用いる方が使いやすいでしょう。
-
-![R Markdownファイル：Visualモード](./image/initial_Rmarkdown_visual.png)
-
-最終的には上のアイコンに含まれている「Knit」（毛糸を編む、ニット）の下矢印をクリックし、選択肢から出力したいファイル形式（HTML、PDF、Word）を選ぶことでRを実行した結果を表示した出力ファイルを得ることができます。
-
-![R markdownをknitする](./image/knit_Rmarkdown.png)
-
-## yamlとchunk
-
-### yaml
-
-上記の「New R Markdown」ウインドウで設定した内容は、文書の一番始め、`---`に挟まれた領域に記載されています。
-
-```yaml
----
-title: "Untitled"
-author: "xjorv"
-date: "2024-06-29"
-output: html_document
----
-```
-
-この`---`に挟まれた領域には、[YAML](https://ja.wikipedia.org/wiki/YAML)と呼ばれるものが記載されています。YAML自体は名前とデータをコロン（`:`）でつないだだけのデータ形式です。R markdownではこのYAMLを読み込むことで、最終的な出力データに表記する情報・データの出力形式などを設定します。YAMLで設定できる主な要素は以下の表2の通りです。
-
-```{r, echo = FALSE}
-d <- read_excel("./data/chapter34_Rmarkdown.xlsx", sheet = 2)
-knitr::kable(d, caption="表2：YAMLの指定")
-```
-
-YAMLの指定では、論理型として`true`/`false`という形で、小文字を用います。
-
-### chunk
-
-R markdown中では、Rのスクリプトは以下のように\`3つで囲まれた領域に書くことになります。このコードのかたまりのことを**chunk**と呼びます。
-
-````markdown
-`r ''````{r}
-plot(cars)
+````{markdown, filename="Markdownのchunk"}
+```{markdown}
+![](.image/toba.jpg)
 ```
 ````
 
-```{r, echo=FALSE}
-plot(cars)
+```{markdown}
+![](.image/toba.jpg) # 変換されず、そのまま表示される
 ```
 
-.rmd（.qmd）ファイル中にchunkを書くと、knitするときにchunk内のスクリプトは実行され、上のように評価結果が出力ファイル上に表示されます。chunkに書かれている`{r}`はRのコードであるということを示しています。Rstudioではchunkを**{{< kbd Ctrl+Alt+I >}}**で挿入することができます。
+Rstudioでは、**{{< kbd Ctrl+ALT+I >}}**のショートカットで文章にチャンクを挿入することができます。
 
-この`{r}`の部分には、chunkオプションというものを追加し、評価や表示の方法を指定することができます。chunkオプションのリストを以下の表に示します。
+## chunk option
 
-```{r, echo = FALSE}
+R markdownの章で説明した通り、chunkには**chunk option**と呼ばれる、chunk実行時の設定を変更することが出来る機能があります。chunk optionは**chunkの`{}`の中**に以下のように記載し、用います。
+
+````{markdown, filename="chunk optionの利用"}
+```{r, eval = FALSE}
+# eval = FALSEはコードを実行しない際のchunk option
+knitr::kable(iris[1:2, ])
+```
+````
+
+```{r, eval = FALSE, collapse=TRUE}
+# eval = FALSEはコードを実行しない際のchunk option
+knitr::kable(iris[1:2, ])
+```
+
+R markdownの章に示した通り、主なchunk optionには以下のようなものがあります。また、Rを用いる場合には、chunk optionとして、R markdownのchunk optionを用いることができます。詳しくは[Dr. Yihui Xieが作成されているページ](https://yihui.org/knitr/options/)をご参考下さい。
+
+```{r, echo=FALSE, message=FALSE}
 d <- read_excel("./data/chapter34_Rmarkdown.xlsx", sheet = 3)
-knitr::kable(d, caption="表3：chunk optionの一覧")
+knitr::kable(d)
 ```
 
-チャンクオプションは以下のように記載して用います。
+例えば、ライブラリの読み込み時にメッセージが出る場合（`tidyverse`は読み込み時に必ずメッセージを表示します）には`message=FALSE`を設定することで、メッセージがRender後に表示されないようにすることができます。エラーが出る処理を出力したいのであれば`error=true`を、Rでの演算を実行したくない場合は`eval=FALSE`を、Rのスクリプトを表示したくない場合には`echo=FALSE`を設定するとよいでしょう。
 
-````markdown
-`r ''````{r, echo = FALSE, eval = FALSE}
-plot(cars) # チャンクオプションはコンマで区切って記述する
+また、このテキストでのchunkにはほぼすべて`filename`が設定されており、Rのコードにはほぼ必ずタイトルがついていると思います。
+
+### chunk optionの記載位置について
+
+このchunk optionについては、Quartoでは大幅に拡張されています。例えば前章で説明したレイアウトに関しては、chunk optionに記載することでも対応ができるようになっています。
+
+chunk optionが拡張されたことで、`{}`の中にたくさん記載すると読みにくく、管理しにくくなるため、Quartoでは以下のように、`#|`の後に記載し、chunk optionを設定できるようにされています。この場合、`=`を用いて指定していた値は、YAMLのように`:`を用いて記載します。
+
+````{markdown, filename="chunk optionをchunk内で宣言する"}
+```{r}
+#| message: false
+#| column: margin
+
+plot(cars)
 ```
 ````
+
+```{r, filename="chunk optionで.column-marginを設定し、右にアウトプットを表示", collapse=TRUE}
+#| message: false
+#| column: margin
+
+plot(cars)
+```
+
+`column`に設定する幅には、`margin`の他に`body`、`page`、`screen`の3つに加えて、`-outset`、`-inset`の2種、`-right`、`-left`の2つを後につけることで、表示する幅をコントロールすることもできます。詳しくは前章のレイアウトを確認してください。
+
+### 図のキャプションやコード表示の指定：fig-cap/echo
+
+chunk optionには、出力される図（グラフなど）のキャプション（`fig-cap`）、図を読み出すことが出来ないときに表示されるテキスト（`fig-alt`）などを設定することもできます。また、以下のように`echo: fenced`を設定すると、表示されるコードにchunkが付いた形で表示されます。
+
+```{r}
+#| filename: "様々なchunk optionの設定"
+#| fig-cap: "figure caption：出力した図にキャプションが付く（cap-location: marginなので右に表示）"
+#| fig-alt: "図が読みだせません"
+#| fig.height: 4
+#| cap-location: margin
+#| echo: fenced
+
+# fig-altは図が表示されない場合に表示されるテキストのこと。
+# Rではよほど大きいファイルを取り扱わない限り必要ないかと思います。
+# #| echo: fenced を設定しているので、chunkが表示されています
+#（#| echo: fencedででは表示されません）
+# cap-locationはmarginにfig-capを置くためのoptionです。
+ 
+plot(cars)
+```
+
+また、`echo:fenced`の代わりに、括弧を2重（`{{}}`）にすることでもchunkを表示させることができます。この方法では他のオプションを指定しにくいため、`echo:fenced`を用いた方がよいでしょう。
+
+````{markdown, filename="カッコを2重にする"}
+```{{r}}
+1 + 1
+```
+````
+
+### 出力の表示方法の変更：results: asis
+
+`results: asis`はchunkの演算結果を通常の結果の表示方法ではなく、Markdownとしてそのまま出力するためのオプションです。以下の例のように、`cat`関数の返り値は通常文字列の返り値として、以下のように表示されます。
+
+```{r, filename = "通常の出力", echo="fenced"}
+cat("[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する\n")
+```
+
+`results: asis`を設定すると返り値が通常のMarkdownとして取り扱われ、リンクや太字の表示がMarkdownに従い変換されます。使いどころは難しいのですが、Rの出力の表示を変えたいときには使うことがあるかもしれません。
+
+```{r, echo="fenced", filename = "results: asis"}
+#| results: asis
+
+cat("[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する\n")
+```
+
+
+
+### 図を複数列に並べて表示する：layout-ncol
+
+また、`layout-ncol`を用いることでRの出力するグラフを2列に並べることもできます。
+
+````{markdown, filename="layout-ncolでグラフを横に並べる"}
+```{r, echo = FALSE}
+#| layout-ncol: 2
+
+plot(cars)
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point(size=2)
+```
+````
+
+```{r, echo = FALSE}
+#| layout-ncol: 2
+
+plot(cars)
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point(size=2)
+```
+
+### コードの表示を折りたたむ：code-fold/code-overflow
+
+また、コードを折りたたむ場合には`code-fold: true`、長いコードを折り返し表示したい場合には`code-overflow: wrap`を指定します。
+
+````{markdown, filename="code-foldとcode-overflow"}
+```{r}
+#| echo: fenced
+#| code-overflow: wrap
+#| code-fold: true
+
+print("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
+```
+````
+
+```{r}
+#| echo: fenced
+#| code-overflow: wrap
+#| code-fold: true
+
+print("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
+```
+
+### コードの行に番号を付ける：code-line-numbers
+
+`code-line-numbers`はコードの行に番号をつけるためのオプションです。`true`に指定することで、コードの行の頭に数字が付きます。後で説明するcode annotationという機能よりは簡潔に行数を表示し、説明しやすくすることができます。
+
+````{markdown, filename="code-line-numbers"}
+```{r, filename = "code-line-numbersを指定する"}
+#| code-line-numbers: true
+
+a <- 1
+b <- 2
+a + b
+```
+````
+
+```{r, filename = "code-line-numbersを指定する"}
+#| code-line-numbers: true
+
+a <- 1
+b <- 2
+a + b
+```
+
+### 実行結果をキャッシュする：cache
+
+[cache](https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5_(%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0))（キャッシュ）とは、演算結果を保存しておくことで、コードを書き換えない時には以前に保存した結果を、コードを書き換えた時には新たな演算を実行するための、chunkの機能のことです。計算が重いchunkでは`cache:true`と設定しておくと、Renderするときにかかる演算の時間を省略できます。
+
+````{markdown, filename="cacheの設定"}
+```{r}
+#| cache: true
+
+replicate(1000000, rnorm(1)) |> head()
+```
+````
+
+```{r, filename="cache:trueを指定"}
+#| cache: true
+
+replicate(1000000, rnorm(1)) |> head()
+```
+
+## code annotation
+
+code annotationとは、実行するRコードの行に番号を付け、その番号を引用して説明文を加えることができる、chunkの機能のことです。このテキストのように、コードの内容を説明するときに使用すると、わかりやすい文を作成することができます。
+
+code annotationを用いる場合には、コードの行に`# <1>`などの数値を加え、chunkの下に箇条書き（`1. XXX`など）を記載します。箇条書きの数値の記載と、`# <1>`の数値が対応し、コードと箇条書きの両方に同じ形の番号が示されます。
+
+````{markdown, filename="code annotation"}
+```{r}
+library(palmerpenguins)
+penguins$species |> levels() # <1>
+penguins |> group_by(species) |> summarise(mean_bm = mean(na.omit(body_mass_g))) # <2>
+```
+
+1. penguinsには3種のペンギンのデータが含まれる
+2. ジェンツーペンギンは一回り大きい
+````
+
+```{r, message=FALSE}
+library(palmerpenguins)
+penguins$species |> levels() # <1>
+penguins |> group_by(species) |> summarise(mean_bm = mean(na.omit(body_mass_g))) # <2>
+```
+
+1. penguinsには3種のペンギンのデータが含まれる
+2. ジェンツーペンギンは一回り大きい
+
+<hr>
+
+説明文と返り値の位置など、調整がやや煩雑なのでこのテキストではcode annotationは用いていません。
+
+## インラインのコード
+
+Quartoでは、chunkを書かずに、Markdownの文中でRを実行することもできます。例えば、chunkを用いて演算結果を変数に代入します。
+
+```{r, filename="インラインコードで出力する変数"}
+temp <- rnorm(1)
+```
+
+次に、以下のように、`{r}`で囲い、Markdownの文中に記載することで、その文中のRのコードを実行することが出来ます。
+
+````{markdown, filename="インラインコード", eval=FALSE}
+変数tempには`{\r} temp`が代入されている。 # バックスラッシュは不要
+````
+
+変数`temp`には`{r} temp`が代入されている。
+
+<hr>
+
+ただし、このインラインコードに長いスクリプトを書いてしまうと、読みにくく、理解しにくくなるため、上記のように変数を呼びだす程度の利用にとどめる方がよいでしょう。
