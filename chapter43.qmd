@@ -1,6 +1,6 @@
 # Quarto：デプロイ
 
-```{r, echo = FALSE, message=FALSE}
+```{r, echo = FALSE, eval=FALSE, message=FALSE}
 pi # knitrを使うためのラベル
 ```
 
@@ -8,17 +8,17 @@ WebsiteやBookをRenderし、HTMLを作成した後、そのHTMLを公開すれ�
 
 デプロイをするためには、Webサーバーが必要となります。自前でWebサーバーを準備することもできますが、通常はWebサーバーを運用しているサービスを利用することになります。
 
-Webサーバーを運用しているサービスには、Amazon web serviseやMicrosoft Azureなどがありますが、いずれも有料です。Quartoで作成したHTML（Webサーバーで演算を行わないので、静的なHTMLと呼ばれます）をデプロイするのであれば、これらの有料サービスではなく、無料のサービスを利用することができます。
+Webサーバーを運用しているサービスには、[Amazon web servise](https://aws.amazon.com/jp)や[Microsoft Azure](https://azure.microsoft.com/ja-jp)などがありますが、いずれも有料です。Quartoで作成したHTML（Webサーバーで演算を行わないので、静的なHTMLと呼ばれます）をデプロイするのであれば、これらの有料サービスではなく、無料のサービスを利用することができます。
 
 無料のサービスには、Positが運営しているQuarto専用のサービスである[**Quarto Pub**](https://quartopub.com/)や、もっと汎用的にHTMLの公開に用いることができる[**Github Pages**](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site)などがあります。
 
-これらの無料のサービスは基本的にはWeb上に完全に公開されます。企業内など、特定のユーザーのみがアクセスできる設定にはできません。また、アクセス数に制限があり、高頻度でアクセスされると表示が遅くなったり、表示できなくなったりします。また、HTMLのサイズにも制限があります。
+これらの無料のサービスでは公開したHTMLは基本的にはWeb上に完全に公開されます。企業内など、特定のユーザーのみがアクセスできる設定にはできません。また、アクセス数に制限があり、高頻度でアクセスされると表示が遅くなったり、表示できなくなったりします。また、HTMLのサイズにも制限があります。
 
 とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることもあまりないと思います。とりあえずはQuarto pubかGithub Pagesでデプロイすることを検討するとよいでしょう。
 
 ## Quarto Pub
 
-Quarto Pubは上記の通り、Positが運営しているサービスで、RStudioを用いていれば簡単にQuartoを用いて作成したHTMLをデプロイすることができます。
+Quarto Pubは上記の通り、Positが運営しているサービスで、Rstudioを用いていれば簡単にQuartoを用いて作成したHTMLをデプロイすることができます。
 
 Quarto Pubにデプロイする場合、まずはQuarto Pubにアカウントを作成する必要があります。まずはQuarto Pubのホームページにアクセスし、「Sign Up」を選択しましょう。Quarto PubのログインにはGoogleやGithubのアカウントを用いることもできます。
 
@@ -26,7 +26,7 @@ Quarto Pubにデプロイする場合、まずはQuarto Pubにアカウントを
 
 Quarto Pubにアカウントを作成した後、TerminalでWebsiteやBookのProjectのディレクトリに移動した後、`quarto publish`コマンドを用いることでそのProject内の.qmdファイルがHTMLにRenderされ、そのHTMLがQuarto Pubにデプロイされます。
 
-```{terminal, filename="quarto publish"}
+```{terminal, filename="quarto publishコマンド"}
 quarto publish quarto-pub
 ```
 
@@ -34,19 +34,19 @@ quarto publish quarto-pub
 
 ### アクセストークン（Access Token）
 
-上記のQuarto Pubへの認証では、アクセストークン（Access Token）というものが要求されます。アクセストークンは上記のQuarto Pubのアカウントにログインし、アカウントのページから取得することができます。認証の途中で入力を求められるため、取得してテキストとしてTerminalで貼り付けるとよいでしょう。詳細については[QuartoのGuide](https://quarto.org/docs/publishing/quarto-pub.html#access-tokens)のページをご参照ください。
+上記のQuarto Pubの認証では、アクセストークン（Access Token）というものが要求されます。アクセストークンは上記のQuarto Pubのアカウントにログインし、アカウント内のページから取得することができます。認証の途中で入力を求められるため、コピーしておいてテキストとしてTerminalで貼り付けるとよいでしょう。詳細については[QuartoのGuide](https://quarto.org/docs/publishing/quarto-pub.html#access-tokens)のページをご参照ください。
 
 ### Quarto Pubでのページの管理
 
-Quarto Pubにログインすると、デプロイしたProjectの一覧が表示されます。このページから、デプロイしたページに移動したり、削除することができます。
+Quarto Pubにログインすると、デプロイしたProjectの一覧が表示されます。このページから、デプロイしたページに移動したり、デプロイしたProjectを削除することができます。
 
 ![Quarto Pub：ページの管理](./image/quarto_pub_loggedin.png)
 
 ## Github Pages
 
-Github Pagesはこのテキストでも何度か紹介しているリモートリポジトリサービスであるGithubが運用している、静的なHTMLをデプロイするためのサービスです。Github PagesではGithubのリモートリポジトリに保存したHTMLを公開するような形で運用します。
+Github Pagesは、リモートリポジトリサービスであるGithubが運用している、静的なHTMLをデプロイするためのサービスです。Github PagesではGithubのリモートリポジトリに保存したHTMLを公開することができます。
 
-Githubの使いかたについてはこのテキストの範囲を越えるため詳細は説明しませんが、Github Pagesを用いるために最低限必要なことのみ以下のcalloutブロックで説明します。
+Githubの使い方についてはこのテキストの範囲を越えるため詳細については説明しませんが、Github Pagesを用いるために最低限必要なことのみ以下のcalloutブロックで説明します。
 
 :::{.callout-tip collapse=true}
 
@@ -64,7 +64,7 @@ Githubが提供している[Github Desktop](https://desktop.github.com/download/
 
 ### Git：ユーザー名とメールアドレスの登録
 
-Gitをインストールすると、TerminalからGitのコマンドを利用できるようになります。次に、TerminalからGitのユーザー名とメールアドレスを登録します。
+Gitをインストールすると、TerminalからGitのコマンドを利用できるようになります。Gitのコマンドを利用して、Terminalからユーザー名とメールアドレスを登録します。
 
 ユーザー名は、以下のように`user.name`として文字列で指定して登録します。以下の例ではユーザー名は「XXXXX」となります。
 
@@ -86,19 +86,19 @@ git config --global user.email "XXXXX.@xjorv.com"
 
 ### Githubにリモートリポジトリを作成する
 
-次に、Githubにログインし、リモートリポジトリを作成します。リモートリポジトリとは、開発しているプログラムを保存するWeb上のフォルダのようなものです。
+作成したアカウントでGithubにログインし、リモートリポジトリを作成します。リモートリポジトリとは、開発しているプログラムを保存するWeb上のフォルダのようなものです。
 
 Githubのアカウントのページで「repositories」のタブに移動すると、「new」というボタンがあります。このボタンを押すことでレポジトリ作成のページに移行します。
 
 ![新しいリモートレポジトリを作成する](./image/github_new_repo.png)
 
-このCreate a new repositoryのページ上で、Repository nameをつけます。Repository nameは英語名で、スペースを入れないものとします。仮に「test」というリポジトリを作成します。
+この「Create a new repository」のページ上で、Repository nameをつけます。Repository nameは英語名で、スペースを入れないものとします。仮に「test」というリポジトリを作成します。
 
 また、Github Pagesで広くネットにWebsiteを公開する場合、レポジトリはPublic、つまり誰でも閲覧できる形で作成する必要があります。
 
 ### gitの設定とcommit
 
-まず、TerminalでProjectのディレクトリに移動し、`git init`と入力します。このコマンドを用いることで、Gitに必要なファイルがそのディレクトリに作成されます。
+TerminalでProjectのディレクトリに移動し、`git init`と入力します。このコマンドを用いることで、Gitに必要なファイルがそのディレクトリに作成されます。
 
 ```{terminal, filename="gitの初期設定"}
 git init
@@ -108,7 +108,7 @@ git init
 
 commitの詳細については[gitのtutorial](https://git-scm.com/docs/gittutorial)や[サル先生のGit入門](https://backlog.com/ja/git-tutorial/)をご参照下さい。
 
-とりあえずすべてのファイルをcommitするためには、まず`git add`コマンドを実行し、その後、`git commit`コマンドを実行します。
+ディレクトリ内のすべてのファイルをcommitするためには、まず`git add`コマンドを実行し、その後、`git commit`コマンドを実行します。
 
 引き続き、TerminalでProjectのディレクトリに移動して、以下のように入力します。`-A`はすべてのファイルをcommitできるように準備するためのコマンドです。
 
@@ -116,7 +116,7 @@ commitの詳細については[gitのtutorial](https://git-scm.com/docs/gittutor
 git add -A
 ```
 
-次に、commitを行います。commitではcommitメッセージの入力が必要です。以下のように入力し、commitメッセージを追加します。
+次に、commitを行います。commitでは**commitメッセージ**の入力が必要です。以下のように入力し、commitメッセージを追加します。
 
 ```{terminal, filename="git commit"}
 git commit -m "commit message"
@@ -126,7 +126,7 @@ git commit -m "commit message"
 
 Web上のリモートリポジトリであるGithubと自分のPC（ローカル）で機能するローカルレポジトリであるGitを関連付けることで、Terminalから簡単にGithubへとファイルを転送することができるようになります。
 
-このGitとGithubの関連付けについては、Github上に作成したリモートリポジトリに移動すると以下のようにk関連付けの方法が表示されます。
+Github上に作成したリモートリポジトリに移動すると以下のように関連付けの方法が表示されます。
 
 ![Githubのリモートリポジトリに表示されるコマンド](./image/github_remote_add.png)
 
@@ -154,7 +154,7 @@ pushを行うと、Githubのリモートリポジトリのページからファ�
 
 GithubのリモートリポジトリにファイルをPushしたら、次にリモートリポジトリのページからGithub Pagesの設定を行います。
 
-Githubにログインし、ファイルをPushしたリモートリポジトリに移動したら、次に上のタブから「Setting」を選択し、左のカラムから「Pages」を選択します。選択すると以下のようなページに移動します。
+Githubにログインし、ファイルをPushしたリモートリポジトリに移動します。次に、上のタブから「Setting」を選択し、左のカラムから「Pages」を選択します。選択すると以下のようなページに移動します。
 
 ![Github Pagesの設定](./image/github_pages_setting.png)
 
@@ -172,11 +172,11 @@ project:
 
 ## その他のサービスについて
 
-[QuartoのGuide](https://quarto.org/docs/publishing/)では、デプロイするサービスの例として、[Neltify](https://www.netlify.com/)、[Posit Connect](https://posit.co/products/enterprise/connect/)、[Posit Cloud](https://posit.cloud/)、[Confluence](https://www.atlassian.com/software/confluence)、[hugging face](https://huggingface.co/)、[Firebase](https://firebase.google.com/)、[Site44](https://www.site44.com/)、[Amazon S3](https://aws.amazon.com/jp/s3)などが挙げられています。いずれもそれぞれ使い方が異なり、有料のものも含まれています。作成するページのトラフィックが非常に大きいようならこれらのサービスを用いることを検討してみてもよいでしょう。また、日本では[さくらインターネット](https://www.sakura.ad.jp/)などのクラウドサービスを用いてもデプロイすることができます。
+[QuartoのGuide](https://quarto.org/docs/publishing/)では、HTMLをデプロイするためのサービスの例として、[Neltify](https://www.netlify.com/)、[Posit Connect](https://posit.co/products/enterprise/connect/)、[Posit Cloud](https://posit.cloud/)、[Confluence](https://www.atlassian.com/software/confluence)、[hugging face](https://huggingface.co/)、[Firebase](https://firebase.google.com/)、[Site44](https://www.site44.com/)、[Amazon S3](https://aws.amazon.com/jp/s3)などが挙げられています。いずれもそれぞれ使い方が異なり、有料のものも含まれています。作成するページのトラフィックが非常に大きいようならこれらのサービスを用いることを検討してみてもよいでしょう。また、日本では[さくらインターネット](https://www.sakura.ad.jp/)などのクラウドサービスを用いてもデプロイすることができます。
 
 ## Google Analytics
 
-作成したページのアクセスを解析するサービスがGoogle Analyticsです。Google Analyticsを利用するには、まずGoogleのアカウントでGoogle Analyticsにログインします。次に、設定の画面からアカウントとプロパティを作成します。このプロパティがページへのアクセスを測定する機能に相当します。
+作成したページのアクセスを解析するサービスが[Google Analytics](https://developers.google.com/analytics?hl=ja)です。Google Analyticsを利用するには、まずGoogleのアカウントでGoogle Analyticsにログインします。次に、設定の画面からアカウントとプロパティを作成します。このプロパティがページへのアクセスを測定する機能に相当します。
 
 プロパティには、[tracking ID](https://support.google.com/analytics/answer/9539598?hl=ja)か[tag measurement ID](https://support.google.com/analytics/answer/9539598?hl=en)があります。このIDのいずれかを以下のようにYAMLを設定することで、Google Analyticsのページからアクセスを解析することができます。
 

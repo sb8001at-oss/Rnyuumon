@@ -10,16 +10,16 @@ library(readxl)
 :::{.callout-tip collapse=true}
 ## R markdownとQuartoの違い
 
-R markdownとQuartoではファイルの拡張子が異なりますが（R markdownは.rmd、Quartoは.qmd）、どちらも`knitr`でHTMLやPDFに変換される仕組みは同じで、Rではほぼ同じものと考えてよいでしょう。ただし、PythonやJulia、ObservableではR markdownは利用できず、Quartoのみが利用可能です。PythonやJuliaでは`knitr`ではなく、Jupiterの仕組みを利用して変換されます。
+R markdownとQuartoではファイルの拡張子が異なりますが（R markdownは.rmd、Quartoは.qmd）、どちらも`knitr`でHTMLやPDFに変換される仕組みは同じで、Rではほぼ同じものと考えてよいでしょう。ただし、R markdownではPythonやJulia、Observableを利用できず、Quartoでは利用可能です。PythonやJuliaでは`knitr`ではなく、Jupiterの仕組みを利用して変換されます。
 
-ただし、`knitr`ではPythonのコードを実行することができます。このPythonのコードの実行には`reticulate`[@reticulate_bib]というRのライブラリが用いられます。詳しくは[chunkの章](chapter38.qmd)で説明します。
+`knitr`ではPythonのコードを実行することができます。このPythonのコードの実行には`reticulate`[@reticulate_bib]というRのライブラリが用いられます。詳しくは[chunkの章](chapter38.qmd)で説明します。
 :::
 
 Quartoを用いると、以下のようなウェブサイトを簡単に作成することができます。
 
-1. [源氏物語（若紫）](https://xjorv.quarto.pub/genzi_wakamurasaki/)：Quarto Booksという機能で作成し、[Quarto Pub](https://quartopub.com/)で公開
-2. [奈良の個人的な観光マップ](https://sb8001at-oss.github.io/Nara_map/)：Quartoで10行未満のコードを書いて作成し、[Github Pages](https://docs.github.com/ja/pages/getting-started-with-github-pages/what-is-github-pages)で公開
-3. [日本の人口統計](https://xjorv.quarto.pub/pop_japanese_dashboard_with_ojs/)：ObservableというJavascriptベースのデータ描画ライブラリを用いたダッシュボード。Quarto Pubで公開
+1. [源氏物語（若紫）](https://xjorv.quarto.pub/genzi_wakamurasaki/)：Quarto Bookという機能で作成し、[Quarto Pub](https://quartopub.com/)で公開。
+2. [奈良の個人的な観光マップ](https://sb8001at-oss.github.io/Nara_map/)：Quartoで10行未満のコードを書いて作成し、[Github Pages](https://docs.github.com/ja/pages/getting-started-with-github-pages/what-is-github-pages)で公開。
+3. [日本の人口統計](https://xjorv.quarto.pub/pop_japanese_dashboard_with_ojs/)：ObservableというJavascriptベースのデータ描画ライブラリを用いたダッシュボード。Quarto Pubで公開。
 
 いずれも以下のページ（レポジトリ）でソースコードを公開しています。
 
@@ -27,7 +27,7 @@ Quartoを用いると、以下のようなウェブサイトを簡単に作成�
 2. {{< fa brands github >}}：[sb8001at-oss/Nara_map](https://github.com/sb8001at-oss/Nara_map)
 2. {{< fa brands github >}}：[sb8001at-oss/Rnyuumon](https://github.com/sb8001at-oss/Rnyuumon/blob/master/sample_observable/index.qmd)
 
-このテキストでは、基本的にQuartoでHTMLを作成する方法について説明します。
+このテキストでは、QuartoでHTMLを作成する方法について主に説明します。
 
 :::{.callout-tip collapse="true"}
 ## HTML以外のファイル形式
@@ -39,27 +39,27 @@ HTMLはWebで用いられるファイル形式であり、そのままではや�
 
 ## Quarto CLIのインストール
 
-Quartoを使用する場合、まずは[CLIをインストール](https://quarto.org/docs/get-started/)するとよいでしょう。
+Quartoを使用する場合、まずは[**Quarto CLI**をインストール](https://quarto.org/docs/get-started/)するとよいでしょう。
 
 ![Quarto CLIのインストール](./image/quarto_CLI_install.png)
 
-CLIをインストールしているとRstudioからのみではなく、Terminal（WindowsではコマンドプロンプトやPowerShell）からQuartoのファイルをRender（R markdownのknitに当たるもの）できるようになります。また、chunk optionの表記法、YAMLの要素などが少しずつR markdownとは異なります。この章ではまず、Quartoでのドキュメントの作成の基礎について説明していきます。
+CLIをインストールしているとRstudioからのみではなく、Terminal（WindowsではコマンドプロンプトやPowerShell）からQuartoのファイルを**Render**（R markdownのknitに当たるもの）できるようになります。この章ではまず、Quartoでのドキュメントの作成の基礎について説明していきます。
 
 :::{.callout-tip collapse=true}
 ## CLIとは？
 
 CLIとはCommand Line Interfaceのことで、ターミナル（WindowsではコマンドプロンプトやPowershell、MacやLinuxではTerminal）からソフトウェアの機能を用いるためのツールのことです。Rstudioでは、Consoleのタブの隣に『Terminal』というタブがあり、これを用いることでターミナルを利用して.qmdファイルをknit（QuartoではRender）することができます。Quarto CLIをインストールすると、以下の文を利用して、現在のディレクトリ内に保存した.qmdファイルをRenderすることができます。
 
-```{markdown}
+```{terminal, filename="quarto renderコマンドからRenderする"}
 quarto render ファイル名
 ```
 :::
 
 ## Projectの設定
 
-これまで説明してこなかったRstudioの機能の一つに、**Project**というものがあります。このProjectはRstudioで作成可能な様々なツール・文書の作成（ShinyやRのパッケージ、Rmarkdownなど）・一連の解析を行う際のファイルの管理等を便利にするためのものです。
+これまで説明してこなかったRstudioの機能の一つに、**Project**というものがあります。このProjectはRstudioで作成可能な様々なツール・文書の作成（ShinyやRのパッケージ、R markdownなど）・一連の解析を行う際のファイルの管理等を便利にするためのものです。
 
-小規模のRファイル、解析データなどではProjectは必ずしも必要ではありませんが、この章で説明するQuartoでのファイル作成や、次の章で説明するShinyアプリを作成する際、また大規模なデータをいろいろな角度から解析するような場合には、たくさんのコード、画像、表、データソースなどのファイルを用います。このようなたくさんのファイルを管理し、利用する際にはProjectが有用です。Projectをあらかじめ作成しておくことで、後々ファイルの取り扱いが簡単になります。
+小規模のRファイル、解析データなどではProjectは必ずしも必要ではありませんが、この章で説明するQuartoでのHTMLファイル作成や、[47章](chapter47.qmd)で説明するShinyアプリを作成する際、また大規模なデータをいろいろな角度から解析するような場合には、たくさんのコード、画像、表、データソースなどのファイルを用います。このようなたくさんのファイルを管理し、利用する際にはProjectが有用です。Projectをあらかじめ作成しておくことで、後々ファイルの取り扱いが簡単になります。
 
 ### Projectを作成する
 
@@ -76,16 +76,16 @@ Projectを作成する場合には、まずRstudioのウインドウの右上、
 :::{.callout-tip collapse=true}
 ## Version Controlについて
 
-3つ目のVersion Controlは、レポジトリ（ファイルの置き場所のこと）からProjectを拾ってきて、自分のPCで編集する際に用いるものです。このレポジトリとは、このテキストにも数回出てきた[Git](https://git-scm.com/)などを指します。Rの初心者が選択することはまれだと思います。
+3つ目のVersion Controlは、レポジトリ（ファイルの置き場所のこと）からProjectを拾ってきて、自分のPCで編集する際に用いるものです。このレポジトリとは、このテキストにも数回出てきた[Git](https://git-scm.com/)などで管理されている一連のファイルを指します。Rの初心者が選択することはまれだと思います。
 :::
 
 このウインドウで「New Directory」を選択すると、以下のようなウインドウがさらに表示されます。
 
 ![Projectのタイプを選択](./image/new_project3.png)
 
-このウインドウでは、Projectの種類を選択します。例えば、Quartoで文を作成したい場合には「Quarto Project」を、Shinyでアプリケーションを作成したい場合には「Shiny Application」を、Rのパッケージを作成したい場合には「R Package」を選択します。このようなタイプのProjectを選択した場合、ProjectのフォルダにはそのProjectに関連するテンプレートが自動的に作成されます。
+このウインドウでは、Projectの種類を選択します。例えば、Quartoで文を作成したい場合には「Quarto Project」を、Shinyでアプリケーションを作成したい場合には「Shiny Application」を、Rのパッケージを作成したい場合には「R Package」を選択します。このようなタイプのProjectを選択した場合、ProjectのフォルダにはそのProjectに関連するテンプレートのファイルが自動的に作成されます。
 
-特にQuartoやShinyで利用しない場合、つまり解析などを行うためにProjectを作成する場合には「New Project」を選択しましょう。また、「New Project」を選択した場合でも、後からQuartoやShinyアプリケーションのファイルをProjectのフォルダ内に作成することはできます。
+特にQuartoやShinyを利用しない場合、つまり解析などを行うためにProjectを作成する場合には「New Project」を選択しましょう。また、「New Project」を選択した場合でも、後からQuartoやShinyアプリケーションのファイルをProjectのフォルダ内に作成することはできます。
 
 「New Project」を選択すると、以下のウインドウがさらに表示されます。
 
@@ -93,7 +93,7 @@ Projectを作成する場合には、まずRstudioのウインドウの右上、
 
 このウインドウでは、Directory name（新しく作成されるフォルダ名、Projectをこのフォルダで管理します）、Projectのフォルダを作成するディレクトリ（フォルダ）を選択することができます。オプションとして、git repositoryを同時に作成することや、[`renv`](https://rstudio.github.io/renv/articles/renv.html)[@renv_bib]を用いる設定とすることもできます。`renv`はRのパッケージ管理に関するツールで、演算の再現性を保ちたいときには用いることを検討してもよいでしょう。
 
-Projectを作成すると、作成したフォルダ内に、Directory nameと同じ名前の、「.Rproj」というファイルが作成されます。この.Rprojファイルを開くと、Rstudio上でそのProjectが開きます。また、「File->Open Project」から.Rprojファイルを選択してProjectを開くこともできます。
+Projectを作成すると、作成したフォルダ内に、Directory nameと同じ名前の、「.Rproj」というファイルが作成されます。この.Rprojファイルを開くと、Rstudio上でそのProjectが開きます。また、「File -> Open Project」から.Rprojファイルを選択してProjectを開くこともできます。
 
 ![Projectを開く](./image/Open_project.png)
 
@@ -110,7 +110,7 @@ Projectを開くと、以下のような設定が自動的に行われます。
 - 前回開いていたファイルが自動的に開く
 - 前回利用した際のRstudioのセッティング（パネルのサイズなど）が再現される
 
-逆にProjectを閉じると、以下のようにファイルが保存されます。
+逆にProjectを閉じると、以下のように現在のProjectの状態が保存されます。
 
 - .RDataと.Rhistoryが上書きされる
 - 開いていたファイルが保存される
@@ -123,21 +123,21 @@ Projectを開くと、以下のような設定が自動的に行われます。
 Rstudioのセッティングなどの情報は、projectを作成した際に自動的に生成される隠しフォルダ内のファイルに保存されています。
 :::
 
-したがって、Rstudioを用いた解析を一度中断しても、Projectを開くことで同じ状態から解析を続けることができるようになります。特に複雑なQuartoの文書を作成したいとき（後に述べるQuarto Booksなど）、Shinyアプリを作成する際などにはあらかじめProjectを作成しておくことをおススメします。
+したがって、解析を一度中断しても、Projectを開くことで同じ状態から解析を続けることができるようになります。特に複雑なQuartoの文書を作成したいとき（後に述べるQuarto WebsiteやQuarto Bookなど）、Shinyアプリを作成する際などにはあらかじめProjectを作成しておくことをおススメします。
 
 ## qmdファイルの作成
 
-Quartoでは、**qmdファイル**をRenderすることで、HTMLやPDF、Wordファイルを生成する仕組みとなっています。Rstudioでは、このqmdファイルを上のメニューのFileから、「New file -> Quarto Document...」を選択することで作成することができます。
+Quartoでは、**qmdファイルをRender**することで、HTMLやPDF、Wordファイルを生成する仕組みとなっています。Rstudioでは、このqmdファイルを上のメニューのFileから、「New file -> Quarto Document...」を選択することで作成することができます。
 
 ![Quarto DocumentをRstudioで作成する](./image/chapter39_qmdfile.png)
 
-Quarto Document...を選択すると以下のようなウインドウが開きます。必要に応じてTitleやAuthorを入力し、出力したいファイル形式（HTML、PDF、Word）とRenderに用いるエンジン（Rの場合は通常knitrで、Pythonの場合はJupyter）、エディタのモード（SourceかVisualか）を選択し、Createを押すとqmdファイルが作成されます。このウインドウで選択した要素はすべて、後から変更することができます。
+Quarto Document...を選択すると以下のようなウインドウが開きます。必要に応じてTitleやAuthorを入力し、出力したいファイル形式（HTML、PDF、Word）とRenderに用いるエンジン（Rの場合は通常knitrで、Pythonの場合はJupyter）、エディタのモード（SourceかVisualか）を選択し、Createを押すとqmdファイルが作成されます。このウインドウで入力・選択した要素はすべて、後から変更することができます。
 
 ![Quarto Documentの作成ウインドウ](./image/chapter39_qmdfile2.png)
 
-R markdownの場合、R studioはmarkdownの例を記載したファイルを作成しますが、qmdファイルではyamlだけのシンプルなファイルが生成されます。
+R markdownのファイルを作成した場合、R studioはR markdownの例を記載したファイルを作成しますが、qmdファイルではyamlだけのシンプルなファイルが生成されます。
 
-また、他のRのファイルと同じですが、テキストエディタなどで単に拡張子を「.qmd」にするだけでもqmdファイルを作成することができます。
+また、他のRのファイルと同じですが、テキストエディタなどで単に拡張子を「`.qmd`」にするだけでもqmdファイルを作成することができます。
 
 :::{.callout-tip collapse=true}
 ## Quartoの意味

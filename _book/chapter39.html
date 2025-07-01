@@ -829,14 +829,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </div>
 <p>Quartoでは、このYAMLが非常に拡張されており、YAMLを文頭に書くと文章がいつまでたっても始まらない、という場合があるほどに設定できる項目がたくさんあります。</p>
-<p>R markdownを利用していた初期の頃はYAMLを文頭に書いていて問題はありませんでしたし、シンプルな文章を作成するだけであれば今でもQuartoの文頭にYAMLを記載しても問題ありません。</p>
-<p>ただし、複雑な文章、例えばこのテキストのような<strong>Quarto Books</strong>を作成したいときや、ブログを作成するような場合、Reveal.jsなどを用いたプレゼンテーションを作成する場合や、インタラクティブなダッシュボードを作成するような場合には、YAMLを文頭に書くと非常に煩雑になり、読みにくくなってしまいます。</p>
-<p>従って、Quartoを用いる場合には、YAMLは基本的に別ファイルとして作成する方がよいでしょう。QuartoのYAMLは<strong><code>_quarto.yml</code></strong>というファイルにまとめて書くことが出来ます。<code>_quarto.yml</code>には、<code>---</code>を書く必要はなく、YAMLを直接書いていくことができます。<code>_quarto.yml</code>を.qmdファイルと同じフォルダに保存しておけば、.qmdファイルをRenderする際に勝手に<code>_quarto.yml</code>を読み込み、文章の形式を整えてくれます。</p>
-<p><a href="https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml">このテキストの_quarto.yml</a>を見ていただければ、どのようにYAMLを<code>_quarto.yml</code>に書くのか、イメージしやすいと思います。</p>
-<p>以下では、まず基礎となるYAMLの項目とその機能について説明し、その後別章でHTMLとQuarto Books（HTMLを出力）、Reveal.js（HTMLによるプレゼンテーションを出力）、<a href="https://ja.wikipedia.org/wiki/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89">Dashboards</a>を作成する場合のYAMLについて順に説明していきます。</p>
+<p>R markdownを利用し始めた初期の頃はYAMLを文頭に書いて問題はありませんでしたし、シンプルな文章を作成するだけであれば今でもQuartoの文頭にYAMLを記載しても問題ありません。</p>
+<p>ただし、複雑な文章、例えばこのテキストのような<strong>Quarto Book</strong>を作成したいときや、ブログを作成するような場合、Reveal.jsなどを用いたプレゼンテーションを作成する場合や、インタラクティブなダッシュボードを作成するような場合には、YAMLを文頭に書くと非常に煩雑になり、読みにくくなってしまいます。</p>
+<p>従って、Quartoを用いる場合には、YAMLは基本的に別ファイルとして作成する方がよいでしょう。QuartoのYAMLは<strong><code>_quarto.yml</code></strong>というファイルにまとめて書くことが出来ます。<code>_quarto.yml</code>には、<code>---</code>を書く必要はなく、YAMLを直接書くことができます。<code>_quarto.yml</code>を.qmdファイルと同じフォルダに保存しておけば、.qmdファイルをRenderする際に勝手に<code>_quarto.yml</code>を読み込み、文章の形式をYAMLで指定した通りに整えてくれます。</p>
+<p><a href="https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml">このテキストの_quarto.yml</a>を見ていただければ、どのようにYAMLを<code>_quarto.yml</code>に書くのか、イメージしやすいかと思います。</p>
+<p>以下では、まず基礎となるYAMLの項目とその機能について説明し、その後別章でHTMLとWebsite、Quarto Books（HTMLを出力）、Reveal.js（HTMLによるプレゼンテーションを出力）、<a href="https://ja.wikipedia.org/wiki/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89">Dashboards</a>を作成する場合のYAMLについて順に説明していきます。</p>
 </section><section id="yamlの構造" class="level2" data-number="39.2"><h2 data-number="39.2" class="anchored" data-anchor-id="yamlの構造">
 <span class="header-section-number">39.2</span> YAMLの構造</h2>
-<p>YAMLは以下のように階層構造を取り、各階層の項目に値を設定することができます。</p>
+<p>YAMLは以下のように階層構造を取ります。各階層のYAMLにそれぞれ値を設定します。</p>
 <div class="grid">
 <div class="g-col-8">
 <div class="cell">
@@ -871,8 +871,9 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>YAMLでは、<code>要素: 値</code>の形で、その要素の値を設定します。また、<code>要素:</code>の次の行にインデント（前のスペース）を入れると、その要素の小項目を設定できます。例えば、上記のYAMLのうち、以下の<code>book</code>のYAMLでは、<code>title</code>、<code>author</code>を小項目として設定しています。</p>
-<p>小項目の前に<code>-</code>を入れる場合と入れない場合がありますが、小項目を箇条書きとする場合に<code>-</code>を入れるのが元々の<a href="https://yaml.org/spec/1.2.2/">YAMLのルール</a>となっています（Quartoでは直下の項目とセットで評価するときなどに追加します）。<code>|</code>はlinebreakを明示するときに用います。</p>
+<p>YAMLでは、<code>要素: 値</code>の形で、その要素の値を設定します。<code>:</code>と<code>値</code>の間にはスペースが必要です。</p>
+<p>また、<code>要素:</code>の次の行にインデント（前のスペース）を入れると、その要素の小項目を設定できます。例えば、上記のYAMLのうち、以下の<code>book</code>のYAMLでは、<code>title</code>、<code>author</code>を小項目として設定しています。</p>
+<p>小項目の前には<code>-</code>を入れる場合と入れない場合がありますが、小項目を箇条書きとする場合に<code>-</code>を入れるのが元々の<a href="https://yaml.org/spec/1.2.2/">YAMLのルール</a>となっています（Quartoでは直下の項目とセットで評価するときなどに追加します）。<code>|</code>はlinebreakを明示するときに用います。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -2563,19 +2564,19 @@ Wickham, Hadley, Jim Hester, and Jeroen Ooms. 2025. <em>Xml2: Parse XML</em>. <a
 <span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>Quartoでは、このYAMLが非常に拡張されており、YAMLを文頭に書くと文章がいつまでたっても始まらない、という場合があるほどに設定できる項目がたくさんあります。</span>
 <span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>R markdownを利用していた初期の頃はYAMLを文頭に書いていて問題はありませんでしたし、シンプルな文章を作成するだけであれば今でもQuartoの文頭にYAMLを記載しても問題ありません。</span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>R markdownを利用し始めた初期の頃はYAMLを文頭に書いて問題はありませんでしたし、シンプルな文章を作成するだけであれば今でもQuartoの文頭にYAMLを記載しても問題ありません。</span>
 <span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>ただし、複雑な文章、例えばこのテキストのような**Quarto Books**を作成したいときや、ブログを作成するような場合、Reveal.jsなどを用いたプレゼンテーションを作成する場合や、インタラクティブなダッシュボードを作成するような場合には、YAMLを文頭に書くと非常に煩雑になり、読みにくくなってしまいます。</span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>ただし、複雑な文章、例えばこのテキストのような**Quarto Book**を作成したいときや、ブログを作成するような場合、Reveal.jsなどを用いたプレゼンテーションを作成する場合や、インタラクティブなダッシュボードを作成するような場合には、YAMLを文頭に書くと非常に煩雑になり、読みにくくなってしまいます。</span>
 <span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>従って、Quartoを用いる場合には、YAMLは基本的に別ファイルとして作成する方がよいでしょう。QuartoのYAMLは**`_quarto.yml`**というファイルにまとめて書くことが出来ます。<span class="in">`_quarto.yml`</span>には、<span class="in">`---`</span>を書く必要はなく、YAMLを直接書いていくことができます。<span class="in">`_quarto.yml`</span>を.qmdファイルと同じフォルダに保存しておけば、.qmdファイルをRenderする際に勝手に<span class="in">`_quarto.yml`</span>を読み込み、文章の形式を整えてくれます。</span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>従って、Quartoを用いる場合には、YAMLは基本的に別ファイルとして作成する方がよいでしょう。QuartoのYAMLは**`_quarto.yml`**というファイルにまとめて書くことが出来ます。<span class="in">`_quarto.yml`</span>には、<span class="in">`---`</span>を書く必要はなく、YAMLを直接書くことができます。<span class="in">`_quarto.yml`</span>を.qmdファイルと同じフォルダに保存しておけば、.qmdファイルをRenderする際に勝手に<span class="in">`_quarto.yml`</span>を読み込み、文章の形式をYAMLで指定した通りに整えてくれます。</span>
 <span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">このテキストの_quarto.yml</span><span class="co">](https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml)</span>を見ていただければ、どのようにYAMLを<span class="in">`_quarto.yml`</span>に書くのか、イメージしやすいと思います。</span>
+<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">このテキストの_quarto.yml</span><span class="co">](https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml)</span>を見ていただければ、どのようにYAMLを<span class="in">`_quarto.yml`</span>に書くのか、イメージしやすいかと思います。</span>
 <span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a>以下では、まず基礎となるYAMLの項目とその機能について説明し、その後別章でHTMLとQuarto Books（HTMLを出力）、Reveal.js（HTMLによるプレゼンテーションを出力）、<span class="co">[</span><span class="ot">Dashboards</span><span class="co">](https://ja.wikipedia.org/wiki/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89)</span>を作成する場合のYAMLについて順に説明していきます。</span>
+<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a>以下では、まず基礎となるYAMLの項目とその機能について説明し、その後別章でHTMLとWebsite、Quarto Books（HTMLを出力）、Reveal.js（HTMLによるプレゼンテーションを出力）、<span class="co">[</span><span class="ot">Dashboards</span><span class="co">](https://ja.wikipedia.org/wiki/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89)</span>を作成する場合のYAMLについて順に説明していきます。</span>
 <span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-33"><a href="#cb43-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## YAMLの構造</span></span>
 <span id="cb43-34"><a href="#cb43-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-35"><a href="#cb43-35" aria-hidden="true" tabindex="-1"></a>YAMLは以下のように階層構造を取り、各階層の項目に値を設定することができます。</span>
+<span id="cb43-35"><a href="#cb43-35" aria-hidden="true" tabindex="-1"></a>YAMLは以下のように階層構造を取ります。各階層のYAMLにそれぞれ値を設定します。</span>
 <span id="cb43-36"><a href="#cb43-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-37"><a href="#cb43-37" aria-hidden="true" tabindex="-1"></a>::: {.grid}</span>
 <span id="cb43-38"><a href="#cb43-38" aria-hidden="true" tabindex="-1"></a></span>
@@ -2611,621 +2612,623 @@ Wickham, Hadley, Jim Hester, and Jeroen Ooms. 2025. <em>Xml2: Parse XML</em>. <a
 <span id="cb43-68"><a href="#cb43-68" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-69"><a href="#cb43-69" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb43-70"><a href="#cb43-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-71"><a href="#cb43-71" aria-hidden="true" tabindex="-1"></a>YAMLでは、<span class="in">`要素: 値`</span>の形で、その要素の値を設定します。また、<span class="in">`要素: `</span>の次の行にインデント（前のスペース）を入れると、その要素の小項目を設定できます。例えば、上記のYAMLのうち、以下の<span class="in">`book`</span>のYAMLでは、<span class="in">`title`</span>、<span class="in">`author`</span>を小項目として設定しています。</span>
+<span id="cb43-71"><a href="#cb43-71" aria-hidden="true" tabindex="-1"></a>YAMLでは、<span class="in">`要素: 値`</span>の形で、その要素の値を設定します。<span class="in">`:`</span>と<span class="in">`値`</span>の間にはスペースが必要です。</span>
 <span id="cb43-72"><a href="#cb43-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-73"><a href="#cb43-73" aria-hidden="true" tabindex="-1"></a>小項目の前に<span class="in">`-`</span>を入れる場合と入れない場合がありますが、小項目を箇条書きとする場合に<span class="in">`-`</span>を入れるのが元々の<span class="co">[</span><span class="ot">YAMLのルール</span><span class="co">](https://yaml.org/spec/1.2.2/)</span>となっています（Quartoでは直下の項目とセットで評価するときなどに追加します）。<span class="in">`|`</span>はlinebreakを明示するときに用います。</span>
+<span id="cb43-73"><a href="#cb43-73" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`要素: `</span>の次の行にインデント（前のスペース）を入れると、その要素の小項目を設定できます。例えば、上記のYAMLのうち、以下の<span class="in">`book`</span>のYAMLでは、<span class="in">`title`</span>、<span class="in">`author`</span>を小項目として設定しています。</span>
 <span id="cb43-74"><a href="#cb43-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-75"><a href="#cb43-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="YAMLの構造：bookの小項目"}</span></span>
-<span id="cb43-76"><a href="#cb43-76" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
-<span id="cb43-77"><a href="#cb43-77" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"R入門"</span></span>
-<span id="cb43-78"><a href="#cb43-78" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"xjorv"</span></span>
-<span id="cb43-79"><a href="#cb43-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-80"><a href="#cb43-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-81"><a href="#cb43-81" aria-hidden="true" tabindex="-1"></a><span class="fu">## 文章のフォーマット</span></span>
+<span id="cb43-75"><a href="#cb43-75" aria-hidden="true" tabindex="-1"></a>小項目の前には<span class="in">`-`</span>を入れる場合と入れない場合がありますが、小項目を箇条書きとする場合に<span class="in">`-`</span>を入れるのが元々の<span class="co">[</span><span class="ot">YAMLのルール</span><span class="co">](https://yaml.org/spec/1.2.2/)</span>となっています（Quartoでは直下の項目とセットで評価するときなどに追加します）。<span class="in">`|`</span>はlinebreakを明示するときに用います。</span>
+<span id="cb43-76"><a href="#cb43-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-77"><a href="#cb43-77" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="YAMLの構造：bookの小項目"}</span></span>
+<span id="cb43-78"><a href="#cb43-78" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
+<span id="cb43-79"><a href="#cb43-79" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"R入門"</span></span>
+<span id="cb43-80"><a href="#cb43-80" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"xjorv"</span></span>
+<span id="cb43-81"><a href="#cb43-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-82"><a href="#cb43-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-83"><a href="#cb43-83" aria-hidden="true" tabindex="-1"></a>Quartoで作成できる文章のファイルには、以下のようなものがあります。</span>
+<span id="cb43-83"><a href="#cb43-83" aria-hidden="true" tabindex="-1"></a><span class="fu">## 文章のフォーマット</span></span>
 <span id="cb43-84"><a href="#cb43-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-85"><a href="#cb43-85" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>HTML（Books、Websitesを含む）：Webブラウザで表示するファイル形式</span>
-<span id="cb43-86"><a href="#cb43-86" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>PDF：Adobeが管理している文章ファイル形式</span>
-<span id="cb43-87"><a href="#cb43-87" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>MS word：MicrosoftのWordファイル</span>
-<span id="cb43-88"><a href="#cb43-88" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Typst</span><span class="co">](https://typst.app/)</span>：Latex的な組版ファイル形式</span>
-<span id="cb43-89"><a href="#cb43-89" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Open Document</span><span class="co">](https://ja.libreoffice.org/discover/what-is-opendocument/)</span>：Open officeのWord的なファイル形式</span>
-<span id="cb43-90"><a href="#cb43-90" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">ePub</span><span class="co">](https://ja.wikipedia.org/wiki/EPUB)</span>：Web上で論文を表示する際に用いられるファイル形式</span>
-<span id="cb43-91"><a href="#cb43-91" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Reveal.js</span><span class="co">](https://revealjs.com/)</span>:HTMLで作成するプレゼンテーションファイル形式</span>
-<span id="cb43-92"><a href="#cb43-92" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>PowerPoint：MicrosoftのPowerPointファイル</span>
-<span id="cb43-93"><a href="#cb43-93" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Beamer</span><span class="co">](https://ja.overleaf.com/learn/latex/Beamer)</span>：Latexでプレゼンテーションを作成するファイル形式</span>
-<span id="cb43-94"><a href="#cb43-94" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Dashboards：HTML上でデータを表示するための形式</span>
-<span id="cb43-95"><a href="#cb43-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-96"><a href="#cb43-96" aria-hidden="true" tabindex="-1"></a>これらのファイル形式（<span class="in">`format`</span>）は、YAMLで以下のように設定します。</span>
+<span id="cb43-85"><a href="#cb43-85" aria-hidden="true" tabindex="-1"></a>Quartoで作成できる文章のファイルには、以下のようなものがあります。</span>
+<span id="cb43-86"><a href="#cb43-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-87"><a href="#cb43-87" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>HTML（Books、Websitesを含む）：Webブラウザで表示するファイル形式</span>
+<span id="cb43-88"><a href="#cb43-88" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>PDF：Adobeが管理している文章ファイル形式</span>
+<span id="cb43-89"><a href="#cb43-89" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>MS word：MicrosoftのWordファイル</span>
+<span id="cb43-90"><a href="#cb43-90" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Typst</span><span class="co">](https://typst.app/)</span>：Latex的な組版ファイル形式</span>
+<span id="cb43-91"><a href="#cb43-91" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Open Document</span><span class="co">](https://ja.libreoffice.org/discover/what-is-opendocument/)</span>：Open officeのWord的なファイル形式</span>
+<span id="cb43-92"><a href="#cb43-92" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">ePub</span><span class="co">](https://ja.wikipedia.org/wiki/EPUB)</span>：Web上で論文を表示する際に用いられるファイル形式</span>
+<span id="cb43-93"><a href="#cb43-93" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Reveal.js</span><span class="co">](https://revealjs.com/)</span>:HTMLで作成するプレゼンテーションファイル形式</span>
+<span id="cb43-94"><a href="#cb43-94" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>PowerPoint：MicrosoftのPowerPointファイル</span>
+<span id="cb43-95"><a href="#cb43-95" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Beamer</span><span class="co">](https://ja.overleaf.com/learn/latex/Beamer)</span>：Latexでプレゼンテーションを作成するファイル形式</span>
+<span id="cb43-96"><a href="#cb43-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Dashboards：HTML上でデータを表示するための形式</span>
 <span id="cb43-97"><a href="#cb43-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-98"><a href="#cb43-98" aria-hidden="true" tabindex="-1"></a><span class="in">````{yaml, filename="formatの設定"}</span></span>
-<span id="cb43-99"><a href="#cb43-99" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-100"><a href="#cb43-100" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> html</span></span>
+<span id="cb43-98"><a href="#cb43-98" aria-hidden="true" tabindex="-1"></a>これらのファイル形式（<span class="in">`format`</span>）は、YAMLで以下のように設定します。</span>
+<span id="cb43-99"><a href="#cb43-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-100"><a href="#cb43-100" aria-hidden="true" tabindex="-1"></a><span class="in">````{yaml, filename="formatの設定"}</span></span>
 <span id="cb43-101"><a href="#cb43-101" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-102"><a href="#cb43-102" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb43-103"><a href="#cb43-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-104"><a href="#cb43-104" aria-hidden="true" tabindex="-1"></a><span class="in">`format`</span>で設定できるパラメータとファイル形式の関係は以下の通りです。</span>
+<span id="cb43-102"><a href="#cb43-102" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> html</span></span>
+<span id="cb43-103"><a href="#cb43-103" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-104"><a href="#cb43-104" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
 <span id="cb43-105"><a href="#cb43-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-106"><a href="#cb43-106" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
-<span id="cb43-107"><a href="#cb43-107" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
-<span id="cb43-108"><a href="#cb43-108" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
-<span id="cb43-109"><a href="#cb43-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-110"><a href="#cb43-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-111"><a href="#cb43-111" aria-hidden="true" tabindex="-1"></a>また、やや複雑なのですが、HTMLのうちQuarto BooksとWebsites、Manuscriptsの3つに関しては<span class="in">`format`</span>ではなく、<span class="in">`project`</span>の下のカテゴリとして、<span class="in">`type`</span>に設定する形となっています。</span>
+<span id="cb43-106"><a href="#cb43-106" aria-hidden="true" tabindex="-1"></a><span class="in">`format`</span>で設定できるパラメータとファイル形式の関係は以下の通りです。</span>
+<span id="cb43-107"><a href="#cb43-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-108"><a href="#cb43-108" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
+<span id="cb43-109"><a href="#cb43-109" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
+<span id="cb43-110"><a href="#cb43-110" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
+<span id="cb43-111"><a href="#cb43-111" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-112"><a href="#cb43-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-113"><a href="#cb43-113" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="projectの設定"}</span></span>
-<span id="cb43-114"><a href="#cb43-114" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-115"><a href="#cb43-115" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-116"><a href="#cb43-116" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
-<span id="cb43-117"><a href="#cb43-117" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-118"><a href="#cb43-118" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-119"><a href="#cb43-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-120"><a href="#cb43-120" aria-hidden="true" tabindex="-1"></a>この<span class="in">`project: type:`</span>以下に設定するパラメータは以下の5つです。projectに関しては<span class="co">[</span><span class="ot">WebsiteとBookの章</span><span class="co">](chapter42.qmd)</span>で詳しく説明します。</span>
+<span id="cb43-113"><a href="#cb43-113" aria-hidden="true" tabindex="-1"></a>また、やや複雑なのですが、HTMLのうちQuarto BooksとWebsites、Manuscriptsの3つに関しては<span class="in">`format`</span>ではなく、<span class="in">`project`</span>の下のカテゴリとして、<span class="in">`type`</span>に設定する形となっています。</span>
+<span id="cb43-114"><a href="#cb43-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-115"><a href="#cb43-115" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="projectの設定"}</span></span>
+<span id="cb43-116"><a href="#cb43-116" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-117"><a href="#cb43-117" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-118"><a href="#cb43-118" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
+<span id="cb43-119"><a href="#cb43-119" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-120"><a href="#cb43-120" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-121"><a href="#cb43-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-122"><a href="#cb43-122" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
-<span id="cb43-123"><a href="#cb43-123" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">2</span>)</span>
-<span id="cb43-124"><a href="#cb43-124" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
-<span id="cb43-125"><a href="#cb43-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-126"><a href="#cb43-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-127"><a href="#cb43-127" aria-hidden="true" tabindex="-1"></a>QuartoをRenderする際には、Rendering Engine（Rの場合はknitr）が自動的にこの<span class="in">`format`</span>、<span class="in">`project`</span>を読み込み、設定したファイル形式で出力してくれます。</span>
+<span id="cb43-122"><a href="#cb43-122" aria-hidden="true" tabindex="-1"></a>この<span class="in">`project: type:`</span>以下に設定するパラメータは以下の5つです。projectに関しては<span class="co">[</span><span class="ot">WebsiteとBookの章</span><span class="co">](chapter42.qmd)</span>で詳しく説明します。</span>
+<span id="cb43-123"><a href="#cb43-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-124"><a href="#cb43-124" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
+<span id="cb43-125"><a href="#cb43-125" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">2</span>)</span>
+<span id="cb43-126"><a href="#cb43-126" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
+<span id="cb43-127"><a href="#cb43-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-128"><a href="#cb43-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-129"><a href="#cb43-129" aria-hidden="true" tabindex="-1"></a><span class="fu">## 文章のタイトルと著者</span></span>
+<span id="cb43-129"><a href="#cb43-129" aria-hidden="true" tabindex="-1"></a>QuartoをRenderする際には、Rendering Engine（Rの場合はknitr）が自動的にこの<span class="in">`format`</span>、<span class="in">`project`</span>を読み込み、設定したファイル形式で出力してくれます。</span>
 <span id="cb43-130"><a href="#cb43-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-131"><a href="#cb43-131" aria-hidden="true" tabindex="-1"></a>Quartoは論文を執筆する際に用いられることを想定しているため、文章の情報（タイトル、著者など）を設定するためのYAMLがたくさん設定されています。以下に設定できるYAMLの要素と意味を示します。</span>
+<span id="cb43-131"><a href="#cb43-131" aria-hidden="true" tabindex="-1"></a><span class="fu">## 文章のタイトルと著者</span></span>
 <span id="cb43-132"><a href="#cb43-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-133"><a href="#cb43-133" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
-<span id="cb43-134"><a href="#cb43-134" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">3</span>)</span>
-<span id="cb43-135"><a href="#cb43-135" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
-<span id="cb43-136"><a href="#cb43-136" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-137"><a href="#cb43-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-138"><a href="#cb43-138" aria-hidden="true" tabindex="-1"></a><span class="in">`author`</span>などの項目は上記の<span class="in">`book`</span>などの小項目として設定することもできますし、より上位の項目として設定しても特に問題ありません。<span class="in">`author`</span>、<span class="in">`title`</span>等を設定すると、文頭にタイトル、著者、要約等が記載されます。</span>
+<span id="cb43-133"><a href="#cb43-133" aria-hidden="true" tabindex="-1"></a>Quartoは論文を執筆する際に用いられることを想定しているため、文章の情報（タイトル、著者など）を設定するためのYAMLがたくさん設定されています。以下に設定できるYAMLの要素と意味を示します。</span>
+<span id="cb43-134"><a href="#cb43-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-135"><a href="#cb43-135" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
+<span id="cb43-136"><a href="#cb43-136" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">3</span>)</span>
+<span id="cb43-137"><a href="#cb43-137" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
+<span id="cb43-138"><a href="#cb43-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-139"><a href="#cb43-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-140"><a href="#cb43-140" aria-hidden="true" tabindex="-1"></a><span class="al">![タイトルや著者の表示](./image/author_title.png)</span></span>
+<span id="cb43-140"><a href="#cb43-140" aria-hidden="true" tabindex="-1"></a><span class="in">`author`</span>などの項目は上記の<span class="in">`book`</span>などの小項目として設定することもできますし、より上位の項目として設定しても特に問題ありません。<span class="in">`author`</span>、<span class="in">`title`</span>等を設定すると、文頭にタイトル、著者、要約等が記載されます。</span>
 <span id="cb43-141"><a href="#cb43-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-142"><a href="#cb43-142" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">QuartoのFront Matter</span><span class="co">](https://quarto.org/docs/authoring/front-matter.html#authors-and-affiliations)</span>のページに著者に関する設定方法が記載されていますので、より詳細な設定を行う場合には参考にして下さい。</span>
+<span id="cb43-142"><a href="#cb43-142" aria-hidden="true" tabindex="-1"></a><span class="al">![タイトルや著者の表示](./image/author_title.png)</span></span>
 <span id="cb43-143"><a href="#cb43-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-144"><a href="#cb43-144" aria-hidden="true" tabindex="-1"></a><span class="fu">## Table of contents (TOC)</span></span>
+<span id="cb43-144"><a href="#cb43-144" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">QuartoのFront Matter</span><span class="co">](https://quarto.org/docs/authoring/front-matter.html#authors-and-affiliations)</span>のページに著者に関する設定方法が記載されていますので、より詳細な設定を行う場合には参考にして下さい。</span>
 <span id="cb43-145"><a href="#cb43-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-146"><a href="#cb43-146" aria-hidden="true" tabindex="-1"></a>Table of contents（TOC）とは、このページの右に表示されている、そのページの章立てを示すためのものです。項目をクリックすることでその項目の部分に移動することができます。このTOCについては、TOCを表示するかどうか、TOCの深さ（ヘッダーのうち、Header2（<span class="in">`## Header2`</span>）までをTOCに表示するのか、Header 3（<span class="in">`### header 3`</span>）まで表示するのか）、TOCを表示する位置、TOCのタイトル、TOCの折りたたみ（このテキストではHeader 3以降を折りたたんでいます）などをYAMLで設定します。</span>
+<span id="cb43-146"><a href="#cb43-146" aria-hidden="true" tabindex="-1"></a><span class="fu">## Table of contents (TOC)</span></span>
 <span id="cb43-147"><a href="#cb43-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-148"><a href="#cb43-148" aria-hidden="true" tabindex="-1"></a><span class="al">![Table of contents](./image/toc.png)</span></span>
+<span id="cb43-148"><a href="#cb43-148" aria-hidden="true" tabindex="-1"></a>Table of contents（TOC）とは、このページの右に表示されている、そのページの章立てを示すためのものです。項目をクリックすることでその項目の部分に移動することができます。このTOCについては、TOCを表示するかどうか、TOCの深さ（ヘッダーのうち、Header2（<span class="in">`## Header2`</span>）までをTOCに表示するのか、Header 3（<span class="in">`### header 3`</span>）まで表示するのか）、TOCを表示する位置、TOCのタイトル、TOCの折りたたみ（このテキストではHeader 3以降を折りたたんでいます）などをYAMLで設定します。</span>
 <span id="cb43-149"><a href="#cb43-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-150"><a href="#cb43-150" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Table of contentsの設定"}</span></span>
-<span id="cb43-151"><a href="#cb43-151" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-152"><a href="#cb43-152" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb43-153"><a href="#cb43-153" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co"> # TOCを表示する</span></span>
-<span id="cb43-154"><a href="#cb43-154" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-location</span><span class="kw">:</span><span class="at"> right</span><span class="co"> # TOCを右に表示</span></span>
-<span id="cb43-155"><a href="#cb43-155" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Quarto"</span><span class="co"> # TOCの表紙は"Quarto"に</span></span>
-<span id="cb43-156"><a href="#cb43-156" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span><span class="co"> # TOCはHeader 4まで表示</span></span>
-<span id="cb43-157"><a href="#cb43-157" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-expand</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span><span class="co"> # Header 2以降は折りたたむ</span></span>
-<span id="cb43-158"><a href="#cb43-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-159"><a href="#cb43-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-160"><a href="#cb43-160" aria-hidden="true" tabindex="-1"></a>TOCに関するYAMLの設定項目を以下に示します。</span>
+<span id="cb43-150"><a href="#cb43-150" aria-hidden="true" tabindex="-1"></a><span class="al">![Table of contents](./image/toc.png)</span></span>
+<span id="cb43-151"><a href="#cb43-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-152"><a href="#cb43-152" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Table of contentsの設定"}</span></span>
+<span id="cb43-153"><a href="#cb43-153" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-154"><a href="#cb43-154" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb43-155"><a href="#cb43-155" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co"> # TOCを表示する</span></span>
+<span id="cb43-156"><a href="#cb43-156" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-location</span><span class="kw">:</span><span class="at"> right</span><span class="co"> # TOCを右に表示</span></span>
+<span id="cb43-157"><a href="#cb43-157" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Quarto"</span><span class="co"> # TOCの表紙は"Quarto"に</span></span>
+<span id="cb43-158"><a href="#cb43-158" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span><span class="co"> # TOCはHeader 4まで表示</span></span>
+<span id="cb43-159"><a href="#cb43-159" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-expand</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span><span class="co"> # Header 2以降は折りたたむ</span></span>
+<span id="cb43-160"><a href="#cb43-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-161"><a href="#cb43-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-162"><a href="#cb43-162" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
-<span id="cb43-163"><a href="#cb43-163" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">4</span>)</span>
-<span id="cb43-164"><a href="#cb43-164" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
-<span id="cb43-165"><a href="#cb43-165" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-166"><a href="#cb43-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-167"><a href="#cb43-167" aria-hidden="true" tabindex="-1"></a><span class="fu">### セクションに番号をつける</span></span>
+<span id="cb43-162"><a href="#cb43-162" aria-hidden="true" tabindex="-1"></a>TOCに関するYAMLの設定項目を以下に示します。</span>
+<span id="cb43-163"><a href="#cb43-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-164"><a href="#cb43-164" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
+<span id="cb43-165"><a href="#cb43-165" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">4</span>)</span>
+<span id="cb43-166"><a href="#cb43-166" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
+<span id="cb43-167"><a href="#cb43-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-168"><a href="#cb43-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-169"><a href="#cb43-169" aria-hidden="true" tabindex="-1"></a>TOCに加えて、TOCで表示される章の項目（セクション）に番号をつけるためのYAMLが、<span class="in">`number-sections`</span>です。YAMLで<span class="in">`number-sections: true`</span>を設定すると、このテキストのように表題に番号が自動的に付けられます。番号をつけたくないセクションには、ヘッダー表記の後に<span class="in">`{.unnumbered}`</span>をつけます。この<span class="in">`{.unnumbered}`</span>を付けたセクションには番号がつかず、飛ばして番号が付与されます。</span>
+<span id="cb43-169"><a href="#cb43-169" aria-hidden="true" tabindex="-1"></a><span class="fu">### セクションに番号をつける</span></span>
 <span id="cb43-170"><a href="#cb43-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-171"><a href="#cb43-171" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filenamee="セクションの番号の設定"}</span></span>
-<span id="cb43-172"><a href="#cb43-172" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-173"><a href="#cb43-173" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-174"><a href="#cb43-174" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-175"><a href="#cb43-175" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-176"><a href="#cb43-176" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-177"><a href="#cb43-177" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-178"><a href="#cb43-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-179"><a href="#cb43-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-180"><a href="#cb43-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-181"><a href="#cb43-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="セクションに番号をつけない"}</span></span>
-<span id="cb43-182"><a href="#cb43-182" aria-hidden="true" tabindex="-1"></a><span class="fu">## 番号をつけたくないセクション {.unnumbered}</span></span>
-<span id="cb43-183"><a href="#cb43-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-184"><a href="#cb43-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-185"><a href="#cb43-185" aria-hidden="true" tabindex="-1"></a><span class="fu">## 文章の言語（lang）</span></span>
+<span id="cb43-171"><a href="#cb43-171" aria-hidden="true" tabindex="-1"></a>TOCに加えて、TOCで表示される章の項目（セクション）に番号をつけるためのYAMLが、<span class="in">`number-sections`</span>です。YAMLで<span class="in">`number-sections: true`</span>を設定すると、このテキストのように表題に番号が自動的に付けられます。番号をつけたくないセクションには、ヘッダー表記の後に<span class="in">`{.unnumbered}`</span>をつけます。この<span class="in">`{.unnumbered}`</span>を付けたセクションには番号がつかず、飛ばして番号が付与されます。</span>
+<span id="cb43-172"><a href="#cb43-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-173"><a href="#cb43-173" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filenamee="セクションの番号の設定"}</span></span>
+<span id="cb43-174"><a href="#cb43-174" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-175"><a href="#cb43-175" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-176"><a href="#cb43-176" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-177"><a href="#cb43-177" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-178"><a href="#cb43-178" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-179"><a href="#cb43-179" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-180"><a href="#cb43-180" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb43-181"><a href="#cb43-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-182"><a href="#cb43-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-183"><a href="#cb43-183" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="セクションに番号をつけない"}</span></span>
+<span id="cb43-184"><a href="#cb43-184" aria-hidden="true" tabindex="-1"></a><span class="fu">## 番号をつけたくないセクション {.unnumbered}</span></span>
+<span id="cb43-185"><a href="#cb43-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-186"><a href="#cb43-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-187"><a href="#cb43-187" aria-hidden="true" tabindex="-1"></a>Quartoで作成している文章の言語はデフォルトでは英語です。ですので、上記のTOCの設定後、表示されるTOCの題名はデフォルトでは「Table of contents」と英語で表示されます。このような表示を他の言語に変更する場合には、YAMLで<span class="in">`lang`</span>を設定します。<span class="in">`lang`</span>のデフォルトは<span class="in">`lang: en`</span>で、<span class="in">`lang`</span>を設定しない場合には英語となっています。<span class="in">`lang: ja`</span>と設定することで表示を日本語に変更することが出来ます。</span>
+<span id="cb43-187"><a href="#cb43-187" aria-hidden="true" tabindex="-1"></a><span class="fu">## 文章の言語（lang）</span></span>
 <span id="cb43-188"><a href="#cb43-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-189"><a href="#cb43-189" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="文章の言語の設定"}</span></span>
-<span id="cb43-190"><a href="#cb43-190" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-191"><a href="#cb43-191" aria-hidden="true" tabindex="-1"></a><span class="fu">lang</span><span class="kw">:</span><span class="at"> ja</span><span class="co"> # 日本語表示を用いる</span></span>
+<span id="cb43-189"><a href="#cb43-189" aria-hidden="true" tabindex="-1"></a>Quartoで作成している文章の言語はデフォルトでは英語です。ですので、上記のTOCの設定後、表示されるTOCの題名はデフォルトでは「Table of contents」と英語で表示されます。このような表示を他の言語に変更する場合には、YAMLで<span class="in">`lang`</span>を設定します。<span class="in">`lang`</span>のデフォルトは<span class="in">`lang: en`</span>で、<span class="in">`lang`</span>を設定しない場合には英語となっています。<span class="in">`lang: ja`</span>と設定することで表示を日本語に変更することが出来ます。</span>
+<span id="cb43-190"><a href="#cb43-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-191"><a href="#cb43-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="文章の言語の設定"}</span></span>
 <span id="cb43-192"><a href="#cb43-192" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-193"><a href="#cb43-193" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-194"><a href="#cb43-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-195"><a href="#cb43-195" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
-<span id="cb43-196"><a href="#cb43-196" aria-hidden="true" tabindex="-1"></a><span class="fu">## langの設定ファイル</span></span>
-<span id="cb43-197"><a href="#cb43-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-198"><a href="#cb43-198" aria-hidden="true" tabindex="-1"></a><span class="in">`lang`</span>に関する設定ファイルについてはgithubで確認することができます。</span>
+<span id="cb43-193"><a href="#cb43-193" aria-hidden="true" tabindex="-1"></a><span class="fu">lang</span><span class="kw">:</span><span class="at"> ja</span><span class="co"> # 日本語表示を用いる</span></span>
+<span id="cb43-194"><a href="#cb43-194" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-195"><a href="#cb43-195" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb43-196"><a href="#cb43-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-197"><a href="#cb43-197" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
+<span id="cb43-198"><a href="#cb43-198" aria-hidden="true" tabindex="-1"></a><span class="fu">## langの設定ファイル</span></span>
 <span id="cb43-199"><a href="#cb43-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-200"><a href="#cb43-200" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">_language-ja.yml</span><span class="co">](https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/language/_language-ja.yml)</span></span>
+<span id="cb43-200"><a href="#cb43-200" aria-hidden="true" tabindex="-1"></a><span class="in">`lang`</span>に関する設定ファイルについてはgithubで確認することができます。</span>
 <span id="cb43-201"><a href="#cb43-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-202"><a href="#cb43-202" aria-hidden="true" tabindex="-1"></a>このファイルを見ていただくとわかる通り、<span class="in">`lang`</span>で設定できるのは、表題などの一部の要素で、pdfの言語設定などを変更できるものではありません。<span class="in">`lang`</span>を設定しても、pdfを出力した際の<span class="in">`ggplot2`</span>の文字化けなどは特に修正されません。</span>
-<span id="cb43-203"><a href="#cb43-203" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb43-204"><a href="#cb43-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-205"><a href="#cb43-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-206"><a href="#cb43-206" aria-hidden="true" tabindex="-1"></a><span class="fu">## ナビゲーション</span></span>
+<span id="cb43-202"><a href="#cb43-202" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">_language-ja.yml</span><span class="co">](https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/language/_language-ja.yml)</span></span>
+<span id="cb43-203"><a href="#cb43-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-204"><a href="#cb43-204" aria-hidden="true" tabindex="-1"></a>このファイルを見ていただくとわかる通り、<span class="in">`lang`</span>で設定できるのは、表題などの一部の要素で、pdfの言語設定などを変更できるものではありません。<span class="in">`lang`</span>を設定しても、pdfを出力した際の<span class="in">`ggplot2`</span>の文字化けなどは特に修正されません。</span>
+<span id="cb43-205"><a href="#cb43-205" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb43-206"><a href="#cb43-206" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-207"><a href="#cb43-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-208"><a href="#cb43-208" aria-hidden="true" tabindex="-1"></a>ナビゲーションとは、このテキストでは左側に表示されている、そのHTMLの構造や章立てを示す部分のことです。QuartoからHTMLを出力する場合、このナビゲーションをページの上（<span class="in">`navbar`</span>）と左側（<span class="in">`sidebar`</span>）に表示させることができます。このテキストでは<span class="in">`navbar`</span>を用いず、<span class="in">`sidebar`</span>のみ用いていますが、逆に<span class="in">`navbar`</span>だけを用いることもできます。navbarやsidebarは、以下の例のようにformatやprojectの名前のYAMLの小項目として設定し、さらにnavbarやsidebarの小項目として、そのナビゲーションの設定項目を指定していきます。</span>
+<span id="cb43-208"><a href="#cb43-208" aria-hidden="true" tabindex="-1"></a><span class="fu">## ナビゲーション</span></span>
 <span id="cb43-209"><a href="#cb43-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-210"><a href="#cb43-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="navbar/sidebarの設定"}</span></span>
-<span id="cb43-211"><a href="#cb43-211" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
-<span id="cb43-212"><a href="#cb43-212" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
-<span id="cb43-213"><a href="#cb43-213" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">search</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-214"><a href="#cb43-214" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sidebar</span><span class="kw">:</span></span>
-<span id="cb43-215"><a href="#cb43-215" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">style</span><span class="kw">:</span><span class="at"> </span><span class="st">"docked"</span></span>
-<span id="cb43-216"><a href="#cb43-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-217"><a href="#cb43-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-218"><a href="#cb43-218" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
-<span id="cb43-219"><a href="#cb43-219" aria-hidden="true" tabindex="-1"></a><span class="fu">## YAMLの設定項目の位置</span></span>
-<span id="cb43-220"><a href="#cb43-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-221"><a href="#cb43-221" aria-hidden="true" tabindex="-1"></a>QuartoのYAMLでは、設定項目の上位・下位要素をどこに記載したらよいのかよくわからない場合が割とあります。YAMLの設定項目を指定しても思い通りの出力が得られない場合には、<span class="co">[</span><span class="ot">QuartoのGuide</span><span class="co">](https://quarto.org/docs/guide/)</span>に記載されているYAMLの例を真似てみたり、<span class="co">[</span><span class="ot">Quartoのgithubレポジトリ内の`_quarto.yml`</span><span class="co">](https://github.com/quarto-dev/quarto-web/blob/main/_quarto.yml)</span>を見てみたり、Quarto booksなどのgithubのレポジトリに保存されている<span class="in">`_quarto.yml`</span>を確認し、真似てみるのが良いでしょう。</span>
-<span id="cb43-222"><a href="#cb43-222" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb43-223"><a href="#cb43-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-224"><a href="#cb43-224" aria-hidden="true" tabindex="-1"></a><span class="fu">### navbar</span></span>
+<span id="cb43-210"><a href="#cb43-210" aria-hidden="true" tabindex="-1"></a>ナビゲーションとは、このテキストでは左側に表示されている、そのHTMLの構造や章立てを示す部分のことです。QuartoからHTMLを出力する場合、このナビゲーションをページの上（<span class="in">`navbar`</span>）と左側（<span class="in">`sidebar`</span>）に表示させることができます。このテキストでは<span class="in">`navbar`</span>を用いず、<span class="in">`sidebar`</span>のみ用いていますが、逆に<span class="in">`navbar`</span>だけを用いることもできます。navbarやsidebarは、以下の例のようにformatやprojectの名前のYAMLの小項目として設定し、さらにnavbarやsidebarの小項目として、そのナビゲーションの設定項目を指定していきます。</span>
+<span id="cb43-211"><a href="#cb43-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-212"><a href="#cb43-212" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="navbar/sidebarの設定"}</span></span>
+<span id="cb43-213"><a href="#cb43-213" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
+<span id="cb43-214"><a href="#cb43-214" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
+<span id="cb43-215"><a href="#cb43-215" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">search</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-216"><a href="#cb43-216" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sidebar</span><span class="kw">:</span></span>
+<span id="cb43-217"><a href="#cb43-217" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">style</span><span class="kw">:</span><span class="at"> </span><span class="st">"docked"</span></span>
+<span id="cb43-218"><a href="#cb43-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb43-219"><a href="#cb43-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-220"><a href="#cb43-220" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
+<span id="cb43-221"><a href="#cb43-221" aria-hidden="true" tabindex="-1"></a><span class="fu">## YAMLの設定項目の位置</span></span>
+<span id="cb43-222"><a href="#cb43-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-223"><a href="#cb43-223" aria-hidden="true" tabindex="-1"></a>QuartoのYAMLでは、設定項目の上位・下位要素をどこに記載したらよいのかよくわからない場合が割とあります。YAMLの設定項目を指定しても思い通りの出力が得られない場合には、<span class="co">[</span><span class="ot">QuartoのGuide</span><span class="co">](https://quarto.org/docs/guide/)</span>に記載されているYAMLの例を真似てみたり、<span class="co">[</span><span class="ot">Quartoのgithubレポジトリ内の`_quarto.yml`</span><span class="co">](https://github.com/quarto-dev/quarto-web/blob/main/_quarto.yml)</span>を見てみたり、Quarto booksなどのgithubのレポジトリに保存されている<span class="in">`_quarto.yml`</span>を確認し、真似てみるのが良いでしょう。</span>
+<span id="cb43-224"><a href="#cb43-224" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb43-225"><a href="#cb43-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-226"><a href="#cb43-226" aria-hidden="true" tabindex="-1"></a><span class="in">`navbar`</span>で設定できる主な項目は以下の通りです。<span class="in">`navbar`</span>の設定を.qmd内に<span class="in">`---`</span>で囲まれたブロックに記載すると表示されないので、<span class="in">`_quarto.yml`</span>に記載するようにしましょう。</span>
+<span id="cb43-226"><a href="#cb43-226" aria-hidden="true" tabindex="-1"></a><span class="fu">### navbar</span></span>
 <span id="cb43-227"><a href="#cb43-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-228"><a href="#cb43-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
-<span id="cb43-229"><a href="#cb43-229" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">5</span>)</span>
-<span id="cb43-230"><a href="#cb43-230" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
-<span id="cb43-231"><a href="#cb43-231" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-232"><a href="#cb43-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-233"><a href="#cb43-233" aria-hidden="true" tabindex="-1"></a>以下に<span class="in">`navbar`</span>の設定の例を示します。<span class="in">`search: true`</span>で右端の検索マーク、<span class="in">`tools`</span>でgithubやtwitter（x）のリンク、<span class="in">`left: menu`</span>で▼のリンクにYahooとGoogleを設定しています。リンクでは同じフォルダ内の<span class="in">`.qmd`</span>ファイルを指定することもできます。</span>
+<span id="cb43-228"><a href="#cb43-228" aria-hidden="true" tabindex="-1"></a><span class="in">`navbar`</span>で設定できる主な項目は以下の通りです。<span class="in">`navbar`</span>の設定を.qmd内に<span class="in">`---`</span>で囲まれたブロックに記載すると表示されないので、<span class="in">`_quarto.yml`</span>に記載するようにしましょう。</span>
+<span id="cb43-229"><a href="#cb43-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-230"><a href="#cb43-230" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
+<span id="cb43-231"><a href="#cb43-231" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">5</span>)</span>
+<span id="cb43-232"><a href="#cb43-232" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
+<span id="cb43-233"><a href="#cb43-233" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-234"><a href="#cb43-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-235"><a href="#cb43-235" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="YAML: navbarの設定の例"}</span></span>
-<span id="cb43-236"><a href="#cb43-236" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-237"><a href="#cb43-237" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
-<span id="cb43-238"><a href="#cb43-238" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
-<span id="cb43-239"><a href="#cb43-239" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"文章のタイトル"</span></span>
-<span id="cb43-240"><a href="#cb43-240" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
-<span id="cb43-241"><a href="#cb43-241" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb43-242"><a href="#cb43-242" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-243"><a href="#cb43-243" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">search</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-244"><a href="#cb43-244" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">background</span><span class="kw">:</span><span class="at"> </span><span class="st">"warning"</span></span>
-<span id="cb43-245"><a href="#cb43-245" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb43-246"><a href="#cb43-246" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">pinned</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-247"><a href="#cb43-247" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tools</span><span class="kw">:</span></span>
-<span id="cb43-248"><a href="#cb43-248" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> </span><span class="st">"github"</span></span>
-<span id="cb43-249"><a href="#cb43-249" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://github.com/"</span></span>
-<span id="cb43-250"><a href="#cb43-250" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> </span><span class="st">"twitter"</span></span>
-<span id="cb43-251"><a href="#cb43-251" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://x.com/"</span></span>
-<span id="cb43-252"><a href="#cb43-252" aria-hidden="true" tabindex="-1"></a><span class="at">        </span></span>
-<span id="cb43-253"><a href="#cb43-253" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
-<span id="cb43-254"><a href="#cb43-254" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Quarto"</span></span>
-<span id="cb43-255"><a href="#cb43-255" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://quarto.org/"</span></span>
-<span id="cb43-256"><a href="#cb43-256" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"links2"</span></span>
-<span id="cb43-257"><a href="#cb43-257" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">menu</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-258"><a href="#cb43-258" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Yahoo Japan"</span></span>
-<span id="cb43-259"><a href="#cb43-259" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://www.yahoo.co.jp/"</span></span>
-<span id="cb43-260"><a href="#cb43-260" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Google"</span></span>
-<span id="cb43-261"><a href="#cb43-261" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://www.google.co.jp/"</span></span>
-<span id="cb43-262"><a href="#cb43-262" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-263"><a href="#cb43-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-264"><a href="#cb43-264" aria-hidden="true" tabindex="-1"></a><span class="al">![上記のYAMLで表示されるnavbar](./image/Quarto_navbar.png)</span></span>
+<span id="cb43-235"><a href="#cb43-235" aria-hidden="true" tabindex="-1"></a>以下に<span class="in">`navbar`</span>の設定の例を示します。<span class="in">`search: true`</span>で右端の検索マーク、<span class="in">`tools`</span>でgithubやtwitter（x）のリンク、<span class="in">`left: menu`</span>で▼のリンクにYahooとGoogleを設定しています。リンクでは同じフォルダ内の<span class="in">`.qmd`</span>ファイルを指定することもできます。</span>
+<span id="cb43-236"><a href="#cb43-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-237"><a href="#cb43-237" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="YAML: navbarの設定の例"}</span></span>
+<span id="cb43-238"><a href="#cb43-238" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-239"><a href="#cb43-239" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb43-240"><a href="#cb43-240" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
+<span id="cb43-241"><a href="#cb43-241" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"文章のタイトル"</span></span>
+<span id="cb43-242"><a href="#cb43-242" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb43-243"><a href="#cb43-243" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb43-244"><a href="#cb43-244" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-245"><a href="#cb43-245" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">search</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-246"><a href="#cb43-246" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">background</span><span class="kw">:</span><span class="at"> </span><span class="st">"warning"</span></span>
+<span id="cb43-247"><a href="#cb43-247" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb43-248"><a href="#cb43-248" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">pinned</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-249"><a href="#cb43-249" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tools</span><span class="kw">:</span></span>
+<span id="cb43-250"><a href="#cb43-250" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> </span><span class="st">"github"</span></span>
+<span id="cb43-251"><a href="#cb43-251" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://github.com/"</span></span>
+<span id="cb43-252"><a href="#cb43-252" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> </span><span class="st">"twitter"</span></span>
+<span id="cb43-253"><a href="#cb43-253" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://x.com/"</span></span>
+<span id="cb43-254"><a href="#cb43-254" aria-hidden="true" tabindex="-1"></a><span class="at">        </span></span>
+<span id="cb43-255"><a href="#cb43-255" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
+<span id="cb43-256"><a href="#cb43-256" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Quarto"</span></span>
+<span id="cb43-257"><a href="#cb43-257" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://quarto.org/"</span></span>
+<span id="cb43-258"><a href="#cb43-258" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"links2"</span></span>
+<span id="cb43-259"><a href="#cb43-259" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">menu</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-260"><a href="#cb43-260" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Yahoo Japan"</span></span>
+<span id="cb43-261"><a href="#cb43-261" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://www.yahoo.co.jp/"</span></span>
+<span id="cb43-262"><a href="#cb43-262" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Google"</span></span>
+<span id="cb43-263"><a href="#cb43-263" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">href</span><span class="kw">:</span><span class="at"> </span><span class="st">"https://www.google.co.jp/"</span></span>
+<span id="cb43-264"><a href="#cb43-264" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-265"><a href="#cb43-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-266"><a href="#cb43-266" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
-<span id="cb43-267"><a href="#cb43-267" aria-hidden="true" tabindex="-1"></a><span class="fu">## searchの設定</span></span>
-<span id="cb43-268"><a href="#cb43-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-269"><a href="#cb43-269" aria-hidden="true" tabindex="-1"></a><span class="in">`search`</span>は、<span class="in">`.qmd`</span>を保存したフォルダ（Projectを設定していればそのProjectのフォルダ）内に<span class="in">`search.json`</span>というファイルを作成し、<span class="in">`search.json`</span>から文書の単語を検索するような形で機能します。また、<span class="co">[</span><span class="ot">Algolia</span><span class="co">](https://www.algolia.com/)</span>という検索サービスを利用することもできます。<span class="in">`search`</span>の設定の詳細については<span class="co">[</span><span class="ot">Quartoのsearchのページ</span><span class="co">](https://quarto.org/docs/websites/website-search.html)</span>を参考にして下さい。</span>
-<span id="cb43-270"><a href="#cb43-270" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb43-271"><a href="#cb43-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-272"><a href="#cb43-272" aria-hidden="true" tabindex="-1"></a><span class="fu">### sidebar</span></span>
+<span id="cb43-266"><a href="#cb43-266" aria-hidden="true" tabindex="-1"></a><span class="al">![上記のYAMLで表示されるnavbar](./image/Quarto_navbar.png)</span></span>
+<span id="cb43-267"><a href="#cb43-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-268"><a href="#cb43-268" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
+<span id="cb43-269"><a href="#cb43-269" aria-hidden="true" tabindex="-1"></a><span class="fu">## searchの設定</span></span>
+<span id="cb43-270"><a href="#cb43-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-271"><a href="#cb43-271" aria-hidden="true" tabindex="-1"></a><span class="in">`search`</span>は、<span class="in">`.qmd`</span>を保存したフォルダ（Projectを設定していればそのProjectのフォルダ）内に<span class="in">`search.json`</span>というファイルを作成し、<span class="in">`search.json`</span>から文書の単語を検索するような形で機能します。また、<span class="co">[</span><span class="ot">Algolia</span><span class="co">](https://www.algolia.com/)</span>という検索サービスを利用することもできます。<span class="in">`search`</span>の設定の詳細については<span class="co">[</span><span class="ot">Quartoのsearchのページ</span><span class="co">](https://quarto.org/docs/websites/website-search.html)</span>を参考にして下さい。</span>
+<span id="cb43-272"><a href="#cb43-272" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb43-273"><a href="#cb43-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-274"><a href="#cb43-274" aria-hidden="true" tabindex="-1"></a><span class="in">`sidebar`</span>はこのテキストでも左側に表示されているナビゲーションで、<span class="in">`navbar`</span>と同じようにリンク等を配置することができます。<span class="in">`sidebar`</span>で指定できる設定項目は以下の表の通りです。</span>
+<span id="cb43-274"><a href="#cb43-274" aria-hidden="true" tabindex="-1"></a><span class="fu">### sidebar</span></span>
 <span id="cb43-275"><a href="#cb43-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-276"><a href="#cb43-276" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
-<span id="cb43-277"><a href="#cb43-277" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">6</span>)</span>
-<span id="cb43-278"><a href="#cb43-278" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
-<span id="cb43-279"><a href="#cb43-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-280"><a href="#cb43-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-281"><a href="#cb43-281" aria-hidden="true" tabindex="-1"></a>以下に<span class="in">`sidebar`</span>の設定の例を示します。このテキストでも<span class="in">`sidebar`</span>を利用しているので、<span class="co">[</span><span class="ot">`_quarto.yml`</span><span class="co">](https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml)</span>を見ていただければ参考になると思います。</span>
+<span id="cb43-276"><a href="#cb43-276" aria-hidden="true" tabindex="-1"></a><span class="in">`sidebar`</span>はこのテキストでも左側に表示されているナビゲーションで、<span class="in">`navbar`</span>と同じようにリンク等を配置することができます。<span class="in">`sidebar`</span>で指定できる設定項目は以下の表の通りです。</span>
+<span id="cb43-277"><a href="#cb43-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-278"><a href="#cb43-278" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
+<span id="cb43-279"><a href="#cb43-279" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">6</span>)</span>
+<span id="cb43-280"><a href="#cb43-280" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
+<span id="cb43-281"><a href="#cb43-281" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-282"><a href="#cb43-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-283"><a href="#cb43-283" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="sidebarの設定の例"}</span></span>
-<span id="cb43-284"><a href="#cb43-284" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-285"><a href="#cb43-285" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
-<span id="cb43-286"><a href="#cb43-286" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
-<span id="cb43-287"><a href="#cb43-287" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb43-288"><a href="#cb43-288" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sidebar</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-289"><a href="#cb43-289" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">search</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-290"><a href="#cb43-290" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">style</span><span class="kw">:</span><span class="at"> docked</span></span>
-<span id="cb43-291"><a href="#cb43-291" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">background</span><span class="kw">:</span><span class="at"> light</span></span>
-<span id="cb43-292"><a href="#cb43-292" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tools</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-293"><a href="#cb43-293" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> github</span></span>
-<span id="cb43-294"><a href="#cb43-294" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">menu</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-295"><a href="#cb43-295" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> ソースコード</span></span>
-<span id="cb43-296"><a href="#cb43-296" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">href</span><span class="kw">:</span><span class="at"> https://github.com/</span></span>
-<span id="cb43-297"><a href="#cb43-297" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">contents</span><span class="kw">:</span></span>
-<span id="cb43-298"><a href="#cb43-298" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>example_navbar.qmd<span class="co"> # titleはこの.qmd内でYAMLとして設定する</span></span>
-<span id="cb43-299"><a href="#cb43-299" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>example_sidebar.qmd</span>
-<span id="cb43-300"><a href="#cb43-300" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-301"><a href="#cb43-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-302"><a href="#cb43-302" aria-hidden="true" tabindex="-1"></a><span class="al">![上記のYAMLで表示されるsidebar](./image/Quarto_sidebar.png)</span></span>
+<span id="cb43-283"><a href="#cb43-283" aria-hidden="true" tabindex="-1"></a>以下に<span class="in">`sidebar`</span>の設定の例を示します。このテキストでも<span class="in">`sidebar`</span>を利用しているので、<span class="co">[</span><span class="ot">`_quarto.yml`</span><span class="co">](https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml)</span>を見ていただければ参考になると思います。</span>
+<span id="cb43-284"><a href="#cb43-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-285"><a href="#cb43-285" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="sidebarの設定の例"}</span></span>
+<span id="cb43-286"><a href="#cb43-286" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-287"><a href="#cb43-287" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb43-288"><a href="#cb43-288" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb43-289"><a href="#cb43-289" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb43-290"><a href="#cb43-290" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sidebar</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-291"><a href="#cb43-291" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">search</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-292"><a href="#cb43-292" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">style</span><span class="kw">:</span><span class="at"> docked</span></span>
+<span id="cb43-293"><a href="#cb43-293" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">background</span><span class="kw">:</span><span class="at"> light</span></span>
+<span id="cb43-294"><a href="#cb43-294" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tools</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-295"><a href="#cb43-295" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> github</span></span>
+<span id="cb43-296"><a href="#cb43-296" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">menu</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-297"><a href="#cb43-297" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> ソースコード</span></span>
+<span id="cb43-298"><a href="#cb43-298" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">href</span><span class="kw">:</span><span class="at"> https://github.com/</span></span>
+<span id="cb43-299"><a href="#cb43-299" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">contents</span><span class="kw">:</span></span>
+<span id="cb43-300"><a href="#cb43-300" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>example_navbar.qmd<span class="co"> # titleはこの.qmd内でYAMLとして設定する</span></span>
+<span id="cb43-301"><a href="#cb43-301" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>example_sidebar.qmd</span>
+<span id="cb43-302"><a href="#cb43-302" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-303"><a href="#cb43-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-304"><a href="#cb43-304" aria-hidden="true" tabindex="-1"></a><span class="fu">### フッター（footer）</span></span>
+<span id="cb43-304"><a href="#cb43-304" aria-hidden="true" tabindex="-1"></a><span class="al">![上記のYAMLで表示されるsidebar](./image/Quarto_sidebar.png)</span></span>
 <span id="cb43-305"><a href="#cb43-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-306"><a href="#cb43-306" aria-hidden="true" tabindex="-1"></a>フッターは文書の最後に表示されるテキストやリンクのことです。コピーライトや利用しているツール名、、ソースコードへのリンクや、企業であれば企業ページへのリンク、規約に関するリンクなどを置くことが一般的だと思います。フッターは以下のような形で<span class="in">`page-footer`</span>の項目に設定します。</span>
+<span id="cb43-306"><a href="#cb43-306" aria-hidden="true" tabindex="-1"></a><span class="fu">### フッター（footer）</span></span>
 <span id="cb43-307"><a href="#cb43-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-308"><a href="#cb43-308" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="footerの設定"}</span></span>
-<span id="cb43-309"><a href="#cb43-309" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb43-310"><a href="#cb43-310" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">page-footer</span><span class="kw">:</span></span>
-<span id="cb43-311"><a href="#cb43-311" aria-hidden="true" tabindex="-1"></a><span class="fu">    right</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb43-312"><a href="#cb43-312" aria-hidden="true" tabindex="-1"></a>      &lt;a href="https://quarto.org/"&gt;Quarto&lt;/a&gt;を用いてこの本を作成しました</span>
-<span id="cb43-313"><a href="#cb43-313" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
-<span id="cb43-314"><a href="#cb43-314" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>©<span class="at"> </span>xjorv,<span class="at"> </span>2025</span>
-<span id="cb43-315"><a href="#cb43-315" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-316"><a href="#cb43-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-317"><a href="#cb43-317" aria-hidden="true" tabindex="-1"></a><span class="al">![フッターの表示](./image/Quarto_page_footer.png)</span></span>
+<span id="cb43-308"><a href="#cb43-308" aria-hidden="true" tabindex="-1"></a>フッターは文書の最後に表示されるテキストやリンクのことです。コピーライトや利用しているツール名、、ソースコードへのリンクや、企業であれば企業ページへのリンク、規約に関するリンクなどを置くことが一般的だと思います。フッターは以下のような形で<span class="in">`page-footer`</span>の項目に設定します。</span>
+<span id="cb43-309"><a href="#cb43-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-310"><a href="#cb43-310" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="footerの設定"}</span></span>
+<span id="cb43-311"><a href="#cb43-311" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb43-312"><a href="#cb43-312" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">page-footer</span><span class="kw">:</span></span>
+<span id="cb43-313"><a href="#cb43-313" aria-hidden="true" tabindex="-1"></a><span class="fu">    right</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb43-314"><a href="#cb43-314" aria-hidden="true" tabindex="-1"></a>      &lt;a href="https://quarto.org/"&gt;Quarto&lt;/a&gt;を用いてこの本を作成しました</span>
+<span id="cb43-315"><a href="#cb43-315" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
+<span id="cb43-316"><a href="#cb43-316" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>©<span class="at"> </span>xjorv,<span class="at"> </span>2025</span>
+<span id="cb43-317"><a href="#cb43-317" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-318"><a href="#cb43-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-319"><a href="#cb43-319" aria-hidden="true" tabindex="-1"></a>この他のナビゲーション等については、<span class="co">[</span><span class="ot">QuartoのGuide</span><span class="co">](https://quarto.org/docs/reference/projects/websites.html)</span>を参考にして下さい。</span>
+<span id="cb43-319"><a href="#cb43-319" aria-hidden="true" tabindex="-1"></a><span class="al">![フッターの表示](./image/Quarto_page_footer.png)</span></span>
 <span id="cb43-320"><a href="#cb43-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-321"><a href="#cb43-321" aria-hidden="true" tabindex="-1"></a><span class="fu">## chunk optionをYAMLで設定する</span></span>
+<span id="cb43-321"><a href="#cb43-321" aria-hidden="true" tabindex="-1"></a>この他のナビゲーション等については、<span class="co">[</span><span class="ot">QuartoのGuide</span><span class="co">](https://quarto.org/docs/reference/projects/websites.html)</span>を参考にして下さい。</span>
 <span id="cb43-322"><a href="#cb43-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-323"><a href="#cb43-323" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">前の章</span><span class="co">](./chapter38.html)</span>で説明したchunk optionは，各chunkに設定するだけでなく，YAMLとして設定することもできます．YAMLとしてchunk optionを設定すると，その文章のすべてのchunkに指定したchunk optionが適用されます．</span>
+<span id="cb43-323"><a href="#cb43-323" aria-hidden="true" tabindex="-1"></a><span class="fu">## chunk optionをYAMLで設定する</span></span>
 <span id="cb43-324"><a href="#cb43-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-325"><a href="#cb43-325" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="YAMLでchunk optionを指定する"}</span></span>
-<span id="cb43-326"><a href="#cb43-326" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-327"><a href="#cb43-327" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
-<span id="cb43-328"><a href="#cb43-328" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">eval</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co"> # すべてのchunkでコードを実行しない</span></span>
-<span id="cb43-329"><a href="#cb43-329" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">warning</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co"> # すべてのchunkでwarningを表示しない</span></span>
-<span id="cb43-330"><a href="#cb43-330" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">cache</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co"> # すべてのchunkでcacheを適用する</span></span>
-<span id="cb43-331"><a href="#cb43-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-332"><a href="#cb43-332" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-333"><a href="#cb43-333" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="co"> # formatはpdfやwordでも可</span></span>
-<span id="cb43-334"><a href="#cb43-334" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-fold</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co"> # すべてのchunkコードを折りたたむ（HTMLは対応）</span></span>
-<span id="cb43-335"><a href="#cb43-335" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-width</span><span class="kw">:</span><span class="at"> </span><span class="dv">8</span><span class="co"> # グラフ等の幅の指定</span></span>
-<span id="cb43-336"><a href="#cb43-336" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-height</span><span class="kw">:</span><span class="at"> </span><span class="dv">6</span><span class="co"> # グラフ等の高さの指定</span></span>
-<span id="cb43-337"><a href="#cb43-337" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-338"><a href="#cb43-338" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-339"><a href="#cb43-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-340"><a href="#cb43-340" aria-hidden="true" tabindex="-1"></a>詳細については，Quartoの<span class="co">[</span><span class="ot">Excecution Options</span><span class="co">](https://quarto.org/docs/computations/execution-options.html)</span>を参照してください．</span>
+<span id="cb43-325"><a href="#cb43-325" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">前の章</span><span class="co">](./chapter38.html)</span>で説明したchunk optionは，各chunkに設定するだけでなく，YAMLとして設定することもできます．YAMLとしてchunk optionを設定すると，その文章のすべてのchunkに指定したchunk optionが適用されます．</span>
+<span id="cb43-326"><a href="#cb43-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-327"><a href="#cb43-327" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="YAMLでchunk optionを指定する"}</span></span>
+<span id="cb43-328"><a href="#cb43-328" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-329"><a href="#cb43-329" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb43-330"><a href="#cb43-330" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">eval</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co"> # すべてのchunkでコードを実行しない</span></span>
+<span id="cb43-331"><a href="#cb43-331" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">warning</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co"> # すべてのchunkでwarningを表示しない</span></span>
+<span id="cb43-332"><a href="#cb43-332" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">cache</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co"> # すべてのchunkでcacheを適用する</span></span>
+<span id="cb43-333"><a href="#cb43-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-334"><a href="#cb43-334" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-335"><a href="#cb43-335" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="co"> # formatはpdfやwordでも可</span></span>
+<span id="cb43-336"><a href="#cb43-336" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-fold</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co"> # すべてのchunkコードを折りたたむ（HTMLは対応）</span></span>
+<span id="cb43-337"><a href="#cb43-337" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-width</span><span class="kw">:</span><span class="at"> </span><span class="dv">8</span><span class="co"> # グラフ等の幅の指定</span></span>
+<span id="cb43-338"><a href="#cb43-338" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-height</span><span class="kw">:</span><span class="at"> </span><span class="dv">6</span><span class="co"> # グラフ等の高さの指定</span></span>
+<span id="cb43-339"><a href="#cb43-339" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-340"><a href="#cb43-340" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-341"><a href="#cb43-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-342"><a href="#cb43-342" aria-hidden="true" tabindex="-1"></a><span class="fu">## HTML固有のYAMLの設定</span></span>
+<span id="cb43-342"><a href="#cb43-342" aria-hidden="true" tabindex="-1"></a>詳細については，Quartoの<span class="co">[</span><span class="ot">Excecution Options</span><span class="co">](https://quarto.org/docs/computations/execution-options.html)</span>を参照してください．</span>
 <span id="cb43-343"><a href="#cb43-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-344"><a href="#cb43-344" aria-hidden="true" tabindex="-1"></a><span class="fu">### HTMLの要素をすべてHTMLに含める（Self contained）</span></span>
+<span id="cb43-344"><a href="#cb43-344" aria-hidden="true" tabindex="-1"></a><span class="fu">## HTML固有のYAMLの設定</span></span>
 <span id="cb43-345"><a href="#cb43-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-346"><a href="#cb43-346" aria-hidden="true" tabindex="-1"></a>QuartoでHTMLをRenderすると、HTMLだけでなく、別途フォルダが出力されます。このフォルダには、HTML内の画像や、JavaScriptなどのHTMLの要素が含まれています。HTMLはこのフォルダ内のファイルを読み込んで表示する仕組みになっているため、HTMLだけを他人と共有するとうまく開かないファイルになってしまいます。</span>
+<span id="cb43-346"><a href="#cb43-346" aria-hidden="true" tabindex="-1"></a><span class="fu">### HTMLの要素をすべてHTMLに含める（Self contained）</span></span>
 <span id="cb43-347"><a href="#cb43-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-348"><a href="#cb43-348" aria-hidden="true" tabindex="-1"></a>このような、HTMLの要素をHTMLにすべて埋め込んでしまうための設定がSelf contained HTMLというものです。このSelf contained HTMLでは、Renderで出力されるファイルがHTMLのみになり、画像やその他の要素はHTMLにすべて埋め込まれます。この形のHTMLであれば、HTMLだけを他人に送ってもうまく開いてもらうことができます。</span>
+<span id="cb43-348"><a href="#cb43-348" aria-hidden="true" tabindex="-1"></a>QuartoでHTMLをRenderすると、HTMLだけでなく、別途フォルダが出力されます。このフォルダには、HTML内の画像や、JavaScriptなどのHTMLの要素が含まれています。HTMLはこのフォルダ内のファイルを読み込んで表示する仕組みになっているため、HTMLだけを他人と共有するとうまく開かないファイルになってしまいます。</span>
 <span id="cb43-349"><a href="#cb43-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-350"><a href="#cb43-350" aria-hidden="true" tabindex="-1"></a>Self contained HTMLを出力する場合、以下のようにYAMLに<span class="in">`embed-resources: true`</span>を設定します。</span>
+<span id="cb43-350"><a href="#cb43-350" aria-hidden="true" tabindex="-1"></a>このような、HTMLの要素をHTMLにすべて埋め込んでしまうための設定がSelf contained HTMLというものです。このSelf contained HTMLでは、Renderで出力されるファイルがHTMLのみになり、画像やその他の要素はHTMLにすべて埋め込まれます。この形のHTMLであれば、HTMLだけを他人に送ってもうまく開いてもらうことができます。</span>
 <span id="cb43-351"><a href="#cb43-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-352"><a href="#cb43-352" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="self-contained"}</span></span>
-<span id="cb43-353"><a href="#cb43-353" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-354"><a href="#cb43-354" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb43-355"><a href="#cb43-355" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-356"><a href="#cb43-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-357"><a href="#cb43-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-358"><a href="#cb43-358" aria-hidden="true" tabindex="-1"></a><span class="fu">### theme</span></span>
+<span id="cb43-352"><a href="#cb43-352" aria-hidden="true" tabindex="-1"></a>Self contained HTMLを出力する場合、以下のようにYAMLに<span class="in">`embed-resources: true`</span>を設定します。</span>
+<span id="cb43-353"><a href="#cb43-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-354"><a href="#cb43-354" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="self-contained"}</span></span>
+<span id="cb43-355"><a href="#cb43-355" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-356"><a href="#cb43-356" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb43-357"><a href="#cb43-357" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-358"><a href="#cb43-358" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-359"><a href="#cb43-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-360"><a href="#cb43-360" aria-hidden="true" tabindex="-1"></a>QuartoでHTMLをRenderする場合、ウェブサイト全体のデザイン・色調（theme）は<span class="co">[</span><span class="ot">Bootswatch</span><span class="co">](https://bootswatch.com/)</span>のthemeに従います。特に指定しない場合、themeは<span class="co">[</span><span class="ot">default</span><span class="co">](https://bootswatch.com/default/)</span>に設定されます。</span>
+<span id="cb43-360"><a href="#cb43-360" aria-hidden="true" tabindex="-1"></a><span class="fu">### theme</span></span>
 <span id="cb43-361"><a href="#cb43-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-362"><a href="#cb43-362" aria-hidden="true" tabindex="-1"></a>themeを別のものに変更する場合、以下のようにYAMLを設定します。</span>
+<span id="cb43-362"><a href="#cb43-362" aria-hidden="true" tabindex="-1"></a>QuartoでHTMLをRenderする場合、ウェブサイト全体のデザイン・色調（theme）は<span class="co">[</span><span class="ot">Bootswatch</span><span class="co">](https://bootswatch.com/)</span>のthemeに従います。特に指定しない場合、themeは<span class="co">[</span><span class="ot">default</span><span class="co">](https://bootswatch.com/default/)</span>に設定されます。</span>
 <span id="cb43-363"><a href="#cb43-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-364"><a href="#cb43-364" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="themeの設定"}</span></span>
-<span id="cb43-365"><a href="#cb43-365" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-366"><a href="#cb43-366" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb43-367"><a href="#cb43-367" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> united</span></span>
-<span id="cb43-368"><a href="#cb43-368" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-369"><a href="#cb43-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-370"><a href="#cb43-370" aria-hidden="true" tabindex="-1"></a>上記のように設定すると、HTMLは<span class="co">[</span><span class="ot">united</span><span class="co">](https://bootswatch.com/united/)</span>のデザインに従います。また、以下のようにYAMLを設定すると、明るいモード（light mode）と暗いモード（dark mode）をそれぞれ設定し、<span class="co">[</span><span class="ot">トグルボタン</span><span class="co">]</span>(https://en.wikipedia.org/wiki/Toggle_switch_(widget))でデザインを変更できるようにもできます。</span>
+<span id="cb43-364"><a href="#cb43-364" aria-hidden="true" tabindex="-1"></a>themeを別のものに変更する場合、以下のようにYAMLを設定します。</span>
+<span id="cb43-365"><a href="#cb43-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-366"><a href="#cb43-366" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="themeの設定"}</span></span>
+<span id="cb43-367"><a href="#cb43-367" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-368"><a href="#cb43-368" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb43-369"><a href="#cb43-369" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> united</span></span>
+<span id="cb43-370"><a href="#cb43-370" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-371"><a href="#cb43-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-372"><a href="#cb43-372" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="themeの設定"}</span></span>
-<span id="cb43-373"><a href="#cb43-373" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-374"><a href="#cb43-374" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb43-375"><a href="#cb43-375" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-376"><a href="#cb43-376" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">light</span><span class="kw">:</span><span class="at"> united</span></span>
-<span id="cb43-377"><a href="#cb43-377" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">dark</span><span class="kw">:</span><span class="at"> cyborg</span></span>
-<span id="cb43-378"><a href="#cb43-378" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-379"><a href="#cb43-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-380"><a href="#cb43-380" aria-hidden="true" tabindex="-1"></a>このテキストでは、sidebarの上にトグルボタンがあり、light modeは<span class="co">[</span><span class="ot">united</span><span class="co">](https://bootswatch.com/united/)</span>、dark modeは<span class="co">[</span><span class="ot">cyborg</span><span class="co">](https://bootswatch.com/cyborg/)</span>で表示するようにしています。HTMLのデザインに関しては、Bootswatchのデザインをカスタマイズしたり、自分で<span class="co">[</span><span class="ot">scss</span><span class="co">](https://sass-lang.com/)</span>を準備してデザインを変更することもできます。詳しくは<span class="co">[</span><span class="ot">QuartoのHTML Theming</span><span class="co">](https://quarto.org/docs/output-formats/html-themes.html)</span>を参考にしてください。</span>
+<span id="cb43-372"><a href="#cb43-372" aria-hidden="true" tabindex="-1"></a>上記のように設定すると、HTMLは<span class="co">[</span><span class="ot">united</span><span class="co">](https://bootswatch.com/united/)</span>のデザインに従います。また、以下のようにYAMLを設定すると、明るいモード（light mode）と暗いモード（dark mode）をそれぞれ設定し、<span class="co">[</span><span class="ot">トグルボタン</span><span class="co">]</span>(https://en.wikipedia.org/wiki/Toggle_switch_(widget))でデザインを変更できるようにもできます。</span>
+<span id="cb43-373"><a href="#cb43-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-374"><a href="#cb43-374" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="themeの設定"}</span></span>
+<span id="cb43-375"><a href="#cb43-375" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-376"><a href="#cb43-376" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb43-377"><a href="#cb43-377" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-378"><a href="#cb43-378" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">light</span><span class="kw">:</span><span class="at"> united</span></span>
+<span id="cb43-379"><a href="#cb43-379" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">dark</span><span class="kw">:</span><span class="at"> cyborg</span></span>
+<span id="cb43-380"><a href="#cb43-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-381"><a href="#cb43-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-382"><a href="#cb43-382" aria-hidden="true" tabindex="-1"></a><span class="fu">#### themeにより図の色を変える</span></span>
+<span id="cb43-382"><a href="#cb43-382" aria-hidden="true" tabindex="-1"></a>このテキストでは、sidebarの上にトグルボタンがあり、light modeは<span class="co">[</span><span class="ot">united</span><span class="co">](https://bootswatch.com/united/)</span>、dark modeは<span class="co">[</span><span class="ot">cyborg</span><span class="co">](https://bootswatch.com/cyborg/)</span>で表示するようにしています。HTMLのデザインに関しては、Bootswatchのデザインをカスタマイズしたり、自分で<span class="co">[</span><span class="ot">scss</span><span class="co">](https://sass-lang.com/)</span>を準備してデザインを変更することもできます。詳しくは<span class="co">[</span><span class="ot">QuartoのHTML Theming</span><span class="co">](https://quarto.org/docs/output-formats/html-themes.html)</span>を参考にしてください。</span>
 <span id="cb43-383"><a href="#cb43-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-384"><a href="#cb43-384" aria-hidden="true" tabindex="-1"></a>上記の通り、<span class="in">`theme`</span>を用いるとlight modeとdark modeを切り替えることが出来ます。ただし、chunkを実行し、表示した図（<span class="in">`ggplot2`</span>のグラフなど）はlight modeでもdark modeでも同じ明るさ、つまりデフォルトの白バックのグラフとして表示されます。このグラフの表示を明るさのモードによって変更したい場合には、以下のようにchunk optionとして<span class="in">`renderings: [light, dark]`</span>を設定します。下記のグラフのように、<span class="in">`renderings: [light, dark]`</span>を用いると明るさのモードによって表示する図自体を変えることもできます。</span>
+<span id="cb43-384"><a href="#cb43-384" aria-hidden="true" tabindex="-1"></a><span class="fu">#### themeにより図の色を変える</span></span>
 <span id="cb43-385"><a href="#cb43-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-386"><a href="#cb43-386" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="renderings: [light, dark]を設定する"}</span></span>
-<span id="cb43-387"><a href="#cb43-387" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="明るさのモードに従い図の色を変える"}</span></span>
-<span id="cb43-388"><a href="#cb43-388" aria-hidden="true" tabindex="-1"></a><span class="co">#| renderings: [light, dark]</span></span>
-<span id="cb43-389"><a href="#cb43-389" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#FFFFFF"</span>, <span class="at">fg =</span> <span class="st">"#000000"</span>)</span>
-<span id="cb43-390"><a href="#cb43-390" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars, <span class="at">main =</span> <span class="st">"light mode"</span>) <span class="co"># light modeで表示</span></span>
-<span id="cb43-391"><a href="#cb43-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-392"><a href="#cb43-392" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#000000"</span>, <span class="at">fg =</span> <span class="st">"#FFFFFF"</span>, <span class="at">col.axis =</span> <span class="st">"#FFFFFF"</span>, <span class="at">col.main =</span> <span class="st">"#FFFFFF"</span>)</span>
-<span id="cb43-393"><a href="#cb43-393" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars<span class="sc">$</span>speed, <span class="sc">-</span>cars<span class="sc">$</span>dist, <span class="at">main =</span> <span class="st">"dark mode"</span>) <span class="co"># dark modeで表示</span></span>
-<span id="cb43-394"><a href="#cb43-394" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-395"><a href="#cb43-395" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb43-396"><a href="#cb43-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-397"><a href="#cb43-397" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="明るさのモードに従い図の色を変える", collapse=TRUE}</span></span>
-<span id="cb43-398"><a href="#cb43-398" aria-hidden="true" tabindex="-1"></a><span class="co">#| renderings: [light, dark]</span></span>
-<span id="cb43-399"><a href="#cb43-399" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#FFFFFF"</span>, <span class="at">fg =</span> <span class="st">"#000000"</span>)</span>
-<span id="cb43-400"><a href="#cb43-400" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars, <span class="at">main =</span> <span class="st">"light mode"</span>) <span class="co"># light modeで表示</span></span>
-<span id="cb43-401"><a href="#cb43-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-402"><a href="#cb43-402" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#000000"</span>, <span class="at">fg =</span> <span class="st">"#FFFFFF"</span>, <span class="at">col.axis =</span> <span class="st">"#FFFFFF"</span>, <span class="at">col.main =</span> <span class="st">"#FFFFFF"</span>)</span>
-<span id="cb43-403"><a href="#cb43-403" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars<span class="sc">$</span>speed, <span class="sc">-</span>cars<span class="sc">$</span>dist, <span class="at">main =</span> <span class="st">"dark mode"</span>) <span class="co"># dark modeで表示</span></span>
-<span id="cb43-404"><a href="#cb43-404" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-405"><a href="#cb43-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-406"><a href="#cb43-406" aria-hidden="true" tabindex="-1"></a><span class="fu">### favicon</span></span>
+<span id="cb43-386"><a href="#cb43-386" aria-hidden="true" tabindex="-1"></a>上記の通り、<span class="in">`theme`</span>を用いるとlight modeとdark modeを切り替えることが出来ます。ただし、chunkを実行し、表示した図（<span class="in">`ggplot2`</span>のグラフなど）はlight modeでもdark modeでも同じ明るさ、つまりデフォルトの白バックのグラフとして表示されます。このグラフの表示を明るさのモードによって変更したい場合には、以下のようにchunk optionとして<span class="in">`renderings: [light, dark]`</span>を設定します。下記のグラフのように、<span class="in">`renderings: [light, dark]`</span>を用いると明るさのモードによって表示する図自体を変えることもできます。</span>
+<span id="cb43-387"><a href="#cb43-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-388"><a href="#cb43-388" aria-hidden="true" tabindex="-1"></a><span class="in">````{markdown, filename="renderings: [light, dark]を設定する"}</span></span>
+<span id="cb43-389"><a href="#cb43-389" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="明るさのモードに従い図の色を変える"}</span></span>
+<span id="cb43-390"><a href="#cb43-390" aria-hidden="true" tabindex="-1"></a><span class="co">#| renderings: [light, dark]</span></span>
+<span id="cb43-391"><a href="#cb43-391" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#FFFFFF"</span>, <span class="at">fg =</span> <span class="st">"#000000"</span>)</span>
+<span id="cb43-392"><a href="#cb43-392" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars, <span class="at">main =</span> <span class="st">"light mode"</span>) <span class="co"># light modeで表示</span></span>
+<span id="cb43-393"><a href="#cb43-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-394"><a href="#cb43-394" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#000000"</span>, <span class="at">fg =</span> <span class="st">"#FFFFFF"</span>, <span class="at">col.axis =</span> <span class="st">"#FFFFFF"</span>, <span class="at">col.main =</span> <span class="st">"#FFFFFF"</span>)</span>
+<span id="cb43-395"><a href="#cb43-395" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars<span class="sc">$</span>speed, <span class="sc">-</span>cars<span class="sc">$</span>dist, <span class="at">main =</span> <span class="st">"dark mode"</span>) <span class="co"># dark modeで表示</span></span>
+<span id="cb43-396"><a href="#cb43-396" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb43-397"><a href="#cb43-397" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb43-398"><a href="#cb43-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-399"><a href="#cb43-399" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="明るさのモードに従い図の色を変える", collapse=TRUE}</span></span>
+<span id="cb43-400"><a href="#cb43-400" aria-hidden="true" tabindex="-1"></a><span class="co">#| renderings: [light, dark]</span></span>
+<span id="cb43-401"><a href="#cb43-401" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#FFFFFF"</span>, <span class="at">fg =</span> <span class="st">"#000000"</span>)</span>
+<span id="cb43-402"><a href="#cb43-402" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars, <span class="at">main =</span> <span class="st">"light mode"</span>) <span class="co"># light modeで表示</span></span>
+<span id="cb43-403"><a href="#cb43-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-404"><a href="#cb43-404" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#000000"</span>, <span class="at">fg =</span> <span class="st">"#FFFFFF"</span>, <span class="at">col.axis =</span> <span class="st">"#FFFFFF"</span>, <span class="at">col.main =</span> <span class="st">"#FFFFFF"</span>)</span>
+<span id="cb43-405"><a href="#cb43-405" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars<span class="sc">$</span>speed, <span class="sc">-</span>cars<span class="sc">$</span>dist, <span class="at">main =</span> <span class="st">"dark mode"</span>) <span class="co"># dark modeで表示</span></span>
+<span id="cb43-406"><a href="#cb43-406" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-407"><a href="#cb43-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-408"><a href="#cb43-408" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">favicon</span><span class="co">](https://ja.wikipedia.org/wiki/Favicon)</span>とは、ウェブサイトをブラウザで表示した際にタブの横に表示される小さな画像を指します。</span>
+<span id="cb43-408"><a href="#cb43-408" aria-hidden="true" tabindex="-1"></a><span class="fu">### favicon</span></span>
 <span id="cb43-409"><a href="#cb43-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-410"><a href="#cb43-410" aria-hidden="true" tabindex="-1"></a><span class="al">![faviconのイメージ](./image/favicon_image.png)</span></span>
+<span id="cb43-410"><a href="#cb43-410" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">favicon</span><span class="co">](https://ja.wikipedia.org/wiki/Favicon)</span>とは、ウェブサイトをブラウザで表示した際にタブの横に表示される小さな画像を指します。</span>
 <span id="cb43-411"><a href="#cb43-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-412"><a href="#cb43-412" aria-hidden="true" tabindex="-1"></a>Quartoでは、YAMLに<span class="in">`favicon:`</span>を設定することでfaviconを設定し、タブの横に画像を置くことができます。この<span class="in">`favicon:`</span>は、<span class="in">`.ico`</span>というファイル形式で設定します。<span class="in">`.ico`</span>はアイコンを指定するためのファイル形式で、ネット上には<span class="co">[</span><span class="ot">faviconのジェネレータ</span><span class="co">](https://favicon-generator.mintsu-dev.com/)</span>がたくさんありますので、画像ファイルを変換して<span class="in">`.ico`</span>ファイルを作成できます。faviconの画像は16×16pxが一般的ですが、もっと大きなファイルであっても特に問題にはなりません。正方形の画像ファイルを作成し、faviconジェネレータで変換して用いるとよいでしょう。</span>
+<span id="cb43-412"><a href="#cb43-412" aria-hidden="true" tabindex="-1"></a><span class="al">![faviconのイメージ](./image/favicon_image.png)</span></span>
 <span id="cb43-413"><a href="#cb43-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-414"><a href="#cb43-414" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="faviconの設定"}</span></span>
-<span id="cb43-415"><a href="#cb43-415" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-416"><a href="#cb43-416" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-417"><a href="#cb43-417" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb43-418"><a href="#cb43-418" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">favicon</span><span class="kw">:</span><span class="at"> favicon.ico</span></span>
-<span id="cb43-419"><a href="#cb43-419" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-420"><a href="#cb43-420" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-421"><a href="#cb43-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-422"><a href="#cb43-422" aria-hidden="true" tabindex="-1"></a><span class="fu">### アナウンス</span></span>
+<span id="cb43-414"><a href="#cb43-414" aria-hidden="true" tabindex="-1"></a>Quartoでは、YAMLに<span class="in">`favicon:`</span>を設定することでfaviconを設定し、タブの横に画像を置くことができます。この<span class="in">`favicon:`</span>は、<span class="in">`.ico`</span>というファイル形式で設定します。<span class="in">`.ico`</span>はアイコンを指定するためのファイル形式で、ネット上には<span class="co">[</span><span class="ot">faviconのジェネレータ</span><span class="co">](https://favicon-generator.mintsu-dev.com/)</span>がたくさんありますので、画像ファイルを変換して<span class="in">`.ico`</span>ファイルを作成できます。faviconの画像は16×16pxが一般的ですが、もっと大きなファイルであっても特に問題にはなりません。正方形の画像ファイルを作成し、faviconジェネレータで変換して用いるとよいでしょう。</span>
+<span id="cb43-415"><a href="#cb43-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-416"><a href="#cb43-416" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="faviconの設定"}</span></span>
+<span id="cb43-417"><a href="#cb43-417" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-418"><a href="#cb43-418" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-419"><a href="#cb43-419" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb43-420"><a href="#cb43-420" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">favicon</span><span class="kw">:</span><span class="at"> favicon.ico</span></span>
+<span id="cb43-421"><a href="#cb43-421" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-422"><a href="#cb43-422" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-423"><a href="#cb43-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-424"><a href="#cb43-424" aria-hidden="true" tabindex="-1"></a>WebsiteやQuarto Booksにおいて、特別に表示して注意喚起したい場合には、アナウンスの設定を行うことができます。アナウンスは<span class="in">`website: announcement:`</span>に文字列を記載する形で設定します。</span>
+<span id="cb43-424"><a href="#cb43-424" aria-hidden="true" tabindex="-1"></a><span class="fu">### アナウンス</span></span>
 <span id="cb43-425"><a href="#cb43-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-426"><a href="#cb43-426" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="アナウンスの設定"}</span></span>
-<span id="cb43-427"><a href="#cb43-427" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-428"><a href="#cb43-428" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb43-429"><a href="#cb43-429" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">announcement</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-430"><a href="#cb43-430" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">content</span><span class="kw">:</span><span class="at"> </span><span class="st">"**Webページの始めに変更などのニュースを表示する**"</span><span class="at"> </span></span>
-<span id="cb43-431"><a href="#cb43-431" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-432"><a href="#cb43-432" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-433"><a href="#cb43-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-434"><a href="#cb43-434" aria-hidden="true" tabindex="-1"></a><span class="al">![アナウンスの表示](./image/Quarto_announcement.png)</span></span>
+<span id="cb43-426"><a href="#cb43-426" aria-hidden="true" tabindex="-1"></a>WebsiteやQuarto Booksにおいて、特別に表示して注意喚起したい場合には、アナウンスの設定を行うことができます。アナウンスは<span class="in">`website: announcement:`</span>に文字列を記載する形で設定します。</span>
+<span id="cb43-427"><a href="#cb43-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-428"><a href="#cb43-428" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="アナウンスの設定"}</span></span>
+<span id="cb43-429"><a href="#cb43-429" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-430"><a href="#cb43-430" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb43-431"><a href="#cb43-431" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">announcement</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-432"><a href="#cb43-432" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">content</span><span class="kw">:</span><span class="at"> </span><span class="st">"**Webページの始めに変更などのニュースを表示する**"</span><span class="at"> </span></span>
+<span id="cb43-433"><a href="#cb43-433" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-434"><a href="#cb43-434" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-435"><a href="#cb43-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-436"><a href="#cb43-436" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
-<span id="cb43-437"><a href="#cb43-437" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quartoのrendering：RstudioとCLIを用いる方法</span></span>
-<span id="cb43-438"><a href="#cb43-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-439"><a href="#cb43-439" aria-hidden="true" tabindex="-1"></a>QuartoのRenderは、Rstudioではテキストエディタの上の「Render」ボタンを用いて実行できます。</span>
-<span id="cb43-440"><a href="#cb43-440" aria-hidden="true" tabindex="-1"></a><span class="al">![Renderボタン](./image/Quarto_render_from_Rstudio.png)</span></span>
-<span id="cb43-441"><a href="#cb43-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-442"><a href="#cb43-442" aria-hidden="true" tabindex="-1"></a>ただし、一部のYAMLの機能（例えば上記のアナウンス）は、このボタンを押す方法では表示されない場合があります（<span class="in">`knitr`</span> ver. 1.50では表示されませんでした）。このボタンを用いてうまく出力が表示されない場合には、<span class="co">[</span><span class="ot">Quarto CLI</span><span class="co">](https://quarto.org/docs/get-started/)</span>を用いたレンダリングを試すとよいでしょう。</span>
+<span id="cb43-436"><a href="#cb43-436" aria-hidden="true" tabindex="-1"></a><span class="al">![アナウンスの表示](./image/Quarto_announcement.png)</span></span>
+<span id="cb43-437"><a href="#cb43-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-438"><a href="#cb43-438" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
+<span id="cb43-439"><a href="#cb43-439" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quartoのrendering：RstudioとCLIを用いる方法</span></span>
+<span id="cb43-440"><a href="#cb43-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-441"><a href="#cb43-441" aria-hidden="true" tabindex="-1"></a>QuartoのRenderは、Rstudioではテキストエディタの上の「Render」ボタンを用いて実行できます。</span>
+<span id="cb43-442"><a href="#cb43-442" aria-hidden="true" tabindex="-1"></a><span class="al">![Renderボタン](./image/Quarto_render_from_Rstudio.png)</span></span>
 <span id="cb43-443"><a href="#cb43-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-444"><a href="#cb43-444" aria-hidden="true" tabindex="-1"></a>Rstudioでは、左下の「Console」のタブの横に、「Terminal」のタブがあります。この「Terminal」はProjectを開いた状態であれば、Projectのフォルダ（ディレクトリ）が指定された状態で表示されます。</span>
+<span id="cb43-444"><a href="#cb43-444" aria-hidden="true" tabindex="-1"></a>ただし、一部のYAMLの機能（例えば上記のアナウンス）は、このボタンを押す方法では表示されない場合があります（<span class="in">`knitr`</span> ver. 1.50では表示されませんでした）。このボタンを用いてうまく出力が表示されない場合には、<span class="co">[</span><span class="ot">Quarto CLI</span><span class="co">](https://quarto.org/docs/get-started/)</span>を用いたレンダリングを試すとよいでしょう。</span>
 <span id="cb43-445"><a href="#cb43-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-446"><a href="#cb43-446" aria-hidden="true" tabindex="-1"></a><span class="al">![TerminalでRenderを実行する](./image/quarto_render_from_terminal.png)</span></span>
+<span id="cb43-446"><a href="#cb43-446" aria-hidden="true" tabindex="-1"></a>Rstudioでは、左下の「Console」のタブの横に、「Terminal」のタブがあります。この「Terminal」はProjectを開いた状態であれば、Projectのフォルダ（ディレクトリ）が指定された状態で表示されます。</span>
 <span id="cb43-447"><a href="#cb43-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-448"><a href="#cb43-448" aria-hidden="true" tabindex="-1"></a>この「Terminal」に上の図のように、<span class="in">`quarto render`</span>と入力してエンターキーを押すと、Rstudioのボタンを用いなくてもRenderを実行できます。</span>
+<span id="cb43-448"><a href="#cb43-448" aria-hidden="true" tabindex="-1"></a><span class="al">![TerminalでRenderを実行する](./image/quarto_render_from_terminal.png)</span></span>
 <span id="cb43-449"><a href="#cb43-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-450"><a href="#cb43-450" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="Quarto CLIでrenderを実行"}</span></span>
-<span id="cb43-451"><a href="#cb43-451" aria-hidden="true" tabindex="-1"></a>quarto render</span>
-<span id="cb43-452"><a href="#cb43-452" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-453"><a href="#cb43-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-454"><a href="#cb43-454" aria-hidden="true" tabindex="-1"></a>この方法がQuarto CLIを用いたRenderとなります。CLIを用いるため、<span class="co">[</span><span class="ot">Quartoのページ</span><span class="co">](https://quarto.org/docs/get-started/)</span>からあらかじめCLIをダウンロードし、インストールしておく必要があります。</span>
+<span id="cb43-450"><a href="#cb43-450" aria-hidden="true" tabindex="-1"></a>この「Terminal」に上の図のように、<span class="in">`quarto render`</span>と入力してエンターキーを押すと、Rstudioのボタンを用いなくてもRenderを実行できます。</span>
+<span id="cb43-451"><a href="#cb43-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-452"><a href="#cb43-452" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="Quarto CLIでrenderを実行"}</span></span>
+<span id="cb43-453"><a href="#cb43-453" aria-hidden="true" tabindex="-1"></a>quarto render</span>
+<span id="cb43-454"><a href="#cb43-454" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-455"><a href="#cb43-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-456"><a href="#cb43-456" aria-hidden="true" tabindex="-1"></a>Renderの方法によって出力が変わる場合があるため、困ったときは上記のCLIを用いてみるとよいでしょう。</span>
+<span id="cb43-456"><a href="#cb43-456" aria-hidden="true" tabindex="-1"></a>この方法がQuarto CLIを用いたRenderとなります。CLIを用いるため、<span class="co">[</span><span class="ot">Quartoのページ</span><span class="co">](https://quarto.org/docs/get-started/)</span>からあらかじめCLIをダウンロードし、インストールしておく必要があります。</span>
 <span id="cb43-457"><a href="#cb43-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-458"><a href="#cb43-458" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb43-458"><a href="#cb43-458" aria-hidden="true" tabindex="-1"></a>Renderの方法によって出力が変わる場合があるため、困ったときは上記のCLIを用いてみるとよいでしょう。</span>
 <span id="cb43-459"><a href="#cb43-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-460"><a href="#cb43-460" aria-hidden="true" tabindex="-1"></a><span class="fu">### コメントの入力欄の設定</span></span>
+<span id="cb43-460"><a href="#cb43-460" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb43-461"><a href="#cb43-461" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-462"><a href="#cb43-462" aria-hidden="true" tabindex="-1"></a>QuartoでWebsite、Quarto booksを利用する場合には、読者のコメント欄を準備することもできます。コメント欄の表示はYAMLで設定し、ページの一番下、フッターの上に以下のようなコメント欄が表示されます。</span>
+<span id="cb43-462"><a href="#cb43-462" aria-hidden="true" tabindex="-1"></a><span class="fu">### コメントの入力欄の設定</span></span>
 <span id="cb43-463"><a href="#cb43-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-464"><a href="#cb43-464" aria-hidden="true" tabindex="-1"></a><span class="al">![Giscusでのコメントの例](./image/Quarto_giscus.png)</span></span>
+<span id="cb43-464"><a href="#cb43-464" aria-hidden="true" tabindex="-1"></a>QuartoでWebsite、Quarto booksを利用する場合には、読者のコメント欄を準備することもできます。コメント欄の表示はYAMLで設定し、ページの一番下、フッターの上に以下のようなコメント欄が表示されます。</span>
 <span id="cb43-465"><a href="#cb43-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-466"><a href="#cb43-466" aria-hidden="true" tabindex="-1"></a>YAMLでのコメント欄の追加には、3つのサービスを利用することができます。</span>
+<span id="cb43-466"><a href="#cb43-466" aria-hidden="true" tabindex="-1"></a><span class="al">![Giscusでのコメントの例](./image/Quarto_giscus.png)</span></span>
 <span id="cb43-467"><a href="#cb43-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-468"><a href="#cb43-468" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Hypothesis</span><span class="co">](https://web.hypothes.is/)</span>: 文章の部分ごとにコメントを残すことができるWebサービス</span>
-<span id="cb43-469"><a href="#cb43-469" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Utterances</span><span class="co">](https://utteranc.es/)</span>: githubのissuesを利用したコメント入力システム</span>
-<span id="cb43-470"><a href="#cb43-470" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Giscus</span><span class="co">](https://giscus.app/ja)</span>: githubのDiscussionsを利用したコメント入力システム</span>
-<span id="cb43-471"><a href="#cb43-471" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-472"><a href="#cb43-472" aria-hidden="true" tabindex="-1"></a>コメント欄を追加する場合、以下のようにcomments:の項目をYAMLに追加します。</span>
+<span id="cb43-468"><a href="#cb43-468" aria-hidden="true" tabindex="-1"></a>YAMLでのコメント欄の追加には、3つのサービスを利用することができます。</span>
+<span id="cb43-469"><a href="#cb43-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-470"><a href="#cb43-470" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Hypothesis</span><span class="co">](https://web.hypothes.is/)</span>: 文章の部分ごとにコメントを残すことができるWebサービス</span>
+<span id="cb43-471"><a href="#cb43-471" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Utterances</span><span class="co">](https://utteranc.es/)</span>: githubのissuesを利用したコメント入力システム</span>
+<span id="cb43-472"><a href="#cb43-472" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Giscus</span><span class="co">](https://giscus.app/ja)</span>: githubのDiscussionsを利用したコメント入力システム</span>
 <span id="cb43-473"><a href="#cb43-473" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-474"><a href="#cb43-474" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Hypothesisを利用する"}</span></span>
-<span id="cb43-475"><a href="#cb43-475" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb43-476"><a href="#cb43-476" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">comments</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-477"><a href="#cb43-477" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hypothesis</span><span class="kw">:</span></span>
-<span id="cb43-478"><a href="#cb43-478" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> clean</span></span>
-<span id="cb43-479"><a href="#cb43-479" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">openSidebar</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb43-480"><a href="#cb43-480" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-481"><a href="#cb43-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-482"><a href="#cb43-482" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Utterancesを利用する"}</span></span>
-<span id="cb43-483"><a href="#cb43-483" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb43-484"><a href="#cb43-484" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">comments</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-485"><a href="#cb43-485" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">utterances</span><span class="kw">:</span></span>
-<span id="cb43-486"><a href="#cb43-486" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> sb8001at-oss/Rnyuumon.io</span></span>
-<span id="cb43-487"><a href="#cb43-487" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-488"><a href="#cb43-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-489"><a href="#cb43-489" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Giscusを利用する"}</span></span>
-<span id="cb43-490"><a href="#cb43-490" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb43-491"><a href="#cb43-491" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">comments</span><span class="kw">:</span></span>
-<span id="cb43-492"><a href="#cb43-492" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">giscus</span><span class="kw">:</span></span>
-<span id="cb43-493"><a href="#cb43-493" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> sb8001at-oss/Rnyuumon.io</span></span>
-<span id="cb43-494"><a href="#cb43-494" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-495"><a href="#cb43-495" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-496"><a href="#cb43-496" aria-hidden="true" tabindex="-1"></a>いずれもあらかじめGithubでの設定が必要であったり（Utterances、Giscus）、コメントにログインが必要だったり（3つすべて、Hypothesisは独自のログインシステム、UtterancesやGiscusはGithubのアカウント）するため、簡単に利用できるものとは言い難いですが、静的なWebページでデータベースの管理を必要とせずにコメントを残すことができます。</span>
+<span id="cb43-474"><a href="#cb43-474" aria-hidden="true" tabindex="-1"></a>コメント欄を追加する場合、以下のようにcomments:の項目をYAMLに追加します。</span>
+<span id="cb43-475"><a href="#cb43-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-476"><a href="#cb43-476" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Hypothesisを利用する"}</span></span>
+<span id="cb43-477"><a href="#cb43-477" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb43-478"><a href="#cb43-478" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">comments</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-479"><a href="#cb43-479" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hypothesis</span><span class="kw">:</span></span>
+<span id="cb43-480"><a href="#cb43-480" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> clean</span></span>
+<span id="cb43-481"><a href="#cb43-481" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">openSidebar</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb43-482"><a href="#cb43-482" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb43-483"><a href="#cb43-483" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-484"><a href="#cb43-484" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Utterancesを利用する"}</span></span>
+<span id="cb43-485"><a href="#cb43-485" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb43-486"><a href="#cb43-486" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">comments</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-487"><a href="#cb43-487" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">utterances</span><span class="kw">:</span></span>
+<span id="cb43-488"><a href="#cb43-488" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> sb8001at-oss/Rnyuumon.io</span></span>
+<span id="cb43-489"><a href="#cb43-489" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb43-490"><a href="#cb43-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-491"><a href="#cb43-491" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Giscusを利用する"}</span></span>
+<span id="cb43-492"><a href="#cb43-492" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb43-493"><a href="#cb43-493" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">comments</span><span class="kw">:</span></span>
+<span id="cb43-494"><a href="#cb43-494" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">giscus</span><span class="kw">:</span></span>
+<span id="cb43-495"><a href="#cb43-495" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> sb8001at-oss/Rnyuumon.io</span></span>
+<span id="cb43-496"><a href="#cb43-496" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-497"><a href="#cb43-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-498"><a href="#cb43-498" aria-hidden="true" tabindex="-1"></a><span class="fu">### lightbox</span></span>
+<span id="cb43-498"><a href="#cb43-498" aria-hidden="true" tabindex="-1"></a>いずれもあらかじめGithubでの設定が必要であったり（Utterances、Giscus）、コメントにログインが必要だったり（3つすべて、Hypothesisは独自のログインシステム、UtterancesやGiscusはGithubのアカウント）するため、簡単に利用できるものとは言い難いですが、静的なWebページでデータベースの管理を必要とせずにコメントを残すことができます。</span>
 <span id="cb43-499"><a href="#cb43-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-500"><a href="#cb43-500" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">lightbox</span><span class="co">](https://ja.wikipedia.org/wiki/Lightbox)</span>はMarkdownとレイアウトの章で説明した通り、Web上に表示された図をクリックすることで拡大して表示することができるようにする、JavaScriptで作成された機能の一つです。図をクリックすることで、イメージが拡大され、ブラウザ全面に図が表示されるようになります。</span>
+<span id="cb43-500"><a href="#cb43-500" aria-hidden="true" tabindex="-1"></a><span class="fu">### lightbox</span></span>
 <span id="cb43-501"><a href="#cb43-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-502"><a href="#cb43-502" aria-hidden="true" tabindex="-1"></a>Quartoでは図・画像ごとにlightboxを設定することができますが、YAMLでlightboxを設定すると、文章内のすべての図・画像に適用することができます。<span class="in">`lightbox`</span>の設定には、<span class="in">`true`</span>、<span class="in">`false`</span>、<span class="in">`auto`</span>の3つがあり、<span class="in">`true`</span>か<span class="in">`auto`</span>に設定することで図が拡大されるようになります。<span class="in">`true`</span>と<span class="in">`auto`</span>の違いは、図のすべてに適用するか（<span class="in">`true`</span>）、一部の図には適用しないようにできるか（<span class="in">`auto`</span>）です。</span>
+<span id="cb43-502"><a href="#cb43-502" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">lightbox</span><span class="co">](https://ja.wikipedia.org/wiki/Lightbox)</span>はMarkdownとレイアウトの章で説明した通り、Web上に表示された図をクリックすることで拡大して表示することができるようにする、JavaScriptで作成された機能の一つです。図をクリックすることで、イメージが拡大され、ブラウザ全面に図が表示されるようになります。</span>
 <span id="cb43-503"><a href="#cb43-503" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-504"><a href="#cb43-504" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="lightboxの設定"}</span></span>
-<span id="cb43-505"><a href="#cb43-505" aria-hidden="true" tabindex="-1"></a><span class="fu">lightbox</span><span class="kw">:</span><span class="at"> auto</span></span>
-<span id="cb43-506"><a href="#cb43-506" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-507"><a href="#cb43-507" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-508"><a href="#cb43-508" aria-hidden="true" tabindex="-1"></a><span class="fu">### コードの表示・コードツール</span></span>
+<span id="cb43-504"><a href="#cb43-504" aria-hidden="true" tabindex="-1"></a>Quartoでは図・画像ごとにlightboxを設定することができますが、YAMLでlightboxを設定すると、文章内のすべての図・画像に適用することができます。<span class="in">`lightbox`</span>の設定には、<span class="in">`true`</span>、<span class="in">`false`</span>、<span class="in">`auto`</span>の3つがあり、<span class="in">`true`</span>か<span class="in">`auto`</span>に設定することで図が拡大されるようになります。<span class="in">`true`</span>と<span class="in">`auto`</span>の違いは、図のすべてに適用するか（<span class="in">`true`</span>）、一部の図には適用しないようにできるか（<span class="in">`auto`</span>）です。</span>
+<span id="cb43-505"><a href="#cb43-505" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-506"><a href="#cb43-506" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="lightboxの設定"}</span></span>
+<span id="cb43-507"><a href="#cb43-507" aria-hidden="true" tabindex="-1"></a><span class="fu">lightbox</span><span class="kw">:</span><span class="at"> auto</span></span>
+<span id="cb43-508"><a href="#cb43-508" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-509"><a href="#cb43-509" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-510"><a href="#cb43-510" aria-hidden="true" tabindex="-1"></a>YAMLでは、Rのchunkを実行したときの表示方法の設定、コードツールの設定を行うことができます。コードツールとは、ソースコードの表示など、コードに関する機能を指します。</span>
+<span id="cb43-510"><a href="#cb43-510" aria-hidden="true" tabindex="-1"></a><span class="fu">### コードの表示・コードツール</span></span>
 <span id="cb43-511"><a href="#cb43-511" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-512"><a href="#cb43-512" aria-hidden="true" tabindex="-1"></a><span class="fu">#### chunkの表示に関するYAML</span></span>
+<span id="cb43-512"><a href="#cb43-512" aria-hidden="true" tabindex="-1"></a>YAMLでは、Rのchunkを実行したときの表示方法の設定、コードツールの設定を行うことができます。コードツールとは、ソースコードの表示など、コードに関する機能を指します。</span>
 <span id="cb43-513"><a href="#cb43-513" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-514"><a href="#cb43-514" aria-hidden="true" tabindex="-1"></a>chunkの機能に関連するYAMLの項目には、chunk optionと一部機能が重複しているものもありますが、YAMLで設定すればひとつづつのchunkにoptionを設定することなく、すべてのchunkに機能を適用することができます。chunkの機能に関連するツールには、以下のようなものがあります。</span>
+<span id="cb43-514"><a href="#cb43-514" aria-hidden="true" tabindex="-1"></a><span class="fu">#### chunkの表示に関するYAML</span></span>
 <span id="cb43-515"><a href="#cb43-515" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-516"><a href="#cb43-516" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
-<span id="cb43-517"><a href="#cb43-517" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">7</span>)</span>
-<span id="cb43-518"><a href="#cb43-518" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
-<span id="cb43-519"><a href="#cb43-519" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-520"><a href="#cb43-520" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-521"><a href="#cb43-521" aria-hidden="true" tabindex="-1"></a>これらのコードツールに関するいずれのYAMLの要素も、<span class="in">`format: html:`</span>の下に設定します。</span>
+<span id="cb43-516"><a href="#cb43-516" aria-hidden="true" tabindex="-1"></a>chunkの機能に関連するYAMLの項目には、chunk optionと一部機能が重複しているものもありますが、YAMLで設定すればひとつづつのchunkにoptionを設定することなく、すべてのchunkに機能を適用することができます。chunkの機能に関連するツールには、以下のようなものがあります。</span>
+<span id="cb43-517"><a href="#cb43-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-518"><a href="#cb43-518" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE}</span></span>
+<span id="cb43-519"><a href="#cb43-519" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">7</span>)</span>
+<span id="cb43-520"><a href="#cb43-520" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d)</span>
+<span id="cb43-521"><a href="#cb43-521" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-522"><a href="#cb43-522" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-523"><a href="#cb43-523" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="codeに関するYAMLの設定"}</span></span>
-<span id="cb43-524"><a href="#cb43-524" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-525"><a href="#cb43-525" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb43-526"><a href="#cb43-526" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-tools</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-527"><a href="#cb43-527" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-link</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-528"><a href="#cb43-528" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-block-bg</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-529"><a href="#cb43-529" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-block-border-left</span><span class="kw">:</span><span class="at"> </span><span class="st">"#31BAE9"</span></span>
-<span id="cb43-530"><a href="#cb43-530" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-531"><a href="#cb43-531" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-532"><a href="#cb43-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-533"><a href="#cb43-533" aria-hidden="true" tabindex="-1"></a>例えば、<span class="in">`code-link: true`</span>を設定すると、コード内の関数にリンクをつけてくれます。このリンクは<span class="co">[</span><span class="ot">rdrr.io</span><span class="co">](https://rdrr.io/)</span>の関数のヘルプに繋がっており、関数をクリックすることで関数の意味を確認することができます。</span>
+<span id="cb43-523"><a href="#cb43-523" aria-hidden="true" tabindex="-1"></a>これらのコードツールに関するいずれのYAMLの要素も、<span class="in">`format: html:`</span>の下に設定します。</span>
+<span id="cb43-524"><a href="#cb43-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-525"><a href="#cb43-525" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="codeに関するYAMLの設定"}</span></span>
+<span id="cb43-526"><a href="#cb43-526" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-527"><a href="#cb43-527" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb43-528"><a href="#cb43-528" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-tools</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-529"><a href="#cb43-529" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-link</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-530"><a href="#cb43-530" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-block-bg</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-531"><a href="#cb43-531" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-block-border-left</span><span class="kw">:</span><span class="at"> </span><span class="st">"#31BAE9"</span></span>
+<span id="cb43-532"><a href="#cb43-532" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb43-533"><a href="#cb43-533" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-534"><a href="#cb43-534" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-535"><a href="#cb43-535" aria-hidden="true" tabindex="-1"></a>ただし、この<span class="in">`code-link`</span>には<span class="in">`downlit`</span><span class="co">[</span><span class="ot">@downlit_bib</span><span class="co">]</span>と<span class="in">`xml2`</span><span class="co">[</span><span class="ot">@xml2_bib</span><span class="co">]</span>の2つのライブラリが必要な上、base Rの関数ぐらいにしかリンクがつきません。また、<span class="in">`knitr`</span>以外のレンダリングエンジン（<span class="in">`jupyter`</span>など）を用いる場合、つまりR以外の言語を用いる場合には利用できません。おまけぐらいに考えておくとよいでしょう。</span>
+<span id="cb43-535"><a href="#cb43-535" aria-hidden="true" tabindex="-1"></a>例えば、<span class="in">`code-link: true`</span>を設定すると、コード内の関数にリンクをつけてくれます。このリンクは<span class="co">[</span><span class="ot">rdrr.io</span><span class="co">](https://rdrr.io/)</span>の関数のヘルプに繋がっており、関数をクリックすることで関数の意味を確認することができます。</span>
 <span id="cb43-536"><a href="#cb43-536" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-537"><a href="#cb43-537" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="code-linkの設定", eval=FALSE}</span></span>
-<span id="cb43-538"><a href="#cb43-538" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(iris) <span class="co"># classにリンクがついている</span></span>
-<span id="cb43-539"><a href="#cb43-539" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-540"><a href="#cb43-540" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-541"><a href="#cb43-541" aria-hidden="true" tabindex="-1"></a><span class="fu">#### コードツール</span></span>
+<span id="cb43-537"><a href="#cb43-537" aria-hidden="true" tabindex="-1"></a>ただし、この<span class="in">`code-link`</span>には<span class="in">`downlit`</span><span class="co">[</span><span class="ot">@downlit_bib</span><span class="co">]</span>と<span class="in">`xml2`</span><span class="co">[</span><span class="ot">@xml2_bib</span><span class="co">]</span>の2つのライブラリが必要な上、base Rの関数ぐらいにしかリンクがつきません。また、<span class="in">`knitr`</span>以外のレンダリングエンジン（<span class="in">`jupyter`</span>など）を用いる場合、つまりR以外の言語を用いる場合には利用できません。おまけぐらいに考えておくとよいでしょう。</span>
+<span id="cb43-538"><a href="#cb43-538" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-539"><a href="#cb43-539" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="code-linkの設定", eval=FALSE}</span></span>
+<span id="cb43-540"><a href="#cb43-540" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(iris) <span class="co"># classにリンクがついている</span></span>
+<span id="cb43-541"><a href="#cb43-541" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-542"><a href="#cb43-542" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-543"><a href="#cb43-543" aria-hidden="true" tabindex="-1"></a>コードツールとは、このテキストのタイトルの右上にある、『&lt;/&gt; code』という部分のことを指します。この部分をクリックすると、そのページのソース（.qmdに記載されたコード・文）を表示することができます。</span>
+<span id="cb43-543"><a href="#cb43-543" aria-hidden="true" tabindex="-1"></a><span class="fu">#### コードツール</span></span>
 <span id="cb43-544"><a href="#cb43-544" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-545"><a href="#cb43-545" aria-hidden="true" tabindex="-1"></a><span class="al">![コードツール](./image/Quarto_codetool.png)</span></span>
+<span id="cb43-545"><a href="#cb43-545" aria-hidden="true" tabindex="-1"></a>コードツールとは、このテキストのタイトルの右上にある、『&lt;/&gt; code』という部分のことを指します。この部分をクリックすると、そのページのソース（.qmdに記載されたコード・文）を表示することができます。</span>
 <span id="cb43-546"><a href="#cb43-546" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-547"><a href="#cb43-547" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="コードツールの設定"}</span></span>
-<span id="cb43-548"><a href="#cb43-548" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-549"><a href="#cb43-549" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-550"><a href="#cb43-550" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-tools</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb43-551"><a href="#cb43-551" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-552"><a href="#cb43-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-553"><a href="#cb43-553" aria-hidden="true" tabindex="-1"></a>この他に、<span class="in">`code-fold: true`</span>を設定していた場合にはソースコードを全部折りたたむ・展開する設定をこのコードツールに盛り込むこともできます。</span>
+<span id="cb43-547"><a href="#cb43-547" aria-hidden="true" tabindex="-1"></a><span class="al">![コードツール](./image/Quarto_codetool.png)</span></span>
+<span id="cb43-548"><a href="#cb43-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-549"><a href="#cb43-549" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="コードツールの設定"}</span></span>
+<span id="cb43-550"><a href="#cb43-550" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-551"><a href="#cb43-551" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-552"><a href="#cb43-552" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-tools</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb43-553"><a href="#cb43-553" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-554"><a href="#cb43-554" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-555"><a href="#cb43-555" aria-hidden="true" tabindex="-1"></a><span class="fu">## PDFを出力する</span></span>
+<span id="cb43-555"><a href="#cb43-555" aria-hidden="true" tabindex="-1"></a>この他に、<span class="in">`code-fold: true`</span>を設定していた場合にはソースコードを全部折りたたむ・展開する設定をこのコードツールに盛り込むこともできます。</span>
 <span id="cb43-556"><a href="#cb43-556" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-557"><a href="#cb43-557" aria-hidden="true" tabindex="-1"></a>QuartoをPDFとして出力する場合、上記の通り<span class="in">`format: pdf`</span>と設定します。PDFの出力では、Quartoは一度Latexに変換された後、LaTeXをPDFに変換することになります。このLaTeXからPDFへの変換には、LaTeXのエンジンには、LuaLaTexやpdfLaTexなど、様々なものがあるのですが、Quartoでは<span class="co">[</span><span class="ot">tinytex</span><span class="co">](https://yihui.org/tinytex/)</span>というLaTeXエンジンが推奨されています。tinytexはTerminalを用いて、Quarto CLIからインストールすることができます。LaTeXエンジンの詳細については、<span class="co">[</span><span class="ot">QuartoのPDF Engines</span><span class="co">](https://quarto.org/docs/output-formats/pdf-engine.html)</span>のページをご参照ください。</span>
+<span id="cb43-557"><a href="#cb43-557" aria-hidden="true" tabindex="-1"></a><span class="fu">## PDFを出力する</span></span>
 <span id="cb43-558"><a href="#cb43-558" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-559"><a href="#cb43-559" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="tinytexをインストールする"}</span></span>
-<span id="cb43-560"><a href="#cb43-560" aria-hidden="true" tabindex="-1"></a>Quarto install tinytex</span>
-<span id="cb43-561"><a href="#cb43-561" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-562"><a href="#cb43-562" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-563"><a href="#cb43-563" aria-hidden="true" tabindex="-1"></a><span class="fu">### Document Class</span></span>
+<span id="cb43-559"><a href="#cb43-559" aria-hidden="true" tabindex="-1"></a>QuartoをPDFとして出力する場合、上記の通り<span class="in">`format: pdf`</span>と設定します。PDFの出力では、Quartoは一度Latexに変換された後、LaTeXをPDFに変換することになります。このLaTeXからPDFへの変換には、LaTeXのエンジンには、LuaLaTexやpdfLaTexなど、様々なものがあるのですが、Quartoでは<span class="co">[</span><span class="ot">tinytex</span><span class="co">](https://yihui.org/tinytex/)</span>というLaTeXエンジンが推奨されています。tinytexはTerminalを用いて、Quarto CLIからインストールすることができます。LaTeXエンジンの詳細については、<span class="co">[</span><span class="ot">QuartoのPDF Engines</span><span class="co">](https://quarto.org/docs/output-formats/pdf-engine.html)</span>のページをご参照ください。</span>
+<span id="cb43-560"><a href="#cb43-560" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-561"><a href="#cb43-561" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="tinytexをインストールする"}</span></span>
+<span id="cb43-562"><a href="#cb43-562" aria-hidden="true" tabindex="-1"></a>Quarto install tinytex</span>
+<span id="cb43-563"><a href="#cb43-563" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-564"><a href="#cb43-564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-565"><a href="#cb43-565" aria-hidden="true" tabindex="-1"></a>Quartoでは、PDFの文章の表示形式として、Document Classというものが設定できます。Document Classには<span class="in">`article`</span>、<span class="in">`report`</span>、<span class="in">`book`</span>の3つがあります。</span>
+<span id="cb43-565"><a href="#cb43-565" aria-hidden="true" tabindex="-1"></a><span class="fu">### Document Class</span></span>
 <span id="cb43-566"><a href="#cb43-566" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-567"><a href="#cb43-567" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename = "Document Classの設定"}</span></span>
-<span id="cb43-568"><a href="#cb43-568" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-569"><a href="#cb43-569" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-570"><a href="#cb43-570" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb43-571"><a href="#cb43-571" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> article</span></span>
-<span id="cb43-572"><a href="#cb43-572" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-573"><a href="#cb43-573" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-574"><a href="#cb43-574" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-575"><a href="#cb43-575" aria-hidden="true" tabindex="-1"></a><span class="fu">### マージンとフォントの種類</span></span>
+<span id="cb43-567"><a href="#cb43-567" aria-hidden="true" tabindex="-1"></a>Quartoでは、PDFの文章の表示形式として、Document Classというものが設定できます。Document Classには<span class="in">`article`</span>、<span class="in">`report`</span>、<span class="in">`book`</span>の3つがあります。</span>
+<span id="cb43-568"><a href="#cb43-568" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-569"><a href="#cb43-569" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename = "Document Classの設定"}</span></span>
+<span id="cb43-570"><a href="#cb43-570" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-571"><a href="#cb43-571" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-572"><a href="#cb43-572" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb43-573"><a href="#cb43-573" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> article</span></span>
+<span id="cb43-574"><a href="#cb43-574" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-575"><a href="#cb43-575" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-576"><a href="#cb43-576" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-577"><a href="#cb43-577" aria-hidden="true" tabindex="-1"></a>PDFを出力する際の、ページの外枠のスペース（マージン）は<span class="in">`margin-xxx`</span>というYAMLから設定できます。<span class="in">`xxx`</span>の部分には<span class="in">`left`</span>、<span class="in">`right`</span>、<span class="in">`top`</span>、<span class="in">`bottom`</span>のいずれかを記載し、mm単位で設定値を記載します。また、<span class="in">`geometry`</span>というYAMLを利用することもできます。</span>
+<span id="cb43-577"><a href="#cb43-577" aria-hidden="true" tabindex="-1"></a><span class="fu">### マージンとフォントの種類</span></span>
 <span id="cb43-578"><a href="#cb43-578" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-579"><a href="#cb43-579" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="マージンの設定"}</span></span>
-<span id="cb43-580"><a href="#cb43-580" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-581"><a href="#cb43-581" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-582"><a href="#cb43-582" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb43-583"><a href="#cb43-583" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">margin-top</span><span class="kw">:</span><span class="at"> 30mm</span></span>
-<span id="cb43-584"><a href="#cb43-584" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">margin-left</span><span class="kw">:</span><span class="at"> 20mm</span></span>
-<span id="cb43-585"><a href="#cb43-585" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-586"><a href="#cb43-586" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
-<span id="cb43-587"><a href="#cb43-587" aria-hidden="true" tabindex="-1"></a><span class="co"># こちらを用いてもよい（geometryを使うと、margin-は無視される）</span></span>
-<span id="cb43-588"><a href="#cb43-588" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-589"><a href="#cb43-589" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-590"><a href="#cb43-590" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb43-591"><a href="#cb43-591" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">geometry</span><span class="kw">:</span></span>
-<span id="cb43-592"><a href="#cb43-592" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>top=30mm</span>
-<span id="cb43-593"><a href="#cb43-593" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>left=20mm</span>
-<span id="cb43-594"><a href="#cb43-594" aria-hidden="true" tabindex="-1"></a><span class="pp">---  </span></span>
-<span id="cb43-595"><a href="#cb43-595" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-596"><a href="#cb43-596" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-597"><a href="#cb43-597" aria-hidden="true" tabindex="-1"></a>PDFのフォントの設定として、<span class="in">`sansfont`</span>、<span class="in">`mainfont`</span>、<span class="in">`monofont`</span>、<span class="in">`mathfont`</span>の各YAMLを設定することが出来ます。</span>
+<span id="cb43-579"><a href="#cb43-579" aria-hidden="true" tabindex="-1"></a>PDFを出力する際の、ページの外枠のスペース（マージン）は<span class="in">`margin-xxx`</span>というYAMLから設定できます。<span class="in">`xxx`</span>の部分には<span class="in">`left`</span>、<span class="in">`right`</span>、<span class="in">`top`</span>、<span class="in">`bottom`</span>のいずれかを記載し、mm単位で設定値を記載します。また、<span class="in">`geometry`</span>というYAMLを利用することもできます。</span>
+<span id="cb43-580"><a href="#cb43-580" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-581"><a href="#cb43-581" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="マージンの設定"}</span></span>
+<span id="cb43-582"><a href="#cb43-582" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-583"><a href="#cb43-583" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-584"><a href="#cb43-584" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb43-585"><a href="#cb43-585" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">margin-top</span><span class="kw">:</span><span class="at"> 30mm</span></span>
+<span id="cb43-586"><a href="#cb43-586" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">margin-left</span><span class="kw">:</span><span class="at"> 20mm</span></span>
+<span id="cb43-587"><a href="#cb43-587" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-588"><a href="#cb43-588" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
+<span id="cb43-589"><a href="#cb43-589" aria-hidden="true" tabindex="-1"></a><span class="co"># こちらを用いてもよい（geometryを使うと、margin-は無視される）</span></span>
+<span id="cb43-590"><a href="#cb43-590" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-591"><a href="#cb43-591" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-592"><a href="#cb43-592" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb43-593"><a href="#cb43-593" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">geometry</span><span class="kw">:</span></span>
+<span id="cb43-594"><a href="#cb43-594" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>top=30mm</span>
+<span id="cb43-595"><a href="#cb43-595" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>left=20mm</span>
+<span id="cb43-596"><a href="#cb43-596" aria-hidden="true" tabindex="-1"></a><span class="pp">---  </span></span>
+<span id="cb43-597"><a href="#cb43-597" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-598"><a href="#cb43-598" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-599"><a href="#cb43-599" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="フォントの設定"}</span></span>
-<span id="cb43-600"><a href="#cb43-600" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-601"><a href="#cb43-601" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb43-602"><a href="#cb43-602" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb43-603"><a href="#cb43-603" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mainfont</span><span class="kw">:</span><span class="at"> </span><span class="st">"Times New Roman"</span></span>
-<span id="cb43-604"><a href="#cb43-604" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-605"><a href="#cb43-605" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-606"><a href="#cb43-606" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-607"><a href="#cb43-607" aria-hidden="true" tabindex="-1"></a>また、日本語フォントを用いる場合には、英語でのフォント名を指定することになります。</span>
+<span id="cb43-599"><a href="#cb43-599" aria-hidden="true" tabindex="-1"></a>PDFのフォントの設定として、<span class="in">`sansfont`</span>、<span class="in">`mainfont`</span>、<span class="in">`monofont`</span>、<span class="in">`mathfont`</span>の各YAMLを設定することが出来ます。</span>
+<span id="cb43-600"><a href="#cb43-600" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-601"><a href="#cb43-601" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="フォントの設定"}</span></span>
+<span id="cb43-602"><a href="#cb43-602" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-603"><a href="#cb43-603" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb43-604"><a href="#cb43-604" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb43-605"><a href="#cb43-605" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mainfont</span><span class="kw">:</span><span class="at"> </span><span class="st">"Times New Roman"</span></span>
+<span id="cb43-606"><a href="#cb43-606" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-607"><a href="#cb43-607" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-608"><a href="#cb43-608" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-609"><a href="#cb43-609" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="日本語フォントの利用"}</span></span>
-<span id="cb43-610"><a href="#cb43-610" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-611"><a href="#cb43-611" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Unicode test</span></span>
-<span id="cb43-612"><a href="#cb43-612" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> pdf</span></span>
-<span id="cb43-613"><a href="#cb43-613" aria-hidden="true" tabindex="-1"></a><span class="fu">mainfont</span><span class="kw">:</span><span class="at"> </span><span class="st">"Meiryo UI"</span></span>
-<span id="cb43-614"><a href="#cb43-614" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-615"><a href="#cb43-615" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-616"><a href="#cb43-616" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-617"><a href="#cb43-617" aria-hidden="true" tabindex="-1"></a><span class="fu">### グラフでの日本語：画像でグラフを表示する</span></span>
+<span id="cb43-609"><a href="#cb43-609" aria-hidden="true" tabindex="-1"></a>また、日本語フォントを用いる場合には、英語でのフォント名を指定することになります。</span>
+<span id="cb43-610"><a href="#cb43-610" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-611"><a href="#cb43-611" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="日本語フォントの利用"}</span></span>
+<span id="cb43-612"><a href="#cb43-612" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-613"><a href="#cb43-613" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Unicode test</span></span>
+<span id="cb43-614"><a href="#cb43-614" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> pdf</span></span>
+<span id="cb43-615"><a href="#cb43-615" aria-hidden="true" tabindex="-1"></a><span class="fu">mainfont</span><span class="kw">:</span><span class="at"> </span><span class="st">"Meiryo UI"</span></span>
+<span id="cb43-616"><a href="#cb43-616" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-617"><a href="#cb43-617" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-618"><a href="#cb43-618" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-619"><a href="#cb43-619" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`ggplot2`の章</span><span class="co">](chapter26.qmd)</span>に記載した通り、<span class="in">`ggplot2`</span>で日本語を用いてPDFとして保存すると、日本語が文字化けします。日本語をきちんと表示させる方法はいろいろ提案されていますが（例えばQiitaの<span class="co">[</span><span class="ot">この記事</span><span class="co">](https://qiita.com/yetanothersu/items/a5ad93574adb9208fb68)</span>など）、Quartoではシンプルにグラフを画像（<span class="in">`png`</span>や<span class="in">`jpg`</span>）で出力してしまうのが比較的簡単です。</span>
+<span id="cb43-619"><a href="#cb43-619" aria-hidden="true" tabindex="-1"></a><span class="fu">### グラフでの日本語：画像でグラフを表示する</span></span>
 <span id="cb43-620"><a href="#cb43-620" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-621"><a href="#cb43-621" aria-hidden="true" tabindex="-1"></a>グラフを画像で出力する場合には、YAMLに<span class="in">`fig-format`</span>を設定します。<span class="in">`fig-format: "png"`</span>では画像は<span class="in">`png`</span>、<span class="in">`fig-format: "jpg"`</span>では画像は<span class="in">`jpg`</span>として出力され、PDFに張り付けられます。画像を拡大する可能性があったり、大きなサイズで保存する場合には<span class="in">`fig-dpi`</span>を大きい値に設定するとよいでしょう。</span>
+<span id="cb43-621"><a href="#cb43-621" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`ggplot2`の章</span><span class="co">](chapter26.qmd)</span>に記載した通り、<span class="in">`ggplot2`</span>で日本語を用いてPDFとして保存すると、日本語が文字化けします。日本語をきちんと表示させる方法はいろいろ提案されていますが（例えばQiitaの<span class="co">[</span><span class="ot">この記事</span><span class="co">](https://qiita.com/yetanothersu/items/a5ad93574adb9208fb68)</span>など）、Quartoではシンプルにグラフを画像（<span class="in">`png`</span>や<span class="in">`jpg`</span>）で出力してしまうのが比較的簡単です。</span>
 <span id="cb43-622"><a href="#cb43-622" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-623"><a href="#cb43-623" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="グラフを画像として出力する"}</span></span>
-<span id="cb43-624"><a href="#cb43-624" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-625"><a href="#cb43-625" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-626"><a href="#cb43-626" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb43-627"><a href="#cb43-627" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-format</span><span class="kw">:</span><span class="at"> </span><span class="st">"png"</span></span>
-<span id="cb43-628"><a href="#cb43-628" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-dpi</span><span class="kw">:</span><span class="at"> </span><span class="dv">300</span></span>
-<span id="cb43-629"><a href="#cb43-629" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-align</span><span class="kw">:</span><span class="at"> center</span><span class="co"> # 図を中央に表示する</span></span>
-<span id="cb43-630"><a href="#cb43-630" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-631"><a href="#cb43-631" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-632"><a href="#cb43-632" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-633"><a href="#cb43-633" aria-hidden="true" tabindex="-1"></a><span class="fu">## wordを出力する</span></span>
+<span id="cb43-623"><a href="#cb43-623" aria-hidden="true" tabindex="-1"></a>グラフを画像で出力する場合には、YAMLに<span class="in">`fig-format`</span>を設定します。<span class="in">`fig-format: "png"`</span>では画像は<span class="in">`png`</span>、<span class="in">`fig-format: "jpg"`</span>では画像は<span class="in">`jpg`</span>として出力され、PDFに張り付けられます。画像を拡大する可能性があったり、大きなサイズで保存する場合には<span class="in">`fig-dpi`</span>を大きい値に設定するとよいでしょう。</span>
+<span id="cb43-624"><a href="#cb43-624" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-625"><a href="#cb43-625" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="グラフを画像として出力する"}</span></span>
+<span id="cb43-626"><a href="#cb43-626" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-627"><a href="#cb43-627" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-628"><a href="#cb43-628" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb43-629"><a href="#cb43-629" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-format</span><span class="kw">:</span><span class="at"> </span><span class="st">"png"</span></span>
+<span id="cb43-630"><a href="#cb43-630" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-dpi</span><span class="kw">:</span><span class="at"> </span><span class="dv">300</span></span>
+<span id="cb43-631"><a href="#cb43-631" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fig-align</span><span class="kw">:</span><span class="at"> center</span><span class="co"> # 図を中央に表示する</span></span>
+<span id="cb43-632"><a href="#cb43-632" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-633"><a href="#cb43-633" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-634"><a href="#cb43-634" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-635"><a href="#cb43-635" aria-hidden="true" tabindex="-1"></a>Wordを出力する場合、YAMLでは<span class="in">`format: docx`</span>を指定します。Wordを出力するときには、グラフは画像として保存されることから、PDFで起こるような文字化けの問題は起こりません。</span>
+<span id="cb43-635"><a href="#cb43-635" aria-hidden="true" tabindex="-1"></a><span class="fu">## wordを出力する</span></span>
 <span id="cb43-636"><a href="#cb43-636" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-637"><a href="#cb43-637" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="wordファイルとして出力する"}</span></span>
-<span id="cb43-638"><a href="#cb43-638" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-639"><a href="#cb43-639" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> docx</span></span>
+<span id="cb43-637"><a href="#cb43-637" aria-hidden="true" tabindex="-1"></a>Wordを出力する場合、YAMLでは<span class="in">`format: docx`</span>を指定します。Wordを出力するときには、グラフは画像として保存されることから、PDFで起こるような文字化けの問題は起こりません。</span>
+<span id="cb43-638"><a href="#cb43-638" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-639"><a href="#cb43-639" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="wordファイルとして出力する"}</span></span>
 <span id="cb43-640"><a href="#cb43-640" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-641"><a href="#cb43-641" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-642"><a href="#cb43-642" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-643"><a href="#cb43-643" aria-hidden="true" tabindex="-1"></a><span class="fu">### ページの区切り</span></span>
+<span id="cb43-641"><a href="#cb43-641" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> docx</span></span>
+<span id="cb43-642"><a href="#cb43-642" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-643"><a href="#cb43-643" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-644"><a href="#cb43-644" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-645"><a href="#cb43-645" aria-hidden="true" tabindex="-1"></a>HTMLではページを明確に分断する必要はありませんが、PDFやWordではページの区切りを明確に示したい場合が生じます。このようにページの区切りを入れる場合には、YAMLではなく、以下のようなMarkdownの記法を用います。</span>
+<span id="cb43-645"><a href="#cb43-645" aria-hidden="true" tabindex="-1"></a><span class="fu">### ページの区切り</span></span>
 <span id="cb43-646"><a href="#cb43-646" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-647"><a href="#cb43-647" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="pagebreak：ページの区切りをいれる"}</span></span>
-<span id="cb43-648"><a href="#cb43-648" aria-hidden="true" tabindex="-1"></a>{{&lt; pagebreak &gt;}} # 前と後ろの文章のページが区切られる</span>
-<span id="cb43-649"><a href="#cb43-649" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-650"><a href="#cb43-650" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-651"><a href="#cb43-651" aria-hidden="true" tabindex="-1"></a><span class="fu">### Wordのテンプレートを準備する</span></span>
+<span id="cb43-647"><a href="#cb43-647" aria-hidden="true" tabindex="-1"></a>HTMLではページを明確に分断する必要はありませんが、PDFやWordではページの区切りを明確に示したい場合が生じます。このようにページの区切りを入れる場合には、YAMLではなく、以下のようなMarkdownの記法を用います。</span>
+<span id="cb43-648"><a href="#cb43-648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-649"><a href="#cb43-649" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="pagebreak：ページの区切りをいれる"}</span></span>
+<span id="cb43-650"><a href="#cb43-650" aria-hidden="true" tabindex="-1"></a>{{&lt; pagebreak &gt;}} # 前と後ろの文章のページが区切られる</span>
+<span id="cb43-651"><a href="#cb43-651" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-652"><a href="#cb43-652" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-653"><a href="#cb43-653" aria-hidden="true" tabindex="-1"></a>Wordを出力するときには、コード部分を除くフォントの種類や色、ページの構成などをQuartoから指定することはできません。フォントや色を指定するためには、あらかじめWordでスタイルを設定したテンプレートファイルを作成しておく必要があります。</span>
+<span id="cb43-653"><a href="#cb43-653" aria-hidden="true" tabindex="-1"></a><span class="fu">### Wordのテンプレートを準備する</span></span>
 <span id="cb43-654"><a href="#cb43-654" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-655"><a href="#cb43-655" aria-hidden="true" tabindex="-1"></a><span class="al">![Wordのスタイル](./image/word_style.png)</span></span>
+<span id="cb43-655"><a href="#cb43-655" aria-hidden="true" tabindex="-1"></a>Wordを出力するときには、コード部分を除くフォントの種類や色、ページの構成などをQuartoから指定することはできません。フォントや色を指定するためには、あらかじめWordでスタイルを設定したテンプレートファイルを作成しておく必要があります。</span>
 <span id="cb43-656"><a href="#cb43-656" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-657"><a href="#cb43-657" aria-hidden="true" tabindex="-1"></a>このスタイルを編集したWordファイルを保存し、そのWordファイルをYAMLで指定することで、そのスタイルに沿ったWordファイルを出力することができます。</span>
+<span id="cb43-657"><a href="#cb43-657" aria-hidden="true" tabindex="-1"></a><span class="al">![Wordのスタイル](./image/word_style.png)</span></span>
 <span id="cb43-658"><a href="#cb43-658" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-659"><a href="#cb43-659" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="テンプレートの設定"}</span></span>
-<span id="cb43-660"><a href="#cb43-660" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb43-661"><a href="#cb43-661" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
-<span id="cb43-662"><a href="#cb43-662" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> template.docx</span></span>
-<span id="cb43-663"><a href="#cb43-663" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-664"><a href="#cb43-664" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-665"><a href="#cb43-665" aria-hidden="true" tabindex="-1"></a><span class="fu">## YAMLに定数を設定する</span></span>
+<span id="cb43-659"><a href="#cb43-659" aria-hidden="true" tabindex="-1"></a>このスタイルを編集したWordファイルを保存し、そのWordファイルをYAMLで指定することで、そのスタイルに沿ったWordファイルを出力することができます。</span>
+<span id="cb43-660"><a href="#cb43-660" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-661"><a href="#cb43-661" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="テンプレートの設定"}</span></span>
+<span id="cb43-662"><a href="#cb43-662" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb43-663"><a href="#cb43-663" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
+<span id="cb43-664"><a href="#cb43-664" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> template.docx</span></span>
+<span id="cb43-665"><a href="#cb43-665" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb43-666"><a href="#cb43-666" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-667"><a href="#cb43-667" aria-hidden="true" tabindex="-1"></a>YAMLでは、定数を設定しておき、Quartoのchunk内で呼び出すことができます。Rでは基本的に定数を定義することはできませんが、QuartoのYAMLを利用すると定数の設定が可能です。定数は<span class="in">`params: 定数名: value`</span>という形で設定し、呼び出すときには<span class="in">`params$定数名`</span>という形でリストのように呼び出します。</span>
+<span id="cb43-667"><a href="#cb43-667" aria-hidden="true" tabindex="-1"></a><span class="fu">## YAMLに定数を設定する</span></span>
 <span id="cb43-668"><a href="#cb43-668" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-669"><a href="#cb43-669" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="定数の設定"}</span></span>
-<span id="cb43-670"><a href="#cb43-670" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-671"><a href="#cb43-671" aria-hidden="true" tabindex="-1"></a><span class="fu">params</span><span class="kw">:</span></span>
-<span id="cb43-672"><a href="#cb43-672" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">alpha</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.5</span></span>
-<span id="cb43-673"><a href="#cb43-673" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb43-674"><a href="#cb43-674" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-675"><a href="#cb43-675" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-676"><a href="#cb43-676" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb43-677"><a href="#cb43-677" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb43-678"><a href="#cb43-678" aria-hidden="true" tabindex="-1"></a>params<span class="sc">$</span>alpha <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb43-679"><a href="#cb43-679" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb43-680"><a href="#cb43-680" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-681"><a href="#cb43-681" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb43-682"><a href="#cb43-682" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="定数の呼び出し"}</span></span>
-<span id="cb43-683"><a href="#cb43-683" aria-hidden="true" tabindex="-1"></a>params<span class="sc">$</span>alpha</span>
-<span id="cb43-684"><a href="#cb43-684" aria-hidden="true" tabindex="-1"></a><span class="co"># params$alpha &lt;- 1 代入するとエラーが出て、Renderできない</span></span>
-<span id="cb43-685"><a href="#cb43-685" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb43-669"><a href="#cb43-669" aria-hidden="true" tabindex="-1"></a>YAMLでは、定数を設定しておき、Quartoのchunk内で呼び出すことができます。Rでは基本的に定数を定義することはできませんが、QuartoのYAMLを利用すると定数の設定が可能です。定数は<span class="in">`params: 定数名: value`</span>という形で設定し、呼び出すときには<span class="in">`params$定数名`</span>という形でリストのように呼び出します。</span>
+<span id="cb43-670"><a href="#cb43-670" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-671"><a href="#cb43-671" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="定数の設定"}</span></span>
+<span id="cb43-672"><a href="#cb43-672" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-673"><a href="#cb43-673" aria-hidden="true" tabindex="-1"></a><span class="fu">params</span><span class="kw">:</span></span>
+<span id="cb43-674"><a href="#cb43-674" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">alpha</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.5</span></span>
+<span id="cb43-675"><a href="#cb43-675" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb43-676"><a href="#cb43-676" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb43-677"><a href="#cb43-677" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-678"><a href="#cb43-678" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb43-679"><a href="#cb43-679" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb43-680"><a href="#cb43-680" aria-hidden="true" tabindex="-1"></a>params<span class="sc">$</span>alpha <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb43-681"><a href="#cb43-681" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb43-682"><a href="#cb43-682" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-683"><a href="#cb43-683" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb43-684"><a href="#cb43-684" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="定数の呼び出し"}</span></span>
+<span id="cb43-685"><a href="#cb43-685" aria-hidden="true" tabindex="-1"></a>params<span class="sc">$</span>alpha</span>
+<span id="cb43-686"><a href="#cb43-686" aria-hidden="true" tabindex="-1"></a><span class="co"># params$alpha &lt;- 1 代入するとエラーが出て、Renderできない</span></span>
+<span id="cb43-687"><a href="#cb43-687" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
