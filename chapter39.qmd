@@ -26,7 +26,7 @@ R markdownを利用し始めた初期の頃はYAMLを文頭に書いて問題は
 
 従って、Quartoを用いる場合には、YAMLは基本的に別ファイルとして作成する方がよいでしょう。QuartoのYAMLは**`_quarto.yml`**というファイルにまとめて書くことが出来ます。`_quarto.yml`には、`---`を書く必要はなく、YAMLを直接書くことができます。`_quarto.yml`を.qmdファイルと同じフォルダに保存しておけば、.qmdファイルをRenderする際に勝手に`_quarto.yml`を読み込み、文章の形式をYAMLで指定した通りに整えてくれます。
 
-  [このテキストの_quarto.yml](https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml)を見ていただければ、どのようにYAMLを`_quarto.yml`に書くのか、イメージしやすいかと思います。
+  [このテキストの`_quarto.yml`](https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml)を見ていただければ、どのようにYAMLを`_quarto.yml`に書くのか、イメージしやすいかと思います。
 
 以下では、まず基礎となるYAMLの項目とその機能について説明し、その後別章でHTMLとWebsite、Quarto Books（HTMLを出力）、Reveal.js（HTMLによるプレゼンテーションを出力）、[Dashboards](https://ja.wikipedia.org/wiki/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89)を作成する場合のYAMLについて順に説明していきます。
 
@@ -110,7 +110,7 @@ d <- read_excel("./data/Quarto_YAMLs.xlsx", sheet = 1)
 knitr::kable(d)
 ```
 
-また、やや複雑なのですが、HTMLのうちQuarto BooksとWebsites、Manuscriptsの3つに関しては`format`ではなく、`project`の下のカテゴリとして、`type`に設定する形となっています。
+また、やや複雑なのですが、HTMLのうちQuarto BookとWebsite、Manuscriptの3つに関しては`format`ではなく、`project`の下のカテゴリとして、`type`に設定する形となっています。
 
 ```{yaml, filename="projectの設定"}
 ---
@@ -126,11 +126,11 @@ d <- read_excel("./data/Quarto_YAMLs.xlsx", sheet = 2)
 knitr::kable(d)
 ```
 
-QuartoをRenderする際には、Rendering Engine（Rの場合はknitr）が自動的にこの`format`、`project`を読み込み、設定したファイル形式で出力してくれます。
+QuartoをRenderする際には、Rendering Engine（Rの場合はknitr）が`format`、`project`を読み込み、設定したファイル形式で出力してくれます。
 
-## 文章のタイトルと著者
+## 文書のタイトルと著者
 
-Quartoは論文を執筆する際に用いられることを想定しているため、文章の情報（タイトル、著者など）を設定するためのYAMLがたくさん設定されています。以下に設定できるYAMLの要素と意味を示します。
+Quartoは論文を執筆する際に用いられることも想定しているため、文書の情報（タイトル、著者など）を設定するためのYAMLがたくさん設定されています。以下に設定できるYAMLの要素と意味を示します。
 
 ```{r, echo=FALSE, message=FALSE}
 d <- read_excel("./data/Quarto_YAMLs.xlsx", sheet = 3)
@@ -154,7 +154,7 @@ format:
   html:
     toc: true # TOCを表示する
     toc-location: right # TOCを右に表示
-    toc-title: "Quarto" # TOCの表紙は"Quarto"に
+    toc-title: "Quarto" # TOCのタイトルは"Quarto"に
     toc-depth: 4 # TOCはHeader 4まで表示
     toc-expand: 2 # Header 2以降は折りたたむ
 ```
@@ -168,14 +168,14 @@ knitr::kable(d)
 
 ### セクションに番号をつける
 
-TOCに加えて、TOCで表示される章の項目（セクション）に番号をつけるためのYAMLが、`number-sections`です。YAMLで`number-sections: true`を設定すると、このテキストのように表題に番号が自動的に付けられます。番号をつけたくないセクションには、ヘッダー表記の後に`{.unnumbered}`をつけます。この`{.unnumbered}`を付けたセクションには番号がつかず、飛ばして番号が付与されます。
+TOCに加えて、TOCで表示される章の項目（セクション）に番号をつけるためのYAMLが、`number-sections`です。YAMLで`number-sections: true`を設定すると、表題に番号が自動的に付けられます。番号をつけたくないセクションには、ヘッダー表記の後に`{.unnumbered}`をつけます。この`{.unnumbered}`を付けたセクションには番号がつかず、そのセクションを飛ばして番号が付与されます。
 
-```{yaml, filenamee="セクションの番号の設定"}
+```{yaml, filename="セクションの番号の設定"}
 ---
 format: 
   html: 
-  toc: true
-  number-sections: true
+    toc: true
+    number-sections: true
 ---
 ```
 
@@ -186,7 +186,7 @@ format:
 
 ## 文章の言語（lang）
 
-Quartoで作成している文章の言語はデフォルトでは英語です。ですので、上記のTOCの設定後、表示されるTOCの題名はデフォルトでは「Table of contents」と英語で表示されます。このような表示を他の言語に変更する場合には、YAMLで`lang`を設定します。`lang`のデフォルトは`lang: en`で、`lang`を設定しない場合には英語となっています。`lang: ja`と設定することで表示を日本語に変更することが出来ます。
+Quartoで作成している文章の言語はデフォルトでは英語です。ですので、例えばTOCの題名はデフォルトでは「Table of contents」と英語で表示されます。このような表示を他の言語に変更する場合には、YAMLで`lang`を設定します。`lang`のデフォルトは`lang: en`です。`lang: ja`と設定することで表示を日本語に変更することが出来ます。
 
 ```{yaml, filename="文章の言語の設定"}
 ---
@@ -207,7 +207,7 @@ lang: ja # 日本語表示を用いる
 
 ## ナビゲーション
 
-ナビゲーションとは、このテキストでは左側に表示されている、そのHTMLの構造や章立てを示す部分のことです。QuartoからHTMLを出力する場合、このナビゲーションをページの上（`navbar`）と左側（`sidebar`）に表示させることができます。このテキストでは`navbar`を用いず、`sidebar`のみ用いていますが、逆に`navbar`だけを用いることもできます。navbarやsidebarは、以下の例のようにformatやprojectの名前のYAMLの小項目として設定し、さらにnavbarやsidebarの小項目として、そのナビゲーションの設定項目を指定していきます。
+ナビゲーションとは、このテキストでは左側に表示されている、そのHTMLの構造や章立てを示す部分のことです。QuartoからHTMLを出力する場合、このナビゲーションをページの上（`navbar`）と左側（`sidebar`）に表示させることができます。このテキストでは`navbar`を用いず、`sidebar`のみ用いていますが、逆に`navbar`だけを用いることもできます。navbarやsidebarは、以下の例のようにformatやprojectの小項目として設定し、さらにnavbarやsidebarの小項目として、そのナビゲーションの設定項目を指定していきます。
 
 ```{yaml, filename="navbar/sidebarの設定"}
 book:
@@ -220,7 +220,7 @@ book:
 :::{.callout-tip collapse=true}
 ## YAMLの設定項目の位置
 
-QuartoのYAMLでは、設定項目の上位・下位要素をどこに記載したらよいのかよくわからない場合が割とあります。YAMLの設定項目を指定しても思い通りの出力が得られない場合には、[QuartoのGuide](https://quarto.org/docs/guide/)に記載されているYAMLの例を真似てみたり、[Quartoのgithubレポジトリ内の`_quarto.yml`](https://github.com/quarto-dev/quarto-web/blob/main/_quarto.yml)を見てみたり、Quarto booksなどのgithubのレポジトリに保存されている`_quarto.yml`を確認し、真似てみるのが良いでしょう。
+QuartoのYAMLでは、設定項目の上位・下位要素をどこに記載したらよいのかよくわからない場合が割とあります。YAMLの設定項目を指定しても思い通りの出力が得られない場合には、[QuartoのGuide](https://quarto.org/docs/guide/)に記載されているYAMLの例を真似てみたり、[Quartoのgithubレポジトリ内の`_quarto.yml`](https://github.com/quarto-dev/quarto-web/blob/main/_quarto.yml)を見てみたり、Quarto bookなどのgithubのレポジトリに保存されている`_quarto.yml`を確認し、真似てみるのが良いでしょう。
 :::
 
 ### navbar
@@ -268,19 +268,19 @@ website:
 :::{.callout-tip collapse=true}
 ## searchの設定
 
-`search`は、`.qmd`を保存したフォルダ（Projectを設定していればそのProjectのフォルダ）内に`search.json`というファイルを作成し、`search.json`から文書の単語を検索するような形で機能します。また、[Algolia](https://www.algolia.com/)という検索サービスを利用することもできます。`search`の設定の詳細については[Quartoのsearchのページ](https://quarto.org/docs/websites/website-search.html)を参考にして下さい。
+`search`は、RenderしたHTMLが保存保存されるフォルダ内に`search.json`というファイルを作成し、`search.json`から単語を検索するような形で機能します。また、[Algolia](https://www.algolia.com/)という検索サービスを利用することもできます。`search`の設定の詳細については[Quartoのsearchのページ](https://quarto.org/docs/websites/website-search.html)を参考にして下さい。
 :::
 
 ### sidebar
 
-`sidebar`はこのテキストでも左側に表示されているナビゲーションで、`navbar`と同じようにリンク等を配置することができます。`sidebar`で指定できる設定項目は以下の表の通りです。
+`sidebar`は左側に表示されているナビゲーションで、`navbar`と同じようにリンク等を配置することができます。`sidebar`で指定できる設定項目は以下の表の通りです。
 
 ```{r, echo=FALSE, message=FALSE}
 d <- read_excel("./data/Quarto_YAMLs.xlsx", sheet = 6)
 knitr::kable(d)
 ```
 
-以下に`sidebar`の設定の例を示します。このテキストでも`sidebar`を利用しているので、[`_quarto.yml`](https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml)を見ていただければ参考になると思います。
+以下に`sidebar`の設定の例を示します。このテキストの[`_quarto.yml`](https://github.com/sb8001at-oss/Rnyuumon/blob/master/_quarto.yml)を見ていただければ設定の参考になると思います。
 
 ```{yaml, filename="sidebarの設定の例"}
 project: 
@@ -305,7 +305,7 @@ website:
 
 ### フッター（footer）
 
-フッターは文書の最後に表示されるテキストやリンクのことです。コピーライトや利用しているツール名、、ソースコードへのリンクや、企業であれば企業ページへのリンク、規約に関するリンクなどを置くことが一般的だと思います。フッターは以下のような形で`page-footer`の項目に設定します。
+フッターは文書の最後に表示されるテキストやリンクのことです。コピーライトや利用しているツール名、、ソースコードへのリンクや、企業であれば企業ページへのリンク、規約に関するリンクなどを置く部分です。フッターは以下のような形で`page-footer`の項目に設定します。
 
 ```{yaml, filename="footerの設定"}
 website:
@@ -345,9 +345,9 @@ format:
 
 ### HTMLの要素をすべてHTMLに含める（Self contained）
 
-QuartoでHTMLをRenderすると、HTMLだけでなく、別途フォルダが出力されます。このフォルダには、HTML内の画像や、JavaScriptなどのHTMLの要素が含まれています。HTMLはこのフォルダ内のファイルを読み込んで表示する仕組みになっているため、HTMLだけを他人と共有するとうまく開かないファイルになってしまいます。
+QuartoでHTMLをRenderすると、HTMLだけでなく、別途フォルダが出力されます。このフォルダには、HTML内の画像や、JavaScriptなどのHTMLの要素が含まれています。HTMLはこのフォルダ内のファイルを読み込んで表示する仕組みになっているため、HTMLだけではうまく開くことができません。
 
-このような、HTMLの要素をHTMLにすべて埋め込んでしまうための設定がSelf contained HTMLというものです。このSelf contained HTMLでは、Renderで出力されるファイルがHTMLのみになり、画像やその他の要素はHTMLにすべて埋め込まれます。この形のHTMLであれば、HTMLだけを他人に送ってもうまく開いてもらうことができます。
+このようなHTMLの要素を、HTMLにすべて埋め込んでしまうための設定がSelf contained HTMLというものです。このSelf contained HTMLでは、Renderで出力されるファイルがHTMLのみになり、画像やその他の要素はHTMLにすべて埋め込まれます。この形のHTMLであれば、HTMLだけでもブラウザで表示することができます。
 
 Self contained HTMLを出力する場合、以下のようにYAMLに`embed-resources: true`を設定します。
 
@@ -369,7 +369,9 @@ format:
     theme: united
 ```
 
-上記のように設定すると、HTMLは[united](https://bootswatch.com/united/)のデザインに従います。また、以下のようにYAMLを設定すると、明るいモード（light mode）と暗いモード（dark mode）をそれぞれ設定し、[トグルボタン](https://en.wikipedia.org/wiki/Toggle_switch_(widget))でデザインを変更できるようにもできます。
+上記のように設定すると、HTMLは[united](https://bootswatch.com/united/)のデザインに従います。
+
+また、以下のようにYAMLを設定すると、明るいモード（light mode）と暗いモード（dark mode）をそれぞれ設定し、[トグルボタン](https://en.wikipedia.org/wiki/Toggle_switch_(widget))でデザインを変更できるようにもできます。
 
 ```{yaml, filename="themeの設定"}
 format:
@@ -379,7 +381,9 @@ format:
       dark: cyborg
 ```
 
-このテキストでは、sidebarの上にトグルボタンがあり、light modeは[united](https://bootswatch.com/united/)、dark modeは[cyborg](https://bootswatch.com/cyborg/)で表示するようにしています。HTMLのデザインに関しては、Bootswatchのデザインをカスタマイズしたり、自分で[scss](https://sass-lang.com/)を準備してデザインを変更することもできます。詳しくは[QuartoのHTML Theming](https://quarto.org/docs/output-formats/html-themes.html)を参考にしてください。
+上記のように`light`と`dark`のthemeをそれぞれ設定すると、、sidebarの上にトグルボタンが表示されるようになります。上のYAMLの例では、light modeは[united](https://bootswatch.com/united/)、dark modeは[cyborg](https://bootswatch.com/cyborg/)で表示されます。トグルボタンを操作することで、light modeとdark modeを切り替えることができます。
+
+HTMLのデザインに関しては、Bootswatchのデザインをカスタマイズしたり、自分で[scss](https://sass-lang.com/)を準備してデザインを変更することもできます。詳しくは[QuartoのHTML Theming](https://quarto.org/docs/output-formats/html-themes.html)を参考にしてください。
 
 #### themeにより図の色を変える
 
@@ -407,11 +411,11 @@ plot(cars$speed, -cars$dist, main = "dark mode") # dark modeで表示
 
 ### favicon
 
-[favicon](https://ja.wikipedia.org/wiki/Favicon)とは、ウェブサイトをブラウザで表示した際にタブの横に表示される小さな画像を指します。
+[favicon](https://ja.wikipedia.org/wiki/Favicon)とは、ウェブサイトをブラウザで表示した際にタブの横に表示される小さな画像のことです。
 
 ![faviconのイメージ](./image/favicon_image.png)
 
-Quartoでは、YAMLに`favicon:`を設定することでfaviconを設定し、タブの横に画像を置くことができます。この`favicon:`は、`.ico`というファイル形式で設定します。`.ico`はアイコンを指定するためのファイル形式で、ネット上には[faviconのジェネレータ](https://favicon-generator.mintsu-dev.com/)がたくさんありますので、画像ファイルを変換して`.ico`ファイルを作成できます。faviconの画像は16×16pxが一般的ですが、もっと大きなファイルであっても特に問題にはなりません。正方形の画像ファイルを作成し、faviconジェネレータで変換して用いるとよいでしょう。
+Quartoでは、YAMLに`favicon:`を設定することでfaviconを設定し、タブの横に画像を置くことができます。この`favicon:`は、`.ico`というファイル形式で設定します。`.ico`はアイコンを指定するためのファイル形式です。ネット上には[faviconのジェネレータ](https://favicon-generator.mintsu-dev.com/)がたくさんありますので、ジェネレーターを利用すれば画像ファイルから`.ico`ファイルを作成することができます。faviconの画像は16×16pxが一般的ですが、もっと大きなファイルとして作成しても特に問題はありません。正方形の画像ファイルを作成し、faviconジェネレータで変換して用いるとよいでしょう。
 
 ```{yaml, filename="faviconの設定"}
 ---
@@ -441,7 +445,7 @@ website:
 QuartoのRenderは、Rstudioではテキストエディタの上の「Render」ボタンを用いて実行できます。
 ![Renderボタン](./image/Quarto_render_from_Rstudio.png)
 
-ただし、一部のYAMLの機能（例えば上記のアナウンス）は、このボタンを押す方法では表示されない場合があります（`knitr` ver. 1.50では表示されませんでした）。このボタンを用いてうまく出力が表示されない場合には、[Quarto CLI](https://quarto.org/docs/get-started/)を用いたレンダリングを試すとよいでしょう。
+ただし、一部のYAMLの機能（例えば上記のアナウンス）は、このボタンを押す方法では表示されません（`knitr` ver. 1.50）。このボタンを用いてうまく出力が表示されない場合には、[Quarto CLI](https://quarto.org/docs/get-started/)を用いたレンダリングを試すとよいでしょう。
 
 Rstudioでは、左下の「Console」のタブの横に、「Terminal」のタブがあります。この「Terminal」はProjectを開いた状態であれば、Projectのフォルダ（ディレクトリ）が指定された状態で表示されます。
 
@@ -461,17 +465,17 @@ Renderの方法によって出力が変わる場合があるため、困った�
 
 ### コメントの入力欄の設定
 
-QuartoでWebsite、Quarto booksを利用する場合には、読者のコメント欄を準備することもできます。コメント欄の表示はYAMLで設定し、ページの一番下、フッターの上に以下のようなコメント欄が表示されます。
+QuartoでWebsite、Quarto bookを利用する場合には、読者のコメント欄を準備することもできます。
 
 ![Giscusでのコメントの例](./image/Quarto_giscus.png)
 
 YAMLでのコメント欄の追加には、3つのサービスを利用することができます。
 
-- [Hypothesis](https://web.hypothes.is/): 文章の部分ごとにコメントを残すことができるWebサービス
+- [Hypothesis](https://web.hypothes.is/): 文章の一部を選択し、その文章に関するコメントを残すことができるWebサービス
 - [Utterances](https://utteranc.es/): githubのissuesを利用したコメント入力システム
 - [Giscus](https://giscus.app/ja): githubのDiscussionsを利用したコメント入力システム
 
-コメント欄を追加する場合、以下のようにcomments:の項目をYAMLに追加します。
+コメント欄を追加する場合、以下のように`comments:`の項目をYAMLに追加します。
 
 ```{yaml, filename="Hypothesisを利用する"}
 website:
@@ -495,11 +499,11 @@ website:
       repo: sb8001at-oss/Rnyuumon.io
 ```
 
-いずれもあらかじめGithubでの設定が必要であったり（Utterances、Giscus）、コメントにログインが必要だったり（3つすべて、Hypothesisは独自のログインシステム、UtterancesやGiscusはGithubのアカウント）するため、簡単に利用できるものとは言い難いですが、静的なWebページでデータベースの管理を必要とせずにコメントを残すことができます。
+いずれもあらかじめGithubでの設定が必要であったり（Utterances、Giscus）、コメントを入力するためにはログインが必要だったり（3つすべて、Hypothesisは独自のログインシステム、UtterancesやGiscusはGithubのアカウント）するため、簡単に利用できるものとは言い難いですが、これらのサービスを用いることで、静的なWebページでデータベースの管理を必要とせずコメントを残すことができます。
 
 ### lightbox
 
-[lightbox](https://ja.wikipedia.org/wiki/Lightbox)はMarkdownとレイアウトの章で説明した通り、Web上に表示された図をクリックすることで拡大して表示することができるようにする、JavaScriptで作成された機能の一つです。図をクリックすることで、イメージが拡大され、ブラウザ全面に図が表示されるようになります。
+[lightbox](https://ja.wikipedia.org/wiki/Lightbox)は[37章](chapter37.qmd#lightbox)で説明した通り、Web上に表示された図をクリックすることで拡大して表示することができるようにする、JavaScriptで作成された機能の一つです。図をクリックすることで、イメージが拡大され、ブラウザ全面に図が表示されるようになります。
 
 Quartoでは図・画像ごとにlightboxを設定することができますが、YAMLでlightboxを設定すると、文章内のすべての図・画像に適用することができます。`lightbox`の設定には、`true`、`false`、`auto`の3つがあり、`true`か`auto`に設定することで図が拡大されるようになります。`true`と`auto`の違いは、図のすべてに適用するか（`true`）、一部の図には適用しないようにできるか（`auto`）です。
 
@@ -542,7 +546,7 @@ class(iris) # classにリンクがついている
 
 #### コードツール
 
-コードツールとは、このテキストのタイトルの右上にある、『</> code』という部分のことを指します。この部分をクリックすると、そのページのソース（.qmdに記載されたコード・文）を表示することができます。
+コードツールとは、ページのタイトルの右上にある、『</> Code』という部分のことを指します。この部分をクリックすると、そのページのソース（.qmdに記載されたコード・文）を表示することができます。
 
 ![コードツール](./image/Quarto_codetool.png)
 
@@ -552,11 +556,11 @@ format:
     code-tools: true
 ```
 
-この他に、`code-fold: true`を設定していた場合にはソースコードを全部折りたたむ・展開する設定をこのコードツールに盛り込むこともできます。
+また、`code-fold: true`を設定すると、コードツールからソースコードを全部折りたたむ・展開することができるようになります。
 
 ## PDFを出力する
 
-QuartoをPDFとして出力する場合、上記の通り`format: pdf`と設定します。PDFの出力では、Quartoは一度Latexに変換された後、LaTeXをPDFに変換することになります。このLaTeXからPDFへの変換には、LaTeXのエンジンには、LuaLaTexやpdfLaTexなど、様々なものがあるのですが、Quartoでは[tinytex](https://yihui.org/tinytex/)というLaTeXエンジンが推奨されています。tinytexはTerminalを用いて、Quarto CLIからインストールすることができます。LaTeXエンジンの詳細については、[QuartoのPDF Engines](https://quarto.org/docs/output-formats/pdf-engine.html)のページをご参照ください。
+QuartoをPDFとして出力する場合、上記の通り`format: pdf`を設定します。PDFの出力では、Quartoは一度Latexに変換された後、そのLaTeXをPDFに変換することになります。このLaTeXからPDFへの変換には、LaTeXのエンジンを用います。LaTeXのエンジンにはLuaLaTexやpdfLaTexなど、様々なものがあるのですが、Quartoでは[tinytex](https://yihui.org/tinytex/)というLaTeXエンジンが推奨されています。tinytexはTerminalを用いて、Quarto CLIからインストールすることができます。LaTeXエンジンの詳細については、[QuartoのPDF Engines](https://quarto.org/docs/output-formats/pdf-engine.html)のページをご参照ください。
 
 ```{markdown, filename="tinytexをインストールする"}
 Quarto install tinytex
@@ -564,7 +568,7 @@ Quarto install tinytex
 
 ### Document Class
 
-Quartoでは、PDFの文章の表示形式として、Document Classというものが設定できます。Document Classには`article`、`report`、`book`の3つがあります。
+Quartoでは、PDFの表示形式として、Document Classというものを設定できます。Document Classには`article`、`report`、`book`の3つがあります。
 
 ```{yaml, filename = "Document Classの設定"}
 ---
@@ -576,7 +580,7 @@ format:
 
 ### マージンとフォントの種類
 
-PDFを出力する際の、ページの外枠のスペース（マージン）は`margin-xxx`というYAMLから設定できます。`xxx`の部分には`left`、`right`、`top`、`bottom`のいずれかを記載し、mm単位で設定値を記載します。また、`geometry`というYAMLを利用することもできます。
+PDFを出力する際の、ページの外枠のスペース（マージン）は`margin-xxx`というYAMLで設定できます。`xxx`の部分には`left`、`right`、`top`、`bottom`のいずれかを記載し、mm単位で設定値を記載します。また、`geometry`というYAMLを利用することもできます。
 
 ```{yaml, filename="マージンの設定"}
 ---
@@ -596,7 +600,7 @@ format:
 ---  
 ```
 
-PDFのフォントの設定として、`sansfont`、`mainfont`、`monofont`、`mathfont`の各YAMLを設定することが出来ます。
+PDFの表示フォントは、`sansfont`、`mainfont`、`monofont`、`mathfont`の各YAMLで設定することが出来ます。
 
 ```{yaml, filename="フォントの設定"}
 ---
@@ -618,9 +622,9 @@ mainfont: "Meiryo UI"
 
 ### グラフでの日本語：画像でグラフを表示する
 
-[`ggplot2`の章](chapter26.qmd)に記載した通り、`ggplot2`で日本語を用いてPDFとして保存すると、日本語が文字化けします。日本語をきちんと表示させる方法はいろいろ提案されていますが（例えばQiitaの[この記事](https://qiita.com/yetanothersu/items/a5ad93574adb9208fb68)など）、Quartoではシンプルにグラフを画像（`png`や`jpg`）で出力してしまうのが比較的簡単です。
+[26章](chapter26.qmd#グラフの保存ggsave)に記載した通り、`ggplot2`で作成するグラフに日本語を用いて、PDFとして保存すると、日本語が文字化けします。日本語をきちんと表示させる方法はいろいろ提案されていますが（例えばQiitaの[この記事](https://qiita.com/yetanothersu/items/a5ad93574adb9208fb68)など）、Quartoではシンプルにグラフを画像（`png`や`jpg`）で出力してしまうのが簡単です。
 
-グラフを画像で出力する場合には、YAMLに`fig-format`を設定します。`fig-format: "png"`では画像は`png`、`fig-format: "jpg"`では画像は`jpg`として出力され、PDFに張り付けられます。画像を拡大する可能性があったり、大きなサイズで保存する場合には`fig-dpi`を大きい値に設定するとよいでしょう。
+グラフを画像で出力する場合には、YAMLに`fig-format`を設定します。`fig-format: "png"`では画像は`png`、`fig-format: "jpg"`では画像は`jpg`としてPDFに張り付けられます。画像を拡大する可能性があったり、大きなサイズで保存する場合には`fig-dpi`を大きい値に設定するとよいでしょう。
 
 ```{yaml, filename="グラフを画像として出力する"}
 ---
@@ -634,7 +638,7 @@ format:
 
 ## wordを出力する
 
-Wordを出力する場合、YAMLでは`format: docx`を指定します。Wordを出力するときには、グラフは画像として保存されることから、PDFで起こるような文字化けの問題は起こりません。
+Wordを出力する場合には、YAMLで`format: docx`を指定します。Wordを出力するときには、グラフは画像として保存されることから、PDFで起こるような文字化けの問題は起こりません。
 
 ```{yaml, filename="wordファイルとして出力する"}
 ---
@@ -652,11 +656,11 @@ HTMLではページを明確に分断する必要はありませんが、PDFやW
 
 ### Wordのテンプレートを準備する
 
-Wordを出力するときには、コード部分を除くフォントの種類や色、ページの構成などをQuartoから指定することはできません。フォントや色を指定するためには、あらかじめWordでスタイルを設定したテンプレートファイルを作成しておく必要があります。
+Wordを出力するときには、コード部分を除くフォントの種類やページの構成などをQuartoから指定することはできません。フォントや色を指定するためには、あらかじめWordでスタイルを設定したテンプレートファイルを作成しておく必要があります。
 
 ![Wordのスタイル](./image/word_style.png)
 
-このスタイルを編集したWordファイルを保存し、そのWordファイルをYAMLで指定することで、そのスタイルに沿ったWordファイルを出力することができます。
+このスタイルを編集したWordファイルを保存し、そのWordファイルをテンプレートとしてYAMLで指定することで、そのスタイルに沿ったWordファイルを出力することができます。
 
 ```{yaml, filename="テンプレートの設定"}
 format:
@@ -680,6 +684,7 @@ params <- list()
 params$alpha <- 0.5
 ```
 
+`params`で設定する値は定数ですので、Rのスクリプトの中で書き換えることはできません。
   
 ```{r, filename="定数の呼び出し"}
 params$alpha

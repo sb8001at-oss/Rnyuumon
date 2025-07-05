@@ -749,15 +749,15 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   
 
 
-</header><p>WebsiteやBookをRenderし、HTMLを作成した後、そのHTMLを公開すれば、世界中の人達がそのWebsiteやBookを読むことができます。HTMLをWeb上で公開するというのは、Webに繋がったコンピュータ（Webサーバー）にHTMLファイルを置き、Web上でこのHTMLファイルを開くことができるようにすることです。このHTMLの公開のことを<strong><code>デプロイ</code></strong>と呼びます。</p>
+</header><p>WebsiteやBookをRenderし、HTMLを作成した後、そのHTMLをWeb上に公開すれば、世界中の人達がそのWebsiteやBookを読むことができます。HTMLをWeb上で公開するというのは、Webに繋がったコンピュータ（Webサーバー）にHTMLファイルを置き、Web上でこのHTMLファイルにアクセスができるようにすることです。このHTMLの公開のことを<strong><code>デプロイ</code></strong>と呼びます。</p>
 <p>デプロイをするためには、Webサーバーが必要となります。自前でWebサーバーを準備することもできますが、通常はWebサーバーを運用しているサービスを利用することになります。</p>
 <p>Webサーバーを運用しているサービスには、<a href="https://aws.amazon.com/jp">Amazon web servise</a>や<a href="https://azure.microsoft.com/ja-jp">Microsoft Azure</a>などがありますが、いずれも有料です。Quartoで作成したHTML（Webサーバーで演算を行わないので、静的なHTMLと呼ばれます）をデプロイするのであれば、これらの有料サービスではなく、無料のサービスを利用することができます。</p>
 <p>無料のサービスには、Positが運営しているQuarto専用のサービスである<a href="https://quartopub.com/"><strong>Quarto Pub</strong></a>や、もっと汎用的にHTMLの公開に用いることができる<a href="https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site"><strong>Github Pages</strong></a>などがあります。</p>
 <p>これらの無料のサービスでは公開したHTMLは基本的にはWeb上に完全に公開されます。企業内など、特定のユーザーのみがアクセスできる設定にはできません。また、アクセス数に制限があり、高頻度でアクセスされると表示が遅くなったり、表示できなくなったりします。また、HTMLのサイズにも制限があります。</p>
-<p>とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることもあまりないと思います。とりあえずはQuarto pubかGithub Pagesでデプロイすることを検討するとよいでしょう。</p>
+<p>とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることはあまりないと思います。Quartoで作成したHTMLを公開する場合、とりあえずはQuarto pubかGithub Pagesでデプロイすることを検討するとよいでしょう。</p>
 <section id="quarto-pub" class="level2" data-number="43.1"><h2 data-number="43.1" class="anchored" data-anchor-id="quarto-pub">
 <span class="header-section-number">43.1</span> Quarto Pub</h2>
-<p>Quarto Pubは上記の通り、Positが運営しているサービスで、Rstudioを用いていれば簡単にQuartoを用いて作成したHTMLをデプロイすることができます。</p>
+<p>Quarto Pubは上記の通り、Positが運営しているサービスで、Rstudioを用いていれば簡単にHTMLをデプロイすることができます。</p>
 <p>Quarto Pubにデプロイする場合、まずはQuarto Pubにアカウントを作成する必要があります。まずはQuarto Pubのホームページにアクセスし、「Sign Up」を選択しましょう。Quarto PubのログインにはGoogleやGithubのアカウントを用いることもできます。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/quarto_pub.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Quarto Pubのページからアカウントを作成する"><img src="./image/quarto_pub.png" class="img-fluid figure-img" alt="Quarto Pubのページからアカウントを作成する"></a></p>
@@ -769,10 +769,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>quarto publishコマンド</strong></pre>
 </div>
-<pre class="terminal cell-code"><code>quarto publish quarto-pub</code></pre>
+<pre class="terminal cell-code"><code>quarto publish quarto-pub.qmd</code></pre>
 </div>
 </div>
-<p><code>quarto publish</code>コマンドを入力すると、Terminal上でQuarto Pubへの認証が行われます。必要な情報を入力すると、作成したQuarto PubのアカウントにProjectがデプロイされます。</p>
+<p><code>quarto publish</code>コマンドを入力すると、Terminal上でQuarto Pubへの認証が行われます。必要な情報を入力すると、作成したQuarto PubのアカウントにProjectの.qmdもしくは指定した.qmdファイルがHTMLにRenderされた後、デプロイされます。</p>
 <section id="アクセストークンaccess-token" class="level3" data-number="43.1.1"><h3 data-number="43.1.1" class="anchored" data-anchor-id="アクセストークンaccess-token">
 <span class="header-section-number">43.1.1</span> アクセストークン（Access Token）</h3>
 <p>上記のQuarto Pubの認証では、アクセストークン（Access Token）というものが要求されます。アクセストークンは上記のQuarto Pubのアカウントにログインし、アカウント内のページから取得することができます。認証の途中で入力を求められるため、コピーしておいてテキストとしてTerminalで貼り付けるとよいでしょう。詳細については<a href="https://quarto.org/docs/publishing/quarto-pub.html#access-tokens">QuartoのGuide</a>のページをご参照ください。</p>
@@ -924,7 +924,7 @@ Githubにリモートリポジトリを作成し、ファイルをアップロ�
 <figcaption>Github Pagesの設定</figcaption></figure>
 </div>
 <p>このページでBranchを<code>main</code>（上の図では<code>master</code>になっています）、<code>/(root)</code>もしくは<code>/docs</code>から選択します。rootの場合はProjectのディレクトリにあるHTMLを、/docsの場合はProjectのディレクトリに作成した/docsのディレクトリ内のHTMLをそれぞれデプロイすることになります。</p>
-<p>QuartoではRenderで出力するHTMLは_siteや_bookのフォルダ内に保存されるため、以下のようにYAMLでdocsフォルダに保存するようにしておくとよいでしょう。</p>
+<p>QuartoではRenderで出力するHTMLは<code>_site</code>や<code>_book</code>のフォルダ内に保存されるため、以下のようにYAMLで<code>docs</code>フォルダに保存するようにしておくとよいでしょう。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1438,7 +1438,7 @@ Githubにリモートリポジトリを作成し、ファイルをアップロ�
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>pi <span class="co"># knitrを使うためのラベル</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>WebsiteやBookをRenderし、HTMLを作成した後、そのHTMLを公開すれば、世界中の人達がそのWebsiteやBookを読むことができます。HTMLをWeb上で公開するというのは、Webに繋がったコンピュータ（Webサーバー）にHTMLファイルを置き、Web上でこのHTMLファイルを開くことができるようにすることです。このHTMLの公開のことを**`デプロイ`**と呼びます。</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>WebsiteやBookをRenderし、HTMLを作成した後、そのHTMLをWeb上に公開すれば、世界中の人達がそのWebsiteやBookを読むことができます。HTMLをWeb上で公開するというのは、Webに繋がったコンピュータ（Webサーバー）にHTMLファイルを置き、Web上でこのHTMLファイルにアクセスができるようにすることです。このHTMLの公開のことを**`デプロイ`**と呼びます。</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>デプロイをするためには、Webサーバーが必要となります。自前でWebサーバーを準備することもできますが、通常はWebサーバーを運用しているサービスを利用することになります。</span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
@@ -1448,11 +1448,11 @@ Githubにリモートリポジトリを作成し、ファイルをアップロ�
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>これらの無料のサービスでは公開したHTMLは基本的にはWeb上に完全に公開されます。企業内など、特定のユーザーのみがアクセスできる設定にはできません。また、アクセス数に制限があり、高頻度でアクセスされると表示が遅くなったり、表示できなくなったりします。また、HTMLのサイズにも制限があります。</span>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることもあまりないと思います。とりあえずはQuarto pubかGithub Pagesでデプロイすることを検討するとよいでしょう。</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることはあまりないと思います。Quartoで作成したHTMLを公開する場合、とりあえずはQuarto pubかGithub Pagesでデプロイすることを検討するとよいでしょう。</span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto Pub</span></span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>Quarto Pubは上記の通り、Positが運営しているサービスで、Rstudioを用いていれば簡単にQuartoを用いて作成したHTMLをデプロイすることができます。</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>Quarto Pubは上記の通り、Positが運営しているサービスで、Rstudioを用いていれば簡単にHTMLをデプロイすることができます。</span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>Quarto Pubにデプロイする場合、まずはQuarto Pubにアカウントを作成する必要があります。まずはQuarto Pubのホームページにアクセスし、「Sign Up」を選択しましょう。Quarto PubのログインにはGoogleやGithubのアカウントを用いることもできます。</span>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
@@ -1461,10 +1461,10 @@ Githubにリモートリポジトリを作成し、ファイルをアップロ�
 <span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>Quarto Pubにアカウントを作成した後、TerminalでWebsiteやBookのProjectのディレクトリに移動した後、<span class="in">`quarto publish`</span>コマンドを用いることでそのProject内の.qmdファイルがHTMLにRenderされ、そのHTMLがQuarto Pubにデプロイされます。</span>
 <span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="quarto publishコマンド"}</span></span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="in">quarto publish quarto-pub</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="in">quarto publish quarto-pub.qmd</span></span>
 <span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="in">`quarto publish`</span>コマンドを入力すると、Terminal上でQuarto Pubへの認証が行われます。必要な情報を入力すると、作成したQuarto PubのアカウントにProjectがデプロイされます。</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="in">`quarto publish`</span>コマンドを入力すると、Terminal上でQuarto Pubへの認証が行われます。必要な情報を入力すると、作成したQuarto PubのアカウントにProjectの.qmdもしくは指定した.qmdファイルがHTMLにRenderされた後、デプロイされます。</span>
 <span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="fu">### アクセストークン（Access Token）</span></span>
 <span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
@@ -1594,7 +1594,7 @@ Githubにリモートリポジトリを作成し、ファイルをアップロ�
 <span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>このページでBranchを<span class="in">`main`</span>（上の図では<span class="in">`master`</span>になっています）、<span class="in">`/(root)`</span>もしくは<span class="in">`/docs`</span>から選択します。rootの場合はProjectのディレクトリにあるHTMLを、/docsの場合はProjectのディレクトリに作成した/docsのディレクトリ内のHTMLをそれぞれデプロイすることになります。</span>
 <span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a>QuartoではRenderで出力するHTMLは_siteや_bookのフォルダ内に保存されるため、以下のようにYAMLでdocsフォルダに保存するようにしておくとよいでしょう。</span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a>QuartoではRenderで出力するHTMLは<span class="in">`_site`</span>や<span class="in">`_book`</span>のフォルダ内に保存されるため、以下のようにYAMLで<span class="in">`docs`</span>フォルダに保存するようにしておくとよいでしょう。</span>
 <span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="HTMLを出力するフォルダを設定する"}</span></span>
 <span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>

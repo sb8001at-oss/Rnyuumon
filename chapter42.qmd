@@ -5,7 +5,7 @@ library(tidyverse)
 library(readxl)
 ```
 
-ここまでに、QuartoでHTML、PDF、Wordなどの文書、Reveal.jsなどのプレゼンテーション、インタラクティブなダッシュボードを作成する手法を説明してきました。Quartoでは、HTMLの拡張として、ブログなどを含む**Website**や教科書などの本のHTMLとして表現する、**Book**を作成することもできます。以下にWebsiteやHTMLを作成する手順について、簡単に説明していきます。
+ここまでに、QuartoでHTML、PDF、Wordなどの文書、Reveal.jsなどのプレゼンテーション、インタラクティブなダッシュボードを作成する手法を説明してきました。Quartoでは、HTMLの拡張として、ブログなどを含む**Website**や教科書などの本のHTMLとして表現する、**Book**を作成することもできます。以下にWebsiteやBookを作成する手順について、簡単に説明していきます。
 
 ## Quarto project
 
@@ -25,13 +25,13 @@ RStudioを用いている場合には、このフォルダ内の`.Rproj`ファ�
 quarto create project
 ```
 
-TerminalからQuarto Projectを作成すると、まずはプロジェクトのタイプを入力する画面が表示されます。タイプには、default、website、blog、manuscript、book、[confluence](https://quarto.org/docs/publishing/confluence.html)（Wikiみたいなもの）の6つの選択肢が表示されるので、作成する文書に対応したタイプを選択します。
+TerminalからQuarto Projectを作成すると、まずはプロジェクトのタイプを入力する画面が表示されます。タイプには、default、website、blog、manuscript、book、[confluence](https://quarto.org/docs/publishing/confluence.html)（Wikiみたいなもの）の6つがあるので、作成する文書に対応したタイプを選択します。
 
 次に、Directory（フォルダ名）を入力します。Directoryを入力すると、そのDirectory内にProjectが作成されます。このProjectのフォルダには、上で示した作成されるファイルから、`.Rproj`ファイルが除かれたものが作成されます。このフォルダに移動し、`quarto render`を行うと、テンプレートの文書（Websiteの場合はHTML）を作成することができます。
 
-RStudioではProjectに従いいろいろな設定が行われるため、複雑な文書を作成する場合にはProjectを作成しておいた方がよいですが、VSCodeなどを用いる場合には特に必須ではなく、`_quarto.yml`にYAMLの設定を行えばWebsiteやBookを特に問題なく作成することができます。ただし、Projectを作成するとテンプレートとなるファイル・フォルダを生成してくれるため、Quartoで文書の作成を始める場合には有用でしょう。
+RStudioではProjectを作成することでいろいろな設定が行われるため、複雑な文書を作成する場合にはProjectを作成しておいた方がよいですが、VSCodeなどを用いる場合には特に必須ではなく、`_quarto.yml`にYAMLの設定を書けばWebsiteやBookを特に問題なく作成することができます。ただし、Projectを作成するとテンプレートとなるファイル・フォルダを生成してくれるため、Quartoで文書の作成を始める場合には有用でしょう。
 
-以下に、各タイプのProjectで作成されるファイル・フォルダの構造、_quarto.ymlの設定、Renderで出力されるHTMLの見ためを示します。
+以下に、各タイプのProjectで作成されるファイル・フォルダの構造、`_quarto.yml`の設定、Renderで出力されるHTMLの見ためを示します。
 
 :::{.column-page-right}
 
@@ -329,17 +329,18 @@ format:
 
 Quartoでは、YAMLに出力ファイルを指定せずにRenderを行うと、HTMLが出力されます。ですので、Markdown、YAMLを用いれば、ある程度自由にHTMLを用いたウェブページを作成することができます。
 
-QuartoでWebsiteやBookを指定してWebsite・Bookを作成する利点は、それぞれを指定することである程度出力するHTMLのデザインを固定することができる点にあります。Websiteではある程度自由に、複数の`.qmd`を一つのウェブページに仕立てることができます。また、Bookであれば、`.qmd`を各章とし、本のように一本道のウェブページを作成できます。
+QuartoでWebsiteやBookを指定してWebsite・Bookを作成する利点は、それぞれを指定することである程度出力するHTMLのデザインを固定することができる点にあります。Websiteではある程度自由に、複数の.qmdを一つのウェブページに仕立てることができます。また、Bookであれば、.qmdを各章とし、本のように一本道のウェブページを作成できます。
 
 ### website・bookの設定
 
 Website、Bookを作成する場合、`_quarto.yml`に`project: type: website`または`project: type:  book`を設定します。この`project`は上記のようにQuarto Projectを作成していなくても設定可能です。
 
-また、`.qmd`ファイル内で`project`を設定しても、`project`に応じた設定は利用できません。`project`は`_quarto.yml`内に設定して用います。
+また、.qmdファイル内で`project`を設定しても、`project`に応じた設定は利用できません。`project`は`_quarto.yml`内に設定して用います。
 
 ```{yaml, filename="project typeの設定"}
 project: 
   type: website
+
 project: 
   type: book
 ```
@@ -352,13 +353,13 @@ project:
 
 ### index.qmd
 
-`website`のトップページとなるのは、`index.qmd`という`.qmd`ファイルです。`index.qmd`は`book`や`blog`でもトップページとなります。
+`website`のトップページとなるのは、`index.qmd`という.qmdファイルです。`index.qmd`は`book`や`blog`でもトップページとなります。
 
 ### Renderする.qmdを指定する
 
-projectを設定した`_quarto.yml`と同じフォルダ・サブフォルダ内に保存されている`.qmd`ファイルは、そのprojectのファイルであると認識されます。このフォルダ内の.qmdファイルをRenderすると、基本的にはそのフォルダおよびサブフォルダ内のすべての`.qmd`ファイルがRenderされます。
+Projectを設定した`_quarto.yml`と同じフォルダ・サブフォルダ内に保存されている.qmdファイルは、そのProjectのファイルであると認識されます。このフォルダ内の.qmdファイルをRenderすると、基本的にはそのフォルダおよびサブフォルダ内のすべての.qmdファイルがRenderされます。
 
-Projectのフォルダ内のうち、Renderしたい`.qmd`ファイルを指定する場合には、`project: render:`に`.qmd`ファイルを設定します。
+Projectのフォルダ内のうち、Renderしたい.qmdファイルを指定する場合には、`project: render:`に.qmdファイルを設定します。
 
 ```{yaml, filename="Renderするファイルを指定する"}
 project:
@@ -367,19 +368,19 @@ project:
     - section2.qmd
 ```
 
-また、ファイル名の前に`!`を置くと、そのファイルのみを除いてRenderすることもできます。ただし、この場合には`*.qmd`という形で、すべての`.qmd`ファイルを指定しておく必要があります。
+また、ファイル名の前に`!`を置くと、そのファイルのみを除いてRenderすることもできます。ただし、この場合には`*.qmd`という形で、すべての.qmdファイルを指定しておく必要があります。
 
 ```{yaml, filename="Renderしないファイルを指定する"}
 project:
   render:
-    - "*.qmd" # すべての.qmdファイルをRenderしない
+    - "*.qmd" # すべての.qmdファイルをRenderする
     - "!ignored.qmd" # 選択した.qmdファイルをRenderしない
     - "!ignored-dir/" # 指定したディレクトリ内の.qmdファイルをRenderしない
 ```
 
 ### ブログを作成する
 
-blogはwebsiteの特殊な形の一つで、基本的なWebsiteの構造に投稿（posts）を追加していく形となります。blogのフォルダ構造は上に示した通り、以下のようになります。`posts`ディレクトリ内にpostsに当たる.qmdファイルを追加していきます。
+blogはwebsiteの特殊な形の一つで、基本的なWebsiteの構造に投稿（posts）を追加して用います。blogのフォルダ構造は上に示した通り、以下のようになります。`posts`ディレクトリ内にpostsに当たる.qmdファイルを追加していきます。
 
 また、`posts`ディレクトリ内にサブフォルダを作成し、その中に.qmdファイルを作成することで、各postごとのファイルをそれぞれ別に保存することもできます。
 
@@ -390,14 +391,11 @@ test_confluence
 │- profile.jpg
 │- styles.css
 │- _quarto.yml
-│
 └─ posts
     │- _metadata.yml
-    │
     ├- post-with-code
     │  ├- image.jpg
     │  └- index.qmd
-    │
     └- welcome
        ├- index.qmd
        └- thumbnail.jpg
@@ -405,13 +403,13 @@ test_confluence
 
 #### _metadata.yml
 
-上記のpostsディレクトリ内には、`_metadata.yml`というファイルがあります。これは、`_quarto.yml`に設定したYAMLに加えて、postsのみに設定するためのYAMLを指定するためのファイルです。`blog`に限らず、websiteでも同様にサブフォルダ内に`_metadata.yml`を設定することで、そのサブフォルダ内の.qmdのデザインやchunkの設定などをpost意外とは別の形で設定することができます。
+上記のpostsディレクトリ内には、`_metadata.yml`というファイルがあります。これは、`_quarto.yml`に設定したYAMLに加えて、postsのみに適用するYAMLを指定するためのファイルです。`blog`に限らず、websiteでも同様にサブフォルダ内に`_metadata.yml`を設定することで、そのサブフォルダ内の.qmdのデザインやchunkの設定などをpost以外とは別の形で設定することができます。
 
-ただし、サブフォルダ内の`.qmd`に適用されるYAMLは`_quarto.yml`と`_metadata.yml`を統合したものになり、`_metadata.yml`の設定のみだけではなく、`_quarto.yml`の内容も同様に適用されます。
+ただし、サブフォルダ内の.qmdに適用されるYAMLは`_quarto.yml`と`_metadata.yml`を統合したものになり、`_metadata.yml`の設定のみだけではなく、`_quarto.yml`の内容も同様に適用されます。
 
 #### postsの設定
 
-各postにはタイトルや著者、登校日、ブログのカテゴリ、トップ画像を設定することができます。タイトルや著者、は[39章](./chapter39.html)に記載した通り、`title`や`author`、`date`を設定します。ブログのカテゴリは`categories`に、ブログのトップ画像として用いる画像は`image`にそれぞれ設定します。
+各postにはタイトルや著者、登校日、ブログのカテゴリ、トップ画像を設定することができます。タイトルや著者には、[39章](chapter39.qmd#文章のタイトルと著者)に記載した通り、`title`や`author`、`date`をそのpostのYAMLに設定します。ブログのカテゴリは`categories`に、ブログのトップ画像として用いる画像は`image`にそれぞれ設定します。
 
 ```{yaml, filename="Blog：PostのYAML設定"}
 ---
@@ -423,7 +421,7 @@ image: "image.jpg"
 ---
 ```
 
-`categories`は以下のような形で設定することもできます。
+`categories`は`_quarto.yml`に以下のような形で設定することもできます。
 
 ```{yaml, filename="Blog：カテゴリの設定"}
 categories:
@@ -510,7 +508,7 @@ listing:
 ---
 ```
 
-ただし、個別の.qmdファイルで`feed: true`と設定しただけでは、RSSを設定することはできず、_quarto.ymlで以下のようにRSSの設定を別途記載する必要があります。
+ただし、個別の.qmdファイルで`feed: true`と設定しただけでは、RSSを設定することはできず、`_quarto.yml`で以下のようにRSSの設定を別途記載する必要があります。
 
 ```{yaml, filename="RSSの設定2"}
 website:
@@ -519,7 +517,7 @@ website:
   description: "A cheap sample blog"
 ```
 
-## Quarto Books
+## Quarto Book
 
 Quartoで教科書などの本を書くときに用いる`project`の`type`が`type: book`です。`book`はR markdownの拡張である、[bookdown](https://bookdown.org/)[@bookdown_bib]を基とした`type`で、YAMLでは以下のように記載することで`book`のスタイルを適用することができます。
 
@@ -528,9 +526,9 @@ project:
   type: book
 ```
 
-### Quarto Booksの構造
+### Quarto Bookの構造
 
-Quarto Booksの構造は`website`と比較して単純で一本道となります。Booksの基本的な要素は`index.qmd`、各章に当たる`.qmd`ファイル、`summary.qmd`、`reference.qmd`の4つです。Quarto Booksでは`index.qmd`は表紙とまえがき、`summary.qmd`があとがき、`reference.qmd`は参考文献に当たります。この3種類はQuarto Projectを用いる場合にも作成されます。
+Quarto Bookの構造は`website`と比較して単純で一本道となります。Bookの基本的な要素は`index.qmd`、各章に当たる`.qmd`ファイル、`summary.qmd`、`reference.qmd`の4つです。Quarto Bookでは`index.qmd`は表紙とまえがき、`summary.qmd`があとがき、`reference.qmd`は参考文献に当たります。この3種類はQuarto Projectを用いる場合にも作成されます。
 
 各章の`.qmd`ファイルにはどのような名前を付けても問題ありませんが、各文書がどの章を構成するのかをYAMLで指定する必要があります。
 
@@ -586,7 +584,7 @@ Quarto Bookでは、その章内の図やchunkだけでなく、他の章の記�
 
 chunk optionとして`label`を設定しておくと、その`label`を参照し、リンクを作成することができます。また、画像や表に対しても参照を行うことができます。
 
-ただし、参照のための`label`の付け方にはルールがあり、図や画像のラベルは`fig-`から、表のラベルは`tbl-`から始める必要があります。また、labelにはアンダースコア（`_`）を用いることはできません。
+ただし、参照のための`label`の付け方にはルールがあり、図や画像のラベルは`fig-`から、表のラベルは`tbl-`から始める必要があります。また、`label`にはアンダースコア（`_`）を用いることはできません。
 
 ```{{r}}
 #| label: fig-cars-plot
@@ -654,17 +652,17 @@ WebsiteやBookの.qmdを作成したら、HTMLをRenderします。Website・Boo
 
 ![Renderボタン](./image/Quarto_render_from_Rstudio.png)
 
-また、TerminalでProjectのフォルダに移動し、quarto renderを実行することでもWebsite・BookをRenderすることができます。
+また、TerminalでProjectのフォルダに移動し、`quarto render`のコマンドを実行することでもWebsite・BookをRenderすることができます。
 
 ![quarto render](./image/Quarto_render_from_terminal.png)
 
-Renderを実行すると、Websiteではそのフォルダとサブフォルダに含まれている`.qmd`ファイルがHTMLに変換されます。一方でBookでは、そのフォルダ内の.qmdファイルのうち、`chapters`で章に設定した`.qmd`ファイルだけがHTMLに変換されます。
+Renderを実行すると、Websiteではそのフォルダとサブフォルダに含まれている`.qmd`ファイルがHTMLに変換されます。一方でBookでは、そのフォルダ内の.qmdファイルのうち、`chapters`で章に設定した.qmdファイルだけがHTMLに変換されます。
 
 ### freeze
 
-WebsiteやBookでは、`.qmd`ファイルを指定せずにRenderすると、変換する`.qmd`ファイルに含まれるRのスクリプトがすべて再計算され、Renderされます。すでにHTMLを作成し、`.qmd`に変更がない場合にもこの再計算は実行されます。したがって、WebsiteやBookのサイズが大きくなると、再計算に時間がかかるようになります。
+WebsiteやBookでは、.qmdファイルを指定せずにRenderすると、変換する.qmdファイルに含まれるRのスクリプトがすべて再計算され、Renderされます。すでにHTMLを作成し、.qmdに変更がない場合にもこの再計算は実行されます。したがって、WebsiteやBookのサイズが大きくなると、再計算に時間がかかるようになります。
 
-一度HTMLを作成した`.qmd`について、ファイルに変更がない場合にRenderを実施しないようにするには、`freeze: auto`を設定します。また、`freeze: true`を設定すると、`.qmd`のRenderが行われなくなります。
+一度HTMLを作成した.qmdについて、ファイルに変更がない場合にRenderを実施しないようにするには、`freeze: auto`を設定します。また、`freeze: true`を設定すると、.qmdのRenderが行われなくなります。
 
 大きなWebsiteを作成する場合には、作成中には`freeze: auto`を用い、以下に述べるデプロイの前には`freeze: false`として全体をRenderするような運用を行うとよいかと思います。
 
@@ -676,5 +674,5 @@ execute:
 :::{.callout-tip collapse=true}
 ## freeze: autoについて
 
-大きなWebsiteやBookを作成する場合、`freeze: auto`はRenderにかかる時間を短縮できる便利な設定です。ただし、`.qmd`ファイルに変更がないのに内容が変わるような場合、例えば.qmdファイル中で読み込むデータを修正した場合などには、この変更が適用されずにRenderが終了してしまいます。HTMLを共有・公開する前などには、`freeze: false`に設定を変更し、Renderしたほうがよいでしょう。
+大きなWebsiteやBookを作成する場合、`freeze: auto`はRenderにかかる時間を短縮できる便利な設定です。ただし、.qmdファイルに変更がないのに内容が変わるような場合、例えば.qmdファイル中で読み込むデータを修正した場合などには、この変更が適用されずにRenderが終了してしまいます。HTMLを共有・公開する前などには、`freeze: false`に設定を変更し、Renderしたほうがよいでしょう。
 :::

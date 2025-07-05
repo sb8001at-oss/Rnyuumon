@@ -7,13 +7,13 @@ library(readxl)
 
 ## ダッシュボードとは？
 
-Quartoでは、文書、プレゼンテーションに加えて、ダッシュボードを作成することができます。ダッシュボードとは、数値や統計の結果などを一覧として表示するためのHTMLを指す言葉で、通常は動的なデータ（例えば特定の株式会社の株価や毎日のプロ野球の試合の結果など）を表示するのに用いられます。ダッシュボードの例として、以下のようなものが[QuartoのGallary](https://quarto.org/docs/gallery/)に示されています。
+Quartoでは、文書、プレゼンテーションに加えて、**ダッシュボード**を作成することができます。ダッシュボードとは、数値や統計の結果などを一覧として表示するためのHTMLを指す言葉で、通常は動的なデータ（例えば特定の株式会社の株価や毎日のプロ野球の試合の結果など）を表示するのに用いられます。ダッシュボードの例として、以下のようなものが[QuartoのGallary](https://quarto.org/docs/gallery/)に示されています。
 
 - [Palmer Penguins](https://jjallaire.shinyapps.io/penguins-dashboard/)
 - [NFL Injuries](https://jjallaire.github.io/nfl-injuries-dashboard/)
 - [日本の人口](https://xjorv.quarto.pub/pop_japanese_dashboard_with_ojs/)：これはGallaryにはなく、私が作成したものです。スマホで表示するとグラフが際限なく縦長になります。
 
-ダッシュボードでは数値やグラフが表示されます。この数値やグラフの値がいつも同じなら（例えば、いつ見ても同じ日の株価が表示されていれば）、誰もそのダッシュボードに興味を抱かないでしょう。したがって、何らかの方法で表示される値やグラフが変化する（動的な）仕組みが必要です。
+ダッシュボードには数値やグラフが表示されます。この数値やグラフの値がいつも同じなら（例えば、いつ見ても同じ日の株価が表示されていれば）、誰もそのダッシュボードに興味を抱かないでしょう。したがって、何らかの方法で表示される値やグラフが変化する（動的な）仕組みが必要です。
 
 Quartoに動的な仕組みを持ち込む方法には、以下のようなものがあります。
 
@@ -163,11 +163,11 @@ plot(iris)
 
 ### value box
 
-**value box**とは、特定の値などを大きく表示する場合に用いるもので、以下の図のように表示されるものです。
+**value box**とは、特定の値などを大きく表示する場合に用いるもので、以下の図のようなものです。
 
 ![value box](./image/dashboard_valuebox.png)
 
-value boxを表示する場合、以下のようにchunkに`content: valuebox`を設定します。また、value boxには`icon`を表示させることができます。`icon`は[bootstrap icons](https://icons.getbootstrap.com/)から選択して指定します。value boxの色は`color`を指定することもでき、[primary、secondaryなど](https://quarto.org/docs/dashboards/data-display.html#icon-and-color)から選択、もしくはカラーコードを指定します。
+value boxを表示する場合、以下のようにchunkに`content: valuebox`を設定します。value boxの値はリストで設定し、名前を`value`とします。value boxには`icon`を表示させることができます。`icon`は[bootstrap icons](https://icons.getbootstrap.com/)から選択して指定します。value boxの色は`color`を指定することもでき、[primary、secondaryなど](https://quarto.org/docs/dashboards/data-display.html#icon-and-color)から選択、もしくはカラーコードを指定します。
 
 ````{markdown, filename="value boxを使用する"}
 ```{r}
@@ -183,13 +183,13 @@ list(
 
 ## Observable
 
-動的なウェブサイトを作成する場合、上に記載した通りShinyなどの**Webアプリケーション**を用いるのが一般的です。Webアプリケーションとは、ウェブサイトで入力した内容に従い、サーバーと呼ばれるコンピュータで演算を行うことで、表示させるウェブページを変えることができるようにする仕組みを指します（詳しくは[47章](chapter47.qmd)で説明します）。
+動的なウェブサイトを作成する場合、上に記載した通りShinyなどの**Webアプリケーション**を用いるのが一般的です。Webアプリケーションとは、ウェブサイトで入力した内容に従い、サーバーと呼ばれるコンピュータで演算を行うことで、表示させるウェブページを動的に変化させることができるようにする仕組みを指します（詳しくは[47章](chapter47.qmd)で説明します）。
 
 Quartoでは、Shinyを用いて動的なHTMLを作成することができます。ただし、Shinyを用いた場合、サーバーで演算を行う必要があります。Shiny専用のサーバーとして[**Shinyapps.io**](https://www.shinyapps.io/)というものを無料で用いることができますが、無料だけにサーバーの計算能力は低く、あまりレスポンスのいいものではありません。
 
 そもそもQuartoは静的なHTML、つまりサーバーの演算能力を必要としないHTMLを作成することを前提として作成されています。ですので、できればサーバーの演算能力を用いず、動的に見えるHTMLを作成したいところです。
 
-動的に見えるHTMLとしては、[27章](chapter27.qmd)で説明した`plotly`、[45章](chapter45.qmd#leafletパッケージ)で説明する`leaflet`があります。これらを用いることでサーバーで演算を行うことなく動的なHTMLを作成することができます。
+動的に見えるHTMLとしては、上で紹介したように[27章](chapter27.qmd)で説明した`plotly`、[45章](chapter45.qmd#leafletパッケージ)で説明する`leaflet`があります。これらを用いることでサーバーで演算を行うことなく動的なHTMLを作成することができます。
 
 もう一つの動的に見えるHTMLを作成する方法として、[**Observable**](https://observablehq.com/)があります。Observableは[D3.js](https://d3js.org/)を開発した[Dr. Mike Bostock](https://en.wikipedia.org/wiki/Mike_Bostock)が開発している一連のツールで、Jupiter notebook風の[Observable Notebooks](https://observablehq.com/platform/notebooks)、ダッシュボード風のObservable Canvasesの2つを提供しているWebサービスです。ObservableはD3.jsのグラフを比較的簡単な手順で描画できる、Javascriptベースのサービスとなっており、Rユーザーでも比較的簡単にJavascriptを使い、グラフを作成できるようになっています。
 
@@ -286,7 +286,7 @@ viewof select_pref = Inputs.select(["北海道","青森県","岩手県","宮城�
 
 ### データのフィルタリング
 
-データを取り込み、入力からオブジェクトを作成したら、入力オブジェクトに従いデータを選択する必要があります。データの選択には、dplyrと同じように`filter`メソッドを用います。Rを使っていると以下の表現はやや迂遠な感じを受けるかもしれませんが、特に難しいことなくデータを選択することができます。
+データを取り込み、入力からオブジェクトを作成したら、入力オブジェクトに従いデータを選択する必要があります。データの選択には、`dplyr`と同じように`filter`メソッドを用います。Rを使っていると以下の表現はやや迂遠な感じを受けるかもしれませんが、特に難しいことなくデータを選択することができます。
 
 ただし、この`filter`メソッドは`arquero`というJavascriptのライブラリに設定されている関数ですので、Rのライブラリと同様に読み込む必要があります。
 
