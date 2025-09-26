@@ -105,7 +105,7 @@ t1$zone # タイムゾーン
 
 POSIXltにはタイムゾーンがアトリビュートとして設定されており、POSIXctには設定されていませんが、いずれも`as.POSIXlt`、`as.POSIXct`関数の`tz`引数を設定することで、タイムゾーンを変更することができます。
 
-ただし、POSIXltクラスのオブジェクトを`as.POSIXlt`関数の引数とした場合にはタイムゾーンが変更されない仕様になっています。
+ただし、POSIXltから`as.POSIXct`関数でタイムゾーンを変更するときにはタイムゾーンは変更になりますが、時間は修正されません。また、POSIXltクラスのオブジェクトを`as.POSIXlt`関数の引数とした場合にはタイムゾーンが変更されない仕様になっています。
 
 ```{r, error=TRUE, filename="タイムゾーンの設定"}
 Sys.time() |> class() # POSIXctクラスのオブジェクト
@@ -120,7 +120,7 @@ as.POSIXlt(Sys.time(), "EST") # アメリカ東時間に変換
 class(t1) # POSIXltクラスのオブジェクト
 # 引数がPOSIXltだとタイムゾーンの変更ができない
 as.POSIXlt(t1, tz = "EST")
-# POSIXltからPOSIXctに変換するとタイムゾーンが変更できる
+# POSIXltからPOSIXctに変換するとタイムゾーンが変更できる（時刻は変更されない）
 as.POSIXct(t1, tz = "EST")
 ```
 
@@ -143,6 +143,18 @@ months(t2) # 月を返す関数
 
 quarters(t2) # 四半期を返す関数
 ```
+
+:::{.callout-tip collapse="true"}
+## weekdaysの表示
+
+weekdaysの表示はRの**Locale**に依存して決まっています。Localeは`Sys.getlocale`関数で確認できます。
+
+```{r, filename="Sys.getlocale関数"}
+Sys.getlocale()
+```
+Localeは`Sys.setlocale`関数で変更できますが、どうしても英語にしたい、といった場合を除けばあまりいじらなくてよいでしょう。
+
+:::
 
 ## 文字列を日時データに変換する
 

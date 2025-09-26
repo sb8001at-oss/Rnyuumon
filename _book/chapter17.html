@@ -98,6 +98,8 @@ div.csl-indent {
 <link href="site_libs/bootstrap/bootstrap-608b8f7c2f1fcf01b028a6c7745bf651.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark-1ce8372c138f3081dbeb34edbaf21c9c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="site_libs/bootstrap/bootstrap-608b8f7c2f1fcf01b028a6c7745bf651.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/kbd/kbd.js"></script>
+<link href="site_libs/quarto-contrib/kbd/kbd.css" rel="stylesheet">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -711,6 +713,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter48.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">実験計画法</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -786,8 +794,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </li>
   <li><a href="#readxl" id="toc-readxl" class="nav-link" data-scroll-target="#readxl"><span class="header-section-number">17.9</span> readxl</a></li>
   <li><a href="#excel%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E7%A8%AE%E9%A1%9E" id="toc-excelファイルの種類" class="nav-link" data-scroll-target="#excel%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E7%A8%AE%E9%A1%9E"><span class="header-section-number">17.10</span> Excelファイルの種類</a></li>
-  <li><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA" id="toc-その他のデータ読み込みライブラリ" class="nav-link" data-scroll-target="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA"><span class="header-section-number">17.10.0.1</span> その他のデータ読み込みライブラリ</a></li>
-  <li><a href="#data.table" id="toc-data.table" class="nav-link" data-scroll-target="#data.table"><span class="header-section-number">17.11</span> data.table</a></li>
+  <li><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA" id="toc-その他のデータ読み込みライブラリ" class="nav-link" data-scroll-target="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA"><span class="header-section-number">17.11</span> その他のデータ読み込みライブラリ</a></li>
+  <li><a href="#data.table" id="toc-data.table" class="nav-link" data-scroll-target="#data.table"><span class="header-section-number">17.12</span> data.table</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -808,7 +816,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   
 
 
-</header><p>統計に用いるデータは、通常Excelのような表計算ソフトや、データベースなどで作成されます。Rを用いてデータ解析・統計解析を行うためには、まずRに表計算ソフトやデータベースからデータを読み込む必要があります。</p>
+</header><p>統計に用いるデータは、通常Excelのような表計算ソフトやデータベースからの抽出などで作成されます。Rを用いてデータ解析・統計解析を行うためには、まずRに表計算ソフトやデータベースからデータを読み込む必要があります。</p>
 <p>データ解析・統計解析が終われば、Rでの解析結果を書き出し、Excelなどで取り扱う必要があります。</p>
 <p>このように、Rで解析を行うためには、データの読み込み・書き出しが必須となります。Rはこのような、データの読み込み・書き出し（Input/Output、<strong>I/O</strong>）のための関数を多数備えています。</p>
 <section id="ディレクトリの操作" class="level2" data-number="17.1"><h2 data-number="17.1" class="anchored" data-anchor-id="ディレクトリの操作">
@@ -959,7 +967,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <section id="プログラムを呼び出す" class="level3" data-number="17.5.1"><h3 data-number="17.5.1" class="anchored" data-anchor-id="プログラムを呼び出す">
 <span class="header-section-number">17.5.1</span> プログラムを呼び出す</h3>
-<p>保存したプログラムを他のプログラムで呼び出すときには、<code>source</code>関数を用います。<code>source</code>関数の引数はファイル名の文字列です。<a href="./chapter2.html#エディタを使う">2章</a>で説明した通り、Rのプログラムは通常「.R」の拡張子を付けて取り扱いますので、拡張子を含めたファイル名を指定します。現在のワーキングディレクトリに保存されているファイルを呼び出す場合はそのファイル名を、他のディレクトリに保存されているファイルを呼び出す場合はそのファイルのパスを含む文字列を<code>source</code>関数の引数に取ります。。<code>source</code>関数でプログラムを呼び出すと、プログラムが実行されます。複雑なプログラムでは、関数などを別ファイルで定義しておいて、そのファイルを呼び出して用いることもあります。</p>
+<p>保存したプログラムを他のプログラムで呼び出すときには、<code>source</code>関数を用います。<code>source</code>関数の引数はファイル名の文字列です。<a href="./chapter2.html#エディタを使う">2章</a>で説明した通り、Rのプログラムは通常「.R」の拡張子を付けて取り扱いますので、拡張子を含めたファイル名を指定します。現在のワーキングディレクトリに保存されているファイルを呼び出す場合はそのファイル名を、他のディレクトリに保存されているファイルを呼び出す場合はそのファイルのパスを含む文字列を<code>source</code>関数の引数に取ります。<code>source</code>関数でプログラムを呼び出すと、そのプログラムが実行されます。複雑なプログラムでは、関数などを別ファイルで定義しておいて、そのファイルを呼び出して用いることもあります。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -973,7 +981,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <section id="excelからデータを読み込む古典的な方法" class="level3" data-number="17.6.1"><h3 data-number="17.6.1" class="anchored" data-anchor-id="excelからデータを読み込む古典的な方法">
 <span class="header-section-number">17.6.1</span> Excelからデータを読み込む（古典的な方法）</h3>
 <p>統計を行うデータは、通常Excelのような表計算ソフトか、データベースで準備するのが一般的です。このようなデータをRで取り込む際には、一昔前までは<strong>「テキストファイルに変換」</strong>してから読み込むのが一般的でした。</p>
-<p>最近ではライブラリを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、ライブラリなしのRではこのような読み込みはできません。ライブラリが使用できないときには、以下のような方法でExcelファイルをテキストで保存し、Rで読み込むことになります。</p>
+<p>最近ではライブラリを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、ライブラリなしのRではこのような読み込みはできません。ライブラリが使用できないときには、以下のような方法でExcelファイルをテキストとして保存し、Rで読み込むことになります。</p>
 <p>また、Web上に保存されているデータがテキストである場合も少なくありません。このような、Web上のテキストファイルの読み込みにも、以下に示すテキスト読み込みの方法を用いることができます。</p>
 <section id="excelcsvタブ切りテキストへの変換" class="level4" data-number="17.6.1.1"><h4 data-number="17.6.1.1" class="anchored" data-anchor-id="excelcsvタブ切りテキストへの変換">
 <span class="header-section-number">17.6.1.1</span> Excel：csv・タブ切りテキストへの変換</h4>
@@ -1272,11 +1280,11 @@ Excelの空欄データ
 </div>
 <section id="stringasfactorsとfileencoding" class="level4" data-number="17.6.4.1"><h4 data-number="17.6.4.1" class="anchored" data-anchor-id="stringasfactorsとfileencoding">
 <span class="header-section-number">17.6.4.1</span> stringAsFactorsとfileEncoding</h4>
-<p><code>read.table</code>関数の「<code>stringAsFactors</code>」という引数は、昔はTRUEがデフォルトとされており、<code>read.table</code>関数で読み込んだ文字列はすべて因子に変換されていました。Rのバージョン4.0.0より<code>stringAsFactors</code>のデフォルト値が<code>FALSE</code>に変更されたため、現在の<code>read.table</code>関数では、文字列は文字列のまま読み込まれます。</p>
+<p>文字列を因子に変換したい場合には<code>stringAsFactors</code>を<code>TRUE</code>に指定します。<code>stringAsFactors</code>は、以前は<code>TRUE</code>がデフォルトとされており、<code>read.table</code>関数で読み込んだ文字列がすべて因子に変換される設定になっていました。Rのバージョン4.0.0より<code>stringAsFactors</code>のデフォルト値が<code>FALSE</code>に変更されたため、現在の<code>read.table</code>関数では、<code>stringAsFactors</code>を指定しない場合、文字列は文字列のまま読み込まれます。</p>
 <p>WindowsではテキストファイルのエンコーディングがShift JIS（CP932）になっている場合がありますので、「<code>fileEncoding = "CP932"</code>」を引数に指定しないと読み込めないことがあります。エンコーディングがUTF-8であれば、<code>fileEncoding</code>を指定する必要はありません。</p>
 </section></section><section id="クリップボードからの読み込み" class="level3" data-number="17.6.5"><h3 data-number="17.6.5" class="anchored" data-anchor-id="クリップボードからの読み込み">
 <span class="header-section-number">17.6.5</span> クリップボードからの読み込み</h3>
-<p>Rでは、コピーしたテキストをクリップボードから読み込むこともできます。Ctrl+Cなどでコピーしたテキストを読み込む場合には、<code>read.table</code>関数の引数に<code>"clipboard"</code>を指定します。</p>
+<p>Rでは、コピーしたテキストをクリップボードから読み込むこともできます。<kbd aria-hidden="true">Ctrl+C</kbd><span class="visually-hidden">Ctrl+C</span>などでコピーしたテキストを読み込む場合には、<code>read.table</code>関数の引数に<code>"clipboard"</code>を指定します。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1328,7 +1336,7 @@ Excelの空欄データ
 </div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span><span class="op">(</span><span class="va">df_obj</span>, <span class="st">"filename.txt"</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># 列名あり、行名なし、ダブルクオーテーションなしで保存</span></span>
+<span><span class="co"># 列名あり、行名なし、ダブルクオーテーションなしで出力</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span><span class="op">(</span><span class="va">df_obj</span>, <span class="st">"filename.txt"</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, col.names <span class="op">=</span> <span class="cn">T</span>, row.names <span class="op">=</span> <span class="cn">F</span>, quote <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">df_obj</span>, <span class="st">"filename.csv"</span><span class="op">)</span></span>
@@ -1382,6 +1390,7 @@ Excelの空欄データ
 </div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># tibbleを作成する（data.frame関数とほぼ同じ）</span></span>
 <span><span class="fu">tibble</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 3 × 3</span></span>
 <span><span class="co">##       x y     z    </span></span>
@@ -1390,6 +1399,7 @@ Excelの空欄データ
 <span><span class="co">## 2     2 b     FALSE</span></span>
 <span><span class="co">## 3     3 c     TRUE</span></span>
 <span></span>
+<span><span class="co"># as_tibbleでデータフレームをtibbleに変換できる</span></span>
 <span><span class="fu">as_tibble</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 150 × 5</span></span>
 <span><span class="co">##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
@@ -1430,7 +1440,6 @@ Excelの空欄データ
 <span class="header-section-number">17.9</span> readxl</h2>
 <p>私のようなヘボいR使いは昔から上記のようにExcelをテキストファイルに変換してはRに読み込むというステップを踏み続けてきました。このExcelからテキストへの変換の手間を無くすライブラリが<code>readxl</code>パッケージ <span class="citation" data-cites="readxl_bib">(<a href="references.html#ref-readxl_bib" role="doc-biblioref">Wickham and Bryan 2023</a>)</span>です。</p>
 <p><code>readxl</code>パッケージも<code>tidyverse</code>と同じく、<a href="https://posit.co/">Posit Software</a>が開発しているライブラリですが、<code>tidyverse</code>には含まれていません。<code>tidyverse</code>とは別に、<code>readxl</code>パッケージを独立に読み込む必要があります。</p>
-<p><code>readxl</code>パッケージで使用する関数は、ほぼ<code>read_excel</code>関数だけです。<code>read_excel</code>関数は、.xlsおよび.xlsxファイルの読み込みに対応しており、ファイル名で指定したExcelファイルからテーブルを<code>tibble</code>として読み込みます。<code>read_excel</code>関数では<code>sheet</code>という引数を設定することができます。<code>read_excel</code>関数は<code>sheet</code>に設定した番号（もしくはシート名）のシートを読み込みます。</p>
 <p><code>readxl</code>パッケージは<code>read_excel</code>関数以外に、Excelファイルのメタデータ読み込みのための関数などを備えています。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -1442,14 +1451,30 @@ Excelの空欄データ
 <span><span class="fu">read_excel</span><span class="op">(</span><span class="st">"filename.xls"</span>, sheet <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># read_xlsが読み込まれる</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+read_excel関数とExcelファイルの種類
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>readxl</code>パッケージで使用する関数は、ほぼ<code>read_excel</code>関数だけです。<code>read_excel</code>関数は、.xlsおよび.xlsxファイルの読み込みに対応しており、ファイル名で指定したExcelファイルからテーブルを<code>tibble</code>として読み込みます。<code>read_excel</code>関数では<code>sheet</code>という引数を設定することができます。<code>read_excel</code>関数は<code>sheet</code>に設定した番号（もしくはシート名）のシートを読み込みます。</p>
+</div>
+</div>
+</div>
 </section><section id="excelファイルの種類" class="level2 Callout-tip" data-collapse="true" data-number="17.10"><h2 data-number="17.10" class="anchored" data-anchor-id="excelファイルの種類">
 <span class="header-section-number">17.10</span> Excelファイルの種類</h2>
 <p>Excelには昔使用されていたファイルである.xlsファイルと、Excel2007から使われている.xlsxファイルがあります。</p>
 <p>.xlsファイルはバイナリファイルで、内部的には1と0でデータが表現されています。</p>
 <p>.xlsxファイルは実際にはzipファイルで、xmlというフォーマットで記載されたデータがzipファイルのフォルダ内に含まれています。.xlsxファイルは拡張子を.zipに書き換えるとzipファイルとして解凍することができ、中身を確認することができます。</p>
 <p>.xlsと.xlsxは全然違うファイルですが、<code>read_excel</code>関数は拡張子によって.xlsを読み込む<code>read_xls</code>関数と.xlsxを読み込む<code>read_xlsx</code>関数を切り替えて呼び出しています。</p>
-</section><section id="その他のデータ読み込みライブラリ" class="level4" data-number="17.10.0.1"><h4 data-number="17.10.0.1" class="anchored" data-anchor-id="その他のデータ読み込みライブラリ">
-<span class="header-section-number">17.10.0.1</span> その他のデータ読み込みライブラリ</h4>
+</section><section id="その他のデータ読み込みライブラリ" class="level2" data-number="17.11"><h2 data-number="17.11" class="anchored" data-anchor-id="その他のデータ読み込みライブラリ">
+<span class="header-section-number">17.11</span> その他のデータ読み込みライブラリ</h2>
 <p><a href="https://posit.co/">Posit Software</a>は<code>readxl</code>の他にも、多数のデータ読み込み用ライブラリを開発しています。以下に示したライブラリを利用することで、様々なデータ型のファイルをRで読み込み、統計に用いることができます。</p>
 <ul>
 <li>
@@ -1470,11 +1495,10 @@ Excelの空欄データ
 <li>
 <a href="https://dbi.r-dbi.org/"><code>DBI</code></a>：データベースの読み込み <span class="citation" data-cites="DBI_bib">(<a href="references.html#ref-DBI_bib" role="doc-biblioref">R Special Interest Group on Databases (R-SIG-DB), Wickham, and Müller 2024</a>)</span>
 </li>
-</ul></section><section id="data.table" class="level2" data-number="17.11"><h2 data-number="17.11" class="anchored" data-anchor-id="data.table">
-<span class="header-section-number">17.11</span> data.table</h2>
+</ul></section><section id="data.table" class="level2" data-number="17.12"><h2 data-number="17.12" class="anchored" data-anchor-id="data.table">
+<span class="header-section-number">17.12</span> data.table</h2>
 <p>近年のデータサイエンスでは、時に数百万～数千億程度のデータを取り扱うこともあります。個人のPCでRを使ってこのような超大規模のデータを取り扱うのは現実的ではありませんが、数万～数十万行ぐらいのデータをPCで取り扱うことは増えてきています。例えば、生物分野では<a href="https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%A2%E3%83%AC%E3%82%A4">マイクロアレイ</a>や<a href="https://jp.illumina.com/content/dam/illumina-marketing/apac/japan/documents/pdf/primer_illumina_sequencing_introduction-j.pdf">高速シークエンサー</a>のデータは数万～数十万行で、分析を個人が、自分のPCで取り扱うこともあるかと思います。自分でマイクロアレイやシークエンサーを使ってデータを出さなくても、<a href="https://www.ncbi.nlm.nih.gov/gds">GEO Dataset</a>などからデータを取得して、解析してみることも一般的に行われています。</p>
-<p>このような超巨大データを取り扱う場合、R謹製の<code>read.table</code>関数では手に余りますし、<code>read_table</code>関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労します。このような大規模データの読み込みに特化したライブラリが、<code>data.table</code>パッケージ <span class="citation" data-cites="datatable_bib">(<a href="references.html#ref-datatable_bib" role="doc-biblioref">Barrett, Dowle, and Srinivasan 2023</a>)</span>です。</p>
-<p><a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html"><code>data.table</code></a>パッケージは、大規模データを読み込み、Rで高速に利用できるよう設計されたライブラリです。</p>
+<p>このような超巨大データを取り扱う場合、R謹製の<code>read.table</code>関数では手に余りますし、<code>read_table</code>関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労することがあります。このような大規模データの読み込みに特化したライブラリが、<a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html"><code>data.table</code></a>パッケージ <span class="citation" data-cites="datatable_bib">(<a href="references.html#ref-datatable_bib" role="doc-biblioref">Barrett, Dowle, and Srinivasan 2023</a>)</span>です。<code>data.table</code>を用いることで、大規模データを高速に読み込み、利用できます。</p>
 <p><code>data.table</code>パッケージでデータを読み込むときには、<code>fread</code>関数を用います。<code>fread</code>関数はhtmlからの読み込みにも対応しています。読み込んだデータは<code>data.table</code>クラスのオブジェクトとなります。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -1493,7 +1517,7 @@ Excelの空欄データ
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p><code>data.table</code>の取り扱いの方法はほぼデータフレームと同じです。<code>data.table</code>はインデックスからデータの要約ができる機構を備えています。ただし、<a href="./chapter20.html">後の章</a>で説明する<code>tidyr</code>・<code>dplyr</code>の関数も適用できますので、データの要約は<code>tidyr</code>・<code>dplyr</code>で行ってもよいでしょう。</p>
+<p><code>data.table</code>の取り扱いの方法はほぼデータフレームと同じです。<code>data.table</code>はインデックスからデータの要約ができる機構を備えています。ただし、<a href="./chapter20.html">20章</a>で説明する<code>tidyr</code>・<code>dplyr</code>の関数も適用できますので、データの要約は<code>tidyr</code>・<code>dplyr</code>で行ってもよいでしょう。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1513,7 +1537,7 @@ Excelの空欄データ
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1522,7 +1546,7 @@ data.tableでのデータ取り扱い
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><code>data.table</code>が使われ始めた頃は、<code>data.table</code>オブジェクトの取り扱い方がデータフレームとは大きく異なっており、かなりとっつきにくかったのですが、現在ではデータフレームとほぼ同じ取り扱いができるようになっています。</p>
 </div>
@@ -1567,7 +1591,7 @@ Wickham, Hadley, Jim Hester, and Jennifer Bryan. 2023. <em>Readr: Read Rectangul
 Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Export ’SPSS’, ’Stata’ and ’SAS’ Files</em>. <a href="https://CRAN.R-project.org/package=haven">https://CRAN.R-project.org/package=haven</a>.
 </div>
 </div>
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -2048,7 +2072,7 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>統計に用いるデータは、通常Excelのような表計算ソフトや、データベースなどで作成されます。Rを用いてデータ解析・統計解析を行うためには、まずRに表計算ソフトやデータベースからデータを読み込む必要があります。</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>統計に用いるデータは、通常Excelのような表計算ソフトやデータベースからの抽出などで作成されます。Rを用いてデータ解析・統計解析を行うためには、まずRに表計算ソフトやデータベースからデータを読み込む必要があります。</span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>データ解析・統計解析が終われば、Rでの解析結果を書き出し、Excelなどで取り扱う必要があります。</span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
@@ -2190,7 +2214,7 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
 <span id="cb21-148"><a href="#cb21-148" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-149"><a href="#cb21-149" aria-hidden="true" tabindex="-1"></a><span class="fu">### プログラムを呼び出す</span></span>
 <span id="cb21-150"><a href="#cb21-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-151"><a href="#cb21-151" aria-hidden="true" tabindex="-1"></a>保存したプログラムを他のプログラムで呼び出すときには、<span class="in">`source`</span>関数を用います。<span class="in">`source`</span>関数の引数はファイル名の文字列です。<span class="co">[</span><span class="ot">2章</span><span class="co">](chapter2.qmd#エディタを使う)</span>で説明した通り、Rのプログラムは通常「.R」の拡張子を付けて取り扱いますので、拡張子を含めたファイル名を指定します。現在のワーキングディレクトリに保存されているファイルを呼び出す場合はそのファイル名を、他のディレクトリに保存されているファイルを呼び出す場合はそのファイルのパスを含む文字列を<span class="in">`source`</span>関数の引数に取ります。。<span class="in">`source`</span>関数でプログラムを呼び出すと、プログラムが実行されます。複雑なプログラムでは、関数などを別ファイルで定義しておいて、そのファイルを呼び出して用いることもあります。</span>
+<span id="cb21-151"><a href="#cb21-151" aria-hidden="true" tabindex="-1"></a>保存したプログラムを他のプログラムで呼び出すときには、<span class="in">`source`</span>関数を用います。<span class="in">`source`</span>関数の引数はファイル名の文字列です。<span class="co">[</span><span class="ot">2章</span><span class="co">](chapter2.qmd#エディタを使う)</span>で説明した通り、Rのプログラムは通常「.R」の拡張子を付けて取り扱いますので、拡張子を含めたファイル名を指定します。現在のワーキングディレクトリに保存されているファイルを呼び出す場合はそのファイル名を、他のディレクトリに保存されているファイルを呼び出す場合はそのファイルのパスを含む文字列を<span class="in">`source`</span>関数の引数に取ります。<span class="in">`source`</span>関数でプログラムを呼び出すと、そのプログラムが実行されます。複雑なプログラムでは、関数などを別ファイルで定義しておいて、そのファイルを呼び出して用いることもあります。</span>
 <span id="cb21-152"><a href="#cb21-152" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-153"><a href="#cb21-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="source関数でプログラムの呼び出し", eval=FALSE}</span></span>
 <span id="cb21-154"><a href="#cb21-154" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"code_hello_world.R"</span>)</span>
@@ -2202,7 +2226,7 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
 <span id="cb21-160"><a href="#cb21-160" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-161"><a href="#cb21-161" aria-hidden="true" tabindex="-1"></a>統計を行うデータは、通常Excelのような表計算ソフトか、データベースで準備するのが一般的です。このようなデータをRで取り込む際には、一昔前までは**「テキストファイルに変換」**してから読み込むのが一般的でした。</span>
 <span id="cb21-162"><a href="#cb21-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-163"><a href="#cb21-163" aria-hidden="true" tabindex="-1"></a>最近ではライブラリを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、ライブラリなしのRではこのような読み込みはできません。ライブラリが使用できないときには、以下のような方法でExcelファイルをテキストで保存し、Rで読み込むことになります。</span>
+<span id="cb21-163"><a href="#cb21-163" aria-hidden="true" tabindex="-1"></a>最近ではライブラリを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、ライブラリなしのRではこのような読み込みはできません。ライブラリが使用できないときには、以下のような方法でExcelファイルをテキストとして保存し、Rで読み込むことになります。</span>
 <span id="cb21-164"><a href="#cb21-164" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-165"><a href="#cb21-165" aria-hidden="true" tabindex="-1"></a>また、Web上に保存されているデータがテキストである場合も少なくありません。このような、Web上のテキストファイルの読み込みにも、以下に示すテキスト読み込みの方法を用いることができます。</span>
 <span id="cb21-166"><a href="#cb21-166" aria-hidden="true" tabindex="-1"></a></span>
@@ -2295,14 +2319,14 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
 <span id="cb21-253"><a href="#cb21-253" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-254"><a href="#cb21-254" aria-hidden="true" tabindex="-1"></a><span class="fu">#### stringAsFactorsとfileEncoding</span></span>
 <span id="cb21-255"><a href="#cb21-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-256"><a href="#cb21-256" aria-hidden="true" tabindex="-1"></a><span class="in">`read.table`</span>関数の「<span class="in">`stringAsFactors`</span>」という引数は、昔はTRUEがデフォルトとされており、<span class="in">`read.table`</span>関数で読み込んだ文字列はすべて因子に変換されていました。Rのバージョン4.0.0より<span class="in">`stringAsFactors`</span>のデフォルト値が<span class="in">`FALSE`</span>に変更されたため、現在の<span class="in">`read.table`</span>関数では、文字列は文字列のまま読み込まれます。</span>
+<span id="cb21-256"><a href="#cb21-256" aria-hidden="true" tabindex="-1"></a>文字列を因子に変換したい場合には<span class="in">`stringAsFactors`</span>を<span class="in">`TRUE`</span>に指定します。<span class="in">`stringAsFactors`</span>は、以前は<span class="in">`TRUE`</span>がデフォルトとされており、<span class="in">`read.table`</span>関数で読み込んだ文字列がすべて因子に変換される設定になっていました。Rのバージョン4.0.0より<span class="in">`stringAsFactors`</span>のデフォルト値が<span class="in">`FALSE`</span>に変更されたため、現在の<span class="in">`read.table`</span>関数では、<span class="in">`stringAsFactors`</span>を指定しない場合、文字列は文字列のまま読み込まれます。</span>
 <span id="cb21-257"><a href="#cb21-257" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-258"><a href="#cb21-258" aria-hidden="true" tabindex="-1"></a>WindowsではテキストファイルのエンコーディングがShift JIS（CP932）になっている場合がありますので、「<span class="in">`fileEncoding = "CP932"`</span>」を引数に指定しないと読み込めないことがあります。エンコーディングがUTF-8であれば、<span class="in">`fileEncoding`</span>を指定する必要はありません。</span>
 <span id="cb21-259"><a href="#cb21-259" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-260"><a href="#cb21-260" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-261"><a href="#cb21-261" aria-hidden="true" tabindex="-1"></a><span class="fu">### クリップボードからの読み込み</span></span>
 <span id="cb21-262"><a href="#cb21-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-263"><a href="#cb21-263" aria-hidden="true" tabindex="-1"></a>Rでは、コピーしたテキストをクリップボードから読み込むこともできます。Ctrl+Cなどでコピーしたテキストを読み込む場合には、<span class="in">`read.table`</span>関数の引数に<span class="in">`"clipboard"`</span>を指定します。</span>
+<span id="cb21-263"><a href="#cb21-263" aria-hidden="true" tabindex="-1"></a>Rでは、コピーしたテキストをクリップボードから読み込むこともできます。{{<span class="dt">&lt;</span><span class="kw">kbd</span><span class="ot"> Ctrl</span><span class="er">+</span><span class="ot">C</span><span class="dt">&gt;</span>}}などでコピーしたテキストを読み込む場合には、<span class="in">`read.table`</span>関数の引数に<span class="in">`"clipboard"`</span>を指定します。</span>
 <span id="cb21-264"><a href="#cb21-264" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-265"><a href="#cb21-265" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="クリップボードの内容を読み込む"}</span></span>
 <span id="cb21-266"><a href="#cb21-266" aria-hidden="true" tabindex="-1"></a><span class="fu">read.table</span>(<span class="st">"clipboard"</span>)</span>
@@ -2346,7 +2370,7 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
 <span id="cb21-304"><a href="#cb21-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="write.table関数"}</span></span>
 <span id="cb21-305"><a href="#cb21-305" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(df_obj, <span class="st">"filename.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
 <span id="cb21-306"><a href="#cb21-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-307"><a href="#cb21-307" aria-hidden="true" tabindex="-1"></a><span class="co"># 列名あり、行名なし、ダブルクオーテーションなしで保存</span></span>
+<span id="cb21-307"><a href="#cb21-307" aria-hidden="true" tabindex="-1"></a><span class="co"># 列名あり、行名なし、ダブルクオーテーションなしで出力</span></span>
 <span id="cb21-308"><a href="#cb21-308" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(df_obj, <span class="st">"filename.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col.names =</span> T, <span class="at">row.names =</span> F, <span class="at">quote =</span> F) </span>
 <span id="cb21-309"><a href="#cb21-309" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-310"><a href="#cb21-310" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df_obj, <span class="st">"filename.csv"</span>)</span>
@@ -2397,35 +2421,35 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
 <span id="cb21-355"><a href="#cb21-355" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="tibble"}</span></span>
 <span id="cb21-356"><a href="#cb21-356" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span>
 <span id="cb21-357"><a href="#cb21-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-358"><a href="#cb21-358" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">y =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>), <span class="at">z =</span> <span class="fu">c</span>(T, F, T))</span>
-<span id="cb21-359"><a href="#cb21-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-360"><a href="#cb21-360" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(iris)</span>
-<span id="cb21-361"><a href="#cb21-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb21-362"><a href="#cb21-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-363"><a href="#cb21-363" aria-hidden="true" tabindex="-1"></a><span class="fu">### readr：テキストファイルの書き出し</span></span>
+<span id="cb21-358"><a href="#cb21-358" aria-hidden="true" tabindex="-1"></a><span class="co"># tibbleを作成する（data.frame関数とほぼ同じ）</span></span>
+<span id="cb21-359"><a href="#cb21-359" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">y =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>), <span class="at">z =</span> <span class="fu">c</span>(T, F, T))</span>
+<span id="cb21-360"><a href="#cb21-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-361"><a href="#cb21-361" aria-hidden="true" tabindex="-1"></a><span class="co"># as_tibbleでデータフレームをtibbleに変換できる</span></span>
+<span id="cb21-362"><a href="#cb21-362" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(iris)</span>
+<span id="cb21-363"><a href="#cb21-363" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-364"><a href="#cb21-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-365"><a href="#cb21-365" aria-hidden="true" tabindex="-1"></a><span class="in">`readr`</span>パッケージは<span class="in">`write.table`</span>関数に当たる、テキスト書き出しの関数を備えています。<span class="in">`readr`</span>が備えている関数は、データフレームをCSVとして保存する<span class="in">`write_csv`</span>関数、タブ切りテキストとして保存する<span class="in">`write_tsv`</span>関数、スペース切りテキストとして保存する<span class="in">`write_delim`</span>関数があります。</span>
+<span id="cb21-365"><a href="#cb21-365" aria-hidden="true" tabindex="-1"></a><span class="fu">### readr：テキストファイルの書き出し</span></span>
 <span id="cb21-366"><a href="#cb21-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-367"><a href="#cb21-367" aria-hidden="true" tabindex="-1"></a><span class="in">`read_table`</span>関数と同様に、<span class="in">`write_`</span>関数もテキストの圧縮ファイルの保存に対応しています。対応している圧縮ファイルはgzip（.gz）、bzip2（.bz2）、lzma（.xz）です。</span>
+<span id="cb21-367"><a href="#cb21-367" aria-hidden="true" tabindex="-1"></a><span class="in">`readr`</span>パッケージは<span class="in">`write.table`</span>関数に当たる、テキスト書き出しの関数を備えています。<span class="in">`readr`</span>が備えている関数は、データフレームをCSVとして保存する<span class="in">`write_csv`</span>関数、タブ切りテキストとして保存する<span class="in">`write_tsv`</span>関数、スペース切りテキストとして保存する<span class="in">`write_delim`</span>関数があります。</span>
 <span id="cb21-368"><a href="#cb21-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-369"><a href="#cb21-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="readrでのファイル書き出し"}</span></span>
-<span id="cb21-370"><a href="#cb21-370" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.csv"</span>) <span class="co"># コンマ切り</span></span>
-<span id="cb21-371"><a href="#cb21-371" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(x, <span class="st">"filename.tsv"</span>) <span class="co"># タブ切り</span></span>
-<span id="cb21-372"><a href="#cb21-372" aria-hidden="true" tabindex="-1"></a><span class="fu">write_delim</span>(x, <span class="st">"filename.txt"</span>) <span class="co"># スペース切り</span></span>
-<span id="cb21-373"><a href="#cb21-373" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv2</span>(x, <span class="st">"filename.csv"</span>) <span class="co"># ヨーロッパ仕様</span></span>
-<span id="cb21-374"><a href="#cb21-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-375"><a href="#cb21-375" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.gz"</span>) <span class="co"># gzipで圧縮して出力</span></span>
-<span id="cb21-376"><a href="#cb21-376" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.bz2"</span>) <span class="co"># bzip2で圧縮して出力</span></span>
-<span id="cb21-377"><a href="#cb21-377" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.xz"</span>) <span class="co"># lzmaで圧縮して出力</span></span>
-<span id="cb21-378"><a href="#cb21-378" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb21-379"><a href="#cb21-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-380"><a href="#cb21-380" aria-hidden="true" tabindex="-1"></a><span class="fu">## readxl</span></span>
+<span id="cb21-369"><a href="#cb21-369" aria-hidden="true" tabindex="-1"></a><span class="in">`read_table`</span>関数と同様に、<span class="in">`write_`</span>関数もテキストの圧縮ファイルの保存に対応しています。対応している圧縮ファイルはgzip（.gz）、bzip2（.bz2）、lzma（.xz）です。</span>
+<span id="cb21-370"><a href="#cb21-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-371"><a href="#cb21-371" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="readrでのファイル書き出し"}</span></span>
+<span id="cb21-372"><a href="#cb21-372" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.csv"</span>) <span class="co"># コンマ切り</span></span>
+<span id="cb21-373"><a href="#cb21-373" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(x, <span class="st">"filename.tsv"</span>) <span class="co"># タブ切り</span></span>
+<span id="cb21-374"><a href="#cb21-374" aria-hidden="true" tabindex="-1"></a><span class="fu">write_delim</span>(x, <span class="st">"filename.txt"</span>) <span class="co"># スペース切り</span></span>
+<span id="cb21-375"><a href="#cb21-375" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv2</span>(x, <span class="st">"filename.csv"</span>) <span class="co"># ヨーロッパ仕様</span></span>
+<span id="cb21-376"><a href="#cb21-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-377"><a href="#cb21-377" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.gz"</span>) <span class="co"># gzipで圧縮して出力</span></span>
+<span id="cb21-378"><a href="#cb21-378" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.bz2"</span>) <span class="co"># bzip2で圧縮して出力</span></span>
+<span id="cb21-379"><a href="#cb21-379" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x, <span class="st">"filename.xz"</span>) <span class="co"># lzmaで圧縮して出力</span></span>
+<span id="cb21-380"><a href="#cb21-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-381"><a href="#cb21-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-382"><a href="#cb21-382" aria-hidden="true" tabindex="-1"></a>私のようなヘボいR使いは昔から上記のようにExcelをテキストファイルに変換してはRに読み込むというステップを踏み続けてきました。このExcelからテキストへの変換の手間を無くすライブラリが<span class="in">`readxl`</span>パッケージ <span class="co">[</span><span class="ot">@readxl_bib</span><span class="co">]</span>です。</span>
+<span id="cb21-382"><a href="#cb21-382" aria-hidden="true" tabindex="-1"></a><span class="fu">## readxl</span></span>
 <span id="cb21-383"><a href="#cb21-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-384"><a href="#cb21-384" aria-hidden="true" tabindex="-1"></a><span class="in">`readxl`</span>パッケージも<span class="in">`tidyverse`</span>と同じく、<span class="co">[</span><span class="ot">Posit Software</span><span class="co">](https://posit.co/)</span>が開発しているライブラリですが、<span class="in">`tidyverse`</span>には含まれていません。<span class="in">`tidyverse`</span>とは別に、<span class="in">`readxl`</span>パッケージを独立に読み込む必要があります。</span>
+<span id="cb21-384"><a href="#cb21-384" aria-hidden="true" tabindex="-1"></a>私のようなヘボいR使いは昔から上記のようにExcelをテキストファイルに変換してはRに読み込むというステップを踏み続けてきました。このExcelからテキストへの変換の手間を無くすライブラリが<span class="in">`readxl`</span>パッケージ <span class="co">[</span><span class="ot">@readxl_bib</span><span class="co">]</span>です。</span>
 <span id="cb21-385"><a href="#cb21-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-386"><a href="#cb21-386" aria-hidden="true" tabindex="-1"></a><span class="in">`readxl`</span>パッケージで使用する関数は、ほぼ<span class="in">`read_excel`</span>関数だけです。<span class="in">`read_excel`</span>関数は、.xlsおよび.xlsxファイルの読み込みに対応しており、ファイル名で指定したExcelファイルからテーブルを<span class="in">`tibble`</span>として読み込みます。<span class="in">`read_excel`</span>関数では<span class="in">`sheet`</span>という引数を設定することができます。<span class="in">`read_excel`</span>関数は<span class="in">`sheet`</span>に設定した番号（もしくはシート名）のシートを読み込みます。</span>
+<span id="cb21-386"><a href="#cb21-386" aria-hidden="true" tabindex="-1"></a><span class="in">`readxl`</span>パッケージも<span class="in">`tidyverse`</span>と同じく、<span class="co">[</span><span class="ot">Posit Software</span><span class="co">](https://posit.co/)</span>が開発しているライブラリですが、<span class="in">`tidyverse`</span>には含まれていません。<span class="in">`tidyverse`</span>とは別に、<span class="in">`readxl`</span>パッケージを独立に読み込む必要があります。</span>
 <span id="cb21-387"><a href="#cb21-387" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-388"><a href="#cb21-388" aria-hidden="true" tabindex="-1"></a><span class="in">`readxl`</span>パッケージは<span class="in">`read_excel`</span>関数以外に、Excelファイルのメタデータ読み込みのための関数などを備えています。</span>
 <span id="cb21-389"><a href="#cb21-389" aria-hidden="true" tabindex="-1"></a></span>
@@ -2435,76 +2459,76 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
 <span id="cb21-393"><a href="#cb21-393" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(<span class="st">"filename.xls"</span>, <span class="at">sheet =</span> <span class="dv">1</span>) <span class="co"># read_xlsが読み込まれる</span></span>
 <span id="cb21-394"><a href="#cb21-394" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-395"><a href="#cb21-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-396"><a href="#cb21-396" aria-hidden="true" tabindex="-1"></a>::: {.Callout-tip collapse="true"}</span>
-<span id="cb21-397"><a href="#cb21-397" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-398"><a href="#cb21-398" aria-hidden="true" tabindex="-1"></a><span class="fu">## Excelファイルの種類</span></span>
-<span id="cb21-399"><a href="#cb21-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-400"><a href="#cb21-400" aria-hidden="true" tabindex="-1"></a>Excelには昔使用されていたファイルである.xlsファイルと、Excel2007から使われている.xlsxファイルがあります。</span>
+<span id="cb21-396"><a href="#cb21-396" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb21-397"><a href="#cb21-397" aria-hidden="true" tabindex="-1"></a><span class="fu">## read_excel関数とExcelファイルの種類</span></span>
+<span id="cb21-398"><a href="#cb21-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-399"><a href="#cb21-399" aria-hidden="true" tabindex="-1"></a><span class="in">`readxl`</span>パッケージで使用する関数は、ほぼ<span class="in">`read_excel`</span>関数だけです。<span class="in">`read_excel`</span>関数は、.xlsおよび.xlsxファイルの読み込みに対応しており、ファイル名で指定したExcelファイルからテーブルを<span class="in">`tibble`</span>として読み込みます。<span class="in">`read_excel`</span>関数では<span class="in">`sheet`</span>という引数を設定することができます。<span class="in">`read_excel`</span>関数は<span class="in">`sheet`</span>に設定した番号（もしくはシート名）のシートを読み込みます。</span>
+<span id="cb21-400"><a href="#cb21-400" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb21-401"><a href="#cb21-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-402"><a href="#cb21-402" aria-hidden="true" tabindex="-1"></a>.xlsファイルはバイナリファイルで、内部的には1と0でデータが表現されています。</span>
-<span id="cb21-403"><a href="#cb21-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-404"><a href="#cb21-404" aria-hidden="true" tabindex="-1"></a>.xlsxファイルは実際にはzipファイルで、xmlというフォーマットで記載されたデータがzipファイルのフォルダ内に含まれています。.xlsxファイルは拡張子を.zipに書き換えるとzipファイルとして解凍することができ、中身を確認することができます。</span>
-<span id="cb21-405"><a href="#cb21-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-406"><a href="#cb21-406" aria-hidden="true" tabindex="-1"></a>.xlsと.xlsxは全然違うファイルですが、<span class="in">`read_excel`</span>関数は拡張子によって.xlsを読み込む<span class="in">`read_xls`</span>関数と.xlsxを読み込む<span class="in">`read_xlsx`</span>関数を切り替えて呼び出しています。</span>
-<span id="cb21-407"><a href="#cb21-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-408"><a href="#cb21-408" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb21-409"><a href="#cb21-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-410"><a href="#cb21-410" aria-hidden="true" tabindex="-1"></a><span class="fu">#### その他のデータ読み込みライブラリ</span></span>
-<span id="cb21-411"><a href="#cb21-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-412"><a href="#cb21-412" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Posit Software</span><span class="co">](https://posit.co/)</span>は<span class="in">`readxl`</span>の他にも、多数のデータ読み込み用ライブラリを開発しています。以下に示したライブラリを利用することで、様々なデータ型のファイルをRで読み込み、統計に用いることができます。</span>
+<span id="cb21-402"><a href="#cb21-402" aria-hidden="true" tabindex="-1"></a>:::{.Callout-tip collapse="true"}</span>
+<span id="cb21-403"><a href="#cb21-403" aria-hidden="true" tabindex="-1"></a><span class="fu">## Excelファイルの種類</span></span>
+<span id="cb21-404"><a href="#cb21-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-405"><a href="#cb21-405" aria-hidden="true" tabindex="-1"></a>Excelには昔使用されていたファイルである.xlsファイルと、Excel2007から使われている.xlsxファイルがあります。</span>
+<span id="cb21-406"><a href="#cb21-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-407"><a href="#cb21-407" aria-hidden="true" tabindex="-1"></a>.xlsファイルはバイナリファイルで、内部的には1と0でデータが表現されています。</span>
+<span id="cb21-408"><a href="#cb21-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-409"><a href="#cb21-409" aria-hidden="true" tabindex="-1"></a>.xlsxファイルは実際にはzipファイルで、xmlというフォーマットで記載されたデータがzipファイルのフォルダ内に含まれています。.xlsxファイルは拡張子を.zipに書き換えるとzipファイルとして解凍することができ、中身を確認することができます。</span>
+<span id="cb21-410"><a href="#cb21-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-411"><a href="#cb21-411" aria-hidden="true" tabindex="-1"></a>.xlsと.xlsxは全然違うファイルですが、<span class="in">`read_excel`</span>関数は拡張子によって.xlsを読み込む<span class="in">`read_xls`</span>関数と.xlsxを読み込む<span class="in">`read_xlsx`</span>関数を切り替えて呼び出しています。</span>
+<span id="cb21-412"><a href="#cb21-412" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb21-413"><a href="#cb21-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-414"><a href="#cb21-414" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`googlesheets4`</span><span class="co">](https://googlesheets4.tidyverse.org/)</span>：Googleスプレッドシートの読み込み <span class="co">[</span><span class="ot">@googlesheets4_bib</span><span class="co">]</span></span>
-<span id="cb21-415"><a href="#cb21-415" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`haven`</span><span class="co">](https://haven.tidyverse.org/)</span>：SAS、SPSS、Stataファイルの読み込み <span class="co">[</span><span class="ot">@haven_bib</span><span class="co">]</span></span>
-<span id="cb21-416"><a href="#cb21-416" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`jsonlite`</span><span class="co">](https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html)</span>：jsonファイルの読み込み <span class="co">[</span><span class="ot">@jsonlite_bib</span><span class="co">]</span></span>
-<span id="cb21-417"><a href="#cb21-417" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`httr2`</span><span class="co">](https://httr2.r-lib.org/)</span>：Webからの読み込み <span class="co">[</span><span class="ot">@httr2_bib</span><span class="co">]</span></span>
-<span id="cb21-418"><a href="#cb21-418" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`rvest`</span><span class="co">](https://rvest.tidyverse.org/)</span>：スクレイピング用ライブラリ <span class="co">[</span><span class="ot">@rvest_bib</span><span class="co">]</span></span>
-<span id="cb21-419"><a href="#cb21-419" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`DBI`</span><span class="co">](https://dbi.r-dbi.org/)</span>：データベースの読み込み <span class="co">[</span><span class="ot">@DBI_bib</span><span class="co">]</span></span>
-<span id="cb21-420"><a href="#cb21-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-421"><a href="#cb21-421" aria-hidden="true" tabindex="-1"></a><span class="fu">## data.table</span></span>
-<span id="cb21-422"><a href="#cb21-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-423"><a href="#cb21-423" aria-hidden="true" tabindex="-1"></a>近年のデータサイエンスでは、時に数百万～数千億程度のデータを取り扱うこともあります。個人のPCでRを使ってこのような超大規模のデータを取り扱うのは現実的ではありませんが、数万～数十万行ぐらいのデータをPCで取り扱うことは増えてきています。例えば、生物分野では<span class="co">[</span><span class="ot">マイクロアレイ</span><span class="co">](https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%A2%E3%83%AC%E3%82%A4)</span>や<span class="co">[</span><span class="ot">高速シークエンサー</span><span class="co">](https://jp.illumina.com/content/dam/illumina-marketing/apac/japan/documents/pdf/primer_illumina_sequencing_introduction-j.pdf)</span>のデータは数万～数十万行で、分析を個人が、自分のPCで取り扱うこともあるかと思います。自分でマイクロアレイやシークエンサーを使ってデータを出さなくても、<span class="co">[</span><span class="ot">GEO Dataset</span><span class="co">](https://www.ncbi.nlm.nih.gov/gds)</span>などからデータを取得して、解析してみることも一般的に行われています。</span>
+<span id="cb21-414"><a href="#cb21-414" aria-hidden="true" tabindex="-1"></a><span class="fu">## その他のデータ読み込みライブラリ</span></span>
+<span id="cb21-415"><a href="#cb21-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-416"><a href="#cb21-416" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Posit Software</span><span class="co">](https://posit.co/)</span>は<span class="in">`readxl`</span>の他にも、多数のデータ読み込み用ライブラリを開発しています。以下に示したライブラリを利用することで、様々なデータ型のファイルをRで読み込み、統計に用いることができます。</span>
+<span id="cb21-417"><a href="#cb21-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-418"><a href="#cb21-418" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`googlesheets4`</span><span class="co">](https://googlesheets4.tidyverse.org/)</span>：Googleスプレッドシートの読み込み <span class="co">[</span><span class="ot">@googlesheets4_bib</span><span class="co">]</span></span>
+<span id="cb21-419"><a href="#cb21-419" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`haven`</span><span class="co">](https://haven.tidyverse.org/)</span>：SAS、SPSS、Stataファイルの読み込み <span class="co">[</span><span class="ot">@haven_bib</span><span class="co">]</span></span>
+<span id="cb21-420"><a href="#cb21-420" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`jsonlite`</span><span class="co">](https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html)</span>：jsonファイルの読み込み <span class="co">[</span><span class="ot">@jsonlite_bib</span><span class="co">]</span></span>
+<span id="cb21-421"><a href="#cb21-421" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`httr2`</span><span class="co">](https://httr2.r-lib.org/)</span>：Webからの読み込み <span class="co">[</span><span class="ot">@httr2_bib</span><span class="co">]</span></span>
+<span id="cb21-422"><a href="#cb21-422" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`rvest`</span><span class="co">](https://rvest.tidyverse.org/)</span>：スクレイピング用ライブラリ <span class="co">[</span><span class="ot">@rvest_bib</span><span class="co">]</span></span>
+<span id="cb21-423"><a href="#cb21-423" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">`DBI`</span><span class="co">](https://dbi.r-dbi.org/)</span>：データベースの読み込み <span class="co">[</span><span class="ot">@DBI_bib</span><span class="co">]</span></span>
 <span id="cb21-424"><a href="#cb21-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-425"><a href="#cb21-425" aria-hidden="true" tabindex="-1"></a>このような超巨大データを取り扱う場合、R謹製の<span class="in">`read.table`</span>関数では手に余りますし、<span class="in">`read_table`</span>関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労します。このような大規模データの読み込みに特化したライブラリが、<span class="in">`data.table`</span>パッケージ <span class="co">[</span><span class="ot">@datatable_bib</span><span class="co">]</span>です。</span>
+<span id="cb21-425"><a href="#cb21-425" aria-hidden="true" tabindex="-1"></a><span class="fu">## data.table</span></span>
 <span id="cb21-426"><a href="#cb21-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-427"><a href="#cb21-427" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`data.table`</span><span class="co">](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)</span>パッケージは、大規模データを読み込み、Rで高速に利用できるよう設計されたライブラリです。</span>
+<span id="cb21-427"><a href="#cb21-427" aria-hidden="true" tabindex="-1"></a>近年のデータサイエンスでは、時に数百万～数千億程度のデータを取り扱うこともあります。個人のPCでRを使ってこのような超大規模のデータを取り扱うのは現実的ではありませんが、数万～数十万行ぐらいのデータをPCで取り扱うことは増えてきています。例えば、生物分野では<span class="co">[</span><span class="ot">マイクロアレイ</span><span class="co">](https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%A2%E3%83%AC%E3%82%A4)</span>や<span class="co">[</span><span class="ot">高速シークエンサー</span><span class="co">](https://jp.illumina.com/content/dam/illumina-marketing/apac/japan/documents/pdf/primer_illumina_sequencing_introduction-j.pdf)</span>のデータは数万～数十万行で、分析を個人が、自分のPCで取り扱うこともあるかと思います。自分でマイクロアレイやシークエンサーを使ってデータを出さなくても、<span class="co">[</span><span class="ot">GEO Dataset</span><span class="co">](https://www.ncbi.nlm.nih.gov/gds)</span>などからデータを取得して、解析してみることも一般的に行われています。</span>
 <span id="cb21-428"><a href="#cb21-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-429"><a href="#cb21-429" aria-hidden="true" tabindex="-1"></a><span class="in">`data.table`</span>パッケージでデータを読み込むときには、<span class="in">`fread`</span>関数を用います。<span class="in">`fread`</span>関数はhtmlからの読み込みにも対応しています。読み込んだデータは<span class="in">`data.table`</span>クラスのオブジェクトとなります。</span>
+<span id="cb21-429"><a href="#cb21-429" aria-hidden="true" tabindex="-1"></a>このような超巨大データを取り扱う場合、R謹製の<span class="in">`read.table`</span>関数では手に余りますし、<span class="in">`read_table`</span>関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労することがあります。このような大規模データの読み込みに特化したライブラリが、<span class="co">[</span><span class="ot">`data.table`</span><span class="co">](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)</span>パッケージ <span class="co">[</span><span class="ot">@datatable_bib</span><span class="co">]</span>です。<span class="in">`data.table`</span>を用いることで、大規模データを高速に読み込み、利用できます。</span>
 <span id="cb21-430"><a href="#cb21-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-431"><a href="#cb21-431" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="data.tableパッケージのfread関数でファイルを読み込む"}</span></span>
-<span id="cb21-432"><a href="#cb21-432" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(data.table)</span>
-<span id="cb21-433"><a href="#cb21-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-434"><a href="#cb21-434" aria-hidden="true" tabindex="-1"></a><span class="co"># flights14（NYのフライトデータ、25万行11列）をinputとする</span></span>
-<span id="cb21-435"><a href="#cb21-435" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv"</span></span>
-<span id="cb21-436"><a href="#cb21-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-437"><a href="#cb21-437" aria-hidden="true" tabindex="-1"></a><span class="co"># freadで読み込む</span></span>
-<span id="cb21-438"><a href="#cb21-438" aria-hidden="true" tabindex="-1"></a>flights <span class="ot">&lt;-</span> <span class="fu">fread</span>(input) <span class="co"># 219MBのデータ読み込み</span></span>
-<span id="cb21-439"><a href="#cb21-439" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(flights)</span>
-<span id="cb21-440"><a href="#cb21-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-441"><a href="#cb21-441" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(flights)</span>
-<span id="cb21-442"><a href="#cb21-442" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb21-443"><a href="#cb21-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-444"><a href="#cb21-444" aria-hidden="true" tabindex="-1"></a><span class="in">`data.table`</span>の取り扱いの方法はほぼデータフレームと同じです。<span class="in">`data.table`</span>はインデックスからデータの要約ができる機構を備えています。ただし、<span class="co">[</span><span class="ot">後の章</span><span class="co">](chapter20.qmd)</span>で説明する<span class="in">`tidyr`</span>・<span class="in">`dplyr`</span>の関数も適用できますので、データの要約は<span class="in">`tidyr`</span>・<span class="in">`dplyr`</span>で行ってもよいでしょう。</span>
+<span id="cb21-431"><a href="#cb21-431" aria-hidden="true" tabindex="-1"></a><span class="in">`data.table`</span>パッケージでデータを読み込むときには、<span class="in">`fread`</span>関数を用います。<span class="in">`fread`</span>関数はhtmlからの読み込みにも対応しています。読み込んだデータは<span class="in">`data.table`</span>クラスのオブジェクトとなります。</span>
+<span id="cb21-432"><a href="#cb21-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-433"><a href="#cb21-433" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="data.tableパッケージのfread関数でファイルを読み込む"}</span></span>
+<span id="cb21-434"><a href="#cb21-434" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(data.table)</span>
+<span id="cb21-435"><a href="#cb21-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-436"><a href="#cb21-436" aria-hidden="true" tabindex="-1"></a><span class="co"># flights14（NYのフライトデータ、25万行11列）をinputとする</span></span>
+<span id="cb21-437"><a href="#cb21-437" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv"</span></span>
+<span id="cb21-438"><a href="#cb21-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-439"><a href="#cb21-439" aria-hidden="true" tabindex="-1"></a><span class="co"># freadで読み込む</span></span>
+<span id="cb21-440"><a href="#cb21-440" aria-hidden="true" tabindex="-1"></a>flights <span class="ot">&lt;-</span> <span class="fu">fread</span>(input) <span class="co"># 219MBのデータ読み込み</span></span>
+<span id="cb21-441"><a href="#cb21-441" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(flights)</span>
+<span id="cb21-442"><a href="#cb21-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-443"><a href="#cb21-443" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(flights)</span>
+<span id="cb21-444"><a href="#cb21-444" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-445"><a href="#cb21-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-446"><a href="#cb21-446" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="data.tableクラスの取り扱い"}</span></span>
-<span id="cb21-447"><a href="#cb21-447" aria-hidden="true" tabindex="-1"></a>flights[<span class="dv">5</span>, <span class="dv">1</span>] <span class="co"># 通常のインデックスに対応</span></span>
-<span id="cb21-448"><a href="#cb21-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-449"><a href="#cb21-449" aria-hidden="true" tabindex="-1"></a>flights[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="co"># 行列を指定しない場合は、行のインデックスになる</span></span>
+<span id="cb21-446"><a href="#cb21-446" aria-hidden="true" tabindex="-1"></a><span class="in">`data.table`</span>の取り扱いの方法はほぼデータフレームと同じです。<span class="in">`data.table`</span>はインデックスからデータの要約ができる機構を備えています。ただし、<span class="co">[</span><span class="ot">20章</span><span class="co">](chapter20.qmd)</span>で説明する<span class="in">`tidyr`</span>・<span class="in">`dplyr`</span>の関数も適用できますので、データの要約は<span class="in">`tidyr`</span>・<span class="in">`dplyr`</span>で行ってもよいでしょう。</span>
+<span id="cb21-447"><a href="#cb21-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-448"><a href="#cb21-448" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="data.tableクラスの取り扱い"}</span></span>
+<span id="cb21-449"><a href="#cb21-449" aria-hidden="true" tabindex="-1"></a>flights[<span class="dv">5</span>, <span class="dv">1</span>] <span class="co"># 通常のインデックスに対応</span></span>
 <span id="cb21-450"><a href="#cb21-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-451"><a href="#cb21-451" aria-hidden="true" tabindex="-1"></a>flights[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>] <span class="co"># ベクターでの読み出しにも対応</span></span>
+<span id="cb21-451"><a href="#cb21-451" aria-hidden="true" tabindex="-1"></a>flights[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="co"># 行列を指定しない場合は、行のインデックスになる</span></span>
 <span id="cb21-452"><a href="#cb21-452" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-453"><a href="#cb21-453" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flights[origin <span class="sc">==</span> <span class="st">"JFK"</span>, ]) <span class="co"># originがJFKの行を選択</span></span>
+<span id="cb21-453"><a href="#cb21-453" aria-hidden="true" tabindex="-1"></a>flights[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>] <span class="co"># ベクターでの読み出しにも対応</span></span>
 <span id="cb21-454"><a href="#cb21-454" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-455"><a href="#cb21-455" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flights[, .(month, day)]) <span class="co"># monthとdayの列を選択</span></span>
+<span id="cb21-455"><a href="#cb21-455" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flights[origin <span class="sc">==</span> <span class="st">"JFK"</span>, ]) <span class="co"># originがJFKの行を選択</span></span>
 <span id="cb21-456"><a href="#cb21-456" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-457"><a href="#cb21-457" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flights<span class="sc">$</span>origin) <span class="co"># originの列を抽出</span></span>
-<span id="cb21-458"><a href="#cb21-458" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb21-459"><a href="#cb21-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-460"><a href="#cb21-460" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb21-457"><a href="#cb21-457" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flights[, .(month, day)]) <span class="co"># monthとdayの列を選択</span></span>
+<span id="cb21-458"><a href="#cb21-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-459"><a href="#cb21-459" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flights<span class="sc">$</span>origin) <span class="co"># originの列を抽出</span></span>
+<span id="cb21-460"><a href="#cb21-460" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-461"><a href="#cb21-461" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-462"><a href="#cb21-462" aria-hidden="true" tabindex="-1"></a><span class="fu">## data.tableでのデータ取り扱い</span></span>
-<span id="cb21-463"><a href="#cb21-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-464"><a href="#cb21-464" aria-hidden="true" tabindex="-1"></a> <span class="in">`data.table`</span>が使われ始めた頃は、<span class="in">`data.table`</span>オブジェクトの取り扱い方がデータフレームとは大きく異なっており、かなりとっつきにくかったのですが、現在ではデータフレームとほぼ同じ取り扱いができるようになっています。</span>
-<span id="cb21-465"><a href="#cb21-465" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-462"><a href="#cb21-462" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb21-463"><a href="#cb21-463" aria-hidden="true" tabindex="-1"></a><span class="fu">## data.tableでのデータ取り扱い</span></span>
+<span id="cb21-464"><a href="#cb21-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-465"><a href="#cb21-465" aria-hidden="true" tabindex="-1"></a> <span class="in">`data.table`</span>が使われ始めた頃は、<span class="in">`data.table`</span>オブジェクトの取り扱い方がデータフレームとは大きく異なっており、かなりとっつきにくかったのですが、現在ではデータフレームとほぼ同じ取り扱いができるようになっています。</span>
 <span id="cb21-466"><a href="#cb21-466" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

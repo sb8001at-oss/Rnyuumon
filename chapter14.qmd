@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-**因子**はほぼRにのみに存在する特徴的なクラスです。因子は**カテゴリカル変数**（男性と女性、病気の有無など）を表現するためのもので、統計解析において重要な役割を果たします。ただし、因子の挙動はやや複雑で、文字列のつもりが因子だった、因子だと思っていたら文字列だった、などという場合が多々発生します。
+**因子**はほぼRにのみ存在する特徴的なクラスです。因子は**カテゴリカル変数**（男性と女性、病気の有無など）を表現するためのもので、統計解析において重要な役割を果たします。ただし、因子の挙動はやや複雑で、文字列のつもりが因子だった、因子だと思っていたら文字列だった、などという場合が多々発生します。
 
 因子を作るときには、`factor`関数を用います。引数には文字列や数値のベクターを取ります。また、`gl`関数を用いても因子を作成することができます。
 
@@ -135,7 +135,7 @@ Rでは因子のレベル順を変更し、グラフや統計結果の表示順�
 
 ```{r, echo=FALSE}
 d <- data.frame(
-  func = c("fct_count(x)", "fct_match(x, pattern)", "fct_unique(x)", "fct_c(x, y)", "fct_unify(list(x, y))", "fct_relevel(x, levels)", "fct_infreq(x)", "fct_inorder(x)", "fct_rev(x)", "fct_shift(x)", "fct_shuffle(x)", "fct_recode(x, newlevel=\"oldlevel\")", "fct_anon(x)", "fct_collupse(x, newlevel=c(levels))", "fct_lump_min(x, min)", "fct_other(x, keep)"),
+  func = c("fct_count(x)", "fct_match(x, pattern)", "fct_unique(x)", "fct_c(x, y)", "fct_unify(list(x, y))", "fct_relevel(x, levels)", "fct_infreq(x)", "fct_inorder(x)", "fct_rev(x)", "fct_shift(x)", "fct_shuffle(x)", "fct_recode(x, newlevel=\"oldlevel\")", "fct_anon(x)", "fct_collapse(x, newlevel=c(levels))", "fct_lump_min(x, min)", "fct_other(x, keep)"),
   meaning = c("各レベルの要素の数を返す", "patternのレベルであればTRUEを返す", "各レベルから要素を1つずつ返す", "因子を結合する", "リスト内の因子間でレベルを追加する", "レベルを付け直す", "レベルの要素の数順にレベルをつけ直す", "前にある要素ほど前のレベルにする", "レベルを逆順にする", "レベルの順を1つずらす", "レベルをランダムに並べ替える", "oldlevelのラベルをnewlevelにつけ直す", "レベル名を匿名化する", "2つ以上のレベルを1つにまとめる", "minで指定した数以上のレベルをotherにする", "keepで指定したレベル以外の因子をotherにする")
 )
 
@@ -167,7 +167,7 @@ fct_unique(fx) # levelsとほとんど同じ関数(因子を返す、levelsは�
 
 ### 因子を結合する
 
-因子をつなぐときに用いるのが、`fct_c`関数と`fct_unity`関数です。`fct_c`関数は`c`関数と同じですが、因子のリストを引数に取れるという特徴があります。`fact_unify`関数は引数にリストを取り、お互いにレベルを追加するところが異なります。
+因子をつなぐときに用いるのが、`fct_c`関数と`fct_unity`関数です。`fct_c`関数は`c`関数と同じですが、因子のリストを引数に取れるという特徴があります。`fact_unify`関数は引数にリストを取り、お互いにレベルを追加できるところが異なります。
 
 ```{r, filename="forcats：因子を結合する"}
 fx3 <- factor(rep(c("rat", "mouse", "sheep"), c(3, 4, 5)))
@@ -205,7 +205,7 @@ fct_shuffle(fx) # レベルをランダムに並べ替える
 
 `fct_recode`関数は因子名を別名に付け替え、`fct_anon`関数は因子名を匿名化（anonymize）するものです。`fct_collapse`関数は因子の複数のレベルを1つにまとめ、`fct_lump_min`関数は`min`引数で指定した数より個数が少ない因子をすべてotherに変えます。`fct_other`関数は`keep`引数で指定したレベル以外をotherに変えます。
 
-いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したりするために用いるものです。
+いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したり、要素が少ない因子を集約するために用いるものです。
 
 ```{r, filename="forcats：レベル名を変更する"}
 fct_recode(fx, mouse="dog", rat="cat", monkey="pig", cow="horse") # ラベルを付け替える

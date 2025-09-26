@@ -736,6 +736,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter48.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">実験計画法</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -812,8 +818,8 @@ window.Quarto = {
 <pre><strong>1～100の整数からランダムに20個取り出す</strong></pre>
 </div>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">20</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">##  [1]  14  11  88  47  75  30   6  89  50  64  82  74  66 100   9  94  75  63  68</span></span>
-<span><span class="co">## [20]  87</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [1]  74  27  26  61  75  71  77  35  49   6  81  70 100  63  33  35  89  70  84</span></span>
+<span><span class="co">## [20]  68</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>乱数は完全にランダムな数値というわけではなく、ランダムに見える繰り返し計算から生成されています（<strong>疑似乱数</strong>）。この疑似乱数を生成するアルゴリズムにはいろいろなものがあるのですが、Rではデフォルトの乱数生成アルゴリズムとして、<strong><a href="http://www.math.sci.hiroshima-u.ac.jp/m-mat/TEACH/ichimura-sho-koen.pdf">メルセンヌ・ツイスター法</a>（mersenne twister）</strong> <span class="citation" data-cites="10.1145/272991.272995">(<a href="references.html#ref-10.1145/272991.272995" role="doc-biblioref">Matsumoto and Nishimura 1998</a>)</span> が用いられています。メルセンヌ・ツイスターは乱数生成アルゴリズムの中でも偏りのない乱数を得られるもので、現在ではExcelでも用いられています。</p>
@@ -828,7 +834,7 @@ window.Quarto = {
 <span><span class="co">## [1] "Mersenne-Twister" "Inversion"        "Rejection"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>乱数生成アルゴリズムは繰り返し計算で乱数を生成するため、乱数を生成するときに乱数の初期値が必要となります。この乱数の初期値のことを<strong>乱数の種（seed）</strong>と呼びます。Rでは乱数の種を<code>set.seed</code>関数で指定することができます。乱数の種をある値に設定しておくと、乱数を何度生成しても同じ結果を得ることができます。乱数を用いた計算で統計を行う場合には、計算の再現性を保つためにseedを設定しておく方がよいでしょう。</p>
+<p>乱数生成アルゴリズムは繰り返し計算で乱数を生成するため、乱数を生成するときに乱数の初期値（のようなもの）が必要となります。この乱数の初期値のことを<strong>乱数の種（seed）</strong>と呼びます。Rでは乱数の種を<code>set.seed</code>関数で指定することができます。乱数の種をある値に設定しておくと、乱数を何度生成しても同じ結果を得ることができます。乱数を用いた計算で統計を行う場合には、計算の再現性を保つためにseedを設定しておく方がよいでしょう。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -3265,7 +3271,7 @@ window.Quarto = {
 Matsumoto, Makoto, and Takuji Nishimura. 1998. <span>“Mersenne Twister: A 623-Dimensionally Equidistributed Uniform Pseudo-Random Number Generator.”</span> <em>ACM Trans. Model. Comput. Simul.</em> 8 (1): 3–30. <a href="https://doi.org/10.1145/272991.272995">https://doi.org/10.1145/272991.272995</a>.
 </div>
 </div>
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -3766,7 +3772,7 @@ Matsumoto, Makoto, and Takuji Nishimura. 1998. <span>“Mersenne Twister: A 623-
 <span id="cb79-26"><a href="#cb79-26" aria-hidden="true" tabindex="-1"></a><span class="fu">RNGkind</span>()</span>
 <span id="cb79-27"><a href="#cb79-27" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb79-28"><a href="#cb79-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb79-29"><a href="#cb79-29" aria-hidden="true" tabindex="-1"></a>乱数生成アルゴリズムは繰り返し計算で乱数を生成するため、乱数を生成するときに乱数の初期値が必要となります。この乱数の初期値のことを**乱数の種（seed）**と呼びます。Rでは乱数の種を<span class="in">`set.seed`</span>関数で指定することができます。乱数の種をある値に設定しておくと、乱数を何度生成しても同じ結果を得ることができます。乱数を用いた計算で統計を行う場合には、計算の再現性を保つためにseedを設定しておく方がよいでしょう。</span>
+<span id="cb79-29"><a href="#cb79-29" aria-hidden="true" tabindex="-1"></a>乱数生成アルゴリズムは繰り返し計算で乱数を生成するため、乱数を生成するときに乱数の初期値（のようなもの）が必要となります。この乱数の初期値のことを**乱数の種（seed）**と呼びます。Rでは乱数の種を<span class="in">`set.seed`</span>関数で指定することができます。乱数の種をある値に設定しておくと、乱数を何度生成しても同じ結果を得ることができます。乱数を用いた計算で統計を行う場合には、計算の再現性を保つためにseedを設定しておく方がよいでしょう。</span>
 <span id="cb79-30"><a href="#cb79-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb79-31"><a href="#cb79-31" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="set.seed関数で乱数のシードを設定"}</span></span>
 <span id="cb79-32"><a href="#cb79-32" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>

@@ -288,6 +288,46 @@ lm(iris$Sepal.Length ~ iris$Sepal.Width + iris$Petal.Length + iris$Species) |> s
 lm(iris$Sepal.Length ~ iris$Sepal.Width * iris$Petal.Length * iris$Species) |> summary()
 ```
 
+:::{.callout-tip collapse = "true"}
+## formulaの様々な設定方法
+
+[29章](chapter29.qmd#formulaを用いたt検定)で簡単に説明した通り、formulaは`formula`関数を用いて文字列から作成することができます。交互作用のある場合も同様です。
+
+```{r, filename="formula関数"}
+formula("x ~ f")
+```
+
+データフレームを用いている場合、目的変数以外のすべての列を説明変数とするには、以下のように.を用います。
+
+```{r, filename=".を用いて説明変数を設定する"}
+# Sepal.Width、Petal.Length、Speciesが説明変数となる
+lm(Sepal.Length ~ ., data = iris) |> coef()
+```
+
+すべての交互作用を評価する場合には、以下のように`(.)^2`という形で書くこともできます。
+
+```{r, filename="すべての交互作用を評価する"}
+lm(Sepal.Length ~ (.)^2, data = iris) |> coef()
+```
+
+交互作用の一部だけを評価したい場合には、以下のように交互作用を評価したい要素をカッコで区切り、`(x1 + x2)^2`のように設定することもできます。
+
+```{r, filename="一部の交互作用のみ評価する"}
+# Sepal.WidthとPetal.Lengthの交互作用のみ評価する
+lm(Sepal.Length ~ (Sepal.Width + Petal.Length)^2 + Petal.Width, data = iris) |> coef()
+```
+
+また、多項式回帰（例えばSepal.Widthの2乗を含むモデル）を行う場合には、以下のように`I`関数を用いたformulaを設定します。`I`関数を用いないと正しい結果が返ってきません。
+
+```{r, filename="I関数を用いて多項式回帰を行う"}
+# Sepal.Widthの2乗のパラメータを評価する
+lm(Sepal.Length ~ Sepal.Width + I(Sepal.Width^2), data = iris) |> coef()
+```
+
+詳しく知りたい方は`?formula`を実行し、`formula`関数のヘルプを確認してみるとよいでしょう。
+
+:::
+
 ## 一般化線形モデル
 
 ここまでは目的変数が正規分布することを仮定した回帰でしたが、目的変数が正規分布しない場合、例えばポアソン分布や二項分布するときには、分布が上下非対称になります。ですので、最小二乗法を用いた直線での回帰は適していません。

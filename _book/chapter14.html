@@ -708,6 +708,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter48.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">実験計画法</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -762,7 +768,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   
 
 
-</header><p><strong>因子</strong>はほぼRにのみに存在する特徴的なクラスです。因子は<strong>カテゴリカル変数</strong>（男性と女性、病気の有無など）を表現するためのもので、統計解析において重要な役割を果たします。ただし、因子の挙動はやや複雑で、文字列のつもりが因子だった、因子だと思っていたら文字列だった、などという場合が多々発生します。</p>
+</header><p><strong>因子</strong>はほぼRにのみ存在する特徴的なクラスです。因子は<strong>カテゴリカル変数</strong>（男性と女性、病気の有無など）を表現するためのもので、統計解析において重要な役割を果たします。ただし、因子の挙動はやや複雑で、文字列のつもりが因子だった、因子だと思っていたら文字列だった、などという場合が多々発生します。</p>
 <p>因子を作るときには、<code>factor</code>関数を用います。引数には文字列や数値のベクターを取ります。また、<code>gl</code>関数を用いても因子を作成することができます。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -1036,7 +1042,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <td style="text-align: left;">レベル名を匿名化する</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">fct_collupse(x, newlevel=c(levels))</td>
+<td style="text-align: left;">fct_collapse(x, newlevel=c(levels))</td>
 <td style="text-align: left;">2つ以上のレベルを1つにまとめる</td>
 </tr>
 <tr class="odd">
@@ -1090,7 +1096,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </section><section id="因子を結合する" class="level3" data-number="14.4.2"><h3 data-number="14.4.2" class="anchored" data-anchor-id="因子を結合する">
 <span class="header-section-number">14.4.2</span> 因子を結合する</h3>
-<p>因子をつなぐときに用いるのが、<code>fct_c</code>関数と<code>fct_unity</code>関数です。<code>fct_c</code>関数は<code>c</code>関数と同じですが、因子のリストを引数に取れるという特徴があります。<code>fact_unify</code>関数は引数にリストを取り、お互いにレベルを追加するところが異なります。</p>
+<p>因子をつなぐときに用いるのが、<code>fct_c</code>関数と<code>fct_unity</code>関数です。<code>fct_c</code>関数は<code>c</code>関数と同じですが、因子のリストを引数に取れるという特徴があります。<code>fact_unify</code>関数は引数にリストを取り、お互いにレベルを追加できるところが異なります。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1165,7 +1171,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </section><section id="レベル名の変更" class="level3" data-number="14.4.4"><h3 data-number="14.4.4" class="anchored" data-anchor-id="レベル名の変更">
 <span class="header-section-number">14.4.4</span> レベル名の変更</h3>
 <p><code>fct_recode</code>関数は因子名を別名に付け替え、<code>fct_anon</code>関数は因子名を匿名化（anonymize）するものです。<code>fct_collapse</code>関数は因子の複数のレベルを1つにまとめ、<code>fct_lump_min</code>関数は<code>min</code>引数で指定した数より個数が少ない因子をすべてotherに変えます。<code>fct_other</code>関数は<code>keep</code>引数で指定したレベル以外をotherに変えます。</p>
-<p>いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したりするために用いるものです。</p>
+<p>いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したり、要素が少ない因子を集約するために用いるものです。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1177,7 +1183,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## Levels: rat mouse cow monkey</span></span>
 <span></span>
 <span><span class="fu">fct_anon</span><span class="op">(</span><span class="va">fx</span><span class="op">)</span> <span class="co"># 因子を匿名化（anonymize）する</span></span>
-<span><span class="co">##  [1] 2 2 2 2 2 3 3 3 3 1 1 1 4 4</span></span>
+<span><span class="co">##  [1] 1 1 1 1 1 3 3 3 3 4 4 4 2 2</span></span>
 <span><span class="co">## Levels: 1 2 3 4</span></span>
 <span></span>
 <span><span class="fu">fct_collapse</span><span class="op">(</span><span class="va">fx</span>, dogcat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span><span class="op">)</span><span class="op">)</span> <span class="co"># レベルを結合する</span></span>
@@ -1208,7 +1214,7 @@ Wickham, Hadley. 2023. <em>Forcats: Tools for Working with Categorical Variables
 Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
 </div>
 </div>
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1689,7 +1695,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino 
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>**因子**はほぼRにのみに存在する特徴的なクラスです。因子は**カテゴリカル変数**（男性と女性、病気の有無など）を表現するためのもので、統計解析において重要な役割を果たします。ただし、因子の挙動はやや複雑で、文字列のつもりが因子だった、因子だと思っていたら文字列だった、などという場合が多々発生します。</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>**因子**はほぼRにのみ存在する特徴的なクラスです。因子は**カテゴリカル変数**（男性と女性、病気の有無など）を表現するためのもので、統計解析において重要な役割を果たします。ただし、因子の挙動はやや複雑で、文字列のつもりが因子だった、因子だと思っていたら文字列だった、などという場合が多々発生します。</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>因子を作るときには、<span class="in">`factor`</span>関数を用います。引数には文字列や数値のベクターを取ります。また、<span class="in">`gl`</span>関数を用いても因子を作成することができます。</span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
@@ -1818,7 +1824,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino 
 <span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> <span class="fu">c</span>(<span class="st">"fct_count(x)"</span>, <span class="st">"fct_match(x, pattern)"</span>, <span class="st">"fct_unique(x)"</span>, <span class="st">"fct_c(x, y)"</span>, <span class="st">"fct_unify(list(x, y))"</span>, <span class="st">"fct_relevel(x, levels)"</span>, <span class="st">"fct_infreq(x)"</span>, <span class="st">"fct_inorder(x)"</span>, <span class="st">"fct_rev(x)"</span>, <span class="st">"fct_shift(x)"</span>, <span class="st">"fct_shuffle(x)"</span>, <span class="st">"fct_recode(x, newlevel=</span><span class="sc">\"</span><span class="st">oldlevel</span><span class="sc">\"</span><span class="st">)"</span>, <span class="st">"fct_anon(x)"</span>, <span class="st">"fct_collupse(x, newlevel=c(levels))"</span>, <span class="st">"fct_lump_min(x, min)"</span>, <span class="st">"fct_other(x, keep)"</span>),</span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> <span class="fu">c</span>(<span class="st">"fct_count(x)"</span>, <span class="st">"fct_match(x, pattern)"</span>, <span class="st">"fct_unique(x)"</span>, <span class="st">"fct_c(x, y)"</span>, <span class="st">"fct_unify(list(x, y))"</span>, <span class="st">"fct_relevel(x, levels)"</span>, <span class="st">"fct_infreq(x)"</span>, <span class="st">"fct_inorder(x)"</span>, <span class="st">"fct_rev(x)"</span>, <span class="st">"fct_shift(x)"</span>, <span class="st">"fct_shuffle(x)"</span>, <span class="st">"fct_recode(x, newlevel=</span><span class="sc">\"</span><span class="st">oldlevel</span><span class="sc">\"</span><span class="st">)"</span>, <span class="st">"fct_anon(x)"</span>, <span class="st">"fct_collapse(x, newlevel=c(levels))"</span>, <span class="st">"fct_lump_min(x, min)"</span>, <span class="st">"fct_other(x, keep)"</span>),</span>
 <span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"各レベルの要素の数を返す"</span>, <span class="st">"patternのレベルであればTRUEを返す"</span>, <span class="st">"各レベルから要素を1つずつ返す"</span>, <span class="st">"因子を結合する"</span>, <span class="st">"リスト内の因子間でレベルを追加する"</span>, <span class="st">"レベルを付け直す"</span>, <span class="st">"レベルの要素の数順にレベルをつけ直す"</span>, <span class="st">"前にある要素ほど前のレベルにする"</span>, <span class="st">"レベルを逆順にする"</span>, <span class="st">"レベルの順を1つずらす"</span>, <span class="st">"レベルをランダムに並べ替える"</span>, <span class="st">"oldlevelのラベルをnewlevelにつけ直す"</span>, <span class="st">"レベル名を匿名化する"</span>, <span class="st">"2つ以上のレベルを1つにまとめる"</span>, <span class="st">"minで指定した数以上のレベルをotherにする"</span>, <span class="st">"keepで指定したレベル以外の因子をotherにする"</span>)</span>
 <span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a></span>
@@ -1850,7 +1856,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino 
 <span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a><span class="fu">### 因子を結合する</span></span>
 <span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>因子をつなぐときに用いるのが、<span class="in">`fct_c`</span>関数と<span class="in">`fct_unity`</span>関数です。<span class="in">`fct_c`</span>関数は<span class="in">`c`</span>関数と同じですが、因子のリストを引数に取れるという特徴があります。<span class="in">`fact_unify`</span>関数は引数にリストを取り、お互いにレベルを追加するところが異なります。</span>
+<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>因子をつなぐときに用いるのが、<span class="in">`fct_c`</span>関数と<span class="in">`fct_unity`</span>関数です。<span class="in">`fct_c`</span>関数は<span class="in">`c`</span>関数と同じですが、因子のリストを引数に取れるという特徴があります。<span class="in">`fact_unify`</span>関数は引数にリストを取り、お互いにレベルを追加できるところが異なります。</span>
 <span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats：因子を結合する"}</span></span>
 <span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a>fx3 <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"rat"</span>, <span class="st">"mouse"</span>, <span class="st">"sheep"</span>), <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)))</span>
@@ -1888,7 +1894,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino 
 <span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a><span class="in">`fct_recode`</span>関数は因子名を別名に付け替え、<span class="in">`fct_anon`</span>関数は因子名を匿名化（anonymize）するものです。<span class="in">`fct_collapse`</span>関数は因子の複数のレベルを1つにまとめ、<span class="in">`fct_lump_min`</span>関数は<span class="in">`min`</span>引数で指定した数より個数が少ない因子をすべてotherに変えます。<span class="in">`fct_other`</span>関数は<span class="in">`keep`</span>引数で指定したレベル以外をotherに変えます。</span>
 <span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a>いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したりするために用いるものです。</span>
+<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a>いずれも、データをRに取り込んだ後に、余分な因子を処理したり、匿名化することで個人情報等に対応したり、要素が少ない因子を集約するために用いるものです。</span>
 <span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="forcats：レベル名を変更する"}</span></span>
 <span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_recode</span>(fx, <span class="at">mouse=</span><span class="st">"dog"</span>, <span class="at">rat=</span><span class="st">"cat"</span>, <span class="at">monkey=</span><span class="st">"pig"</span>, <span class="at">cow=</span><span class="st">"horse"</span>) <span class="co"># ラベルを付け替える</span></span>

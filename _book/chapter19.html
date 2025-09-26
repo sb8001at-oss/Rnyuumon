@@ -711,6 +711,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter48.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">実験計画法</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -786,7 +792,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>ベクターのような、多数の要素を含むオブジェクトを用いて演算を行う場合、R以外の言語では通常<strong>繰り返し計算</strong>を用います。繰り返し計算とは<a href="./chapter9.html">9章</a>で説明した通り、<code>for</code>文や<code>while</code>文、<code>repeat</code>文などを用いた計算です。プログラミング言語によって繰り返し計算の式は異なりますが、たくさんの要素を持つオブジェクトの演算では、繰り返し計算は有効な計算方法の一つです。</p>
+<p>ベクターのような、多数の要素を含むオブジェクトを用いて演算を行う場合、R以外の言語では通常<strong>繰り返し計算</strong>を用います。繰り返し計算とは<a href="./chapter9.html">9章</a>で説明した通り、<code>for</code>文や<code>while</code>文、<code>repeat</code>文などを用いた計算です。プログラミング言語によって繰り返し計算の文は異なりますが、いずれのプログラミング言語においても、たくさんの要素を持つオブジェクトの演算では、繰り返し計算は有効な計算方法の一つです。</p>
 <p>では、Rでの繰り返し計算を見てみましょう。下の例では、ベクターの要素に演算を行い、結果をベクターで返す繰り返し計算を行っています。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -957,7 +963,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [6,] "setosa" "21.06"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>上記のように、Rでは繰り返し計算で変数の「作り直し」が起きたり、データ型がころころ変わったりするため、繰り返し計算でベクターやデータフレームの要素を取り扱うのは推奨されません。ただし、繰り返し計算は演算の過程が捉えやすく、後から読んで理解しやすい構造をしています。<code>NULL</code>オブジェクトにデータを追加していくと、結果として得られるオブジェクトのサイズがわかっていなくても演算できるという利点があります。</p>
+<p>上記のように、Rでは繰り返し計算で変数の「作り直し」が起きたり、データ型がころころ変わったりするため、繰り返し計算でベクターやデータフレームの要素を取り扱うのは推奨されません。ただし、繰り返し計算は演算の過程を捉えやすく、後から読んで理解しやすい構造をしています。<code>NULL</code>オブジェクトにデータを追加していくと、結果として得られるオブジェクトのサイズがわかっていなくても演算できるという利点があります。</p>
 <p>2000年頃のPCは性能が低く、計算コストに気を払う必要がありましたが、現在では繰り返し計算を回しても大して時間がかからなくなりました。よほど大きいデータフレーム（数万～数十万行）を取り扱う場合を除けば、繰り返し計算が問題となることは少なくなったと感じます。データの取り扱いが一度きり（ad hoc）の場合には以下の<code>apply</code>関数群を使っても、繰り返し計算を使っても大差ないため、好みの、わかりやすい方法を用いればよいでしょう。</p>
 </div>
 </div>
@@ -1029,7 +1035,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <section id="apply関数" class="level3" data-number="19.1.1"><h3 data-number="19.1.1" class="anchored" data-anchor-id="apply関数">
 <span class="header-section-number">19.1.1</span> apply関数</h3>
 <p><code>apply</code>関数群の中で最も基本的なものが、<code>apply</code>関数です。<code>apply</code>関数は第一引数にデータフレーム（もしくは行列）を取り、<strong>第二引数に<code>MARGIN</code></strong>、<strong>第三引数に関数</strong>を取ります。第二引数の<code>MARGIN</code>は1か2を取り、<strong>1を取ると行（横）方向、2を取ると列（縦）方向</strong>のベクターを計算対象とします。<code>apply</code>関数はデータフレームの要素に、<code>MARGIN</code>で指定した方向に、第三引数で指定した関数を適用します。第三引数に指定する関数には、Rに備わっている関数、自作した関数の両方を用いることができます。</p>
-<p><code>apply</code>関数の演算では、（特に行方向、<code>MARGIN = 1</code>の時には）データ型が一致していることが必要となります。<code>apply</code>関数の使い方を以下の図1に示します。</p>
+<p><code>apply</code>関数の演算では、（特に行方向、<code>MARGIN = 1</code>の時には）データ型が指定した関数の引数の型と一致していることが必要となります。<code>apply</code>関数の使い方を以下の図1に示します。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/chapter15_apply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="図1：apply関数の使い方"><img src="./image/chapter15_apply.png" class="img-fluid figure-img" alt="図1：apply関数の使い方"></a></p>
 <figcaption>図1：apply関数の使い方</figcaption></figure>
@@ -1200,7 +1206,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </section><section id="lapply関数sapply関数" class="level3" data-number="19.1.3"><h3 data-number="19.1.3" class="anchored" data-anchor-id="lapply関数sapply関数">
 <span class="header-section-number">19.1.3</span> lapply関数/sapply関数</h3>
-<p><code>lapply</code>関数はリストを引数に取る関数です。<code>lapply</code>関数は第一引数にリスト、第二引数に関数を取り、リストの各要素に関数を適用します。<code>lapply</code>関数は返り値にリストを取ります。データフレームはリストですので、<code>lapply</code>関数は<code>apply(x, 2, FUN)</code>、つまり列方向に関数を適用するのと同じ計算を行うことができます。</p>
+<p><code>lapply</code>関数はリストを引数に取る関数です。<code>lapply</code>関数は第一引数にリスト、第二引数に関数を取り、リストの各要素に関数を適用します。<code>lapply</code>関数は返り値にリストを取ります。データフレームはリストですので、データフレームを引数に取った場合、<code>lapply</code>関数は<code>apply(x, 2, FUN)</code>、つまり列方向に関数を適用するのと同じ演算で、返り値がリストになります。</p>
 <p><code>sapply</code>関数は返り値がベクターになった<code>lapply</code>関数です。関数の返り値が2つ以上の値であれば、<code>sapply</code>関数は行列を返します。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/chapter15_lapply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="図3：lapply/sapply関数の使い方"><img src="./image/chapter15_lapply.png" class="img-fluid figure-img" alt="図3：lapply/sapply関数の使い方"></a></p>
@@ -1265,7 +1271,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </section><section id="withwithin関数" class="level3" data-number="19.1.4"><h3 data-number="19.1.4" class="anchored" data-anchor-id="withwithin関数">
 <span class="header-section-number">19.1.4</span> with・within関数</h3>
-<p><a href="./chapter16.html#データフレームの列の演算">16章</a>で紹介した通り、データフレームの列同士の演算には<code>with</code>・<code>within</code>関数を用いても計算することができます。<code>with</code>・<code>within</code>関数はデータフレームと列の演算を引数に取ります。<code>with</code>関数がベクターを返すのに対し、<code>within</code>関数は列が追加されたデータフレームを返します。<code>within</code>関数を<code>apply</code>関数群と同時に使うことで、より複雑なデータフレームの演算を行うことができます。</p>
+<p><a href="./chapter16.html#データフレームの列の演算">16章</a>で紹介した通り、データフレームの列同士の演算には<code>with</code>・<code>within</code>関数を用いることができます。<code>with</code>・<code>within</code>関数はデータフレームと列の演算を引数に取ります。<code>with</code>関数がベクターを返すのに対し、<code>within</code>関数は列が追加されたデータフレームを返します。<code>within</code>関数を<code>apply</code>関数群と同時に使うことで、より複雑なデータフレームの演算を行うことができます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1336,7 +1342,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </section><section id="tapply関数" class="level3" data-number="19.1.7"><h3 data-number="19.1.7" class="anchored" data-anchor-id="tapply関数">
 <span class="header-section-number">19.1.7</span> tapply関数</h3>
-<p><code>tapply</code>関数はベクターと因子を引数に取り、因子のグループごとに関数をベクターに適用します。ベクターに測定値、因子にカテゴリ（たとえば男性・女性など）を取っておけば、カテゴリごとの集計値を計算するのに使えます。</p>
+<p><code>tapply</code>関数はベクターと因子を引数に取り、因子のレベルごとに関数をベクターに適用します。ベクターに測定値、因子にカテゴリ（たとえば男性・女性など）を取っておけば、カテゴリごとの集計値を計算するのに使えます。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/chapter15_tapply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="図6：tapply関数の使い方"><img src="./image/chapter15_tapply.png" class="img-fluid figure-img" alt="図6：tapply関数の使い方"></a></p>
 <figcaption>図6：tapply関数の使い方</figcaption></figure>
@@ -1382,8 +1388,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </section><section id="aggregate関数" class="level3" data-number="19.1.9"><h3 data-number="19.1.9" class="anchored" data-anchor-id="aggregate関数">
 <span class="header-section-number">19.1.9</span> aggregate関数</h3>
-<p><code>aggregate</code>関数は、<code>dplyr</code>が出てくるまではデータフレームの結果を集計するのによく用いられてきた関数です。<code>aggregate</code>関数の第一引数はデータフレーム、第二引数には<code>by</code>（因子のリスト）、第三引数に関数を取ります。<code>aggregate</code>関数は<code>by</code>に指定した因子に従い、各列に関数を適用します。因子にカテゴリ（下の例では<code>iris</code>の種、<code>Species</code>）を指定することで、因子ごとにデータを集計するのに用いることができます。</p>
-<p><code>aggregate</code>関数は引数にデータフレームだけでなく、<strong>formula（式）</strong>というものを取ることもできます。このformulaはRでは統計でよく用いられる表現で、<code>~</code>（チルダ）を演算子として用いるものです。<strong><code>~</code>の左側には目的変数、右側には説明変数を足し算・掛け算で記入する</strong>形をとるのが最も一般的です。<code>aggregate</code>関数では、左側に関数を適用する列名、右側に<code>by</code>にあたる因子を指定します。また、formulaでは、~の左側または右側に.（ピリオド）を置くことがあります。このピリオドは、「従属変数または独立変数に使用しなかったすべての列」を表す表現です。このformulaについては、統計の章で詳しく説明します。</p>
+<p><code>aggregate</code>関数は、<code>dplyr</code>が出てくるまではデータフレームの結果を集計するのによく用いられていた関数です。<code>aggregate</code>関数の第一引数はデータフレーム、第二引数には<code>by</code>（因子のリスト）、第三引数に関数を取ります。<code>aggregate</code>関数は<code>by</code>に指定した因子に従い、各列に関数を適用します。因子にカテゴリ（下の例では<code>iris</code>の種、<code>Species</code>）を指定することで、因子ごとにデータを集計するのに用いることができます。</p>
+<p><code>aggregate</code>関数は引数にデータフレームだけでなく、<strong>formula（式）</strong>というものを取ることもできます。このformulaはRでは統計でよく用いられる表現で、<code>~</code>（チルダ）を演算子として用いるものです。<strong><code>~</code>の左側には目的変数、右側には説明変数を足し算・掛け算で記入する</strong>形をとるのが最も一般的です。<code>aggregate</code>関数では、左側に関数を適用する列名、右側に<code>by</code>にあたる因子を指定します。また、formulaでは、<code>~</code>の左側または右側に<code>.</code>（ピリオド）を置くことがあります。このピリオドは、「従属変数または独立変数に使用しなかったすべての列」を表す表現です。このformulaについては、<a href="./chapter29.html#formulaを用いたt検定">29章</a>で詳しく説明します。</p>
 <p><code>by</code>関数も<code>aggregate</code>関数と類似した関数ですが、<code>by</code>は関数の引数に各列のベクターではなく、因子で区切ったデータフレームを指定します。ですので、データフレームを処理できない関数を用いると、計算ができない場合があります。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/chapter15_aggregate.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="図7：aggregate関数の使い方"><img src="./image/chapter15_aggregate.png" class="img-fluid figure-img" alt="図7：aggregate関数の使い方"></a></p>
@@ -1493,7 +1499,7 @@ Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaugh
 Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Messy Data</em>. <a href="https://CRAN.R-project.org/package=tidyr">https://CRAN.R-project.org/package=tidyr</a>.
 </div>
 </div>
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1982,7 +1988,7 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## 繰り返し計算</span></span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>ベクターのような、多数の要素を含むオブジェクトを用いて演算を行う場合、R以外の言語では通常**繰り返し計算**を用います。繰り返し計算とは<span class="co">[</span><span class="ot">9章</span><span class="co">](chapter9.qmd)</span>で説明した通り、<span class="in">`for`</span>文や<span class="in">`while`</span>文、<span class="in">`repeat`</span>文などを用いた計算です。プログラミング言語によって繰り返し計算の式は異なりますが、たくさんの要素を持つオブジェクトの演算では、繰り返し計算は有効な計算方法の一つです。</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>ベクターのような、多数の要素を含むオブジェクトを用いて演算を行う場合、R以外の言語では通常**繰り返し計算**を用います。繰り返し計算とは<span class="co">[</span><span class="ot">9章</span><span class="co">](chapter9.qmd)</span>で説明した通り、<span class="in">`for`</span>文や<span class="in">`while`</span>文、<span class="in">`repeat`</span>文などを用いた計算です。プログラミング言語によって繰り返し計算の文は異なりますが、いずれのプログラミング言語においても、たくさんの要素を持つオブジェクトの演算では、繰り返し計算は有効な計算方法の一つです。</span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>では、Rでの繰り返し計算を見てみましょう。下の例では、ベクターの要素に演算を行い、結果をベクターで返す繰り返し計算を行っています。</span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
@@ -2104,7 +2110,7 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
 <span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris_edited) <span class="co"># 文字列の行列になっている</span></span>
 <span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>上記のように、Rでは繰り返し計算で変数の「作り直し」が起きたり、データ型がころころ変わったりするため、繰り返し計算でベクターやデータフレームの要素を取り扱うのは推奨されません。ただし、繰り返し計算は演算の過程が捉えやすく、後から読んで理解しやすい構造をしています。<span class="in">`NULL`</span>オブジェクトにデータを追加していくと、結果として得られるオブジェクトのサイズがわかっていなくても演算できるという利点があります。</span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>上記のように、Rでは繰り返し計算で変数の「作り直し」が起きたり、データ型がころころ変わったりするため、繰り返し計算でベクターやデータフレームの要素を取り扱うのは推奨されません。ただし、繰り返し計算は演算の過程を捉えやすく、後から読んで理解しやすい構造をしています。<span class="in">`NULL`</span>オブジェクトにデータを追加していくと、結果として得られるオブジェクトのサイズがわかっていなくても演算できるという利点があります。</span>
 <span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a>2000年頃のPCは性能が低く、計算コストに気を払う必要がありましたが、現在では繰り返し計算を回しても大して時間がかからなくなりました。よほど大きいデータフレーム（数万～数十万行）を取り扱う場合を除けば、繰り返し計算が問題となることは少なくなったと感じます。データの取り扱いが一度きり（ad hoc）の場合には以下の<span class="in">`apply`</span>関数群を使っても、繰り返し計算を使っても大差ないため、好みの、わかりやすい方法を用いればよいでしょう。</span>
 <span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a></span>
@@ -2127,7 +2133,7 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
 <span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a><span class="in">`apply`</span>関数群の中で最も基本的なものが、<span class="in">`apply`</span>関数です。<span class="in">`apply`</span>関数は第一引数にデータフレーム（もしくは行列）を取り、**第二引数に`MARGIN`**、**第三引数に関数**を取ります。第二引数の`MARGIN`は1か2を取り、**1を取ると行（横）方向、2を取ると列（縦）方向**のベクターを計算対象とします。<span class="in">`apply`</span>関数はデータフレームの要素に、<span class="in">`MARGIN`</span>で指定した方向に、第三引数で指定した関数を適用します。第三引数に指定する関数には、Rに備わっている関数、自作した関数の両方を用いることができます。</span>
 <span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a><span class="in">`apply`</span>関数の演算では、（特に行方向、<span class="in">`MARGIN = 1`</span>の時には）データ型が一致していることが必要となります。<span class="in">`apply`</span>関数の使い方を以下の図1に示します。</span>
+<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a><span class="in">`apply`</span>関数の演算では、（特に行方向、<span class="in">`MARGIN = 1`</span>の時には）データ型が指定した関数の引数の型と一致していることが必要となります。<span class="in">`apply`</span>関数の使い方を以下の図1に示します。</span>
 <span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a><span class="al">![図1：apply関数の使い方](./image/chapter15_apply.png)</span></span>
 <span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a></span>
@@ -2189,7 +2195,7 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
 <span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a><span class="fu">### lapply関数/sapply関数</span></span>
 <span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a><span class="in">`lapply`</span>関数はリストを引数に取る関数です。<span class="in">`lapply`</span>関数は第一引数にリスト、第二引数に関数を取り、リストの各要素に関数を適用します。<span class="in">`lapply`</span>関数は返り値にリストを取ります。データフレームはリストですので、<span class="in">`lapply`</span>関数は<span class="in">`apply(x, 2, FUN)`</span>、つまり列方向に関数を適用するのと同じ計算を行うことができます。</span>
+<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a><span class="in">`lapply`</span>関数はリストを引数に取る関数です。<span class="in">`lapply`</span>関数は第一引数にリスト、第二引数に関数を取り、リストの各要素に関数を適用します。<span class="in">`lapply`</span>関数は返り値にリストを取ります。データフレームはリストですので、データフレームを引数に取った場合、<span class="in">`lapply`</span>関数は<span class="in">`apply(x, 2, FUN)`</span>、つまり列方向に関数を適用するのと同じ演算で、返り値がリストになります。</span>
 <span id="cb16-225"><a href="#cb16-225" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-226"><a href="#cb16-226" aria-hidden="true" tabindex="-1"></a><span class="in">`sapply`</span>関数は返り値がベクターになった<span class="in">`lapply`</span>関数です。関数の返り値が2つ以上の値であれば、<span class="in">`sapply`</span>関数は行列を返します。</span>
 <span id="cb16-227"><a href="#cb16-227" aria-hidden="true" tabindex="-1"></a></span>
@@ -2210,7 +2216,7 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
 <span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a><span class="fu">### with・within関数</span></span>
 <span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">16章</span><span class="co">](chapter16.qmd#データフレームの列の演算)</span>で紹介した通り、データフレームの列同士の演算には<span class="in">`with`</span>・<span class="in">`within`</span>関数を用いても計算することができます。<span class="in">`with`</span>・<span class="in">`within`</span>関数はデータフレームと列の演算を引数に取ります。<span class="in">`with`</span>関数がベクターを返すのに対し、<span class="in">`within`</span>関数は列が追加されたデータフレームを返します。<span class="in">`within`</span>関数を<span class="in">`apply`</span>関数群と同時に使うことで、より複雑なデータフレームの演算を行うことができます。</span>
+<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">16章</span><span class="co">](chapter16.qmd#データフレームの列の演算)</span>で紹介した通り、データフレームの列同士の演算には<span class="in">`with`</span>・<span class="in">`within`</span>関数を用いることができます。<span class="in">`with`</span>・<span class="in">`within`</span>関数はデータフレームと列の演算を引数に取ります。<span class="in">`with`</span>関数がベクターを返すのに対し、<span class="in">`within`</span>関数は列が追加されたデータフレームを返します。<span class="in">`within`</span>関数を<span class="in">`apply`</span>関数群と同時に使うことで、より複雑なデータフレームの演算を行うことができます。</span>
 <span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="列の演算：with関数とwithin関数"}</span></span>
 <span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a>iris6 <span class="ot">&lt;-</span> <span class="fu">head</span>(iris) <span class="co"># 始めの6行を選択</span></span>
@@ -2254,7 +2260,7 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
 <span id="cb16-286"><a href="#cb16-286" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-287"><a href="#cb16-287" aria-hidden="true" tabindex="-1"></a><span class="fu">### tapply関数</span></span>
 <span id="cb16-288"><a href="#cb16-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a><span class="in">`tapply`</span>関数はベクターと因子を引数に取り、因子のグループごとに関数をベクターに適用します。ベクターに測定値、因子にカテゴリ（たとえば男性・女性など）を取っておけば、カテゴリごとの集計値を計算するのに使えます。</span>
+<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a><span class="in">`tapply`</span>関数はベクターと因子を引数に取り、因子のレベルごとに関数をベクターに適用します。ベクターに測定値、因子にカテゴリ（たとえば男性・女性など）を取っておけば、カテゴリごとの集計値を計算するのに使えます。</span>
 <span id="cb16-290"><a href="#cb16-290" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-291"><a href="#cb16-291" aria-hidden="true" tabindex="-1"></a><span class="al">![図6：tapply関数の使い方](./image/chapter15_tapply.png)</span></span>
 <span id="cb16-292"><a href="#cb16-292" aria-hidden="true" tabindex="-1"></a></span>
@@ -2278,9 +2284,9 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
 <span id="cb16-310"><a href="#cb16-310" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-311"><a href="#cb16-311" aria-hidden="true" tabindex="-1"></a><span class="fu">### aggregate関数</span></span>
 <span id="cb16-312"><a href="#cb16-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-313"><a href="#cb16-313" aria-hidden="true" tabindex="-1"></a><span class="in">`aggregate`</span>関数は、<span class="in">`dplyr`</span>が出てくるまではデータフレームの結果を集計するのによく用いられてきた関数です。<span class="in">`aggregate`</span>関数の第一引数はデータフレーム、第二引数には<span class="in">`by`</span>（因子のリスト）、第三引数に関数を取ります。<span class="in">`aggregate`</span>関数は<span class="in">`by`</span>に指定した因子に従い、各列に関数を適用します。因子にカテゴリ（下の例では<span class="in">`iris`</span>の種、<span class="in">`Species`</span>）を指定することで、因子ごとにデータを集計するのに用いることができます。</span>
+<span id="cb16-313"><a href="#cb16-313" aria-hidden="true" tabindex="-1"></a><span class="in">`aggregate`</span>関数は、<span class="in">`dplyr`</span>が出てくるまではデータフレームの結果を集計するのによく用いられていた関数です。<span class="in">`aggregate`</span>関数の第一引数はデータフレーム、第二引数には<span class="in">`by`</span>（因子のリスト）、第三引数に関数を取ります。<span class="in">`aggregate`</span>関数は<span class="in">`by`</span>に指定した因子に従い、各列に関数を適用します。因子にカテゴリ（下の例では<span class="in">`iris`</span>の種、<span class="in">`Species`</span>）を指定することで、因子ごとにデータを集計するのに用いることができます。</span>
 <span id="cb16-314"><a href="#cb16-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-315"><a href="#cb16-315" aria-hidden="true" tabindex="-1"></a><span class="in">`aggregate`</span>関数は引数にデータフレームだけでなく、**formula（式）**というものを取ることもできます。このformulaはRでは統計でよく用いられる表現で、`~`（チルダ）を演算子として用いるものです。**`~`の左側には目的変数、右側には説明変数を足し算・掛け算で記入する**形をとるのが最も一般的です。<span class="in">`aggregate`</span>関数では、左側に関数を適用する列名、右側に<span class="in">`by`</span>にあたる因子を指定します。また、formulaでは、~の左側または右側に.（ピリオド）を置くことがあります。このピリオドは、「従属変数または独立変数に使用しなかったすべての列」を表す表現です。このformulaについては、統計の章で詳しく説明します。</span>
+<span id="cb16-315"><a href="#cb16-315" aria-hidden="true" tabindex="-1"></a><span class="in">`aggregate`</span>関数は引数にデータフレームだけでなく、**formula（式）**というものを取ることもできます。このformulaはRでは統計でよく用いられる表現で、`~`（チルダ）を演算子として用いるものです。**`~`の左側には目的変数、右側には説明変数を足し算・掛け算で記入する**形をとるのが最も一般的です。<span class="in">`aggregate`</span>関数では、左側に関数を適用する列名、右側に<span class="in">`by`</span>にあたる因子を指定します。また、formulaでは、<span class="in">`~`</span>の左側または右側に<span class="in">`.`</span>（ピリオド）を置くことがあります。このピリオドは、「従属変数または独立変数に使用しなかったすべての列」を表す表現です。このformulaについては、<span class="co">[</span><span class="ot">29章</span><span class="co">](chapter29.qmd#formulaを用いたt検定)</span>で詳しく説明します。</span>
 <span id="cb16-316"><a href="#cb16-316" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-317"><a href="#cb16-317" aria-hidden="true" tabindex="-1"></a><span class="in">`by`</span>関数も<span class="in">`aggregate`</span>関数と類似した関数ですが、<span class="in">`by`</span>は関数の引数に各列のベクターではなく、因子で区切ったデータフレームを指定します。ですので、データフレームを処理できない関数を用いると、計算ができない場合があります。</span>
 <span id="cb16-318"><a href="#cb16-318" aria-hidden="true" tabindex="-1"></a></span>

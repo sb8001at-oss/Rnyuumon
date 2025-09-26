@@ -14,8 +14,10 @@ knitr::kable(d, caption="表1：低レベルグラフィック関数")
 `points`関数は、すでに存在するグラフに点を追加するための関数です。`points`関数は`x`と`y`の2つの引数を取り、その`x`、`y`が示す場所に点を追加します。
 
 ```{r, filename="point関数で点を描画"}
-plot(x = 0, y = 0, type = "n", xlab = "", ylab = "") # 軸だけのプロット
+# 軸だけのプロット
+plot(x = 0, y = 0, type = "n", xlab = "", ylab = "", xlim = c(-1, 2), ylim = c(-1, 2)) 
 points(x = 0, y = 0) # x=0, y=0に点を追加
+points(c(1, 2), c(1, 2), col = "red") # 複数の点を追加するときはベクターで指定する
 ```
 
 ## text関数
@@ -25,6 +27,8 @@ points(x = 0, y = 0) # x=0, y=0に点を追加
 ```{r, filename="text関数でテキスト表示"}
 plot(x = 0, y = 0, type = "n", xlab = "", ylab = "")
 text(x = 0, y = 0, labels = "added text") # x=0, y=0にテキストを追加
+# 複数のテキストを表示するときはベクターで指定
+text(x = c(-0.5, 0.5), y = c(-0.5, 0.5), labels = c("minus", "plus"))
 ```
 
 ## abline関数
@@ -34,13 +38,14 @@ text(x = 0, y = 0, labels = "added text") # x=0, y=0にテキストを追加
 - 切片（引数`a`）と傾き（引数`b`）を指定する
 - 横線のy軸の位置（引数`h`）を指定する
 - 縦線のx軸の位置（引数`v`）を指定する
-- 線形回帰の結果（引数`coef`）を指定する
+- 切片と傾きの2値のベクター（引数`coef`）を指定する
 
 ```{r, filename="abline関数で直線を引く"}
 plot(x = 0, y = 0, type = "n", xlab = "", ylab = "")
 abline(a = -0.5, b = 2, col = "red") # y = 2 x - 0.5 の線を追加
 abline(h = 1, col = "blue") # y = 1 の水平線を追加
 abline(v = -1, lty = 2, col = "darkgreen") # x = -1 の縦線（点線）を追加
+abline(coef =c(0.5, 1), col  = "orange") # y = x + 0.5の線を追加
 ```
 
 ## 多角形・図形・矢印を追加
@@ -80,7 +85,10 @@ arrows(x0 = 0.25, y0 = -0.75, x1 = 0.5, y1 = -0.5, col = "#A569BD")
 ```{r, filename="凡例（legend）とタイトル（title）の表示"}
 plot(x = 0, y = 0, type = "n", xlab = "", ylab = "")
 # 凡例（legend）を追加
-legend(x = 0.5, y = -0.5, legend = "point", pch = 1)
+legend(x = 0.5, y = -0.5, legend = "point1", pch = 1)
+# legendをベクターで指定すれば複数の凡例を追加できる
+legend(x = -0.5, y = 0.5, legend = c("point2", "point3"), pch = c(2, 3))
+
 # タイトルを追加
 title(main = "メインタイトル", sub = "サブタイトル")
 ```
@@ -225,7 +233,7 @@ plot(
   )
 ```
 
-Rで用いることのできる色については、[NCEAS (National Center for Ecological Analysis and Synthesis)が公開しているチートシート](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf)に詳しくまとめられています。
+Rで用いることのできる色については、[NCEAS (National Center for Ecological Analysis and Synthesis)が公開しているチートシート](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf)[@zeileis2009escaping]に詳しくまとめられています。
 
 色はベクターで指定することもできます。
 

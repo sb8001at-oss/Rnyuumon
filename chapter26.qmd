@@ -211,11 +211,24 @@ iris |>
   geom_histogram()
 ```
 
+ヒストグラムの棒の幅は、`bins`もしくは`binwidth`のどちらかで指定します。`bins`で指定する場合には棒の数を、binwidthで指定する場合には棒の幅のサイズをそれぞれ数値で指定します。
+
+```{r, filename="geom_histogram：棒の幅を指定する"}
+iris |> 
+  ggplot(aes(x = Sepal.Length)) +
+  geom_histogram(bins = 15) # 棒を15本にする（binsのデフォルト値は30）
+
+iris |> 
+  ggplot(aes(x = Sepal.Length)) +
+  geom_histogram(binwidth = 0.5) # 棒の幅を0.5にする
+```
+
+
 ### statの設定
 
 `geom_bar`関数で1つの値に対して1つの棒グラフを描画する、要は通常の棒グラフを描画する場合には、`stat="identity"`を指定します。棒グラフを描画するときには、まずx軸とy軸の数値・ラベルを含むデータフレームを作成します。
 
-```{r, filename="tidyrd、dplyrでデータフレームの前準備"}
+```{r, filename="tidyr、dplyrでデータフレームの前準備"}
 d <- iris |> 
   group_by(Species) |> 
   summarise(
@@ -273,7 +286,7 @@ iris |>
 
 ### geom_density
 
-`geom_density`はヒストグラムと類似していますが、単に度数を返すのではなく、カーネル密度関数に変換した上で度数分布を示してくれる関数です。`geom_density`では、縦軸の値は確率密度となり、実際のデータが少ない部分にも実際の頻度より高めの確率密度が与えられるため、かなりデータが多い場合以外は正確性に欠くことになります。データが少ない場合にはヒストグラムの方が使い勝手が良いでしょう。
+`geom_density`はヒストグラムと類似していますが、単に度数を返すのではなく、カーネル密度に変換した度数分布を示してくれる関数です。`geom_density`では、縦軸の値は確率密度となり、実際のデータが少ない部分にも実際の頻度より高めの確率密度が与えられるため、かなりデータが多い場合以外は正確性に欠くことになります。データが少ない場合にはヒストグラムの方が使い勝手が良いでしょう。
 
 ```{r, filename="geom_density関数"}
 iris |> 
@@ -302,12 +315,20 @@ iris |>
   geom_point()
 ```
 
-このような場合に、点の重なりを抑えるため、データの表示にランダムな幅を持たせるのが`geom_jitter`です。`x`か`y`のどちらかのみが数値の場合には、数値以外の値には幅を持たせず、両方が数値の場合にはx軸・y軸方向に幅を持たせることになります。ですので、`x`、`y`の両方が数値の場合には、点は正確な位置には配置されません。
+このような場合に、点の重なりを抑えるため、データの表示にランダムな幅を持たせるのが`geom_jitter`です。`x`と`y`の方向にランダムに点をばらつかせることができます。`x`と`y`の両方が数値の場合にはx軸・y軸方向に幅を持たせることになります。ですので、`x`、`y`の両方が数値の場合には、点は正確な位置には配置されません。
 
 ```{r, filename="geom_jitter関数で点をバラつかせる"}
 iris |> 
   ggplot(aes(x = Species, y = Sepal.Length, color = Species)) +
   geom_jitter()
+```
+
+`geom_jitter`では、`width`と`height`の2つの引数でばらつかせる幅と高さを指定することができます。y方向の値に注目する場合であれば、`height=0`を指定することでy軸方向のばらつきを0にすることができるため、y軸方向には正確な値を表示させることができます。
+
+```{r, filename="geom_jitter：widthとheightを指定する"}
+iris |> 
+  ggplot(aes(x = Species, y = Sepal.Length, color = Species)) +
+  geom_jitter(width = 0.2, height = 0)
 ```
 
 ### geom_boxplot
@@ -696,7 +717,7 @@ iris |>
 iris |> 
   ggplot(aes(x = Species, y = Sepal.Length)) +
   geom_boxplot() +
-  geom_jitter(aes(color = Species), width = 0.2)
+  geom_jitter(aes(color = Species), width = 0.2, height = 0)
 ```
 
 ## 複数のグラフの表示：facetting
@@ -848,6 +869,7 @@ p <-
 ggsave("plot_iris_Sepal.pdf", p)
 ```
 
+また、Rstudioでは[24章](chapter24.qmd#グラフをファイルに保存する)で説明した通り、右下ウインドウのメニューにある『Export』からグラフをファイルに保存することもできます。
 
 :::{.callout-tip collapse=true}
 ## ggplot2で日本語を表示する
@@ -870,7 +892,7 @@ p
 ggsave("./image/cars.pdf", p)
 ```
 
-![](./image/cars_pdf.png){width = 50%}
+![](./image/cars_pdf.png)
 
 一方で、PNGのような画像ファイルとして保存すると、日本語がそのまま表示されます。R上で日本語が文字化けせずに表示されるのは、出力がペイント系の画像になっているからです。
 
@@ -878,7 +900,7 @@ ggsave("./image/cars.pdf", p)
 ggsave("./image/cars.png", p)
 ```
 
-![](./image/cars.png){width = 50%}
+![](./image/cars.png)
 
 つまり、PDFや[EPS](https://www.adobe.com/jp/creativecloud/file-types/image/vector/eps-file.html)のようなドロー系のファイル形式で日本語を含む`ggplot2`のグラフを保存すると、文字化けします。このPDFにすると文字化けする問題は日本のRユーザーを長く悩ませてきました。
 
@@ -902,7 +924,7 @@ ggsave("./image/cars_cairo_pdf.pdf", p, device=cairo_pdf, family = "Meiryo UI")
 
 `patchwork`を用いる時には、まず`ggplot2`のオブジェクトを変数に代入しておくとよいでしょう。
 
-```{r, filename="ggplot2オブジェクトを変数に代入"}
+```{r, filename="ggplot2オブジェクトを変数に代入", message=FALSE}
 pacman::p_load(patchwork)
 p1 <- iris |> ggplot(aes(x = Sepal.Length, y = Sepal.Width)) + geom_point()
 p2 <- iris |> ggplot(aes(x = Species, y = Petal.Length)) + geom_boxplot()
@@ -912,19 +934,19 @@ p4 <- iris |> ggplot(aes(x = Petal.Length, color = Species, fill = Species)) + g
 
 グラフを横に並べて表示するときには、`+`でオブジェクトを繋ぎます。
 
-```{r, filename="グラフを横に並べる"}
+```{r, filename="グラフを横に並べる", message=FALSE}
 p1 + p2
 ```
 
 同様にカッコで囲えば表示を一部まとめておくことができます。また、`|`は横並び、`/`は縦並びにグラフを配置する場合に用います。
 
-```{r, filename="グラフを縦横に配置する"}
+```{r, filename="グラフを縦横に配置する", message=FALSE}
 (p1 | p2) / p3
 ```
 
 カッコ、`|`、`/`を組み合わせれば、グラフを様々な配置に並べて表示することができます。
 
-```{r, filename="カッコを用いて配置する"}
+```{r, filename="カッコを用いて配置する", message=FALSE}
 (p1 | p2) / (p3 | p4)
 ```
 

@@ -222,6 +222,7 @@ d # 数値と因子のデータフレーム（aとbの2群）
 t.test(x ~ f, data = d)
 ```
 
+
 formulaは文字列から作成することもできます。文字列からformulaに変換する場合には、`formula`関数を用います。
 
 ```{r, filename="文字列をformulaに変換する"}
@@ -292,6 +293,37 @@ t_temp |>
 検出力とαの関係については、この[vignettes](https://cran.r-project.org/web/packages/pwrss/vignettes/examples.html)も参考になります。
 
 :::
+
+### 効果量（Effect size）
+
+効果量（Effect size）とは、群間の値の差を標準化したパラメータで、差の大きさを評価する際に用いられる指標の一つです。例えば、代表的な効果量の指標には、2群間の効果量であるCohen’s dがあります。Cohen's dは以下の式で求めることができます。
+
+$$ d = \frac{\bar{x_1}-\bar{x_2}}{s} $$
+
+上の式の$\bar{x_1}$、$\bar{x_2}$はそれぞれ2群の平均値で、分子の$\bar{x_1}-\bar{x_2}$は2群の平均値の差です。また、$s$は2群の標準偏差をプールしたもので、以下の式で表されます。
+
+$$s=\sqrt{\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}}$$
+
+この式の$n_1$、$n_2$はそれぞれ2群のデータ数、$s_1$、$s_2$は2群の標準偏差です。したがって、Cohen's dは平均値の差を標準偏差で割ったような値となっています。
+
+これだけだと意味が分かりにくいのですが、このCohen's dにはおおよその差の大きさの指標が決められていて、dが0.2未満なら差がとても小さく、0.2～0.5なら小さく、0.5～0.8なら中程度、0.8以上だと大きいとされています[@cohen2013statistical]。
+
+この効果量の計算に用いるライブラリが[`effectsize`](https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html)[@effectsize_bib]です。`effectsize`の`cohens_d`関数はformulaを引数に取り、2群間の効果量であるCohen's dを返す関数です。引数は`t.test`関数と同じように指定します。`cohens_d`関数を実行すると、以下のようにCohen's dと差の95%信頼区間が表示されます。
+
+```{r, filename="Cohen's dを計算する"}
+library(effectsize)
+d # 上で作成したデータフレームを利用
+
+cohens_d(x ~ f, data = d)
+```
+
+また、Cohen's dの評価を調べる場合には`interpret_cohens_d`関数を用います。`interpret_cohens_d`関数の引数はCohen's dの値で、Cohen's dの値をCohen (1988)に従いVery small、Small、Medium、Largeの4段階で評価してくれます。
+
+```{r, filename="interpret_cohens_d関数で効果量を評価する"}
+interpret_cohens_d(0.73)
+```
+
+Cohen's dの他にも、以下で説明する分散分析の効果量に関しても`effectsize`で計算することができます。[`effectsize`の説明に関するページ](https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html)に詳しい説明があるので、興味のある方は一読してみるとよいでしょう。
 
 ## カテゴリカルデータの検定
 

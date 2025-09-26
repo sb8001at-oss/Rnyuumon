@@ -97,10 +97,7 @@ div.csl-indent {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-608b8f7c2f1fcf01b028a6c7745bf651.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark-1ce8372c138f3081dbeb34edbaf21c9c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-608b8f7c2f1fcf01b028a6c7745bf651.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
-<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-608b8f7c2f1fcf01b028a6c7745bf651.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -711,6 +708,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter48.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">実験計画法</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -976,7 +979,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p><code>S7</code>を開発しているのが<code>ggplot2</code>を開発したHadley Wickhamなので（2023年現在）、いずれは<code>S7</code>が主流になるのかもしれませんが、現状では簡単にRにオブジェクト指向のクラスを持ち込む場合にはS3を、少し複雑なプロジェクトにはS4を用いるのが一般的であるように見えます。特に<a href="https://www.bioconductor.org/">Bioconductor</a>のライブラリではS4のオブジェクトが用いられています。</p>
 </section><section id="rでのs3s4クラスオブジェクトの取り扱い" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="rでのs3s4クラスオブジェクトの取り扱い">
 <span class="header-section-number">22.4</span> RでのS3、S4クラスオブジェクトの取り扱い</h2>
-<p>上に述べたように、Rではライブラリを作成する等の特殊な場合を除いて、クラスを定義することはありません。クラスの定義は入門で学ぶには少し高度な内容となるので、他の文献に説明を譲ります。</p>
+<p>上に述べたように、Rではライブラリを作成する等の特殊な場合を除いて、クラスを定義することはありません。クラスの定義は入門で学ぶには少し高度な内容となるので、他の文献<span class="citation" data-cites="Wickham_Hadley2019-05-24 Hadley_Wickham2016-02-10">(<a href="references.html#ref-Wickham_Hadley2019-05-24" role="doc-biblioref">Wickham 2019</a>, <a href="references.html#ref-Hadley_Wickham2016-02-10" role="doc-biblioref">2016</a>)</span>に説明を譲ります。</p>
 <p>しかし、統計の関数の返り値はS3やS4を親クラスとしたオブジェクトとなっている場合が多いため、オブジェクトの取り扱い方を理解しておくことは統計解析において重要となります。</p>
 <p>典型的なS3の例として線形回帰の結果（lmオブジェクト）、S4の例として線形混合モデルの結果（lmerModオブジェクト、<a href="https://cran.r-project.org/web/packages/lme4/index.html">lme4パッケージ</a> <span class="citation" data-cites="lme4_bib">(<a href="references.html#ref-lme4_bib" role="doc-biblioref">Bates et al. 2015</a>)</span>より）を用いて、オブジェクトの取り扱い方を説明します。</p>
 <p>S3オブジェクトでもS4オブジェクトでも、オブジェクトの内容を確認する場合には、まず<code>str</code>関数でオブジェクトの構造を理解するところから始めます。</p>
@@ -1034,6 +1037,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p>関数の適用に関しては、ジェネリック関数を用いて、そのクラスのオブジェクトを引数にした場合の演算が定義されます。このように、関数名は同じだけどオブジェクトのクラスによって出力が異なる性質のことを<strong>ポリモルフィズム</strong>と呼びます。</p>
 <p>以下にS3とS4クラスの値の呼び出しや、関数の適用例を挙げます。</p>
 <div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>S3クラスの取り扱い</strong></pre>
+</div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># S3クラス</span></span>
 <span><span class="va">lm_obj</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "lm"</span></span>
@@ -1048,16 +1055,33 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## $names</span></span>
 <span><span class="co">## [1] "(Intercept)"      "iris$Sepal.Width"</span></span>
 <span></span>
-<span><span class="co"># S3クラス：関数の引数にする（plot.lmが呼び出されている）</span></span>
-<span><span class="va">lm_obj</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>which <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><a href="chapter22_files/figure-html/unnamed-chunk-11-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="chapter22_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
+<span><span class="co"># S3クラス：関数の引数にする（summary.lmが呼び出される）</span></span>
+<span><span class="va">lm_obj</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## lm(formula = iris$Sepal.Length ~ iris$Sepal.Width)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residuals:</span></span>
+<span><span class="co">##     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">## -1.5561 -0.6333 -0.1120  0.5579  2.2226 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">##                  Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)        6.5262     0.4789   13.63   &lt;2e-16 ***</span></span>
+<span><span class="co">## iris$Sepal.Width  -0.2234     0.1551   -1.44    0.152    </span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residual standard error: 0.8251 on 148 degrees of freedom</span></span>
+<span><span class="co">## Multiple R-squared:  0.01382,    Adjusted R-squared:  0.007159 </span></span>
+<span><span class="co">## F-statistic: 2.074 on 1 and 148 DF,  p-value: 0.1519</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>S4クラスの取り扱い</strong></pre>
+</div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># S4クラス</span></span>
 <span><span class="va">lme4_obj</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "lmerMod"</span></span>
@@ -1126,6 +1150,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## attr(,"class")</span></span>
 <span><span class="co">## [1] "coef.mer"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
 
 
 <!-- -->
@@ -1143,11 +1168,17 @@ Vaughan, Davis, Jim Hester, Tomasz Kalinowski, Will Landau, Michael Lawrence, Ma
 <div id="ref-aoos_bib" class="csl-entry" role="listitem">
 Warnholz, Sebastian. 2017. <em>Aoos: Another Object Orientation System</em>. <a href="https://CRAN.R-project.org/package=aoos">https://CRAN.R-project.org/package=aoos</a>.
 </div>
+<div id="ref-Hadley_Wickham2016-02-10" class="csl-entry" role="listitem">
+Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広, 市川太祐, 高柳慎一, and 福島真太朗. 単行本. 共立出版.
+</div>
+<div id="ref-Wickham_Hadley2019-05-24" class="csl-entry" role="listitem">
+———. 2019. <em>Advanced r, Second Edition (Chapman &amp; Hall/CRC the r Series) (English Edition)</em>. Kindle版. Chapman; Hall/CRC.
+</div>
 <div id="ref-pryr_bib" class="csl-entry" role="listitem">
-Wickham, Hadley. 2023. <em>Pryr: Tools for Computing on the Language</em>. <a href="https://CRAN.R-project.org/package=pryr">https://CRAN.R-project.org/package=pryr</a>.
+———. 2023. <em>Pryr: Tools for Computing on the Language</em>. <a href="https://CRAN.R-project.org/package=pryr">https://CRAN.R-project.org/package=pryr</a>.
 </div>
 </div>
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1787,7 +1818,7 @@ Wickham, Hadley. 2023. <em>Pryr: Tools for Computing on the Language</em>. <a hr
 <span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a><span class="fu">## RでのS3、S4クラスオブジェクトの取り扱い</span></span>
 <span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a>上に述べたように、Rではライブラリを作成する等の特殊な場合を除いて、クラスを定義することはありません。クラスの定義は入門で学ぶには少し高度な内容となるので、他の文献に説明を譲ります。</span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a>上に述べたように、Rではライブラリを作成する等の特殊な場合を除いて、クラスを定義することはありません。クラスの定義は入門で学ぶには少し高度な内容となるので、他の文献<span class="co">[</span><span class="ot">@Wickham_Hadley2019-05-24; @Hadley_Wickham2016-02-10</span><span class="co">]</span>に説明を譲ります。</span>
 <span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a>しかし、統計の関数の返り値はS3やS4を親クラスとしたオブジェクトとなっている場合が多いため、オブジェクトの取り扱い方を理解しておくことは統計解析において重要となります。</span>
 <span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a></span>
@@ -1823,37 +1854,36 @@ Wickham, Hadley. 2023. <em>Pryr: Tools for Computing on the Language</em>. <a hr
 <span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a>以下にS3とS4クラスの値の呼び出しや、関数の適用例を挙げます。</span>
 <span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a><span class="co"># S3クラス</span></span>
-<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a>lm_obj <span class="sc">|&gt;</span> <span class="fu">class</span>()</span>
-<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a><span class="co"># S3クラス：要素の取り出し</span></span>
-<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a>lm_obj<span class="sc">$</span>coefficients</span>
-<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a><span class="co"># S3クラス：アトリビュートを読み出す</span></span>
-<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a>lm_obj<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">attributes</span>()</span>
-<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a><span class="co"># S3クラス：関数の引数にする（plot.lmが呼び出されている）</span></span>
-<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a>lm_obj <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">which =</span> <span class="dv">1</span>)</span>
-<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス</span></span>
-<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a>lme4_obj <span class="sc">|&gt;</span> <span class="fu">class</span>()</span>
-<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス：要素の取り出し</span></span>
-<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a>lme4_obj<span class="sc">@</span>pp<span class="sc">$</span>beta0</span>
-<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス：アトリビュートを読み出す</span></span>
-<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a>lme4_obj<span class="sc">@</span>pp<span class="sc">$</span>X <span class="sc">|&gt;</span> <span class="fu">attributes</span>() <span class="sc">|&gt;</span> _<span class="sc">$</span>dim</span>
-<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス：関数の引数にする（summary.lmerModが呼び出されている）</span></span>
-<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lme4_obj)</span>
-<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス：アクセサ（値を取り出す関数）</span></span>
-<span id="cb13-236"><a href="#cb13-236" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(lme4_obj)</span>
-<span id="cb13-237"><a href="#cb13-237" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="S3クラスの取り扱い"}</span></span>
+<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a><span class="co"># S3クラス</span></span>
+<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a>lm_obj <span class="sc">|&gt;</span> <span class="fu">class</span>()</span>
+<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a><span class="co"># S3クラス：要素の取り出し</span></span>
+<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a>lm_obj<span class="sc">$</span>coefficients</span>
+<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a><span class="co"># S3クラス：アトリビュートを読み出す</span></span>
+<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a>lm_obj<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">attributes</span>()</span>
+<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a><span class="co"># S3クラス：関数の引数にする（summary.lmが呼び出される）</span></span>
+<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a>lm_obj <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span>
+<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="S4クラスの取り扱い"}</span></span>
+<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス</span></span>
+<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a>lme4_obj <span class="sc">|&gt;</span> <span class="fu">class</span>()</span>
+<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス：要素の取り出し</span></span>
+<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a>lme4_obj<span class="sc">@</span>pp<span class="sc">$</span>beta0</span>
+<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス：アトリビュートを読み出す</span></span>
+<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a>lme4_obj<span class="sc">@</span>pp<span class="sc">$</span>X <span class="sc">|&gt;</span> <span class="fu">attributes</span>() <span class="sc">|&gt;</span> _<span class="sc">$</span>dim</span>
+<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス：関数の引数にする（summary.lmerModが呼び出されている）</span></span>
+<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lme4_obj)</span>
+<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a><span class="co"># S4クラス：アクセサ（値を取り出す関数）</span></span>
+<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(lme4_obj)</span>
+<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -1871,38 +1901,7 @@ Wickham, Hadley. 2023. <em>Pryr: Tools for Computing on the Language</em>. <a hr
 <p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
 </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
-(function() {
-  let previousOnload = window.onload;
-  window.onload = () => {
-    if (previousOnload) {
-      previousOnload();
-    }
-    lightboxQuarto.on('slide_before_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      const href = trigger.getAttribute('href');
-      if (href !== null) {
-        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-        if (imgEl !== null) {
-          const srcAttr = imgEl.getAttribute("src");
-          if (srcAttr && srcAttr.startsWith("data:")) {
-            slideConfig.href = srcAttr;
-          }
-        }
-      } 
-    });
-  
-    lightboxQuarto.on('slide_after_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(slideNode);
-      }
-    });
-  
-  };
-  
-})();
-          </script>
+</footer>
 
 
 </body></html>

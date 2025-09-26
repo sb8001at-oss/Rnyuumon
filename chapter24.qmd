@@ -118,7 +118,20 @@ JohnsonJohnson |> decompose() |> plot() # decomposeは時系列のトレンド�
 
 ### 箱ひげ図
 
-`plot`関数の`x`に因子、`y`に数値を取った場合、`plot`関数は**箱ひげ図**を表示します。
+`plot`関数の`x`に因子、`y`に数値を取った場合、`plot`関数は**箱ひげ図**を表示します。箱ひげ図の図の意味は右図の通りです。
+
+:::{.column-margin}
+箱ひげ図の位置と意味
+
+![](./image/boxplot.png)
+
+- 箱の真ん中の線は中央値（median）
+- 箱の上端は75%四分位値（75% quantile）
+- 箱の下端は25%四分位値（25% quantile）
+- 線の上端はIQR（75%四分位値-25%四分位値）の1.5倍以内の最大値
+- 線の下端はIQR（75%四分位値-25%四分位値）の1.5倍以内の最小値
+- 外れ値（outlier）はIQRの1.5倍より外にある値
+:::
 
 ```{r, filename="plot関数：箱ひげ図"}
 # x軸が因子、y軸は数値
@@ -173,7 +186,6 @@ plot(\(x){cos(x)}, xlim = c(-pi, pi)) # \で作成した無名関数も使える
 ```{r, filename="curve関数で関数を描画"}
 curve(sin, -pi, pi) # sin関数を-piからpiまで記述
 ```
-
 
 ### ステップ関数（step functions）
 
@@ -235,6 +247,35 @@ pchShow <-
 
 pchShow()
 ```
+
+### plot関数：ifelse関数での色や形の設定
+
+plot関数の引数には、`ifelse`関数を用いて、ある条件の時のプロットの色や形、大きさなどを設定することもできます。以下の例では、種が`versicolor`なら赤、それ以外なら青、種が`setosa`なら〇、それ以外なら△、`Sepal.Width > (Sepal.Length - 2.5)`が`TRUE`ならプロットのサイズは`1.5`、`FALSE`なら`1`となるように設定しています。
+
+```{r, filename="ifelseを用いて引数を設定する"}
+plot(
+  x = iris$Sepal.Length, 
+  y = iris$Sepal.Width, 
+  # versicolorは赤、それ以外は青
+  col = ifelse(iris$Species == "versicolor", "red", "blue"),
+  # setosaなら〇、それ以外は△
+  pch = ifelse(iris$Species == "setosa", 1, 2),
+  # iris$Sepal.Width > (iris$Sepal.Length - 2.5)がTRUEならサイズを1.5にする
+  cex = ifelse(iris$Sepal.Width > (iris$Sepal.Length - 2.5), 1.5, 1)
+)
+```
+
+また、一部の引数は数値で設定することができます。例えば`cex`（プロットのサイズ）は数値で指定し、値に従ったプロットのサイズでグラフを表示することもできます。
+
+```{r, filename="プロットのサイズを数値で指定する"}
+plot(
+  x = iris$Sepal.Length, 
+  y = iris$Sepal.Width,
+  # Petal.Length/3でプロットのサイズを描画する
+  cex = iris$Petal.Length/3 
+)
+```
+
 
 ## hist関数：ヒストグラム
 
@@ -419,6 +460,10 @@ d <- readxl::read_excel("./data/chapter18_highlevel_function.xlsx", sheet=4)
 knitr::kable(d, caption="表4：デバイス操作に関する関数の一覧")
 ```
 
+また、Rstudioでは、右下のタイルに表示されたグラフの上部にある、『Export』を選択して表示されているグラフを保存することができます。
+
+![Rstudioでのグラフの保存](./image/save_plot_Rstudio.png)
+
 ## グラフの重ね書き
 
 同じデバイス上に2つのグラフを重ね書きする場合には、「`par(new = T)`」を2つの高レベルグラフィック関数の間に置きます。この「`par(new = T)`」は、デバイスは以前にグラフを描画したものと同じものを利用して、グラフを重ね書きすることを指示するための関数です。ただし、この重ね書きでは、プロットの**横軸と縦軸のレンジが同じになるよう調整はしてくれない**ので、高レベルグラフィック関数内で軸のレンジ等をあらかじめ設定する必要があります。
@@ -427,4 +472,20 @@ knitr::kable(d, caption="表4：デバイス操作に関する関数の一覧")
 plot(1:10)
 par(new = T)
 plot(1:10, c(1:5, 1:5), col = "red") # 軸がずれたグラフが重ね書きされる
+```
+
+`xlim`や`ylim`引数で軸のサイズを揃え、`xlab`、`ylab`、`main`などの引数を用いて軸ラベルやタイトルを消せば、グラフをきれいに重ね書きすることができます。
+
+```{r, filename="軸を合わせてグラフを重ね書きする"}
+plot(1:10, ylim = c(1, 10))
+par(new = T)
+# 軸を合わせて、ラベルを消す
+plot(
+  1:10, c(1:5, 1:5), 
+  col = "red",
+  ylim = c(1, 10),
+  xlab = "",
+  ylab = "",
+  main = ""
+  ) 
 ```

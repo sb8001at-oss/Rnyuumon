@@ -572,11 +572,42 @@ $$\psi=\frac{h_{1}(t)}{h_{0}(t)}$$
 
 ハザード比は一般的に**フォレストプロット**と呼ばれる、代表値を点、信頼区間を線で表した図で表記されます。フォレストプロットについては[ggplot2の章](chapter26.qmd#エラーバーの描画geom_errorbargeom_linerangegeom_pointrange)で簡単に紹介しています。
 
+ハザード比の計算では、`coxph`関数の返り値（以下の例では`result_step`）を`summary`関数の引数とします。結果が3つのテーブルに表示されますが、真ん中の表に`exp(coef)`と`lower .95`、`upper .95`の3つが表示されています。この3つがそれぞれハザード比、ハザード比の下側95%信頼区間、上側95%信頼区間に当たります。
+
+この`summary`関数の返り値のうち、リストの名前である`$conf.int`で呼び出すことができる表が、上記のハザード比と信頼区間の表になります。この表をもとにハザード比をフォレストプロットにしていきます。
+
+```{r, filename="ハザード比"}
+# summary関数の引数にするとハザード比と信頼区間が表示される
+result_step |> summary()
+
+# summaryの$conf.intの要素を呼び出して変数に代入する
+df_step <- result_step |> summary() |> _$conf.int
+df_step
+```
+
+フォレストプロットは点と線のグラフですので、[26章](chapter26.qmd#エラーバーの描画geom_errorbargeom_linerangegeom_pointrange)で説明した`geom_linerange`を使えば簡単に作成できます。
+
+以下のグラフでは、`sex`と`ph.ecog`のハザード比の信頼区間が1に被っていない形になっています。この図から、`sex`、`ph.ecog`のハザード比は1ではなく、いずれも生存時間に統計的に有意な影響を与えていることがわかります。
+
+```{r, filename="フォレストプロットの作図"}
+# 列名にカッコがあると演算に使いにくいので列名を変更（HRinvはHRの逆数）
+colnames(df_step) <- c("HR", "HRinv", "lower95", "upper95")
+df_step <- as.data.frame(df_step)
+df_step$val <- rownames(df_step)
+
+df_step |> 
+  ggplot(aes(x = HR, xmax = upper95, xmin = lower95, y = val, color = val)) +
+  geom_pointrange(linewidth = 1, size = 1) +
+  geom_vline(xintercept = 1)
+```
+
+<!--
+### survivalAnalysisはCRANからremoveされたので、書き直し ###
 Rでのハザード比の計算とフォレストプロットの作成には、[survivalAnalysis](https://cran.r-project.org/web/packages/survivalAnalysis/index.html)パッケージ  [@survivalAnalysis_bib]を用いるのが便利です。`cox_as_data_frame`関数を用いると、各説明変数ごとのハザード比（`HR`、hazard ratio）、95%信頼区間（`Lower_CI`、`Upper_CI`）を含むデータフレームを返してくれます。
 
 以下のグラフでは、`sex`と`ph.ecog`のハザード比の信頼区間が1に被っていない形になっています。この図から、`sex`、`ph.ecog`のハザード比は1ではなく、いずれも生存時間に統計的に有意な影響を与えていることがわかります。
 
-```{r, filename="ハザード比", warning=FALSE, message=FALSE}
+```{r, filename="ハザード比", warning=FALSE, message=FALSE, eval=FALSE}
 pacman::p_load(survivalAnalysis)
 
 # coxph関数の返り値をcox_as_data_frame関数の引数に与える
@@ -593,6 +624,7 @@ df_step |>
   geom_linerange(linewidth = 1)+
   geom_vline(xintercept = 1)
 ```
+-->
 
 ## パラメトリックな手法
 

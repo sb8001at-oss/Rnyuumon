@@ -48,7 +48,7 @@ nchar("Hello R") # スペースを含めて7文字
 x <- c("A dog is running", "A cat is running")
 nchar(x) # ベクターの要素それぞれについて計算
 
-nchar("日本語") # 日本語でも文字列はカウントされる
+nchar("日本語") # 日本語でも文字数がカウントされる
 
 nchar("日本語", type="bytes") # バイト数は3倍
 
@@ -69,7 +69,7 @@ substring(x, 3) # 3文字目以降を取得
 
 ### 文字列を分割する：strsplit
 
-`strsplit`関数は、文字列をある特定の文字で分割し、リストの要素として返す関数です。文字は1文字でも、複数の文字でも問題ありません。
+`strsplit`関数は、文字列をある特定の文字で分割し、リストの要素として返す関数です。区切りの文字は1文字でも、複数の文字でも問題ありません。
 
 ```{r, filename="文字列の分割"}
 x
@@ -173,7 +173,7 @@ knitr::kable(d, caption="表2：stringrの関数")
 
 ## stringrとラッパー（wrapper）
 
-`stringr`は[`stringi`](https://stringi.gagolewski.com/)[@stringi_bib]というライブラリのラッパー（wrapper）です。ラッパーとは既存の関数の名前や引数の順序を統一したり、使用頻度の高い関数を選んだり、部分的に機能を追加することで利用しやすくしたものです。`stringi`はC言語由来の文字列処理を取り込んでいるため、Rのデフォルトの関数よりも計算が速いという特徴があります。
+`stringr`は[`stringi`](https://stringi.gagolewski.com/)[@stringi_bib]というライブラリのラッパー（wrapper）です。ラッパーとは既存の関数の名前や引数の順序を統一したり、使用頻度の高い関数を選んだり、部分的に機能を追加することで利用しやすくしたものです。`stringi`はC言語由来の文字列処理を用いているため、Rのデフォルトの関数よりも計算が速いという特徴があります。
 
 :::
 
@@ -299,7 +299,7 @@ str_match_all(x, "n") # パターンがあれば、それをすべて返す
 
 ### 文字列をつなぐ：str_cとstr_flatten
 
-`str_c`関数と`str_flatten`関数はいずれも文字列をつなぐ関数です。ともに`paste`関数と`paste0`関数とほぼ同じですが、`NA`の取り扱いが少しだけ異なります。
+`str_c`関数と`str_flatten`関数はいずれも文字列をつなぐ関数です。ともに`paste`関数と`paste0`関数とほぼ同じですが、`NA`の取り扱いが少しだけ異なり、`paste`関数が`NA`を文字列としてつないでしまうのに対して、`str_c`関数は文字列を繋がずに`NA`を返します。
 
 ```{r, filename="文字列をつなぐ：str_c関数"}
 x
@@ -311,6 +311,10 @@ str_c(x[1], x[2], sep=" ") # pasteと同じ
 str_flatten(c("a", "dog", "is", "running")) # paste0と同じ
 
 str_flatten(c("a", "dog", "is", "running"), collapse= " ") # pasteと同じ
+
+paste("A", NA)
+
+str_c("A", NA)
 ```
 
 ### 文字列を分割する：str_split、str_split_fixed、str_split_i

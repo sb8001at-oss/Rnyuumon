@@ -4,7 +4,7 @@
 
 Rでインタラクティブなグラフを作成したい場合には、[rgl](https://dmurdoch.github.io/rgl/)パッケージ[@rgl_bib]や、Javascriptのインタラクティブグラフィックライブラリである[d3.js](https://d3js.org/)を使用したライブラリである[r2d3](https://rstudio.github.io/r2d3/) [@r2d3_bib]を用いるなど、様々な方法があります。
 
-このようなインタラクティブなグラフ作成パッケージの中では、[plotly](https://plotly.com/graphing-libraries/) [@plotly_bib]が機能が多彩かつ記述の方法もシンプルで非常に分かりやすい優れたライブラリです。
+このようなインタラクティブなグラフ作成パッケージの中では、[plotly](https://plotly.com/graphing-libraries/) [@plotly_bib]が機能が多彩で、記述の方法もシンプルな優れたライブラリです。
 
 ```{r, filename="plotlyライブラリのロード"}
 pacman::p_load(plotly)
@@ -16,7 +16,7 @@ pacman::p_load(plotly)
 
 以前はRでインタラクティブなグラフを作成しても、Rが実行されているPC上でのみ確認ができただけで、他の人とグラフを共有するすべがほとんどありませんでした。しかし、ここ10年で、Rを用いてHTMLの文書を作成するライブラリ（[RMarkdown](https://rmarkdown.rstudio.com/) [@rmarkdown_bib1; @rmarkdown_bib2; @rmarkdown_bib3]、[Quarto](https://quarto.org/)）や、Webアプリケーションを作成するためのライブラリ（[Shiny](https://shiny.posit.co/)）[@shiny_bib]が公開され、インタラクティブなグラフを共有するしくみが構築されました。
 
-Web上でのインタラクティブなグラフの多くは[d3.js](https://d3js.org/)で構築されていると思います。しかし、d3.jsの記法はやや特殊で、Rユーザーが使いこなすのはやや難しいです。`plotly`は主にPythonのライブラリとして開発されていますが、Rやほかの言語での開発も行われています。記法も`ggplot2`やRのデフォルトのグラフィック関数に近く、Rユーザーにも使いやすいものとなっています。
+Web上でのインタラクティブなグラフの多くは[d3.js](https://d3js.org/)で構築されていると思います。しかし、d3.jsの記法はやや特殊で、Rユーザーが使いこなすのは難しいです。`plotly`は主にPythonのライブラリとして開発されていますが、Rやほかの言語での開発も行われています。記法も`ggplot2`やRのデフォルトのグラフィック関数に近く、Rユーザーにも使いやすいものとなっています。
 
 インタラクティブなグラフの使いどころは難しいですが、有効に用いれば、データを確認しやすく、見る人の興味を引くグラフを作成することができます。
 
@@ -30,6 +30,7 @@ Web上でのインタラクティブなグラフの多くは[d3.js](https://d3js
 plot_ly(data = iris, x = ~Sepal.Length, y = ~Sepal.Width, color = ~Species)
 ```
 
+
 `ggplot2`と同様に、`color`や`size`などの引数に数値を取ることで、バブルチャートなどのグラフを作成することもできます。
 
 ```{r, message=FALSE, warning=FALSE, filename="plot_ly関数でバブルチャート"}
@@ -37,7 +38,8 @@ iris |>
   plot_ly(x = ~Sepal.Length, y = ~Sepal.Width, color = ~Petal.Length, size = ~Petal.Width)
 ```
 
-`ggplot2`での`scale_color_brewer`のように、Color Brewerを用いた色の指定も行うことができます。配色の指定には`colors`という引数を用います。
+
+`ggplot2`での`scale_color_brewer`のような色の指定も行うことができます。配色の指定には`colors`という引数を用います。
 
 ```{r, message=FALSE, filename="ColorBrewerの色指定"}
 diamonds[sample(1:nrow(diamonds), 500),] |> 
@@ -82,6 +84,7 @@ iris |>
 `x`軸に日時データを指定すれば、簡単に時系列グラフを描画することができます。時系列プロットや線グラフを作成する場合には、`plot_ly`関数の返り値を`add_trace`関数の引数にする形でも指定できます。
 
 ```{r, filename="add_trace関数"}
+# time(Nile)は時系列から時間のみ取り出す関数、21章参照
 data.frame(year = time(Nile), value = Nile) |> 
   plot_ly(type = "scatter", mode = "lines") |> 
   add_trace(x = ~year, y = ~value)
@@ -94,6 +97,7 @@ data.frame(year = time(Nile), value = Nile) |>
 `plotly`では、ウォーターフォールプロットのほかにも、[ろうそくチャート](https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%BC%E3%82%BD%E3%82%AF%E8%B6%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%83%88)や[オープン-ハイ-ロー-クローズチャート](https://datavizcatalogue.com/methods/OHLC_chart.html)など、ビジネスや株価に関連したグラフを簡単に作成することができます。
 
 ```{r, filename="waterfallプロット"}
+# https://plotly.com/r/waterfall-charts/ に記載の例
 x= c("Sales", "Consulting", "Net revenue", "Purchases", "Other expenses", "Profit before tax")
 measure= c("relative", "relative", "total", "relative", "relative", "total")
 text= c("+60", "+80", "", "-40", "-20", "Total")
@@ -118,7 +122,7 @@ fig
 
 ## ggplotly
 
-`plotly`では、`ggplot2`で準備したグラフをインタラクティブなグラフに簡単に変換することができます。`ggplot2`のグラフオブジェクトを変数に保存し、その変数を`ggplotly`関数の引数にするだけで、`ggplot2`のグラフがインタラクティブなものに変換されます。
+`plotly`では、`ggplot2`で準備したグラフをインタラクティブなグラフに簡単に変換することができます。`ggplot2`のグラフオブジェクトを変数に保存し、その変数を`ggplotly`関数の引数にするだけで、`ggplot2`のグラフがインタラクティブなplotlyのグラフに変換されます。
 
 ```{r, filename="ggplotlyでインタラクティブなggplot2グラフ"}
 p <- iris |> 

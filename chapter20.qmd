@@ -39,9 +39,9 @@ string.reverse.upcase # 文字列を逆順にし、大文字に変換する
 ```
 
 ```{javascript, filename="JavaScriptでのメソッドチェーン", eval=FALSE}
-var firstName = " Rajat "; // firstNameは " Rajat "
+var firstName = " Xjorv "; // firstNameは " Xjorv "
 console.log(firstName); 
-#> " Rajat "
+#> " Xjorv "
 
 var modifiedName = 
   firstName 
@@ -49,14 +49,14 @@ var modifiedName =
 		.trim(); // 前後のスペースを削除する
 
 console.log(modifiedName)
-#> "RAJAT"
+#> "XJORV"
 ```
 
 メソッドチェーンのよいところは、**演算の過程を左から右へ、文章を読むように追いかけることができる**ことです。上記のメソッドチェーンと同じような演算をRで行うと、以下のようになります。
 
 ```{r, filename="文字列に2つの処理を行う"}
 pacman::p_load(tidyverse) # stringrを使うためtidyverseをロードする
-firstname <- " Rajat "
+firstname <- " Xjorv "
 
 # 例1
 str_to_upper(str_trim(firstname)) # スペースを取り除いて大文字にする
@@ -93,7 +93,7 @@ vec |> mean() # パイプ演算子
 上のjavascriptでのメソッドチェーンと同じ演算をパイプ演算子を用いて行うと、以下のようになります。パイプ演算子を用いることで、「文字列からスペースを取り除き、大文字にする」という、文章と同じ順序でデータを処理することができます。このように順序が変わることで、一度にたくさんの演算を行っても、理解しやすいプログラムを書くことができます。
 
 ```{r, filename="パイプ演算子を用いて文字列を処理する"}
-firstname <- " Rajat "
+firstname <- " Xjorv "
 firstname |> str_trim() |> str_to_upper() # スペースを取り除き、大文字にする
 ```
 
@@ -329,7 +329,7 @@ iris |> tibble() |> arrange(desc(Sepal.Length)) # 降順に並べ替え
 
 ### mutate関数
 
-`mutate`関数は、データフレームに新しい列を追加する関数です。`mutate`は[16章](./chapter16.html)で説明した`within`関数に似た働きを持ち、第一引数にデータフレーム、第二引数に「新しい列の名前 = 値」という形で、追加したい列の名前と値を指定します。値の計算には、すでにデータフレームに存在する列名を用いることができます。したがって、「列のデータを加工・演算して新しい列を作る」場合に`mutate`関数を用いることになります。
+`mutate`関数は、データフレームに新しい列を追加する関数です。`mutate`は[16章](chapter16.qmd#データフレームの列の演算)で説明した`within`関数に似た働きを持ち、第一引数にデータフレーム、第二引数に「新しい列の名前 = 値」という形で、追加したい列の名前と値を指定します。値の計算には、すでにデータフレームに存在する列名を用いることができます。したがって、「列のデータを加工・演算して新しい列を作る」場合に`mutate`関数を用いることになります。
 
 データフレームの列のインデックスに値を代入しても同様の列の追加を行うことができますが、パイプ演算子の途中で代入を行うことはできません。`mutate`関数を用いれば、パイプ演算子中で列を追加し、以降の演算に用いることができます。
 
@@ -366,7 +366,7 @@ ungroup(d) # グループの解除
 
 ### group_by関数とsummarise関数を同時に用いる
 
-上記のように、`summarise`関数も`group_by`関数も、どちらも単独ではいまいちよく分からない関数ですが、組み合わせて使用することで、[19章](./chapter19.html)で解説した`aggregate`関数と同じように、**カテゴリごとの集計計算**を行うことができます。
+上記のように、`summarise`関数も`group_by`関数も、どちらも単独ではいまいちよく分からない関数ですが、組み合わせて使用することで、[19章](chapter19.qmd#aggregate関数)で解説した`aggregate`関数と同じように、**カテゴリごとの集計計算**を行うことができます。
 
 まずはデータフレームを`group_by`関数でグループ化します。このグループ化したデータフレームに`summarise`関数で計算を適用すると、計算をグループごとに実行してくれます。下の例では、`Species`でグループ化した後に、`Sepal.Length`の平均を`summarise`関数で計算しています。結果として、`Species`ごとに`Sepal.Length`の平均値を計算したデータフレームが返ってきます。グループ化した場合は、グループ化に用いた列を結果のデータフレームに残してくれます。
 

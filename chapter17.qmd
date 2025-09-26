@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-統計に用いるデータは、通常Excelのような表計算ソフトや、データベースなどで作成されます。Rを用いてデータ解析・統計解析を行うためには、まずRに表計算ソフトやデータベースからデータを読み込む必要があります。
+統計に用いるデータは、通常Excelのような表計算ソフトやデータベースからの抽出などで作成されます。Rを用いてデータ解析・統計解析を行うためには、まずRに表計算ソフトやデータベースからデータを読み込む必要があります。
 
 データ解析・統計解析が終われば、Rでの解析結果を書き出し、Excelなどで取り扱う必要があります。
 
@@ -148,7 +148,7 @@ load("Robject_dput.rda") # エラー。dputで保存するとloadで読み込め
 
 ### プログラムを呼び出す
 
-保存したプログラムを他のプログラムで呼び出すときには、`source`関数を用います。`source`関数の引数はファイル名の文字列です。[2章](chapter2.qmd#エディタを使う)で説明した通り、Rのプログラムは通常「.R」の拡張子を付けて取り扱いますので、拡張子を含めたファイル名を指定します。現在のワーキングディレクトリに保存されているファイルを呼び出す場合はそのファイル名を、他のディレクトリに保存されているファイルを呼び出す場合はそのファイルのパスを含む文字列を`source`関数の引数に取ります。。`source`関数でプログラムを呼び出すと、プログラムが実行されます。複雑なプログラムでは、関数などを別ファイルで定義しておいて、そのファイルを呼び出して用いることもあります。
+保存したプログラムを他のプログラムで呼び出すときには、`source`関数を用います。`source`関数の引数はファイル名の文字列です。[2章](chapter2.qmd#エディタを使う)で説明した通り、Rのプログラムは通常「.R」の拡張子を付けて取り扱いますので、拡張子を含めたファイル名を指定します。現在のワーキングディレクトリに保存されているファイルを呼び出す場合はそのファイル名を、他のディレクトリに保存されているファイルを呼び出す場合はそのファイルのパスを含む文字列を`source`関数の引数に取ります。`source`関数でプログラムを呼び出すと、そのプログラムが実行されます。複雑なプログラムでは、関数などを別ファイルで定義しておいて、そのファイルを呼び出して用いることもあります。
 
 ```{r, filename="source関数でプログラムの呼び出し", eval=FALSE}
 source("code_hello_world.R")
@@ -160,7 +160,7 @@ source("code_hello_world.R")
 
 統計を行うデータは、通常Excelのような表計算ソフトか、データベースで準備するのが一般的です。このようなデータをRで取り込む際には、一昔前までは**「テキストファイルに変換」**してから読み込むのが一般的でした。
 
-最近ではライブラリを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、ライブラリなしのRではこのような読み込みはできません。ライブラリが使用できないときには、以下のような方法でExcelファイルをテキストで保存し、Rで読み込むことになります。
+最近ではライブラリを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、ライブラリなしのRではこのような読み込みはできません。ライブラリが使用できないときには、以下のような方法でExcelファイルをテキストとして保存し、Rで読み込むことになります。
 
 また、Web上に保存されているデータがテキストである場合も少なくありません。このような、Web上のテキストファイルの読み込みにも、以下に示すテキスト読み込みの方法を用いることができます。
 
@@ -253,14 +253,14 @@ read.fwf("filename.txt") # 固定幅テキスト
 
 #### stringAsFactorsとfileEncoding
 
-`read.table`関数の「`stringAsFactors`」という引数は、昔はTRUEがデフォルトとされており、`read.table`関数で読み込んだ文字列はすべて因子に変換されていました。Rのバージョン4.0.0より`stringAsFactors`のデフォルト値が`FALSE`に変更されたため、現在の`read.table`関数では、文字列は文字列のまま読み込まれます。
+文字列を因子に変換したい場合には`stringAsFactors`を`TRUE`に指定します。`stringAsFactors`は、以前は`TRUE`がデフォルトとされており、`read.table`関数で読み込んだ文字列がすべて因子に変換される設定になっていました。Rのバージョン4.0.0より`stringAsFactors`のデフォルト値が`FALSE`に変更されたため、現在の`read.table`関数では、`stringAsFactors`を指定しない場合、文字列は文字列のまま読み込まれます。
 
 WindowsではテキストファイルのエンコーディングがShift JIS（CP932）になっている場合がありますので、「`fileEncoding = "CP932"`」を引数に指定しないと読み込めないことがあります。エンコーディングがUTF-8であれば、`fileEncoding`を指定する必要はありません。
 
 
 ### クリップボードからの読み込み
 
-Rでは、コピーしたテキストをクリップボードから読み込むこともできます。Ctrl+Cなどでコピーしたテキストを読み込む場合には、`read.table`関数の引数に`"clipboard"`を指定します。
+Rでは、コピーしたテキストをクリップボードから読み込むこともできます。{{<kbd Ctrl+C>}}などでコピーしたテキストを読み込む場合には、`read.table`関数の引数に`"clipboard"`を指定します。
 
 ```{r, eval=FALSE, filename="クリップボードの内容を読み込む"}
 read.table("clipboard")
@@ -304,7 +304,7 @@ Rでは、データ処理の多くはデータフレームを用いて行いま�
 ```{r, eval=FALSE, filename="write.table関数"}
 write.table(df_obj, "filename.txt", sep = "\t")
 
-# 列名あり、行名なし、ダブルクオーテーションなしで保存
+# 列名あり、行名なし、ダブルクオーテーションなしで出力
 write.table(df_obj, "filename.txt", sep = "\t", col.names = T, row.names = F, quote = F) 
 
 write.csv(df_obj, "filename.csv")
@@ -355,8 +355,10 @@ read_table("filename.zip") # zipファイルも直接読み込める
 ```{r, filename="tibble"}
 pacman::p_load(tidyverse)
 
+# tibbleを作成する（data.frame関数とほぼ同じ）
 tibble(x = 1:3, y = c("a", "b", "c"), z = c(T, F, T))
 
+# as_tibbleでデータフレームをtibbleに変換できる
 as_tibble(iris)
 ```
 
@@ -383,8 +385,6 @@ write_csv(x, "filename.xz") # lzmaで圧縮して出力
 
 `readxl`パッケージも`tidyverse`と同じく、[Posit Software](https://posit.co/)が開発しているライブラリですが、`tidyverse`には含まれていません。`tidyverse`とは別に、`readxl`パッケージを独立に読み込む必要があります。
 
-`readxl`パッケージで使用する関数は、ほぼ`read_excel`関数だけです。`read_excel`関数は、.xlsおよび.xlsxファイルの読み込みに対応しており、ファイル名で指定したExcelファイルからテーブルを`tibble`として読み込みます。`read_excel`関数では`sheet`という引数を設定することができます。`read_excel`関数は`sheet`に設定した番号（もしくはシート名）のシートを読み込みます。
-
 `readxl`パッケージは`read_excel`関数以外に、Excelファイルのメタデータ読み込みのための関数などを備えています。
 
 ```{r, eval=FALSE, filename="readxlでExcelファイルを読み込む"}
@@ -393,8 +393,13 @@ read_excel("filename.xlsx", sheet = 1) # read_xlsxが読み込まれる
 read_excel("filename.xls", sheet = 1) # read_xlsが読み込まれる
 ```
 
-::: {.Callout-tip collapse="true"}
+:::{.callout-tip collapse="true"}
+## read_excel関数とExcelファイルの種類
 
+`readxl`パッケージで使用する関数は、ほぼ`read_excel`関数だけです。`read_excel`関数は、.xlsおよび.xlsxファイルの読み込みに対応しており、ファイル名で指定したExcelファイルからテーブルを`tibble`として読み込みます。`read_excel`関数では`sheet`という引数を設定することができます。`read_excel`関数は`sheet`に設定した番号（もしくはシート名）のシートを読み込みます。
+:::
+
+:::{.Callout-tip collapse="true"}
 ## Excelファイルの種類
 
 Excelには昔使用されていたファイルである.xlsファイルと、Excel2007から使われている.xlsxファイルがあります。
@@ -404,10 +409,9 @@ Excelには昔使用されていたファイルである.xlsファイルと、Ex
 .xlsxファイルは実際にはzipファイルで、xmlというフォーマットで記載されたデータがzipファイルのフォルダ内に含まれています。.xlsxファイルは拡張子を.zipに書き換えるとzipファイルとして解凍することができ、中身を確認することができます。
 
 .xlsと.xlsxは全然違うファイルですが、`read_excel`関数は拡張子によって.xlsを読み込む`read_xls`関数と.xlsxを読み込む`read_xlsx`関数を切り替えて呼び出しています。
-
 :::
 
-#### その他のデータ読み込みライブラリ
+## その他のデータ読み込みライブラリ
 
 [Posit Software](https://posit.co/)は`readxl`の他にも、多数のデータ読み込み用ライブラリを開発しています。以下に示したライブラリを利用することで、様々なデータ型のファイルをRで読み込み、統計に用いることができます。
 
@@ -422,9 +426,7 @@ Excelには昔使用されていたファイルである.xlsファイルと、Ex
 
 近年のデータサイエンスでは、時に数百万～数千億程度のデータを取り扱うこともあります。個人のPCでRを使ってこのような超大規模のデータを取り扱うのは現実的ではありませんが、数万～数十万行ぐらいのデータをPCで取り扱うことは増えてきています。例えば、生物分野では[マイクロアレイ](https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%A2%E3%83%AC%E3%82%A4)や[高速シークエンサー](https://jp.illumina.com/content/dam/illumina-marketing/apac/japan/documents/pdf/primer_illumina_sequencing_introduction-j.pdf)のデータは数万～数十万行で、分析を個人が、自分のPCで取り扱うこともあるかと思います。自分でマイクロアレイやシークエンサーを使ってデータを出さなくても、[GEO Dataset](https://www.ncbi.nlm.nih.gov/gds)などからデータを取得して、解析してみることも一般的に行われています。
 
-このような超巨大データを取り扱う場合、R謹製の`read.table`関数では手に余りますし、`read_table`関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労します。このような大規模データの読み込みに特化したライブラリが、`data.table`パッケージ [@datatable_bib]です。
-
-[`data.table`](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)パッケージは、大規模データを読み込み、Rで高速に利用できるよう設計されたライブラリです。
+このような超巨大データを取り扱う場合、R謹製の`read.table`関数では手に余りますし、`read_table`関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労することがあります。このような大規模データの読み込みに特化したライブラリが、[`data.table`](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)パッケージ [@datatable_bib]です。`data.table`を用いることで、大規模データを高速に読み込み、利用できます。
 
 `data.table`パッケージでデータを読み込むときには、`fread`関数を用います。`fread`関数はhtmlからの読み込みにも対応しています。読み込んだデータは`data.table`クラスのオブジェクトとなります。
 
@@ -441,7 +443,7 @@ class(flights)
 dim(flights)
 ```
 
-`data.table`の取り扱いの方法はほぼデータフレームと同じです。`data.table`はインデックスからデータの要約ができる機構を備えています。ただし、[後の章](chapter20.qmd)で説明する`tidyr`・`dplyr`の関数も適用できますので、データの要約は`tidyr`・`dplyr`で行ってもよいでしょう。
+`data.table`の取り扱いの方法はほぼデータフレームと同じです。`data.table`はインデックスからデータの要約ができる機構を備えています。ただし、[20章](chapter20.qmd)で説明する`tidyr`・`dplyr`の関数も適用できますので、データの要約は`tidyr`・`dplyr`で行ってもよいでしょう。
 
 ```{r, eval=FALSE, filename="data.tableクラスの取り扱い"}
 flights[5, 1] # 通常のインデックスに対応
@@ -458,9 +460,7 @@ head(flights$origin) # originの列を抽出
 ```
 
 :::{.callout-tip collapse="true"}
-
 ## data.tableでのデータ取り扱い
 
  `data.table`が使われ始めた頃は、`data.table`オブジェクトの取り扱い方がデータフレームとは大きく異なっており、かなりとっつきにくかったのですが、現在ではデータフレームとほぼ同じ取り扱いができるようになっています。
-
 :::
