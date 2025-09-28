@@ -915,16 +915,16 @@ window.Quarto = {
 <section id="説明変数が1つの場合" class="level3" data-number="48.1.1"><h3 data-number="48.1.1" class="anchored" data-anchor-id="説明変数が1つの場合">
 <span class="header-section-number">48.1.1</span> 説明変数が1つの場合</h3>
 <p>肥料の量が作物の収量に与える影響について調べたいとしましょう。説明変数が一つ（肥料の量）なら、肥料の多い・少ない環境での作物の収量を評価すれば、肥料の量が収量に与える影響を評価することができます。説明変数が1つで、2条件だけなら、最小の実験の単位は2です。実験の単位が2なので、上記のフィッシャーの3原則：反復に従い実験を繰り返したとしても、それほどたくさんの実験を行うことにはなりません。条件を3条件、4条件にしても、それほど実験の数は必要ないでしょう。</p>
-<p>また、統計手法としてはt検定や一元分散分析、単回帰などを用いることができます。</p>
+<p>また、統計手法としては<a href="./chapter29.html#t検定">t検定</a>や<a href="(chapter29.qmd#一元分散分析)">一元分散分析</a>、<a href="./chapter30.html#線形回帰">単回帰</a>などを用いることができます。</p>
 </section><section id="説明変数が2つ以上の場合" class="level3" data-number="48.1.2"><h3 data-number="48.1.2" class="anchored" data-anchor-id="説明変数が2つ以上の場合">
 <span class="header-section-number">48.1.2</span> 説明変数が2つ以上の場合</h3>
 <p>実験はシンプルである方が反復を行いやすく、結果の解釈も容易です。しかし、大抵の実験では、目的変数を一つに絞り切れません。例えば、上記の作物の収量であれば、肥料の量だけでなく、日照や水、土壌のpHや土壌の質、肥料の構成など、たくさんの因子の影響を受けます。</p>
-<p>説明変数が2つや3つの場合であれば、2元や3元の分散分析で解析することができます。交互作用もそれほど多くありませんし、総当たりの実験を組んだとしても、それほど実験の数は増えないでしょう。</p>
+<p>説明変数が2つや3つの場合であれば、<a href="./chapter29.html#二元分散分析">2元や3元の分散分析</a>で解析することができます。交互作用もそれほど多くありませんし、総当たりの実験を組んだとしても、それほど実験の数は増えないでしょう。</p>
 <p>しかし、4つ以上の説明変数の影響を調べる場合、実験は複雑になり、たくさんの実験を行う必要が生じます。説明変数間の交互作用も複雑になり、その理解も難しくなります。ですので、できればあまりたくさんの説明変数を取り扱わず、目的変数（結果）に大きな影響がある説明変数だけを取り扱い、実験を行いたいところです。そのためには、たくさんの説明変数の中から、結果に大きな影響がある説明変数を選び出す必要があります。</p>
 <p>このように、たくさんの説明変数の中から、真に目的変数に影響を与えるものを探す試行のことを、<strong>スクリーニング</strong>と呼びます。以下では、まずこのスクリーニングを対象として説明を進めていきます。</p>
 </section></section><section id="スクリーニングにおける説明変数" class="level2" data-number="48.2"><h2 data-number="48.2" class="anchored" data-anchor-id="スクリーニングにおける説明変数">
 <span class="header-section-number">48.2</span> スクリーニングにおける説明変数</h2>
-<p>作物の例でスクリーニングを考えてみましょう。目的変数は作物の収量（重さ）とします。説明変数には、肥料の量、日照量、水の量、土壌のpH、土壌の粒の細かさなどです。</p>
+<p>作物の例でスクリーニングを考えてみましょう。目的変数は作物の収量（重さ）とします。説明変数は肥料の量、日照量、水の量、土壌のpH、土壌の粒の細かさなどです。</p>
 <p>説明変数に対して目的変数が線形（直線的）に応答するかわからないため、可能であればそれぞれの説明変数は小さい・中ぐらい・大きいの3条件を用いて実験する方が望ましいです。ただし、実験の条件が増えると行う実験の数も増えます。ですので、スクリーニングでは説明変数の設定は大きい、小さいなどの2条件とします。</p>
 <p>また、スクリーニングでは設定した2値の説明変数は<strong>1と-1に正規化</strong>します（正規化については<a href="./chapter30.html#データの正規化">30章</a>を参照）。肥料の例であれば、土地1 m<sup>2</sup>あたりに20 gと5 gの2条件で実験する場合、20 gを1、5 gを-1に置き換えます。このように正規化することで、後の演算を簡単にするとともに、多数の説明変数の間のパラメータ（傾き）を比較しやすくすることができます。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -3882,13 +3882,13 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb161-52"><a href="#cb161-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-53"><a href="#cb161-53" aria-hidden="true" tabindex="-1"></a>肥料の量が作物の収量に与える影響について調べたいとしましょう。説明変数が一つ（肥料の量）なら、肥料の多い・少ない環境での作物の収量を評価すれば、肥料の量が収量に与える影響を評価することができます。説明変数が1つで、2条件だけなら、最小の実験の単位は2です。実験の単位が2なので、上記のフィッシャーの3原則：反復に従い実験を繰り返したとしても、それほどたくさんの実験を行うことにはなりません。条件を3条件、4条件にしても、それほど実験の数は必要ないでしょう。</span>
 <span id="cb161-54"><a href="#cb161-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-55"><a href="#cb161-55" aria-hidden="true" tabindex="-1"></a>また、統計手法としてはt検定や一元分散分析、単回帰などを用いることができます。</span>
+<span id="cb161-55"><a href="#cb161-55" aria-hidden="true" tabindex="-1"></a>また、統計手法としては<span class="co">[</span><span class="ot">t検定</span><span class="co">](chapter29.qmd#t検定)</span>や<span class="co">[</span><span class="ot">一元分散分析</span><span class="co">]</span>((chapter29.qmd#一元分散分析))、<span class="co">[</span><span class="ot">単回帰</span><span class="co">](chapter30.qmd#線形回帰)</span>などを用いることができます。</span>
 <span id="cb161-56"><a href="#cb161-56" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-57"><a href="#cb161-57" aria-hidden="true" tabindex="-1"></a><span class="fu">### 説明変数が2つ以上の場合</span></span>
 <span id="cb161-58"><a href="#cb161-58" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-59"><a href="#cb161-59" aria-hidden="true" tabindex="-1"></a>実験はシンプルである方が反復を行いやすく、結果の解釈も容易です。しかし、大抵の実験では、目的変数を一つに絞り切れません。例えば、上記の作物の収量であれば、肥料の量だけでなく、日照や水、土壌のpHや土壌の質、肥料の構成など、たくさんの因子の影響を受けます。</span>
 <span id="cb161-60"><a href="#cb161-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-61"><a href="#cb161-61" aria-hidden="true" tabindex="-1"></a>説明変数が2つや3つの場合であれば、2元や3元の分散分析で解析することができます。交互作用もそれほど多くありませんし、総当たりの実験を組んだとしても、それほど実験の数は増えないでしょう。</span>
+<span id="cb161-61"><a href="#cb161-61" aria-hidden="true" tabindex="-1"></a>説明変数が2つや3つの場合であれば、<span class="co">[</span><span class="ot">2元や3元の分散分析</span><span class="co">](chapter29.qmd#二元分散分析)</span>で解析することができます。交互作用もそれほど多くありませんし、総当たりの実験を組んだとしても、それほど実験の数は増えないでしょう。</span>
 <span id="cb161-62"><a href="#cb161-62" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-63"><a href="#cb161-63" aria-hidden="true" tabindex="-1"></a>しかし、4つ以上の説明変数の影響を調べる場合、実験は複雑になり、たくさんの実験を行う必要が生じます。説明変数間の交互作用も複雑になり、その理解も難しくなります。ですので、できればあまりたくさんの説明変数を取り扱わず、目的変数（結果）に大きな影響がある説明変数だけを取り扱い、実験を行いたいところです。そのためには、たくさんの説明変数の中から、結果に大きな影響がある説明変数を選び出す必要があります。</span>
 <span id="cb161-64"><a href="#cb161-64" aria-hidden="true" tabindex="-1"></a></span>
@@ -3896,7 +3896,7 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb161-66"><a href="#cb161-66" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-67"><a href="#cb161-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## スクリーニングにおける説明変数</span></span>
 <span id="cb161-68"><a href="#cb161-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-69"><a href="#cb161-69" aria-hidden="true" tabindex="-1"></a>作物の例でスクリーニングを考えてみましょう。目的変数は作物の収量（重さ）とします。説明変数には、肥料の量、日照量、水の量、土壌のpH、土壌の粒の細かさなどです。</span>
+<span id="cb161-69"><a href="#cb161-69" aria-hidden="true" tabindex="-1"></a>作物の例でスクリーニングを考えてみましょう。目的変数は作物の収量（重さ）とします。説明変数は肥料の量、日照量、水の量、土壌のpH、土壌の粒の細かさなどです。</span>
 <span id="cb161-70"><a href="#cb161-70" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-71"><a href="#cb161-71" aria-hidden="true" tabindex="-1"></a>説明変数に対して目的変数が線形（直線的）に応答するかわからないため、可能であればそれぞれの説明変数は小さい・中ぐらい・大きいの3条件を用いて実験する方が望ましいです。ただし、実験の条件が増えると行う実験の数も増えます。ですので、スクリーニングでは説明変数の設定は大きい、小さいなどの2条件とします。</span>
 <span id="cb161-72"><a href="#cb161-72" aria-hidden="true" tabindex="-1"></a></span>
