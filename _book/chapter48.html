@@ -924,7 +924,7 @@ window.Quarto = {
 <p>このように、たくさんの説明変数の中から、真に目的変数に影響を与えるものを探す試行のことを、<strong>スクリーニング</strong>と呼びます。以下では、まずこのスクリーニングを対象として説明を進めていきます。</p>
 </section></section><section id="スクリーニングにおける説明変数" class="level2" data-number="48.2"><h2 data-number="48.2" class="anchored" data-anchor-id="スクリーニングにおける説明変数">
 <span class="header-section-number">48.2</span> スクリーニングにおける説明変数</h2>
-<p>作物の例でスクリーニングを考えてみましょう。目的変数は作物の収量（重さ）とします。説明変数には、肥料の量、日照量、水の量、土壌のpH、土壌の粒の細かさを選ぶこととします。目的変数は1つで、説明変数は5つです。</p>
+<p>作物の例でスクリーニングを考えてみましょう。目的変数は作物の収量（重さ）とします。説明変数には、肥料の量、日照量、水の量、土壌のpH、土壌の粒の細かさなどです。</p>
 <p>説明変数に対して目的変数が線形（直線的）に応答するかわからないため、可能であればそれぞれの説明変数は小さい・中ぐらい・大きいの3条件を用いて実験する方が望ましいです。ただし、実験の条件が増えると行う実験の数も増えます。ですので、スクリーニングでは説明変数の設定は大きい、小さいなどの2条件とします。</p>
 <p>また、スクリーニングでは設定した2値の説明変数は<strong>1と-1に正規化</strong>します（正規化については<a href="./chapter30.html#データの正規化">30章</a>を参照）。肥料の例であれば、土地1 m<sup>2</sup>あたりに20 gと5 gの2条件で実験する場合、20 gを1、5 gを-1に置き換えます。このように正規化することで、後の演算を簡単にするとともに、多数の説明変数の間のパラメータ（傾き）を比較しやすくすることができます。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1108,9 +1108,9 @@ Tip&nbsp;48.1: 一般線形モデルの演算
 <p><span class="math display">\[
 u_i \sim Normal(0, \sigma^2)
 \]</span></p>
-<p>目的変数の行列を<span class="math inline">\(Y\)</span>、説明変数の行列を<span class="math inline">\(X\)</span>、パラメータの行列を<span class="math inline">\(\beta\)</span>、ばらつきの項を<span class="math inline">\(u\)</span>と置き換えると、以下の式で表すことができます。</p>
+<p>上の式の目的変数の行列を<span class="math inline">\(Y\)</span>、説明変数の行列を<span class="math inline">\(X\)</span>、パラメータの行列を<span class="math inline">\(\beta\)</span>、ばらつきの項を<span class="math inline">\(u\)</span>と置き換えると、以下の式で表すことができます。</p>
 <p><span class="math display">\[ Y = X \beta + u \]</span></p>
-<p><span class="math inline">\(\beta\)</span>の真の値はわからないため、<span class="math inline">\(\beta\)</span>の予測値（<span class="math inline">\(\hat{\beta}\)</span>、ベータハット）を<span class="math inline">\(\beta\)</span>の変わりに用いることにします。また、<span class="math inline">\(X\)</span>は実験のデザインを表す行列として、<strong>デザイン行列</strong>と呼びます。</p>
+<p><span class="math inline">\(\beta\)</span>の真の値はわからないため、<span class="math inline">\(\beta\)</span>の予測値（<span class="math inline">\(\hat{\beta}\)</span>、ベータハット）を<span class="math inline">\(\beta\)</span>の変わりに用いることにします。また、<span class="math inline">\(X\)</span>は実験のデザインを表す行列なので、<strong>デザイン行列</strong>と呼ばれます。</p>
 <p>残差（<a href="./chapter30.html#線形回帰">30章のy方向の誤差を参照</a>）は実際の目的変数の値（<span class="math inline">\(Y\)</span>）と<span class="math inline">\(\hat{\beta}\)</span>を用いた線形モデルで予測した値（<span class="math inline">\(X\hat{\beta}\)</span>）の差なので、以下の式で表すことができます。</p>
 <p><span class="math display">\[ Y - X\hat{\beta} \]</span></p>
 <p>最小二乗法では、この残差の2乗和（残差平方和、<span class="math inline">\(S_e\)</span>）を最小にする<span class="math inline">\(\hat{\beta}\)</span>を求めます。単純に考えると<span class="math inline">\((Y-X\hat{\beta})^2\)</span>を最小にすればよいのですが、この式は行列なので、2乗にする場合には片方を転置（行と列を反転させること、Rでは<a href="./chapter16.html#行列の演算">16章</a>で説明した<code>t</code>関数で計算）することになります。ですので、以下の式で残差平方和<span class="math inline">\(S_e\)</span>を表します。</p>
@@ -1420,7 +1420,7 @@ Coefficients:
 </table>
 </div>
 </div>
-<p>ただし、x1の2乗が含まれているなら線は2次関数のような曲線になりますが、x1は-1と1の2つの値しか取っていないため、このデータではyとx1の関係について、どのように曲がっているのかはわかりません。つまり、2点では多項式のパラメータは求まりそうにありません。</p>
+<p>ただし、x1の2乗の項が含まれているなら、線は2次関数のような曲線になりますが、x1は-1と1の2つの値しか取っていないため、このデータではyとx1の関係について、どのように曲がっているのかはわかりません。つまり、2点では多項式のパラメータは求まりそうにありません。</p>
 <p>実際にこの多項式を入れた場合のデザイン行列を見ると、x1x1の列とbの列の値が同じになっています。このような場合には<span class="math inline">\((X^TX)^{-1}X^TY\)</span>が計算できなくなります。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -1590,21 +1590,21 @@ Coefficients:
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, <span class="op">]</span> <span class="co"># 2、3行目を削除する</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, <span class="op">]</span> <span class="co"># 2、3行目を削除する</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  nutrient water   weight
-1       -1     1 6.894233
-4        1    -1 6.900991</code></pre>
+<pre><code>  nutrient water    weight
+2        1     1 11.704653
+4        1    -1  6.900991</code></pre>
 </div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">nutrient</span> <span class="op">*</span> <span class="va">water</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">water</span> <span class="op">*</span> <span class="va">nutrient</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = weight ~ nutrient * water, data = d[c(1, 4), ])
+lm(formula = weight ~ water * nutrient, data = d[c(1, 4), ])
 
 Coefficients:
-   (Intercept)        nutrient           water  nutrient:water  
-      6.897612        0.003379              NA              NA  </code></pre>
+   (Intercept)           water        nutrient  water:nutrient  
+      6.897612       -0.003379              NA              NA  </code></pre>
 </div>
 </div>
 </div>
@@ -1612,7 +1612,7 @@ Coefficients:
 </div>
 <p>なぜデータを減らすと求まるパラメータが変わるのかは、データをグラフに示してみるとわかります。パラメータは傾き（横軸：nutrient）か、線のシフト（青と赤の線の幅：water）として計算されます。また、交互作用は青と赤の線の傾きの差です。</p>
 <p>点（データ）が4つあると、傾きも線のシフトも、傾きの差も評価できます。点が3つになると、傾きと線のシフトは計算できますが、傾きの差は線が2本ないため評価できなくなります。点が2つになると、傾きかシフトのいずれかだけが計算できます。ですので、データが減れば求まるパラメータが変わっていくことになります。</p>
-<div class="cell quarto-layout-panel" data-layout-ncol="2" data-layout-nrow="2">
+<div class="cell quarto-layout-panel" data-layout-nrow="2" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><a href="chapter48_files/figure-html/unnamed-chunk-19-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="chapter48_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></a></p>
@@ -1632,7 +1632,7 @@ Coefficients:
 </div>
 </section><section id="パラメータの標準誤差の計算" class="level3" data-number="48.3.3"><h3 data-number="48.3.3" class="anchored" data-anchor-id="パラメータの標準誤差の計算">
 <span class="header-section-number">48.3.3</span> パラメータの標準誤差の計算</h3>
-<p>ただし、4つのデータで4つのパラメータ（説明変数2つの傾き、交互作用1つ、切片1つ）を求めると、標準誤差が求まらなくなります。これは、下の演算の結果に示されている通り、残差の自由度が0になるからです。</p>
+<p>4つのデータで4つのパラメータ（説明変数2つの傾き、交互作用1つ、切片1つ）を求めると、標準誤差が求まらなくなります。これは、下の演算の結果に示されている通り、残差の自由度が0になるからです。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1660,7 +1660,7 @@ Multiple R-squared:      1, Adjusted R-squared:    NaN
 F-statistic:   NaN on 3 and 0 DF,  p-value: NA</code></pre>
 </div>
 </div>
-<p>要因配置計画でも、主効果のみを計算すると、交互作用に割り振る自由度がなくなるため、標準誤差が求まります。</p>
+<p>要因配置計画でも、主効果のみを計算すると、交互作用に割り振る自由度がなくなり、自由度に余裕ができるので標準誤差が求まります。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -2272,7 +2272,7 @@ class=design, type= FrF2 </code></pre>
 <div class="code-with-filename-file">
 <pre><strong>FrF2：求めたいパラメータのformulaから計画を作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FrF2</span><span class="op">(</span>estimable<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html">formula</a></span><span class="op">(</span><span class="st">"~(A+B+C)^2+D+E"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FrF2</span><span class="op">(</span>estimable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">formula</a></span><span class="op">(</span><span class="st">"~(A+B+C)^2+D+E"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    A  B  C  D  E
@@ -2302,7 +2302,8 @@ class=design, type= FrF2.estimable </code></pre>
 <pre><strong>主効果を求めない因子を加える</strong></pre>
 </div>
 <div class="sourceCode" id="cb73"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 6つのnfactorを指定し、5つをestimableに加える</span></span>
-<span><span class="fu">FrF2</span><span class="op">(</span>nfactor <span class="op">=</span> <span class="fl">6</span>, estimable<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html">formula</a></span><span class="op">(</span><span class="st">"~(A+B+C)^2+D+E"</span><span class="op">)</span>, clear <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># clearがないと演算できない</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co"># clear=FALSEがないと演算できない</span></span>
+<span><span class="fu">FrF2</span><span class="op">(</span>nfactor <span class="op">=</span> <span class="fl">6</span>, estimable<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html">formula</a></span><span class="op">(</span><span class="st">"~(A+B+C)^2+D+E"</span><span class="op">)</span>, clear <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    A  B  C  D  E  F
@@ -2384,7 +2385,7 @@ class=design, type= FrF2.generators </code></pre>
 </section><section id="frf2関数実験計画に中間点を追加する" class="level4" data-number="48.4.1.6"><h4 data-number="48.4.1.6" class="anchored" data-anchor-id="frf2関数実験計画に中間点を追加する">
 <span class="header-section-number">48.4.1.6</span> FrF2関数：実験計画に中間点を追加する</h4>
 <p>実験計画に中間の点（2条件が1、-1の時、0）を加えると、その説明変数に対する目的変数の応答が直線的か、曲線になっているかを評価できます。</p>
-<p><code>FrF2</code>関数では、<code>ncenter</code>引数を用いることで、中間点を加えることができます。<code>ncenter</code>には数値を設定し、設定した数だけ中間点のみの実験を追加します。また、すでに作成した<code>FrF2</code>関数の返り値を引数に取る、<code>add.center</code>関数でも中間点を設定することができます。</p>
+<p><code>FrF2</code>関数では、<code>ncenter</code>引数を用いることで、中間点を加えることができます。<code>ncenter</code>には数値を設定し、設定した数だけ中間点のみの実験を追加します。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -2407,9 +2408,17 @@ class=design, type= FrF2.generators </code></pre>
 11  0  0  0  0  0
 class=design, type= FrF2.center </code></pre>
 </div>
+</div>
+<p>また、すでに作成した<code>FrF2</code>関数の返り値を引数に取る、<code>add.center</code>関数でも中間点を設定することができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>FrF2：作成した計画に中間点を追加する</strong></pre>
+</div>
 <div class="sourceCode" id="cb83"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 計画を作成した後でも中間点を設定できる</span></span>
 <span><span class="va">design_exp</span> <span class="op">&lt;-</span> <span class="fu">FrF2</span><span class="op">(</span><span class="fl">8</span>,<span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu">add.center</span><span class="op">(</span><span class="va">design_exp</span>, <span class="fl">3</span><span class="op">)</span> <span class="co"># 計画に中間点の実験を3つ追加する</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    A  B  C  D  E
 1   0  0  0  0  0
@@ -2440,16 +2449,16 @@ class=design, type= FrF2.center </code></pre>
 <div class="code-with-filename-file">
 <pre><strong>FrF2：resolutionを指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FrF2</span><span class="op">(</span>nfactors<span class="op">=</span><span class="fl">7</span>, resolution<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># resolution Vだと64実験</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FrF2</span><span class="op">(</span>nfactors <span class="op">=</span> <span class="fl">7</span>, resolution <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># resolution Vだと64実験</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 64</code></pre>
 </div>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FrF2</span><span class="op">(</span>nfactors<span class="op">=</span><span class="fl">7</span>, resolution<span class="op">=</span><span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># resolution IVだと16実験</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FrF2</span><span class="op">(</span>nfactors <span class="op">=</span> <span class="fl">7</span>, resolution <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># resolution IVだと16実験</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 16</code></pre>
 </div>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FrF2</span><span class="op">(</span>nfactors<span class="op">=</span><span class="fl">7</span>, resolution<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="co"># resolution III（主効果のみ）だと8実験</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FrF2</span><span class="op">(</span>nfactors <span class="op">=</span> <span class="fl">7</span>, resolution <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="co"># resolution III（主効果のみ）だと8実験</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   A  B  C  D  E  F  G
 1  1  1 -1  1 -1 -1 -1
@@ -2648,7 +2657,7 @@ character(0)</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-48-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="chapter48_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-49-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="chapter48_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -2656,13 +2665,13 @@ character(0)</code></pre>
 <span><span class="fu">IAPlot</span><span class="op">(</span><span class="va">lm_xy</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-48-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="chapter48_files/figure-html/unnamed-chunk-48-2.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-49-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="chapter48_files/figure-html/unnamed-chunk-49-2.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
-<p><code>DanielPlot</code>関数は、論文<span class="citation" data-cites="Daniel01111959">(<a href="references.html#ref-Daniel01111959" role="doc-biblioref">Daniel 1959</a>)</span>で説明されている、正規分布と実際の効果を大きさ順にならべ、プロットしたものです。説明変数に何の効果も無ければ、直線上に点が並びます。正規分布のマイナス側の絶対値を取ったプロットにすることもでき（<code>half = TRUE</code>）、こちらの方が直線に点が乗っているかわかりやすくなります。説明変数に効果がある場合には、直線より右側に点が外れることになります。</p>
-<p>上記に回帰のコードを示した通り、目的変数yはただの正規乱数ですので、どの説明変数にも明確な効果がなく、すべての点が直線上に乗ります。</p>
+<p><code>DanielPlot</code>関数は、論文<span class="citation" data-cites="Daniel01111959">(<a href="references.html#ref-Daniel01111959" role="doc-biblioref">Daniel 1959</a>)</span>で説明されている、正規分布とパラメータを大きさ順にならべてプロットしたqqplotの一種です。説明変数に何の効果も無ければ、直線上に点が並びます。正規分布の代わりに半正規分布を用いたプロットにすることもでき（<code>half = TRUE</code>）、こちらの方が直線に点が乗っているかわかりやすくなります。説明変数に効果がある場合には、直線より右側に点が外れることになります。</p>
+<p>回帰のコードに示した通り、目的変数<code>y</code>はただの正規乱数ですので、どの説明変数にも明確な効果がなく、すべての点が直線上に乗ります。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -2673,14 +2682,14 @@ character(0)</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-49-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="chapter48_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-50-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="chapter48_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">DanielPlot</span><span class="op">(</span><span class="va">lm_xy</span>, half <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">DanielPlot</span><span class="op">(</span><span class="va">lm_xy</span>, half <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># 半正規分布を用いる</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-49-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="chapter48_files/figure-html/unnamed-chunk-49-2.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-50-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="chapter48_files/figure-html/unnamed-chunk-50-2.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -2696,14 +2705,14 @@ character(0)</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-50-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="chapter48_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-51-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="chapter48_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
 </section></section></section><section id="optimal-design" class="level2" data-number="48.5"><h2 data-number="48.5" class="anchored" data-anchor-id="optimal-design">
 <span class="header-section-number">48.5</span> Optimal Design</h2>
-<p>説明変数がn個のとき、要因配置計画では2<sup>n</sup>、一部要因配置計画では2<sup>n-k</sup>（k&lt;n）の実験を行うことになります。とはいえ、実験で必ず2の倍数で実験を行うかというと、そういうわけではないでしょう。時間や予算によっては2<sup>n</sup>の実験を実施することは難しくても、2<sup>n-1</sup>よりは多く実験ができそう、という場合もあります。実験を増やせば結果の精度が上がっていきますから、わざわざ一部要因配置計画に合わせて実験をする必要はないでしょう。また、<code>FrF2</code>では各説明変数に2条件を仮定していましたが、3条件以上で実験を行い、説明変数への応答が直線的なのか、曲線的なのか評価したい場合もあるでしょう。</p>
+<p>説明変数がn個のとき、要因配置計画では2<sup>n</sup>、一部要因配置計画では2<sup>n-k</sup>（k&lt;n）の実験を行うことになります。とはいえ、実験で必ず2の倍数で実験を行うかというと、そういうわけではないでしょう。時間や予算によっては2<sup>n</sup>の実験を実施することは難しくても、2<sup>n-1</sup>よりは多く実験ができそう、という場合もあります。実験を増やせば結果の精度が上がっていきますから、わざわざ一部要因配置計画に合わせて少なく実験をするのでは結果の精度を下げることになります。また、<code>FrF2</code>では各説明変数に2条件を仮定していましたが、3条件以上で実験を行い、説明変数への応答が直線的なのか、曲線的なのか評価したい場合もあるでしょう。</p>
 <p>交互作用についても、ある交互作用は注意が必要で、別の交互作用についてはそれほど注意しなくて良い場合もあります。例えば、作物の収量と肥料・水・日射量の関係を見ると、水をたくさん与えれば肥料は流れ出て効果が小さくなる、つまり交互作用がありそうですが、水と日射量には明確な交互作用はなさそうです。ですので、実験では肥料と水の交互作用に注意が必要そう、と想像することができます。</p>
 <p>しかし、一部要因配置計画よりはたくさん実験をできそうであっても、どのような実験の組み合わせであれば求めたい交互作用が求まり、より実験の精度を高くできるかをパッと想像できる人はあまりいないでしょう。</p>
 <p>このように、要因配置計画や一部要因配置計画よりも柔軟性が高く、求めたい交互作用を適切に評価し、結果のばらつきをできるだけ小さく最適化することを目的とした実験計画法が<strong>Optimal Design</strong>です。日本語では最適計画と呼ばれるようです。</p>
@@ -2723,7 +2732,7 @@ character(0)</code></pre>
 <ul>
 <li>ブロック（局所管理）を想定したもの</li>
 <li>ブロックを想定しているけどブロックの条件を変更しにくい場合（例えば、溶鉱炉の温度を変更したいけど変更するとコストがかさむ場合）を想定したもの</li>
-<li>各説明変数の和は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量）を想定したもの</li>
+<li>各説明変数の和は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量を変える場合）を想定したもの</li>
 <li>実験を追加で行うことを想定したもの</li>
 </ul>
 <p>すべてを説明するとページがいくらあっても足りないため、このテキストでは<strong>D-Optimal Design</strong>と<strong>I-Optimal Design</strong>のみを簡単に説明します。Optimal Designについて詳しく知りたい方は文献<span class="citation" data-cites="Goos_Peter2011-06-28">(<a href="references.html#ref-Goos_Peter2011-06-28" role="doc-biblioref">Goos and Jones 2011</a>)</span>を参照下さい。また、Optimal Designを含めた実験計画については<a href="https://www.jmp.com/ja/home">JMP</a>の機能が充実しています。以下に説明する通りRでもOptimal Designを計画することはできますが、JMPではGUIを用いて実験計画を組むことができます。JMPは<a href="https://www.sas.com/ja_jp/home.html">SAS Institute.inc</a>の製品ですので、利用にはお金はかかりますが、お金に余裕があれば試してみるのもよいでしょう。</p>
@@ -2745,8 +2754,8 @@ character(0)</code></pre>
 </div>
 </div>
 </div>
-<p>このグラフのFraction of Design Spaceが0.5の時のPrediction Variance（赤線が交わる点）をできるだけ小さくするモデルを選択するのがI-Optimal Designです。I-Optimal Designは説明変数と目的変数の関係が多項式的（直線ではなく、曲線的）である場合に比較的適しているようです。</p>
-<p>D-Optimal Design、I-Optimal Design共に最適なデザイン行列は乱数を使った繰り返し計算（Monte Carloアルゴリズム）で計算できます。一部要因配置計画についてはコンピュータが発達する前から直交表を用いて作成されてきましたが、Opitimal Designではデザイン行列の作成に繰り返し計算を用いるため、デザインの作成にはコンピュータが必要です。</p>
+<p>このグラフのFraction of Design Spaceが0.5の時のPrediction Variance（赤線が交わる点）を最小とするモデルを選択するのがI-Optimal Designです。I-Optimal Designは説明変数と目的変数の関係が多項式的（直線ではなく、曲線的）である場合に比較的適しているようです。</p>
+<p>D-Optimal Design、I-Optimal Design共に最適なデザイン行列は乱数を使った繰り返し計算（Monte Carloアルゴリズム）で計算・作成されます。一部要因配置計画についてはコンピュータが発達する前から直交表を用いて作成されてきましたが、Opitimal Designではデザイン行列の作成に繰り返し計算を用いるため、デザインの作成にはコンピュータが必要です。</p>
 </section></section><section id="rでoptimal-designskpr" class="level2" data-number="48.6"><h2 data-number="48.6" class="anchored" data-anchor-id="rでoptimal-designskpr">
 <span class="header-section-number">48.6</span> RでOptimal Design：skpr</h2>
 <p>RでOptimal Designを作成する場合には、様々なライブラリを利用可能ですが、比較的簡単にOptimal Designを作成・評価できるライブラリとして、以下では<strong><a href="https://tylermorganwall.github.io/skpr/"><code>skpr</code></a>パッケージ</strong><span class="citation" data-cites="skpr_bib">(<a href="references.html#ref-skpr_bib" role="doc-biblioref">Morgan-Wall and Khoury 2021</a>)</span>を紹介します。</p>
@@ -2895,7 +2904,7 @@ character(0)</code></pre>
 </div>
 </section><section id="split-plot-design" class="level4" data-number="48.6.1.3"><h4 data-number="48.6.1.3" class="anchored" data-anchor-id="split-plot-design">
 <span class="header-section-number">48.6.1.3</span> Split-plot design</h4>
-<p>実験を計画する場合、説明変数はいつも自由に変更できる、というわけではありません。例えば、高温に溶かした素材を用いて製品を作成する場合、窯の温度をランダムに上げたり下げたりすると燃料のコストも時間もかかってしまいます。したがって、説明変数の一部はあまり頻繁に変更せず、実験を行った方がよい場合もあります。</p>
+<p>実験を計画する場合、説明変数はいつも自由に変更できる、というわけではありません。例えば、高温で溶かした素材を用いて製品を作成する場合、温度の影響を調べるために窯の温度をランダムに上げたり下げたりすると燃料のコストも時間もかかってしまいます。したがって、説明変数の一部はあまり頻繁に変更せず、実験を行った方がよい場合もあります。</p>
 <p>このような場合に用いるのが<strong>split-plot design</strong>です。<code>skpr</code>はsplit-plot designにも対応しています。split-plot designでは、選択した変更しにくい説明変数をなるべく同じ値で繰り返すように実験を設計してくれます。</p>
 <p>以下にsplit-plot designの作成方法を示します。split-plot designを作成する場合、まずは変更しにくい説明変数のみを<code>model</code>に設定した計画を<code>gen_design</code>関数で作成します。この計画のオブジェクトを再び<code>gen_design</code>関数の<code>splitplotdesign</code>引数に設定します。実験は一つ目の計画の<code>trials</code>の整数倍とします。Split-plot designの結果として、以下のように変えにくい変数（下の例では<code>nutrient</code>）の値に比較的変更が少ない実験を計画することができます。</p>
 <div class="cell">
@@ -3003,13 +3012,13 @@ character(0)</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>get_optimality関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tylermorganwall.github.io/skpr/reference/get_optimality.html">get_optimality</a></span><span class="op">(</span><span class="va">od_d</span><span class="op">)</span> <span class="co"># D-OptimalではDが大きい</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tylermorganwall.github.io/skpr/reference/get_optimality.html">get_optimality</a></span><span class="op">(</span><span class="va">od_d</span><span class="op">)</span> <span class="co"># D-OptimalではD（D efficiencyというパラメータ）が大きい</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         D         I        A            G  T E    Alias
 1 97.03219 0.2480159 94.38202 Not Computed 50 8 4.344671</code></pre>
 </div>
-<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tylermorganwall.github.io/skpr/reference/get_optimality.html">get_optimality</a></span><span class="op">(</span><span class="va">od_i</span><span class="op">)</span> <span class="co"># I-optimalではIが小さい</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tylermorganwall.github.io/skpr/reference/get_optimality.html">get_optimality</a></span><span class="op">(</span><span class="va">od_i</span><span class="op">)</span> <span class="co"># I-optimalではI(average prediction variance)が小さい</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         D         I        A            G  T E Alias
 1 96.08995 0.2458333 93.02326 Not Computed 50 8  4.24</code></pre>
@@ -3110,7 +3119,7 @@ character(0)</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-63-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="chapter48_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-64-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="chapter48_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -3192,7 +3201,7 @@ No errors or warnings encountered during power curve generation!</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-64-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="chapter48_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-65-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="chapter48_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -3210,7 +3219,7 @@ No errors or warnings encountered during power curve generation!</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-65-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img src="chapter48_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-66-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img src="chapter48_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -3222,14 +3231,14 @@ No errors or warnings encountered during power curve generation!</code></pre>
 <span>  <span class="fu"><a href="https://tylermorganwall.github.io/skpr/reference/plot_correlations.html">plot_correlations</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-65-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17"><img src="chapter48_files/figure-html/unnamed-chunk-65-2.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-66-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17"><img src="chapter48_files/figure-html/unnamed-chunk-66-2.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
 </section></section></section><section id="mixture-experiment" class="level2" data-number="48.7"><h2 data-number="48.7" class="anchored" data-anchor-id="mixture-experiment">
 <span class="header-section-number">48.7</span> mixture experiment</h2>
-<p>説明変数全体の量は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量）のことを<strong>mixture experiment</strong>と呼びます。mixture experimentでは、各説明変数の和が常に1となるよう実験計画が作成されます。</p>
+<p>説明変数全体の量は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量の割合を変える場合）の実験のことを<strong>mixture experiment</strong>と呼びます。mixture experimentでは、各説明変数の和が常に1となるよう実験計画が作成されます。</p>
 <p>mixture experimentの実験計画には<code>skpr</code>は対応していないので、別のライブラリ（<a href="https://cran.r-project.org/web/packages/mixexp/index.html"><code>mixexp</code></a><span class="citation" data-cites="mixexp_bib">(<a href="references.html#ref-mixexp_bib" role="doc-biblioref">Lawson and Willden 2016</a>)</span>、<a href="https://cran.r-project.org/web/packages/AlgDesign/index.html"><code>AlgDesign</code></a><span class="citation" data-cites="AlgDesign_bib">(<a href="references.html#ref-AlgDesign_bib" role="doc-biblioref">Wheeler 2025</a>)</span>）を用います。</p>
 <section id="mixexpパッケージ" class="level3" data-number="48.7.1"><h3 data-number="48.7.1" class="anchored" data-anchor-id="mixexpパッケージ">
 <span class="header-section-number">48.7.1</span> mixexpパッケージ</h3>
@@ -3279,7 +3288,7 @@ No errors or warnings encountered during power curve generation!</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-67-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18"><img src="chapter48_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-68-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18"><img src="chapter48_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -3287,7 +3296,7 @@ No errors or warnings encountered during power curve generation!</code></pre>
 <span><span class="fu"><a href="https://rdrr.io/pkg/mixexp/man/SCD.html">SCD</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/mixexp/man/DesignPoints.html">DesignPoints</a></span><span class="op">(</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-67-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19"><img src="chapter48_files/figure-html/unnamed-chunk-67-2.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="chapter48_files/figure-html/unnamed-chunk-68-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19"><img src="chapter48_files/figure-html/unnamed-chunk-68-2.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -3887,7 +3896,7 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb161-66"><a href="#cb161-66" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-67"><a href="#cb161-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## スクリーニングにおける説明変数</span></span>
 <span id="cb161-68"><a href="#cb161-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-69"><a href="#cb161-69" aria-hidden="true" tabindex="-1"></a>作物の例でスクリーニングを考えてみましょう。目的変数は作物の収量（重さ）とします。説明変数には、肥料の量、日照量、水の量、土壌のpH、土壌の粒の細かさを選ぶこととします。目的変数は1つで、説明変数は5つです。</span>
+<span id="cb161-69"><a href="#cb161-69" aria-hidden="true" tabindex="-1"></a>作物の例でスクリーニングを考えてみましょう。目的変数は作物の収量（重さ）とします。説明変数には、肥料の量、日照量、水の量、土壌のpH、土壌の粒の細かさなどです。</span>
 <span id="cb161-70"><a href="#cb161-70" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-71"><a href="#cb161-71" aria-hidden="true" tabindex="-1"></a>説明変数に対して目的変数が線形（直線的）に応答するかわからないため、可能であればそれぞれの説明変数は小さい・中ぐらい・大きいの3条件を用いて実験する方が望ましいです。ただし、実験の条件が増えると行う実験の数も増えます。ですので、スクリーニングでは説明変数の設定は大きい、小さいなどの2条件とします。</span>
 <span id="cb161-72"><a href="#cb161-72" aria-hidden="true" tabindex="-1"></a></span>
@@ -4011,11 +4020,11 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb161-190"><a href="#cb161-190" aria-hidden="true" tabindex="-1"></a>u_i \sim Normal(0, \sigma^2)</span>
 <span id="cb161-191"><a href="#cb161-191" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb161-192"><a href="#cb161-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-193"><a href="#cb161-193" aria-hidden="true" tabindex="-1"></a>目的変数の行列を$Y$、説明変数の行列を$X$、パラメータの行列を$\beta$、ばらつきの項を$u$と置き換えると、以下の式で表すことができます。</span>
+<span id="cb161-193"><a href="#cb161-193" aria-hidden="true" tabindex="-1"></a>上の式の目的変数の行列を$Y$、説明変数の行列を$X$、パラメータの行列を$\beta$、ばらつきの項を$u$と置き換えると、以下の式で表すことができます。</span>
 <span id="cb161-194"><a href="#cb161-194" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-195"><a href="#cb161-195" aria-hidden="true" tabindex="-1"></a>$$ Y = X \beta + u $$</span>
 <span id="cb161-196"><a href="#cb161-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-197"><a href="#cb161-197" aria-hidden="true" tabindex="-1"></a>$\beta$の真の値はわからないため、$\beta$の予測値（$\hat{\beta}$、ベータハット）を$\beta$の変わりに用いることにします。また、$X$は実験のデザインを表す行列として、**デザイン行列**と呼びます。</span>
+<span id="cb161-197"><a href="#cb161-197" aria-hidden="true" tabindex="-1"></a>$\beta$の真の値はわからないため、$\beta$の予測値（$\hat{\beta}$、ベータハット）を$\beta$の変わりに用いることにします。また、$X$は実験のデザインを表す行列なので、**デザイン行列**と呼ばれます。</span>
 <span id="cb161-198"><a href="#cb161-198" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-199"><a href="#cb161-199" aria-hidden="true" tabindex="-1"></a>残差（<span class="co">[</span><span class="ot">30章のy方向の誤差を参照</span><span class="co">](chapter30.qmd#線形回帰)</span>）は実際の目的変数の値（$Y$）と$\hat{\beta}$を用いた線形モデルで予測した値（$X\hat{\beta}$）の差なので、以下の式で表すことができます。</span>
 <span id="cb161-200"><a href="#cb161-200" aria-hidden="true" tabindex="-1"></a></span>
@@ -4132,7 +4141,7 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb161-311"><a href="#cb161-311" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(x)</span>
 <span id="cb161-312"><a href="#cb161-312" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb161-313"><a href="#cb161-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-314"><a href="#cb161-314" aria-hidden="true" tabindex="-1"></a>ただし、x1の2乗が含まれているなら線は2次関数のような曲線になりますが、x1は-1と1の2つの値しか取っていないため、このデータではyとx1の関係について、どのように曲がっているのかはわかりません。つまり、2点では多項式のパラメータは求まりそうにありません。</span>
+<span id="cb161-314"><a href="#cb161-314" aria-hidden="true" tabindex="-1"></a>ただし、x1の2乗の項が含まれているなら、線は2次関数のような曲線になりますが、x1は-1と1の2つの値しか取っていないため、このデータではyとx1の関係について、どのように曲がっているのかはわかりません。つまり、2点では多項式のパラメータは求まりそうにありません。</span>
 <span id="cb161-315"><a href="#cb161-315" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-316"><a href="#cb161-316" aria-hidden="true" tabindex="-1"></a>実際にこの多項式を入れた場合のデザイン行列を見ると、x1x1の列とbの列の値が同じになっています。このような場合には$(X^TX)^{-1}X^TY$が計算できなくなります。</span>
 <span id="cb161-317"><a href="#cb161-317" aria-hidden="true" tabindex="-1"></a></span>
@@ -4212,8 +4221,8 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb161-393"><a href="#cb161-393" aria-hidden="true" tabindex="-1"></a><span class="fu">## waterだけが求まる場合</span></span>
 <span id="cb161-394"><a href="#cb161-394" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-397"><a href="#cb161-397" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb161-398"><a href="#cb161-398" aria-hidden="true" tabindex="-1"></a>d[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>), ] <span class="co"># 2、3行目を削除する</span></span>
-<span id="cb161-399"><a href="#cb161-399" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> nutrient <span class="sc">*</span> water, <span class="at">data =</span> d[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>), ])</span>
+<span id="cb161-398"><a href="#cb161-398" aria-hidden="true" tabindex="-1"></a>d[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>), ] <span class="co"># 2、3行目を削除する</span></span>
+<span id="cb161-399"><a href="#cb161-399" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> water <span class="sc">*</span> nutrient, <span class="at">data =</span> d[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>), ])</span>
 <span id="cb161-400"><a href="#cb161-400" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb161-401"><a href="#cb161-401" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-402"><a href="#cb161-402" aria-hidden="true" tabindex="-1"></a>:::</span>
@@ -4230,18 +4239,18 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb161-415"><a href="#cb161-415" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="at">x =</span> nutrient, <span class="at">y =</span> weight, <span class="at">color =</span> <span class="fu">factor</span>(water))) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"4実験を行う場合"</span>)</span>
 <span id="cb161-416"><a href="#cb161-416" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ], <span class="fu">aes</span>(<span class="at">x =</span> nutrient, <span class="at">y =</span> weight, <span class="at">color =</span> <span class="fu">factor</span>(water))) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"3実験を行う場合"</span>)</span>
 <span id="cb161-417"><a href="#cb161-417" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ], <span class="fu">aes</span>(<span class="at">x =</span> nutrient, <span class="at">y =</span> weight, <span class="at">color =</span> <span class="fu">factor</span>(water))) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"2実験を行う場合1"</span>)</span>
-<span id="cb161-418"><a href="#cb161-418" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>), ], <span class="fu">aes</span>(<span class="at">x =</span> nutrient, <span class="at">y =</span> weight, <span class="at">color =</span> <span class="fu">factor</span>(water))) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"2実験を行う場合2"</span>)</span>
+<span id="cb161-418"><a href="#cb161-418" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>), ], <span class="fu">aes</span>(<span class="at">x =</span> nutrient, <span class="at">y =</span> weight, <span class="at">color =</span> <span class="fu">factor</span>(water))) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"2実験を行う場合2"</span>)</span>
 <span id="cb161-419"><a href="#cb161-419" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb161-420"><a href="#cb161-420" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-421"><a href="#cb161-421" aria-hidden="true" tabindex="-1"></a><span class="fu">### パラメータの標準誤差の計算</span></span>
 <span id="cb161-422"><a href="#cb161-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-423"><a href="#cb161-423" aria-hidden="true" tabindex="-1"></a>ただし、4つのデータで4つのパラメータ（説明変数2つの傾き、交互作用1つ、切片1つ）を求めると、標準誤差が求まらなくなります。これは、下の演算の結果に示されている通り、残差の自由度が0になるからです。</span>
+<span id="cb161-423"><a href="#cb161-423" aria-hidden="true" tabindex="-1"></a>4つのデータで4つのパラメータ（説明変数2つの傾き、交互作用1つ、切片1つ）を求めると、標準誤差が求まらなくなります。これは、下の演算の結果に示されている通り、残差の自由度が0になるからです。</span>
 <span id="cb161-424"><a href="#cb161-424" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-425"><a href="#cb161-425" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="要員配置実験での標準誤差"}</span></span>
 <span id="cb161-426"><a href="#cb161-426" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> nutrient <span class="sc">*</span> water, <span class="at">data =</span> d) <span class="sc">|&gt;</span> <span class="fu">summary</span>() <span class="co"># Std.Errorが求まらない（NaN）</span></span>
 <span id="cb161-427"><a href="#cb161-427" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb161-428"><a href="#cb161-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-429"><a href="#cb161-429" aria-hidden="true" tabindex="-1"></a>要因配置計画でも、主効果のみを計算すると、交互作用に割り振る自由度がなくなるため、標準誤差が求まります。</span>
+<span id="cb161-429"><a href="#cb161-429" aria-hidden="true" tabindex="-1"></a>要因配置計画でも、主効果のみを計算すると、交互作用に割り振る自由度がなくなり、自由度に余裕ができるので標準誤差が求まります。</span>
 <span id="cb161-430"><a href="#cb161-430" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-431"><a href="#cb161-431" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="主効果のみ場合の標準誤差"}</span></span>
 <span id="cb161-432"><a href="#cb161-432" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> nutrient <span class="sc">+</span> water, <span class="at">data =</span> d) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span>
@@ -4448,405 +4457,410 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb161-633"><a href="#cb161-633" aria-hidden="true" tabindex="-1"></a>また、実験で求めたいパラメータ（主効果や交互作用の傾き）が決まっている時には、<span class="in">`estimable`</span>に<span class="in">`formula`</span>を設定することでも実験デザインを作成することができます。以下の例では、5つの主効果（A、B、C、D、E）に加えて、AB、BC、ACの交互作用のパラメータを求めるための一部要因配置計画の計画を作成する例を示しています。</span>
 <span id="cb161-634"><a href="#cb161-634" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-635"><a href="#cb161-635" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：求めたいパラメータのformulaから計画を作成する"}</span></span>
-<span id="cb161-636"><a href="#cb161-636" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">estimable=</span><span class="fu">formula</span>(<span class="st">"~(A+B+C)^2+D+E"</span>))</span>
+<span id="cb161-636"><a href="#cb161-636" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">estimable =</span> <span class="fu">formula</span>(<span class="st">"~(A+B+C)^2+D+E"</span>))</span>
 <span id="cb161-637"><a href="#cb161-637" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb161-638"><a href="#cb161-638" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-639"><a href="#cb161-639" aria-hidden="true" tabindex="-1"></a>説明変数の数を指定しておき、すべての主効果を求めないデザインを採用することもできます。この時、引数に<span class="in">`clear=FALSE`</span>を設定しておく必要があります。<span class="in">`clear`</span>は主効果のパラメータをすべて求めるかどうかを定める引数で、<span class="in">`clear`</span>のデフォルト値は<span class="in">`TRUE`</span>、主効果をすべて求める設定となっています。<span class="in">`clear=FALSE`</span>とすることで求まらない主効果を許容することができます。</span>
 <span id="cb161-640"><a href="#cb161-640" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb161-641"><a href="#cb161-641" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="主効果を求めない因子を加える"}</span></span>
 <span id="cb161-642"><a href="#cb161-642" aria-hidden="true" tabindex="-1"></a><span class="co"># 6つのnfactorを指定し、5つをestimableに加える</span></span>
-<span id="cb161-643"><a href="#cb161-643" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactor =</span> <span class="dv">6</span>, <span class="at">estimable=</span><span class="fu">formula</span>(<span class="st">"~(A+B+C)^2+D+E"</span>), <span class="at">clear =</span> <span class="cn">FALSE</span>) <span class="co"># clearがないと演算できない</span></span>
-<span id="cb161-644"><a href="#cb161-644" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactor =</span> <span class="dv">6</span>, <span class="at">estimable=</span><span class="fu">formula</span>(<span class="st">"~(A+B+C)^2+D+E"</span>)) <span class="co"># エラー</span></span>
-<span id="cb161-645"><a href="#cb161-645" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-646"><a href="#cb161-646" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-647"><a href="#cb161-647" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：generatorsを利用する</span></span>
-<span id="cb161-648"><a href="#cb161-648" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-649"><a href="#cb161-649" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`generators`</span>引数を設定すると、評価したい交互作用を追加し評価するための計画を作成することができます。</span>
-<span id="cb161-650"><a href="#cb161-650" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-651"><a href="#cb161-651" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：generators引数"}</span></span>
-<span id="cb161-652"><a href="#cb161-652" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="dv">16</span>, <span class="at">generators =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))) <span class="co"># ABCの交互作用が求まるようにする（説明変数は5つ）</span></span>
-<span id="cb161-653"><a href="#cb161-653" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="dv">16</span>, <span class="dv">5</span>, <span class="at">generators =</span> <span class="st">"ABD"</span>) <span class="co"># ABDの交互作用を評価できるようにする</span></span>
-<span id="cb161-654"><a href="#cb161-654" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-655"><a href="#cb161-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-656"><a href="#cb161-656" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：実験計画に中間点を追加する</span></span>
-<span id="cb161-657"><a href="#cb161-657" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-658"><a href="#cb161-658" aria-hidden="true" tabindex="-1"></a>実験計画に中間の点（2条件が1、-1の時、0）を加えると、その説明変数に対する目的変数の応答が直線的か、曲線になっているかを評価できます。</span>
-<span id="cb161-659"><a href="#cb161-659" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-660"><a href="#cb161-660" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>関数では、<span class="in">`ncenter`</span>引数を用いることで、中間点を加えることができます。<span class="in">`ncenter`</span>には数値を設定し、設定した数だけ中間点のみの実験を追加します。また、すでに作成した<span class="in">`FrF2`</span>関数の返り値を引数に取る、<span class="in">`add.center`</span>関数でも中間点を設定することができます。</span>
-<span id="cb161-661"><a href="#cb161-661" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-662"><a href="#cb161-662" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：中間点を追加する"}</span></span>
-<span id="cb161-663"><a href="#cb161-663" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">5</span>, <span class="at">ncenter =</span> <span class="dv">3</span>)</span>
-<span id="cb161-664"><a href="#cb161-664" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-665"><a href="#cb161-665" aria-hidden="true" tabindex="-1"></a><span class="co"># 計画を作成した後でも中間点を設定できる</span></span>
-<span id="cb161-666"><a href="#cb161-666" aria-hidden="true" tabindex="-1"></a>design_exp <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="dv">8</span>,<span class="dv">5</span>)</span>
-<span id="cb161-667"><a href="#cb161-667" aria-hidden="true" tabindex="-1"></a><span class="fu">add.center</span>(design_exp, <span class="dv">3</span>) <span class="co"># 計画に中間点の実験を3つ追加する</span></span>
-<span id="cb161-668"><a href="#cb161-668" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-669"><a href="#cb161-669" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-670"><a href="#cb161-670" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：一部要因配置計画のresolution</span></span>
-<span id="cb161-671"><a href="#cb161-671" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-672"><a href="#cb161-672" aria-hidden="true" tabindex="-1"></a>一部要因配置計画には、resolution（分解能）というものがあり、resolutionにはクラスが3つ（class III、class IV、 class V）あります。resolutionが高くなると、以下の通り求まる交互作用のパラメータが多くなり、実験数が増えることになります。</span>
-<span id="cb161-673"><a href="#cb161-673" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-674"><a href="#cb161-674" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>class III：すべての主効果のパラメータが求まる</span>
-<span id="cb161-675"><a href="#cb161-675" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>class IV：すべての主効果と2次の交互作用の一部のパラメータが求まる</span>
-<span id="cb161-676"><a href="#cb161-676" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>class V：すべての2次の交互作用のパラメータが求まる</span>
-<span id="cb161-677"><a href="#cb161-677" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-678"><a href="#cb161-678" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>関数では、<span class="in">`resolution`</span>引数にresolutionのクラスを数値で指定することで、resolutionを指定した実験計画を得ることができます。<span class="in">`resulution`</span>は<span class="in">`3`</span>、<span class="in">`4`</span>、<span class="in">`5`</span>のいずれかの数値を取ります。<span class="in">`resolution`</span>を指定する場合には実験数（<span class="in">`nruns`</span>）は指定せず、説明変数の数（<span class="in">`nfactors`</span>）と<span class="in">`resolution`</span>のみを指定します。</span>
-<span id="cb161-679"><a href="#cb161-679" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-680"><a href="#cb161-680" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：resolutionを指定する"}</span></span>
-<span id="cb161-681"><a href="#cb161-681" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactors=</span><span class="dv">7</span>, <span class="at">resolution=</span><span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>() <span class="co"># resolution Vだと64実験</span></span>
-<span id="cb161-682"><a href="#cb161-682" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactors=</span><span class="dv">7</span>, <span class="at">resolution=</span><span class="dv">4</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>() <span class="co"># resolution IVだと16実験</span></span>
-<span id="cb161-683"><a href="#cb161-683" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactors=</span><span class="dv">7</span>, <span class="at">resolution=</span><span class="dv">3</span>) <span class="co"># resolution III（主効果のみ）だと8実験</span></span>
-<span id="cb161-684"><a href="#cb161-684" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-685"><a href="#cb161-685" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-686"><a href="#cb161-686" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：実験計画の評価</span></span>
-<span id="cb161-687"><a href="#cb161-687" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-688"><a href="#cb161-688" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>関数で実験計画を作成した後、実験計画の情報を取得する場合には<span class="in">`design.info`</span>関数を用います。<span class="in">`design.info`</span>関数は<span class="in">`FrF2`</span>関数の返り値を引数に取ります。</span>
-<span id="cb161-689"><a href="#cb161-689" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-690"><a href="#cb161-690" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="design.info関数で計画情報を得る"}</span></span>
-<span id="cb161-691"><a href="#cb161-691" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">5</span>)</span>
-<span id="cb161-692"><a href="#cb161-692" aria-hidden="true" tabindex="-1"></a>x <span class="sc">|&gt;</span> <span class="fu">design.info</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>) <span class="co"># デザインの詳細を表示（出力が多いので3つだけ表示）</span></span>
-<span id="cb161-693"><a href="#cb161-693" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-643"><a href="#cb161-643" aria-hidden="true" tabindex="-1"></a><span class="co"># clear=FALSEがないと演算できない</span></span>
+<span id="cb161-644"><a href="#cb161-644" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactor =</span> <span class="dv">6</span>, <span class="at">estimable=</span><span class="fu">formula</span>(<span class="st">"~(A+B+C)^2+D+E"</span>), <span class="at">clear =</span> <span class="cn">FALSE</span>) </span>
+<span id="cb161-645"><a href="#cb161-645" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactor =</span> <span class="dv">6</span>, <span class="at">estimable=</span><span class="fu">formula</span>(<span class="st">"~(A+B+C)^2+D+E"</span>)) <span class="co"># エラー</span></span>
+<span id="cb161-646"><a href="#cb161-646" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-647"><a href="#cb161-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-648"><a href="#cb161-648" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：generatorsを利用する</span></span>
+<span id="cb161-649"><a href="#cb161-649" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-650"><a href="#cb161-650" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`generators`</span>引数を設定すると、評価したい交互作用を追加し評価するための計画を作成することができます。</span>
+<span id="cb161-651"><a href="#cb161-651" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-652"><a href="#cb161-652" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：generators引数"}</span></span>
+<span id="cb161-653"><a href="#cb161-653" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="dv">16</span>, <span class="at">generators =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))) <span class="co"># ABCの交互作用が求まるようにする（説明変数は5つ）</span></span>
+<span id="cb161-654"><a href="#cb161-654" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="dv">16</span>, <span class="dv">5</span>, <span class="at">generators =</span> <span class="st">"ABD"</span>) <span class="co"># ABDの交互作用を評価できるようにする</span></span>
+<span id="cb161-655"><a href="#cb161-655" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-656"><a href="#cb161-656" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-657"><a href="#cb161-657" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：実験計画に中間点を追加する</span></span>
+<span id="cb161-658"><a href="#cb161-658" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-659"><a href="#cb161-659" aria-hidden="true" tabindex="-1"></a>実験計画に中間の点（2条件が1、-1の時、0）を加えると、その説明変数に対する目的変数の応答が直線的か、曲線になっているかを評価できます。</span>
+<span id="cb161-660"><a href="#cb161-660" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-661"><a href="#cb161-661" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>関数では、<span class="in">`ncenter`</span>引数を用いることで、中間点を加えることができます。<span class="in">`ncenter`</span>には数値を設定し、設定した数だけ中間点のみの実験を追加します。</span>
+<span id="cb161-662"><a href="#cb161-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-663"><a href="#cb161-663" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：中間点を追加する"}</span></span>
+<span id="cb161-664"><a href="#cb161-664" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">5</span>, <span class="at">ncenter =</span> <span class="dv">3</span>)</span>
+<span id="cb161-665"><a href="#cb161-665" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-666"><a href="#cb161-666" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-667"><a href="#cb161-667" aria-hidden="true" tabindex="-1"></a>また、すでに作成した<span class="in">`FrF2`</span>関数の返り値を引数に取る、<span class="in">`add.center`</span>関数でも中間点を設定することができます。</span>
+<span id="cb161-668"><a href="#cb161-668" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-669"><a href="#cb161-669" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：作成した計画に中間点を追加する"}</span></span>
+<span id="cb161-670"><a href="#cb161-670" aria-hidden="true" tabindex="-1"></a><span class="co"># 計画を作成した後でも中間点を設定できる</span></span>
+<span id="cb161-671"><a href="#cb161-671" aria-hidden="true" tabindex="-1"></a>design_exp <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="dv">8</span>,<span class="dv">5</span>)</span>
+<span id="cb161-672"><a href="#cb161-672" aria-hidden="true" tabindex="-1"></a><span class="fu">add.center</span>(design_exp, <span class="dv">3</span>) <span class="co"># 計画に中間点の実験を3つ追加する</span></span>
+<span id="cb161-673"><a href="#cb161-673" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-674"><a href="#cb161-674" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-675"><a href="#cb161-675" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：一部要因配置計画のresolution</span></span>
+<span id="cb161-676"><a href="#cb161-676" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-677"><a href="#cb161-677" aria-hidden="true" tabindex="-1"></a>一部要因配置計画には、resolution（分解能）というものがあり、resolutionにはクラスが3つ（class III、class IV、 class V）あります。resolutionが高くなると、以下の通り求まる交互作用のパラメータが多くなり、実験数が増えることになります。</span>
+<span id="cb161-678"><a href="#cb161-678" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-679"><a href="#cb161-679" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>class III：すべての主効果のパラメータが求まる</span>
+<span id="cb161-680"><a href="#cb161-680" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>class IV：すべての主効果と2次の交互作用の一部のパラメータが求まる</span>
+<span id="cb161-681"><a href="#cb161-681" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>class V：すべての2次の交互作用のパラメータが求まる</span>
+<span id="cb161-682"><a href="#cb161-682" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-683"><a href="#cb161-683" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>関数では、<span class="in">`resolution`</span>引数にresolutionのクラスを数値で指定することで、resolutionを指定した実験計画を得ることができます。<span class="in">`resulution`</span>は<span class="in">`3`</span>、<span class="in">`4`</span>、<span class="in">`5`</span>のいずれかの数値を取ります。<span class="in">`resolution`</span>を指定する場合には実験数（<span class="in">`nruns`</span>）は指定せず、説明変数の数（<span class="in">`nfactors`</span>）と<span class="in">`resolution`</span>のみを指定します。</span>
+<span id="cb161-684"><a href="#cb161-684" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-685"><a href="#cb161-685" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：resolutionを指定する"}</span></span>
+<span id="cb161-686"><a href="#cb161-686" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactors =</span> <span class="dv">7</span>, <span class="at">resolution =</span> <span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>() <span class="co"># resolution Vだと64実験</span></span>
+<span id="cb161-687"><a href="#cb161-687" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactors =</span> <span class="dv">7</span>, <span class="at">resolution =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>() <span class="co"># resolution IVだと16実験</span></span>
+<span id="cb161-688"><a href="#cb161-688" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="at">nfactors =</span> <span class="dv">7</span>, <span class="at">resolution =</span> <span class="dv">3</span>) <span class="co"># resolution III（主効果のみ）だと8実験</span></span>
+<span id="cb161-689"><a href="#cb161-689" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-690"><a href="#cb161-690" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-691"><a href="#cb161-691" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：実験計画の評価</span></span>
+<span id="cb161-692"><a href="#cb161-692" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-693"><a href="#cb161-693" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>関数で実験計画を作成した後、実験計画の情報を取得する場合には<span class="in">`design.info`</span>関数を用います。<span class="in">`design.info`</span>関数は<span class="in">`FrF2`</span>関数の返り値を引数に取ります。</span>
 <span id="cb161-694"><a href="#cb161-694" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-695"><a href="#cb161-695" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：行列への変換</span></span>
-<span id="cb161-696"><a href="#cb161-696" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-697"><a href="#cb161-697" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>関数の返り値はデータフレームですが、各列は因子（factor）になっています。そのまま行列に変換すると、文字列の行列が返ってきます。</span>
-<span id="cb161-698"><a href="#cb161-698" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-699"><a href="#cb161-699" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：返り値をas.matrix関数で行列に変換"}</span></span>
-<span id="cb161-700"><a href="#cb161-700" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">as.matrix</span>()</span>
-<span id="cb161-701"><a href="#cb161-701" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-702"><a href="#cb161-702" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-703"><a href="#cb161-703" aria-hidden="true" tabindex="-1"></a>数値の行列に変換する場合には、<span class="in">`desnum`</span>関数を用います。</span>
-<span id="cb161-704"><a href="#cb161-704" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-705"><a href="#cb161-705" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：desnum関数で数値の行列に変換"}</span></span>
-<span id="cb161-706"><a href="#cb161-706" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">7</span>)</span>
-<span id="cb161-707"><a href="#cb161-707" aria-hidden="true" tabindex="-1"></a><span class="fu">desnum</span>(x) <span class="co"># matrixにする関数</span></span>
-<span id="cb161-708"><a href="#cb161-708" aria-hidden="true" tabindex="-1"></a><span class="fu">desnum</span>(x) <span class="sc">|&gt;</span> <span class="fu">class</span>()</span>
-<span id="cb161-709"><a href="#cb161-709" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-710"><a href="#cb161-710" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-711"><a href="#cb161-711" aria-hidden="true" tabindex="-1"></a>この行列はデザイン行列から切片項を除いたものになっています。一部要因配置計画のデザイン行列は直交（orthogonal）ですので、切片項の列を追加して$X^TX$の行列を演算すると、単位行列の整数倍になります。</span>
-<span id="cb161-712"><a href="#cb161-712" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-713"><a href="#cb161-713" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="切片項を追加し、デザイン行列を得る"}</span></span>
-<span id="cb161-714"><a href="#cb161-714" aria-hidden="true" tabindex="-1"></a><span class="co"># 切片項を足せば単位行列の積になる（直交）</span></span>
-<span id="cb161-715"><a href="#cb161-715" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">cbind</span>(<span class="fu">desnum</span>(x), <span class="dv">1</span>)) <span class="sc">%*%</span> <span class="fu">cbind</span>(<span class="fu">desnum</span>(x), <span class="dv">1</span>)</span>
-<span id="cb161-716"><a href="#cb161-716" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-695"><a href="#cb161-695" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="design.info関数で計画情報を得る"}</span></span>
+<span id="cb161-696"><a href="#cb161-696" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">5</span>)</span>
+<span id="cb161-697"><a href="#cb161-697" aria-hidden="true" tabindex="-1"></a>x <span class="sc">|&gt;</span> <span class="fu">design.info</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>) <span class="co"># デザインの詳細を表示（出力が多いので3つだけ表示）</span></span>
+<span id="cb161-698"><a href="#cb161-698" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-699"><a href="#cb161-699" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-700"><a href="#cb161-700" aria-hidden="true" tabindex="-1"></a><span class="fu">#### FrF2関数：行列への変換</span></span>
+<span id="cb161-701"><a href="#cb161-701" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-702"><a href="#cb161-702" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>関数の返り値はデータフレームですが、各列は因子（factor）になっています。そのまま行列に変換すると、文字列の行列が返ってきます。</span>
+<span id="cb161-703"><a href="#cb161-703" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-704"><a href="#cb161-704" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：返り値をas.matrix関数で行列に変換"}</span></span>
+<span id="cb161-705"><a href="#cb161-705" aria-hidden="true" tabindex="-1"></a><span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">as.matrix</span>()</span>
+<span id="cb161-706"><a href="#cb161-706" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-707"><a href="#cb161-707" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-708"><a href="#cb161-708" aria-hidden="true" tabindex="-1"></a>数値の行列に変換する場合には、<span class="in">`desnum`</span>関数を用います。</span>
+<span id="cb161-709"><a href="#cb161-709" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-710"><a href="#cb161-710" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：desnum関数で数値の行列に変換"}</span></span>
+<span id="cb161-711"><a href="#cb161-711" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">7</span>)</span>
+<span id="cb161-712"><a href="#cb161-712" aria-hidden="true" tabindex="-1"></a><span class="fu">desnum</span>(x) <span class="co"># matrixにする関数</span></span>
+<span id="cb161-713"><a href="#cb161-713" aria-hidden="true" tabindex="-1"></a><span class="fu">desnum</span>(x) <span class="sc">|&gt;</span> <span class="fu">class</span>()</span>
+<span id="cb161-714"><a href="#cb161-714" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-715"><a href="#cb161-715" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-716"><a href="#cb161-716" aria-hidden="true" tabindex="-1"></a>この行列はデザイン行列から切片項を除いたものになっています。一部要因配置計画のデザイン行列は直交（orthogonal）ですので、切片項の列を追加して$X^TX$の行列を演算すると、単位行列の整数倍になります。</span>
 <span id="cb161-717"><a href="#cb161-717" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-718"><a href="#cb161-718" aria-hidden="true" tabindex="-1"></a><span class="fu">### 回帰と結果の評価</span></span>
-<span id="cb161-719"><a href="#cb161-719" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-720"><a href="#cb161-720" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>には、実験計画を作成するだけではなく、実験計画に沿って実験を行った後、回帰の結果を評価するための関数も備わっています。まずは<span class="in">`lm`</span>関数で回帰を行い、返り値をオブジェクトに代入しておきます。</span>
-<span id="cb161-721"><a href="#cb161-721" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-722"><a href="#cb161-722" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：実験計画を用いて回帰"}</span></span>
-<span id="cb161-723"><a href="#cb161-723" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">8</span>, <span class="dv">7</span>, <span class="fl">0.5</span>)</span>
-<span id="cb161-724"><a href="#cb161-724" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">7</span>)</span>
-<span id="cb161-725"><a href="#cb161-725" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-726"><a href="#cb161-726" aria-hidden="true" tabindex="-1"></a><span class="co"># 回帰のための行列を作成</span></span>
-<span id="cb161-727"><a href="#cb161-727" aria-hidden="true" tabindex="-1"></a>xy <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">desnum</span>(x), y)</span>
-<span id="cb161-728"><a href="#cb161-728" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-729"><a href="#cb161-729" aria-hidden="true" tabindex="-1"></a>lm_xy <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> (.)<span class="sc">^</span><span class="dv">2</span>, <span class="at">data =</span> xy <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>())</span>
-<span id="cb161-730"><a href="#cb161-730" aria-hidden="true" tabindex="-1"></a>lm_xy</span>
-<span id="cb161-731"><a href="#cb161-731" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-732"><a href="#cb161-732" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-733"><a href="#cb161-733" aria-hidden="true" tabindex="-1"></a>この回帰の結果（<span class="in">`lm_xy`</span>）を<span class="in">`FrF2`</span>の関数の引数にすることで、回帰の結果を評価することができます。</span>
-<span id="cb161-734"><a href="#cb161-734" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-735"><a href="#cb161-735" aria-hidden="true" tabindex="-1"></a><span class="fu">#### aliase</span></span>
-<span id="cb161-736"><a href="#cb161-736" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-737"><a href="#cb161-737" aria-hidden="true" tabindex="-1"></a>aliase（エイリアス、別名関係）とは、説明変数や交互作用のうち、計画の列が同じ値となるため分離ができないもの同士のことを指します。上の<span class="in">`lm_xy`</span>におけるaliaseを調べる場合、<span class="in">`aliases`</span>関数を用います。<span class="in">`aliases`</span>関数の引数に<span class="in">`lm`</span>関数の返り値（下の例では<span class="in">`lm_xy`</span>）を取ると、aliaseの一覧を表示することができます。</span>
-<span id="cb161-738"><a href="#cb161-738" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-739"><a href="#cb161-739" aria-hidden="true" tabindex="-1"></a>以下の例では、<span class="in">`aliases(lm_xy)`</span>の結果として「A = B:D = C:E = F:G」という表示が返ってきています。これは、説明変数Aと交互作用B:D、C:E、F:Gが分離不能なので、Aの主効果を求めると交互作用B:D、C:E、F:Gは求まらないこと、Aの主効果に交互作用B:D、C:E、F:Gのパラメータが含まれている可能性があることを示しています。</span>
-<span id="cb161-740"><a href="#cb161-740" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-741"><a href="#cb161-741" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="aliase"}</span></span>
-<span id="cb161-742"><a href="#cb161-742" aria-hidden="true" tabindex="-1"></a><span class="fu">aliases</span>(lm_xy)</span>
-<span id="cb161-743"><a href="#cb161-743" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-744"><a href="#cb161-744" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-745"><a href="#cb161-745" aria-hidden="true" tabindex="-1"></a>aliaseは<span class="in">`lm`</span>関数の返り値を用いなくても、<span class="in">`FrF2`</span>関数の返り値から評価することもできます。上記の通り、<span class="in">`design.info`</span>関数を用いると実験計画の詳細を調べることができます。この<span class="in">`design.info`</span>関数の返り値のうち、<span class="in">`aliased`</span>という項目にはaliaseの情報が記載されており、上で示した<span class="in">`aliases`</span>関数の返り値と同じものが記載されています。</span>
-<span id="cb161-746"><a href="#cb161-746" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-747"><a href="#cb161-747" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="aliaseをFrF2関数の返り値から評価する"}</span></span>
-<span id="cb161-748"><a href="#cb161-748" aria-hidden="true" tabindex="-1"></a><span class="fu">design.info</span>(x)<span class="sc">$</span>aliased</span>
-<span id="cb161-749"><a href="#cb161-749" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-750"><a href="#cb161-750" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-751"><a href="#cb161-751" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 主効果・交互作用を評価する</span></span>
-<span id="cb161-752"><a href="#cb161-752" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-753"><a href="#cb161-753" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>には、主効果と交互作用を評価するためのグラフを作成する関数である、<span class="in">`MEPlot`</span>関数と<span class="in">`IAPlot`</span>関数が準備されています。</span>
-<span id="cb161-754"><a href="#cb161-754" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-755"><a href="#cb161-755" aria-hidden="true" tabindex="-1"></a><span class="in">`MEPlot`</span>は、各説明変数の2水準について値を示したグラフで、傾きの大きさがその説明変数の効果の大きさを反映します。また、<span class="in">`IAPlot`</span>は2説明変数同士の結果を表示したもので、交互作用があれば赤と黒の線の傾きが異なります。<span class="in">`MEPlot`</span>、<span class="in">`IAPlot`</span>共にスクリーニングや交互作用の評価の必要性を調べるのに有用です。</span>
-<span id="cb161-756"><a href="#cb161-756" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-757"><a href="#cb161-757" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="MEPlot・IAPlot関数"}</span></span>
-<span id="cb161-758"><a href="#cb161-758" aria-hidden="true" tabindex="-1"></a><span class="co"># 各説明変数の効果に関するプロット</span></span>
-<span id="cb161-759"><a href="#cb161-759" aria-hidden="true" tabindex="-1"></a><span class="fu">MEPlot</span>(lm_xy)</span>
-<span id="cb161-760"><a href="#cb161-760" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-761"><a href="#cb161-761" aria-hidden="true" tabindex="-1"></a><span class="co"># 交互作用を示すためのプロット</span></span>
-<span id="cb161-762"><a href="#cb161-762" aria-hidden="true" tabindex="-1"></a><span class="fu">IAPlot</span>(lm_xy)</span>
-<span id="cb161-763"><a href="#cb161-763" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-764"><a href="#cb161-764" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-765"><a href="#cb161-765" aria-hidden="true" tabindex="-1"></a><span class="in">`DanielPlot`</span>関数は、論文<span class="co">[</span><span class="ot">@Daniel01111959</span><span class="co">]</span>で説明されている、正規分布と実際の効果を大きさ順にならべ、プロットしたものです。説明変数に何の効果も無ければ、直線上に点が並びます。正規分布のマイナス側の絶対値を取ったプロットにすることもでき（<span class="in">`half = TRUE`</span>）、こちらの方が直線に点が乗っているかわかりやすくなります。説明変数に効果がある場合には、直線より右側に点が外れることになります。</span>
-<span id="cb161-766"><a href="#cb161-766" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-767"><a href="#cb161-767" aria-hidden="true" tabindex="-1"></a>上記に回帰のコードを示した通り、目的変数yはただの正規乱数ですので、どの説明変数にも明確な効果がなく、すべての点が直線上に乗ります。</span>
-<span id="cb161-768"><a href="#cb161-768" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-769"><a href="#cb161-769" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Daniel Plot"}</span></span>
-<span id="cb161-770"><a href="#cb161-770" aria-hidden="true" tabindex="-1"></a><span class="co"># 直線に乗らない説明変数には有意な効果があると考える</span></span>
-<span id="cb161-771"><a href="#cb161-771" aria-hidden="true" tabindex="-1"></a><span class="fu">DanielPlot</span>(lm_xy)</span>
-<span id="cb161-772"><a href="#cb161-772" aria-hidden="true" tabindex="-1"></a><span class="fu">DanielPlot</span>(lm_xy, <span class="at">half =</span> <span class="cn">TRUE</span>) <span class="co"># </span></span>
-<span id="cb161-773"><a href="#cb161-773" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-774"><a href="#cb161-774" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-775"><a href="#cb161-775" aria-hidden="true" tabindex="-1"></a>説明変数から3つを選び、それぞれの効果を図に示すのが<span class="in">`cubePlot`</span>です。選択した各説明変数間の関係と並行性を数値から評価することができます。</span>
-<span id="cb161-776"><a href="#cb161-776" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-777"><a href="#cb161-777" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="cubePlot"}</span></span>
-<span id="cb161-778"><a href="#cb161-778" aria-hidden="true" tabindex="-1"></a><span class="co"># 3つの説明変数</span></span>
-<span id="cb161-779"><a href="#cb161-779" aria-hidden="true" tabindex="-1"></a><span class="fu">cubePlot</span>(lm_xy, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>)</span>
-<span id="cb161-780"><a href="#cb161-780" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-718"><a href="#cb161-718" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="切片項を追加し、デザイン行列を得る"}</span></span>
+<span id="cb161-719"><a href="#cb161-719" aria-hidden="true" tabindex="-1"></a><span class="co"># 切片項を足せば単位行列の積になる（直交）</span></span>
+<span id="cb161-720"><a href="#cb161-720" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">cbind</span>(<span class="fu">desnum</span>(x), <span class="dv">1</span>)) <span class="sc">%*%</span> <span class="fu">cbind</span>(<span class="fu">desnum</span>(x), <span class="dv">1</span>)</span>
+<span id="cb161-721"><a href="#cb161-721" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-722"><a href="#cb161-722" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-723"><a href="#cb161-723" aria-hidden="true" tabindex="-1"></a><span class="fu">### 回帰と結果の評価</span></span>
+<span id="cb161-724"><a href="#cb161-724" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-725"><a href="#cb161-725" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>には、実験計画を作成するだけではなく、実験計画に沿って実験を行った後、回帰の結果を評価するための関数も備わっています。まずは<span class="in">`lm`</span>関数で回帰を行い、返り値をオブジェクトに代入しておきます。</span>
+<span id="cb161-726"><a href="#cb161-726" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-727"><a href="#cb161-727" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="FrF2：実験計画を用いて回帰"}</span></span>
+<span id="cb161-728"><a href="#cb161-728" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">8</span>, <span class="dv">7</span>, <span class="fl">0.5</span>)</span>
+<span id="cb161-729"><a href="#cb161-729" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">FrF2</span>(<span class="dv">8</span>, <span class="dv">7</span>)</span>
+<span id="cb161-730"><a href="#cb161-730" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-731"><a href="#cb161-731" aria-hidden="true" tabindex="-1"></a><span class="co"># 回帰のための行列を作成</span></span>
+<span id="cb161-732"><a href="#cb161-732" aria-hidden="true" tabindex="-1"></a>xy <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">desnum</span>(x), y)</span>
+<span id="cb161-733"><a href="#cb161-733" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-734"><a href="#cb161-734" aria-hidden="true" tabindex="-1"></a>lm_xy <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> (.)<span class="sc">^</span><span class="dv">2</span>, <span class="at">data =</span> xy <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>())</span>
+<span id="cb161-735"><a href="#cb161-735" aria-hidden="true" tabindex="-1"></a>lm_xy</span>
+<span id="cb161-736"><a href="#cb161-736" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-737"><a href="#cb161-737" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-738"><a href="#cb161-738" aria-hidden="true" tabindex="-1"></a>この回帰の結果（<span class="in">`lm_xy`</span>）を<span class="in">`FrF2`</span>の関数の引数にすることで、回帰の結果を評価することができます。</span>
+<span id="cb161-739"><a href="#cb161-739" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-740"><a href="#cb161-740" aria-hidden="true" tabindex="-1"></a><span class="fu">#### aliase</span></span>
+<span id="cb161-741"><a href="#cb161-741" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-742"><a href="#cb161-742" aria-hidden="true" tabindex="-1"></a>aliase（エイリアス、別名関係）とは、説明変数や交互作用のうち、計画の列が同じ値となるため分離ができないもの同士のことを指します。上の<span class="in">`lm_xy`</span>におけるaliaseを調べる場合、<span class="in">`aliases`</span>関数を用います。<span class="in">`aliases`</span>関数の引数に<span class="in">`lm`</span>関数の返り値（下の例では<span class="in">`lm_xy`</span>）を取ると、aliaseの一覧を表示することができます。</span>
+<span id="cb161-743"><a href="#cb161-743" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-744"><a href="#cb161-744" aria-hidden="true" tabindex="-1"></a>以下の例では、<span class="in">`aliases(lm_xy)`</span>の結果として「A = B:D = C:E = F:G」という表示が返ってきています。これは、説明変数Aと交互作用B:D、C:E、F:Gが分離不能なので、Aの主効果を求めると交互作用B:D、C:E、F:Gは求まらないこと、Aの主効果に交互作用B:D、C:E、F:Gのパラメータが含まれている可能性があることを示しています。</span>
+<span id="cb161-745"><a href="#cb161-745" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-746"><a href="#cb161-746" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="aliase"}</span></span>
+<span id="cb161-747"><a href="#cb161-747" aria-hidden="true" tabindex="-1"></a><span class="fu">aliases</span>(lm_xy)</span>
+<span id="cb161-748"><a href="#cb161-748" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-749"><a href="#cb161-749" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-750"><a href="#cb161-750" aria-hidden="true" tabindex="-1"></a>aliaseは<span class="in">`lm`</span>関数の返り値を用いなくても、<span class="in">`FrF2`</span>関数の返り値から評価することもできます。上記の通り、<span class="in">`design.info`</span>関数を用いると実験計画の詳細を調べることができます。この<span class="in">`design.info`</span>関数の返り値のうち、<span class="in">`aliased`</span>という項目にはaliaseの情報が記載されており、上で示した<span class="in">`aliases`</span>関数の返り値と同じものが記載されています。</span>
+<span id="cb161-751"><a href="#cb161-751" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-752"><a href="#cb161-752" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="aliaseをFrF2関数の返り値から評価する"}</span></span>
+<span id="cb161-753"><a href="#cb161-753" aria-hidden="true" tabindex="-1"></a><span class="fu">design.info</span>(x)<span class="sc">$</span>aliased</span>
+<span id="cb161-754"><a href="#cb161-754" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-755"><a href="#cb161-755" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-756"><a href="#cb161-756" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 主効果・交互作用を評価する</span></span>
+<span id="cb161-757"><a href="#cb161-757" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-758"><a href="#cb161-758" aria-hidden="true" tabindex="-1"></a><span class="in">`FrF2`</span>には、主効果と交互作用を評価するためのグラフを作成する関数である、<span class="in">`MEPlot`</span>関数と<span class="in">`IAPlot`</span>関数が準備されています。</span>
+<span id="cb161-759"><a href="#cb161-759" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-760"><a href="#cb161-760" aria-hidden="true" tabindex="-1"></a><span class="in">`MEPlot`</span>は、各説明変数の2水準について値を示したグラフで、傾きの大きさがその説明変数の効果の大きさを反映します。また、<span class="in">`IAPlot`</span>は2説明変数同士の結果を表示したもので、交互作用があれば赤と黒の線の傾きが異なります。<span class="in">`MEPlot`</span>、<span class="in">`IAPlot`</span>共にスクリーニングや交互作用の評価の必要性を調べるのに有用です。</span>
+<span id="cb161-761"><a href="#cb161-761" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-762"><a href="#cb161-762" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="MEPlot・IAPlot関数"}</span></span>
+<span id="cb161-763"><a href="#cb161-763" aria-hidden="true" tabindex="-1"></a><span class="co"># 各説明変数の効果に関するプロット</span></span>
+<span id="cb161-764"><a href="#cb161-764" aria-hidden="true" tabindex="-1"></a><span class="fu">MEPlot</span>(lm_xy)</span>
+<span id="cb161-765"><a href="#cb161-765" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-766"><a href="#cb161-766" aria-hidden="true" tabindex="-1"></a><span class="co"># 交互作用を示すためのプロット</span></span>
+<span id="cb161-767"><a href="#cb161-767" aria-hidden="true" tabindex="-1"></a><span class="fu">IAPlot</span>(lm_xy)</span>
+<span id="cb161-768"><a href="#cb161-768" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-769"><a href="#cb161-769" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-770"><a href="#cb161-770" aria-hidden="true" tabindex="-1"></a><span class="in">`DanielPlot`</span>関数は、論文<span class="co">[</span><span class="ot">@Daniel01111959</span><span class="co">]</span>で説明されている、正規分布とパラメータを大きさ順にならべてプロットしたqqplotの一種です。説明変数に何の効果も無ければ、直線上に点が並びます。正規分布の代わりに半正規分布を用いたプロットにすることもでき（<span class="in">`half = TRUE`</span>）、こちらの方が直線に点が乗っているかわかりやすくなります。説明変数に効果がある場合には、直線より右側に点が外れることになります。</span>
+<span id="cb161-771"><a href="#cb161-771" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-772"><a href="#cb161-772" aria-hidden="true" tabindex="-1"></a>回帰のコードに示した通り、目的変数<span class="in">`y`</span>はただの正規乱数ですので、どの説明変数にも明確な効果がなく、すべての点が直線上に乗ります。</span>
+<span id="cb161-773"><a href="#cb161-773" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-774"><a href="#cb161-774" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Daniel Plot"}</span></span>
+<span id="cb161-775"><a href="#cb161-775" aria-hidden="true" tabindex="-1"></a><span class="co"># 直線に乗らない説明変数には有意な効果があると考える</span></span>
+<span id="cb161-776"><a href="#cb161-776" aria-hidden="true" tabindex="-1"></a><span class="fu">DanielPlot</span>(lm_xy)</span>
+<span id="cb161-777"><a href="#cb161-777" aria-hidden="true" tabindex="-1"></a><span class="fu">DanielPlot</span>(lm_xy, <span class="at">half =</span> <span class="cn">TRUE</span>) <span class="co"># 半正規分布を用いる</span></span>
+<span id="cb161-778"><a href="#cb161-778" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-779"><a href="#cb161-779" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-780"><a href="#cb161-780" aria-hidden="true" tabindex="-1"></a>説明変数から3つを選び、それぞれの効果を図に示すのが<span class="in">`cubePlot`</span>です。選択した各説明変数間の関係と並行性を数値から評価することができます。</span>
 <span id="cb161-781"><a href="#cb161-781" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-782"><a href="#cb161-782" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-783"><a href="#cb161-783" aria-hidden="true" tabindex="-1"></a><span class="fu">## Optimal Design</span></span>
-<span id="cb161-784"><a href="#cb161-784" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-785"><a href="#cb161-785" aria-hidden="true" tabindex="-1"></a>説明変数がn個のとき、要因配置計画では2^n^、一部要因配置計画では2^n-k^（k&lt;n）の実験を行うことになります。とはいえ、実験で必ず2の倍数で実験を行うかというと、そういうわけではないでしょう。時間や予算によっては2^n^の実験を実施することは難しくても、2^n-1^よりは多く実験ができそう、という場合もあります。実験を増やせば結果の精度が上がっていきますから、わざわざ一部要因配置計画に合わせて実験をする必要はないでしょう。また、<span class="in">`FrF2`</span>では各説明変数に2条件を仮定していましたが、3条件以上で実験を行い、説明変数への応答が直線的なのか、曲線的なのか評価したい場合もあるでしょう。</span>
+<span id="cb161-782"><a href="#cb161-782" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="cubePlot"}</span></span>
+<span id="cb161-783"><a href="#cb161-783" aria-hidden="true" tabindex="-1"></a><span class="co"># 3つの説明変数</span></span>
+<span id="cb161-784"><a href="#cb161-784" aria-hidden="true" tabindex="-1"></a><span class="fu">cubePlot</span>(lm_xy, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>)</span>
+<span id="cb161-785"><a href="#cb161-785" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb161-786"><a href="#cb161-786" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-787"><a href="#cb161-787" aria-hidden="true" tabindex="-1"></a>交互作用についても、ある交互作用は注意が必要で、別の交互作用についてはそれほど注意しなくて良い場合もあります。例えば、作物の収量と肥料・水・日射量の関係を見ると、水をたくさん与えれば肥料は流れ出て効果が小さくなる、つまり交互作用がありそうですが、水と日射量には明確な交互作用はなさそうです。ですので、実験では肥料と水の交互作用に注意が必要そう、と想像することができます。</span>
-<span id="cb161-788"><a href="#cb161-788" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-789"><a href="#cb161-789" aria-hidden="true" tabindex="-1"></a>しかし、一部要因配置計画よりはたくさん実験をできそうであっても、どのような実験の組み合わせであれば求めたい交互作用が求まり、より実験の精度を高くできるかをパッと想像できる人はあまりいないでしょう。</span>
-<span id="cb161-790"><a href="#cb161-790" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-791"><a href="#cb161-791" aria-hidden="true" tabindex="-1"></a>このように、要因配置計画や一部要因配置計画よりも柔軟性が高く、求めたい交互作用を適切に評価し、結果のばらつきをできるだけ小さく最適化することを目的とした実験計画法が**Optimal Design**です。日本語では最適計画と呼ばれるようです。</span>
-<span id="cb161-792"><a href="#cb161-792" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-793"><a href="#cb161-793" aria-hidden="true" tabindex="-1"></a>Optimal Designには、以下の通り非常にたくさんの種類があります。</span>
-<span id="cb161-794"><a href="#cb161-794" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-795"><a href="#cb161-795" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A-Optimal Design</span>
-<span id="cb161-796"><a href="#cb161-796" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>C-Optimal Design</span>
-<span id="cb161-797"><a href="#cb161-797" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>D-Optimal Design</span>
-<span id="cb161-798"><a href="#cb161-798" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>E-Optimal Design</span>
-<span id="cb161-799"><a href="#cb161-799" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>S-Optimal Design</span>
-<span id="cb161-800"><a href="#cb161-800" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>T-Optimal Design</span>
-<span id="cb161-801"><a href="#cb161-801" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>G-Optimal Design</span>
-<span id="cb161-802"><a href="#cb161-802" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>I-Optimal Design</span>
-<span id="cb161-803"><a href="#cb161-803" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>V-Optimal Design</span>
-<span id="cb161-804"><a href="#cb161-804" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-805"><a href="#cb161-805" aria-hidden="true" tabindex="-1"></a>また、Optimal Designには以下のような想定での実験デザインを考慮したものもあります。</span>
-<span id="cb161-806"><a href="#cb161-806" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-807"><a href="#cb161-807" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ブロック（局所管理）を想定したもの</span>
-<span id="cb161-808"><a href="#cb161-808" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ブロックを想定しているけどブロックの条件を変更しにくい場合（例えば、溶鉱炉の温度を変更したいけど変更するとコストがかさむ場合）を想定したもの</span>
-<span id="cb161-809"><a href="#cb161-809" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>各説明変数の和は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量）を想定したもの</span>
-<span id="cb161-810"><a href="#cb161-810" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>実験を追加で行うことを想定したもの</span>
+<span id="cb161-787"><a href="#cb161-787" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-788"><a href="#cb161-788" aria-hidden="true" tabindex="-1"></a><span class="fu">## Optimal Design</span></span>
+<span id="cb161-789"><a href="#cb161-789" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-790"><a href="#cb161-790" aria-hidden="true" tabindex="-1"></a>説明変数がn個のとき、要因配置計画では2^n^、一部要因配置計画では2^n-k^（k&lt;n）の実験を行うことになります。とはいえ、実験で必ず2の倍数で実験を行うかというと、そういうわけではないでしょう。時間や予算によっては2^n^の実験を実施することは難しくても、2^n-1^よりは多く実験ができそう、という場合もあります。実験を増やせば結果の精度が上がっていきますから、わざわざ一部要因配置計画に合わせて少なく実験をするのでは結果の精度を下げることになります。また、<span class="in">`FrF2`</span>では各説明変数に2条件を仮定していましたが、3条件以上で実験を行い、説明変数への応答が直線的なのか、曲線的なのか評価したい場合もあるでしょう。</span>
+<span id="cb161-791"><a href="#cb161-791" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-792"><a href="#cb161-792" aria-hidden="true" tabindex="-1"></a>交互作用についても、ある交互作用は注意が必要で、別の交互作用についてはそれほど注意しなくて良い場合もあります。例えば、作物の収量と肥料・水・日射量の関係を見ると、水をたくさん与えれば肥料は流れ出て効果が小さくなる、つまり交互作用がありそうですが、水と日射量には明確な交互作用はなさそうです。ですので、実験では肥料と水の交互作用に注意が必要そう、と想像することができます。</span>
+<span id="cb161-793"><a href="#cb161-793" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-794"><a href="#cb161-794" aria-hidden="true" tabindex="-1"></a>しかし、一部要因配置計画よりはたくさん実験をできそうであっても、どのような実験の組み合わせであれば求めたい交互作用が求まり、より実験の精度を高くできるかをパッと想像できる人はあまりいないでしょう。</span>
+<span id="cb161-795"><a href="#cb161-795" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-796"><a href="#cb161-796" aria-hidden="true" tabindex="-1"></a>このように、要因配置計画や一部要因配置計画よりも柔軟性が高く、求めたい交互作用を適切に評価し、結果のばらつきをできるだけ小さく最適化することを目的とした実験計画法が**Optimal Design**です。日本語では最適計画と呼ばれるようです。</span>
+<span id="cb161-797"><a href="#cb161-797" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-798"><a href="#cb161-798" aria-hidden="true" tabindex="-1"></a>Optimal Designには、以下の通り非常にたくさんの種類があります。</span>
+<span id="cb161-799"><a href="#cb161-799" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-800"><a href="#cb161-800" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A-Optimal Design</span>
+<span id="cb161-801"><a href="#cb161-801" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>C-Optimal Design</span>
+<span id="cb161-802"><a href="#cb161-802" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>D-Optimal Design</span>
+<span id="cb161-803"><a href="#cb161-803" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>E-Optimal Design</span>
+<span id="cb161-804"><a href="#cb161-804" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>S-Optimal Design</span>
+<span id="cb161-805"><a href="#cb161-805" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>T-Optimal Design</span>
+<span id="cb161-806"><a href="#cb161-806" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>G-Optimal Design</span>
+<span id="cb161-807"><a href="#cb161-807" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>I-Optimal Design</span>
+<span id="cb161-808"><a href="#cb161-808" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>V-Optimal Design</span>
+<span id="cb161-809"><a href="#cb161-809" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-810"><a href="#cb161-810" aria-hidden="true" tabindex="-1"></a>また、Optimal Designには以下のような想定での実験デザインを考慮したものもあります。</span>
 <span id="cb161-811"><a href="#cb161-811" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-812"><a href="#cb161-812" aria-hidden="true" tabindex="-1"></a>すべてを説明するとページがいくらあっても足りないため、このテキストでは**D-Optimal Design**と**I-Optimal Design**のみを簡単に説明します。Optimal Designについて詳しく知りたい方は文献<span class="co">[</span><span class="ot">@Goos_Peter2011-06-28</span><span class="co">]</span>を参照下さい。また、Optimal Designを含めた実験計画については<span class="co">[</span><span class="ot">JMP</span><span class="co">](https://www.jmp.com/ja/home)</span>の機能が充実しています。以下に説明する通りRでもOptimal Designを計画することはできますが、JMPではGUIを用いて実験計画を組むことができます。JMPは<span class="co">[</span><span class="ot">SAS Institute.inc</span><span class="co">](https://www.sas.com/ja_jp/home.html)</span>の製品ですので、利用にはお金はかかりますが、お金に余裕があれば試してみるのもよいでしょう。</span>
-<span id="cb161-813"><a href="#cb161-813" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-814"><a href="#cb161-814" aria-hidden="true" tabindex="-1"></a><span class="fu">### D-optimal Design</span></span>
-<span id="cb161-815"><a href="#cb161-815" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-816"><a href="#cb161-816" aria-hidden="true" tabindex="-1"></a>D-optimal Designは、一般線形モデルの演算（@tip-lm）で説明したデザイン行列の積（$X^TX$）の行列式（$|X^TX|$）を最大とするデザインを選択するOpitimal Designの方法の一つです。</span>
-<span id="cb161-817"><a href="#cb161-817" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-818"><a href="#cb161-818" aria-hidden="true" tabindex="-1"></a>各説明変数のパラメータ（傾き）のばらつき（分散・共分散行列、$Cov(\hat{\beta})$）はデザイン行列を用いて以下の式で表されます。</span>
-<span id="cb161-819"><a href="#cb161-819" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-820"><a href="#cb161-820" aria-hidden="true" tabindex="-1"></a>$$Cov(\hat{\beta}) = \hat{\sigma}^2(X^TX)^{-1}$$</span>
-<span id="cb161-821"><a href="#cb161-821" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-822"><a href="#cb161-822" aria-hidden="true" tabindex="-1"></a>このばらつきのうち、実験デザインで小さくできるのは$(X^TX)^{-1}$、$X^TX$の逆行列の部分になります。逆行列は行列式の逆数を行列にかけた形で表されるため（$A^{-1}=\frac{1}{|A|}\cdot \tilde{A}$）、$X^TX$の行列式（$|X^TX|$）が大きくなれば$(X^TX)^{-1}$を小さく、つまりばらつきを小さくすることができます。ですので、$|X^TX|$を最大化するデザイン行列$X$を選択するのがD-Optimal Designです。Dはdeterminant（行列式）のDです。</span>
-<span id="cb161-823"><a href="#cb161-823" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-824"><a href="#cb161-824" aria-hidden="true" tabindex="-1"></a>ばらつきが小さくなれば高い確度を持ってパラメータを推定できるので、D-Optimal Designは汎用的に使えるOptimal Designの一つとなります。</span>
-<span id="cb161-825"><a href="#cb161-825" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-826"><a href="#cb161-826" aria-hidden="true" tabindex="-1"></a><span class="fu">### I-Optimal Design</span></span>
-<span id="cb161-827"><a href="#cb161-827" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-828"><a href="#cb161-828" aria-hidden="true" tabindex="-1"></a>I-Optimal DesignはD-Optimal Designと同様にばらつきを小さくするデザイン行列を見つける方法ですが、最適化するのは$|X^TX|$ではなく、平均のばらつき（mean prediction variance）と呼ばれるものです。このmean prediction varianceはFraction of Design Space Plotと呼ばれるプロットの中央値を指します。以下にFraction of Design Space Plotを示します。</span>
-<span id="cb161-829"><a href="#cb161-829" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-830"><a href="#cb161-830" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, Fraction of Design Space Plot, echo=FALSE}</span></span>
-<span id="cb161-831"><a href="#cb161-831" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skpr)</span>
-<span id="cb161-832"><a href="#cb161-832" aria-hidden="true" tabindex="-1"></a>cand <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">nutrient =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">water =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">light =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb161-833"><a href="#cb161-833" aria-hidden="true" tabindex="-1"></a>od_i <span class="ot">&lt;-</span> <span class="fu">gen_design</span>(<span class="at">candidateset =</span> cand, <span class="at">model =</span> <span class="sc">~</span> nutrient <span class="sc">+</span> water <span class="sc">+</span> light <span class="sc">+</span> depth, <span class="at">trial =</span> <span class="dv">10</span>, <span class="at">optimality =</span> <span class="st">"I"</span>)</span>
-<span id="cb161-834"><a href="#cb161-834" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_fds</span>(od_i)</span>
-<span id="cb161-835"><a href="#cb161-835" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-836"><a href="#cb161-836" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-837"><a href="#cb161-837" aria-hidden="true" tabindex="-1"></a>このグラフのFraction of Design Spaceが0.5の時のPrediction Variance（赤線が交わる点）をできるだけ小さくするモデルを選択するのがI-Optimal Designです。I-Optimal Designは説明変数と目的変数の関係が多項式的（直線ではなく、曲線的）である場合に比較的適しているようです。</span>
-<span id="cb161-838"><a href="#cb161-838" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-839"><a href="#cb161-839" aria-hidden="true" tabindex="-1"></a>D-Optimal Design、I-Optimal Design共に最適なデザイン行列は乱数を使った繰り返し計算（Monte Carloアルゴリズム）で計算できます。一部要因配置計画についてはコンピュータが発達する前から直交表を用いて作成されてきましたが、Opitimal Designではデザイン行列の作成に繰り返し計算を用いるため、デザインの作成にはコンピュータが必要です。</span>
-<span id="cb161-840"><a href="#cb161-840" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-841"><a href="#cb161-841" aria-hidden="true" tabindex="-1"></a><span class="fu">## RでOptimal Design：skpr</span></span>
-<span id="cb161-842"><a href="#cb161-842" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-843"><a href="#cb161-843" aria-hidden="true" tabindex="-1"></a>RでOptimal Designを作成する場合には、様々なライブラリを利用可能ですが、比較的簡単にOptimal Designを作成・評価できるライブラリとして、以下では**[`skpr`](https://tylermorganwall.github.io/skpr/)パッケージ**<span class="co">[</span><span class="ot">@skpr_bib</span><span class="co">]</span>を紹介します。</span>
-<span id="cb161-844"><a href="#cb161-844" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-845"><a href="#cb161-845" aria-hidden="true" tabindex="-1"></a><span class="fu">### 実験計画を作成する</span></span>
-<span id="cb161-846"><a href="#cb161-846" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-847"><a href="#cb161-847" aria-hidden="true" tabindex="-1"></a><span class="in">`skpr`</span>パッケージで実験計画を作成する場合、まずは<span class="in">`expand.grid`</span>関数を用いて要因配置計画を作成します。<span class="in">`FrF2`</span>のように各説明変数の条件を2条件とする必要はなく、3条件以上であってもOptimal Designを作成することができます。</span>
-<span id="cb161-848"><a href="#cb161-848" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-849"><a href="#cb161-849" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：要因配置計画を作成する"}</span></span>
-<span id="cb161-850"><a href="#cb161-850" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skpr)</span>
-<span id="cb161-851"><a href="#cb161-851" aria-hidden="true" tabindex="-1"></a>cand <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">nutrient =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">water =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">light =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb161-852"><a href="#cb161-852" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-812"><a href="#cb161-812" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ブロック（局所管理）を想定したもの</span>
+<span id="cb161-813"><a href="#cb161-813" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ブロックを想定しているけどブロックの条件を変更しにくい場合（例えば、溶鉱炉の温度を変更したいけど変更するとコストがかさむ場合）を想定したもの</span>
+<span id="cb161-814"><a href="#cb161-814" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>各説明変数の和は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量を変える場合）を想定したもの</span>
+<span id="cb161-815"><a href="#cb161-815" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>実験を追加で行うことを想定したもの</span>
+<span id="cb161-816"><a href="#cb161-816" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-817"><a href="#cb161-817" aria-hidden="true" tabindex="-1"></a>すべてを説明するとページがいくらあっても足りないため、このテキストでは**D-Optimal Design**と**I-Optimal Design**のみを簡単に説明します。Optimal Designについて詳しく知りたい方は文献<span class="co">[</span><span class="ot">@Goos_Peter2011-06-28</span><span class="co">]</span>を参照下さい。また、Optimal Designを含めた実験計画については<span class="co">[</span><span class="ot">JMP</span><span class="co">](https://www.jmp.com/ja/home)</span>の機能が充実しています。以下に説明する通りRでもOptimal Designを計画することはできますが、JMPではGUIを用いて実験計画を組むことができます。JMPは<span class="co">[</span><span class="ot">SAS Institute.inc</span><span class="co">](https://www.sas.com/ja_jp/home.html)</span>の製品ですので、利用にはお金はかかりますが、お金に余裕があれば試してみるのもよいでしょう。</span>
+<span id="cb161-818"><a href="#cb161-818" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-819"><a href="#cb161-819" aria-hidden="true" tabindex="-1"></a><span class="fu">### D-optimal Design</span></span>
+<span id="cb161-820"><a href="#cb161-820" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-821"><a href="#cb161-821" aria-hidden="true" tabindex="-1"></a>D-optimal Designは、一般線形モデルの演算（@tip-lm）で説明したデザイン行列の積（$X^TX$）の行列式（$|X^TX|$）を最大とするデザインを選択するOpitimal Designの方法の一つです。</span>
+<span id="cb161-822"><a href="#cb161-822" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-823"><a href="#cb161-823" aria-hidden="true" tabindex="-1"></a>各説明変数のパラメータ（傾き）のばらつき（分散・共分散行列、$Cov(\hat{\beta})$）はデザイン行列を用いて以下の式で表されます。</span>
+<span id="cb161-824"><a href="#cb161-824" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-825"><a href="#cb161-825" aria-hidden="true" tabindex="-1"></a>$$Cov(\hat{\beta}) = \hat{\sigma}^2(X^TX)^{-1}$$</span>
+<span id="cb161-826"><a href="#cb161-826" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-827"><a href="#cb161-827" aria-hidden="true" tabindex="-1"></a>このばらつきのうち、実験デザインで小さくできるのは$(X^TX)^{-1}$、$X^TX$の逆行列の部分になります。逆行列は行列式の逆数を行列にかけた形で表されるため（$A^{-1}=\frac{1}{|A|}\cdot \tilde{A}$）、$X^TX$の行列式（$|X^TX|$）が大きくなれば$(X^TX)^{-1}$を小さく、つまりばらつきを小さくすることができます。ですので、$|X^TX|$を最大化するデザイン行列$X$を選択するのがD-Optimal Designです。Dはdeterminant（行列式）のDです。</span>
+<span id="cb161-828"><a href="#cb161-828" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-829"><a href="#cb161-829" aria-hidden="true" tabindex="-1"></a>ばらつきが小さくなれば高い確度を持ってパラメータを推定できるので、D-Optimal Designは汎用的に使えるOptimal Designの一つとなります。</span>
+<span id="cb161-830"><a href="#cb161-830" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-831"><a href="#cb161-831" aria-hidden="true" tabindex="-1"></a><span class="fu">### I-Optimal Design</span></span>
+<span id="cb161-832"><a href="#cb161-832" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-833"><a href="#cb161-833" aria-hidden="true" tabindex="-1"></a>I-Optimal DesignはD-Optimal Designと同様にばらつきを小さくするデザイン行列を見つける方法ですが、最適化するのは$|X^TX|$ではなく、平均のばらつき（mean prediction variance）と呼ばれるものです。このmean prediction varianceはFraction of Design Space Plotと呼ばれるプロットの中央値を指します。以下にFraction of Design Space Plotを示します。</span>
+<span id="cb161-834"><a href="#cb161-834" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-835"><a href="#cb161-835" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, Fraction of Design Space Plot, echo=FALSE}</span></span>
+<span id="cb161-836"><a href="#cb161-836" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skpr)</span>
+<span id="cb161-837"><a href="#cb161-837" aria-hidden="true" tabindex="-1"></a>cand <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">nutrient =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">water =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">light =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb161-838"><a href="#cb161-838" aria-hidden="true" tabindex="-1"></a>od_i <span class="ot">&lt;-</span> <span class="fu">gen_design</span>(<span class="at">candidateset =</span> cand, <span class="at">model =</span> <span class="sc">~</span> nutrient <span class="sc">+</span> water <span class="sc">+</span> light <span class="sc">+</span> depth, <span class="at">trial =</span> <span class="dv">10</span>, <span class="at">optimality =</span> <span class="st">"I"</span>)</span>
+<span id="cb161-839"><a href="#cb161-839" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_fds</span>(od_i)</span>
+<span id="cb161-840"><a href="#cb161-840" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-841"><a href="#cb161-841" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-842"><a href="#cb161-842" aria-hidden="true" tabindex="-1"></a>このグラフのFraction of Design Spaceが0.5の時のPrediction Variance（赤線が交わる点）を最小とするモデルを選択するのがI-Optimal Designです。I-Optimal Designは説明変数と目的変数の関係が多項式的（直線ではなく、曲線的）である場合に比較的適しているようです。</span>
+<span id="cb161-843"><a href="#cb161-843" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-844"><a href="#cb161-844" aria-hidden="true" tabindex="-1"></a>D-Optimal Design、I-Optimal Design共に最適なデザイン行列は乱数を使った繰り返し計算（Monte Carloアルゴリズム）で計算・作成されます。一部要因配置計画についてはコンピュータが発達する前から直交表を用いて作成されてきましたが、Opitimal Designではデザイン行列の作成に繰り返し計算を用いるため、デザインの作成にはコンピュータが必要です。</span>
+<span id="cb161-845"><a href="#cb161-845" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-846"><a href="#cb161-846" aria-hidden="true" tabindex="-1"></a><span class="fu">## RでOptimal Design：skpr</span></span>
+<span id="cb161-847"><a href="#cb161-847" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-848"><a href="#cb161-848" aria-hidden="true" tabindex="-1"></a>RでOptimal Designを作成する場合には、様々なライブラリを利用可能ですが、比較的簡単にOptimal Designを作成・評価できるライブラリとして、以下では**[`skpr`](https://tylermorganwall.github.io/skpr/)パッケージ**<span class="co">[</span><span class="ot">@skpr_bib</span><span class="co">]</span>を紹介します。</span>
+<span id="cb161-849"><a href="#cb161-849" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-850"><a href="#cb161-850" aria-hidden="true" tabindex="-1"></a><span class="fu">### 実験計画を作成する</span></span>
+<span id="cb161-851"><a href="#cb161-851" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-852"><a href="#cb161-852" aria-hidden="true" tabindex="-1"></a><span class="in">`skpr`</span>パッケージで実験計画を作成する場合、まずは<span class="in">`expand.grid`</span>関数を用いて要因配置計画を作成します。<span class="in">`FrF2`</span>のように各説明変数の条件を2条件とする必要はなく、3条件以上であってもOptimal Designを作成することができます。</span>
 <span id="cb161-853"><a href="#cb161-853" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-854"><a href="#cb161-854" aria-hidden="true" tabindex="-1"></a>この<span class="in">`expand.grid`</span>関数で作成したデータフレームを<span class="in">`gen_design`</span>関数の引数にすることで、実験計画を作成することができます。<span class="in">`gen_design`</span>関数にはデータフレームの他に、回帰のモデル（<span class="in">`model`</span>）と実験数（<span class="in">`trial`</span>）を設定します。</span>
-<span id="cb161-855"><a href="#cb161-855" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-856"><a href="#cb161-856" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：gen_design関数"}</span></span>
-<span id="cb161-857"><a href="#cb161-857" aria-hidden="true" tabindex="-1"></a><span class="co"># 主効果だけ評価する場合、中間点は必要ないのでnutrient=0は採用されない</span></span>
-<span id="cb161-858"><a href="#cb161-858" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> nutrient <span class="sc">+</span> water <span class="sc">+</span> light <span class="sc">+</span> depth, <span class="at">trial =</span> <span class="dv">10</span>)</span>
-<span id="cb161-859"><a href="#cb161-859" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-854"><a href="#cb161-854" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：要因配置計画を作成する"}</span></span>
+<span id="cb161-855"><a href="#cb161-855" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skpr)</span>
+<span id="cb161-856"><a href="#cb161-856" aria-hidden="true" tabindex="-1"></a>cand <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">nutrient =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">water =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">light =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb161-857"><a href="#cb161-857" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-858"><a href="#cb161-858" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-859"><a href="#cb161-859" aria-hidden="true" tabindex="-1"></a>この<span class="in">`expand.grid`</span>関数で作成したデータフレームを<span class="in">`gen_design`</span>関数の引数にすることで、実験計画を作成することができます。<span class="in">`gen_design`</span>関数にはデータフレームの他に、回帰のモデル（<span class="in">`model`</span>）と実験数（<span class="in">`trial`</span>）を設定します。</span>
 <span id="cb161-860"><a href="#cb161-860" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-861"><a href="#cb161-861" aria-hidden="true" tabindex="-1"></a><span class="in">`gen_design`</span>関数のデフォルトのOptimalityはD-Optimalityですので、返り値はD-Optimal Designのデータフレームになります。また、モデルは以下のような形で設定することもできます。</span>
-<span id="cb161-862"><a href="#cb161-862" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-863"><a href="#cb161-863" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：modelの設定"}</span></span>
-<span id="cb161-864"><a href="#cb161-864" aria-hidden="true" tabindex="-1"></a><span class="co"># 上と同じ（すべての主効果を含める）</span></span>
-<span id="cb161-865"><a href="#cb161-865" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> ., <span class="at">trial =</span> <span class="dv">10</span>)</span>
-<span id="cb161-866"><a href="#cb161-866" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-867"><a href="#cb161-867" aria-hidden="true" tabindex="-1"></a><span class="co"># 全部の説明変数に対して2次の交互作用を設定</span></span>
-<span id="cb161-868"><a href="#cb161-868" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> (.)<span class="sc">^</span><span class="dv">2</span>, <span class="at">trial =</span> <span class="dv">12</span>) </span>
-<span id="cb161-869"><a href="#cb161-869" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-870"><a href="#cb161-870" aria-hidden="true" tabindex="-1"></a><span class="co"># nutrientの2乗（多項式回帰）を設定：説明変数を3条件以上にする必要あり</span></span>
-<span id="cb161-871"><a href="#cb161-871" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> . <span class="sc">+</span> <span class="fu">I</span>(nutrient<span class="sc">^</span><span class="dv">2</span>), <span class="at">trial =</span> <span class="dv">12</span>) </span>
-<span id="cb161-872"><a href="#cb161-872" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-873"><a href="#cb161-873" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-874"><a href="#cb161-874" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Optimalityの設定</span></span>
-<span id="cb161-875"><a href="#cb161-875" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-876"><a href="#cb161-876" aria-hidden="true" tabindex="-1"></a>Optimalityは<span class="in">`optimality`</span>引数で設定することができます。<span class="in">`optimality`</span>は文字列で設定し、<span class="in">`"D"`</span>, <span class="in">`"I"`</span>, <span class="in">`"A"`</span>, <span class="in">`"ALIAS"`</span>, <span class="in">`"G"`</span>, <span class="in">`"T"`</span>, <span class="in">`"E"`</span>, <span class="in">`"CUSTOM"`</span>のいずれかを選択します。これらのうち、<span class="in">`"ALIAS"`</span>は近年の論文<span class="co">[</span><span class="ot">@Jones2011</span><span class="co">]</span>に記載された最適化の手法で、<span class="in">`"CUSTOM"`</span>は自分で設定した最適化アルゴリズムを利用する方法です。以下では、I-Optimal Designの計画を作成しています。</span>
-<span id="cb161-877"><a href="#cb161-877" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-878"><a href="#cb161-878" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：optimalityを選択する"}</span></span>
-<span id="cb161-879"><a href="#cb161-879" aria-hidden="true" tabindex="-1"></a><span class="co"># I-Optimal Designの計画を作成する</span></span>
-<span id="cb161-880"><a href="#cb161-880" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(<span class="at">candidateset =</span> cand, <span class="at">model =</span> <span class="sc">~</span> nutrient <span class="sc">+</span> water <span class="sc">+</span> light <span class="sc">+</span> depth, <span class="at">trial =</span> <span class="dv">10</span>, <span class="at">optimality =</span> <span class="st">"I"</span>)</span>
-<span id="cb161-881"><a href="#cb161-881" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-861"><a href="#cb161-861" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：gen_design関数"}</span></span>
+<span id="cb161-862"><a href="#cb161-862" aria-hidden="true" tabindex="-1"></a><span class="co"># 主効果だけ評価する場合、中間点は必要ないのでnutrient=0は採用されない</span></span>
+<span id="cb161-863"><a href="#cb161-863" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> nutrient <span class="sc">+</span> water <span class="sc">+</span> light <span class="sc">+</span> depth, <span class="at">trial =</span> <span class="dv">10</span>)</span>
+<span id="cb161-864"><a href="#cb161-864" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-865"><a href="#cb161-865" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-866"><a href="#cb161-866" aria-hidden="true" tabindex="-1"></a><span class="in">`gen_design`</span>関数のデフォルトのOptimalityはD-Optimalityですので、返り値はD-Optimal Designのデータフレームになります。また、モデルは以下のような形で設定することもできます。</span>
+<span id="cb161-867"><a href="#cb161-867" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-868"><a href="#cb161-868" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：modelの設定"}</span></span>
+<span id="cb161-869"><a href="#cb161-869" aria-hidden="true" tabindex="-1"></a><span class="co"># 上と同じ（すべての主効果を含める）</span></span>
+<span id="cb161-870"><a href="#cb161-870" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> ., <span class="at">trial =</span> <span class="dv">10</span>)</span>
+<span id="cb161-871"><a href="#cb161-871" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-872"><a href="#cb161-872" aria-hidden="true" tabindex="-1"></a><span class="co"># 全部の説明変数に対して2次の交互作用を設定</span></span>
+<span id="cb161-873"><a href="#cb161-873" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> (.)<span class="sc">^</span><span class="dv">2</span>, <span class="at">trial =</span> <span class="dv">12</span>) </span>
+<span id="cb161-874"><a href="#cb161-874" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-875"><a href="#cb161-875" aria-hidden="true" tabindex="-1"></a><span class="co"># nutrientの2乗（多項式回帰）を設定：説明変数を3条件以上にする必要あり</span></span>
+<span id="cb161-876"><a href="#cb161-876" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> . <span class="sc">+</span> <span class="fu">I</span>(nutrient<span class="sc">^</span><span class="dv">2</span>), <span class="at">trial =</span> <span class="dv">12</span>) </span>
+<span id="cb161-877"><a href="#cb161-877" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-878"><a href="#cb161-878" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-879"><a href="#cb161-879" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Optimalityの設定</span></span>
+<span id="cb161-880"><a href="#cb161-880" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-881"><a href="#cb161-881" aria-hidden="true" tabindex="-1"></a>Optimalityは<span class="in">`optimality`</span>引数で設定することができます。<span class="in">`optimality`</span>は文字列で設定し、<span class="in">`"D"`</span>, <span class="in">`"I"`</span>, <span class="in">`"A"`</span>, <span class="in">`"ALIAS"`</span>, <span class="in">`"G"`</span>, <span class="in">`"T"`</span>, <span class="in">`"E"`</span>, <span class="in">`"CUSTOM"`</span>のいずれかを選択します。これらのうち、<span class="in">`"ALIAS"`</span>は近年の論文<span class="co">[</span><span class="ot">@Jones2011</span><span class="co">]</span>に記載された最適化の手法で、<span class="in">`"CUSTOM"`</span>は自分で設定した最適化アルゴリズムを利用する方法です。以下では、I-Optimal Designの計画を作成しています。</span>
 <span id="cb161-882"><a href="#cb161-882" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-883"><a href="#cb161-883" aria-hidden="true" tabindex="-1"></a><span class="fu">#### ブロックの設定</span></span>
-<span id="cb161-884"><a href="#cb161-884" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-885"><a href="#cb161-885" aria-hidden="true" tabindex="-1"></a><span class="in">`gen_design`</span>関数の引数に<span class="in">`blocksizes`</span>を設定すると、ブロックを設定した実験を計画することができます。以下の例では、<span class="in">`blocksizes`</span>を4、つまり4実験ずつのブロックを3つ作成し、12実験の計画としています。<span class="in">`add_blocking_column=TRUE`</span>を設定すると、ブロックの列を追加することができます。</span>
-<span id="cb161-886"><a href="#cb161-886" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-887"><a href="#cb161-887" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="blockを設定する"}</span></span>
-<span id="cb161-888"><a href="#cb161-888" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="sc">~</span>., <span class="dv">12</span>, <span class="at">blocksizes=</span><span class="dv">4</span>, <span class="at">add_blocking_column=</span><span class="cn">TRUE</span>)</span>
-<span id="cb161-889"><a href="#cb161-889" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-890"><a href="#cb161-890" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-891"><a href="#cb161-891" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Split-plot design</span></span>
-<span id="cb161-892"><a href="#cb161-892" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-893"><a href="#cb161-893" aria-hidden="true" tabindex="-1"></a>実験を計画する場合、説明変数はいつも自由に変更できる、というわけではありません。例えば、高温に溶かした素材を用いて製品を作成する場合、窯の温度をランダムに上げたり下げたりすると燃料のコストも時間もかかってしまいます。したがって、説明変数の一部はあまり頻繁に変更せず、実験を行った方がよい場合もあります。</span>
-<span id="cb161-894"><a href="#cb161-894" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-895"><a href="#cb161-895" aria-hidden="true" tabindex="-1"></a>このような場合に用いるのが**split-plot design**です。<span class="in">`skpr`</span>はsplit-plot designにも対応しています。split-plot designでは、選択した変更しにくい説明変数をなるべく同じ値で繰り返すように実験を設計してくれます。</span>
-<span id="cb161-896"><a href="#cb161-896" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-897"><a href="#cb161-897" aria-hidden="true" tabindex="-1"></a>以下にsplit-plot designの作成方法を示します。split-plot designを作成する場合、まずは変更しにくい説明変数のみを<span class="in">`model`</span>に設定した計画を<span class="in">`gen_design`</span>関数で作成します。この計画のオブジェクトを再び<span class="in">`gen_design`</span>関数の<span class="in">`splitplotdesign`</span>引数に設定します。実験は一つ目の計画の<span class="in">`trials`</span>の整数倍とします。Split-plot designの結果として、以下のように変えにくい変数（下の例では<span class="in">`nutrient`</span>）の値に比較的変更が少ない実験を計画することができます。</span>
-<span id="cb161-898"><a href="#cb161-898" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-899"><a href="#cb161-899" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="split-plot designの作成"}</span></span>
-<span id="cb161-900"><a href="#cb161-900" aria-hidden="true" tabindex="-1"></a><span class="co"># 変更しにくい説明変数のみをモデルに含めた計画を作成する</span></span>
-<span id="cb161-901"><a href="#cb161-901" aria-hidden="true" tabindex="-1"></a>spdesign <span class="ot">=</span> </span>
-<span id="cb161-902"><a href="#cb161-902" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gen_design</span>(</span>
-<span id="cb161-903"><a href="#cb161-903" aria-hidden="true" tabindex="-1"></a>    cand, </span>
-<span id="cb161-904"><a href="#cb161-904" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> <span class="sc">~</span>nutrient,</span>
-<span id="cb161-905"><a href="#cb161-905" aria-hidden="true" tabindex="-1"></a>    <span class="at">trials =</span> <span class="dv">12</span>, </span>
-<span id="cb161-906"><a href="#cb161-906" aria-hidden="true" tabindex="-1"></a>    <span class="at">repeats =</span> <span class="dv">10</span>)</span>
-<span id="cb161-907"><a href="#cb161-907" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-908"><a href="#cb161-908" aria-hidden="true" tabindex="-1"></a><span class="co"># 上で示した計画をsplitplotdesign引数に設定する</span></span>
-<span id="cb161-909"><a href="#cb161-909" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="sc">~</span>., <span class="at">splitplotdesign =</span> spdesign, <span class="at">trials =</span> <span class="dv">24</span>)</span>
-<span id="cb161-910"><a href="#cb161-910" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-911"><a href="#cb161-911" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-912"><a href="#cb161-912" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Shinyアプリで実験計画を作成する</span></span>
-<span id="cb161-913"><a href="#cb161-913" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-914"><a href="#cb161-914" aria-hidden="true" tabindex="-1"></a><span class="in">`skpr`</span>にはShinyアプリを起動するための関数（<span class="in">`skprGUI`</span>）があり、この関数を用いるとブラウザ上でインタラクティブに実験計画を作成することもできます。</span>
-<span id="cb161-915"><a href="#cb161-915" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-916"><a href="#cb161-916" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Shinyアプリケーションを起動し実験計画を作成する", eval=FALSE}</span></span>
-<span id="cb161-917"><a href="#cb161-917" aria-hidden="true" tabindex="-1"></a><span class="fu">skprGUI</span>()</span>
-<span id="cb161-918"><a href="#cb161-918" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-919"><a href="#cb161-919" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-883"><a href="#cb161-883" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：optimalityを選択する"}</span></span>
+<span id="cb161-884"><a href="#cb161-884" aria-hidden="true" tabindex="-1"></a><span class="co"># I-Optimal Designの計画を作成する</span></span>
+<span id="cb161-885"><a href="#cb161-885" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(<span class="at">candidateset =</span> cand, <span class="at">model =</span> <span class="sc">~</span> nutrient <span class="sc">+</span> water <span class="sc">+</span> light <span class="sc">+</span> depth, <span class="at">trial =</span> <span class="dv">10</span>, <span class="at">optimality =</span> <span class="st">"I"</span>)</span>
+<span id="cb161-886"><a href="#cb161-886" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-887"><a href="#cb161-887" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-888"><a href="#cb161-888" aria-hidden="true" tabindex="-1"></a><span class="fu">#### ブロックの設定</span></span>
+<span id="cb161-889"><a href="#cb161-889" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-890"><a href="#cb161-890" aria-hidden="true" tabindex="-1"></a><span class="in">`gen_design`</span>関数の引数に<span class="in">`blocksizes`</span>を設定すると、ブロックを設定した実験を計画することができます。以下の例では、<span class="in">`blocksizes`</span>を4、つまり4実験ずつのブロックを3つ作成し、12実験の計画としています。<span class="in">`add_blocking_column=TRUE`</span>を設定すると、ブロックの列を追加することができます。</span>
+<span id="cb161-891"><a href="#cb161-891" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-892"><a href="#cb161-892" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="blockを設定する"}</span></span>
+<span id="cb161-893"><a href="#cb161-893" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="sc">~</span>., <span class="dv">12</span>, <span class="at">blocksizes=</span><span class="dv">4</span>, <span class="at">add_blocking_column=</span><span class="cn">TRUE</span>)</span>
+<span id="cb161-894"><a href="#cb161-894" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-895"><a href="#cb161-895" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-896"><a href="#cb161-896" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Split-plot design</span></span>
+<span id="cb161-897"><a href="#cb161-897" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-898"><a href="#cb161-898" aria-hidden="true" tabindex="-1"></a>実験を計画する場合、説明変数はいつも自由に変更できる、というわけではありません。例えば、高温で溶かした素材を用いて製品を作成する場合、温度の影響を調べるために窯の温度をランダムに上げたり下げたりすると燃料のコストも時間もかかってしまいます。したがって、説明変数の一部はあまり頻繁に変更せず、実験を行った方がよい場合もあります。</span>
+<span id="cb161-899"><a href="#cb161-899" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-900"><a href="#cb161-900" aria-hidden="true" tabindex="-1"></a>このような場合に用いるのが**split-plot design**です。<span class="in">`skpr`</span>はsplit-plot designにも対応しています。split-plot designでは、選択した変更しにくい説明変数をなるべく同じ値で繰り返すように実験を設計してくれます。</span>
+<span id="cb161-901"><a href="#cb161-901" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-902"><a href="#cb161-902" aria-hidden="true" tabindex="-1"></a>以下にsplit-plot designの作成方法を示します。split-plot designを作成する場合、まずは変更しにくい説明変数のみを<span class="in">`model`</span>に設定した計画を<span class="in">`gen_design`</span>関数で作成します。この計画のオブジェクトを再び<span class="in">`gen_design`</span>関数の<span class="in">`splitplotdesign`</span>引数に設定します。実験は一つ目の計画の<span class="in">`trials`</span>の整数倍とします。Split-plot designの結果として、以下のように変えにくい変数（下の例では<span class="in">`nutrient`</span>）の値に比較的変更が少ない実験を計画することができます。</span>
+<span id="cb161-903"><a href="#cb161-903" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-904"><a href="#cb161-904" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="split-plot designの作成"}</span></span>
+<span id="cb161-905"><a href="#cb161-905" aria-hidden="true" tabindex="-1"></a><span class="co"># 変更しにくい説明変数のみをモデルに含めた計画を作成する</span></span>
+<span id="cb161-906"><a href="#cb161-906" aria-hidden="true" tabindex="-1"></a>spdesign <span class="ot">=</span> </span>
+<span id="cb161-907"><a href="#cb161-907" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gen_design</span>(</span>
+<span id="cb161-908"><a href="#cb161-908" aria-hidden="true" tabindex="-1"></a>    cand, </span>
+<span id="cb161-909"><a href="#cb161-909" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> <span class="sc">~</span>nutrient,</span>
+<span id="cb161-910"><a href="#cb161-910" aria-hidden="true" tabindex="-1"></a>    <span class="at">trials =</span> <span class="dv">12</span>, </span>
+<span id="cb161-911"><a href="#cb161-911" aria-hidden="true" tabindex="-1"></a>    <span class="at">repeats =</span> <span class="dv">10</span>)</span>
+<span id="cb161-912"><a href="#cb161-912" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-913"><a href="#cb161-913" aria-hidden="true" tabindex="-1"></a><span class="co"># 上で示した計画をsplitplotdesign引数に設定する</span></span>
+<span id="cb161-914"><a href="#cb161-914" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(cand, <span class="sc">~</span>., <span class="at">splitplotdesign =</span> spdesign, <span class="at">trials =</span> <span class="dv">24</span>)</span>
+<span id="cb161-915"><a href="#cb161-915" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-916"><a href="#cb161-916" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-917"><a href="#cb161-917" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Shinyアプリで実験計画を作成する</span></span>
+<span id="cb161-918"><a href="#cb161-918" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-919"><a href="#cb161-919" aria-hidden="true" tabindex="-1"></a><span class="in">`skpr`</span>にはShinyアプリを起動するための関数（<span class="in">`skprGUI`</span>）があり、この関数を用いるとブラウザ上でインタラクティブに実験計画を作成することもできます。</span>
 <span id="cb161-920"><a href="#cb161-920" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-921"><a href="#cb161-921" aria-hidden="true" tabindex="-1"></a><span class="fu">### gen_designの返り値と計画の評価</span></span>
-<span id="cb161-922"><a href="#cb161-922" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-923"><a href="#cb161-923" aria-hidden="true" tabindex="-1"></a><span class="in">`gen_design`</span>関数の返り値はデータフレームです。ただし、このデータフレームにはattributeが設定されています。<span class="in">`skpr`</span>パッケージにはデザインを評価する関数がいくつか設定されていますが、これらの関数にはこのattributeが必要となります。</span>
+<span id="cb161-921"><a href="#cb161-921" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Shinyアプリケーションを起動し実験計画を作成する", eval=FALSE}</span></span>
+<span id="cb161-922"><a href="#cb161-922" aria-hidden="true" tabindex="-1"></a><span class="fu">skprGUI</span>()</span>
+<span id="cb161-923"><a href="#cb161-923" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb161-924"><a href="#cb161-924" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-925"><a href="#cb161-925" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：デザインの返り値"}</span></span>
-<span id="cb161-926"><a href="#cb161-926" aria-hidden="true" tabindex="-1"></a>od_d <span class="ot">&lt;-</span> <span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> ., <span class="at">trial =</span> <span class="dv">10</span>)</span>
-<span id="cb161-927"><a href="#cb161-927" aria-hidden="true" tabindex="-1"></a>od_i <span class="ot">&lt;-</span> <span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> ., <span class="at">trial =</span> <span class="dv">10</span>, <span class="at">optimality =</span> <span class="st">"I"</span>)</span>
-<span id="cb161-928"><a href="#cb161-928" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-929"><a href="#cb161-929" aria-hidden="true" tabindex="-1"></a>od_d <span class="sc">|&gt;</span> <span class="fu">class</span>() <span class="co"># クラスはデータフレーム</span></span>
-<span id="cb161-930"><a href="#cb161-930" aria-hidden="true" tabindex="-1"></a>od_d <span class="sc">|&gt;</span> <span class="fu">attributes</span>() <span class="sc">|&gt;</span> <span class="fu">names</span>() <span class="co"># attributeが設定されている</span></span>
-<span id="cb161-931"><a href="#cb161-931" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-932"><a href="#cb161-932" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-933"><a href="#cb161-933" aria-hidden="true" tabindex="-1"></a>attributeは<span class="in">`get_attribute`</span>関数でも取得することができます。</span>
-<span id="cb161-934"><a href="#cb161-934" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-935"><a href="#cb161-935" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="get_attribute関数でattributeを取得する"}</span></span>
-<span id="cb161-936"><a href="#cb161-936" aria-hidden="true" tabindex="-1"></a><span class="fu">get_attribute</span>(od_d) <span class="sc">|&gt;</span> <span class="fu">names</span>()</span>
-<span id="cb161-937"><a href="#cb161-937" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-938"><a href="#cb161-938" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-939"><a href="#cb161-939" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 最適化パラメータを評価する</span></span>
-<span id="cb161-940"><a href="#cb161-940" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-941"><a href="#cb161-941" aria-hidden="true" tabindex="-1"></a>Optimal Designでは、何らかの最適化パラメータを最大化・最小化するデザインを選択しています。この最適化パラメータを評価するための関数が<span class="in">`get_optimality`</span>です。<span class="in">`get_optimality`</span>関数の引数に<span class="in">`gen_design`</span>関数の返り値を取ると、最適化パラメータが表示されます。最適化パラメータはD、I、A、G、T、E、Aliasの7つです。D-Optimal DesignではDを最大化、I-Optimal DesignではIを最小化しています。</span>
-<span id="cb161-942"><a href="#cb161-942" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-943"><a href="#cb161-943" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="get_optimality関数"}</span></span>
-<span id="cb161-944"><a href="#cb161-944" aria-hidden="true" tabindex="-1"></a><span class="fu">get_optimality</span>(od_d) <span class="co"># D-OptimalではDが大きい</span></span>
-<span id="cb161-945"><a href="#cb161-945" aria-hidden="true" tabindex="-1"></a><span class="fu">get_optimality</span>(od_i) <span class="co"># I-optimalではIが小さい</span></span>
-<span id="cb161-946"><a href="#cb161-946" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-925"><a href="#cb161-925" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-926"><a href="#cb161-926" aria-hidden="true" tabindex="-1"></a><span class="fu">### gen_designの返り値と計画の評価</span></span>
+<span id="cb161-927"><a href="#cb161-927" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-928"><a href="#cb161-928" aria-hidden="true" tabindex="-1"></a><span class="in">`gen_design`</span>関数の返り値はデータフレームです。ただし、このデータフレームにはattributeが設定されています。<span class="in">`skpr`</span>パッケージにはデザインを評価する関数がいくつか設定されていますが、これらの関数にはこのattributeが必要となります。</span>
+<span id="cb161-929"><a href="#cb161-929" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-930"><a href="#cb161-930" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="skpr：デザインの返り値"}</span></span>
+<span id="cb161-931"><a href="#cb161-931" aria-hidden="true" tabindex="-1"></a>od_d <span class="ot">&lt;-</span> <span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> ., <span class="at">trial =</span> <span class="dv">10</span>)</span>
+<span id="cb161-932"><a href="#cb161-932" aria-hidden="true" tabindex="-1"></a>od_i <span class="ot">&lt;-</span> <span class="fu">gen_design</span>(cand, <span class="at">model =</span>  <span class="sc">~</span> ., <span class="at">trial =</span> <span class="dv">10</span>, <span class="at">optimality =</span> <span class="st">"I"</span>)</span>
+<span id="cb161-933"><a href="#cb161-933" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-934"><a href="#cb161-934" aria-hidden="true" tabindex="-1"></a>od_d <span class="sc">|&gt;</span> <span class="fu">class</span>() <span class="co"># クラスはデータフレーム</span></span>
+<span id="cb161-935"><a href="#cb161-935" aria-hidden="true" tabindex="-1"></a>od_d <span class="sc">|&gt;</span> <span class="fu">attributes</span>() <span class="sc">|&gt;</span> <span class="fu">names</span>() <span class="co"># attributeが設定されている</span></span>
+<span id="cb161-936"><a href="#cb161-936" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-937"><a href="#cb161-937" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-938"><a href="#cb161-938" aria-hidden="true" tabindex="-1"></a>attributeは<span class="in">`get_attribute`</span>関数でも取得することができます。</span>
+<span id="cb161-939"><a href="#cb161-939" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-940"><a href="#cb161-940" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="get_attribute関数でattributeを取得する"}</span></span>
+<span id="cb161-941"><a href="#cb161-941" aria-hidden="true" tabindex="-1"></a><span class="fu">get_attribute</span>(od_d) <span class="sc">|&gt;</span> <span class="fu">names</span>()</span>
+<span id="cb161-942"><a href="#cb161-942" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-943"><a href="#cb161-943" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-944"><a href="#cb161-944" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 最適化パラメータを評価する</span></span>
+<span id="cb161-945"><a href="#cb161-945" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-946"><a href="#cb161-946" aria-hidden="true" tabindex="-1"></a>Optimal Designでは、何らかの最適化パラメータを最大化・最小化するデザインを選択しています。この最適化パラメータを評価するための関数が<span class="in">`get_optimality`</span>です。<span class="in">`get_optimality`</span>関数の引数に<span class="in">`gen_design`</span>関数の返り値を取ると、最適化パラメータが表示されます。最適化パラメータはD、I、A、G、T、E、Aliasの7つです。D-Optimal DesignではDを最大化、I-Optimal DesignではIを最小化しています。</span>
 <span id="cb161-947"><a href="#cb161-947" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-948"><a href="#cb161-948" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Power（検出力）を計算する</span></span>
-<span id="cb161-949"><a href="#cb161-949" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-950"><a href="#cb161-950" aria-hidden="true" tabindex="-1"></a>実験計画において、<span class="co">[</span><span class="ot">29章</span><span class="co">](chapter29.qmd#sec-power)</span>で説明したPower（検出力）の評価は重要です。検出力が80%（場合によっては90%）以上となるよう実験数（例数）を設計するのがよいとされています。実験計画においても同様に検出力を80%以上とするため、<span class="in">`skpr`</span>には検出力を計算するための関数（<span class="in">`eval_design`</span>）も備わっています。<span class="in">`eval_design`</span>関数はそれぞれのパラメータについてそれぞれPowerを計算します。</span>
-<span id="cb161-951"><a href="#cb161-951" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-952"><a href="#cb161-952" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Powerの計算"}</span></span>
-<span id="cb161-953"><a href="#cb161-953" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_design</span>(od_d)</span>
-<span id="cb161-954"><a href="#cb161-954" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_design</span>(od_i)</span>
-<span id="cb161-955"><a href="#cb161-955" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-948"><a href="#cb161-948" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="get_optimality関数"}</span></span>
+<span id="cb161-949"><a href="#cb161-949" aria-hidden="true" tabindex="-1"></a><span class="fu">get_optimality</span>(od_d) <span class="co"># D-OptimalではD（D efficiencyというパラメータ）が大きい</span></span>
+<span id="cb161-950"><a href="#cb161-950" aria-hidden="true" tabindex="-1"></a><span class="fu">get_optimality</span>(od_i) <span class="co"># I-optimalではI(average prediction variance)が小さい</span></span>
+<span id="cb161-951"><a href="#cb161-951" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-952"><a href="#cb161-952" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-953"><a href="#cb161-953" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Power（検出力）を計算する</span></span>
+<span id="cb161-954"><a href="#cb161-954" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-955"><a href="#cb161-955" aria-hidden="true" tabindex="-1"></a>実験計画において、<span class="co">[</span><span class="ot">29章</span><span class="co">](chapter29.qmd#sec-power)</span>で説明したPower（検出力）の評価は重要です。検出力が80%（場合によっては90%）以上となるよう実験数（例数）を設計するのがよいとされています。実験計画においても同様に検出力を80%以上とするため、<span class="in">`skpr`</span>には検出力を計算するための関数（<span class="in">`eval_design`</span>）も備わっています。<span class="in">`eval_design`</span>関数はそれぞれのパラメータについてそれぞれPowerを計算します。</span>
 <span id="cb161-956"><a href="#cb161-956" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-957"><a href="#cb161-957" aria-hidden="true" tabindex="-1"></a>また、より精度の高いPowerを求める場合には、乱数計算（モンテカルロ法）を用いた関数（<span class="in">`eval_design_mc`</span>）を用いることもできます。</span>
-<span id="cb161-958"><a href="#cb161-958" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-959"><a href="#cb161-959" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="繰り返し計算でより正確なPowerを求める"}</span></span>
-<span id="cb161-960"><a href="#cb161-960" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_design_mc</span>(od_d)</span>
-<span id="cb161-961"><a href="#cb161-961" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-962"><a href="#cb161-962" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-963"><a href="#cb161-963" aria-hidden="true" tabindex="-1"></a>また、実験数（例数）とPowerの関係を調べるグラフを作成する場合には、<span class="in">`calculate_power_curves`</span>関数を用います。<span class="in">`calculate_power_curves`</span>関数の返り値はPowerを計算したデータフレームとグラフで、グラフの結果は<span class="in">`gen_design`</span>関数の<span class="in">`trial`</span>の設定の参考に用いることができます。</span>
-<span id="cb161-964"><a href="#cb161-964" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-965"><a href="#cb161-965" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Power curveを表示する"}</span></span>
-<span id="cb161-966"><a href="#cb161-966" aria-hidden="true" tabindex="-1"></a><span class="co"># trialが10～60まで10置きの場合のPowerを計算する</span></span>
-<span id="cb161-967"><a href="#cb161-967" aria-hidden="true" tabindex="-1"></a><span class="fu">calculate_power_curves</span>(</span>
-<span id="cb161-968"><a href="#cb161-968" aria-hidden="true" tabindex="-1"></a>  <span class="at">trials =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">60</span>, <span class="at">by =</span> <span class="dv">10</span>), </span>
-<span id="cb161-969"><a href="#cb161-969" aria-hidden="true" tabindex="-1"></a>  <span class="at">candidateset =</span> cand, </span>
-<span id="cb161-970"><a href="#cb161-970" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="sc">~</span> nutrient <span class="sc">+</span> water <span class="sc">+</span> light <span class="sc">+</span> depth)</span>
-<span id="cb161-971"><a href="#cb161-971" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-972"><a href="#cb161-972" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-973"><a href="#cb161-973" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Fraction of Design Space Plot</span></span>
-<span id="cb161-974"><a href="#cb161-974" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-975"><a href="#cb161-975" aria-hidden="true" tabindex="-1"></a>上に示した通り、I-Optimal Designでは平均のばらつき（mean prediction variance）を最小とするデザインを選択します。Fraction of Design Space Plotはこのmean prediction varianceを評価する場合に有用です。</span>
-<span id="cb161-976"><a href="#cb161-976" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-977"><a href="#cb161-977" aria-hidden="true" tabindex="-1"></a><span class="in">`skpr`</span>には、Fraction of Design Space Plotを表示するための関数、<span class="in">`plot_fds`</span>関数があります。<span class="in">`plot_fds`</span>関数の引数に<span class="in">`gen_design`</span>の返り値を指定することでFraction of Design Space Plotが表示されます。<span class="in">`plot_fds`</span>関数で描画される線の位置が低く、中央値が小さいほどI-Optimal Designではよいデザインとなります。</span>
-<span id="cb161-978"><a href="#cb161-978" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-979"><a href="#cb161-979" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Fraction of Design Space Plot"}</span></span>
-<span id="cb161-980"><a href="#cb161-980" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_fds</span>(od_i)</span>
-<span id="cb161-981"><a href="#cb161-981" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-982"><a href="#cb161-982" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-983"><a href="#cb161-983" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 説明変数間の相関を評価する</span></span>
-<span id="cb161-984"><a href="#cb161-984" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-985"><a href="#cb161-985" aria-hidden="true" tabindex="-1"></a>説明変数間に相関があると、<span class="co">[</span><span class="ot">30章</span><span class="co">](chapter30.qmd#説明変数がたくさんある場合の回帰)</span>で説明した通り多重共線性の問題が起こりやすくなります。実験計画を作成した段階で相関があるかどうか評価することで、多重共線性が避けられるかどうかを評価できます。</span>
-<span id="cb161-986"><a href="#cb161-986" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-987"><a href="#cb161-987" aria-hidden="true" tabindex="-1"></a><span class="in">`plot_correlations`</span>関数はこの説明変数同士の相関を評価するための関数です。<span class="in">`gen_design`</span>関数の返り値を<span class="in">`plot_correlations`</span>関数の引数に取ることで、交互作用を含めた説明変数同士の相関をヒートマップとして示すことができます。</span>
-<span id="cb161-988"><a href="#cb161-988" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-989"><a href="#cb161-989" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="plot_correlation関数"}</span></span>
-<span id="cb161-990"><a href="#cb161-990" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_correlations</span>(od_d)</span>
+<span id="cb161-957"><a href="#cb161-957" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Powerの計算"}</span></span>
+<span id="cb161-958"><a href="#cb161-958" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_design</span>(od_d)</span>
+<span id="cb161-959"><a href="#cb161-959" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_design</span>(od_i)</span>
+<span id="cb161-960"><a href="#cb161-960" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-961"><a href="#cb161-961" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-962"><a href="#cb161-962" aria-hidden="true" tabindex="-1"></a>また、より精度の高いPowerを求める場合には、乱数計算（モンテカルロ法）を用いた関数（<span class="in">`eval_design_mc`</span>）を用いることもできます。</span>
+<span id="cb161-963"><a href="#cb161-963" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-964"><a href="#cb161-964" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="繰り返し計算でより正確なPowerを求める"}</span></span>
+<span id="cb161-965"><a href="#cb161-965" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_design_mc</span>(od_d)</span>
+<span id="cb161-966"><a href="#cb161-966" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-967"><a href="#cb161-967" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-968"><a href="#cb161-968" aria-hidden="true" tabindex="-1"></a>また、実験数（例数）とPowerの関係を調べるグラフを作成する場合には、<span class="in">`calculate_power_curves`</span>関数を用います。<span class="in">`calculate_power_curves`</span>関数の返り値はPowerを計算したデータフレームとグラフで、グラフの結果は<span class="in">`gen_design`</span>関数の<span class="in">`trial`</span>の設定の参考に用いることができます。</span>
+<span id="cb161-969"><a href="#cb161-969" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-970"><a href="#cb161-970" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Power curveを表示する"}</span></span>
+<span id="cb161-971"><a href="#cb161-971" aria-hidden="true" tabindex="-1"></a><span class="co"># trialが10～60まで10置きの場合のPowerを計算する</span></span>
+<span id="cb161-972"><a href="#cb161-972" aria-hidden="true" tabindex="-1"></a><span class="fu">calculate_power_curves</span>(</span>
+<span id="cb161-973"><a href="#cb161-973" aria-hidden="true" tabindex="-1"></a>  <span class="at">trials =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">60</span>, <span class="at">by =</span> <span class="dv">10</span>), </span>
+<span id="cb161-974"><a href="#cb161-974" aria-hidden="true" tabindex="-1"></a>  <span class="at">candidateset =</span> cand, </span>
+<span id="cb161-975"><a href="#cb161-975" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="sc">~</span> nutrient <span class="sc">+</span> water <span class="sc">+</span> light <span class="sc">+</span> depth)</span>
+<span id="cb161-976"><a href="#cb161-976" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-977"><a href="#cb161-977" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-978"><a href="#cb161-978" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Fraction of Design Space Plot</span></span>
+<span id="cb161-979"><a href="#cb161-979" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-980"><a href="#cb161-980" aria-hidden="true" tabindex="-1"></a>上に示した通り、I-Optimal Designでは平均のばらつき（mean prediction variance）を最小とするデザインを選択します。Fraction of Design Space Plotはこのmean prediction varianceを評価する場合に有用です。</span>
+<span id="cb161-981"><a href="#cb161-981" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-982"><a href="#cb161-982" aria-hidden="true" tabindex="-1"></a><span class="in">`skpr`</span>には、Fraction of Design Space Plotを表示するための関数、<span class="in">`plot_fds`</span>関数があります。<span class="in">`plot_fds`</span>関数の引数に<span class="in">`gen_design`</span>の返り値を指定することでFraction of Design Space Plotが表示されます。<span class="in">`plot_fds`</span>関数で描画される線の位置が低く、中央値が小さいほどI-Optimal Designではよいデザインとなります。</span>
+<span id="cb161-983"><a href="#cb161-983" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-984"><a href="#cb161-984" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Fraction of Design Space Plot"}</span></span>
+<span id="cb161-985"><a href="#cb161-985" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_fds</span>(od_i)</span>
+<span id="cb161-986"><a href="#cb161-986" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-987"><a href="#cb161-987" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-988"><a href="#cb161-988" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 説明変数間の相関を評価する</span></span>
+<span id="cb161-989"><a href="#cb161-989" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-990"><a href="#cb161-990" aria-hidden="true" tabindex="-1"></a>説明変数間に相関があると、<span class="co">[</span><span class="ot">30章</span><span class="co">](chapter30.qmd#説明変数がたくさんある場合の回帰)</span>で説明した通り多重共線性の問題が起こりやすくなります。実験計画を作成した段階で相関があるかどうか評価することで、多重共線性が避けられるかどうかを評価できます。</span>
 <span id="cb161-991"><a href="#cb161-991" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-992"><a href="#cb161-992" aria-hidden="true" tabindex="-1"></a><span class="co"># 要因配置計画では説明変数同士の相関は0となる</span></span>
-<span id="cb161-993"><a href="#cb161-993" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(</span>
-<span id="cb161-994"><a href="#cb161-994" aria-hidden="true" tabindex="-1"></a>  <span class="at">candidateset =</span> cand, </span>
-<span id="cb161-995"><a href="#cb161-995" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="sc">~</span> nutrient <span class="sc">*</span> water <span class="sc">*</span> light <span class="sc">*</span> depth, <span class="at">trial =</span> <span class="dv">16</span></span>
-<span id="cb161-996"><a href="#cb161-996" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb161-997"><a href="#cb161-997" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_correlations</span>()</span>
-<span id="cb161-998"><a href="#cb161-998" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-999"><a href="#cb161-999" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1000"><a href="#cb161-1000" aria-hidden="true" tabindex="-1"></a><span class="fu">## mixture experiment</span></span>
-<span id="cb161-1001"><a href="#cb161-1001" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1002"><a href="#cb161-1002" aria-hidden="true" tabindex="-1"></a>説明変数全体の量は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量）のことを**mixture experiment**と呼びます。mixture experimentでは、各説明変数の和が常に1となるよう実験計画が作成されます。</span>
-<span id="cb161-1003"><a href="#cb161-1003" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1004"><a href="#cb161-1004" aria-hidden="true" tabindex="-1"></a>mixture experimentの実験計画には<span class="in">`skpr`</span>は対応していないので、別のライブラリ（<span class="co">[</span><span class="ot">`mixexp`</span><span class="co">](https://cran.r-project.org/web/packages/mixexp/index.html)[</span><span class="ot">@mixexp_bib</span><span class="co">]</span>、<span class="co">[</span><span class="ot">`AlgDesign`</span><span class="co">](https://cran.r-project.org/web/packages/AlgDesign/index.html)[</span><span class="ot">@AlgDesign_bib</span><span class="co">]</span>）を用います。</span>
-<span id="cb161-1005"><a href="#cb161-1005" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1006"><a href="#cb161-1006" aria-hidden="true" tabindex="-1"></a><span class="fu">### mixexpパッケージ</span></span>
-<span id="cb161-1007"><a href="#cb161-1007" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1008"><a href="#cb161-1008" aria-hidden="true" tabindex="-1"></a><span class="in">`mixexp`</span>はmixture experimentの実験計画作成のためのライブラリです。このライブラリではOptimal Designではなく、Simplex-Lattice Design <span class="co">[</span><span class="ot">@Scheffé1958</span><span class="co">]</span>に従い計画を作成します。</span>
-<span id="cb161-1009"><a href="#cb161-1009" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1010"><a href="#cb161-1010" aria-hidden="true" tabindex="-1"></a><span class="in">`mixexp`</span>での実験計画の作成はシンプルで、2つの関数を用います。一つは説明変数の数だけ設定する<span class="in">`SCD`</span>関数、もう一つは説明変数の数と各説明変数の条件の数を指定する<span class="in">`SLD`</span>関数です。<span class="in">`SCD`</span>関数では各説明変数の条件の数を6とすることになります。</span>
-<span id="cb161-1011"><a href="#cb161-1011" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1012"><a href="#cb161-1012" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="mixexpパッケージ：SCD関数とSLD関数"}</span></span>
-<span id="cb161-1013"><a href="#cb161-1013" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mixexp)</span>
-<span id="cb161-1014"><a href="#cb161-1014" aria-hidden="true" tabindex="-1"></a><span class="fu">SCD</span>(<span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>() <span class="co"># 5説明変数の実験（各説明変数6段階）</span></span>
-<span id="cb161-1015"><a href="#cb161-1015" aria-hidden="true" tabindex="-1"></a><span class="fu">SLD</span>(<span class="dv">5</span>, <span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>() <span class="co"># 5説明変数、各説明変数5段階の実験</span></span>
-<span id="cb161-1016"><a href="#cb161-1016" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-1017"><a href="#cb161-1017" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1018"><a href="#cb161-1018" aria-hidden="true" tabindex="-1"></a><span class="in">`mixexp`</span>には実験計画を図で示してくれる、<span class="in">`DesignPoints`</span>関数があります。<span class="in">`SCD`</span>・<span class="in">`SLD`</span>関数の返り値を<span class="in">`DesignPoints`</span>関数の引数に取ると、実験計画に設定した量を三角形の図上の点（三角グラフ）で示してくれます。</span>
-<span id="cb161-1019"><a href="#cb161-1019" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1020"><a href="#cb161-1020" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="DesignPoints関数"}</span></span>
-<span id="cb161-1021"><a href="#cb161-1021" aria-hidden="true" tabindex="-1"></a><span class="fu">SCD</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">DesignPoints</span>()</span>
+<span id="cb161-992"><a href="#cb161-992" aria-hidden="true" tabindex="-1"></a><span class="in">`plot_correlations`</span>関数はこの説明変数同士の相関を評価するための関数です。<span class="in">`gen_design`</span>関数の返り値を<span class="in">`plot_correlations`</span>関数の引数に取ることで、交互作用を含めた説明変数同士の相関をヒートマップとして示すことができます。</span>
+<span id="cb161-993"><a href="#cb161-993" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-994"><a href="#cb161-994" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="plot_correlation関数"}</span></span>
+<span id="cb161-995"><a href="#cb161-995" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_correlations</span>(od_d)</span>
+<span id="cb161-996"><a href="#cb161-996" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-997"><a href="#cb161-997" aria-hidden="true" tabindex="-1"></a><span class="co"># 要因配置計画では説明変数同士の相関は0となる</span></span>
+<span id="cb161-998"><a href="#cb161-998" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_design</span>(</span>
+<span id="cb161-999"><a href="#cb161-999" aria-hidden="true" tabindex="-1"></a>  <span class="at">candidateset =</span> cand, </span>
+<span id="cb161-1000"><a href="#cb161-1000" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="sc">~</span> nutrient <span class="sc">*</span> water <span class="sc">*</span> light <span class="sc">*</span> depth, <span class="at">trial =</span> <span class="dv">16</span></span>
+<span id="cb161-1001"><a href="#cb161-1001" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb161-1002"><a href="#cb161-1002" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_correlations</span>()</span>
+<span id="cb161-1003"><a href="#cb161-1003" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-1004"><a href="#cb161-1004" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1005"><a href="#cb161-1005" aria-hidden="true" tabindex="-1"></a><span class="fu">## mixture experiment</span></span>
+<span id="cb161-1006"><a href="#cb161-1006" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1007"><a href="#cb161-1007" aria-hidden="true" tabindex="-1"></a>説明変数全体の量は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量の割合を変える場合）の実験のことを**mixture experiment**と呼びます。mixture experimentでは、各説明変数の和が常に1となるよう実験計画が作成されます。</span>
+<span id="cb161-1008"><a href="#cb161-1008" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1009"><a href="#cb161-1009" aria-hidden="true" tabindex="-1"></a>mixture experimentの実験計画には<span class="in">`skpr`</span>は対応していないので、別のライブラリ（<span class="co">[</span><span class="ot">`mixexp`</span><span class="co">](https://cran.r-project.org/web/packages/mixexp/index.html)[</span><span class="ot">@mixexp_bib</span><span class="co">]</span>、<span class="co">[</span><span class="ot">`AlgDesign`</span><span class="co">](https://cran.r-project.org/web/packages/AlgDesign/index.html)[</span><span class="ot">@AlgDesign_bib</span><span class="co">]</span>）を用います。</span>
+<span id="cb161-1010"><a href="#cb161-1010" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1011"><a href="#cb161-1011" aria-hidden="true" tabindex="-1"></a><span class="fu">### mixexpパッケージ</span></span>
+<span id="cb161-1012"><a href="#cb161-1012" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1013"><a href="#cb161-1013" aria-hidden="true" tabindex="-1"></a><span class="in">`mixexp`</span>はmixture experimentの実験計画作成のためのライブラリです。このライブラリではOptimal Designではなく、Simplex-Lattice Design <span class="co">[</span><span class="ot">@Scheffé1958</span><span class="co">]</span>に従い計画を作成します。</span>
+<span id="cb161-1014"><a href="#cb161-1014" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1015"><a href="#cb161-1015" aria-hidden="true" tabindex="-1"></a><span class="in">`mixexp`</span>での実験計画の作成はシンプルで、2つの関数を用います。一つは説明変数の数だけ設定する<span class="in">`SCD`</span>関数、もう一つは説明変数の数と各説明変数の条件の数を指定する<span class="in">`SLD`</span>関数です。<span class="in">`SCD`</span>関数では各説明変数の条件の数を6とすることになります。</span>
+<span id="cb161-1016"><a href="#cb161-1016" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1017"><a href="#cb161-1017" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="mixexpパッケージ：SCD関数とSLD関数"}</span></span>
+<span id="cb161-1018"><a href="#cb161-1018" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mixexp)</span>
+<span id="cb161-1019"><a href="#cb161-1019" aria-hidden="true" tabindex="-1"></a><span class="fu">SCD</span>(<span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>() <span class="co"># 5説明変数の実験（各説明変数6段階）</span></span>
+<span id="cb161-1020"><a href="#cb161-1020" aria-hidden="true" tabindex="-1"></a><span class="fu">SLD</span>(<span class="dv">5</span>, <span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>() <span class="co"># 5説明変数、各説明変数5段階の実験</span></span>
+<span id="cb161-1021"><a href="#cb161-1021" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb161-1022"><a href="#cb161-1022" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1023"><a href="#cb161-1023" aria-hidden="true" tabindex="-1"></a><span class="co"># 説明変数は3つまでしか表示できない</span></span>
-<span id="cb161-1024"><a href="#cb161-1024" aria-hidden="true" tabindex="-1"></a><span class="fu">SCD</span>(<span class="dv">5</span>)[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)] <span class="sc">|&gt;</span> <span class="fu">DesignPoints</span>() </span>
-<span id="cb161-1025"><a href="#cb161-1025" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb161-1026"><a href="#cb161-1026" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1027"><a href="#cb161-1027" aria-hidden="true" tabindex="-1"></a><span class="fu">### AlgDesignパッケージ</span></span>
-<span id="cb161-1028"><a href="#cb161-1028" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1029"><a href="#cb161-1029" aria-hidden="true" tabindex="-1"></a><span class="in">`AlgDesign`</span>は<span class="in">`skpr`</span>と同様にOptimal Designの実験計画を作成するためのライブラリです。<span class="in">`AlgDesign`</span>にはmixture experimentの実験計画を作成するための関数である、<span class="in">`gen.mixture`</span>関数があります。<span class="in">`gen.mixture`</span>は<span class="in">`mixexp`</span>の<span class="in">`SLD`</span>とほぼ同じ使い方の、説明変数の数と各説明変数の条件の数を指定して用いる関数です。</span>
-<span id="cb161-1030"><a href="#cb161-1030" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb161-1031"><a href="#cb161-1031" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="AlgDesign：gen.mixture関数"}</span></span>
-<span id="cb161-1032"><a href="#cb161-1032" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AlgDesign)</span>
-<span id="cb161-1033"><a href="#cb161-1033" aria-hidden="true" tabindex="-1"></a><span class="fu">gen.mixture</span>(<span class="dv">5</span>,<span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>() <span class="co"># 5説明変数、各説明変数5段階の実験 </span></span>
-<span id="cb161-1034"><a href="#cb161-1034" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-1023"><a href="#cb161-1023" aria-hidden="true" tabindex="-1"></a><span class="in">`mixexp`</span>には実験計画を図で示してくれる、<span class="in">`DesignPoints`</span>関数があります。<span class="in">`SCD`</span>・<span class="in">`SLD`</span>関数の返り値を<span class="in">`DesignPoints`</span>関数の引数に取ると、実験計画に設定した量を三角形の図上の点（三角グラフ）で示してくれます。</span>
+<span id="cb161-1024"><a href="#cb161-1024" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1025"><a href="#cb161-1025" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="DesignPoints関数"}</span></span>
+<span id="cb161-1026"><a href="#cb161-1026" aria-hidden="true" tabindex="-1"></a><span class="fu">SCD</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">DesignPoints</span>()</span>
+<span id="cb161-1027"><a href="#cb161-1027" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1028"><a href="#cb161-1028" aria-hidden="true" tabindex="-1"></a><span class="co"># 説明変数は3つまでしか表示できない</span></span>
+<span id="cb161-1029"><a href="#cb161-1029" aria-hidden="true" tabindex="-1"></a><span class="fu">SCD</span>(<span class="dv">5</span>)[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)] <span class="sc">|&gt;</span> <span class="fu">DesignPoints</span>() </span>
+<span id="cb161-1030"><a href="#cb161-1030" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb161-1031"><a href="#cb161-1031" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1032"><a href="#cb161-1032" aria-hidden="true" tabindex="-1"></a><span class="fu">### AlgDesignパッケージ</span></span>
+<span id="cb161-1033"><a href="#cb161-1033" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1034"><a href="#cb161-1034" aria-hidden="true" tabindex="-1"></a><span class="in">`AlgDesign`</span>は<span class="in">`skpr`</span>と同様にOptimal Designの実験計画を作成するためのライブラリです。<span class="in">`AlgDesign`</span>にはmixture experimentの実験計画を作成するための関数である、<span class="in">`gen.mixture`</span>関数があります。<span class="in">`gen.mixture`</span>は<span class="in">`mixexp`</span>の<span class="in">`SLD`</span>とほぼ同じ使い方の、説明変数の数と各説明変数の条件の数を指定して用いる関数です。</span>
+<span id="cb161-1035"><a href="#cb161-1035" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-1036"><a href="#cb161-1036" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="AlgDesign：gen.mixture関数"}</span></span>
+<span id="cb161-1037"><a href="#cb161-1037" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AlgDesign)</span>
+<span id="cb161-1038"><a href="#cb161-1038" aria-hidden="true" tabindex="-1"></a><span class="fu">gen.mixture</span>(<span class="dv">5</span>,<span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>() <span class="co"># 5説明変数、各説明変数5段階の実験 </span></span>
+<span id="cb161-1039"><a href="#cb161-1039" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

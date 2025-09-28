@@ -1600,10 +1600,7 @@ Table&nbsp;42.1: 表のラベル
 <figcaption>Renderボタン</figcaption></figure>
 </div>
 <p>また、TerminalでProjectのフォルダに移動し、<code>quarto render</code>のコマンドを実行することでもWebsite・BookをRenderすることができます。</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/Quarto_render_from_terminal.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="quarto render"><img src="./image/Quarto_render_from_terminal.png" class="img-fluid figure-img" alt="quarto render"></a></p>
-<figcaption>quarto render</figcaption></figure>
-</div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Renderを実行すると、Websiteではそのフォルダとサブフォルダに含まれている<code>.qmd</code>ファイルがHTMLに変換されます。一方でBookでは、そのフォルダ内の.qmdファイルのうち、<code>chapters</code>で章に設定した.qmdファイルだけがHTMLに変換されます。</p>
 <section id="freeze" class="level3" data-number="42.4.1"><h3 data-number="42.4.1" class="anchored" data-anchor-id="freeze">
 <span class="header-section-number">42.4.1</span> freeze</h3>
@@ -1615,8 +1612,8 @@ Table&nbsp;42.1: 表のラベル
 <div class="code-with-filename-file">
 <pre><strong>freezeの設定</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> auto</span><span class="co"> # true/auto/falseのいずれかを選択する</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> auto</span><span class="co"> # true/auto/falseのいずれかを選択する</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -2120,684 +2117,686 @@ Xie, Yihui. 2024. <em>Bookdown: Authoring Books and Technical Documents with r M
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb34" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Quarto：WebsiteとBook</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE, message=FALSE}</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>ここまでに、QuartoでHTML、PDF、Wordなどの文書、Reveal.jsなどのプレゼンテーション、インタラクティブなダッシュボードを作成する手法を説明してきました。Quartoでは、HTMLの拡張として、ブログなどを含む**Website**や教科書などの本のHTMLとして表現する、**Book**を作成することもできます。以下にWebsiteやBookを作成する手順について、簡単に説明していきます。</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto project</span></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>Quartoでは、**QuartoのProject**というものを設定することができます。RStudioを用いる場合、Quarto Projectは<span class="co">[</span><span class="ot">39章</span><span class="co">](chapter39.qmd)</span>で説明したRStudioのProjectとほぼ同じです。RStudioではProjectを作成するとき、Projectのタイプを選択することができます。</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="al">![RStudioでProject typeを選択する](./image/Rstudio_quarto_project.png)</span></span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>このリストから、「Quarto Project」や「Quarto Website」、「Quarto Book」などを選択すると、そのタイプに従ったプロジェクトと共に、いくつかのqmdファイルがProjectのフォルダに作成されます。</span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a><span class="al">![Quarto Projectで作成されるファイル（Website）](./image/quarto_project_files.png)</span></span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>RStudioを用いている場合には、このフォルダ内の<span class="in">`.Rproj`</span>ファイルを開くとRStudioでプロジェクトが展開されます。</span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>一方で、VSCodeなどのテキストエディタやJupyter Notebookなどを用いている場合には、RStudioのようにProjectを作成することはできません。そこで、Quarto CLIでは、TerminalからProjectを作成できるようになっています。</span>
-<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="Quarto Projectを作成する"}</span></span>
-<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>quarto create project</span>
-<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>TerminalからQuarto Projectを作成すると、まずはプロジェクトのタイプを入力する画面が表示されます。タイプには、default、website、blog、manuscript、book、<span class="co">[</span><span class="ot">confluence</span><span class="co">](https://quarto.org/docs/publishing/confluence.html)</span>（Wikiみたいなもの）の6つがあるので、作成する文書に対応したタイプを選択します。</span>
-<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>次に、Directory（フォルダ名）を入力します。Directoryを入力すると、そのDirectory内にProjectが作成されます。このProjectのフォルダには、上で示した作成されるファイルから、<span class="in">`.Rproj`</span>ファイルが除かれたものが作成されます。このフォルダに移動し、<span class="in">`quarto render`</span>を行うと、テンプレートの文書（Websiteの場合はHTML）を作成することができます。</span>
-<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>RStudioではProjectを作成することでいろいろな設定が行われるため、複雑な文書を作成する場合にはProjectを作成しておいた方がよいですが、VSCodeなどを用いる場合には特に必須ではなく、<span class="in">`_quarto.yml`</span>にYAMLの設定を書けばWebsiteやBookを特に問題なく作成することができます。ただし、Projectを作成するとテンプレートとなるファイル・フォルダを生成してくれるため、Quartoで文書の作成を始める場合には有用でしょう。</span>
-<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>以下に、各タイプのProjectで作成されるファイル・フォルダの構造、<span class="in">`_quarto.yml`</span>の設定、Renderで出力されるHTMLの見ためを示します。</span>
-<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>:::{.column-page-right}</span>
-<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>:::{.panel-tabset}</span>
-<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## default</span></span>
-<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
-<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
-<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a>test_website</span>
-<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a>│- about.qmd</span>
-<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
-<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a>│- styles.css</span>
-<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a>└─ _quarto.yml</span>
-<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
-<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_default"</span></span>
-<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_default.png)</span></span>
-<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-69"><a href="#cb34-69" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-73"><a href="#cb34-73" aria-hidden="true" tabindex="-1"></a><span class="fu">## website</span></span>
-<span id="cb34-74"><a href="#cb34-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
-<span id="cb34-76"><a href="#cb34-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-77"><a href="#cb34-77" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-78"><a href="#cb34-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-79"><a href="#cb34-79" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
-<span id="cb34-80"><a href="#cb34-80" aria-hidden="true" tabindex="-1"></a>test_website</span>
-<span id="cb34-81"><a href="#cb34-81" aria-hidden="true" tabindex="-1"></a>│- about.qmd</span>
-<span id="cb34-82"><a href="#cb34-82" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
-<span id="cb34-83"><a href="#cb34-83" aria-hidden="true" tabindex="-1"></a>│- styles.css</span>
-<span id="cb34-84"><a href="#cb34-84" aria-hidden="true" tabindex="-1"></a>└─ _quarto.yml</span>
-<span id="cb34-85"><a href="#cb34-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-86"><a href="#cb34-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-87"><a href="#cb34-87" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-88"><a href="#cb34-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-89"><a href="#cb34-89" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-90"><a href="#cb34-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-91"><a href="#cb34-91" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
-<span id="cb34-92"><a href="#cb34-92" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb34-93"><a href="#cb34-93" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
-<span id="cb34-94"><a href="#cb34-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-95"><a href="#cb34-95" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb34-96"><a href="#cb34-96" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_website"</span></span>
-<span id="cb34-97"><a href="#cb34-97" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
-<span id="cb34-98"><a href="#cb34-98" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
-<span id="cb34-99"><a href="#cb34-99" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">href</span><span class="kw">:</span><span class="at"> index.qmd</span></span>
-<span id="cb34-100"><a href="#cb34-100" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> Home</span></span>
-<span id="cb34-101"><a href="#cb34-101" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>about.qmd</span>
-<span id="cb34-102"><a href="#cb34-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-103"><a href="#cb34-103" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb34-104"><a href="#cb34-104" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb34-105"><a href="#cb34-105" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span></span>
-<span id="cb34-106"><a href="#cb34-106" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>cosmo</span>
-<span id="cb34-107"><a href="#cb34-107" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>brand</span>
-<span id="cb34-108"><a href="#cb34-108" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> styles.css</span></span>
-<span id="cb34-109"><a href="#cb34-109" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb34-110"><a href="#cb34-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-111"><a href="#cb34-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-112"><a href="#cb34-112" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-113"><a href="#cb34-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-114"><a href="#cb34-114" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-115"><a href="#cb34-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-116"><a href="#cb34-116" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_website.png)</span></span>
-<span id="cb34-117"><a href="#cb34-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-118"><a href="#cb34-118" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-119"><a href="#cb34-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-120"><a href="#cb34-120" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-121"><a href="#cb34-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-122"><a href="#cb34-122" aria-hidden="true" tabindex="-1"></a><span class="fu">## manuscript</span></span>
-<span id="cb34-123"><a href="#cb34-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-124"><a href="#cb34-124" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
-<span id="cb34-125"><a href="#cb34-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-126"><a href="#cb34-126" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-127"><a href="#cb34-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-128"><a href="#cb34-128" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
-<span id="cb34-129"><a href="#cb34-129" aria-hidden="true" tabindex="-1"></a>test_manuscript</span>
-<span id="cb34-130"><a href="#cb34-130" aria-hidden="true" tabindex="-1"></a>│- references_bib</span>
-<span id="cb34-131"><a href="#cb34-131" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
-<span id="cb34-132"><a href="#cb34-132" aria-hidden="true" tabindex="-1"></a>└─ _quarto.yml</span>
-<span id="cb34-133"><a href="#cb34-133" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-134"><a href="#cb34-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-135"><a href="#cb34-135" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-136"><a href="#cb34-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-137"><a href="#cb34-137" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-138"><a href="#cb34-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-139"><a href="#cb34-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
-<span id="cb34-140"><a href="#cb34-140" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb34-141"><a href="#cb34-141" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> manuscript</span></span>
-<span id="cb34-142"><a href="#cb34-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-143"><a href="#cb34-143" aria-hidden="true" tabindex="-1"></a><span class="fu">manuscript</span><span class="kw">:</span></span>
-<span id="cb34-144"><a href="#cb34-144" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">article</span><span class="kw">:</span><span class="at"> index.qmd</span></span>
-<span id="cb34-145"><a href="#cb34-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-146"><a href="#cb34-146" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb34-147"><a href="#cb34-147" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb34-148"><a href="#cb34-148" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">comments</span><span class="kw">:</span></span>
-<span id="cb34-149"><a href="#cb34-149" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">hypothesis</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb34-150"><a href="#cb34-150" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span><span class="at"> default</span></span>
-<span id="cb34-151"><a href="#cb34-151" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">jats</span><span class="kw">:</span><span class="at"> default</span></span>
-<span id="cb34-152"><a href="#cb34-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-153"><a href="#cb34-153" aria-hidden="true" tabindex="-1"></a><span class="co">  # (other formats)</span></span>
-<span id="cb34-154"><a href="#cb34-154" aria-hidden="true" tabindex="-1"></a><span class="co">  # pdf: default</span></span>
-<span id="cb34-155"><a href="#cb34-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-156"><a href="#cb34-156" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
-<span id="cb34-157"><a href="#cb34-157" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb34-158"><a href="#cb34-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-159"><a href="#cb34-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-160"><a href="#cb34-160" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-161"><a href="#cb34-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-162"><a href="#cb34-162" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-163"><a href="#cb34-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-164"><a href="#cb34-164" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_manuscript.png)</span></span>
-<span id="cb34-165"><a href="#cb34-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-166"><a href="#cb34-166" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-167"><a href="#cb34-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-168"><a href="#cb34-168" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-169"><a href="#cb34-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-170"><a href="#cb34-170" aria-hidden="true" tabindex="-1"></a><span class="fu">## book</span></span>
-<span id="cb34-171"><a href="#cb34-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-172"><a href="#cb34-172" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
-<span id="cb34-173"><a href="#cb34-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-174"><a href="#cb34-174" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-175"><a href="#cb34-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-176"><a href="#cb34-176" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
-<span id="cb34-177"><a href="#cb34-177" aria-hidden="true" tabindex="-1"></a>test_book</span>
-<span id="cb34-178"><a href="#cb34-178" aria-hidden="true" tabindex="-1"></a>│- cover.png</span>
-<span id="cb34-179"><a href="#cb34-179" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
-<span id="cb34-180"><a href="#cb34-180" aria-hidden="true" tabindex="-1"></a>│- intro.qmd</span>
-<span id="cb34-181"><a href="#cb34-181" aria-hidden="true" tabindex="-1"></a>│- references.bib</span>
-<span id="cb34-182"><a href="#cb34-182" aria-hidden="true" tabindex="-1"></a>│- references.qmd</span>
-<span id="cb34-183"><a href="#cb34-183" aria-hidden="true" tabindex="-1"></a>│- summary.qmd</span>
-<span id="cb34-184"><a href="#cb34-184" aria-hidden="true" tabindex="-1"></a>└─ _quarto.yml</span>
-<span id="cb34-185"><a href="#cb34-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-186"><a href="#cb34-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-187"><a href="#cb34-187" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-188"><a href="#cb34-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-189"><a href="#cb34-189" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-190"><a href="#cb34-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-191"><a href="#cb34-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
-<span id="cb34-192"><a href="#cb34-192" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb34-193"><a href="#cb34-193" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
-<span id="cb34-194"><a href="#cb34-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-195"><a href="#cb34-195" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
-<span id="cb34-196"><a href="#cb34-196" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_book"</span></span>
-<span id="cb34-197"><a href="#cb34-197" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Norah Jones"</span></span>
-<span id="cb34-198"><a href="#cb34-198" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2025/6/13"</span></span>
-<span id="cb34-199"><a href="#cb34-199" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">chapters</span><span class="kw">:</span></span>
-<span id="cb34-200"><a href="#cb34-200" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>index.qmd</span>
-<span id="cb34-201"><a href="#cb34-201" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>intro.qmd</span>
-<span id="cb34-202"><a href="#cb34-202" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>summary.qmd</span>
-<span id="cb34-203"><a href="#cb34-203" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>references.qmd</span>
-<span id="cb34-204"><a href="#cb34-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-205"><a href="#cb34-205" aria-hidden="true" tabindex="-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> references.bib</span></span>
-<span id="cb34-206"><a href="#cb34-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-207"><a href="#cb34-207" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb34-208"><a href="#cb34-208" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb34-209"><a href="#cb34-209" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span></span>
-<span id="cb34-210"><a href="#cb34-210" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>cosmo</span>
-<span id="cb34-211"><a href="#cb34-211" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>brand</span>
-<span id="cb34-212"><a href="#cb34-212" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb34-213"><a href="#cb34-213" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> scrreprt</span></span>
-<span id="cb34-214"><a href="#cb34-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-215"><a href="#cb34-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-216"><a href="#cb34-216" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-217"><a href="#cb34-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-218"><a href="#cb34-218" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-219"><a href="#cb34-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-220"><a href="#cb34-220" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_book.png)</span></span>
-<span id="cb34-221"><a href="#cb34-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-222"><a href="#cb34-222" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-223"><a href="#cb34-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-224"><a href="#cb34-224" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-225"><a href="#cb34-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-226"><a href="#cb34-226" aria-hidden="true" tabindex="-1"></a><span class="fu">## confluence</span></span>
-<span id="cb34-227"><a href="#cb34-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-228"><a href="#cb34-228" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
-<span id="cb34-229"><a href="#cb34-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-230"><a href="#cb34-230" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-231"><a href="#cb34-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-232"><a href="#cb34-232" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
-<span id="cb34-233"><a href="#cb34-233" aria-hidden="true" tabindex="-1"></a>test_confluence</span>
-<span id="cb34-234"><a href="#cb34-234" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
-<span id="cb34-235"><a href="#cb34-235" aria-hidden="true" tabindex="-1"></a>│- project-roadmap.qmd</span>
-<span id="cb34-236"><a href="#cb34-236" aria-hidden="true" tabindex="-1"></a>│- _quarto.yml</span>
-<span id="cb34-237"><a href="#cb34-237" aria-hidden="true" tabindex="-1"></a>│</span>
-<span id="cb34-238"><a href="#cb34-238" aria-hidden="true" tabindex="-1"></a>└─ reports</span>
-<span id="cb34-239"><a href="#cb34-239" aria-hidden="true" tabindex="-1"></a>    │- 2022-01.qmd</span>
-<span id="cb34-240"><a href="#cb34-240" aria-hidden="true" tabindex="-1"></a>    └- 2022-03.qmd    </span>
-<span id="cb34-241"><a href="#cb34-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-242"><a href="#cb34-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-243"><a href="#cb34-243" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-244"><a href="#cb34-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-245"><a href="#cb34-245" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-246"><a href="#cb34-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-247"><a href="#cb34-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
-<span id="cb34-248"><a href="#cb34-248" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb34-249"><a href="#cb34-249" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> confluence</span></span>
-<span id="cb34-250"><a href="#cb34-250" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_confluence"</span></span>
-<span id="cb34-251"><a href="#cb34-251" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-252"><a href="#cb34-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-253"><a href="#cb34-253" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-254"><a href="#cb34-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-255"><a href="#cb34-255" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-256"><a href="#cb34-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-257"><a href="#cb34-257" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_confluence.png)</span></span>
-<span id="cb34-258"><a href="#cb34-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-259"><a href="#cb34-259" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-260"><a href="#cb34-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-261"><a href="#cb34-261" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-262"><a href="#cb34-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-263"><a href="#cb34-263" aria-hidden="true" tabindex="-1"></a><span class="fu">## blog</span></span>
-<span id="cb34-264"><a href="#cb34-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-265"><a href="#cb34-265" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
-<span id="cb34-266"><a href="#cb34-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-267"><a href="#cb34-267" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-268"><a href="#cb34-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-269"><a href="#cb34-269" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
-<span id="cb34-270"><a href="#cb34-270" aria-hidden="true" tabindex="-1"></a>test_confluence</span>
-<span id="cb34-271"><a href="#cb34-271" aria-hidden="true" tabindex="-1"></a>│- about.qmd</span>
-<span id="cb34-272"><a href="#cb34-272" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
-<span id="cb34-273"><a href="#cb34-273" aria-hidden="true" tabindex="-1"></a>│- profile.jpg</span>
-<span id="cb34-274"><a href="#cb34-274" aria-hidden="true" tabindex="-1"></a>│- styles.css</span>
-<span id="cb34-275"><a href="#cb34-275" aria-hidden="true" tabindex="-1"></a>│- _quarto.yml</span>
-<span id="cb34-276"><a href="#cb34-276" aria-hidden="true" tabindex="-1"></a>│</span>
-<span id="cb34-277"><a href="#cb34-277" aria-hidden="true" tabindex="-1"></a>└─ posts</span>
-<span id="cb34-278"><a href="#cb34-278" aria-hidden="true" tabindex="-1"></a>    │- _metadata.yml</span>
-<span id="cb34-279"><a href="#cb34-279" aria-hidden="true" tabindex="-1"></a>    │</span>
-<span id="cb34-280"><a href="#cb34-280" aria-hidden="true" tabindex="-1"></a>    ├- post-with-code</span>
-<span id="cb34-281"><a href="#cb34-281" aria-hidden="true" tabindex="-1"></a>    │  ├- image.jpg</span>
-<span id="cb34-282"><a href="#cb34-282" aria-hidden="true" tabindex="-1"></a>    │  └- index.qmd</span>
-<span id="cb34-283"><a href="#cb34-283" aria-hidden="true" tabindex="-1"></a>    │</span>
-<span id="cb34-284"><a href="#cb34-284" aria-hidden="true" tabindex="-1"></a>    └- welcome</span>
-<span id="cb34-285"><a href="#cb34-285" aria-hidden="true" tabindex="-1"></a>       ├- index.qmd</span>
-<span id="cb34-286"><a href="#cb34-286" aria-hidden="true" tabindex="-1"></a>       └- thumbnail.jpg</span>
-<span id="cb34-287"><a href="#cb34-287" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-288"><a href="#cb34-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-289"><a href="#cb34-289" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-290"><a href="#cb34-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-291"><a href="#cb34-291" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-292"><a href="#cb34-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-293"><a href="#cb34-293" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
-<span id="cb34-294"><a href="#cb34-294" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb34-295"><a href="#cb34-295" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
-<span id="cb34-296"><a href="#cb34-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-297"><a href="#cb34-297" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb34-298"><a href="#cb34-298" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_blog"</span></span>
-<span id="cb34-299"><a href="#cb34-299" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
-<span id="cb34-300"><a href="#cb34-300" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">right</span><span class="kw">:</span></span>
-<span id="cb34-301"><a href="#cb34-301" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>about.qmd</span>
-<span id="cb34-302"><a href="#cb34-302" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> github</span></span>
-<span id="cb34-303"><a href="#cb34-303" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> https://github.com/</span></span>
-<span id="cb34-304"><a href="#cb34-304" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> twitter</span></span>
-<span id="cb34-305"><a href="#cb34-305" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> https://twitter.com</span></span>
-<span id="cb34-306"><a href="#cb34-306" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb34-307"><a href="#cb34-307" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb34-308"><a href="#cb34-308" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span></span>
-<span id="cb34-309"><a href="#cb34-309" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>cosmo</span>
-<span id="cb34-310"><a href="#cb34-310" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>brand</span>
-<span id="cb34-311"><a href="#cb34-311" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> styles.css</span></span>
-<span id="cb34-312"><a href="#cb34-312" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-313"><a href="#cb34-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-314"><a href="#cb34-314" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-315"><a href="#cb34-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-316"><a href="#cb34-316" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
-<span id="cb34-317"><a href="#cb34-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-318"><a href="#cb34-318" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_blog.png)</span></span>
-<span id="cb34-319"><a href="#cb34-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-320"><a href="#cb34-320" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-321"><a href="#cb34-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-322"><a href="#cb34-322" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-323"><a href="#cb34-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-324"><a href="#cb34-324" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-325"><a href="#cb34-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-326"><a href="#cb34-326" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-327"><a href="#cb34-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-328"><a href="#cb34-328" aria-hidden="true" tabindex="-1"></a><span class="fu">## HTMLとWebsite、Quarto Bookの違い</span></span>
-<span id="cb34-329"><a href="#cb34-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-330"><a href="#cb34-330" aria-hidden="true" tabindex="-1"></a>Quartoでは、YAMLに出力ファイルを指定せずにRenderを行うと、HTMLが出力されます。ですので、Markdown、YAMLを用いれば、ある程度自由にHTMLを用いたウェブページを作成することができます。</span>
-<span id="cb34-331"><a href="#cb34-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-332"><a href="#cb34-332" aria-hidden="true" tabindex="-1"></a>QuartoでWebsiteやBookを指定してWebsite・Bookを作成する利点は、それぞれを指定することである程度出力するHTMLのデザインを固定することができる点にあります。Websiteではある程度自由に、複数の.qmdを一つのウェブページに仕立てることができます。また、Bookであれば、.qmdを各章とし、本のように一本道のウェブページを作成できます。</span>
-<span id="cb34-333"><a href="#cb34-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-334"><a href="#cb34-334" aria-hidden="true" tabindex="-1"></a><span class="fu">### website・bookの設定</span></span>
-<span id="cb34-335"><a href="#cb34-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-336"><a href="#cb34-336" aria-hidden="true" tabindex="-1"></a>Website、Bookを作成する場合、<span class="in">`_quarto.yml`</span>に<span class="in">`project: type: website`</span>または<span class="in">`project: type:  book`</span>を設定します。この<span class="in">`project`</span>は上記のようにQuarto Projectを作成していなくても設定可能です。</span>
-<span id="cb34-337"><a href="#cb34-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-338"><a href="#cb34-338" aria-hidden="true" tabindex="-1"></a>また、.qmdファイル内で<span class="in">`project`</span>を設定しても、<span class="in">`project`</span>に応じた設定は利用できません。<span class="in">`project`</span>は<span class="in">`_quarto.yml`</span>内に設定して用います。</span>
-<span id="cb34-339"><a href="#cb34-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-340"><a href="#cb34-340" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="project typeの設定"}</span></span>
-<span id="cb34-341"><a href="#cb34-341" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb34-342"><a href="#cb34-342" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
-<span id="cb34-343"><a href="#cb34-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-344"><a href="#cb34-344" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb34-345"><a href="#cb34-345" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
-<span id="cb34-346"><a href="#cb34-346" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-347"><a href="#cb34-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-348"><a href="#cb34-348" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
-<span id="cb34-349"><a href="#cb34-349" aria-hidden="true" tabindex="-1"></a><span class="fu">## 選択可能なtype</span></span>
-<span id="cb34-350"><a href="#cb34-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-351"><a href="#cb34-351" aria-hidden="true" tabindex="-1"></a><span class="in">`type`</span>には、<span class="in">`default`</span>、<span class="in">`website`</span>、<span class="in">`book`</span>、<span class="in">`manuscript`</span>の<span class="co">[</span><span class="ot">4つが設定できる</span><span class="co">](https://quarto.org/docs/reference/projects/options.html)</span>とされていますが、上記のように<span class="in">`confluence`</span>も設定可能です。blogは<span class="in">`website`</span>の一形態となるため、<span class="in">`type`</span>は<span class="in">`website`</span>となります。</span>
-<span id="cb34-352"><a href="#cb34-352" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-353"><a href="#cb34-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-354"><a href="#cb34-354" aria-hidden="true" tabindex="-1"></a><span class="fu">### index.qmd</span></span>
-<span id="cb34-355"><a href="#cb34-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-356"><a href="#cb34-356" aria-hidden="true" tabindex="-1"></a><span class="in">`website`</span>のトップページとなるのは、<span class="in">`index.qmd`</span>という.qmdファイルです。<span class="in">`index.qmd`</span>は<span class="in">`book`</span>や<span class="in">`blog`</span>でもトップページとなります。</span>
-<span id="cb34-357"><a href="#cb34-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-358"><a href="#cb34-358" aria-hidden="true" tabindex="-1"></a><span class="fu">### Renderする.qmdを指定する</span></span>
-<span id="cb34-359"><a href="#cb34-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-360"><a href="#cb34-360" aria-hidden="true" tabindex="-1"></a>Projectを設定した<span class="in">`_quarto.yml`</span>と同じフォルダ・サブフォルダ内に保存されている.qmdファイルは、そのProjectのファイルであると認識されます。このフォルダ内の.qmdファイルをRenderすると、基本的にはそのフォルダおよびサブフォルダ内のすべての.qmdファイルがRenderされます。</span>
-<span id="cb34-361"><a href="#cb34-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-362"><a href="#cb34-362" aria-hidden="true" tabindex="-1"></a>Projectのフォルダ内のうち、Renderしたい.qmdファイルを指定する場合には、<span class="in">`project: render:`</span>に.qmdファイルを設定します。</span>
-<span id="cb34-363"><a href="#cb34-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-364"><a href="#cb34-364" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Renderするファイルを指定する"}</span></span>
-<span id="cb34-365"><a href="#cb34-365" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb34-366"><a href="#cb34-366" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">render</span><span class="kw">:</span></span>
-<span id="cb34-367"><a href="#cb34-367" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>section1.qmd</span>
-<span id="cb34-368"><a href="#cb34-368" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>section2.qmd</span>
-<span id="cb34-369"><a href="#cb34-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-370"><a href="#cb34-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-371"><a href="#cb34-371" aria-hidden="true" tabindex="-1"></a>また、ファイル名の前に<span class="in">`!`</span>を置くと、そのファイルのみを除いてRenderすることもできます。ただし、この場合には<span class="in">`*.qmd`</span>という形で、すべての.qmdファイルを指定しておく必要があります。</span>
-<span id="cb34-372"><a href="#cb34-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-373"><a href="#cb34-373" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Renderしないファイルを指定する"}</span></span>
-<span id="cb34-374"><a href="#cb34-374" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb34-375"><a href="#cb34-375" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">render</span><span class="kw">:</span></span>
-<span id="cb34-376"><a href="#cb34-376" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"*.qmd"</span><span class="co"> # すべての.qmdファイルをRenderする</span></span>
-<span id="cb34-377"><a href="#cb34-377" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"!ignored.qmd"</span><span class="co"> # 選択した.qmdファイルをRenderしない</span></span>
-<span id="cb34-378"><a href="#cb34-378" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"!ignored-dir/"</span><span class="co"> # 指定したディレクトリ内の.qmdファイルをRenderしない</span></span>
-<span id="cb34-379"><a href="#cb34-379" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-380"><a href="#cb34-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-381"><a href="#cb34-381" aria-hidden="true" tabindex="-1"></a><span class="fu">### ブログを作成する</span></span>
-<span id="cb34-382"><a href="#cb34-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-383"><a href="#cb34-383" aria-hidden="true" tabindex="-1"></a>blogはwebsiteの特殊な形の一つで、基本的なWebsiteの構造に投稿（posts）を追加して用います。blogのフォルダ構造は上に示した通り、以下のようになります。<span class="in">`posts`</span>ディレクトリ内にpostsに当たる.qmdファイルを追加していきます。</span>
-<span id="cb34-384"><a href="#cb34-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-385"><a href="#cb34-385" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`posts`</span>ディレクトリ内にサブフォルダを作成し、その中に.qmdファイルを作成することで、各postごとのファイルをそれぞれ別に保存することもできます。</span>
-<span id="cb34-386"><a href="#cb34-386" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-387"><a href="#cb34-387" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="ブログのフォルダ構造"}</span></span>
-<span id="cb34-388"><a href="#cb34-388" aria-hidden="true" tabindex="-1"></a>test_confluence</span>
-<span id="cb34-389"><a href="#cb34-389" aria-hidden="true" tabindex="-1"></a>│- about.qmd</span>
-<span id="cb34-390"><a href="#cb34-390" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
-<span id="cb34-391"><a href="#cb34-391" aria-hidden="true" tabindex="-1"></a>│- profile.jpg</span>
-<span id="cb34-392"><a href="#cb34-392" aria-hidden="true" tabindex="-1"></a>│- styles.css</span>
-<span id="cb34-393"><a href="#cb34-393" aria-hidden="true" tabindex="-1"></a>│- _quarto.yml</span>
-<span id="cb34-394"><a href="#cb34-394" aria-hidden="true" tabindex="-1"></a>└─ posts</span>
-<span id="cb34-395"><a href="#cb34-395" aria-hidden="true" tabindex="-1"></a>    │- _metadata.yml</span>
-<span id="cb34-396"><a href="#cb34-396" aria-hidden="true" tabindex="-1"></a>    ├- post-with-code</span>
-<span id="cb34-397"><a href="#cb34-397" aria-hidden="true" tabindex="-1"></a>    │  ├- image.jpg</span>
-<span id="cb34-398"><a href="#cb34-398" aria-hidden="true" tabindex="-1"></a>    │  └- index.qmd</span>
-<span id="cb34-399"><a href="#cb34-399" aria-hidden="true" tabindex="-1"></a>    └- welcome</span>
-<span id="cb34-400"><a href="#cb34-400" aria-hidden="true" tabindex="-1"></a>       ├- index.qmd</span>
-<span id="cb34-401"><a href="#cb34-401" aria-hidden="true" tabindex="-1"></a>       └- thumbnail.jpg</span>
-<span id="cb34-402"><a href="#cb34-402" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-403"><a href="#cb34-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-404"><a href="#cb34-404" aria-hidden="true" tabindex="-1"></a><span class="fu">#### _metadata.yml</span></span>
-<span id="cb34-405"><a href="#cb34-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-406"><a href="#cb34-406" aria-hidden="true" tabindex="-1"></a>上記のpostsディレクトリ内には、<span class="in">`_metadata.yml`</span>というファイルがあります。これは、<span class="in">`_quarto.yml`</span>に設定したYAMLに加えて、postsのみに適用するYAMLを指定するためのファイルです。<span class="in">`blog`</span>に限らず、websiteでも同様にサブフォルダ内に<span class="in">`_metadata.yml`</span>を設定することで、そのサブフォルダ内の.qmdのデザインやchunkの設定などをpost以外とは別の形で設定することができます。</span>
-<span id="cb34-407"><a href="#cb34-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-408"><a href="#cb34-408" aria-hidden="true" tabindex="-1"></a>ただし、サブフォルダ内の.qmdに適用されるYAMLは<span class="in">`_quarto.yml`</span>と<span class="in">`_metadata.yml`</span>を統合したものになり、<span class="in">`_metadata.yml`</span>の設定のみだけではなく、<span class="in">`_quarto.yml`</span>の内容も同様に適用されます。</span>
-<span id="cb34-409"><a href="#cb34-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-410"><a href="#cb34-410" aria-hidden="true" tabindex="-1"></a><span class="fu">#### postsの設定</span></span>
-<span id="cb34-411"><a href="#cb34-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-412"><a href="#cb34-412" aria-hidden="true" tabindex="-1"></a>各postにはタイトルや著者、登校日、ブログのカテゴリ、トップ画像を設定することができます。タイトルや著者には、<span class="co">[</span><span class="ot">39章</span><span class="co">](chapter39.qmd#文章のタイトルと著者)</span>に記載した通り、<span class="in">`title`</span>や<span class="in">`author`</span>、<span class="in">`date`</span>をそのpostのYAMLに設定します。ブログのカテゴリは<span class="in">`categories`</span>に、ブログのトップ画像として用いる画像は<span class="in">`image`</span>にそれぞれ設定します。</span>
-<span id="cb34-413"><a href="#cb34-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-414"><a href="#cb34-414" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Blog：PostのYAML設定"}</span></span>
-<span id="cb34-415"><a href="#cb34-415" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb34-416"><a href="#cb34-416" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Post With Code"</span></span>
-<span id="cb34-417"><a href="#cb34-417" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Harlow Malloc"</span></span>
-<span id="cb34-418"><a href="#cb34-418" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2025-06-13"</span></span>
-<span id="cb34-419"><a href="#cb34-419" aria-hidden="true" tabindex="-1"></a><span class="fu">categories</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">news</span><span class="kw">,</span><span class="at"> code</span><span class="kw">,</span><span class="at"> analysis</span><span class="kw">]</span></span>
-<span id="cb34-420"><a href="#cb34-420" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span><span class="kw">:</span><span class="at"> </span><span class="st">"image.jpg"</span></span>
-<span id="cb34-421"><a href="#cb34-421" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb34-422"><a href="#cb34-422" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-423"><a href="#cb34-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-424"><a href="#cb34-424" aria-hidden="true" tabindex="-1"></a><span class="in">`categories`</span>は<span class="in">`_quarto.yml`</span>に以下のような形で設定することもできます。</span>
-<span id="cb34-425"><a href="#cb34-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-426"><a href="#cb34-426" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Blog：カテゴリの設定"}</span></span>
-<span id="cb34-427"><a href="#cb34-427" aria-hidden="true" tabindex="-1"></a><span class="fu">categories</span><span class="kw">:</span></span>
-<span id="cb34-428"><a href="#cb34-428" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span>news</span>
-<span id="cb34-429"><a href="#cb34-429" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span>code</span>
-<span id="cb34-430"><a href="#cb34-430" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span>analysis</span>
-<span id="cb34-431"><a href="#cb34-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-432"><a href="#cb34-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-433"><a href="#cb34-433" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Listing</span></span>
-<span id="cb34-434"><a href="#cb34-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-435"><a href="#cb34-435" aria-hidden="true" tabindex="-1"></a>Listingとはブログのpostの一覧を表示することです。Listingはindex.qmdのページに表示されます。このListingについては、YAMLで<span class="in">`listing`</span>を設定することで表示を変更することができます。</span>
-<span id="cb34-436"><a href="#cb34-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-437"><a href="#cb34-437" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Blog：投稿のlistingの設定"}</span></span>
-<span id="cb34-438"><a href="#cb34-438" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb34-439"><a href="#cb34-439" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"myblog"</span></span>
-<span id="cb34-440"><a href="#cb34-440" aria-hidden="true" tabindex="-1"></a><span class="fu">listing</span><span class="kw">:</span></span>
-<span id="cb34-441"><a href="#cb34-441" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> posts</span></span>
-<span id="cb34-442"><a href="#cb34-442" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sort</span><span class="kw">:</span><span class="at"> </span><span class="st">"date desc"</span></span>
-<span id="cb34-443"><a href="#cb34-443" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> default</span></span>
-<span id="cb34-444"><a href="#cb34-444" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">categories</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb34-445"><a href="#cb34-445" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb34-446"><a href="#cb34-446" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-447"><a href="#cb34-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-448"><a href="#cb34-448" aria-hidden="true" tabindex="-1"></a>設定可能なYAMLの一部を以下に示します。その他の設定項目については<span class="co">[</span><span class="ot">QuartoのReference</span><span class="co">](https://quarto.org/docs/reference/projects/websites.html)</span>をご参照ください。</span>
-<span id="cb34-449"><a href="#cb34-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-450"><a href="#cb34-450" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb34-451"><a href="#cb34-451" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet=</span><span class="dv">8</span>)</span>
-<span id="cb34-452"><a href="#cb34-452" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"Listingに関するYAML"</span>)</span>
-<span id="cb34-453"><a href="#cb34-453" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-454"><a href="#cb34-454" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-455"><a href="#cb34-455" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Aboutページの作成</span></span>
-<span id="cb34-456"><a href="#cb34-456" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-457"><a href="#cb34-457" aria-hidden="true" tabindex="-1"></a>Quartoでは、著者の名前や所属、website、blogの内容などを表示するAboutのページを、<span class="co">[</span><span class="ot">`postcards`</span><span class="co">](https://cran.r-project.org/web/packages/postcards/readme/README.html)</span>パッケージ<span class="co">[</span><span class="ot">@postcards_bib</span><span class="co">]</span>のデザインに従い設定することができます。<span class="in">`postcards`</span>のデザインを採用する場合、about.qmdに<span class="in">`about: template:`</span>のYAMLを設定します。templateには、<span class="in">`jolla`</span>、<span class="in">`trestles`</span>、<span class="in">`solana`</span>、<span class="in">`marquee`</span>、<span class="in">`broadside`</span>のいずれかを設定することができます。</span>
-<span id="cb34-458"><a href="#cb34-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-459"><a href="#cb34-459" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="Aboutページ"}</span></span>
-<span id="cb34-460"><a href="#cb34-460" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb34-461"><a href="#cb34-461" aria-hidden="true" tabindex="-1"></a>title: "xjorv"</span>
-<span id="cb34-462"><a href="#cb34-462" aria-hidden="true" tabindex="-1"></a>image: profile.jpg</span>
-<span id="cb34-463"><a href="#cb34-463" aria-hidden="true" tabindex="-1"></a>about:</span>
-<span id="cb34-464"><a href="#cb34-464" aria-hidden="true" tabindex="-1"></a>  template: jolla</span>
-<span id="cb34-465"><a href="#cb34-465" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb34-466"><a href="#cb34-466" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-467"><a href="#cb34-467" aria-hidden="true" tabindex="-1"></a>xjorvはしがない平社員のサラリーマンです。趣味としてRを触り、気まぐれに教科書を書いています。</span>
-<span id="cb34-468"><a href="#cb34-468" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-469"><a href="#cb34-469" aria-hidden="true" tabindex="-1"></a><span class="fu">## Education</span></span>
-<span id="cb34-470"><a href="#cb34-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-471"><a href="#cb34-471" aria-hidden="true" tabindex="-1"></a>University of bakada, Tokyo | Tokyo, Japan</span>
-<span id="cb34-472"><a href="#cb34-472" aria-hidden="true" tabindex="-1"></a>Ph.D in Tunnel Science | Sept 20XX - June 20XX</span>
-<span id="cb34-473"><a href="#cb34-473" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-474"><a href="#cb34-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-475"><a href="#cb34-475" aria-hidden="true" tabindex="-1"></a>:::{.panel-tabset}</span>
-<span id="cb34-476"><a href="#cb34-476" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-477"><a href="#cb34-477" aria-hidden="true" tabindex="-1"></a><span class="fu">## jolla</span></span>
-<span id="cb34-478"><a href="#cb34-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-479"><a href="#cb34-479" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_jolla.png)</span></span>
-<span id="cb34-480"><a href="#cb34-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-481"><a href="#cb34-481" aria-hidden="true" tabindex="-1"></a><span class="fu">## trestles</span></span>
-<span id="cb34-482"><a href="#cb34-482" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-483"><a href="#cb34-483" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_trestles.png)</span></span>
-<span id="cb34-484"><a href="#cb34-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-485"><a href="#cb34-485" aria-hidden="true" tabindex="-1"></a><span class="fu">## solana</span></span>
-<span id="cb34-486"><a href="#cb34-486" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-487"><a href="#cb34-487" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_solana.png)</span></span>
-<span id="cb34-488"><a href="#cb34-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-489"><a href="#cb34-489" aria-hidden="true" tabindex="-1"></a><span class="fu">## marquee</span></span>
-<span id="cb34-490"><a href="#cb34-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-491"><a href="#cb34-491" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_marquee.png)</span></span>
-<span id="cb34-492"><a href="#cb34-492" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-493"><a href="#cb34-493" aria-hidden="true" tabindex="-1"></a><span class="fu">## broadside</span></span>
-<span id="cb34-494"><a href="#cb34-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-495"><a href="#cb34-495" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_broadside.png)</span></span>
-<span id="cb34-496"><a href="#cb34-496" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-497"><a href="#cb34-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-498"><a href="#cb34-498" aria-hidden="true" tabindex="-1"></a><span class="fu">#### RSS</span></span>
-<span id="cb34-499"><a href="#cb34-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-500"><a href="#cb34-500" aria-hidden="true" tabindex="-1"></a>Listingの説明に記載した通り、YAMLに<span class="in">`feed: true`</span>を設定すると、<span class="co">[</span><span class="ot">RSSフィード</span><span class="co">](https://ja.wikipedia.org/wiki/RSS)</span>を設定することができます。</span>
-<span id="cb34-501"><a href="#cb34-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-502"><a href="#cb34-502" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="RSSの設定"}</span></span>
-<span id="cb34-503"><a href="#cb34-503" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb34-504"><a href="#cb34-504" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"a post"</span></span>
-<span id="cb34-505"><a href="#cb34-505" aria-hidden="true" tabindex="-1"></a><span class="fu">listing</span><span class="kw">:</span></span>
-<span id="cb34-506"><a href="#cb34-506" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> posts</span></span>
-<span id="cb34-507"><a href="#cb34-507" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">feed</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb34-508"><a href="#cb34-508" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb34-509"><a href="#cb34-509" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-510"><a href="#cb34-510" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-511"><a href="#cb34-511" aria-hidden="true" tabindex="-1"></a>ただし、個別の.qmdファイルで<span class="in">`feed: true`</span>と設定しただけでは、RSSを設定することはできず、<span class="in">`_quarto.yml`</span>で以下のようにRSSの設定を別途記載する必要があります。</span>
-<span id="cb34-512"><a href="#cb34-512" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-513"><a href="#cb34-513" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="RSSの設定2"}</span></span>
-<span id="cb34-514"><a href="#cb34-514" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb34-515"><a href="#cb34-515" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"xjorv's blog"</span></span>
-<span id="cb34-516"><a href="#cb34-516" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">site-url</span><span class="kw">:</span><span class="at"> https://www.myblogexample.io</span></span>
-<span id="cb34-517"><a href="#cb34-517" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"A cheap sample blog"</span></span>
-<span id="cb34-518"><a href="#cb34-518" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-519"><a href="#cb34-519" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-520"><a href="#cb34-520" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto Book</span></span>
-<span id="cb34-521"><a href="#cb34-521" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-522"><a href="#cb34-522" aria-hidden="true" tabindex="-1"></a>Quartoで教科書などの本を書くときに用いる<span class="in">`project`</span>の<span class="in">`type`</span>が<span class="in">`type: book`</span>です。<span class="in">`book`</span>はR markdownの拡張である、<span class="co">[</span><span class="ot">bookdown</span><span class="co">](https://bookdown.org/)[</span><span class="ot">@bookdown_bib</span><span class="co">]</span>を基とした<span class="in">`type`</span>で、YAMLでは以下のように記載することで<span class="in">`book`</span>のスタイルを適用することができます。</span>
-<span id="cb34-523"><a href="#cb34-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-524"><a href="#cb34-524" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="type: bookの設定"}</span></span>
-<span id="cb34-525"><a href="#cb34-525" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb34-526"><a href="#cb34-526" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
-<span id="cb34-527"><a href="#cb34-527" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-528"><a href="#cb34-528" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-529"><a href="#cb34-529" aria-hidden="true" tabindex="-1"></a><span class="fu">### Quarto Bookの構造</span></span>
-<span id="cb34-530"><a href="#cb34-530" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-531"><a href="#cb34-531" aria-hidden="true" tabindex="-1"></a>Quarto Bookの構造は<span class="in">`website`</span>と比較して単純で一本道となります。Bookの基本的な要素は<span class="in">`index.qmd`</span>、各章に当たる<span class="in">`.qmd`</span>ファイル、<span class="in">`summary.qmd`</span>、<span class="in">`reference.qmd`</span>の4つです。Quarto Bookでは<span class="in">`index.qmd`</span>は表紙とまえがき、<span class="in">`summary.qmd`</span>があとがき、<span class="in">`reference.qmd`</span>は参考文献に当たります。この3種類はQuarto Projectを用いる場合にも作成されます。</span>
-<span id="cb34-532"><a href="#cb34-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-533"><a href="#cb34-533" aria-hidden="true" tabindex="-1"></a>各章の<span class="in">`.qmd`</span>ファイルにはどのような名前を付けても問題ありませんが、各文書がどの章を構成するのかをYAMLで指定する必要があります。</span>
-<span id="cb34-534"><a href="#cb34-534" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-535"><a href="#cb34-535" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Bookのchaptersを設定する"}</span></span>
-<span id="cb34-536"><a href="#cb34-536" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb34-537"><a href="#cb34-537" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">chapters</span><span class="kw">:</span></span>
-<span id="cb34-538"><a href="#cb34-538" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>index.qmd</span>
-<span id="cb34-539"><a href="#cb34-539" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">part</span><span class="kw">:</span><span class="at"> </span><span class="st">"part 1"</span></span>
-<span id="cb34-540"><a href="#cb34-540" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">chapters</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb34-541"><a href="#cb34-541" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>chapter1.qmd</span>
-<span id="cb34-542"><a href="#cb34-542" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>chapter2.qmd</span>
-<span id="cb34-543"><a href="#cb34-543" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">part</span><span class="kw">:</span><span class="at"> </span><span class="st">"part 2"</span></span>
-<span id="cb34-544"><a href="#cb34-544" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">chapters</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb34-545"><a href="#cb34-545" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>chapter3.qmd</span>
-<span id="cb34-546"><a href="#cb34-546" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>chapter4.qmd</span>
-<span id="cb34-547"><a href="#cb34-547" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>summary.qmd</span>
-<span id="cb34-548"><a href="#cb34-548" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>references.qmd</span>
-<span id="cb34-549"><a href="#cb34-549" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-550"><a href="#cb34-550" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-551"><a href="#cb34-551" aria-hidden="true" tabindex="-1"></a>上記のように設定すると、本の章立てとしては、まず始めのページが<span class="in">`index.qmd`</span>、次に<span class="in">`chapter1.qmd`</span>と<span class="in">`chapter2.qmd`</span>が「part 1」という話題の1章、2章、次の<span class="in">`chapter3.qmd`</span>と<span class="in">`chapter4.qmd`</span>が「part 2」の3章、4章、最後に<span class="in">`summary.qmd`</span>と<span class="in">`references.qmd`</span>が続く形になります。要は、この<span class="in">`chapters`</span>のYAMLに設定した順に章が進むということになります。</span>
-<span id="cb34-552"><a href="#cb34-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-553"><a href="#cb34-553" aria-hidden="true" tabindex="-1"></a>ただし、章番号は上記の<span class="in">`chapter1.qmd`</span>が1章にはならず、<span class="in">`index.qmd`</span>が1章とされます。<span class="in">`index.qmd`</span>を1章とせず、<span class="in">`chapter1.qmd`</span>を1章とする場合には、<span class="in">`index.qmd`</span>のheaderに<span class="in">`{.unnumbered}`</span>を設定する必要があります。また、<span class="in">`summary.qmd`</span>や<span class="in">`references.qmd`</span>にも<span class="in">`index.qmd`</span>と同様に章番号が振られるので、番号を振りたくない場合には<span class="in">`{.unnumbered}`</span>を設定するとよいでしょう。</span>
-<span id="cb34-554"><a href="#cb34-554" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-555"><a href="#cb34-555" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="ヘッダーに番号をつけない"}</span></span>
-<span id="cb34-556"><a href="#cb34-556" aria-hidden="true" tabindex="-1"></a><span class="fu">## はじめに {.unnumbered}</span></span>
-<span id="cb34-557"><a href="#cb34-557" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-558"><a href="#cb34-558" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-559"><a href="#cb34-559" aria-hidden="true" tabindex="-1"></a><span class="fu">### 参照（Cross references）</span></span>
-<span id="cb34-560"><a href="#cb34-560" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-561"><a href="#cb34-561" aria-hidden="true" tabindex="-1"></a>Quarto Bookでは、その章内の図やchunkだけでなく、他の章の記載内容を参照すること（Cross references）ができます。たとえば、以下のようにリンクを記載すると、特定の章の.qmdに対応したページへのリンクを作成できます。</span>
-<span id="cb34-562"><a href="#cb34-562" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-563"><a href="#cb34-563" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="章の参照"}</span></span>
-<span id="cb34-564"><a href="#cb34-564" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章</span><span class="co">](chapter1.qmd)</span></span>
-<span id="cb34-565"><a href="#cb34-565" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-566"><a href="#cb34-566" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章</span><span class="co">](./chapter1.html)</span> # このような形でも章へのリンクを作成できる</span>
-<span id="cb34-567"><a href="#cb34-567" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-568"><a href="#cb34-568" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-569"><a href="#cb34-569" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章</span><span class="co">](chapter1.qmd)</span></span>
-<span id="cb34-570"><a href="#cb34-570" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-571"><a href="#cb34-571" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
-<span id="cb34-572"><a href="#cb34-572" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-573"><a href="#cb34-573" aria-hidden="true" tabindex="-1"></a>また、以下のようなリンクを作成することで、その章の各header（小項目）までのリンクを作成することもできます。</span>
-<span id="cb34-574"><a href="#cb34-574" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-575"><a href="#cb34-575" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="章内のヘッダーの参照"}</span></span>
-<span id="cb34-576"><a href="#cb34-576" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章</span><span class="co">](chapter1.qmd#rstudioのインストール)</span></span>
-<span id="cb34-577"><a href="#cb34-577" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-578"><a href="#cb34-578" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-579"><a href="#cb34-579" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章 Rstudioのインストール</span><span class="co">](chapter1.qmd#rstudioのインストール)</span></span>
-<span id="cb34-580"><a href="#cb34-580" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-581"><a href="#cb34-581" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
-<span id="cb34-582"><a href="#cb34-582" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-583"><a href="#cb34-583" aria-hidden="true" tabindex="-1"></a><span class="fu">### 図・画像・表への参照</span></span>
-<span id="cb34-584"><a href="#cb34-584" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-585"><a href="#cb34-585" aria-hidden="true" tabindex="-1"></a>chunk optionとして<span class="in">`label`</span>を設定しておくと、その<span class="in">`label`</span>を参照し、リンクを作成することができます。また、画像や表に対しても参照を行うことができます。</span>
-<span id="cb34-586"><a href="#cb34-586" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-587"><a href="#cb34-587" aria-hidden="true" tabindex="-1"></a>ただし、参照のための<span class="in">`label`</span>の付け方にはルールがあり、図や画像のラベルは<span class="in">`fig-`</span>から、表のラベルは<span class="in">`tbl-`</span>から始める必要があります。また、<span class="in">`label`</span>にはアンダースコア（<span class="in">`_`</span>）を用いることはできません。</span>
-<span id="cb34-588"><a href="#cb34-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-589"><a href="#cb34-589" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-590"><a href="#cb34-590" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-cars-plot</span></span>
-<span id="cb34-591"><a href="#cb34-591" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: chunk：ラベルを設定する</span></span>
-<span id="cb34-592"><a href="#cb34-592" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-593"><a href="#cb34-593" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
-<span id="cb34-594"><a href="#cb34-594" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-595"><a href="#cb34-595" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-596"><a href="#cb34-596" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb34-597"><a href="#cb34-597" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-cars-plot</span></span>
-<span id="cb34-598"><a href="#cb34-598" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-599"><a href="#cb34-599" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
-<span id="cb34-600"><a href="#cb34-600" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-601"><a href="#cb34-601" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-602"><a href="#cb34-602" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="chunkの出力を参照する"}</span></span>
-<span id="cb34-603"><a href="#cb34-603" aria-hidden="true" tabindex="-1"></a><span class="in">`cars`</span>は自動車のスピードと停止するまでの距離の関係を表したデータです @fig-cars-plot 。</span>
-<span id="cb34-604"><a href="#cb34-604" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-605"><a href="#cb34-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-606"><a href="#cb34-606" aria-hidden="true" tabindex="-1"></a><span class="in">`cars`</span>は自動車のスピードと停止するまでの距離の関係を表したデータです @fig-cars-plot 。</span>
-<span id="cb34-607"><a href="#cb34-607" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-608"><a href="#cb34-608" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
-<span id="cb34-609"><a href="#cb34-609" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-610"><a href="#cb34-610" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="図にラベルを設定する"}</span></span>
-<span id="cb34-611"><a href="#cb34-611" aria-hidden="true" tabindex="-1"></a><span class="al">![大仏](./image/bud.png)</span>{#fig-bud}</span>
-<span id="cb34-612"><a href="#cb34-612" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb34-613"><a href="#cb34-613" aria-hidden="true" tabindex="-1"></a>奈良の大仏 @fig_bud</span>
-<span id="cb34-614"><a href="#cb34-614" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-615"><a href="#cb34-615" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-616"><a href="#cb34-616" aria-hidden="true" tabindex="-1"></a><span class="al">![大仏](./image/bud.jpg)</span>{#fig-bud}</span>
-<span id="cb34-617"><a href="#cb34-617" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb34-618"><a href="#cb34-618" aria-hidden="true" tabindex="-1"></a>奈良の大仏 @fig-bud</span>
-<span id="cb34-619"><a href="#cb34-619" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-620"><a href="#cb34-620" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
-<span id="cb34-621"><a href="#cb34-621" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-622"><a href="#cb34-622" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="表にラベルを設定する"}</span></span>
-<span id="cb34-623"><a href="#cb34-623" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
-<span id="cb34-624"><a href="#cb34-624" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> pet <span class="pp">|</span> age <span class="pp">|</span> sex <span class="pp">|</span></span>
-<span id="cb34-625"><a href="#cb34-625" aria-hidden="true" tabindex="-1"></a>+===<span class="al">==+=====+==</span>===+</span>
-<span id="cb34-626"><a href="#cb34-626" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> dog <span class="pp">|</span> 5   <span class="pp">|</span> F   <span class="pp">|</span></span>
-<span id="cb34-627"><a href="#cb34-627" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
-<span id="cb34-628"><a href="#cb34-628" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cat <span class="pp">|</span> 3   <span class="pp">|</span> M   <span class="pp">|</span></span>
-<span id="cb34-629"><a href="#cb34-629" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
-<span id="cb34-630"><a href="#cb34-630" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb34-631"><a href="#cb34-631" aria-hidden="true" tabindex="-1"></a>: 表のラベル {#tbl-dog-cat}</span>
-<span id="cb34-632"><a href="#cb34-632" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb34-633"><a href="#cb34-633" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb34-634"><a href="#cb34-634" aria-hidden="true" tabindex="-1"></a>表を参照する @tbl-dog-cat 。</span>
-<span id="cb34-635"><a href="#cb34-635" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-636"><a href="#cb34-636" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-637"><a href="#cb34-637" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
-<span id="cb34-638"><a href="#cb34-638" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> pet <span class="pp">|</span> age <span class="pp">|</span> sex <span class="pp">|</span></span>
-<span id="cb34-639"><a href="#cb34-639" aria-hidden="true" tabindex="-1"></a>+===<span class="al">==+=====+==</span>===+</span>
-<span id="cb34-640"><a href="#cb34-640" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> dog <span class="pp">|</span> 5   <span class="pp">|</span> F   <span class="pp">|</span></span>
-<span id="cb34-641"><a href="#cb34-641" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
-<span id="cb34-642"><a href="#cb34-642" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cat <span class="pp">|</span> 3   <span class="pp">|</span> M   <span class="pp">|</span></span>
-<span id="cb34-643"><a href="#cb34-643" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
-<span id="cb34-644"><a href="#cb34-644" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb34-645"><a href="#cb34-645" aria-hidden="true" tabindex="-1"></a>: 表のラベル {#tbl-dog-cat}</span>
-<span id="cb34-646"><a href="#cb34-646" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb34-647"><a href="#cb34-647" aria-hidden="true" tabindex="-1"></a>表を参照する @tbl-dog-cat 。</span>
-<span id="cb34-648"><a href="#cb34-648" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-649"><a href="#cb34-649" aria-hidden="true" tabindex="-1"></a><span class="fu">## Website・BookのRender</span></span>
-<span id="cb34-650"><a href="#cb34-650" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-651"><a href="#cb34-651" aria-hidden="true" tabindex="-1"></a>WebsiteやBookの.qmdを作成したら、HTMLをRenderします。Website・Bookのいずれの場合も、RStudioでは上に表示されているRenderボタンを押すことでRenderすることができます。</span>
-<span id="cb34-652"><a href="#cb34-652" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-653"><a href="#cb34-653" aria-hidden="true" tabindex="-1"></a><span class="al">![Renderボタン](./image/Quarto_render_from_Rstudio.png)</span></span>
-<span id="cb34-654"><a href="#cb34-654" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-655"><a href="#cb34-655" aria-hidden="true" tabindex="-1"></a>また、TerminalでProjectのフォルダに移動し、<span class="in">`quarto render`</span>のコマンドを実行することでもWebsite・BookをRenderすることができます。</span>
-<span id="cb34-656"><a href="#cb34-656" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-657"><a href="#cb34-657" aria-hidden="true" tabindex="-1"></a><span class="al">![quarto render](./image/Quarto_render_from_terminal.png)</span></span>
-<span id="cb34-658"><a href="#cb34-658" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-659"><a href="#cb34-659" aria-hidden="true" tabindex="-1"></a>Renderを実行すると、Websiteではそのフォルダとサブフォルダに含まれている<span class="in">`.qmd`</span>ファイルがHTMLに変換されます。一方でBookでは、そのフォルダ内の.qmdファイルのうち、<span class="in">`chapters`</span>で章に設定した.qmdファイルだけがHTMLに変換されます。</span>
-<span id="cb34-660"><a href="#cb34-660" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-661"><a href="#cb34-661" aria-hidden="true" tabindex="-1"></a><span class="fu">### freeze</span></span>
-<span id="cb34-662"><a href="#cb34-662" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-663"><a href="#cb34-663" aria-hidden="true" tabindex="-1"></a>WebsiteやBookでは、.qmdファイルを指定せずにRenderすると、変換する.qmdファイルに含まれるRのスクリプトがすべて再計算され、Renderされます。すでにHTMLを作成し、.qmdに変更がない場合にもこの再計算は実行されます。したがって、WebsiteやBookのサイズが大きくなると、再計算に時間がかかるようになります。</span>
-<span id="cb34-664"><a href="#cb34-664" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-665"><a href="#cb34-665" aria-hidden="true" tabindex="-1"></a>一度HTMLを作成した.qmdについて、ファイルに変更がない場合にRenderを実施しないようにするには、<span class="in">`freeze: auto`</span>を設定します。また、<span class="in">`freeze: true`</span>を設定すると、.qmdのRenderが行われなくなります。</span>
-<span id="cb34-666"><a href="#cb34-666" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-667"><a href="#cb34-667" aria-hidden="true" tabindex="-1"></a>大きなWebsiteを作成する場合には、作成中には<span class="in">`freeze: auto`</span>を用い、以下に述べるデプロイの前には<span class="in">`freeze: false`</span>として全体をRenderするような運用を行うとよいかと思います。</span>
-<span id="cb34-668"><a href="#cb34-668" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-669"><a href="#cb34-669" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="freezeの設定"}</span></span>
-<span id="cb34-670"><a href="#cb34-670" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
-<span id="cb34-671"><a href="#cb34-671" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> auto</span><span class="co"> # true/auto/falseのいずれかを選択する</span></span>
-<span id="cb34-672"><a href="#cb34-672" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-673"><a href="#cb34-673" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-674"><a href="#cb34-674" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
-<span id="cb34-675"><a href="#cb34-675" aria-hidden="true" tabindex="-1"></a><span class="fu">## freeze: autoについて</span></span>
-<span id="cb34-676"><a href="#cb34-676" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-677"><a href="#cb34-677" aria-hidden="true" tabindex="-1"></a>大きなWebsiteやBookを作成する場合、<span class="in">`freeze: auto`</span>はRenderにかかる時間を短縮できる便利な設定です。ただし、.qmdファイルに変更がないのに内容が変わるような場合、例えば.qmdファイル中で読み込むデータを修正した場合などには、この変更が適用されずにRenderが終了してしまいます。HTMLを共有・公開する前などには、<span class="in">`freeze: false`</span>に設定を変更し、Renderしたほうがよいでしょう。</span>
-<span id="cb34-678"><a href="#cb34-678" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Quarto：WebsiteとBook</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE, message=FALSE}</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>ここまでに、QuartoでHTML、PDF、Wordなどの文書、Reveal.jsなどのプレゼンテーション、インタラクティブなダッシュボードを作成する手法を説明してきました。Quartoでは、HTMLの拡張として、ブログなどを含む**Website**や教科書などの本のHTMLとして表現する、**Book**を作成することもできます。以下にWebsiteやBookを作成する手順について、簡単に説明していきます。</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto project</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>Quartoでは、**QuartoのProject**というものを設定することができます。RStudioを用いる場合、Quarto Projectは<span class="co">[</span><span class="ot">39章</span><span class="co">](chapter39.qmd)</span>で説明したRStudioのProjectとほぼ同じです。RStudioではProjectを作成するとき、Projectのタイプを選択することができます。</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="al">![RStudioでProject typeを選択する](./image/Rstudio_quarto_project.png)</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>このリストから、「Quarto Project」や「Quarto Website」、「Quarto Book」などを選択すると、そのタイプに従ったプロジェクトと共に、いくつかのqmdファイルがProjectのフォルダに作成されます。</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="al">![Quarto Projectで作成されるファイル（Website）](./image/quarto_project_files.png)</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>RStudioを用いている場合には、このフォルダ内の<span class="in">`.Rproj`</span>ファイルを開くとRStudioでプロジェクトが展開されます。</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>一方で、VSCodeなどのテキストエディタやJupyter Notebookなどを用いている場合には、RStudioのようにProjectを作成することはできません。そこで、Quarto CLIでは、TerminalからProjectを作成できるようになっています。</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="Quarto Projectを作成する"}</span></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>quarto create project</span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>TerminalからQuarto Projectを作成すると、まずはプロジェクトのタイプを入力する画面が表示されます。タイプには、default、website、blog、manuscript、book、<span class="co">[</span><span class="ot">confluence</span><span class="co">](https://quarto.org/docs/publishing/confluence.html)</span>（Wikiみたいなもの）の6つがあるので、作成する文書に対応したタイプを選択します。</span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>次に、Directory（フォルダ名）を入力します。Directoryを入力すると、そのDirectory内にProjectが作成されます。このProjectのフォルダには、上で示した作成されるファイルから、<span class="in">`.Rproj`</span>ファイルが除かれたものが作成されます。このフォルダに移動し、<span class="in">`quarto render`</span>を行うと、テンプレートの文書（Websiteの場合はHTML）を作成することができます。</span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a>RStudioではProjectを作成することでいろいろな設定が行われるため、複雑な文書を作成する場合にはProjectを作成しておいた方がよいですが、VSCodeなどを用いる場合には特に必須ではなく、<span class="in">`_quarto.yml`</span>にYAMLの設定を書けばWebsiteやBookを特に問題なく作成することができます。ただし、Projectを作成するとテンプレートとなるファイル・フォルダを生成してくれるため、Quartoで文書の作成を始める場合には有用でしょう。</span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a>以下に、各タイプのProjectで作成されるファイル・フォルダの構造、<span class="in">`_quarto.yml`</span>の設定、Renderで出力されるHTMLの見ためを示します。</span>
+<span id="cb35-35"><a href="#cb35-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-36"><a href="#cb35-36" aria-hidden="true" tabindex="-1"></a>:::{.column-page-right}</span>
+<span id="cb35-37"><a href="#cb35-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-38"><a href="#cb35-38" aria-hidden="true" tabindex="-1"></a>:::{.panel-tabset}</span>
+<span id="cb35-39"><a href="#cb35-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-40"><a href="#cb35-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## default</span></span>
+<span id="cb35-41"><a href="#cb35-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-42"><a href="#cb35-42" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
+<span id="cb35-43"><a href="#cb35-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-44"><a href="#cb35-44" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-45"><a href="#cb35-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-46"><a href="#cb35-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
+<span id="cb35-47"><a href="#cb35-47" aria-hidden="true" tabindex="-1"></a>test_website</span>
+<span id="cb35-48"><a href="#cb35-48" aria-hidden="true" tabindex="-1"></a>│- about.qmd</span>
+<span id="cb35-49"><a href="#cb35-49" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
+<span id="cb35-50"><a href="#cb35-50" aria-hidden="true" tabindex="-1"></a>│- styles.css</span>
+<span id="cb35-51"><a href="#cb35-51" aria-hidden="true" tabindex="-1"></a>└─ _quarto.yml</span>
+<span id="cb35-52"><a href="#cb35-52" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-53"><a href="#cb35-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-54"><a href="#cb35-54" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-55"><a href="#cb35-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-56"><a href="#cb35-56" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-57"><a href="#cb35-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-58"><a href="#cb35-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
+<span id="cb35-59"><a href="#cb35-59" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb35-60"><a href="#cb35-60" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_default"</span></span>
+<span id="cb35-61"><a href="#cb35-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-62"><a href="#cb35-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-63"><a href="#cb35-63" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-64"><a href="#cb35-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-65"><a href="#cb35-65" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-66"><a href="#cb35-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-67"><a href="#cb35-67" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_default.png)</span></span>
+<span id="cb35-68"><a href="#cb35-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-69"><a href="#cb35-69" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-70"><a href="#cb35-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-71"><a href="#cb35-71" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-72"><a href="#cb35-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-73"><a href="#cb35-73" aria-hidden="true" tabindex="-1"></a><span class="fu">## website</span></span>
+<span id="cb35-74"><a href="#cb35-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-75"><a href="#cb35-75" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
+<span id="cb35-76"><a href="#cb35-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-77"><a href="#cb35-77" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-78"><a href="#cb35-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-79"><a href="#cb35-79" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
+<span id="cb35-80"><a href="#cb35-80" aria-hidden="true" tabindex="-1"></a>test_website</span>
+<span id="cb35-81"><a href="#cb35-81" aria-hidden="true" tabindex="-1"></a>│- about.qmd</span>
+<span id="cb35-82"><a href="#cb35-82" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
+<span id="cb35-83"><a href="#cb35-83" aria-hidden="true" tabindex="-1"></a>│- styles.css</span>
+<span id="cb35-84"><a href="#cb35-84" aria-hidden="true" tabindex="-1"></a>└─ _quarto.yml</span>
+<span id="cb35-85"><a href="#cb35-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-86"><a href="#cb35-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-87"><a href="#cb35-87" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-88"><a href="#cb35-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-89"><a href="#cb35-89" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-90"><a href="#cb35-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-91"><a href="#cb35-91" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
+<span id="cb35-92"><a href="#cb35-92" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb35-93"><a href="#cb35-93" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb35-94"><a href="#cb35-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-95"><a href="#cb35-95" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb35-96"><a href="#cb35-96" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_website"</span></span>
+<span id="cb35-97"><a href="#cb35-97" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
+<span id="cb35-98"><a href="#cb35-98" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
+<span id="cb35-99"><a href="#cb35-99" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">href</span><span class="kw">:</span><span class="at"> index.qmd</span></span>
+<span id="cb35-100"><a href="#cb35-100" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> Home</span></span>
+<span id="cb35-101"><a href="#cb35-101" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>about.qmd</span>
+<span id="cb35-102"><a href="#cb35-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-103"><a href="#cb35-103" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb35-104"><a href="#cb35-104" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb35-105"><a href="#cb35-105" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span></span>
+<span id="cb35-106"><a href="#cb35-106" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>cosmo</span>
+<span id="cb35-107"><a href="#cb35-107" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>brand</span>
+<span id="cb35-108"><a href="#cb35-108" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> styles.css</span></span>
+<span id="cb35-109"><a href="#cb35-109" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb35-110"><a href="#cb35-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-111"><a href="#cb35-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-112"><a href="#cb35-112" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-113"><a href="#cb35-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-114"><a href="#cb35-114" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-115"><a href="#cb35-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-116"><a href="#cb35-116" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_website.png)</span></span>
+<span id="cb35-117"><a href="#cb35-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-118"><a href="#cb35-118" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-119"><a href="#cb35-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-120"><a href="#cb35-120" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-121"><a href="#cb35-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-122"><a href="#cb35-122" aria-hidden="true" tabindex="-1"></a><span class="fu">## manuscript</span></span>
+<span id="cb35-123"><a href="#cb35-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-124"><a href="#cb35-124" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
+<span id="cb35-125"><a href="#cb35-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-126"><a href="#cb35-126" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-127"><a href="#cb35-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-128"><a href="#cb35-128" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
+<span id="cb35-129"><a href="#cb35-129" aria-hidden="true" tabindex="-1"></a>test_manuscript</span>
+<span id="cb35-130"><a href="#cb35-130" aria-hidden="true" tabindex="-1"></a>│- references_bib</span>
+<span id="cb35-131"><a href="#cb35-131" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
+<span id="cb35-132"><a href="#cb35-132" aria-hidden="true" tabindex="-1"></a>└─ _quarto.yml</span>
+<span id="cb35-133"><a href="#cb35-133" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-134"><a href="#cb35-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-135"><a href="#cb35-135" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-136"><a href="#cb35-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-137"><a href="#cb35-137" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-138"><a href="#cb35-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-139"><a href="#cb35-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
+<span id="cb35-140"><a href="#cb35-140" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb35-141"><a href="#cb35-141" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> manuscript</span></span>
+<span id="cb35-142"><a href="#cb35-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-143"><a href="#cb35-143" aria-hidden="true" tabindex="-1"></a><span class="fu">manuscript</span><span class="kw">:</span></span>
+<span id="cb35-144"><a href="#cb35-144" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">article</span><span class="kw">:</span><span class="at"> index.qmd</span></span>
+<span id="cb35-145"><a href="#cb35-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-146"><a href="#cb35-146" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb35-147"><a href="#cb35-147" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb35-148"><a href="#cb35-148" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">comments</span><span class="kw">:</span></span>
+<span id="cb35-149"><a href="#cb35-149" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">hypothesis</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb35-150"><a href="#cb35-150" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb35-151"><a href="#cb35-151" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">jats</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb35-152"><a href="#cb35-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-153"><a href="#cb35-153" aria-hidden="true" tabindex="-1"></a><span class="co">  # (other formats)</span></span>
+<span id="cb35-154"><a href="#cb35-154" aria-hidden="true" tabindex="-1"></a><span class="co">  # pdf: default</span></span>
+<span id="cb35-155"><a href="#cb35-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-156"><a href="#cb35-156" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb35-157"><a href="#cb35-157" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb35-158"><a href="#cb35-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-159"><a href="#cb35-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-160"><a href="#cb35-160" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-161"><a href="#cb35-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-162"><a href="#cb35-162" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-163"><a href="#cb35-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-164"><a href="#cb35-164" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_manuscript.png)</span></span>
+<span id="cb35-165"><a href="#cb35-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-166"><a href="#cb35-166" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-167"><a href="#cb35-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-168"><a href="#cb35-168" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-169"><a href="#cb35-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-170"><a href="#cb35-170" aria-hidden="true" tabindex="-1"></a><span class="fu">## book</span></span>
+<span id="cb35-171"><a href="#cb35-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-172"><a href="#cb35-172" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
+<span id="cb35-173"><a href="#cb35-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-174"><a href="#cb35-174" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-175"><a href="#cb35-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-176"><a href="#cb35-176" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
+<span id="cb35-177"><a href="#cb35-177" aria-hidden="true" tabindex="-1"></a>test_book</span>
+<span id="cb35-178"><a href="#cb35-178" aria-hidden="true" tabindex="-1"></a>│- cover.png</span>
+<span id="cb35-179"><a href="#cb35-179" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
+<span id="cb35-180"><a href="#cb35-180" aria-hidden="true" tabindex="-1"></a>│- intro.qmd</span>
+<span id="cb35-181"><a href="#cb35-181" aria-hidden="true" tabindex="-1"></a>│- references.bib</span>
+<span id="cb35-182"><a href="#cb35-182" aria-hidden="true" tabindex="-1"></a>│- references.qmd</span>
+<span id="cb35-183"><a href="#cb35-183" aria-hidden="true" tabindex="-1"></a>│- summary.qmd</span>
+<span id="cb35-184"><a href="#cb35-184" aria-hidden="true" tabindex="-1"></a>└─ _quarto.yml</span>
+<span id="cb35-185"><a href="#cb35-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-186"><a href="#cb35-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-187"><a href="#cb35-187" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-188"><a href="#cb35-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-189"><a href="#cb35-189" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-190"><a href="#cb35-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-191"><a href="#cb35-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
+<span id="cb35-192"><a href="#cb35-192" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb35-193"><a href="#cb35-193" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
+<span id="cb35-194"><a href="#cb35-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-195"><a href="#cb35-195" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
+<span id="cb35-196"><a href="#cb35-196" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_book"</span></span>
+<span id="cb35-197"><a href="#cb35-197" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Norah Jones"</span></span>
+<span id="cb35-198"><a href="#cb35-198" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2025/6/13"</span></span>
+<span id="cb35-199"><a href="#cb35-199" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">chapters</span><span class="kw">:</span></span>
+<span id="cb35-200"><a href="#cb35-200" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>index.qmd</span>
+<span id="cb35-201"><a href="#cb35-201" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>intro.qmd</span>
+<span id="cb35-202"><a href="#cb35-202" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>summary.qmd</span>
+<span id="cb35-203"><a href="#cb35-203" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>references.qmd</span>
+<span id="cb35-204"><a href="#cb35-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-205"><a href="#cb35-205" aria-hidden="true" tabindex="-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> references.bib</span></span>
+<span id="cb35-206"><a href="#cb35-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-207"><a href="#cb35-207" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb35-208"><a href="#cb35-208" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb35-209"><a href="#cb35-209" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span></span>
+<span id="cb35-210"><a href="#cb35-210" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>cosmo</span>
+<span id="cb35-211"><a href="#cb35-211" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>brand</span>
+<span id="cb35-212"><a href="#cb35-212" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb35-213"><a href="#cb35-213" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> scrreprt</span></span>
+<span id="cb35-214"><a href="#cb35-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-215"><a href="#cb35-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-216"><a href="#cb35-216" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-217"><a href="#cb35-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-218"><a href="#cb35-218" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-219"><a href="#cb35-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-220"><a href="#cb35-220" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_book.png)</span></span>
+<span id="cb35-221"><a href="#cb35-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-222"><a href="#cb35-222" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-223"><a href="#cb35-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-224"><a href="#cb35-224" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-225"><a href="#cb35-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-226"><a href="#cb35-226" aria-hidden="true" tabindex="-1"></a><span class="fu">## confluence</span></span>
+<span id="cb35-227"><a href="#cb35-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-228"><a href="#cb35-228" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
+<span id="cb35-229"><a href="#cb35-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-230"><a href="#cb35-230" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-231"><a href="#cb35-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-232"><a href="#cb35-232" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
+<span id="cb35-233"><a href="#cb35-233" aria-hidden="true" tabindex="-1"></a>test_confluence</span>
+<span id="cb35-234"><a href="#cb35-234" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
+<span id="cb35-235"><a href="#cb35-235" aria-hidden="true" tabindex="-1"></a>│- project-roadmap.qmd</span>
+<span id="cb35-236"><a href="#cb35-236" aria-hidden="true" tabindex="-1"></a>│- _quarto.yml</span>
+<span id="cb35-237"><a href="#cb35-237" aria-hidden="true" tabindex="-1"></a>│</span>
+<span id="cb35-238"><a href="#cb35-238" aria-hidden="true" tabindex="-1"></a>└─ reports</span>
+<span id="cb35-239"><a href="#cb35-239" aria-hidden="true" tabindex="-1"></a>    │- 2022-01.qmd</span>
+<span id="cb35-240"><a href="#cb35-240" aria-hidden="true" tabindex="-1"></a>    └- 2022-03.qmd    </span>
+<span id="cb35-241"><a href="#cb35-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-242"><a href="#cb35-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-243"><a href="#cb35-243" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-244"><a href="#cb35-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-245"><a href="#cb35-245" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-246"><a href="#cb35-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-247"><a href="#cb35-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
+<span id="cb35-248"><a href="#cb35-248" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb35-249"><a href="#cb35-249" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> confluence</span></span>
+<span id="cb35-250"><a href="#cb35-250" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_confluence"</span></span>
+<span id="cb35-251"><a href="#cb35-251" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-252"><a href="#cb35-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-253"><a href="#cb35-253" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-254"><a href="#cb35-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-255"><a href="#cb35-255" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-256"><a href="#cb35-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-257"><a href="#cb35-257" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_confluence.png)</span></span>
+<span id="cb35-258"><a href="#cb35-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-259"><a href="#cb35-259" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-260"><a href="#cb35-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-261"><a href="#cb35-261" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-262"><a href="#cb35-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-263"><a href="#cb35-263" aria-hidden="true" tabindex="-1"></a><span class="fu">## blog</span></span>
+<span id="cb35-264"><a href="#cb35-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-265"><a href="#cb35-265" aria-hidden="true" tabindex="-1"></a>:::{.grid}</span>
+<span id="cb35-266"><a href="#cb35-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-267"><a href="#cb35-267" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-268"><a href="#cb35-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-269"><a href="#cb35-269" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="フォルダ構造"}</span></span>
+<span id="cb35-270"><a href="#cb35-270" aria-hidden="true" tabindex="-1"></a>test_confluence</span>
+<span id="cb35-271"><a href="#cb35-271" aria-hidden="true" tabindex="-1"></a>│- about.qmd</span>
+<span id="cb35-272"><a href="#cb35-272" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
+<span id="cb35-273"><a href="#cb35-273" aria-hidden="true" tabindex="-1"></a>│- profile.jpg</span>
+<span id="cb35-274"><a href="#cb35-274" aria-hidden="true" tabindex="-1"></a>│- styles.css</span>
+<span id="cb35-275"><a href="#cb35-275" aria-hidden="true" tabindex="-1"></a>│- _quarto.yml</span>
+<span id="cb35-276"><a href="#cb35-276" aria-hidden="true" tabindex="-1"></a>│</span>
+<span id="cb35-277"><a href="#cb35-277" aria-hidden="true" tabindex="-1"></a>└─ posts</span>
+<span id="cb35-278"><a href="#cb35-278" aria-hidden="true" tabindex="-1"></a>    │- _metadata.yml</span>
+<span id="cb35-279"><a href="#cb35-279" aria-hidden="true" tabindex="-1"></a>    │</span>
+<span id="cb35-280"><a href="#cb35-280" aria-hidden="true" tabindex="-1"></a>    ├- post-with-code</span>
+<span id="cb35-281"><a href="#cb35-281" aria-hidden="true" tabindex="-1"></a>    │  ├- image.jpg</span>
+<span id="cb35-282"><a href="#cb35-282" aria-hidden="true" tabindex="-1"></a>    │  └- index.qmd</span>
+<span id="cb35-283"><a href="#cb35-283" aria-hidden="true" tabindex="-1"></a>    │</span>
+<span id="cb35-284"><a href="#cb35-284" aria-hidden="true" tabindex="-1"></a>    └- welcome</span>
+<span id="cb35-285"><a href="#cb35-285" aria-hidden="true" tabindex="-1"></a>       ├- index.qmd</span>
+<span id="cb35-286"><a href="#cb35-286" aria-hidden="true" tabindex="-1"></a>       └- thumbnail.jpg</span>
+<span id="cb35-287"><a href="#cb35-287" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-288"><a href="#cb35-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-289"><a href="#cb35-289" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-290"><a href="#cb35-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-291"><a href="#cb35-291" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-292"><a href="#cb35-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-293"><a href="#cb35-293" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="_quarto.yml"}</span></span>
+<span id="cb35-294"><a href="#cb35-294" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb35-295"><a href="#cb35-295" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb35-296"><a href="#cb35-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-297"><a href="#cb35-297" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb35-298"><a href="#cb35-298" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"test_blog"</span></span>
+<span id="cb35-299"><a href="#cb35-299" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
+<span id="cb35-300"><a href="#cb35-300" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">right</span><span class="kw">:</span></span>
+<span id="cb35-301"><a href="#cb35-301" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>about.qmd</span>
+<span id="cb35-302"><a href="#cb35-302" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> github</span></span>
+<span id="cb35-303"><a href="#cb35-303" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> https://github.com/</span></span>
+<span id="cb35-304"><a href="#cb35-304" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> twitter</span></span>
+<span id="cb35-305"><a href="#cb35-305" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> https://twitter.com</span></span>
+<span id="cb35-306"><a href="#cb35-306" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb35-307"><a href="#cb35-307" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb35-308"><a href="#cb35-308" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span></span>
+<span id="cb35-309"><a href="#cb35-309" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>cosmo</span>
+<span id="cb35-310"><a href="#cb35-310" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>brand</span>
+<span id="cb35-311"><a href="#cb35-311" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> styles.css</span></span>
+<span id="cb35-312"><a href="#cb35-312" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-313"><a href="#cb35-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-314"><a href="#cb35-314" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-315"><a href="#cb35-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-316"><a href="#cb35-316" aria-hidden="true" tabindex="-1"></a>:::{.g-col-4}</span>
+<span id="cb35-317"><a href="#cb35-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-318"><a href="#cb35-318" aria-hidden="true" tabindex="-1"></a><span class="al">![HTMLの見た目](./image/project_blog.png)</span></span>
+<span id="cb35-319"><a href="#cb35-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-320"><a href="#cb35-320" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-321"><a href="#cb35-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-322"><a href="#cb35-322" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-323"><a href="#cb35-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-324"><a href="#cb35-324" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-325"><a href="#cb35-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-326"><a href="#cb35-326" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-327"><a href="#cb35-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-328"><a href="#cb35-328" aria-hidden="true" tabindex="-1"></a><span class="fu">## HTMLとWebsite、Quarto Bookの違い</span></span>
+<span id="cb35-329"><a href="#cb35-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-330"><a href="#cb35-330" aria-hidden="true" tabindex="-1"></a>Quartoでは、YAMLに出力ファイルを指定せずにRenderを行うと、HTMLが出力されます。ですので、Markdown、YAMLを用いれば、ある程度自由にHTMLを用いたウェブページを作成することができます。</span>
+<span id="cb35-331"><a href="#cb35-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-332"><a href="#cb35-332" aria-hidden="true" tabindex="-1"></a>QuartoでWebsiteやBookを指定してWebsite・Bookを作成する利点は、それぞれを指定することである程度出力するHTMLのデザインを固定することができる点にあります。Websiteではある程度自由に、複数の.qmdを一つのウェブページに仕立てることができます。また、Bookであれば、.qmdを各章とし、本のように一本道のウェブページを作成できます。</span>
+<span id="cb35-333"><a href="#cb35-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-334"><a href="#cb35-334" aria-hidden="true" tabindex="-1"></a><span class="fu">### website・bookの設定</span></span>
+<span id="cb35-335"><a href="#cb35-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-336"><a href="#cb35-336" aria-hidden="true" tabindex="-1"></a>Website、Bookを作成する場合、<span class="in">`_quarto.yml`</span>に<span class="in">`project: type: website`</span>または<span class="in">`project: type:  book`</span>を設定します。この<span class="in">`project`</span>は上記のようにQuarto Projectを作成していなくても設定可能です。</span>
+<span id="cb35-337"><a href="#cb35-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-338"><a href="#cb35-338" aria-hidden="true" tabindex="-1"></a>また、.qmdファイル内で<span class="in">`project`</span>を設定しても、<span class="in">`project`</span>に応じた設定は利用できません。<span class="in">`project`</span>は<span class="in">`_quarto.yml`</span>内に設定して用います。</span>
+<span id="cb35-339"><a href="#cb35-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-340"><a href="#cb35-340" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="project typeの設定"}</span></span>
+<span id="cb35-341"><a href="#cb35-341" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb35-342"><a href="#cb35-342" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb35-343"><a href="#cb35-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-344"><a href="#cb35-344" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb35-345"><a href="#cb35-345" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
+<span id="cb35-346"><a href="#cb35-346" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-347"><a href="#cb35-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-348"><a href="#cb35-348" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
+<span id="cb35-349"><a href="#cb35-349" aria-hidden="true" tabindex="-1"></a><span class="fu">## 選択可能なtype</span></span>
+<span id="cb35-350"><a href="#cb35-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-351"><a href="#cb35-351" aria-hidden="true" tabindex="-1"></a><span class="in">`type`</span>には、<span class="in">`default`</span>、<span class="in">`website`</span>、<span class="in">`book`</span>、<span class="in">`manuscript`</span>の<span class="co">[</span><span class="ot">4つが設定できる</span><span class="co">](https://quarto.org/docs/reference/projects/options.html)</span>とされていますが、上記のように<span class="in">`confluence`</span>も設定可能です。blogは<span class="in">`website`</span>の一形態となるため、<span class="in">`type`</span>は<span class="in">`website`</span>となります。</span>
+<span id="cb35-352"><a href="#cb35-352" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-353"><a href="#cb35-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-354"><a href="#cb35-354" aria-hidden="true" tabindex="-1"></a><span class="fu">### index.qmd</span></span>
+<span id="cb35-355"><a href="#cb35-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-356"><a href="#cb35-356" aria-hidden="true" tabindex="-1"></a><span class="in">`website`</span>のトップページとなるのは、<span class="in">`index.qmd`</span>という.qmdファイルです。<span class="in">`index.qmd`</span>は<span class="in">`book`</span>や<span class="in">`blog`</span>でもトップページとなります。</span>
+<span id="cb35-357"><a href="#cb35-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-358"><a href="#cb35-358" aria-hidden="true" tabindex="-1"></a><span class="fu">### Renderする.qmdを指定する</span></span>
+<span id="cb35-359"><a href="#cb35-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-360"><a href="#cb35-360" aria-hidden="true" tabindex="-1"></a>Projectを設定した<span class="in">`_quarto.yml`</span>と同じフォルダ・サブフォルダ内に保存されている.qmdファイルは、そのProjectのファイルであると認識されます。このフォルダ内の.qmdファイルをRenderすると、基本的にはそのフォルダおよびサブフォルダ内のすべての.qmdファイルがRenderされます。</span>
+<span id="cb35-361"><a href="#cb35-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-362"><a href="#cb35-362" aria-hidden="true" tabindex="-1"></a>Projectのフォルダ内のうち、Renderしたい.qmdファイルを指定する場合には、<span class="in">`project: render:`</span>に.qmdファイルを設定します。</span>
+<span id="cb35-363"><a href="#cb35-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-364"><a href="#cb35-364" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Renderするファイルを指定する"}</span></span>
+<span id="cb35-365"><a href="#cb35-365" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb35-366"><a href="#cb35-366" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">render</span><span class="kw">:</span></span>
+<span id="cb35-367"><a href="#cb35-367" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>section1.qmd</span>
+<span id="cb35-368"><a href="#cb35-368" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>section2.qmd</span>
+<span id="cb35-369"><a href="#cb35-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-370"><a href="#cb35-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-371"><a href="#cb35-371" aria-hidden="true" tabindex="-1"></a>また、ファイル名の前に<span class="in">`!`</span>を置くと、そのファイルのみを除いてRenderすることもできます。ただし、この場合には<span class="in">`*.qmd`</span>という形で、すべての.qmdファイルを指定しておく必要があります。</span>
+<span id="cb35-372"><a href="#cb35-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-373"><a href="#cb35-373" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Renderしないファイルを指定する"}</span></span>
+<span id="cb35-374"><a href="#cb35-374" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb35-375"><a href="#cb35-375" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">render</span><span class="kw">:</span></span>
+<span id="cb35-376"><a href="#cb35-376" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"*.qmd"</span><span class="co"> # すべての.qmdファイルをRenderする</span></span>
+<span id="cb35-377"><a href="#cb35-377" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"!ignored.qmd"</span><span class="co"> # 選択した.qmdファイルをRenderしない</span></span>
+<span id="cb35-378"><a href="#cb35-378" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"!ignored-dir/"</span><span class="co"> # 指定したディレクトリ内の.qmdファイルをRenderしない</span></span>
+<span id="cb35-379"><a href="#cb35-379" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-380"><a href="#cb35-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-381"><a href="#cb35-381" aria-hidden="true" tabindex="-1"></a><span class="fu">### ブログを作成する</span></span>
+<span id="cb35-382"><a href="#cb35-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-383"><a href="#cb35-383" aria-hidden="true" tabindex="-1"></a>blogはwebsiteの特殊な形の一つで、基本的なWebsiteの構造に投稿（posts）を追加して用います。blogのフォルダ構造は上に示した通り、以下のようになります。<span class="in">`posts`</span>ディレクトリ内にpostsに当たる.qmdファイルを追加していきます。</span>
+<span id="cb35-384"><a href="#cb35-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-385"><a href="#cb35-385" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`posts`</span>ディレクトリ内にサブフォルダを作成し、その中に.qmdファイルを作成することで、各postごとのファイルをそれぞれ別に保存することもできます。</span>
+<span id="cb35-386"><a href="#cb35-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-387"><a href="#cb35-387" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="ブログのフォルダ構造"}</span></span>
+<span id="cb35-388"><a href="#cb35-388" aria-hidden="true" tabindex="-1"></a>test_confluence</span>
+<span id="cb35-389"><a href="#cb35-389" aria-hidden="true" tabindex="-1"></a>│- about.qmd</span>
+<span id="cb35-390"><a href="#cb35-390" aria-hidden="true" tabindex="-1"></a>│- index.qmd</span>
+<span id="cb35-391"><a href="#cb35-391" aria-hidden="true" tabindex="-1"></a>│- profile.jpg</span>
+<span id="cb35-392"><a href="#cb35-392" aria-hidden="true" tabindex="-1"></a>│- styles.css</span>
+<span id="cb35-393"><a href="#cb35-393" aria-hidden="true" tabindex="-1"></a>│- _quarto.yml</span>
+<span id="cb35-394"><a href="#cb35-394" aria-hidden="true" tabindex="-1"></a>└─ posts</span>
+<span id="cb35-395"><a href="#cb35-395" aria-hidden="true" tabindex="-1"></a>    │- _metadata.yml</span>
+<span id="cb35-396"><a href="#cb35-396" aria-hidden="true" tabindex="-1"></a>    ├- post-with-code</span>
+<span id="cb35-397"><a href="#cb35-397" aria-hidden="true" tabindex="-1"></a>    │  ├- image.jpg</span>
+<span id="cb35-398"><a href="#cb35-398" aria-hidden="true" tabindex="-1"></a>    │  └- index.qmd</span>
+<span id="cb35-399"><a href="#cb35-399" aria-hidden="true" tabindex="-1"></a>    └- welcome</span>
+<span id="cb35-400"><a href="#cb35-400" aria-hidden="true" tabindex="-1"></a>       ├- index.qmd</span>
+<span id="cb35-401"><a href="#cb35-401" aria-hidden="true" tabindex="-1"></a>       └- thumbnail.jpg</span>
+<span id="cb35-402"><a href="#cb35-402" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-403"><a href="#cb35-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-404"><a href="#cb35-404" aria-hidden="true" tabindex="-1"></a><span class="fu">#### _metadata.yml</span></span>
+<span id="cb35-405"><a href="#cb35-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-406"><a href="#cb35-406" aria-hidden="true" tabindex="-1"></a>上記のpostsディレクトリ内には、<span class="in">`_metadata.yml`</span>というファイルがあります。これは、<span class="in">`_quarto.yml`</span>に設定したYAMLに加えて、postsのみに適用するYAMLを指定するためのファイルです。<span class="in">`blog`</span>に限らず、websiteでも同様にサブフォルダ内に<span class="in">`_metadata.yml`</span>を設定することで、そのサブフォルダ内の.qmdのデザインやchunkの設定などをpost以外とは別の形で設定することができます。</span>
+<span id="cb35-407"><a href="#cb35-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-408"><a href="#cb35-408" aria-hidden="true" tabindex="-1"></a>ただし、サブフォルダ内の.qmdに適用されるYAMLは<span class="in">`_quarto.yml`</span>と<span class="in">`_metadata.yml`</span>を統合したものになり、<span class="in">`_metadata.yml`</span>の設定のみだけではなく、<span class="in">`_quarto.yml`</span>の内容も同様に適用されます。</span>
+<span id="cb35-409"><a href="#cb35-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-410"><a href="#cb35-410" aria-hidden="true" tabindex="-1"></a><span class="fu">#### postsの設定</span></span>
+<span id="cb35-411"><a href="#cb35-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-412"><a href="#cb35-412" aria-hidden="true" tabindex="-1"></a>各postにはタイトルや著者、登校日、ブログのカテゴリ、トップ画像を設定することができます。タイトルや著者には、<span class="co">[</span><span class="ot">39章</span><span class="co">](chapter39.qmd#文章のタイトルと著者)</span>に記載した通り、<span class="in">`title`</span>や<span class="in">`author`</span>、<span class="in">`date`</span>をそのpostのYAMLに設定します。ブログのカテゴリは<span class="in">`categories`</span>に、ブログのトップ画像として用いる画像は<span class="in">`image`</span>にそれぞれ設定します。</span>
+<span id="cb35-413"><a href="#cb35-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-414"><a href="#cb35-414" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Blog：PostのYAML設定"}</span></span>
+<span id="cb35-415"><a href="#cb35-415" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb35-416"><a href="#cb35-416" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Post With Code"</span></span>
+<span id="cb35-417"><a href="#cb35-417" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Harlow Malloc"</span></span>
+<span id="cb35-418"><a href="#cb35-418" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2025-06-13"</span></span>
+<span id="cb35-419"><a href="#cb35-419" aria-hidden="true" tabindex="-1"></a><span class="fu">categories</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">news</span><span class="kw">,</span><span class="at"> code</span><span class="kw">,</span><span class="at"> analysis</span><span class="kw">]</span></span>
+<span id="cb35-420"><a href="#cb35-420" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span><span class="kw">:</span><span class="at"> </span><span class="st">"image.jpg"</span></span>
+<span id="cb35-421"><a href="#cb35-421" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb35-422"><a href="#cb35-422" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-423"><a href="#cb35-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-424"><a href="#cb35-424" aria-hidden="true" tabindex="-1"></a><span class="in">`categories`</span>は<span class="in">`_quarto.yml`</span>に以下のような形で設定することもできます。</span>
+<span id="cb35-425"><a href="#cb35-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-426"><a href="#cb35-426" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Blog：カテゴリの設定"}</span></span>
+<span id="cb35-427"><a href="#cb35-427" aria-hidden="true" tabindex="-1"></a><span class="fu">categories</span><span class="kw">:</span></span>
+<span id="cb35-428"><a href="#cb35-428" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span>news</span>
+<span id="cb35-429"><a href="#cb35-429" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span>code</span>
+<span id="cb35-430"><a href="#cb35-430" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span>analysis</span>
+<span id="cb35-431"><a href="#cb35-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-432"><a href="#cb35-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-433"><a href="#cb35-433" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Listing</span></span>
+<span id="cb35-434"><a href="#cb35-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-435"><a href="#cb35-435" aria-hidden="true" tabindex="-1"></a>Listingとはブログのpostの一覧を表示することです。Listingはindex.qmdのページに表示されます。このListingについては、YAMLで<span class="in">`listing`</span>を設定することで表示を変更することができます。</span>
+<span id="cb35-436"><a href="#cb35-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-437"><a href="#cb35-437" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Blog：投稿のlistingの設定"}</span></span>
+<span id="cb35-438"><a href="#cb35-438" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb35-439"><a href="#cb35-439" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"myblog"</span></span>
+<span id="cb35-440"><a href="#cb35-440" aria-hidden="true" tabindex="-1"></a><span class="fu">listing</span><span class="kw">:</span></span>
+<span id="cb35-441"><a href="#cb35-441" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> posts</span></span>
+<span id="cb35-442"><a href="#cb35-442" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sort</span><span class="kw">:</span><span class="at"> </span><span class="st">"date desc"</span></span>
+<span id="cb35-443"><a href="#cb35-443" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb35-444"><a href="#cb35-444" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">categories</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb35-445"><a href="#cb35-445" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb35-446"><a href="#cb35-446" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-447"><a href="#cb35-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-448"><a href="#cb35-448" aria-hidden="true" tabindex="-1"></a>設定可能なYAMLの一部を以下に示します。その他の設定項目については<span class="co">[</span><span class="ot">QuartoのReference</span><span class="co">](https://quarto.org/docs/reference/projects/websites.html)</span>をご参照ください。</span>
+<span id="cb35-449"><a href="#cb35-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-450"><a href="#cb35-450" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb35-451"><a href="#cb35-451" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/Quarto_YAMLs.xlsx"</span>, <span class="at">sheet=</span><span class="dv">8</span>)</span>
+<span id="cb35-452"><a href="#cb35-452" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"Listingに関するYAML"</span>)</span>
+<span id="cb35-453"><a href="#cb35-453" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-454"><a href="#cb35-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-455"><a href="#cb35-455" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Aboutページの作成</span></span>
+<span id="cb35-456"><a href="#cb35-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-457"><a href="#cb35-457" aria-hidden="true" tabindex="-1"></a>Quartoでは、著者の名前や所属、website、blogの内容などを表示するAboutのページを、<span class="co">[</span><span class="ot">`postcards`</span><span class="co">](https://cran.r-project.org/web/packages/postcards/readme/README.html)</span>パッケージ<span class="co">[</span><span class="ot">@postcards_bib</span><span class="co">]</span>のデザインに従い設定することができます。<span class="in">`postcards`</span>のデザインを採用する場合、about.qmdに<span class="in">`about: template:`</span>のYAMLを設定します。templateには、<span class="in">`jolla`</span>、<span class="in">`trestles`</span>、<span class="in">`solana`</span>、<span class="in">`marquee`</span>、<span class="in">`broadside`</span>のいずれかを設定することができます。</span>
+<span id="cb35-458"><a href="#cb35-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-459"><a href="#cb35-459" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="Aboutページ"}</span></span>
+<span id="cb35-460"><a href="#cb35-460" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb35-461"><a href="#cb35-461" aria-hidden="true" tabindex="-1"></a>title: "xjorv"</span>
+<span id="cb35-462"><a href="#cb35-462" aria-hidden="true" tabindex="-1"></a>image: profile.jpg</span>
+<span id="cb35-463"><a href="#cb35-463" aria-hidden="true" tabindex="-1"></a>about:</span>
+<span id="cb35-464"><a href="#cb35-464" aria-hidden="true" tabindex="-1"></a>  template: jolla</span>
+<span id="cb35-465"><a href="#cb35-465" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb35-466"><a href="#cb35-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-467"><a href="#cb35-467" aria-hidden="true" tabindex="-1"></a>xjorvはしがない平社員のサラリーマンです。趣味としてRを触り、気まぐれに教科書を書いています。</span>
+<span id="cb35-468"><a href="#cb35-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-469"><a href="#cb35-469" aria-hidden="true" tabindex="-1"></a><span class="fu">## Education</span></span>
+<span id="cb35-470"><a href="#cb35-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-471"><a href="#cb35-471" aria-hidden="true" tabindex="-1"></a>University of bakada, Tokyo | Tokyo, Japan</span>
+<span id="cb35-472"><a href="#cb35-472" aria-hidden="true" tabindex="-1"></a>Ph.D in Tunnel Science | Sept 20XX - June 20XX</span>
+<span id="cb35-473"><a href="#cb35-473" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-474"><a href="#cb35-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-475"><a href="#cb35-475" aria-hidden="true" tabindex="-1"></a>:::{.panel-tabset}</span>
+<span id="cb35-476"><a href="#cb35-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-477"><a href="#cb35-477" aria-hidden="true" tabindex="-1"></a><span class="fu">## jolla</span></span>
+<span id="cb35-478"><a href="#cb35-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-479"><a href="#cb35-479" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_jolla.png)</span></span>
+<span id="cb35-480"><a href="#cb35-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-481"><a href="#cb35-481" aria-hidden="true" tabindex="-1"></a><span class="fu">## trestles</span></span>
+<span id="cb35-482"><a href="#cb35-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-483"><a href="#cb35-483" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_trestles.png)</span></span>
+<span id="cb35-484"><a href="#cb35-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-485"><a href="#cb35-485" aria-hidden="true" tabindex="-1"></a><span class="fu">## solana</span></span>
+<span id="cb35-486"><a href="#cb35-486" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-487"><a href="#cb35-487" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_solana.png)</span></span>
+<span id="cb35-488"><a href="#cb35-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-489"><a href="#cb35-489" aria-hidden="true" tabindex="-1"></a><span class="fu">## marquee</span></span>
+<span id="cb35-490"><a href="#cb35-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-491"><a href="#cb35-491" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_marquee.png)</span></span>
+<span id="cb35-492"><a href="#cb35-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-493"><a href="#cb35-493" aria-hidden="true" tabindex="-1"></a><span class="fu">## broadside</span></span>
+<span id="cb35-494"><a href="#cb35-494" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-495"><a href="#cb35-495" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/about_broadside.png)</span></span>
+<span id="cb35-496"><a href="#cb35-496" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb35-497"><a href="#cb35-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-498"><a href="#cb35-498" aria-hidden="true" tabindex="-1"></a><span class="fu">#### RSS</span></span>
+<span id="cb35-499"><a href="#cb35-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-500"><a href="#cb35-500" aria-hidden="true" tabindex="-1"></a>Listingの説明に記載した通り、YAMLに<span class="in">`feed: true`</span>を設定すると、<span class="co">[</span><span class="ot">RSSフィード</span><span class="co">](https://ja.wikipedia.org/wiki/RSS)</span>を設定することができます。</span>
+<span id="cb35-501"><a href="#cb35-501" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-502"><a href="#cb35-502" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="RSSの設定"}</span></span>
+<span id="cb35-503"><a href="#cb35-503" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb35-504"><a href="#cb35-504" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"a post"</span></span>
+<span id="cb35-505"><a href="#cb35-505" aria-hidden="true" tabindex="-1"></a><span class="fu">listing</span><span class="kw">:</span></span>
+<span id="cb35-506"><a href="#cb35-506" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> posts</span></span>
+<span id="cb35-507"><a href="#cb35-507" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">feed</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb35-508"><a href="#cb35-508" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb35-509"><a href="#cb35-509" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-510"><a href="#cb35-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-511"><a href="#cb35-511" aria-hidden="true" tabindex="-1"></a>ただし、個別の.qmdファイルで<span class="in">`feed: true`</span>と設定しただけでは、RSSを設定することはできず、<span class="in">`_quarto.yml`</span>で以下のようにRSSの設定を別途記載する必要があります。</span>
+<span id="cb35-512"><a href="#cb35-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-513"><a href="#cb35-513" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="RSSの設定2"}</span></span>
+<span id="cb35-514"><a href="#cb35-514" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb35-515"><a href="#cb35-515" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"xjorv's blog"</span></span>
+<span id="cb35-516"><a href="#cb35-516" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">site-url</span><span class="kw">:</span><span class="at"> https://www.myblogexample.io</span></span>
+<span id="cb35-517"><a href="#cb35-517" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"A cheap sample blog"</span></span>
+<span id="cb35-518"><a href="#cb35-518" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-519"><a href="#cb35-519" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-520"><a href="#cb35-520" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto Book</span></span>
+<span id="cb35-521"><a href="#cb35-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-522"><a href="#cb35-522" aria-hidden="true" tabindex="-1"></a>Quartoで教科書などの本を書くときに用いる<span class="in">`project`</span>の<span class="in">`type`</span>が<span class="in">`type: book`</span>です。<span class="in">`book`</span>はR markdownの拡張である、<span class="co">[</span><span class="ot">bookdown</span><span class="co">](https://bookdown.org/)[</span><span class="ot">@bookdown_bib</span><span class="co">]</span>を基とした<span class="in">`type`</span>で、YAMLでは以下のように記載することで<span class="in">`book`</span>のスタイルを適用することができます。</span>
+<span id="cb35-523"><a href="#cb35-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-524"><a href="#cb35-524" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="type: bookの設定"}</span></span>
+<span id="cb35-525"><a href="#cb35-525" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb35-526"><a href="#cb35-526" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
+<span id="cb35-527"><a href="#cb35-527" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-528"><a href="#cb35-528" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-529"><a href="#cb35-529" aria-hidden="true" tabindex="-1"></a><span class="fu">### Quarto Bookの構造</span></span>
+<span id="cb35-530"><a href="#cb35-530" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-531"><a href="#cb35-531" aria-hidden="true" tabindex="-1"></a>Quarto Bookの構造は<span class="in">`website`</span>と比較して単純で一本道となります。Bookの基本的な要素は<span class="in">`index.qmd`</span>、各章に当たる<span class="in">`.qmd`</span>ファイル、<span class="in">`summary.qmd`</span>、<span class="in">`reference.qmd`</span>の4つです。Quarto Bookでは<span class="in">`index.qmd`</span>は表紙とまえがき、<span class="in">`summary.qmd`</span>があとがき、<span class="in">`reference.qmd`</span>は参考文献に当たります。この3種類はQuarto Projectを用いる場合にも作成されます。</span>
+<span id="cb35-532"><a href="#cb35-532" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-533"><a href="#cb35-533" aria-hidden="true" tabindex="-1"></a>各章の<span class="in">`.qmd`</span>ファイルにはどのような名前を付けても問題ありませんが、各文書がどの章を構成するのかをYAMLで指定する必要があります。</span>
+<span id="cb35-534"><a href="#cb35-534" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-535"><a href="#cb35-535" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Bookのchaptersを設定する"}</span></span>
+<span id="cb35-536"><a href="#cb35-536" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb35-537"><a href="#cb35-537" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">chapters</span><span class="kw">:</span></span>
+<span id="cb35-538"><a href="#cb35-538" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>index.qmd</span>
+<span id="cb35-539"><a href="#cb35-539" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">part</span><span class="kw">:</span><span class="at"> </span><span class="st">"part 1"</span></span>
+<span id="cb35-540"><a href="#cb35-540" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">chapters</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb35-541"><a href="#cb35-541" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>chapter1.qmd</span>
+<span id="cb35-542"><a href="#cb35-542" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>chapter2.qmd</span>
+<span id="cb35-543"><a href="#cb35-543" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">part</span><span class="kw">:</span><span class="at"> </span><span class="st">"part 2"</span></span>
+<span id="cb35-544"><a href="#cb35-544" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">chapters</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb35-545"><a href="#cb35-545" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>chapter3.qmd</span>
+<span id="cb35-546"><a href="#cb35-546" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span>chapter4.qmd</span>
+<span id="cb35-547"><a href="#cb35-547" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>summary.qmd</span>
+<span id="cb35-548"><a href="#cb35-548" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span>references.qmd</span>
+<span id="cb35-549"><a href="#cb35-549" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-550"><a href="#cb35-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-551"><a href="#cb35-551" aria-hidden="true" tabindex="-1"></a>上記のように設定すると、本の章立てとしては、まず始めのページが<span class="in">`index.qmd`</span>、次に<span class="in">`chapter1.qmd`</span>と<span class="in">`chapter2.qmd`</span>が「part 1」という話題の1章、2章、次の<span class="in">`chapter3.qmd`</span>と<span class="in">`chapter4.qmd`</span>が「part 2」の3章、4章、最後に<span class="in">`summary.qmd`</span>と<span class="in">`references.qmd`</span>が続く形になります。要は、この<span class="in">`chapters`</span>のYAMLに設定した順に章が進むということになります。</span>
+<span id="cb35-552"><a href="#cb35-552" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-553"><a href="#cb35-553" aria-hidden="true" tabindex="-1"></a>ただし、章番号は上記の<span class="in">`chapter1.qmd`</span>が1章にはならず、<span class="in">`index.qmd`</span>が1章とされます。<span class="in">`index.qmd`</span>を1章とせず、<span class="in">`chapter1.qmd`</span>を1章とする場合には、<span class="in">`index.qmd`</span>のheaderに<span class="in">`{.unnumbered}`</span>を設定する必要があります。また、<span class="in">`summary.qmd`</span>や<span class="in">`references.qmd`</span>にも<span class="in">`index.qmd`</span>と同様に章番号が振られるので、番号を振りたくない場合には<span class="in">`{.unnumbered}`</span>を設定するとよいでしょう。</span>
+<span id="cb35-554"><a href="#cb35-554" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-555"><a href="#cb35-555" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="ヘッダーに番号をつけない"}</span></span>
+<span id="cb35-556"><a href="#cb35-556" aria-hidden="true" tabindex="-1"></a><span class="fu">## はじめに {.unnumbered}</span></span>
+<span id="cb35-557"><a href="#cb35-557" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-558"><a href="#cb35-558" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-559"><a href="#cb35-559" aria-hidden="true" tabindex="-1"></a><span class="fu">### 参照（Cross references）</span></span>
+<span id="cb35-560"><a href="#cb35-560" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-561"><a href="#cb35-561" aria-hidden="true" tabindex="-1"></a>Quarto Bookでは、その章内の図やchunkだけでなく、他の章の記載内容を参照すること（Cross references）ができます。たとえば、以下のようにリンクを記載すると、特定の章の.qmdに対応したページへのリンクを作成できます。</span>
+<span id="cb35-562"><a href="#cb35-562" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-563"><a href="#cb35-563" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="章の参照"}</span></span>
+<span id="cb35-564"><a href="#cb35-564" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章</span><span class="co">](chapter1.qmd)</span></span>
+<span id="cb35-565"><a href="#cb35-565" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-566"><a href="#cb35-566" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章</span><span class="co">](./chapter1.html)</span> # このような形でも章へのリンクを作成できる</span>
+<span id="cb35-567"><a href="#cb35-567" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-568"><a href="#cb35-568" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-569"><a href="#cb35-569" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章</span><span class="co">](chapter1.qmd)</span></span>
+<span id="cb35-570"><a href="#cb35-570" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-571"><a href="#cb35-571" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
+<span id="cb35-572"><a href="#cb35-572" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-573"><a href="#cb35-573" aria-hidden="true" tabindex="-1"></a>また、以下のようなリンクを作成することで、その章の各header（小項目）までのリンクを作成することもできます。</span>
+<span id="cb35-574"><a href="#cb35-574" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-575"><a href="#cb35-575" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="章内のヘッダーの参照"}</span></span>
+<span id="cb35-576"><a href="#cb35-576" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章</span><span class="co">](chapter1.qmd#rstudioのインストール)</span></span>
+<span id="cb35-577"><a href="#cb35-577" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-578"><a href="#cb35-578" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-579"><a href="#cb35-579" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">第1章 Rstudioのインストール</span><span class="co">](chapter1.qmd#rstudioのインストール)</span></span>
+<span id="cb35-580"><a href="#cb35-580" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-581"><a href="#cb35-581" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
+<span id="cb35-582"><a href="#cb35-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-583"><a href="#cb35-583" aria-hidden="true" tabindex="-1"></a><span class="fu">### 図・画像・表への参照</span></span>
+<span id="cb35-584"><a href="#cb35-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-585"><a href="#cb35-585" aria-hidden="true" tabindex="-1"></a>chunk optionとして<span class="in">`label`</span>を設定しておくと、その<span class="in">`label`</span>を参照し、リンクを作成することができます。また、画像や表に対しても参照を行うことができます。</span>
+<span id="cb35-586"><a href="#cb35-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-587"><a href="#cb35-587" aria-hidden="true" tabindex="-1"></a>ただし、参照のための<span class="in">`label`</span>の付け方にはルールがあり、図や画像のラベルは<span class="in">`fig-`</span>から、表のラベルは<span class="in">`tbl-`</span>から始める必要があります。また、<span class="in">`label`</span>にはアンダースコア（<span class="in">`_`</span>）を用いることはできません。</span>
+<span id="cb35-588"><a href="#cb35-588" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-589"><a href="#cb35-589" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb35-590"><a href="#cb35-590" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-cars-plot</span></span>
+<span id="cb35-591"><a href="#cb35-591" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: chunk：ラベルを設定する</span></span>
+<span id="cb35-592"><a href="#cb35-592" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-593"><a href="#cb35-593" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb35-594"><a href="#cb35-594" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-595"><a href="#cb35-595" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-596"><a href="#cb35-596" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb35-597"><a href="#cb35-597" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-cars-plot</span></span>
+<span id="cb35-598"><a href="#cb35-598" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-599"><a href="#cb35-599" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb35-600"><a href="#cb35-600" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-601"><a href="#cb35-601" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-602"><a href="#cb35-602" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="chunkの出力を参照する"}</span></span>
+<span id="cb35-603"><a href="#cb35-603" aria-hidden="true" tabindex="-1"></a><span class="in">`cars`</span>は自動車のスピードと停止するまでの距離の関係を表したデータです @fig-cars-plot 。</span>
+<span id="cb35-604"><a href="#cb35-604" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-605"><a href="#cb35-605" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-606"><a href="#cb35-606" aria-hidden="true" tabindex="-1"></a><span class="in">`cars`</span>は自動車のスピードと停止するまでの距離の関係を表したデータです @fig-cars-plot 。</span>
+<span id="cb35-607"><a href="#cb35-607" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-608"><a href="#cb35-608" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
+<span id="cb35-609"><a href="#cb35-609" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-610"><a href="#cb35-610" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="図にラベルを設定する"}</span></span>
+<span id="cb35-611"><a href="#cb35-611" aria-hidden="true" tabindex="-1"></a><span class="al">![大仏](./image/bud.png)</span>{#fig-bud}</span>
+<span id="cb35-612"><a href="#cb35-612" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-613"><a href="#cb35-613" aria-hidden="true" tabindex="-1"></a>奈良の大仏 @fig_bud</span>
+<span id="cb35-614"><a href="#cb35-614" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-615"><a href="#cb35-615" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-616"><a href="#cb35-616" aria-hidden="true" tabindex="-1"></a><span class="al">![大仏](./image/bud.jpg)</span>{#fig-bud}</span>
+<span id="cb35-617"><a href="#cb35-617" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-618"><a href="#cb35-618" aria-hidden="true" tabindex="-1"></a>奈良の大仏 @fig-bud</span>
+<span id="cb35-619"><a href="#cb35-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-620"><a href="#cb35-620" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
+<span id="cb35-621"><a href="#cb35-621" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-622"><a href="#cb35-622" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown, filename="表にラベルを設定する"}</span></span>
+<span id="cb35-623"><a href="#cb35-623" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
+<span id="cb35-624"><a href="#cb35-624" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> pet <span class="pp">|</span> age <span class="pp">|</span> sex <span class="pp">|</span></span>
+<span id="cb35-625"><a href="#cb35-625" aria-hidden="true" tabindex="-1"></a>+===<span class="al">==+=====+==</span>===+</span>
+<span id="cb35-626"><a href="#cb35-626" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> dog <span class="pp">|</span> 5   <span class="pp">|</span> F   <span class="pp">|</span></span>
+<span id="cb35-627"><a href="#cb35-627" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
+<span id="cb35-628"><a href="#cb35-628" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cat <span class="pp">|</span> 3   <span class="pp">|</span> M   <span class="pp">|</span></span>
+<span id="cb35-629"><a href="#cb35-629" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
+<span id="cb35-630"><a href="#cb35-630" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-631"><a href="#cb35-631" aria-hidden="true" tabindex="-1"></a>: 表のラベル {#tbl-dog-cat}</span>
+<span id="cb35-632"><a href="#cb35-632" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-633"><a href="#cb35-633" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-634"><a href="#cb35-634" aria-hidden="true" tabindex="-1"></a>表を参照する @tbl-dog-cat 。</span>
+<span id="cb35-635"><a href="#cb35-635" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-636"><a href="#cb35-636" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-637"><a href="#cb35-637" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
+<span id="cb35-638"><a href="#cb35-638" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> pet <span class="pp">|</span> age <span class="pp">|</span> sex <span class="pp">|</span></span>
+<span id="cb35-639"><a href="#cb35-639" aria-hidden="true" tabindex="-1"></a>+===<span class="al">==+=====+==</span>===+</span>
+<span id="cb35-640"><a href="#cb35-640" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> dog <span class="pp">|</span> 5   <span class="pp">|</span> F   <span class="pp">|</span></span>
+<span id="cb35-641"><a href="#cb35-641" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
+<span id="cb35-642"><a href="#cb35-642" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cat <span class="pp">|</span> 3   <span class="pp">|</span> M   <span class="pp">|</span></span>
+<span id="cb35-643"><a href="#cb35-643" aria-hidden="true" tabindex="-1"></a>+-----+-----+-----+</span>
+<span id="cb35-644"><a href="#cb35-644" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-645"><a href="#cb35-645" aria-hidden="true" tabindex="-1"></a>: 表のラベル {#tbl-dog-cat}</span>
+<span id="cb35-646"><a href="#cb35-646" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-647"><a href="#cb35-647" aria-hidden="true" tabindex="-1"></a>表を参照する @tbl-dog-cat 。</span>
+<span id="cb35-648"><a href="#cb35-648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-649"><a href="#cb35-649" aria-hidden="true" tabindex="-1"></a><span class="fu">## Website・BookのRender</span></span>
+<span id="cb35-650"><a href="#cb35-650" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-651"><a href="#cb35-651" aria-hidden="true" tabindex="-1"></a>WebsiteやBookの.qmdを作成したら、HTMLをRenderします。Website・Bookのいずれの場合も、RStudioでは上に表示されているRenderボタンを押すことでRenderすることができます。</span>
+<span id="cb35-652"><a href="#cb35-652" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-653"><a href="#cb35-653" aria-hidden="true" tabindex="-1"></a><span class="al">![Renderボタン](./image/Quarto_render_from_Rstudio.png)</span></span>
+<span id="cb35-654"><a href="#cb35-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-655"><a href="#cb35-655" aria-hidden="true" tabindex="-1"></a>また、TerminalでProjectのフォルダに移動し、<span class="in">`quarto render`</span>のコマンドを実行することでもWebsite・BookをRenderすることができます。</span>
+<span id="cb35-656"><a href="#cb35-656" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-657"><a href="#cb35-657" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb35-658"><a href="#cb35-658" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span>
+<span id="cb35-659"><a href="#cb35-659" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-660"><a href="#cb35-660" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-661"><a href="#cb35-661" aria-hidden="true" tabindex="-1"></a>Renderを実行すると、Websiteではそのフォルダとサブフォルダに含まれている<span class="in">`.qmd`</span>ファイルがHTMLに変換されます。一方でBookでは、そのフォルダ内の.qmdファイルのうち、<span class="in">`chapters`</span>で章に設定した.qmdファイルだけがHTMLに変換されます。</span>
+<span id="cb35-662"><a href="#cb35-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-663"><a href="#cb35-663" aria-hidden="true" tabindex="-1"></a><span class="fu">### freeze</span></span>
+<span id="cb35-664"><a href="#cb35-664" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-665"><a href="#cb35-665" aria-hidden="true" tabindex="-1"></a>WebsiteやBookでは、.qmdファイルを指定せずにRenderすると、変換する.qmdファイルに含まれるRのスクリプトがすべて再計算され、Renderされます。すでにHTMLを作成し、.qmdに変更がない場合にもこの再計算は実行されます。したがって、WebsiteやBookのサイズが大きくなると、再計算に時間がかかるようになります。</span>
+<span id="cb35-666"><a href="#cb35-666" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-667"><a href="#cb35-667" aria-hidden="true" tabindex="-1"></a>一度HTMLを作成した.qmdについて、ファイルに変更がない場合にRenderを実施しないようにするには、<span class="in">`freeze: auto`</span>を設定します。また、<span class="in">`freeze: true`</span>を設定すると、.qmdのRenderが行われなくなります。</span>
+<span id="cb35-668"><a href="#cb35-668" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-669"><a href="#cb35-669" aria-hidden="true" tabindex="-1"></a>大きなWebsiteを作成する場合には、作成中には<span class="in">`freeze: auto`</span>を用い、以下に述べるデプロイの前には<span class="in">`freeze: false`</span>として全体をRenderするような運用を行うとよいかと思います。</span>
+<span id="cb35-670"><a href="#cb35-670" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-671"><a href="#cb35-671" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="freezeの設定"}</span></span>
+<span id="cb35-672"><a href="#cb35-672" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb35-673"><a href="#cb35-673" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> auto</span><span class="co"> # true/auto/falseのいずれかを選択する</span></span>
+<span id="cb35-674"><a href="#cb35-674" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-675"><a href="#cb35-675" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-676"><a href="#cb35-676" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
+<span id="cb35-677"><a href="#cb35-677" aria-hidden="true" tabindex="-1"></a><span class="fu">## freeze: autoについて</span></span>
+<span id="cb35-678"><a href="#cb35-678" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-679"><a href="#cb35-679" aria-hidden="true" tabindex="-1"></a>大きなWebsiteやBookを作成する場合、<span class="in">`freeze: auto`</span>はRenderにかかる時間を短縮できる便利な設定です。ただし、.qmdファイルに変更がないのに内容が変わるような場合、例えば.qmdファイル中で読み込むデータを修正した場合などには、この変更が適用されずにRenderが終了してしまいます。HTMLを共有・公開する前などには、<span class="in">`freeze: false`</span>に設定を変更し、Renderしたほうがよいでしょう。</span>
+<span id="cb35-680"><a href="#cb35-680" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
