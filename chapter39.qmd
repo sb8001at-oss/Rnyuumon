@@ -7,7 +7,7 @@ library(readxl)
 
 ## YAMLとは？
 
-[R markdownの章](chapter35.qmd#yaml)でも少し説明しましたが、R markdown・Quartoでは、文章全体に関する設定を、文頭の**YAML**という部分に記載します。YAMLは以下のように、`---`で囲まれた領域に記載し、その文章の`title`（題名）や`author`（著者）、`date`（作成日）や`output`（出力するファイル形式）などの設定を`:`（コロン）でつないで記載する形式のテキストを指します。
+[35章](chapter35.qmd#yaml)でも少し説明しましたが、R markdown・Quartoでは、文章全体に関する設定を、文頭の**YAML**という部分に記載します。YAMLは以下のように、`---`で囲まれた領域に記載し、その文章の`title`（題名）や`author`（著者）、`date`（作成日）や`output`（出力するファイル形式）などの設定を`:`（コロン）でつないで記載する形式のテキストです。
 
 ```{yaml, filename="YAMLの例"}
 ---
@@ -82,7 +82,7 @@ book:
 
 ## 文章のフォーマット
 
-Quartoで作成できる文章のファイルには、以下のようなものがあります。
+QuartoをRenderすることで作成できるファイルには、以下のようなものがあります。
 
 - HTML（Books、Websitesを含む）：Webブラウザで表示するファイル形式
 - PDF：Adobeが管理している文章ファイル形式
@@ -90,7 +90,7 @@ Quartoで作成できる文章のファイルには、以下のようなもの�
 - [Typst](https://typst.app/)：Latex的な組版ファイル形式
 - [Open Document](https://ja.libreoffice.org/discover/what-is-opendocument/)：Open officeのWord的なファイル形式
 - [ePub](https://ja.wikipedia.org/wiki/EPUB)：Web上で論文を表示する際に用いられるファイル形式
-- [Reveal.js](https://revealjs.com/):HTMLで作成するプレゼンテーションファイル形式
+- [Reveal.js](https://revealjs.com/)：HTMLで作成するプレゼンテーションファイル形式
 - PowerPoint：MicrosoftのPowerPointファイル
 - [Beamer](https://ja.overleaf.com/learn/latex/Beamer)：Latexでプレゼンテーションを作成するファイル形式
 - Dashboards：HTML上でデータを表示するための形式
@@ -110,7 +110,7 @@ d <- read_excel("./data/Quarto_YAMLs.xlsx", sheet = 1)
 knitr::kable(d)
 ```
 
-また、やや複雑なのですが、HTMLのうちQuarto BookとWebsite、Manuscriptの3つに関しては`format`ではなく、`project`の下のカテゴリとして、`type`に設定する形となっています。
+また、やや複雑なのですが、HTMLのうちQuarto BookとWebsite、Manuscriptなどに関しては`format`ではなく、`project`の下のカテゴリとして、`type`に設定する形となっています。
 
 ```{yaml, filename="projectの設定"}
 ---
@@ -119,7 +119,7 @@ project:
 ---
 ```
 
-この`project: type:`以下に設定するパラメータは以下の5つです。projectに関しては[WebsiteとBookの章](chapter42.qmd)で詳しく説明します。
+この`project: type:`以下に設定するパラメータは以下の5つです。projectとtypeに関しては[42章](chapter42.qmd)で詳しく説明します。
 
 ```{r, echo=FALSE, message=FALSE}
 d <- read_excel("./data/Quarto_YAMLs.xlsx", sheet = 2)
@@ -130,7 +130,7 @@ QuartoをRenderする際には、Rendering Engine（Rの場合はknitr）が`for
 
 ## 文書のタイトルと著者
 
-Quartoは論文を執筆する際に用いられることも想定しているため、文書の情報（タイトル、著者など）を設定するためのYAMLがたくさん設定されています。以下に設定できるYAMLの要素と意味を示します。
+Quartoは論文を執筆する際に用いることも想定しているため、文書の情報（タイトル、著者など）を設定するためのYAMLがたくさん設定されています。以下に設定できるYAMLの要素と意味を示します。
 
 ```{r, echo=FALSE, message=FALSE}
 d <- read_excel("./data/Quarto_YAMLs.xlsx", sheet = 3)
@@ -268,7 +268,7 @@ website:
 :::{.callout-tip collapse=true}
 ## searchの設定
 
-`search`は、RenderしたHTMLが保存保存されるフォルダ内に`search.json`というファイルを作成し、`search.json`から単語を検索するような形で機能します。また、[Algolia](https://www.algolia.com/)という検索サービスを利用することもできます。`search`の設定の詳細については[Quartoのsearchのページ](https://quarto.org/docs/websites/website-search.html)を参考にして下さい。
+`search`は、RenderしたHTMLが保存されるフォルダ内に`search.json`というファイルを作成し、`search.json`から単語を検索するような形で機能します。検索はHTMLをRenderしただけでは使えず、Github Pagesなどにデプロイした際に機能するようになります。また、[Algolia](https://www.algolia.com/)という検索サービスを利用することもできます。`search`の設定の詳細については[Quartoのsearchのページ](https://quarto.org/docs/websites/website-search.html)を参考にして下さい。
 :::
 
 ### sidebar
@@ -305,7 +305,7 @@ website:
 
 ### フッター（footer）
 
-フッターは文書の最後に表示されるテキストやリンクのことです。コピーライトや利用しているツール名、、ソースコードへのリンクや、企業であれば企業ページへのリンク、規約に関するリンクなどを置く部分です。フッターは以下のような形で`page-footer`の項目に設定します。
+フッターは文書の最後に表示されるテキストやリンクのことです。コピーライトや利用しているツール名、ソースコードへのリンクや、企業であれば企業ページへのリンク、規約に関するリンクなどを置く部分です。フッターは以下のような形で`page-footer`の項目に設定します。
 
 ```{yaml, filename="footerの設定"}
 website:
@@ -322,7 +322,7 @@ website:
 
 ## chunk optionをYAMLで設定する
 
-[前の章](./chapter38.html)で説明したchunk optionは，各chunkに設定するだけでなく，YAMLとして設定することもできます．YAMLとしてchunk optionを設定すると，その文章のすべてのchunkに指定したchunk optionが適用されます．
+[38章](./chapter38.html)で説明したchunk optionは，各chunkに設定するだけでなく，YAMLとして設定することもできます．YAMLとしてchunk optionを設定すると，その文章のすべてのchunkに指定したchunk optionが適用されます．
 
 ```{yaml, filename="YAMLでchunk optionを指定する"}
 ---
@@ -381,7 +381,7 @@ format:
       dark: cyborg
 ```
 
-上記のように`light`と`dark`のthemeをそれぞれ設定すると、、sidebarの上にトグルボタンが表示されるようになります。上のYAMLの例では、light modeは[united](https://bootswatch.com/united/)、dark modeは[cyborg](https://bootswatch.com/cyborg/)で表示されます。トグルボタンを操作することで、light modeとdark modeを切り替えることができます。
+上記のように`light`と`dark`のthemeをそれぞれ設定すると、sidebarの上にトグルボタンが表示されるようになります。上のYAMLの例では、light modeは[united](https://bootswatch.com/united/)、dark modeは[cyborg](https://bootswatch.com/cyborg/)で表示されます。トグルボタンを操作することで、light modeとdark modeを切り替えることができます。
 
 HTMLのデザインに関しては、Bootswatchのデザインをカスタマイズしたり、自分で[scss](https://sass-lang.com/)を準備してデザインを変更することもできます。詳しくは[QuartoのHTML Theming](https://quarto.org/docs/output-formats/html-themes.html)を参考にしてください。
 
@@ -400,7 +400,7 @@ plot(cars$speed, -cars$dist, main = "dark mode") # dark modeで表示
 ```
 ````
 
-```{r, filename="明るさのモードに従い図の色を変える", collapse=TRUE}
+```{r, filename="明るさのモードに従い図の色を変える", echo=FALSE}
 #| renderings: [light, dark]
 par(bg = "#FFFFFF", fg = "#000000")
 plot(cars, main = "light mode") # light modeで表示
@@ -560,7 +560,7 @@ format:
 
 ## PDFを出力する
 
-QuartoをPDFとして出力する場合、上記の通り`format: pdf`を設定します。PDFの出力では、Quartoは一度Latexに変換された後、そのLaTeXをPDFに変換することになります。このLaTeXからPDFへの変換には、LaTeXのエンジンを用います。LaTeXのエンジンにはLuaLaTexやpdfLaTexなど、様々なものがあるのですが、Quartoでは[tinytex](https://yihui.org/tinytex/)というLaTeXエンジンが推奨されています。tinytexはTerminalを用いて、Quarto CLIからインストールすることができます。LaTeXエンジンの詳細については、[QuartoのPDF Engines](https://quarto.org/docs/output-formats/pdf-engine.html)のページをご参照ください。
+QuartoをPDFとして出力する場合、上記の通り`format: pdf`を設定します。PDFの出力では、Quartoは一度LaTeXに変換された後、そのLaTeXをPDFに変換することになります。このLaTeXからPDFへの変換には、LaTeXのエンジンを用います。LaTeXのエンジンにはLuaLaTexやpdfLaTexなど、様々なものがあるのですが、Quartoでは[tinytex](https://yihui.org/tinytex/)というLaTeXエンジンが推奨されています。tinytexはTerminalを用いて、Quarto CLIからインストールすることができます。LaTeXエンジンの詳細については、[QuartoのPDF Engines](https://quarto.org/docs/output-formats/pdf-engine.html)のページをご参照ください。
 
 ```{markdown, filename="tinytexをインストールする"}
 Quarto install tinytex

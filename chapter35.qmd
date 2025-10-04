@@ -16,7 +16,7 @@ Rでスクリプトを書いている時には、コードを書き、コード�
 
 また、Rでの計算結果を他の人に説明する場合には、グラフや表を別途保存し、PowerpointやWordなどに張り付ける必要があります。わざわざファイルを保存し、別のファイルに張り付ける作業は無意味ですし、時間を取ります。
 
-このような再現性の確保、計算結果の共有のためのライブラリが[**R markdown**](https://rmarkdown.rstudio.com/)[@Yihui_Xie_231230]です。R markdownでは、マークアップ言語である**Markdown**を用いて、Rのコードとその説明文を同時に文書として作成することができます。
+このような再現性の確保、計算結果の共有のためのライブラリが[**R markdown**](https://rmarkdown.rstudio.com/)[@rmarkdown_bib1; @rmarkdown_bib2; @rmarkdown_bib3]です。R markdownでは、マークアップ言語である**Markdown**を用いて、Rのコードとその説明文を同時に文書として作成することができます。
 
 ## マークアップ言語とMarkdown
 
@@ -43,13 +43,13 @@ Rは統計に用いる言語ですので、Texを用いた論文にRの統計結
 Rでの開発とは別に、PythonではRと同じような対話的実行システムである[IPython](https://ipython.readthedocs.io/en/stable/)（2001年）が開発され、更にPython、Rなどを対話的に実行・結果を表示しつつ、Markdownでの文書と同時に記載できるWebアプリケーションである[Jupyter notebook](https://jupyter.org/)（2014年頃）が開発されました。
 
 上記のような流れの中で、RでLaTex、HTML、Markdownなどの文書とコードを作成し、それをRコードを実行した形でLatexやHTMLとして出力するためのライブラリである[knitr](https://yihui.org/knitr/)が開発されました（2012年頃）。このknitrをさらにPandocと統合し、Rコードから直接PDFやHTML、Microsoft Wordなどのフォーマットの文書を作成できるようにしたものが[R markdown](https://rmarkdown.rstudio.com/)（2016年頃）です。R markdownはすぐにRstudio（[2011年頃](https://posit.co/blog/rstudio-new-open-source-ide-for-r/)に開発）と統合され、RstudioからR markdown方式の文書を作成し、それをPDFやHTMLに変換できるようになりました。R markdownのExtensionsも整備され、例えば[Bookdown](https://bookdown.org/)（R Markdownで本を書くためのツール）が開発されたことでRでHTML形式の本を比較的簡単に作成することができるようになりました。また、[Revealjs](https://revealjs.com/)を
-出力することでHTMLベースのプレゼンテーションを作成することもできるようになっています。R studioにはR markdownのVisual mode（Jupyter notebookと見た目が似た形式）も整備され、R markdownを利用することでJupyter notebook風にRを利用することもできます。
+出力することでHTMLベースのプレゼンテーションを作成することもできるようになっています。RstudioにはR markdownのVisual mode（Jupyter notebookと見た目が似た形式）も整備され、R markdownを利用することでJupyter notebook風にRを利用することもできます。
 
 上記のようにRstudioとR markdownは共に発展してきましたが、2010年代には機械学習のライブラリがほとんどPythonで開発されるようになり、RよりもPythonの方がはるかに流行の言語となりました。このPythonユーザーを取り込むためだと思いますが、Rstudio（今は[Posit.io](https://posit.co/)という企業）はR markdownをPythonやJuliaなどの統計学・機械学習で用いられる言語でも使える形とし、Rstudioだけでなく、JupyterやテキストエディタであるVisual Studio Codeでも使えるものとした、[Quarto](https://quarto.org/)を開発し始めました（おそらく2022年頃）。QuartoがRユーザー以外に注目されているかはかなり疑問ですが、RユーザーとしてはR markdownの機能が単にアップグレードされただけですので、用いない理由はほとんどありません。
 
 このテキストもR markdown、BookdownおよびQuartoを利用して作成しています。
 
-以下ではR markdownについて説明していきますが、RstudioではQuartoもR markdownと同様に用いることができます。
+以下ではR markdownについて説明していきますが、RstudioではQuartoもR markdownと同じように用いることができます。
 
 :::
 
@@ -90,7 +90,7 @@ output: html_document
 ---
 ```
 
-この`---`に挟まれた領域には、[YAML](https://ja.wikipedia.org/wiki/YAML)と呼ばれるものが記載されています。YAML自体は名前とデータをコロン（`:`）でつないだだけのデータ形式です。R markdownではこのYAMLを読み込むことで、最終的な出力データに表記する情報・データの出力形式などを設定します。YAMLで設定できる主な要素は以下の表2の通りです。
+この`---`に挟まれた領域には、[YAML](https://ja.wikipedia.org/wiki/YAML)と呼ばれるものが記載されています。YAML自体は名前とデータをコロン（`:`）でつないだだけのデータ形式です。R markdownではこの文頭のYAMLを読み込むことで、最終的な出力データに表記する情報・データの出力形式などを設定することができます。YAMLで設定できる主な要素は以下の表2の通りです。
 
 ```{r, echo = FALSE}
 d <- read_excel("./data/chapter34_Rmarkdown.xlsx", sheet = 2)
@@ -101,7 +101,7 @@ YAMLの指定では、論理型として`true`/`false`という形で、小文�
 
 ### chunk
 
-R markdown中では、Rのスクリプトは以下のように\`3つで囲まれた領域に書くことになります。このコードのかたまりのことを**chunk**と呼びます。
+R markdownでは、Rのスクリプトは以下のように \` 3つで囲まれた領域に書くことになります。このコードのかたまりのことを**chunk**と呼びます。
 
 ````markdown
 `r ''````{r}

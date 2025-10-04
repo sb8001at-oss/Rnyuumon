@@ -25,13 +25,13 @@ format: beamer
 
 スライドを作成するときのルールはおおむね以下のようになります。
 
-- 表紙のスライドはYAMLの`title`と`author`から作成されます。
+- タイトルのスライドはYAMLの`title`と`author`から作成されます。
 - header1（`# header1`）を設定すると、タイトルのスライドを別途設定することもできます。 
 - header2（`## header2`）を設定すると、新しいスライドが作成されます。header2以下にそのスライドの内容を記載します。
 - header2を用いずに新しいスライドを作成する場合には、ハイフン3つ（`---`）をスライドの区切りに用いることができます。
 - chunkは実行されますが、コードは表示されません（デフォルトでは`echo=FALSE`になっています）。
 
-上記のルールはReveal.js、Powerpoint、Beamerのいずれでも適用されます。以下に[QuartoのGuide](https://quarto.org/docs/presentations/#creating-slides)に記載されているMarkdownの例と、出力されるプレゼンテーション（Reveal.js）を示します。
+上記のルールはReveal.js、Powerpoint、Beamerのいずれにも適用されます。以下に[QuartoのGuide](https://quarto.org/docs/presentations/#creating-slides)に記載されているMarkdownの例と、出力されるプレゼンテーション（Reveal.js）を示します。
 
 ```{markdown, filename="Reveal.jsのサンプル"}
 ---
@@ -80,13 +80,13 @@ format:
 ---
 ```
 
-スライドの高さと`iframe`で指定する高さを揃え、`width`には100%など、%表記で指定すると画面の幅に合わせて横幅を調整してくれます。
+スライドの高さと`iframe`で指定する高さを揃え、`width`には100%のような形で%表記で指定すると画面の幅に合わせて横幅を調整してくれます。
 
 :::
 
 ### 箇条書きをひとつづつ表示する
 
-プレゼンテーションでは、箇条書きにした項目をひとつづつ順番に表示したい場合があります。箇条書きをひとつづつ表示する場合、`:::{.incremental}`と`:::`で箇条書きを囲います。
+プレゼンテーションでは、箇条書きにした項目をひとつづつ順番に表示したい場合があります。箇条書きをひとつづつ表示する場合には、以下のように`:::{.incremental}`と`:::`で箇条書きを囲います。
 
 ```{markdown, filename="箇条書きをひとつづつ表示"}
 :::{.incremental}
@@ -113,18 +113,19 @@ Get out of bed
 
 ### 複数の列に表示する
 
-スライドに複数列の項目を記載したい場合には、`{.columns}`と`{.column}`をネスト（入れ子）にして用います。また、各列の幅は`{.column width=40%}`と指定することで調整することもできます。
+スライドに複数列の項目を記載したい場合には、`{.columns}`と`{.column}`をネスト（入れ子）にして用います。また、各列の幅は`{.column width=40%}`と`{}`の中で指定することで調整することができます。
 
 ```{markdown}
 ## Getting up
 
 :::{.columns} 
-:::{.column}
-Turn off alarm
-:::
-:::{.column}
-Get out of bed
-:::
+  :::{.column}
+    Turn off alarm
+  :::
+
+  :::{.column}
+    Get out of bed
+  :::
 :::
 ```
 
@@ -132,7 +133,7 @@ Get out of bed
 
 ### 図の表示
 
-図の表示は、[37章](chapter37.qmd#図の表示)で説明した通り、`![](path/to/image)`で表示させることができます。上の項目で説明した通り、図は`{.columns}`を用いれば横に並べることができます。また、別途画像を重ねて表示したい場合には、以下のように`{.r-stack}`を用います。
+図の表示は、[37章](chapter37.qmd#図の表示)で説明した通り、`![](path/to/image)`という形で表示させることができます。上の項目で説明した通り、図は`{.columns}`を用いれば横に並べることができます。また、別途画像を重ねて表示したい場合には、以下のように`{.r-stack}`を用います。
 
 ```{markdown, filename="図を重ねて表示する"}
 :::{.r-stack}
@@ -141,7 +142,6 @@ Get out of bed
 ![](../image/matsumoto2.jpg){.fragment width=200px height=150px}
 
 ![](../image/matsumoto3.jpg){.fragment width=100px height=75px}
-
 :::
 ```
 
@@ -159,7 +159,7 @@ Get out of bed
 
 ### テーマ（Theme）
 
-Quartoのテーマ（`theme`、[Bootswitch](https://bootswatch.com/)に従います）とは別に、Reveal.jsには[専用のTheme](https://revealjs.com/themes/)が12種準備されています。これらのうち、[Quartoでは11種を設定可能](https://quarto.org/docs/presentations/revealjs/#themes)と記載されていますが、実際には`dracula`のような記載のないテーマも設定可能です。Themeを設定する場合、YAMLで以下のように`theme`を指定します。
+Quartoのテーマ（`theme`、[Bootswitch](https://bootswatch.com/)に従います）とは別に、Reveal.jsには[専用のTheme](https://revealjs.com/themes/)が12種準備されています。Themeを設定する場合、YAMLで以下のように`theme`を指定します。
 
 ```{yaml, filename="reveal.jsのテーマの設定"}
 format:
@@ -169,7 +169,7 @@ format:
 
 <iframe class="slide-deck" src="./sample_revealjs/sample_theme.html" width="100%" height="250"></iframe>
 
-テーマはReveal.jsのみ適用できるYAMLです。Powerpointの場合はWordを出力する場合と同様にテンプレートを準備してプレゼンテーションのデザインを指定します。QuartoではBeamerを凝ったデザインで出力することは難しいようです。
+テーマはプレゼンテーションのファイルではReveal.jsにのみ適用できるYAMLです。Powerpointの場合はWordを出力する場合と同様にテンプレートを準備してプレゼンテーションのデザインを指定します。QuartoではBeamerを凝ったデザインのプレゼンテーションとして出力することは難しいようです。
 
 ### aside（余談）、注釈（footnote）とフッター（footer）
 
@@ -254,7 +254,7 @@ format:
 
 ### スライドを表示しない・隠しスライド
 
-特定のスライドを全く表示させない場合には、header2の後ろに`{visibility="hidden"}`を指定します。同様に`{visibility="uncounted"}`を指定すると、プレゼンテーションとしては表示しない、隠しスライドとしてスライドを作成することができます。
+特定のスライドを全く表示させない場合には、header2の後ろに`{visibility="hidden"}`を指定します。同様に`{visibility="uncounted"}`を指定すると、スライド番号を表示させた場合にカウントを増やさずにスライドを作成することができます。
 
 ```{markdown, filename="スライドの表示の有無"}
 ## Breakfast
@@ -285,9 +285,9 @@ Reveal.jsでは、スライドの背景を設定することもできます。�
 ```{yaml, filename="タイトルスライドの背景"}
 title: budda
 title-slide-attributes:
-  data-background-image: "../image/budda.jpg"
-  data-background-size: cover
-  data-background-opacity: "0.8"
+  data-background-image: "../image/budda.jpg" # 背景の画像
+  data-background-size: cover # 背景サイズの指定
+  data-background-opacity: "0.8" # 背景の透明度の指定
 ```
 
 #### スライドの背景色
@@ -525,7 +525,7 @@ Reveal.jsでは、上に示した通り、スライドの左右に矢印が表�
 
 スクロールホイールで移動ができるようにするためのYAMLが`scroll-view`です。`scroll-view: true`を設定すると、以下の例のようにスクロールバーが右に表示されるようになり、スクロールホイールでスライドを移動することが出来るようになります。
 
-また、このYAMLを設定していないプレゼンテーションにおいても、キーボードの『O』を押すことでもスクロールホイールで操作することができます。
+また、このYAMLを設定していないプレゼンテーションにおいても、キーボードの『R』を押すことでスクロールホイールで操作できます。
 
 ```{yaml, filename="scroll-viewを有効にする"}
 format: 

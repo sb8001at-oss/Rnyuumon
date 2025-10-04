@@ -774,7 +774,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p>しかし、1つのRファイルにあれもこれも分析を加えていくと、どこで何を計算しているのか、把握することが難しくなっていきます。また、たくさんの分析を一度に行うと、少しスクリプトを修正しただけでプログラムが走らなくなる、結果が大きく変わってしまう、ということも珍しくありません。</p>
 <p>このような、スクリプトを書いているときに発生する問題のことを、<strong>再現性の問題</strong>と呼ぶことがあります。Rでは主に統計の計算を行うため、誰が、いつ、どのような場所で計算を行っても、同じ結果が得られる、つまり再現性があることが重要となります。単にスクリプトを書いているだけでは、再現性を維持するのが難しい場合もあります。</p>
 <p>また、Rでの計算結果を他の人に説明する場合には、グラフや表を別途保存し、PowerpointやWordなどに張り付ける必要があります。わざわざファイルを保存し、別のファイルに張り付ける作業は無意味ですし、時間を取ります。</p>
-<p>このような再現性の確保、計算結果の共有のためのライブラリが<a href="https://rmarkdown.rstudio.com/"><strong>R markdown</strong></a><span class="citation" data-cites="Yihui_Xie_231230">(<a href="references.html#ref-Yihui_Xie_231230" role="doc-biblioref">J. J. Allaire and Grolemund 2023</a>)</span>です。R markdownでは、マークアップ言語である<strong>Markdown</strong>を用いて、Rのコードとその説明文を同時に文書として作成することができます。</p>
+<p>このような再現性の確保、計算結果の共有のためのライブラリが<a href="https://rmarkdown.rstudio.com/"><strong>R markdown</strong></a><span class="citation" data-cites="rmarkdown_bib1 rmarkdown_bib2 rmarkdown_bib3">(<a href="references.html#ref-rmarkdown_bib1" role="doc-biblioref">Allaire et al. 2023</a>; <a href="references.html#ref-rmarkdown_bib2" role="doc-biblioref">Xie, Allaire, and Grolemund 2018</a>; <a href="references.html#ref-rmarkdown_bib3" role="doc-biblioref">Xie, Dervieux, and Riederer 2020</a>)</span>です。R markdownでは、マークアップ言語である<strong>Markdown</strong>を用いて、Rのコードとその説明文を同時に文書として作成することができます。</p>
 <section id="マークアップ言語とmarkdown" class="level2" data-number="35.1"><h2 data-number="35.1" class="anchored" data-anchor-id="マークアップ言語とmarkdown">
 <span class="header-section-number">35.1</span> マークアップ言語とMarkdown</h2>
 <p>マークアップ言語とは、主に<a href="https://ja.wikipedia.org/wiki/%E7%B5%84%E7%89%88">組版</a>と呼ばれる、文書や画像を出版・印刷できる形式で出力するために用いられる言語です。組版自体はマークアップ言語が無くても行うことができます（代表的な組版ソフトウェアは<a href="https://ja.wikipedia.org/wiki/Adobe_InDesign">Adobe InDesign</a>や<a href="https://ja.wikipedia.org/wiki/QuarkXPress">QuarkXPress</a>）。これらの有料の組版ソフトはGUIを用いて組版を行うソフトウェアです。同様の機能をCUI、つまりテキストファイルで対応できるようにしたものがマークアップ言語です。マークアップ言語は通常無料で使用することができ、機能的には有料の組版ソフトと大きな差はありません。ただし、学習コストが比較的高めです。</p>
@@ -920,10 +920,10 @@ R markdownの発展
 <p>Rは統計に用いる言語ですので、Texを用いた論文にRの統計結果を加えることは昔から重要とされていました。Rが用いられ始めてすぐに、RのスクリプトとTexを合わせることができるRの機能として、<a href="https://stat.ethz.ch/R-manual/R-devel/library/utils/doc/Sweave.pdf">Sweave</a>がR Core Teamにより開発されました（<a href="https://cran.r-project.org/doc/Rnews/Rnews_2002-3.pdf#page=28&amp;zoom=100,73,74">2002年頃</a>のようです）。</p>
 <p>また、このようなRでの流れとは独立に、HTMLを簡単な表記で作成するためのテキスト形式である<a href="https://daringfireball.net/projects/markdown/">Markdown</a>（2004年）、MarkdownをHTMLやPDFに変換できるファイルコンバータとして<a href="https://pandoc.org/">Pandoc</a>（2006年）が開発されました。</p>
 <p>Rでの開発とは別に、PythonではRと同じような対話的実行システムである<a href="https://ipython.readthedocs.io/en/stable/">IPython</a>（2001年）が開発され、更にPython、Rなどを対話的に実行・結果を表示しつつ、Markdownでの文書と同時に記載できるWebアプリケーションである<a href="https://jupyter.org/">Jupyter notebook</a>（2014年頃）が開発されました。</p>
-<p>上記のような流れの中で、RでLaTex、HTML、Markdownなどの文書とコードを作成し、それをRコードを実行した形でLatexやHTMLとして出力するためのライブラリである<a href="https://yihui.org/knitr/">knitr</a>が開発されました（2012年頃）。このknitrをさらにPandocと統合し、Rコードから直接PDFやHTML、Microsoft Wordなどのフォーマットの文書を作成できるようにしたものが<a href="https://rmarkdown.rstudio.com/">R markdown</a>（2016年頃）です。R markdownはすぐにRstudio（<a href="https://posit.co/blog/rstudio-new-open-source-ide-for-r/">2011年頃</a>に開発）と統合され、RstudioからR markdown方式の文書を作成し、それをPDFやHTMLに変換できるようになりました。R markdownのExtensionsも整備され、例えば<a href="https://bookdown.org/">Bookdown</a>（R Markdownで本を書くためのツール）が開発されたことでRでHTML形式の本を比較的簡単に作成することができるようになりました。また、<a href="https://revealjs.com/">Revealjs</a>を 出力することでHTMLベースのプレゼンテーションを作成することもできるようになっています。R studioにはR markdownのVisual mode（Jupyter notebookと見た目が似た形式）も整備され、R markdownを利用することでJupyter notebook風にRを利用することもできます。</p>
+<p>上記のような流れの中で、RでLaTex、HTML、Markdownなどの文書とコードを作成し、それをRコードを実行した形でLatexやHTMLとして出力するためのライブラリである<a href="https://yihui.org/knitr/">knitr</a>が開発されました（2012年頃）。このknitrをさらにPandocと統合し、Rコードから直接PDFやHTML、Microsoft Wordなどのフォーマットの文書を作成できるようにしたものが<a href="https://rmarkdown.rstudio.com/">R markdown</a>（2016年頃）です。R markdownはすぐにRstudio（<a href="https://posit.co/blog/rstudio-new-open-source-ide-for-r/">2011年頃</a>に開発）と統合され、RstudioからR markdown方式の文書を作成し、それをPDFやHTMLに変換できるようになりました。R markdownのExtensionsも整備され、例えば<a href="https://bookdown.org/">Bookdown</a>（R Markdownで本を書くためのツール）が開発されたことでRでHTML形式の本を比較的簡単に作成することができるようになりました。また、<a href="https://revealjs.com/">Revealjs</a>を 出力することでHTMLベースのプレゼンテーションを作成することもできるようになっています。RstudioにはR markdownのVisual mode（Jupyter notebookと見た目が似た形式）も整備され、R markdownを利用することでJupyter notebook風にRを利用することもできます。</p>
 <p>上記のようにRstudioとR markdownは共に発展してきましたが、2010年代には機械学習のライブラリがほとんどPythonで開発されるようになり、RよりもPythonの方がはるかに流行の言語となりました。このPythonユーザーを取り込むためだと思いますが、Rstudio（今は<a href="https://posit.co/">Posit.io</a>という企業）はR markdownをPythonやJuliaなどの統計学・機械学習で用いられる言語でも使える形とし、Rstudioだけでなく、JupyterやテキストエディタであるVisual Studio Codeでも使えるものとした、<a href="https://quarto.org/">Quarto</a>を開発し始めました（おそらく2022年頃）。QuartoがRユーザー以外に注目されているかはかなり疑問ですが、RユーザーとしてはR markdownの機能が単にアップグレードされただけですので、用いない理由はほとんどありません。</p>
 <p>このテキストもR markdown、BookdownおよびQuartoを利用して作成しています。</p>
-<p>以下ではR markdownについて説明していきますが、RstudioではQuartoもR markdownと同様に用いることができます。</p>
+<p>以下ではR markdownについて説明していきますが、RstudioではQuartoもR markdownと同じように用いることができます。</p>
 </div>
 </div>
 </div>
@@ -965,7 +965,7 @@ R markdownの発展
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2024-06-29"</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">output</span><span class="kw">:</span><span class="at"> html_document</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>この<code>---</code>に挟まれた領域には、<a href="https://ja.wikipedia.org/wiki/YAML">YAML</a>と呼ばれるものが記載されています。YAML自体は名前とデータをコロン（<code>:</code>）でつないだだけのデータ形式です。R markdownではこのYAMLを読み込むことで、最終的な出力データに表記する情報・データの出力形式などを設定します。YAMLで設定できる主な要素は以下の表2の通りです。</p>
+<p>この<code>---</code>に挟まれた領域には、<a href="https://ja.wikipedia.org/wiki/YAML">YAML</a>と呼ばれるものが記載されています。YAML自体は名前とデータをコロン（<code>:</code>）でつないだだけのデータ形式です。R markdownではこの文頭のYAMLを読み込むことで、最終的な出力データに表記する情報・データの出力形式などを設定することができます。YAMLで設定できる主な要素は以下の表2の通りです。</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1063,7 +1063,7 @@ R markdownの発展
 <p>YAMLの指定では、論理型として<code>true</code>/<code>false</code>という形で、小文字を用います。</p>
 </section><section id="chunk" class="level3" data-number="35.3.2"><h3 data-number="35.3.2" class="anchored" data-anchor-id="chunk">
 <span class="header-section-number">35.3.2</span> chunk</h3>
-<p>R markdown中では、Rのスクリプトは以下のように`3つで囲まれた領域に書くことになります。このコードのかたまりのことを<strong>chunk</strong>と呼びます。</p>
+<p>R markdownでは、Rのスクリプトは以下のように ` 3つで囲まれた領域に書くことになります。このコードのかたまりのことを<strong>chunk</strong>と呼びます。</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1147,8 +1147,14 @@ R markdownの発展
 <!-- -->
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-Yihui_Xie_231230" class="csl-entry" role="listitem">
-J. J. Allaire, Yihui Xie ahd, and Garrett Grolemund. 2023. <em>R Markdown: The Definitive Guide</em>.
+<div id="ref-rmarkdown_bib1" class="csl-entry" role="listitem">
+Allaire, JJ, Yihui Xie, Christophe Dervieux, Jonathan McPherson, Javier Luraschi, Kevin Ushey, Aron Atkins, et al. 2023. <em>Rmarkdown: Dynamic Documents for r</em>. <a href="https://github.com/rstudio/rmarkdown">https://github.com/rstudio/rmarkdown</a>.
+</div>
+<div id="ref-rmarkdown_bib2" class="csl-entry" role="listitem">
+Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. <em>R Markdown: The Definitive Guide</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown">https://bookdown.org/yihui/rmarkdown</a>.
+</div>
+<div id="ref-rmarkdown_bib3" class="csl-entry" role="listitem">
+Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R Markdown Cookbook</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown-cookbook">https://bookdown.org/yihui/rmarkdown-cookbook</a>.
 </div>
 </div>
 </section></section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -1642,7 +1648,7 @@ J. J. Allaire, Yihui Xie ahd, and Garrett Grolemund. 2023. <em>R Markdown: The D
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>また、Rでの計算結果を他の人に説明する場合には、グラフや表を別途保存し、PowerpointやWordなどに張り付ける必要があります。わざわざファイルを保存し、別のファイルに張り付ける作業は無意味ですし、時間を取ります。</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>このような再現性の確保、計算結果の共有のためのライブラリが<span class="co">[</span><span class="ot">**R markdown**</span><span class="co">](https://rmarkdown.rstudio.com/)[</span><span class="ot">@Yihui_Xie_231230</span><span class="co">]</span>です。R markdownでは、マークアップ言語である**Markdown**を用いて、Rのコードとその説明文を同時に文書として作成することができます。</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>このような再現性の確保、計算結果の共有のためのライブラリが<span class="co">[</span><span class="ot">**R markdown**</span><span class="co">](https://rmarkdown.rstudio.com/)[</span><span class="ot">@rmarkdown_bib1; @rmarkdown_bib2; @rmarkdown_bib3</span><span class="co">]</span>です。R markdownでは、マークアップ言語である**Markdown**を用いて、Rのコードとその説明文を同時に文書として作成することができます。</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## マークアップ言語とMarkdown</span></span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
@@ -1669,13 +1675,13 @@ J. J. Allaire, Yihui Xie ahd, and Garrett Grolemund. 2023. <em>R Markdown: The D
 <span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>Rでの開発とは別に、PythonではRと同じような対話的実行システムである<span class="co">[</span><span class="ot">IPython</span><span class="co">](https://ipython.readthedocs.io/en/stable/)</span>（2001年）が開発され、更にPython、Rなどを対話的に実行・結果を表示しつつ、Markdownでの文書と同時に記載できるWebアプリケーションである<span class="co">[</span><span class="ot">Jupyter notebook</span><span class="co">](https://jupyter.org/)</span>（2014年頃）が開発されました。</span>
 <span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>上記のような流れの中で、RでLaTex、HTML、Markdownなどの文書とコードを作成し、それをRコードを実行した形でLatexやHTMLとして出力するためのライブラリである<span class="co">[</span><span class="ot">knitr</span><span class="co">](https://yihui.org/knitr/)</span>が開発されました（2012年頃）。このknitrをさらにPandocと統合し、Rコードから直接PDFやHTML、Microsoft Wordなどのフォーマットの文書を作成できるようにしたものが<span class="co">[</span><span class="ot">R markdown</span><span class="co">](https://rmarkdown.rstudio.com/)</span>（2016年頃）です。R markdownはすぐにRstudio（<span class="co">[</span><span class="ot">2011年頃</span><span class="co">](https://posit.co/blog/rstudio-new-open-source-ide-for-r/)</span>に開発）と統合され、RstudioからR markdown方式の文書を作成し、それをPDFやHTMLに変換できるようになりました。R markdownのExtensionsも整備され、例えば<span class="co">[</span><span class="ot">Bookdown</span><span class="co">](https://bookdown.org/)</span>（R Markdownで本を書くためのツール）が開発されたことでRでHTML形式の本を比較的簡単に作成することができるようになりました。また、<span class="co">[</span><span class="ot">Revealjs</span><span class="co">](https://revealjs.com/)</span>を</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>出力することでHTMLベースのプレゼンテーションを作成することもできるようになっています。R studioにはR markdownのVisual mode（Jupyter notebookと見た目が似た形式）も整備され、R markdownを利用することでJupyter notebook風にRを利用することもできます。</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>出力することでHTMLベースのプレゼンテーションを作成することもできるようになっています。RstudioにはR markdownのVisual mode（Jupyter notebookと見た目が似た形式）も整備され、R markdownを利用することでJupyter notebook風にRを利用することもできます。</span>
 <span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>上記のようにRstudioとR markdownは共に発展してきましたが、2010年代には機械学習のライブラリがほとんどPythonで開発されるようになり、RよりもPythonの方がはるかに流行の言語となりました。このPythonユーザーを取り込むためだと思いますが、Rstudio（今は<span class="co">[</span><span class="ot">Posit.io</span><span class="co">](https://posit.co/)</span>という企業）はR markdownをPythonやJuliaなどの統計学・機械学習で用いられる言語でも使える形とし、Rstudioだけでなく、JupyterやテキストエディタであるVisual Studio Codeでも使えるものとした、<span class="co">[</span><span class="ot">Quarto</span><span class="co">](https://quarto.org/)</span>を開発し始めました（おそらく2022年頃）。QuartoがRユーザー以外に注目されているかはかなり疑問ですが、RユーザーとしてはR markdownの機能が単にアップグレードされただけですので、用いない理由はほとんどありません。</span>
 <span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>このテキストもR markdown、BookdownおよびQuartoを利用して作成しています。</span>
 <span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>以下ではR markdownについて説明していきますが、RstudioではQuartoもR markdownと同様に用いることができます。</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>以下ではR markdownについて説明していきますが、RstudioではQuartoもR markdownと同じように用いることができます。</span>
 <span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
@@ -1716,7 +1722,7 @@ J. J. Allaire, Yihui Xie ahd, and Garrett Grolemund. 2023. <em>R Markdown: The D
 <span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>この<span class="in">`---`</span>に挟まれた領域には、<span class="co">[</span><span class="ot">YAML</span><span class="co">](https://ja.wikipedia.org/wiki/YAML)</span>と呼ばれるものが記載されています。YAML自体は名前とデータをコロン（<span class="in">`:`</span>）でつないだだけのデータ形式です。R markdownではこのYAMLを読み込むことで、最終的な出力データに表記する情報・データの出力形式などを設定します。YAMLで設定できる主な要素は以下の表2の通りです。</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>この<span class="in">`---`</span>に挟まれた領域には、<span class="co">[</span><span class="ot">YAML</span><span class="co">](https://ja.wikipedia.org/wiki/YAML)</span>と呼ばれるものが記載されています。YAML自体は名前とデータをコロン（<span class="in">`:`</span>）でつないだだけのデータ形式です。R markdownではこの文頭のYAMLを読み込むことで、最終的な出力データに表記する情報・データの出力形式などを設定することができます。YAMLで設定できる主な要素は以下の表2の通りです。</span>
 <span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
 <span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"./data/chapter34_Rmarkdown.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">2</span>)</span>
@@ -1727,7 +1733,7 @@ J. J. Allaire, Yihui Xie ahd, and Garrett Grolemund. 2023. <em>R Markdown: The D
 <span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="fu">### chunk</span></span>
 <span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>R markdown中では、Rのスクリプトは以下のように<span class="sc">\`</span>3つで囲まれた領域に書くことになります。このコードのかたまりのことを**chunk**と呼びます。</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>R markdownでは、Rのスクリプトは以下のように <span class="sc">\`</span> 3つで囲まれた領域に書くことになります。このコードのかたまりのことを**chunk**と呼びます。</span>
 <span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a><span class="in">````markdown</span></span>
 <span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>`r ''````{r}</span>

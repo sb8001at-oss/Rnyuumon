@@ -7,7 +7,7 @@ library(readxl)
 
 ## Markdown記法の一覧
 
-Quartoでも、文章の設定は**YAML**として、文章の中身は**Markdown**で、コードは**chunk**に記載するのはR markdownと全く同じです。QuartoのMarkdownも、基本的にはR markdownのものとほぼ同じです。ただし、[R markdownの教科書](https://bookdown.org/yihui/rmarkdown/)に書かれているMarkdownのリストよりも、[QuartoのMarkdownガイド](https://quarto.org/docs/authoring/markdown-basics.html)にはたくさんの記法についての記載があります。以下にQuartoでのMarkdown記法についての一覧を示します。
+Quartoでも、文章の設定は**YAML**として、文章の中身は**Markdown**で、コードは**chunk**に記載するのはR markdownと全く同じです。QuartoのMarkdownは基本的にはR markdownのものとほぼ同じです。ただし、[R markdownの教科書](https://bookdown.org/yihui/rmarkdown/)に書かれているMarkdownのリストよりも、[QuartoのMarkdownガイド](https://quarto.org/docs/authoring/markdown-basics.html)にはたくさんの記法についての記載があります。以下にQuartoでのMarkdown記法についての一覧を示します。
 
 :::{.column-page-right}
 
@@ -145,7 +145,7 @@ Quartoでも、文章の設定は**YAML**として、文章の中身は**Markdow
 
 ## 表にMarkdown記法を加える
 
-上記の表の2列目のように、Markdown記法で記述した要素はMarkdown記法に従ってHTMLに変換されます。ただし、一部変換がうまくいかない場合があります。変換できない場合は、HTMLの記法で書くとHTML表記に従い変換されます。ですので、上の表のソースコードでは、一部HTMLで記載されており、一列目とは記法が異なることが分かるかと思います。
+上記の表の2列目のように、Markdown記法で記述した要素はMarkdown記法に従ってHTMLに変換されます。ただし、一部変換がうまくいかない場合があります。変換できない場合は、HTMLの記法で書くとHTML表記に従い変換されます。ですので、上の表のソースコードでは、一部HTMLで記載されており、一列目とは記法が異なります。
 
 インラインの数式は表中ではうまく変換できず、数式と同じ表記（`$$ $$`の表記）で表示していますが、通常の文中ではきちんと数式に変換されます。
 :::
@@ -507,7 +507,7 @@ graph G {始め -- 終わり}
 
 上記のbibtexの`@Manual{`の次には、`pacman_bib`と記載されています。この`pacman_bib`がこの文献の情報を引用するときに利用するためのタグになっています。
 
-次に、YAMLで引用文献が記載されたbibtexを含むファイル（`references.bib`）を指定する必要があります。前の章で説明した通り、YAMLはR markdownやQuartoでファイルの設定を行うためのテキスト形式であり、通常ファイルの一番初めの、`---`で挟まれた部分や`_quarto.yml`に記載します。
+次に、YAMLで引用文献が記載されたbibtexを含むファイル（`references.bib`）を指定する必要があります。[35章](chapter35.qmd#yaml)で説明した通り、YAMLはR markdownやQuartoでファイルの設定を行うためのテキスト形式であり、通常ファイルの一番初めの、`---`で挟まれた部分や`_quarto.yml`に記載します。
 
 ```{markdown, filename="referenceを設定するためのYAML"}
 ---
@@ -515,7 +515,7 @@ bibliography: references.bib # references.bibにbibtexを記載し、保存す�
 ---
 ```
 
-上記のように、`bibliography: references.bib`をYAMLに設定すると、Quartoは`references.bib`のファイルにbibtexの情報を読みに行き、引用文をタグと結び付けられるようにしてくれます。このようにbibtexの設定を行った後、以下のような記載を行うことで、文献を引用できます。
+上記のように、`bibliography: references.bib`をYAMLに設定すると、Quartoは`references.bib`にbibtexの情報を読みに行き、引用文をタグと結び付けられるようにしてくれます。このようにbibtexの設定を行った後、以下のような記載を行うことで、文献を引用できます。
 
 ```{markdown, filename="文献の引用"}
 pacman：libraryを簡単に取り扱うためのライブラリ。[@pacman_bibtex]
@@ -600,7 +600,7 @@ toBibtex(citation("pacman"))
 
 ### calloutブロック
 
-calloutブロックは、以下のように`{.callout-tip}`という形で記載することで表示させることができます。calloutブロックのタイトルは、この記法の初めの行に`##`のヘッダーとして記載することで設定できます。
+calloutブロックは、以下のように`{.callout-tip}`という形で記載します。calloutブロックのタイトルは、この記法の初めの行に`##`のヘッダーとして記載することで設定できます。
 
 ```{markdown, filename="calloutブロックの記法"}
 :::{.callout-tip}
@@ -644,7 +644,7 @@ callout-caution
 
 #### calloutブロックの折り畳み
 
-また、このテキストで多用しているように、calloutブロックは折りたたむことができます。折りたたむ場合には以下のように`collapse="true"`を加えてcalloutブロックを設定します。`icon="false"`を追加するとアイコンを消すこともできます。
+また、このテキストで多用しているように、calloutブロックは折りたたむことができます。折りたたむ場合には以下のように`collapse="true"`を加えてcalloutブロックを設定します。`icon="false"`を追加するとアイコンを消すこともできます。この時、設定の間をコンマにするとcalloutとして認識してくれなくなります。設定の間はスペースを1つ挟みましょう。
 
 ```{markdown, filename="calloutブロックの折り畳み"}
 :::{.callout-tip collapse="true" icon="false"}
