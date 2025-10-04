@@ -819,8 +819,8 @@ window.Quarto = {
 <pre><strong>1～100の整数からランダムに20個取り出す</strong></pre>
 </div>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">20</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">##  [1]  39  91 100  16  84  66  96  55  69   6  40  94  42   2  37  83   9  13  23</span></span>
-<span><span class="co">## [20]  81</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [1]  32   6  59  91  72 100  30  36   9  26  24   7  50  59  88  96   5  45  42</span></span>
+<span><span class="co">## [20]  39</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>乱数は完全にランダムな数値というわけではなく、ランダムに見える繰り返し計算から生成されています（<strong>疑似乱数</strong>）。この疑似乱数を生成するアルゴリズムにはいろいろなものがあるのですが、Rではデフォルトの乱数生成アルゴリズムとして、<strong><a href="http://www.math.sci.hiroshima-u.ac.jp/m-mat/TEACH/ichimura-sho-koen.pdf">メルセンヌ・ツイスター法</a>（mersenne twister）</strong> <span class="citation" data-cites="10.1145/272991.272995">(<a href="references.html#ref-10.1145/272991.272995" role="doc-biblioref">Matsumoto and Nishimura 1998</a>)</span> が用いられています。メルセンヌ・ツイスターは乱数生成アルゴリズムの中でも偏りのない乱数を得られるもので、現在ではExcelでも用いられています。</p>
@@ -1872,7 +1872,7 @@ window.Quarto = {
 </section><section id="t分布" class="level2" data-number="28.14"><h2 data-number="28.14" class="anchored" data-anchor-id="t分布">
 <span class="header-section-number">28.14</span> t分布</h2>
 <p><strong>t分布</strong>は標本サイズが小さいときの母平均と標本平均の差の分布を反映した確率分布です。t分布は<strong>t統計量</strong>と呼ばれるものの分布を示します。t統計量は以下の式で計算できます。</p>
-<p><span class="math display">\[t=\frac{x-\mu}{s \sqrt n}\]</span></p>
+<p><span class="math display">\[t=\frac{x-\mu}{s/ \sqrt n}\]</span></p>
 <p>この式で、xはサンプルの平均値、μは母平均値、sは標準偏差、nはサンプルの数を指します。t分布は主にt検定（平均値の差の検定）に用いられます。t分布の確率密度関数は以下の式で表されます。</p>
 <p><span class="math display">\[t(x, \nu)=\frac{\Gamma(\nu+1)/2}{\sqrt{\nu \pi} \cdot \Gamma(\nu/2)} \cdot (1+x^2/\nu)^{-(\nu+1)/2}\]</span></p>
 <p>上の式のνは自由度で、サンプル数から1を引いたものとなります。Rでは、<code>dt</code>関数でt分布の確率密度関数を計算することができます。<code>dt</code>関数の引数には、自由度<code>df</code>を設定します。t分布は<span class="math inline">\(-\infty\)</span>～<span class="math inline">\(\infty\)</span>の範囲を持つ連続値を取り、平均値は0です。t分布は正規分布とよく似た釣鐘型の分布ですが、正規分布と比較して裾が重い、0から遠い値の確率が大きくなる性質を持ちます。自由度<code>df</code>が<span class="math inline">\(-\infty\)</span>に近づくと、t分布の形は正規分布と一致します。</p>
@@ -4383,7 +4383,7 @@ Matsumoto, Makoto, and Takuji Nishimura. 1998. <span>“Mersenne Twister: A 623-
 <span id="cb79-635"><a href="#cb79-635" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb79-636"><a href="#cb79-636" aria-hidden="true" tabindex="-1"></a>**t分布**は標本サイズが小さいときの母平均と標本平均の差の分布を反映した確率分布です。t分布は**t統計量**と呼ばれるものの分布を示します。t統計量は以下の式で計算できます。</span>
 <span id="cb79-637"><a href="#cb79-637" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb79-638"><a href="#cb79-638" aria-hidden="true" tabindex="-1"></a>$$t=\frac{x-\mu}{s \sqrt n}$$</span>
+<span id="cb79-638"><a href="#cb79-638" aria-hidden="true" tabindex="-1"></a>$$t=\frac{x-\mu}{s/ \sqrt n}$$</span>
 <span id="cb79-639"><a href="#cb79-639" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb79-640"><a href="#cb79-640" aria-hidden="true" tabindex="-1"></a>この式で、xはサンプルの平均値、μは母平均値、sは標準偏差、nはサンプルの数を指します。t分布は主にt検定（平均値の差の検定）に用いられます。t分布の確率密度関数は以下の式で表されます。</span>
 <span id="cb79-641"><a href="#cb79-641" aria-hidden="true" tabindex="-1"></a></span>
