@@ -90,7 +90,35 @@ d |> ggplot(aes(x=x, y=y, color=yl))+
   theme(legend.position="none")
 ```
 
-また、2変量の関係が直線的でない場合には、何らかの関係が2変量間にあったとしても相関係数は小さくなります。相関係数を調べるだけでなく、グラフで2変量の関係を確認することが重要です。
+また、2変量の関係が直線的でない場合には、何らかの関係が2変量間にあったとしても相関係数は小さくなります。
+
+直線的でなく、相関係数が等しくなるデータとして有名なものが、Anscombeのデータです[@anscombe1973graphs]。Rでは`anscombe`のデータセットとして利用できます。このデータセットでは、x1とy1、x2とy2、x3とy3、x4とy4のそれぞれの列間の相関が一致します。
+
+```{r, filename="Anscombeのデータ"}
+anscombe
+```
+
+Anscombeの各セットの相関係数は以下の通りとなります。すべて0.816前後になります。
+
+```{r}
+d_anscombe <- 
+  data.frame(
+    cor_set = rep(c("x1", "x2", "x3", "x4"), rep(11, 4)),
+    x = anscombe[,1:4] |> unlist(),
+    y = anscombe[,5:8] |> unlist()
+  )
+
+d_anscombe |> group_by(cor_set) |> summarise(corcoef = cor(x, y))
+```
+
+このAnscombeのデータをグラフにすると、以下のようになります。x1は比較的線形であることが分かりますが、その他は線形ではないことがわかります。ピアソンの相関係数は特に外れ値に弱い性質を持ち、大きな外れ値があると大きめの相関係数が得られやすいです。したがって、データを取得したら、解析する前にまずはデータをグラフにしてみて確認するのがよいでしょう。
+
+```{r}
+d_anscombe |> 
+  ggplot(aes(x = x, y = y, color =cor_set)) +
+  geom_point(size = 2) +
+  facet_wrap(~cor_set)
+```
 
 :::
 
@@ -263,7 +291,7 @@ lm(iris$Sepal.Length ~ iris$Sepal.Width + iris$Petal.Length)
 # 0.7185 * Petal.Length - 0.07701 * Sepal.Width * Petal.Length
 lm(iris$Sepal.Length ~ iris$Sepal.Width * iris$Petal.Length)
 
-# 口語作用はコロン（:）を用いて以下のように書くこともできる
+# 交互作用はコロン（:）を用いて以下のように書くこともできる
 lm(
   iris$Sepal.Length ~ 
     iris$Sepal.Width + iris$Petal.Length + iris$Sepal.Width:iris$Petal.Length

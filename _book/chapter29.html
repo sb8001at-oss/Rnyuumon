@@ -1145,10 +1145,10 @@ p値を図示する
 <div class="callout-body-container callout-body">
 <p>検定には非常にたくさんの種類があり、様々なデータに対してそのデータに適した検定の手法が準備されています。どの検定においても、「帰無仮説を立てる」「検定統計量を計算する」「p値を計算する」「p値が小さいときに帰無仮説を棄却する」という枠組みは同じです。以下では、t検定について、この検定の仕組みについて簡単に説明します。</p>
 <p>t検定について考えるため、「ある学校の男子学生3人の身長の平均が170cmと異なるかどうか」を検定する場合を考えます。</p>
-<p>まず、「帰無仮説を立てる」部分です。上記の身長の例では、「男子学生3人の身長の平均が170cmである」を帰無仮説とします。要は、t検定であれば比較するものと差が無い、ということを仮定します。</p>
+<p>まず、「帰無仮説を立てる」部分です。上記の身長の例では、「男子学生3人の身長の平均が170cmである」を帰無仮説とします。要は、t検定であれば比較するものと平均値に差が無い、ということを仮定します。</p>
 <p>次に、「検定統計量を計算する」に移ります。t統計量は上記の通り、以下の式で表すことができます。</p>
 <p><span class="math display">\[t=\frac{x-\mu}{s/ \sqrt n}\]</span></p>
-<p>xが平均値、<span class="math inline">\(\mu\)</span>が帰無仮説における平均値、sは標本の標準偏差、nは例数です。仮に、男子学生の身長の平均値が以下のように177.5cmだったとすると、t統計量は以下のように計算できます。</p>
+<p>xが平均値（177.5cm）、<span class="math inline">\(\mu\)</span>が帰無仮説における平均値（170cm）、sは標本の標準偏差、nは例数（3人）です。仮に、男子学生の身長の平均値が以下のように177.5cmだったとすると、t統計量は以下のように計算できます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1163,7 +1163,7 @@ p値を図示する
 <span><span class="co">## [1] 5.196152</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>次に、「p値を計算」します。p値は、上記の通りt統計量が計算した値以上の値を取りうる確率として計算されます。t統計量が計算した値以上の値を取りうる確率はt分布で計算することができ、自由度<span class="math inline">\(n-1\)</span>の時、t統計量が3.4641以上となる確率は以下の通り計算できます。</p>
+<p>次に、「p値を計算」します。p値は、上記の通りt統計量が計算した値以上の値を取りうる確率として計算されます。t統計量が計算した値以上の値を取りうる確率はt分布を用いて計算することができ、自由度<span class="math inline">\(n-1\)</span>の時、t統計量が3.4641以上となる確率は以下の通り計算できます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1198,9 +1198,9 @@ p値を図示する
 <span><span class="co">## mean of x </span></span>
 <span><span class="co">##     177.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>p値は0.035ですので、平均値が170cmと仮定した時、今回得た平均値177.5cm、標準偏差2.5の3つのデータが取れる確率は3.5%ぐらいある、ということになります。3.5%であれば20回同じ試行を行っても1回も今回のようなデータは取れない可能性が高く、つまり身長170cmが平均だとすると非常に稀なことが起こったわけです。検定では、この程度（20回に1回、p&lt;0.05）の稀なことが起こったときには、平均値が170cmと仮定するのはおかしい、つまり帰無仮説が成立していないと考えます。</p>
+<p>p値は0.035ですので、平均値が170cmと仮定した時、今回得た平均値177.5cm、標準偏差2.5の3つのデータよりも極端なデータが取れる確率は3.5%ぐらいある、ということになります。3.5%であれば20回同じ試行を行っても今回のようなデータは1回とれるかどうかというところですので、身長の平均値が170cmであると仮定とすると非常に稀なことが起こったことになります。検定では、この程度（20回に1回以下、p&lt;0.05）の稀なことが起こったときには、平均値が170cmと仮定するのはおかしい、つまり帰無仮説が成立していないと考えます。</p>
 <p>帰無仮説が成立していない、つまり「男子学生3人の身長の平均が170cmである」は正しくないので、「男子学生3人の身長の平均が170cmではない」、つまり男子学生3人の身長の平均は170cmとは異なるとします。この「男子学生3人の身長の平均は170cmとは異なる」を帰無仮説と対になる対立仮説と呼びます。帰無仮説を捨てて（棄却して）、対立仮説を受け入れることで、差があるかどうかを評価するわけです。</p>
-<p>ただし、上記の通り男子学生の身長の平均が170cmで今回得た平均値177.5cm、標準偏差2.5の3つのデータが取れる確率は3.5%あるので、検定はこの確率で間違いを含みます。これが後ほど出てくる第一の過誤となります。</p>
+<p>ただし、上記の通り男子学生の身長の平均が170cmで今回得た平均値177.5cm、標準偏差2.5の3つのデータよりも極端なデータが取れる確率は3.5%あるので、検定はこの確率で間違いを含みます。これが後ほど出てくる第一の過誤となります。</p>
 </div>
 </div>
 </div>
@@ -1470,7 +1470,7 @@ p値を図示する
 <span><span class="co">## (Rules: cohen1988)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Cohen’s dの他にも、以下で説明する分散分析の効果量に関しても<code>effectsize</code>で計算することができます。<a href="https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html"><code>effectsize</code>の説明に関するページ</a>に詳しい説明があるので、興味のある方は一読してみるとよいでしょう。</p>
+<p>Cohen’s dの他に、以下で説明する分散分析に関しても<code>effectsize</code>で効果量を計算することができます。<a href="https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html"><code>effectsize</code>の説明に関するページ</a>に詳しい説明があるので、興味のある方は一読してみるとよいでしょう。</p>
 </section></section><section id="カテゴリカルデータの検定" class="level2" data-number="29.4"><h2 data-number="29.4" class="anchored" data-anchor-id="カテゴリカルデータの検定">
 <span class="header-section-number">29.4</span> カテゴリカルデータの検定</h2>
 <p>カテゴリカルデータとは、男性や女性、出身地の都道府県のような、連続値で示すことができない値のことです。統計では、例えば男性と女性の比、出身地ごとの人口など、カテゴリカルデータを取り扱うことがあります。Rではカテゴリカルデータ用のデータ型として、因子（factor）が準備されています。</p>
@@ -1556,6 +1556,7 @@ p値を図示する
 <span><span class="co">## O         3        5</span></span>
 <span><span class="co">## AB        2        5</span></span>
 <span></span>
+<span><span class="co"># 2x2の行列以外の場合には、オッズ比が計算できないので信頼区間は計算されない</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/fisher.test.html">fisher.test</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Fisher's Exact Test for Count Data</span></span>
@@ -1600,7 +1601,6 @@ p値を図示する
 <span><span class="co">##   A  4  3</span></span>
 <span><span class="co">##   B 10  8</span></span>
 <span></span>
-<span><span class="co"># 2x2の行列以外の場合には、オッズ比が計算できないので信頼区間は計算されない</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/fisher.test.html">fisher.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Fisher's Exact Test for Count Data</span></span>
@@ -1840,7 +1840,7 @@ p値を図示する
 </div>
 </div>
 </div>
-<p>Rでの共分散分析には、2元分散分析と同じように、<code>aov</code>関数や<code>anova</code>関数を用います。引数の指定はformulaで、<code>因子 * 数値</code>のような形で、因子同士を掛け算でつなぎます。formulaは交互作用ありの二元分散分析と同じ形です。</p>
+<p>Rでの共分散分析には、2元分散分析と同じように、<code>aov</code>関数や<code>anova</code>関数を用います。引数の指定はformulaで、<code>因子 * 数値</code>のような形で、説明変数同士を掛け算でつなぎます。formulaは交互作用ありの二元分散分析と同じ形です。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1955,8 +1955,8 @@ p値を図示する
 </div>
 </section><section id="p値を調整する方法" class="level3" data-number="29.6.4"><h3 data-number="29.6.4" class="anchored" data-anchor-id="p値を調整する方法">
 <span class="header-section-number">29.6.4</span> p値を調整する方法</h3>
-<p>多重比較の方法には、上で示した3つ以外に、t検定などで計算したp値自体を用いてp値を直接調整するタイプの方法がたくさんあります。p値を直接調整する手法としては、holmの方法、hochbergの方法、bonferroniの方法、Benjamini &amp; Hochbergの方法、Benjamini &amp; Yekutieliの方法などがあります。</p>
-<p>これらの方法によるp値の調整はRの<code>p.adjust</code>関数を用いて計算することができます。<code>p.adjust</code>関数の第一引数にはp値のベクターを指定し、<code>method</code>引数に多重比較の方法の指定します。</p>
+<p>多重比較の方法には、上で示した3つ以外に、t検定などで計算したp値自体を用いてp値を直接調整するタイプの方法がたくさんあります。</p>
+<p>多重比較のp値の調整はRの<code>p.adjust</code>関数を用いて計算することができます。<code>p.adjust</code>関数の第一引数にはp値のベクターを指定し、<code>method</code>引数に多重比較の方法の指定します。<code>method</code>には、Holmの方法（<code>"holm"</code>）、Hochbergの方法（<code>"hochberg"</code>）、Hommelの方法（<code>"hommel"</code>）、Bonferroniの方法（<code>"bonferroni"</code>）、Benjamini &amp; Hochbergの方法（<code>"BH"</code>）、Benjamini &amp; Yekutieli（<code>"BY"</code>）の方法のいずれかを指定します。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -2007,13 +2007,13 @@ p値を図示する
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-gatekeeping法
+Gatekeeping法
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>多重比較の方法には、この他にgatekeeping法と呼ばれるものもあります。gatekeeping法は研究デザインとの関連性が高い手法で、基礎研究ではまずお目にかからないものです。近年の第III相治験のような、ガチガチに研究デザインを固めてから行う大規模研究以外ではまず使うことはないでしょう。Rにはこのgatekeeping法の計算に関連したライブラリとして<a href="https://gpaux.github.io/Mediana/">Mediana</a>パッケージ <span class="citation" data-cites="Mediana_bib">(<a href="references.html#ref-Mediana_bib" role="doc-biblioref">Paux and Dmitrienko. 2019</a>)</span>や <a href="https://gsrmtp.r-forge.r-project.org/">gMCP</a>パッケージ <span class="citation" data-cites="gMCP_bib">(<a href="references.html#ref-gMCP_bib" role="doc-biblioref">Bretz et al. 2011</a>)</span>があります。</p>
+<p>多重比較の方法には、この他にGatekeeping法と呼ばれるものもあります。Gatekeeping法は研究デザインとの関連性が高い手法で、基礎研究ではまずお目にかからないものです。近年の第III相治験のような、ガチガチに研究デザインを固めてから行う大規模研究以外ではまず使うことはないでしょう。RにはこのGatekeeping法の計算に関連したライブラリとして<a href="https://gpaux.github.io/Mediana/">Mediana</a>パッケージ <span class="citation" data-cites="Mediana_bib">(<a href="references.html#ref-Mediana_bib" role="doc-biblioref">Paux and Dmitrienko. 2019</a>)</span>や <a href="https://gsrmtp.r-forge.r-project.org/">gMCP</a>パッケージ <span class="citation" data-cites="gMCP_bib">(<a href="references.html#ref-gMCP_bib" role="doc-biblioref">Bretz et al. 2011</a>)</span>があります。</p>
 </div>
 </div>
 </div>
@@ -2222,7 +2222,7 @@ gatekeeping法
 </div>
 </section><section id="項確率の比較prop.test関数" class="level3" data-number="29.8.2"><h3 data-number="29.8.2" class="anchored" data-anchor-id="項確率の比較prop.test関数">
 <span class="header-section-number">29.8.2</span> 2項確率の比較：prop.test関数</h3>
-<p>2項確率（ベルヌーイ試行、コイントスのような試行のこと）を2つ以上比較する場合に用いる関数が<code>prop.test</code>関数です。例えば、コインが5枚あり、5枚を100回ずつ投げた時、表が出る回数が分かったとします。このとき、5枚のコインの表が出る確率が同じかどうかを検定するのが、<code>prop.test</code>です。2項検定を分散分析のように複数の比較に拡張したようなものと考えるとわかりやすいかもしれません。</p>
+<p>2項確率（ベルヌーイ試行、コイントスのような試行のこと）を2つ以上比較する場合に用いる関数が<code>prop.test</code>関数です。例えば、コインが5枚あり、5枚を100回ずつ投げた時、表が出る回数が分かったとします。このとき、5枚のコインの表が出る確率が同じかどうかを検定するのが、<code>prop.test</code>です。</p>
 <p>以下の例では、コイン5枚について100回ずつ投げ、それぞれ28、73、48、60、59回表が出たとき、すべてのコインで表が出る確率が同じかどうかを検定しています。結果として、p &lt; 0.05、つまり表が出る確率は等しくない、という結論となっています。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -3094,13 +3094,13 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb51-175"><a href="#cb51-175" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-176"><a href="#cb51-176" aria-hidden="true" tabindex="-1"></a>t検定について考えるため、「ある学校の男子学生3人の身長の平均が170cmと異なるかどうか」を検定する場合を考えます。</span>
 <span id="cb51-177"><a href="#cb51-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-178"><a href="#cb51-178" aria-hidden="true" tabindex="-1"></a>まず、「帰無仮説を立てる」部分です。上記の身長の例では、「男子学生3人の身長の平均が170cmである」を帰無仮説とします。要は、t検定であれば比較するものと差が無い、ということを仮定します。</span>
+<span id="cb51-178"><a href="#cb51-178" aria-hidden="true" tabindex="-1"></a>まず、「帰無仮説を立てる」部分です。上記の身長の例では、「男子学生3人の身長の平均が170cmである」を帰無仮説とします。要は、t検定であれば比較するものと平均値に差が無い、ということを仮定します。</span>
 <span id="cb51-179"><a href="#cb51-179" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-180"><a href="#cb51-180" aria-hidden="true" tabindex="-1"></a>次に、「検定統計量を計算する」に移ります。t統計量は上記の通り、以下の式で表すことができます。</span>
 <span id="cb51-181"><a href="#cb51-181" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-182"><a href="#cb51-182" aria-hidden="true" tabindex="-1"></a>$$t=\frac{x-\mu}{s/ \sqrt n}$$</span>
 <span id="cb51-183"><a href="#cb51-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-184"><a href="#cb51-184" aria-hidden="true" tabindex="-1"></a>xが平均値、$\mu$が帰無仮説における平均値、sは標本の標準偏差、nは例数です。仮に、男子学生の身長の平均値が以下のように177.5cmだったとすると、t統計量は以下のように計算できます。</span>
+<span id="cb51-184"><a href="#cb51-184" aria-hidden="true" tabindex="-1"></a>xが平均値（177.5cm）、$\mu$が帰無仮説における平均値（170cm）、sは標本の標準偏差、nは例数（3人）です。仮に、男子学生の身長の平均値が以下のように177.5cmだったとすると、t統計量は以下のように計算できます。</span>
 <span id="cb51-185"><a href="#cb51-185" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-186"><a href="#cb51-186" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="t統計量を計算する"}</span></span>
 <span id="cb51-187"><a href="#cb51-187" aria-hidden="true" tabindex="-1"></a>height <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">175</span>, <span class="fl">177.5</span>, <span class="dv">180</span>)</span>
@@ -3109,7 +3109,7 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb51-190"><a href="#cb51-190" aria-hidden="true" tabindex="-1"></a>(height <span class="sc">|&gt;</span> <span class="fu">mean</span>() <span class="sc">-</span> <span class="dv">170</span>) <span class="sc">/</span> (height <span class="sc">|&gt;</span> <span class="fu">sd</span>() <span class="sc">/</span> <span class="dv">3</span> <span class="sc">^</span> <span class="fl">0.5</span>) <span class="co"># t統計量</span></span>
 <span id="cb51-191"><a href="#cb51-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb51-192"><a href="#cb51-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-193"><a href="#cb51-193" aria-hidden="true" tabindex="-1"></a>次に、「p値を計算」します。p値は、上記の通りt統計量が計算した値以上の値を取りうる確率として計算されます。t統計量が計算した値以上の値を取りうる確率はt分布で計算することができ、自由度$n-1$の時、t統計量が3.4641以上となる確率は以下の通り計算できます。</span>
+<span id="cb51-193"><a href="#cb51-193" aria-hidden="true" tabindex="-1"></a>次に、「p値を計算」します。p値は、上記の通りt統計量が計算した値以上の値を取りうる確率として計算されます。t統計量が計算した値以上の値を取りうる確率はt分布を用いて計算することができ、自由度$n-1$の時、t統計量が3.4641以上となる確率は以下の通り計算できます。</span>
 <span id="cb51-194"><a href="#cb51-194" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-195"><a href="#cb51-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="t統計量が3.4641以上となる確率"}</span></span>
 <span id="cb51-196"><a href="#cb51-196" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="fl">5.196152</span>, <span class="dv">2</span>)</span>
@@ -3127,11 +3127,11 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb51-210"><a href="#cb51-210" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(height, <span class="at">mu=</span><span class="dv">170</span>)</span>
 <span id="cb51-211"><a href="#cb51-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb51-212"><a href="#cb51-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-213"><a href="#cb51-213" aria-hidden="true" tabindex="-1"></a>p値は0.035ですので、平均値が170cmと仮定した時、今回得た平均値177.5cm、標準偏差2.5の3つのデータが取れる確率は3.5%ぐらいある、ということになります。3.5%であれば20回同じ試行を行っても1回も今回のようなデータは取れない可能性が高く、つまり身長170cmが平均だとすると非常に稀なことが起こったわけです。検定では、この程度（20回に1回、p&lt;0.05）の稀なことが起こったときには、平均値が170cmと仮定するのはおかしい、つまり帰無仮説が成立していないと考えます。</span>
+<span id="cb51-213"><a href="#cb51-213" aria-hidden="true" tabindex="-1"></a>p値は0.035ですので、平均値が170cmと仮定した時、今回得た平均値177.5cm、標準偏差2.5の3つのデータよりも極端なデータが取れる確率は3.5%ぐらいある、ということになります。3.5%であれば20回同じ試行を行っても今回のようなデータは1回とれるかどうかというところですので、身長の平均値が170cmであると仮定とすると非常に稀なことが起こったことになります。検定では、この程度（20回に1回以下、p&lt;0.05）の稀なことが起こったときには、平均値が170cmと仮定するのはおかしい、つまり帰無仮説が成立していないと考えます。</span>
 <span id="cb51-214"><a href="#cb51-214" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-215"><a href="#cb51-215" aria-hidden="true" tabindex="-1"></a>帰無仮説が成立していない、つまり「男子学生3人の身長の平均が170cmである」は正しくないので、「男子学生3人の身長の平均が170cmではない」、つまり男子学生3人の身長の平均は170cmとは異なるとします。この「男子学生3人の身長の平均は170cmとは異なる」を帰無仮説と対になる対立仮説と呼びます。帰無仮説を捨てて（棄却して）、対立仮説を受け入れることで、差があるかどうかを評価するわけです。</span>
 <span id="cb51-216"><a href="#cb51-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-217"><a href="#cb51-217" aria-hidden="true" tabindex="-1"></a>ただし、上記の通り男子学生の身長の平均が170cmで今回得た平均値177.5cm、標準偏差2.5の3つのデータが取れる確率は3.5%あるので、検定はこの確率で間違いを含みます。これが後ほど出てくる第一の過誤となります。</span>
+<span id="cb51-217"><a href="#cb51-217" aria-hidden="true" tabindex="-1"></a>ただし、上記の通り男子学生の身長の平均が170cmで今回得た平均値177.5cm、標準偏差2.5の3つのデータよりも極端なデータが取れる確率は3.5%あるので、検定はこの確率で間違いを含みます。これが後ほど出てくる第一の過誤となります。</span>
 <span id="cb51-218"><a href="#cb51-218" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-219"><a href="#cb51-219" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb51-220"><a href="#cb51-220" aria-hidden="true" tabindex="-1"></a></span>
@@ -3284,7 +3284,7 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb51-367"><a href="#cb51-367" aria-hidden="true" tabindex="-1"></a><span class="fu">interpret_cohens_d</span>(<span class="fl">0.73</span>)</span>
 <span id="cb51-368"><a href="#cb51-368" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb51-369"><a href="#cb51-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-370"><a href="#cb51-370" aria-hidden="true" tabindex="-1"></a>Cohen's dの他にも、以下で説明する分散分析の効果量に関しても<span class="in">`effectsize`</span>で計算することができます。<span class="co">[</span><span class="ot">`effectsize`の説明に関するページ</span><span class="co">](https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html)</span>に詳しい説明があるので、興味のある方は一読してみるとよいでしょう。</span>
+<span id="cb51-370"><a href="#cb51-370" aria-hidden="true" tabindex="-1"></a>Cohen's dの他に、以下で説明する分散分析に関しても<span class="in">`effectsize`</span>で効果量を計算することができます。<span class="co">[</span><span class="ot">`effectsize`の説明に関するページ</span><span class="co">](https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html)</span>に詳しい説明があるので、興味のある方は一読してみるとよいでしょう。</span>
 <span id="cb51-371"><a href="#cb51-371" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-372"><a href="#cb51-372" aria-hidden="true" tabindex="-1"></a><span class="fu">## カテゴリカルデータの検定</span></span>
 <span id="cb51-373"><a href="#cb51-373" aria-hidden="true" tabindex="-1"></a></span>
@@ -3347,25 +3347,25 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb51-430"><a href="#cb51-430" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"O"</span>, <span class="st">"AB"</span>)</span>
 <span id="cb51-431"><a href="#cb51-431" aria-hidden="true" tabindex="-1"></a>mat</span>
 <span id="cb51-432"><a href="#cb51-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-433"><a href="#cb51-433" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(mat)</span>
-<span id="cb51-434"><a href="#cb51-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-435"><a href="#cb51-435" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(mat)</span>
-<span id="cb51-436"><a href="#cb51-436" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb51-437"><a href="#cb51-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-438"><a href="#cb51-438" aria-hidden="true" tabindex="-1"></a><span class="in">`fisher.test`</span>も<span class="in">`chisq.test`</span>も、度数に変換した行列だけでなく、因子のベクターを引数に取ることができます。因子のベクターは2つ必要で、2つのベクターのデータフレームを<span class="in">`table`</span>関数の引数にしたものを検定の対象とするものです。</span>
-<span id="cb51-439"><a href="#cb51-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-440"><a href="#cb51-440" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="因子ベクターを用いた検定の計算"}</span></span>
-<span id="cb51-441"><a href="#cb51-441" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
-<span id="cb51-442"><a href="#cb51-442" aria-hidden="true" tabindex="-1"></a><span class="co"># 因子のデータフレームを作成</span></span>
-<span id="cb51-443"><a href="#cb51-443" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb51-444"><a href="#cb51-444" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">60</span>)) <span class="sc">|&gt;</span> <span class="fu">factor</span>() <span class="sc">|&gt;</span> <span class="fu">sample</span>(<span class="at">size =</span> <span class="dv">25</span>),</span>
-<span id="cb51-445"><a href="#cb51-445" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"C"</span>, <span class="st">"D"</span>), <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">40</span>)) <span class="sc">|&gt;</span> <span class="fu">factor</span>() <span class="sc">|&gt;</span> <span class="fu">sample</span>(<span class="at">size =</span> <span class="dv">25</span>)</span>
-<span id="cb51-446"><a href="#cb51-446" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb51-447"><a href="#cb51-447" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d)</span>
-<span id="cb51-448"><a href="#cb51-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-449"><a href="#cb51-449" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(d) <span class="co"># これが検定の対象となる</span></span>
-<span id="cb51-450"><a href="#cb51-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-451"><a href="#cb51-451" aria-hidden="true" tabindex="-1"></a><span class="co"># 2x2の行列以外の場合には、オッズ比が計算できないので信頼区間は計算されない</span></span>
+<span id="cb51-433"><a href="#cb51-433" aria-hidden="true" tabindex="-1"></a><span class="co"># 2x2の行列以外の場合には、オッズ比が計算できないので信頼区間は計算されない</span></span>
+<span id="cb51-434"><a href="#cb51-434" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(mat)</span>
+<span id="cb51-435"><a href="#cb51-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-436"><a href="#cb51-436" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(mat)</span>
+<span id="cb51-437"><a href="#cb51-437" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb51-438"><a href="#cb51-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-439"><a href="#cb51-439" aria-hidden="true" tabindex="-1"></a><span class="in">`fisher.test`</span>も<span class="in">`chisq.test`</span>も、度数に変換した行列だけでなく、因子のベクターを引数に取ることができます。因子のベクターは2つ必要で、2つのベクターのデータフレームを<span class="in">`table`</span>関数の引数にしたものを検定の対象とするものです。</span>
+<span id="cb51-440"><a href="#cb51-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-441"><a href="#cb51-441" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="因子ベクターを用いた検定の計算"}</span></span>
+<span id="cb51-442"><a href="#cb51-442" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
+<span id="cb51-443"><a href="#cb51-443" aria-hidden="true" tabindex="-1"></a><span class="co"># 因子のデータフレームを作成</span></span>
+<span id="cb51-444"><a href="#cb51-444" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb51-445"><a href="#cb51-445" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">60</span>)) <span class="sc">|&gt;</span> <span class="fu">factor</span>() <span class="sc">|&gt;</span> <span class="fu">sample</span>(<span class="at">size =</span> <span class="dv">25</span>),</span>
+<span id="cb51-446"><a href="#cb51-446" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"C"</span>, <span class="st">"D"</span>), <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">40</span>)) <span class="sc">|&gt;</span> <span class="fu">factor</span>() <span class="sc">|&gt;</span> <span class="fu">sample</span>(<span class="at">size =</span> <span class="dv">25</span>)</span>
+<span id="cb51-447"><a href="#cb51-447" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb51-448"><a href="#cb51-448" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d)</span>
+<span id="cb51-449"><a href="#cb51-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-450"><a href="#cb51-450" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(d) <span class="co"># これが検定の対象となる</span></span>
+<span id="cb51-451"><a href="#cb51-451" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-452"><a href="#cb51-452" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(<span class="at">x =</span> d<span class="sc">$</span>x, <span class="at">y =</span> d<span class="sc">$</span>y)</span>
 <span id="cb51-453"><a href="#cb51-453" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-454"><a href="#cb51-454" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(<span class="at">x =</span> d<span class="sc">$</span>x, <span class="at">y =</span> d<span class="sc">$</span>y)</span>
@@ -3497,7 +3497,7 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb51-580"><a href="#cb51-580" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"OJ：オレンジジュースに加える、VC：ビタミンCそのまま"</span>)</span>
 <span id="cb51-581"><a href="#cb51-581" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb51-582"><a href="#cb51-582" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-583"><a href="#cb51-583" aria-hidden="true" tabindex="-1"></a>Rでの共分散分析には、2元分散分析と同じように、<span class="in">`aov`</span>関数や<span class="in">`anova`</span>関数を用います。引数の指定はformulaで、<span class="in">`因子 * 数値`</span>のような形で、因子同士を掛け算でつなぎます。formulaは交互作用ありの二元分散分析と同じ形です。</span>
+<span id="cb51-583"><a href="#cb51-583" aria-hidden="true" tabindex="-1"></a>Rでの共分散分析には、2元分散分析と同じように、<span class="in">`aov`</span>関数や<span class="in">`anova`</span>関数を用います。引数の指定はformulaで、<span class="in">`因子 * 数値`</span>のような形で、説明変数同士を掛け算でつなぎます。formulaは交互作用ありの二元分散分析と同じ形です。</span>
 <span id="cb51-584"><a href="#cb51-584" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-585"><a href="#cb51-585" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="aov関数で共分散分析"}</span></span>
 <span id="cb51-586"><a href="#cb51-586" aria-hidden="true" tabindex="-1"></a>aov_ToothGrowth <span class="ot">&lt;-</span> <span class="fu">aov</span>(len <span class="sc">~</span> supp <span class="sc">*</span> dose, <span class="at">data =</span> ToothGrowth) <span class="co"># suppは因子、doseは数値</span></span>
@@ -3559,9 +3559,9 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb51-642"><a href="#cb51-642" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-643"><a href="#cb51-643" aria-hidden="true" tabindex="-1"></a><span class="fu">### p値を調整する方法</span></span>
 <span id="cb51-644"><a href="#cb51-644" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-645"><a href="#cb51-645" aria-hidden="true" tabindex="-1"></a>多重比較の方法には、上で示した3つ以外に、t検定などで計算したp値自体を用いてp値を直接調整するタイプの方法がたくさんあります。p値を直接調整する手法としては、holmの方法、hochbergの方法、bonferroniの方法、Benjamini &amp; Hochbergの方法、Benjamini &amp; Yekutieliの方法などがあります。</span>
+<span id="cb51-645"><a href="#cb51-645" aria-hidden="true" tabindex="-1"></a>多重比較の方法には、上で示した3つ以外に、t検定などで計算したp値自体を用いてp値を直接調整するタイプの方法がたくさんあります。</span>
 <span id="cb51-646"><a href="#cb51-646" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-647"><a href="#cb51-647" aria-hidden="true" tabindex="-1"></a>これらの方法によるp値の調整はRの<span class="in">`p.adjust`</span>関数を用いて計算することができます。<span class="in">`p.adjust`</span>関数の第一引数にはp値のベクターを指定し、<span class="in">`method`</span>引数に多重比較の方法の指定します。</span>
+<span id="cb51-647"><a href="#cb51-647" aria-hidden="true" tabindex="-1"></a>多重比較のp値の調整はRの<span class="in">`p.adjust`</span>関数を用いて計算することができます。<span class="in">`p.adjust`</span>関数の第一引数にはp値のベクターを指定し、<span class="in">`method`</span>引数に多重比較の方法の指定します。<span class="in">`method`</span>には、Holmの方法（<span class="in">`"holm"`</span>）、Hochbergの方法（<span class="in">`"hochberg"`</span>）、Hommelの方法（<span class="in">`"hommel"`</span>）、Bonferroniの方法（<span class="in">`"bonferroni"`</span>）、Benjamini &amp; Hochbergの方法（<span class="in">`"BH"`</span>）、Benjamini &amp; Yekutieli（<span class="in">`"BY"`</span>）の方法のいずれかを指定します。</span>
 <span id="cb51-648"><a href="#cb51-648" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-649"><a href="#cb51-649" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="p.adjust関数でp値を調整する"}</span></span>
 <span id="cb51-650"><a href="#cb51-650" aria-hidden="true" tabindex="-1"></a><span class="co"># p値をベクターで準備</span></span>
@@ -3610,9 +3610,9 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb51-693"><a href="#cb51-693" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-694"><a href="#cb51-694" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
 <span id="cb51-695"><a href="#cb51-695" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-696"><a href="#cb51-696" aria-hidden="true" tabindex="-1"></a><span class="fu">## gatekeeping法</span></span>
+<span id="cb51-696"><a href="#cb51-696" aria-hidden="true" tabindex="-1"></a><span class="fu">## Gatekeeping法</span></span>
 <span id="cb51-697"><a href="#cb51-697" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-698"><a href="#cb51-698" aria-hidden="true" tabindex="-1"></a>多重比較の方法には、この他にgatekeeping法と呼ばれるものもあります。gatekeeping法は研究デザインとの関連性が高い手法で、基礎研究ではまずお目にかからないものです。近年の第III相治験のような、ガチガチに研究デザインを固めてから行う大規模研究以外ではまず使うことはないでしょう。Rにはこのgatekeeping法の計算に関連したライブラリとして<span class="co">[</span><span class="ot">Mediana</span><span class="co">](https://gpaux.github.io/Mediana/)</span>パッケージ <span class="co">[</span><span class="ot">@Mediana_bib</span><span class="co">]</span>や <span class="co">[</span><span class="ot">gMCP</span><span class="co">](https://gsrmtp.r-forge.r-project.org/)</span>パッケージ <span class="co">[</span><span class="ot">@gMCP_bib</span><span class="co">]</span>があります。</span>
+<span id="cb51-698"><a href="#cb51-698" aria-hidden="true" tabindex="-1"></a>多重比較の方法には、この他にGatekeeping法と呼ばれるものもあります。Gatekeeping法は研究デザインとの関連性が高い手法で、基礎研究ではまずお目にかからないものです。近年の第III相治験のような、ガチガチに研究デザインを固めてから行う大規模研究以外ではまず使うことはないでしょう。RにはこのGatekeeping法の計算に関連したライブラリとして<span class="co">[</span><span class="ot">Mediana</span><span class="co">](https://gpaux.github.io/Mediana/)</span>パッケージ <span class="co">[</span><span class="ot">@Mediana_bib</span><span class="co">]</span>や <span class="co">[</span><span class="ot">gMCP</span><span class="co">](https://gsrmtp.r-forge.r-project.org/)</span>パッケージ <span class="co">[</span><span class="ot">@gMCP_bib</span><span class="co">]</span>があります。</span>
 <span id="cb51-699"><a href="#cb51-699" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-700"><a href="#cb51-700" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb51-701"><a href="#cb51-701" aria-hidden="true" tabindex="-1"></a></span>
@@ -3710,7 +3710,7 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb51-793"><a href="#cb51-793" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-794"><a href="#cb51-794" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2項確率の比較：prop.test関数</span></span>
 <span id="cb51-795"><a href="#cb51-795" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-796"><a href="#cb51-796" aria-hidden="true" tabindex="-1"></a>2項確率（ベルヌーイ試行、コイントスのような試行のこと）を2つ以上比較する場合に用いる関数が<span class="in">`prop.test`</span>関数です。例えば、コインが5枚あり、5枚を100回ずつ投げた時、表が出る回数が分かったとします。このとき、5枚のコインの表が出る確率が同じかどうかを検定するのが、<span class="in">`prop.test`</span>です。2項検定を分散分析のように複数の比較に拡張したようなものと考えるとわかりやすいかもしれません。</span>
+<span id="cb51-796"><a href="#cb51-796" aria-hidden="true" tabindex="-1"></a>2項確率（ベルヌーイ試行、コイントスのような試行のこと）を2つ以上比較する場合に用いる関数が<span class="in">`prop.test`</span>関数です。例えば、コインが5枚あり、5枚を100回ずつ投げた時、表が出る回数が分かったとします。このとき、5枚のコインの表が出る確率が同じかどうかを検定するのが、<span class="in">`prop.test`</span>です。</span>
 <span id="cb51-797"><a href="#cb51-797" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-798"><a href="#cb51-798" aria-hidden="true" tabindex="-1"></a>以下の例では、コイン5枚について100回ずつ投げ、それぞれ28、73、48、60、59回表が出たとき、すべてのコインで表が出る確率が同じかどうかを検定しています。結果として、p &lt; 0.05、つまり表が出る確率は等しくない、という結論となっています。</span>
 <span id="cb51-799"><a href="#cb51-799" aria-hidden="true" tabindex="-1"></a></span>
