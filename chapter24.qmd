@@ -386,6 +386,41 @@ Rに限らず、3次元グラフを作成できると何か楽しいような気
 
 :::
 
+## ベン図
+
+ベン図とは、以下のように集合の状態を表示するための図のことです。以下のベン図では、AとBの群の両方にある要素は3つ、Aのみにある要素は2つ、Bのみにあるものは3つであることを示しています。
+
+```{r, echo=FALSE, message=FALSE}
+library(gplots)
+venn(list(A = 1:5, B = 3:8))
+title(main="Venn Diagram（ベン図）の例")
+```
+
+ベン図を描画する場合には、`gplots`ライブラリ[@gplots_bib]の`venn`関数を用います。`venn`関数はリストを引数に取り、リストの各要素を集合としてベン図を描画します。
+
+```{r, filename="gplots::venn関数でベン図を描く"}
+pacman::p_load(gplots)
+venn(list(A = 1:10, B = 5:15, C = 10:20))
+```
+
+`venn`関数はリストの要素が5つまでのベン図を描画することができます。
+
+```{r, error=TRUE, filename="venn関数：要素が5つの場合"}
+venn(list(A=sample(1:10, 3), B=sample(1:10, 3), C=sample(1:10, 3), D=sample(1:10, 3), E=sample(1:10, 3)))
+#要素が6つだとエラー（デバイスは表示される）
+venn(list(A=sample(1:10, 3), B=sample(1:10, 3), C=sample(1:10, 3), D=sample(1:10, 3), E=sample(1:10, 3), G=sample(1:10, 3)))
+```
+
+また、`DescTools`ライブラリ[@DescTools_bib]の`PlotVenn`関数でもベン図を描画することができます。`PlotVenn`関数も`venn`関数と同様にリストを引数に取ります。リストの要素の最大値が5つなのも`venn`関数と同じです。また、`col`引数に色を指定することで集合の色を変更することもできます。`col`引数には単に色をベクターで指定することもできますが、`SetAlpha`関数を用いて透明度（`alpha`）を指定することもできます。
+
+```{r, filename="DescTools::PlotVenn関数"}
+pacman::p_load(DescTools)
+PlotVenn(
+  list(A = 1:10, B = 5:15, C = 10:20),
+  col = SetAlpha(c("blue", "red", "green"), alpha = 0.3)) # 透明度を0.3に指定する
+```
+
+
 ## contour関数：等高線グラフ
 
 `contour`関数は`image`関数と同様に行列を引数に取り、x軸に列、y軸に行、高さとして行列の値を用いた等高線グラフを作成するための関数です。

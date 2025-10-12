@@ -92,7 +92,7 @@ d |> ggplot(aes(x=x, y=y, color=yl))+
 
 また、2変量の関係が直線的でない場合には、何らかの関係が2変量間にあったとしても相関係数は小さくなります。
 
-直線的でなく、相関係数が等しくなるデータとして有名なものが、Anscombeのデータです[@anscombe1973graphs]。Rでは`anscombe`のデータセットとして利用できます。このデータセットでは、x1とy1、x2とy2、x3とy3、x4とy4のそれぞれの列間の相関が一致します。
+相関係数が等しくなるデータの例として有名なものが、Anscombeのデータです[@anscombe1973graphs]。Rでは`anscombe`のデータセットとして利用できます。このデータセットでは、`x1`と`y1`、`x2`と`y2`、`x3`と`y3`、`x4`と`y4`のそれぞれの列間の相関が一致します。
 
 ```{r, filename="Anscombeのデータ"}
 anscombe
@@ -100,7 +100,7 @@ anscombe
 
 Anscombeの各セットの相関係数は以下の通りとなります。すべて0.816前後になります。
 
-```{r}
+```{r, filename="Anscombeのデータの相関係数"}
 d_anscombe <- 
   data.frame(
     cor_set = rep(c("x1", "x2", "x3", "x4"), rep(11, 4)),
@@ -111,26 +111,29 @@ d_anscombe <-
 d_anscombe |> group_by(cor_set) |> summarise(corcoef = cor(x, y))
 ```
 
-このAnscombeのデータをグラフにすると、以下のようになります。x1は比較的線形であることが分かりますが、その他は線形ではないことがわかります。ピアソンの相関係数は特に外れ値に弱い性質を持ち、大きな外れ値があると大きめの相関係数が得られやすいです。したがって、データを取得したら、解析する前にまずはデータをグラフにしてみて確認するのがよいでしょう。
+このAnscombeのデータをグラフにすると、以下のようになります。x1はデータが直線上に近い形で位置していることが分かりますが、その他は直線上にデータが並んでいないことがわかります。また、ピアソンの相関係数は特に外れ値に弱い性質を持ち、大きな外れ値があると大きめの相関係数が得られやすいです。したがって、データを取得したら、解析する前にまずはデータをグラフにしてみて確認するのがよいでしょう。
 
-```{r}
+```{r, filename="Anscombeのデータをグラフとして表示する"}
 d_anscombe |> 
   ggplot(aes(x = x, y = y, color =cor_set)) +
   geom_point(size = 2) +
+  geom_smooth(method = "lm", se = FALSE) +
   facet_wrap(~cor_set)
 ```
 
 :::
 
-## 線形回帰
+## 回帰
 
 **回帰**は目的変数も説明変数も数値である場合に、目的変数と説明変数の関係を線形で示す統計解析です。回帰は、**目的変数と説明変数の関係を説明**するために用いられるものですが、回帰式を用いて**説明変数を得た時に目的変数を予測**する、予測的なモデルとしても用いることができます。
 
 前者、説明的な回帰の例としては、作物に与える窒素肥料の量が作物の収率にどの程度影響を及ぼすのか調べるような場合が当てはまります。後者、予測的な回帰の例としては、検量線を引いておいて、吸光度から物質の濃度を計算するような場合が当てはまります。回帰の種類によっては、予測的なモデルが**機械学習**として取り扱われることもあります。
 
+## 線形回帰：単回帰
+
 説明変数が一つである場合、**単回帰**と呼ばれる線形回帰を行うことになります。**目的変数が正規分布する場合、回帰の結果は直線**となります。
 
-線形回帰では、**最小二乗法**と呼ばれる手法を用いて回帰を行います。最小二乗法は、直線と各データの点までのy軸方向の距離の2乗の和（2乗誤差）を最小にする直線を求める方法です。図で表すと、以下のグラフの赤線の長さを2乗して合計し、この合計を最小にする線の数式を求めるが最小二乗法です。この最小二乗法は微分を使えば比較的簡単に解けるため、昔からよく用いられてきた方法です。y軸方向（目的変数）の誤差のみを考慮して結果を求めるため、説明変数と目的変数を逆にしてしまうと計算結果が変わります。
+単回帰では、**最小二乗法**と呼ばれる手法を用いて回帰を行います。最小二乗法は、直線と各データの点までのy軸方向の距離の2乗の和（2乗誤差）を最小にする直線を求める方法です。図で表すと、以下のグラフの赤線の長さを2乗して合計し、この合計を最小にする線の数式を求めるが最小二乗法です。この最小二乗法は微分を使えば比較的簡単に解けるため、昔からよく用いられてきた方法です。y軸方向（目的変数）の誤差のみを考慮して結果を求めるため、説明変数と目的変数を逆にしてしまうと計算結果が変わります。
 
 :::{.callout-tip collapse="true"}
 
@@ -174,10 +177,13 @@ new_d |>
   labs(title = "最小二乗法のイメージ", caption = "青点：データの点、黒線：線形回帰の線、赤線：最小二乗法で最小とする長さ")
 ```
 
-Rで線形回帰を行う場合には、`lm`関数を用います。`lm`関数の引数はformulaで、`目的変数~説明変数`という形で、チルダ（`~`）の前に結果（目的変数）のデータ、チルダの後に原因（説明変数）のデータをつないで用います。目的変数と説明変数は1対となるため、目的変数と説明変数に指定する変数の長さは同じである必要があります。`lm`関数の結果として、coefficients（係数、パラメータ）が2つ求まります。1つはIntercept、つまり切片で、もう一つは説明変数に対する傾きです。下の例では、$Sepal.Length = 6.5262 - 0.2234 \cdot Sepal.Width$という線形で回帰の式が表されることを示しています。
+Rで線形回帰を行う場合には、`lm`関数を用います。`lm`関数の引数はformulaで、`目的変数~説明変数`という形で、チルダ（`~`）の前に結果（目的変数）のデータ、チルダの後に原因（説明変数）のデータをつないで用います。
+
+目的変数と説明変数の関係は各データについて1対となるため（例えば、身長と体重であれば1人のデータは1対になります）、目的変数と説明変数に指定する変数の長さは同じである必要があります。`lm`関数の結果として、coefficients（係数、パラメータ）が2つ求まります。1つはIntercept、つまり切片で、もう一つは説明変数に対する傾きです。下の例では、$Sepal.Length = 6.5262 - 0.2234 \cdot Sepal.Width$という線形で回帰の式が表されることを示しています。
 
 ```{r, filename="線形回帰（単回帰）"}
-lm(iris$Sepal.Length ~ iris$Sepal.Width)
+iris_se <- iris |> filter(Species == "setosa")
+lm(iris_se$Sepal.Length ~ iris_se$Sepal.Width)
 ```
 
 `lm`関数では、`t.test`関数（[29章](chapter29.qmd#t検定)参照）と同様に`data`引数にデータフレームを取り、formulaにはデータフレームの列名を用いることができます。
@@ -199,12 +205,12 @@ lm(dist ~ speed - 1, data = cars) # 上と同じ
 
 線形回帰の結果を変数に代入すると、lmクラスの変数となります。lmクラスのオブジェクトからは、`$coefficients`で切片と傾きを取り出すことができます。また、`summary`関数の引数とすると、回帰の詳細が表示されます。
 
-`summary`関数で示される回帰の詳細には、coefficientsとして、分散分析表のようなものが表示されます。この表のうち、Estimateは切片と傾きの推定値、Std. Errorは切片と傾きの標準誤差、t valueとPr(>|t|)はt検定の結果を示しています。このt検定の結果は、coefficients（切片と傾き）が0と有意に異なっているかを示しています。以下の例では、Interceptは0と有意に異なるのに対して、iris\$Sepal.Width、つまり傾きは0とは有意に異ならないことを示しています。つまり、`Sepal.Width`は目的変数である`Sepal.Length`にはほとんど影響がないことを表しています。
+`summary`関数で示される回帰の詳細には、coefficientsとして、分散分析表のようなものが表示されます。この表のうち、Estimateは切片と傾きの推定値、Std. Errorは切片と傾きの標準誤差、t valueとPr(>|t|)はt検定の結果を示しています。このt検定の結果は、coefficients（切片と傾き）が0と有意に異なっているかを示しています。以下の例では、Intercept、iris_se\$Sepal.Widthは0と有意に異なります。つまり、`Sepal.Width`は目的変数である`Sepal.Length`に影響を与えていることを表しています。
 
 Multiple R squaredは**決定係数**と呼ばれるもので、線形性の高さを示します。決定係数（R^2^）は相関係数（R）の2乗として計算されるもので、0~1の値を取ります。1に近いほど線形性が高く、0に近いほどあまり線形性がみられないという結果となります。Adjusted R squaredは調整済み決定係数で、説明変数の数でペナルティを付けて計算した決定係数です。
 
 ```{r, filename="lmクラスの取り扱い"}
-lmresult <- lm(iris$Sepal.Length ~ iris$Sepal.Width) # 変数にlmの結果を代入
+lmresult <- lm(iris_se$Sepal.Length ~ iris_se$Sepal.Width) # 変数にlmの結果を代入
 class(lmresult) # lmクラスのオブジェクト
 
 lmresult$coefficients # 切片と傾きを取り出す
@@ -214,7 +220,7 @@ summary(lmresult) # 線形回帰の詳細（内容の詳細は?summary.lmで調�
 
 ### predict関数
 
-`predict`関数は、lmクラスのオブジェクトを引数に取り、x軸の値を与えた時のy軸側の直線上の値やyの値の信頼区間を計算する関数です。
+`predict`関数は、lmクラスのオブジェクトを引数に取り、xの値を与えた時のyの値や、yの信頼区間を計算する関数です。
 
 `predict`関数の第一引数はlmクラスのオブジェクトで、第二引数（`newdata`）に、予測したいx軸上の値をデータフレームで設定します。`interval`という引数には、`"none"`、`"confidence"`、`"prediction"`の3つのうちどれかを設定します。`"none"`の場合には`newdata`で与えたxを与えた場合の直線上のyの値のみを返します。`"confidence"`の場合は信頼区間、`"prediction"`の場合は個々の値に関する予測区間が表示されます。区間の幅は`levels`引数で指定することができます。`levels`引数のデフォルト値は0.95なので、`levels`を設定しない場合には信頼区間などの区間は95％区間として求まります。
 
@@ -236,6 +242,7 @@ predict(lmr, newdata = new, interval = "confidence", levels = 0.95)
 ```
 
 ```{r, filename="95%信頼区間を加えた回帰のグラフ"}
+# predict関数を用いて表示する方法。geom_smooth関数でも同じことができる。
 ggplot()+
   geom_point(data = data.frame(x, y), aes(x = x, y = y, size = 2)) +
   geom_ribbon(
@@ -279,28 +286,28 @@ residuals(lmr) # 残差
 
 ## 重回帰
 
-**重回帰**とは、1つの目的変数に対して、2つ以上の説明変数がある場合の回帰のことです。Rでは重回帰も単回帰と同じく`lm`関数で計算することができます。重回帰は二元分散分析と同様に、説明変数を`+`または`*`でつないでformulaを設定します。`+`でつないだ場合には交互作用なし、`*`でつないだ場合には交互作用ありの重回帰となります。ただし、重回帰の交互作用はその意味の理解が難しいため、意味をよく考えた上で交互作用の項を追加するかどうか決める方がよいでしょう。
+**重回帰**とは、1つの目的変数に対して、2つ以上の説明変数がある場合の回帰のことです。Rでは重回帰も単回帰と同じく`lm`関数で計算することができます。重回帰は[二元分散分析](chapter29.qmd#二元分散分析)と同様に、説明変数を`+`または`*`でつないでformulaを設定します。`+`でつないだ場合には交互作用なし、`*`でつないだ場合には交互作用ありの重回帰となります。ただし、重回帰の交互作用はその意味の理解が難しいため、意味をよく考えた上で交互作用の項を追加するかどうか決める方がよいでしょう。
 
 ```{r, filename="lm関数で重回帰"}
 # 交互作用なしモデル
-# Sepal.Length = 2.2491 + 0.5955 * Sepal.Width + 0.4719 * Petal.Length が結果となる
-lm(iris$Sepal.Length ~ iris$Sepal.Width + iris$Petal.Length)
+# Sepal.Length = 2.3037 + 0.6674 * Sepal.Width + 0.2834 * Petal.Length が結果となる
+lm(iris_se$Sepal.Length ~ iris_se$Sepal.Width + iris_se$Petal.Length)
 
 # 交互作用ありモデル
-# Sepal.Length = 1.4044 + 0.8500 * Sepal.Width + 
-# 0.7185 * Petal.Length - 0.07701 * Sepal.Width * Petal.Length
-lm(iris$Sepal.Length ~ iris$Sepal.Width * iris$Petal.Length)
+# Sepal.Length = -1.3686 + 1.7230 * Sepal.Width + 
+# 2.8759 * Petal.Length - 0.7438 * Sepal.Width * Petal.Length
+lm(iris_se$Sepal.Length ~ iris_se$Sepal.Width * iris_se$Petal.Length)
 
 # 交互作用はコロン（:）を用いて以下のように書くこともできる
 lm(
-  iris$Sepal.Length ~ 
-    iris$Sepal.Width + iris$Petal.Length + iris$Sepal.Width:iris$Petal.Length
+  iris_se$Sepal.Length ~ 
+    iris_se$Sepal.Width + iris_se$Petal.Length + iris_se$Sepal.Width:iris_se$Petal.Length
   )
 ```
 
 ## 一般線形モデル
 
-**一般線形モデル**は、1つの目的変数に対して、数値や因子からなる複数の説明変数がある場合の回帰のことです。重回帰や共分散分析の拡張だと考えるとよいかと思います。Rでは一般線形モデルの計算も`lm`関数を用いて行います。一般線形モデルも重回帰とほぼ同じで、説明変数同士を`+`か`*`でつなぐだけです。
+**一般線形モデル**は、1つの目的変数に対して、数値や因子からなる複数の説明変数がある場合の回帰のことです。重回帰や[共分散分析](chapter29.qmd#共分散分析)の拡張だと考えるとよいかと思います。Rでは一般線形モデルの計算も`lm`関数を用いて行います。一般線形モデルも重回帰とほぼ同じで、説明変数同士を`+`か`*`でつなぐだけです。
 
 一般線形モデルでは説明変数として非常にたくさんの数値や因子を登録できますが、すべての説明変数に対して交互作用ありにしてしまうと交互作用項が非常に多くなり、理解が難しくなるので、本当に必要がある部分にだけ交互作用を入れる方がよいでしょう。個別に交互作用を加えたい場合には、上の重回帰で示したように`:`（コロン）を用いるとよいでしょう。
 
@@ -358,7 +365,7 @@ lm(Sepal.Length ~ Sepal.Width + I(Sepal.Width^2), data = iris) |> coef()
 
 ## 一般化線形モデル
 
-ここまでは目的変数が正規分布することを仮定した回帰でしたが、目的変数が正規分布しない場合、例えばポアソン分布や二項分布するときには、分布が上下非対称になります。ですので、最小二乗法を用いた直線での回帰は適していません。
+目的変数が正規分布しない場合、例えばポアソン分布や二項分布するときには、分布が上下非対称になります。ですので、上記の、データが正規分布すると仮定した場合における最小二乗法を用いた直線での回帰は適していません。
 
 以下に目的変数が二項分布とポアソン分布するデータの例を示します。いずれも直線で回帰してしまうと、データの特徴を捉えていないことがわかると思います。
 
@@ -520,7 +527,7 @@ $$ log(\frac{p}{1-p}) = -4.34896+0.09368x $$
 
 上式を変換し、ロジスティック関数にしたものが以下の式です。
 
-$$ y = \frac{1}{1+exp(-(-4.34896+0.09368x))} $$
+$$ p = \frac{1}{1+exp(-(-4.34896+0.09368x))} $$
 
 ```{r, filename="glm関数：二項分布"}
 # 回帰するデータ
@@ -582,7 +589,7 @@ binom_d |>
   geom_function(fun = \(x){1 / (1 + exp(-(-4.20991  - 0.52864 + 0.09672 * x)))}, color = "red")
 ```
 
-上の例では、計算結果はcoefficientsから、以下の式となります。sexは0か1ですので、0の時は-0.52864×sexの部分が0に、1の時は―0.52864となります。
+上の例では、計算結果はcoefficientsから、以下の式となります。sexは0か1ですので、0の時は-0.52864×sexの部分が0に、1の時は-0.52864となります。
 
 $$ y = \frac{1}{1+exp(-(-4.20991 + 0.09672x - 0.52864 \cdot sex))} $$
 
@@ -683,7 +690,7 @@ llm_ri_sleepstudy@beta
 llm_rs_sleepstudy@beta
 ```
 
-見ての通り、線形回帰の結果と線形混合モデル（固定効果）の結果は一致します。また、固定効果の信頼区間は以下の通りとなります。少し信頼区間の形が違いますが、線形回帰も線形混合モデルの固定効果も同じような信頼区間に収まります。要は、線形混合モデルの固定効果は線形回帰とそれほど変わらないことを示しています。
+見ての通り、線形回帰の結果と線形混合モデル（固定効果）の結果は一致します。また、固定効果の信頼区間は以下の通りとなります。少し信頼区間の形が違いますが、線形回帰も線形混合モデルの固定効果も同じような信頼区間に収まります。要は、線形混合モデルの固定効果は線形回帰とそれほど変わらないことを示しています。ただし、線形回帰ではデータの間のつながりを仮定していないため、統計としては線形混合モデルを利用したほうがより正しい回帰の結果を得ることができます。
 
 ```{r, filename="固定効果の信頼区間"}
 d <- data.frame(Days = seq(0, 9, by = 0.1), Subject = 308)
@@ -730,7 +737,7 @@ p1 + p2 + p3
 coef(llm_ri_sleepstudy)$Subject |> head() # Days（傾き）が一定
 
 # ランダム傾きモデル
-coef(llm_rs_sleepstudy) $Subject |> head() # Days（傾き）が個々に異なる
+coef(llm_rs_sleepstudy)$Subject |> head() # Days（傾き）が個々に異なる
 ```
 
 
@@ -779,7 +786,7 @@ cbind(cbpp$incidence, cbpp$size - cbpp$incidence) |> head() # 左が牛肺疫に
 glmer(cbind(incidence, size - incidence) ~ period |> as.numeric() + (1 | herd), family = "binomial", data = cbpp)
 ```
 
-`lme4`パッケージの他に、RではGLMMの計算に関わるパッケージとして、[`glmm`](https://cran.r-project.org/web/packages/glmm/index.html) [@glmm_bib]や[`MCMCglmm`](https://cran.r-project.org/web/packages/MCMCglmm/index.html) [@MCMCglmm_bib]などがあります。一般化線形モデル・一般化線形混合モデルについては、やや古典の教科書となってきていますが、[データ解析のための統計モデリング入門](https://www.amazon.co.jp/%E3%83%87%E3%83%BC%E3%82%BF%E8%A7%A3%E6%9E%90%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E4%B8%80%E8%88%AC%E5%8C%96%E7%B7%9A%E5%BD%A2%E3%83%A2%E3%83%87%E3%83%AB%E3%83%BB%E9%9A%8E%E5%B1%A4%E3%83%99%E3%82%A4%E3%82%BA%E3%83%A2%E3%83%87%E3%83%AB%E3%83%BBMCMC-%E7%A2%BA%E7%8E%87%E3%81%A8%E6%83%85%E5%A0%B1%E3%81%AE%E7%A7%91%E5%AD%A6-%E4%B9%85%E4%BF%9D-%E6%8B%93%E5%BC%A5/dp/400006973X/ref=sr_1_2?crid=2YDRTUCPZM4HJ&dib=eyJ2IjoiMSJ9.cLlyysXZ_iLOvRYhmMJO8JrLu9tI7C8BlfM7l-0RNeVcFhLjF1qiYu15YvB-rT3Lrpa8oFEXcgLjWYGoh0zZkiPv9d5OFqty6iHTINEyi_6ufuJ_m6rRoH5wQ7TGJFAN651BEnLDZSDbd00hNfVQe6E6exjz-me5Pc9uszWcbYM0xrlzNDIJLfKjaDW54iHjw0crxJ2958tU_HIWu8CyQKgGozQCr5-qa18BMNosh4lsn-4zDcwPLFxvELOeJV8Wl5Spd9jMCTr1kH-fLzwap-WclLOmTVanOXxEYKktzUo.AC94qccYjYbiT6GFuTJIqo4x3g9GOmWkp_8PFHe2fec&dib_tag=se&keywords=%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0&qid=1727527212&sprefix=toukeimoderin%2Caps%2C173&sr=8-2)を読まれるのが良いでしょう。
+`lme4`パッケージの他に、RではGLMMの計算に関わるパッケージとして、[`glmm`](https://cran.r-project.org/web/packages/glmm/index.html) [@glmm_bib]や[`MCMCglmm`](https://cran.r-project.org/web/packages/MCMCglmm/index.html) [@MCMCglmm_bib]などがあります。一般化線形モデル・一般化線形混合モデルについて詳しく知りたい方は[データ解析のための統計モデリング入門](https://www.amazon.co.jp/%E3%83%87%E3%83%BC%E3%82%BF%E8%A7%A3%E6%9E%90%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E4%B8%80%E8%88%AC%E5%8C%96%E7%B7%9A%E5%BD%A2%E3%83%A2%E3%83%87%E3%83%AB%E3%83%BB%E9%9A%8E%E5%B1%A4%E3%83%99%E3%82%A4%E3%82%BA%E3%83%A2%E3%83%87%E3%83%AB%E3%83%BBMCMC-%E7%A2%BA%E7%8E%87%E3%81%A8%E6%83%85%E5%A0%B1%E3%81%AE%E7%A7%91%E5%AD%A6-%E4%B9%85%E4%BF%9D-%E6%8B%93%E5%BC%A5/dp/400006973X/ref=sr_1_2?crid=2YDRTUCPZM4HJ&dib=eyJ2IjoiMSJ9.cLlyysXZ_iLOvRYhmMJO8JrLu9tI7C8BlfM7l-0RNeVcFhLjF1qiYu15YvB-rT3Lrpa8oFEXcgLjWYGoh0zZkiPv9d5OFqty6iHTINEyi_6ufuJ_m6rRoH5wQ7TGJFAN651BEnLDZSDbd00hNfVQe6E6exjz-me5Pc9uszWcbYM0xrlzNDIJLfKjaDW54iHjw0crxJ2958tU_HIWu8CyQKgGozQCr5-qa18BMNosh4lsn-4zDcwPLFxvELOeJV8Wl5Spd9jMCTr1kH-fLzwap-WclLOmTVanOXxEYKktzUo.AC94qccYjYbiT6GFuTJIqo4x3g9GOmWkp_8PFHe2fec&dib_tag=se&keywords=%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0&qid=1727527212&sprefix=toukeimoderin%2Caps%2C173&sr=8-2)をご一読されるのが良いでしょう。
 
 ## ベイズモデル
 
@@ -932,7 +939,7 @@ $$ y= ax_{1} + bx_{2} = acx_{2} + bx_{2} = (ac+b)x_{2}$$
 
 とは言っても、説明変数の組み合わせは説明変数の数が増えると増大していきますし、実際に目的変数に影響を与えうるのかよくわからない説明変数も増えていきます。
 
-説明変数の組み合わせのことを、回帰の**「モデル」**と呼びます。説明変数の組み合わせ、つまり数多くあるモデルから、適切なモデルを選び出すことを、**モデル選択**と呼びます。モデル選択の手法には様々なものがあります。最もよく知られているモデル選択の方法は、**AIC（赤池情報量基準、Akaike's Information Criterion）**によるモデル選択です。
+説明変数の組み合わせのことを、回帰の**「モデル」**と呼びます。説明変数の組み合わせ、つまり数多くあるモデルから、適切なモデルを選び出すことを、**モデル選択**と呼びます。モデル選択の手法には様々なものがあります。最もよく知られているモデル選択の方法は、**AIC（赤池情報量基準、Akaike's Information Criterion）**によるモデル選択[@akaike1998information]です。
 
 AICは、最尤推定の際に用いる尤度（likelyhood）に、説明変数の数をペナルティとして与えた数値です。AICは以下の計算式で求めることができます。
 
