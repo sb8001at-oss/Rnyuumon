@@ -112,7 +112,7 @@ sfobj <- st_read(url)
 
 ### 他の地理情報データとの統合
 
-`sf`オブジェクトはデータフレームでもあるため、地理情報と関連付けられたデータがあれば、`sf`オブジェクトの列として登録し、データとして利用することができます。地理情報と関連されたデータを自分で集めるのは難しいですが、政府統計であれば[e-stat](https://www.e-stat.go.jp/)から簡単にダウンロードできます。
+`sf`オブジェクトはデータフレームでもあるため、地理情報と関連付けられたデータがあれば、`sf`オブジェクトの列として登録し、データとして利用することができます。地理情報と関連したデータを自分で集めるのは難しいですが、政府統計であれば[e-stat](https://www.e-stat.go.jp/)から簡単にダウンロードできます。
 
 以下の例では、2020年の国勢調査のデータをダウンロードし、上記の国土数値情報から作成した`sf`オブジェクトに国勢調査データの2020年人口を登録しています。e-statのデータを用いた解析結果を公表する場合には下のような[出典の記載](https://www.e-stat.go.jp/help/surveyitems/search-3-5)が必要です。
 
@@ -490,7 +490,7 @@ st_crs(Nara_sfobj) <- 4326 # WGS84に変更する（warningが出るが、変換
 
 `terra`は昔から用いられているラスタデータの取り扱いに関するライブラリである[`raster`](https://cran.r-project.org/web/packages/raster/index.html)パッケージ[@raster_bib]を更新したライブラリで、`sf`との連携が組み込まれています。
 
-`stars`は`sf`の開発者が作成したラスタデータの取り扱いに関数ライブラリです。`terra`と比べるとやや[ダウンロードされていないパッケージ](https://www.datasciencemeta.com/rpackages)ではありますが、ココでは`terra`ではなく`stars`について説明することとします。
+`stars`は`sf`の開発者が作成したラスタデータの取り扱いに関するライブラリです。`terra`と比べるとやや[ダウンロードされていないパッケージ](https://www.datasciencemeta.com/rpackages)ではありますが、ココでは`terra`ではなく`stars`について説明することとします。
 
 ```{r, filename="starsパッケージのロード"}
 pacman::p_load(stars)
@@ -625,7 +625,7 @@ plot(circle, col = NA, border = 'red', add = TRUE, lwd = 2)
 
 ### starsオブジェクトの整形
 
-`stars`オブジェクトのデータの整形は、`dplyr`を用いて行うことができます。`stars`オブジェクトは`array`のリストであるため、`array`データの整形に関わるライブラリである[cubelyr](https://cran.r-project.org/web/packages/cubelyr/index.html)パッケージ[@cubelyr_bib]をロードしておいた方がよい場合もあります。
+`stars`オブジェクトのデータの整形は、`dplyr`を用いて行うことができます。`stars`オブジェクトは`array`のリストであるため、`array`データの整形に関わるライブラリである[`cubelyr`](https://cran.r-project.org/web/packages/cubelyr/index.html)パッケージ[@cubelyr_bib]をロードしておいた方がよい場合もあります。
 
 ```{r, filename="starsオブジェクトの整形"}
 w # 上でロードした北米の降雨量・気温のラスタデータ
@@ -756,12 +756,12 @@ Nara_sfobj |>
 
 ### コロプレス図を描画する
 
-コロプレス図を描画する場合には、`tm_polygons`関数の`col`引数に、描画したい値を文字列で指定します。凡例（legend）や色は自動的に作成され、表示されます。
+コロプレス図を描画する場合には、`tm_polygons`関数の`fill`引数に、描画したい値を文字列で指定します。凡例（legend）や色は自動的に作成され、表示されます。
 
 ```{r, filename="コロプレス図を描画する"}
 Nara_sfobj |> 
   tm_shape() +
-  tm_polygons(col = "total_pop")
+  tm_polygons(fill = "total_pop")
 ```
 
 #### 静的マップとインタラクティブマップ
@@ -772,14 +772,14 @@ Nara_sfobj |>
 tmap_mode("view")
 Nara_sfobj |> 
   tm_shape() +
-  tm_polygons(col = "total_pop")
+  tm_polygons(fill = "total_pop")
 ```
 
 ```{r, filename="plotモードで静的な地図を表示"}
 tmap_mode("plot")
 Nara_sfobj |> 
   tm_shape() +
-  tm_polygons(col = "total_pop")
+  tm_polygons(fill = "total_pop")
 ```
 
 ### legendの表示
@@ -789,7 +789,7 @@ legend（凡例）の表示方法を変える場合には、`tm_legend`関数を
 ```{r, filename="凡例（legend）などの編集"}
 Nara_sfobj |> 
   tm_shape() +
-  tm_polygons(col = "total_pop") +
+  tm_polygons(fill = "total_pop") +
   tm_legend(show = FALSE) # viewモードではshow=FALSEは機能しない
 ```
 
@@ -850,7 +850,7 @@ tmap_arrange(map_north, map_south)
 ```{r, filename="背景色を変更する"}
 Nara_sfobj |> 
   tm_shape() +
-  tm_polygons(col = "total_pop") +
+  tm_polygons(fill = "total_pop") +
   tm_layout(bg.color = "blue") +
   tm_legend(show = FALSE)
 ```

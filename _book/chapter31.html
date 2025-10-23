@@ -776,8 +776,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 
 
 </header><p>データがどのような群に分類されるのか評価・予測する<strong>分類</strong>は、検定・回帰と並ぶ統計・機械学習の重要な手法の一つです。分類は<strong>教師あり学習</strong>、<strong>教師なし学習</strong>に大きく二分することができます。</p>
-<p><strong>教師あり学習</strong>とは、今までに取得されたデータ（<strong>訓練データ</strong>）を用いて分類を行うアルゴリズム（<strong>分類器（classifier）</strong>）を作成し、このアルゴリズムを利用して新たに取得されたデータの分類を行う方法を指します。回帰によるデータ予測も、訓練データの回帰による予測を行うことから、教師あり学習に該当します。一般的に機械学習において分類とされるのは、この教師あり学習の分類です。教師あり学習の分類についてこの章で説明していきます。</p>
-<p><strong>教師なし学習</strong>とは、これまでに取れたデータをすべて用いて、似ているデータごとに群として分けるような手法です。教師なし学習では、訓練データと予測を行うデータを明確に分けることはありません。教師なし学習による群分けには、<strong>次元圧縮</strong>と<strong>クラスタリング</strong>があります。教師なし学習については<a href="./chapter32.html">次の章</a>で詳しく解説します。</p>
+<p><strong>教師あり学習</strong>とは、今までに取得されたデータ（<strong>訓練データ</strong>）を用いて分類を行うアルゴリズム（<strong>分類器（classifier）</strong>）を作成し、このアルゴリズムを利用して新たに取得されたデータの分類を行う方法を指します。回帰によるデータ予測も、訓練データの回帰による予測を行うことから、教師あり学習に該当します。一般的に機械学習において分類とされるのは、この教師あり学習の分類です。この章ではこの教師あり学習の分類について説明していきます。</p>
+<p><strong>教師なし学習</strong>とは、取れたデータをすべて用いて、似ているデータごとに群として分けるような手法です。教師なし学習では、訓練データと予測を行うデータを明確に分けることはありません。教師なし学習による群分けには、<strong>次元圧縮</strong>と<strong>クラスタリング</strong>があります。教師なし学習については<a href="./chapter32.html">次の章</a>で詳しく解説します。</p>
 <p><a href="./image/classification_category1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="./image/classification_category1.png" class="img-fluid"></a></p>
 <section id="サポートベクターマシン" class="level2" data-number="31.1"><h2 data-number="31.1" class="anchored" data-anchor-id="サポートベクターマシン">
 <span class="header-section-number">31.1</span> サポートベクターマシン</h2>
@@ -798,7 +798,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <section id="訓練データとテストデータ" class="level3" data-number="31.1.1"><h3 data-number="31.1.1" class="anchored" data-anchor-id="訓練データとテストデータ">
 <span class="header-section-number">31.1.1</span> 訓練データとテストデータ</h3>
-<p>教師あり学習の機械学習を用いる場合には、まずデータを<strong>訓練データ</strong>と<strong>テストデータ</strong>に分けるのが一般的です。これは<a href="./chapter30.html#部分的最小二乗回帰">前章</a>の部分的最小二乗回帰（PLS）の項で説明したものと同じです。</p>
+<p>教師あり学習の機械学習を用いる場合には、まずデータを<strong>訓練データ</strong>と<strong>検証データ（テストデータ）</strong>に分けるのが一般的です。これは<a href="./chapter30.html#部分的最小二乗回帰">前章</a>の部分的最小二乗回帰（PLS）の項で説明したものと同じです。</p>
 <p>訓練データとテストデータを分ける場合には、<code>sample</code>関数を利用してランダムにデータの行を選ぶのが一般的です。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -845,7 +845,7 @@ tidymodelsパッケージでのデータ準備
 </div>
 </div>
 </div>
-<p>Rでサボートベクターマシンを実行する場合には、<code>e1071</code>パッケージの<code>svm</code>関数を用います。<code>svm</code>関数の使い方は<code>lm</code>とよく似ていて、目的とする分類（因子）を目的変数とした<code>formula</code>と、データフレーム（<code>data</code>）の2つを引数に取ります。以下の例では、<code>iris</code>データを用いて、アヤメの種（<code>Species</code>）を予測する分類モデルを訓練データを用いてサポートベクターマシンで作成しています。</p>
+<p>Rでサボートベクターマシンを用いる場合には、<code>e1071</code>パッケージの<code>svm</code>関数を用います。<code>svm</code>関数の使い方は<code>lm</code>とよく似ていて、目的とする分類（因子）を目的変数とした<code>formula</code>と、データフレーム（<code>data</code>）の2つを引数に取ります。以下の例では、<code>iris</code>データを用いて、アヤメの種（<code>Species</code>）を予測する分類モデルを訓練データを用いてサポートベクターマシンで作成しています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1021,7 +1021,7 @@ tidymodelsパッケージでのデータ準備
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>カーネル変換とは、データの写像というものを利用し、元来直線的には分類できないようなデータを写像上で直線的に分類できるようにする手法のことです。写像のイメージとしては、2次元のデータに1次元足して3次元にしているようなものだと思って頂ければよいかと思います。2次元で分離できないものも、1次元追加することで直線（面）で分類できるようになります。この写像の計算の仕方が<code>kernel</code>引数で指定しているものとなります。</p>
+<p>カーネル変換とは、データの写像というものを利用し、元来直線的には分類できないようなデータを写像上で直線的に分類できるようにする手法のことです。写像のイメージとしては、2次元のデータに1次元足して3次元にしているようなものだと思って頂ければよいかと思います。2次元で分離できないものも、1次元追加することで直線（面）で分類できるようになります。この写像の計算の仕方を<code>kernel</code>引数で指定しています。</p>
 </div>
 </div>
 </div>
@@ -1203,7 +1203,7 @@ tidymodelsパッケージでのデータ準備
 <span class="header-section-number">31.3.2</span> ブースティング</h3>
 <p><strong>ブースティング</strong>も決定木の一種ですが、分類器をランダムに生成するのではなく、決定木を少しずつ変化させ最適化するような手法です。ブースティングは以前はそれほど用いられてはいませんでしたが、勾配ブースティングと呼ばれる改良化されたアルゴリズムが開発されてから非常に分類精度の高い手法としてよく用いられています。</p>
 <p>ブースティングのアルゴリズムには、昔からある<a href="https://www.sciencedirect.com/science/article/pii/S002200009791504X">Adaboost</a>や、2015年以降に開発された<a href="https://xgboost.readthedocs.io/en/stable/#">XGBoost</a>、<a href="https://lightgbm.readthedocs.io/en/stable/">LightGBM</a>、<a href="https://catboost.ai/">CatBoost</a>等があります。特に2015年以降に開発された後者の分類性能は高いとされています。</p>
-<p>RではAdaboostは<a href="https://cran.r-project.org/web/packages/JOUSBoost/index.html">JOUSBoost</a>パッケージ <span class="citation" data-cites="JOUSBoost_bib">(<a href="references.html#ref-JOUSBoost_bib" role="doc-biblioref">Olson 2017</a>)</span>、XGBoostは<a href="https://cran.r-project.org/web/packages/xgboost/index.html">xgboost</a>パッケージ <span class="citation" data-cites="xgboost_bib">(<a href="references.html#ref-xgboost_bib" role="doc-biblioref">Chen et al. 2023</a>)</span>、LightGBMは<a href="https://cran.r-project.org/web/packages/lightgbm/index.html">lightgbm</a>パッケージ <span class="citation" data-cites="lightgbm_bib">(<a href="references.html#ref-lightgbm_bib" role="doc-biblioref">Shi et al. 2024</a>)</span>、CatBoostは<a href="https://catboost.ai/en/docs/installation/r-installation-github-installation">catboost</a>パッケージ <span class="citation" data-cites="catboost_bib">(<a href="references.html#ref-catboost_bib" role="doc-biblioref">Prokhorenkova et al. 2017</a>)</span>を用いることで利用できます。ただし、<code>catboost</code>にはPythonのライブラリが必要となるので、Rでは使用の難易度が高めです。</p>
+<p>RではAdaboostは<a href="https://cran.r-project.org/web/packages/JOUSBoost/index.html">JOUSBoost</a>パッケージ <span class="citation" data-cites="JOUSBoost_bib">(<a href="references.html#ref-JOUSBoost_bib" role="doc-biblioref">Olson 2017</a>)</span>、XGBoostは<a href="https://cran.r-project.org/web/packages/xgboost/index.html">xgboost</a>パッケージ <span class="citation" data-cites="xgboost_bib">(<a href="references.html#ref-xgboost_bib" role="doc-biblioref">Chen et al. 2023</a>)</span>、LightGBMは<a href="https://cran.r-project.org/web/packages/lightgbm/index.html">lightgbm</a>パッケージ <span class="citation" data-cites="lightgbm_bib">(<a href="references.html#ref-lightgbm_bib" role="doc-biblioref">Shi et al. 2024</a>)</span>、CatBoostは<a href="https://catboost.ai/en/docs/installation/r-installation-github-installation">catboost</a>パッケージ <span class="citation" data-cites="catboost_bib">(<a href="references.html#ref-catboost_bib" role="doc-biblioref">Prokhorenkova et al. 2017</a>)</span>を用いることで利用できます。ただし、<code>catboost</code>にはPythonのライブラリが必要となるので、Rでは利用の難易度が高めです。</p>
 <p>以下に、XGBoostを利用した分類の例を示します。説明変数となるデータが少なく、モデルの最適化も行っていないため、上記のランダムフォレストと同程度の精度（0.64）となっています。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -1919,9 +1919,9 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>データがどのような群に分類されるのか評価・予測する**分類**は、検定・回帰と並ぶ統計・機械学習の重要な手法の一つです。分類は**教師あり学習**、**教師なし学習**に大きく二分することができます。</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>**教師あり学習**とは、今までに取得されたデータ（**訓練データ**）を用いて分類を行うアルゴリズム（**分類器（classifier）**）を作成し、このアルゴリズムを利用して新たに取得されたデータの分類を行う方法を指します。回帰によるデータ予測も、訓練データの回帰による予測を行うことから、教師あり学習に該当します。一般的に機械学習において分類とされるのは、この教師あり学習の分類です。教師あり学習の分類についてこの章で説明していきます。</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>**教師あり学習**とは、今までに取得されたデータ（**訓練データ**）を用いて分類を行うアルゴリズム（**分類器（classifier）**）を作成し、このアルゴリズムを利用して新たに取得されたデータの分類を行う方法を指します。回帰によるデータ予測も、訓練データの回帰による予測を行うことから、教師あり学習に該当します。一般的に機械学習において分類とされるのは、この教師あり学習の分類です。この章ではこの教師あり学習の分類について説明していきます。</span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>**教師なし学習**とは、これまでに取れたデータをすべて用いて、似ているデータごとに群として分けるような手法です。教師なし学習では、訓練データと予測を行うデータを明確に分けることはありません。教師なし学習による群分けには、**次元圧縮**と**クラスタリング**があります。教師なし学習については<span class="co">[</span><span class="ot">次の章</span><span class="co">](./chapter32.html)</span>で詳しく解説します。</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>**教師なし学習**とは、取れたデータをすべて用いて、似ているデータごとに群として分けるような手法です。教師なし学習では、訓練データと予測を行うデータを明確に分けることはありません。教師なし学習による群分けには、**次元圧縮**と**クラスタリング**があります。教師なし学習については<span class="co">[</span><span class="ot">次の章</span><span class="co">](./chapter32.html)</span>で詳しく解説します。</span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/classification_category1.png)</span></span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
@@ -1949,7 +1949,7 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
 <span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="fu">### 訓練データとテストデータ</span></span>
 <span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>教師あり学習の機械学習を用いる場合には、まずデータを**訓練データ**と**テストデータ**に分けるのが一般的です。これは<span class="co">[</span><span class="ot">前章</span><span class="co">](./chapter30.qmd#部分的最小二乗回帰)</span>の部分的最小二乗回帰（PLS）の項で説明したものと同じです。</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>教師あり学習の機械学習を用いる場合には、まずデータを**訓練データ**と**検証データ（テストデータ）**に分けるのが一般的です。これは<span class="co">[</span><span class="ot">前章</span><span class="co">](./chapter30.qmd#部分的最小二乗回帰)</span>の部分的最小二乗回帰（PLS）の項で説明したものと同じです。</span>
 <span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>訓練データとテストデータを分ける場合には、<span class="in">`sample`</span>関数を利用してランダムにデータの行を選ぶのが一般的です。</span>
 <span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a></span>
@@ -1983,7 +1983,7 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
 <span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a>Rでサボートベクターマシンを実行する場合には、<span class="in">`e1071`</span>パッケージの<span class="in">`svm`</span>関数を用います。<span class="in">`svm`</span>関数の使い方は<span class="in">`lm`</span>とよく似ていて、目的とする分類（因子）を目的変数とした<span class="in">`formula`</span>と、データフレーム（<span class="in">`data`</span>）の2つを引数に取ります。以下の例では、<span class="in">`iris`</span>データを用いて、アヤメの種（<span class="in">`Species`</span>）を予測する分類モデルを訓練データを用いてサポートベクターマシンで作成しています。</span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a>Rでサボートベクターマシンを用いる場合には、<span class="in">`e1071`</span>パッケージの<span class="in">`svm`</span>関数を用います。<span class="in">`svm`</span>関数の使い方は<span class="in">`lm`</span>とよく似ていて、目的とする分類（因子）を目的変数とした<span class="in">`formula`</span>と、データフレーム（<span class="in">`data`</span>）の2つを引数に取ります。以下の例では、<span class="in">`iris`</span>データを用いて、アヤメの種（<span class="in">`Species`</span>）を予測する分類モデルを訓練データを用いてサポートベクターマシンで作成しています。</span>
 <span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="svm関数で分類器を準備する"}</span></span>
 <span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a><span class="co"># 訓練データでサポートベクターマシンを計算（.は目的変数以外の変数すべてを指す）</span></span>
@@ -2120,7 +2120,7 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
 <span id="cb20-205"><a href="#cb20-205" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-206"><a href="#cb20-206" aria-hidden="true" tabindex="-1"></a><span class="fu">## カーネル変換</span></span>
 <span id="cb20-207"><a href="#cb20-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-208"><a href="#cb20-208" aria-hidden="true" tabindex="-1"></a>カーネル変換とは、データの写像というものを利用し、元来直線的には分類できないようなデータを写像上で直線的に分類できるようにする手法のことです。写像のイメージとしては、2次元のデータに1次元足して3次元にしているようなものだと思って頂ければよいかと思います。2次元で分離できないものも、1次元追加することで直線（面）で分類できるようになります。この写像の計算の仕方が<span class="in">`kernel`</span>引数で指定しているものとなります。</span>
+<span id="cb20-208"><a href="#cb20-208" aria-hidden="true" tabindex="-1"></a>カーネル変換とは、データの写像というものを利用し、元来直線的には分類できないようなデータを写像上で直線的に分類できるようにする手法のことです。写像のイメージとしては、2次元のデータに1次元足して3次元にしているようなものだと思って頂ければよいかと思います。2次元で分離できないものも、1次元追加することで直線（面）で分類できるようになります。この写像の計算の仕方を<span class="in">`kernel`</span>引数で指定しています。</span>
 <span id="cb20-209"><a href="#cb20-209" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-210"><a href="#cb20-210" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb20-211"><a href="#cb20-211" aria-hidden="true" tabindex="-1"></a></span>
@@ -2257,7 +2257,7 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
 <span id="cb20-342"><a href="#cb20-342" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-343"><a href="#cb20-343" aria-hidden="true" tabindex="-1"></a>ブースティングのアルゴリズムには、昔からある<span class="co">[</span><span class="ot">Adaboost</span><span class="co">](https://www.sciencedirect.com/science/article/pii/S002200009791504X)</span>や、2015年以降に開発された<span class="co">[</span><span class="ot">XGBoost</span><span class="co">](https://xgboost.readthedocs.io/en/stable/#)</span>、<span class="co">[</span><span class="ot">LightGBM</span><span class="co">](https://lightgbm.readthedocs.io/en/stable/)</span>、<span class="co">[</span><span class="ot">CatBoost</span><span class="co">](https://catboost.ai/)</span>等があります。特に2015年以降に開発された後者の分類性能は高いとされています。</span>
 <span id="cb20-344"><a href="#cb20-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-345"><a href="#cb20-345" aria-hidden="true" tabindex="-1"></a>RではAdaboostは<span class="co">[</span><span class="ot">JOUSBoost</span><span class="co">](https://cran.r-project.org/web/packages/JOUSBoost/index.html)</span>パッケージ <span class="co">[</span><span class="ot">@JOUSBoost_bib</span><span class="co">]</span>、XGBoostは<span class="co">[</span><span class="ot">xgboost</span><span class="co">](https://cran.r-project.org/web/packages/xgboost/index.html)</span>パッケージ <span class="co">[</span><span class="ot">@xgboost_bib</span><span class="co">]</span>、LightGBMは<span class="co">[</span><span class="ot">lightgbm</span><span class="co">](https://cran.r-project.org/web/packages/lightgbm/index.html)</span>パッケージ <span class="co">[</span><span class="ot">@lightgbm_bib</span><span class="co">]</span>、CatBoostは<span class="co">[</span><span class="ot">catboost</span><span class="co">](https://catboost.ai/en/docs/installation/r-installation-github-installation)</span>パッケージ <span class="co">[</span><span class="ot">@catboost_bib</span><span class="co">]</span>を用いることで利用できます。ただし、<span class="in">`catboost`</span>にはPythonのライブラリが必要となるので、Rでは使用の難易度が高めです。</span>
+<span id="cb20-345"><a href="#cb20-345" aria-hidden="true" tabindex="-1"></a>RではAdaboostは<span class="co">[</span><span class="ot">JOUSBoost</span><span class="co">](https://cran.r-project.org/web/packages/JOUSBoost/index.html)</span>パッケージ <span class="co">[</span><span class="ot">@JOUSBoost_bib</span><span class="co">]</span>、XGBoostは<span class="co">[</span><span class="ot">xgboost</span><span class="co">](https://cran.r-project.org/web/packages/xgboost/index.html)</span>パッケージ <span class="co">[</span><span class="ot">@xgboost_bib</span><span class="co">]</span>、LightGBMは<span class="co">[</span><span class="ot">lightgbm</span><span class="co">](https://cran.r-project.org/web/packages/lightgbm/index.html)</span>パッケージ <span class="co">[</span><span class="ot">@lightgbm_bib</span><span class="co">]</span>、CatBoostは<span class="co">[</span><span class="ot">catboost</span><span class="co">](https://catboost.ai/en/docs/installation/r-installation-github-installation)</span>パッケージ <span class="co">[</span><span class="ot">@catboost_bib</span><span class="co">]</span>を用いることで利用できます。ただし、<span class="in">`catboost`</span>にはPythonのライブラリが必要となるので、Rでは利用の難易度が高めです。</span>
 <span id="cb20-346"><a href="#cb20-346" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-347"><a href="#cb20-347" aria-hidden="true" tabindex="-1"></a>以下に、XGBoostを利用した分類の例を示します。説明変数となるデータが少なく、モデルの最適化も行っていないため、上記のランダムフォレストと同程度の精度（0.64）となっています。</span>
 <span id="cb20-348"><a href="#cb20-348" aria-hidden="true" tabindex="-1"></a></span>

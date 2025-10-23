@@ -339,7 +339,7 @@ surv_example <- data.frame(
 surv_example |> knitr::kable()
 ```
 
-打ち切りを考慮した場合・しない場合のそれぞれについて、以下の表のようにカプランマイヤーの計算を行います。最も右の列である生存時間は、その時間までの生存割合の積となっています。
+打ち切りを考慮した場合・しない場合のそれぞれについて、以下の表のようにカプランマイヤーの計算を行います。生存時間は、その時間までの生存割合の積となっています。
 
 打ち切りありとなしで異なるのは、day2、つまり打ち切りがある場合には、打ち切りされた例は生存していると換算して計算し、day3ではリスク集団（その時点の事前まで生存しており、イベントが起きる可能性がある集団）が打ち切り+死亡により2人減って4名になる、という変化を取ることです。下に示した通り、表の計算式で計算した左のカプランマイヤー曲線は、右の`survival`パッケージで計算した結果と一致します。
 
@@ -357,7 +357,7 @@ surv_ex1 <- data.frame(
   survive_p_calc = c(8/8, 6/8, 4/6, 2/4, 0/2) |> cumprod()
 )
 
-surv_ex1 |> knitr::kable(col.names=c("day", "リスク集団", "生存者数", "時点の生存割合", "カプランマイヤーの計算式", "生存割合"), align = "rrrrr")
+surv_ex1 |> knitr::kable(col.names=c("day", "リスク集団", "生存者数", "時点の生存割合", "カプランマイヤーの計算式", "生存時間"), align = "rrrrr")
 ```
 
 ```{r, echo=FALSE, fig.width=10}
@@ -388,7 +388,7 @@ surv_ex2 <- data.frame(
   survive_p_calc = c(8/8, 6/8, 5/6, 2/4, 0/2) |> cumprod()
 )
 
-surv_ex2 |> knitr::kable(col.names=c("day", "リスク集団", "生存者数", "時点の生存割合", "カプランマイヤーの計算式", "生存割合"), align = "rrrr")
+surv_ex2 |> knitr::kable(col.names=c("day", "リスク集団", "生存者数", "時点の生存割合", "カプランマイヤーの計算式", "生存時間"), align = "rrrr")
 ```
 
 ```{r, echo=FALSE, fig.width=10}
@@ -585,7 +585,7 @@ df_step <- result_step |> summary() |> _$conf.int
 df_step
 ```
 
-フォレストプロットは点と線のグラフですので、[26章](chapter26.qmd#エラーバーの描画geom_errorbargeom_linerangegeom_pointrange)で説明した`geom_linerange`を使えば簡単に作成できます。
+フォレストプロットは点と線のグラフですので、[26章](chapter26.qmd#エラーバーの描画geom_errorbargeom_linerangegeom_pointrange)で説明した`geom_pointrange`を使えば簡単に作成できます。
 
 以下のグラフでは、`sex`と`ph.ecog`のハザード比の信頼区間が1に被っていない形になっています。この図から、`sex`、`ph.ecog`のハザード比は1ではなく、いずれも生存時間に統計的に有意な影響を与えていることがわかります。
 
