@@ -724,7 +724,7 @@ st_as_sf(ma, as_points = FALSE) |> plot() # POLYGONに変換
 
 `tmap`は`ggplot2`風に用いることができる、比較的簡単に静的・インタラクティブな地図を描画するパッケージです、一方で`leaflet`はより本格的にインタラクティブな地図を描画することができるパッケージです。以下では、まず`tmap`について紹介し、その後`leaflet`について紹介します。
 
-### tmapパッケージ
+## tmapパッケージ
 
 `tmap`パッケージは、設定により静的・インタラクティブな地図の描画を切り替えることができる、ggplot2-likeな地図描画ライブラリです。
 
@@ -766,7 +766,9 @@ Nara_sfobj |>
 
 #### 静的マップとインタラクティブマップ
 
-ここまでは`tmap`で描画されているのは静的な、拡大・縮小などができないマップでした。`tmap`では、静的なマップ・インタラクティブなマップを表示するモードを`tmap_mode`関数で変更できます。`tmap_mode("view")`と指定すると、インタラクティブなマップが、`tmap_mode("plot")`と指定すると静的なマップが表示されるようになります。モードの設定を行っていないときは静的なマップが表示されます。インタラクティブな地図の表示には、後ほど説明する`leaflet`パッケージでも利用されている、Javascriptの地図表示ライブラリである[leaflet](https://leafletjs.com/)が使用されています。
+ここまでは`tmap`で描画されているのは静的な、拡大・縮小などができないマップでした。`tmap`では、静的なマップ・インタラクティブなマップを表示するモードを`tmap_mode`関数で変更できます。`tmap_mode("view")`と指定すると、インタラクティブなマップが、`tmap_mode("plot")`と指定すると静的なマップが表示されるようになります。モードの設定を行っていないときは静的なマップが表示されます。また、`ttm`関数で`"view"`と`"plot"`を切り替えることもできます。
+
+インタラクティブな地図の表示には、後ほど説明する`leaflet`パッケージでも利用されている、Javascriptの地図表示ライブラリである[leaflet](https://leafletjs.com/)が使用されています。
 
 ```{r, filename="viewモードでインタラクティブな地図を表示"}
 tmap_mode("view")
@@ -792,6 +794,13 @@ Nara_sfobj |>
   tm_polygons(fill = "total_pop") +
   tm_legend(show = FALSE) # viewモードではshow=FALSEは機能しない
 ```
+
+:::{.callout-tip collapse="true"}
+## tmap Ver.3とVer.4
+
+メッセージに記載がある通り、上記の`tm_legend`関数はtmap ver.4（～2025/1/27）では`tm_polygon`関数内の引数として設定する形に変更となっています。`tmap`のVer.3とVer.4では関数や引数名に大幅な変更が行われています。`tmap`の後方互換性は保たれており、Ver.3のコードでも機能します。
+:::
+
 
 ### バブルチャートの作成
 
@@ -1021,7 +1030,7 @@ Nara_sfobj |>
       fillOpacity = 0.3,
       bringToFront = TRUE),
       
-    label = paste(Nara_sfobj$N03_004, ":", (Nara_sfobj$total_pop / 10000) |> round(1), "万人"),
+    label = paste(Nara_sfobj$N03_004, ":", (Nara_sfobj$total_pop / 1000) |> round(1), "千人"),
     labelOptions = labelOptions(
       style = list("font-weight" = "normal", padding = "3px 8px"),
       textsize = "15px",
@@ -1030,7 +1039,7 @@ Nara_sfobj |>
 
 ### 凡例の表示
 
-さらに凡例を追加する場合には、`addPolygons`関数内で`addLegend`関数を指定します。`addLegend`関数には、`addPolygons`関数にも用いた色指定の関数（以下の例では`pal`）、数値（`values`）、透明度、位置等を`addLegend`関数の引数に指定することで、`addPolygons`関数で指定した色に対応した凡例を追加することができます。
+さらに凡例を追加する場合には、`addPolygons`関数内で`addLegend`関数を指定します。`addLegend`関数には、`addPolygons`関数にも用いた色指定の関数（以下の例では`pal`）、数値（`values`）、透明度、位置等を引数に指定することで、`addPolygons`関数で指定した色に対応した凡例を追加することができます。
 
 ```{r, filename="凡例の表示"}
 Nara_sfobj |> 
@@ -1049,7 +1058,7 @@ Nara_sfobj |>
       fillOpacity = 0.3,
       bringToFront = TRUE),
       
-    label = paste(Nara_sfobj$N03_004, ":", (Nara_sfobj$total_pop / 10000) |> round(1), "万人"),
+    label = paste(Nara_sfobj$N03_004, ":", (Nara_sfobj$total_pop / 1000) |> round(1), "千人"),
     labelOptions = labelOptions(
       style = list("font-weight" = "normal", padding = "3px 8px"),
       textsize = "15px",
@@ -1059,4 +1068,4 @@ Nara_sfobj |>
       position = "bottomright")
 ```
 
-`leaflet`には上記の他にも無数の関数が設定されており、駆使することで色々なグラフを作成することができます。`leaflet`の日本語の資料はあまりありませんが（日本語では[このページ](https://kazutan.github.io/JapanR2015/leaflet_d.html)が一番詳しいと思います）、[`leaflet`のreference](https://rstudio.github.io/leaflet/reference/index.html)を読み解きながら作図すれば、思い通りの地図を作成することができます。
+`leaflet`には上記の他にも無数の関数が設定されており、駆使することで色々なマップを作成することができます。`leaflet`の日本語の資料はあまりありませんが（日本語では[このページ](https://kazutan.github.io/JapanR2015/leaflet_d.html)が一番詳しいと思います）、[`leaflet`のreference](https://rstudio.github.io/leaflet/reference/index.html)を読み解きながら作図すれば、思い通りの地図を作成することができます。
