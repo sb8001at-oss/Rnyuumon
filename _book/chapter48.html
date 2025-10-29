@@ -916,7 +916,7 @@ window.Quarto = {
 </div>
 <section id="説明変数の数と実験の計画" class="level2" data-number="48.1"><h2 data-number="48.1" class="anchored" data-anchor-id="説明変数の数と実験の計画">
 <span class="header-section-number">48.1</span> 説明変数の数と実験の計画</h2>
-<p>実験の結果は分散分析や回帰を用いて解析し、説明変数（実験でコントロールする条件）が目的変数（実験の結果）に与える影響を求めるために行います。説明変数と目的変数の関係を分散分析や回帰で求めるためには、その統計手法に適した形の実験を組む必要があります。</p>
+<p>実験の結果は分散分析や回帰を用いて解析し、説明変数（実験でコントロールする条件）が目的変数（実験の結果）に与える影響を求めます。説明変数と目的変数の関係を分散分析や回帰で求めるためには、その統計手法に適した形の実験を組む必要があります。</p>
 <section id="説明変数が1つの場合" class="level3" data-number="48.1.1"><h3 data-number="48.1.1" class="anchored" data-anchor-id="説明変数が1つの場合">
 <span class="header-section-number">48.1.1</span> 説明変数が1つの場合</h3>
 <p>肥料の量が作物の収量に与える影響について調べたいとしましょう。説明変数が一つ（肥料の量）なら、肥料の多い・少ない環境での作物の収量を評価すれば、肥料の量が収量に与える影響を評価することができます。説明変数が1つで、2条件だけなら、最小の実験の単位は2です。実験の単位が2なので、上記のフィッシャーの3原則：反復に従い実験を繰り返したとしても、それほどたくさんの実験を行うことにはなりません。条件を3条件、4条件にしても、それほど実験の数は必要ないでしょう。</p>
@@ -2943,7 +2943,7 @@ character(0)</code></pre>
 <span class="header-section-number">48.6.1.3</span> Split-plot design</h4>
 <p>実験を計画する場合、説明変数はいつも自由に変更できる、というわけではありません。例えば、高温で溶かした素材を用いて製品を作成する場合、温度の影響を調べるために窯の温度をランダムに上げたり下げたりすると燃料のコストも時間もかかってしまいます。したがって、説明変数の一部はあまり頻繁に変更せず、実験を行った方がよい場合もあります。</p>
 <p>このような場合に用いるのが<strong>split-plot design</strong>です。<code>skpr</code>はsplit-plot designにも対応しています。split-plot designでは、選択した変更しにくい説明変数をなるべく同じ値で繰り返すように実験を設計してくれます。</p>
-<p>以下にsplit-plot designの作成方法を示します。split-plot designを作成する場合、まずは変更しにくい説明変数のみを<code>model</code>に設定した計画を<code>gen_design</code>関数で作成します。この計画のオブジェクトを再び<code>gen_design</code>関数の<code>splitplotdesign</code>引数に設定します。実験は一つ目の計画の<code>trials</code>の整数倍とします。Split-plot designの結果として、以下のように変えにくい変数（下の例では<code>nutrient</code>）の値に比較的変更が少ない実験を計画することができます。</p>
+<p>以下にsplit-plot designの作成方法を示します。split-plot designを作成する場合、まずは変更しにくい説明変数のみを<code>model</code>に設定した計画を<code>gen_design</code>関数で作成します。この計画のオブジェクトを再び<code>gen_design</code>関数の<code>splitplotdesign</code>引数に設定します。実験は<code>splitplotdesign</code>に指定した計画の<code>trials</code>の整数倍とします。Split-plot designの結果として、以下のように変えにくい変数（下の例では<code>nutrient</code>）の値に比較的変更が少ない実験を計画することができます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -3063,7 +3063,7 @@ character(0)</code></pre>
 </div>
 </section><section id="power検出力を計算する" class="level4" data-number="48.6.2.2"><h4 data-number="48.6.2.2" class="anchored" data-anchor-id="power検出力を計算する">
 <span class="header-section-number">48.6.2.2</span> Power（検出力）を計算する</h4>
-<p>実験計画において、<a href="./chapter29.html#sec-power">29章</a>で説明したPower（検出力）の評価は重要です。検出力が80%（場合によっては90%）以上となるよう実験数（例数）を設計するのがよいとされています。実験計画においても同様に検出力を80%以上とするため、<code>skpr</code>には検出力を計算するための関数（<code>eval_design</code>）も備わっています。<code>eval_design</code>関数はそれぞれのパラメータについてそれぞれPowerを計算します。</p>
+<p>実験計画において、<a href="./chapter29.html#sec-power">29章</a>で説明したPower（検出力）の評価は重要です。検出力が80%（場合によっては90%）以上となるよう実験数（例数）を設計するのがよいとされています。実験計画においても同様に検出力を80%以上とするため、<code>skpr</code>には検出力を計算するための関数（<code>eval_design</code>）も備わっています。<code>eval_design</code>関数はそれぞれのパラメータについてPowerを計算します。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -3340,7 +3340,7 @@ No errors or warnings encountered during power curve generation!</code></pre>
 </div>
 <section id="量の最大最小値を設定するxvert関数" class="level4" data-number="48.7.1.1"><h4 data-number="48.7.1.1" class="anchored" data-anchor-id="量の最大最小値を設定するxvert関数">
 <span class="header-section-number">48.7.1.1</span> 量の最大・最小値を設定する：Xvert関数</h4>
-<p>上記の<code>SCD</code>、<code>SLD</code>関数では、すべての説明変数が0～1の条件を取ります。割合として考えれば不自然ではありませんが、ホットケーキミックスの割合を考える場合にはあまり使えません。ホットケーキミックスには小麦粉、砂糖、でんぷん、油脂、ベーキングパウダーなどが含まれます。最適なホットケーキミックスのレシピを考える時、砂糖100%や油脂100%、ベーキングパウダー100%のレシピを考える意味はほとんどありませんし、小麦粉が10%以下のレシピを考えてもあまりうまくいかないでしょう。</p>
+<p>上記の<code>SCD</code>、<code>SLD</code>関数では、すべての説明変数が0～1の条件を取ります。割合として考えれば不自然ではありませんが、ホットケーキミックスのレシピを調べる場合にはあまり使えません。ホットケーキミックスには小麦粉、砂糖、でんぷん、油脂、ベーキングパウダーなどが含まれます。最適なホットケーキミックスのレシピを考える時、砂糖100%や油脂100%、ベーキングパウダー100%のレシピを考える意味はほとんどありませんし、小麦粉が10%以下のレシピを考えてもあまりうまくいかないでしょう。</p>
 <p>このように、成分（説明変数）ごとに最小、最大の量を指定しておきたい場合に用いる<code>mixexp</code>の関数が<code>Xvert</code>関数です。<code>Xvert</code>関数では、説明変数の数（<code>nfac</code>）、各説明変数の最小割合（<code>lc</code>）、最大割合（<code>uc</code>）を指定することでmixture experimentsの計画を作成することができます。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -3968,7 +3968,7 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb172-46"><a href="#cb172-46" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-47"><a href="#cb172-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## 説明変数の数と実験の計画</span></span>
 <span id="cb172-48"><a href="#cb172-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-49"><a href="#cb172-49" aria-hidden="true" tabindex="-1"></a>実験の結果は分散分析や回帰を用いて解析し、説明変数（実験でコントロールする条件）が目的変数（実験の結果）に与える影響を求めるために行います。説明変数と目的変数の関係を分散分析や回帰で求めるためには、その統計手法に適した形の実験を組む必要があります。</span>
+<span id="cb172-49"><a href="#cb172-49" aria-hidden="true" tabindex="-1"></a>実験の結果は分散分析や回帰を用いて解析し、説明変数（実験でコントロールする条件）が目的変数（実験の結果）に与える影響を求めます。説明変数と目的変数の関係を分散分析や回帰で求めるためには、その統計手法に適した形の実験を組む必要があります。</span>
 <span id="cb172-50"><a href="#cb172-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-51"><a href="#cb172-51" aria-hidden="true" tabindex="-1"></a><span class="fu">### 説明変数が1つの場合</span></span>
 <span id="cb172-52"><a href="#cb172-52" aria-hidden="true" tabindex="-1"></a></span>
@@ -4823,7 +4823,7 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb172-907"><a href="#cb172-907" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-908"><a href="#cb172-908" aria-hidden="true" tabindex="-1"></a>このような場合に用いるのが**split-plot design**です。<span class="in">`skpr`</span>はsplit-plot designにも対応しています。split-plot designでは、選択した変更しにくい説明変数をなるべく同じ値で繰り返すように実験を設計してくれます。</span>
 <span id="cb172-909"><a href="#cb172-909" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-910"><a href="#cb172-910" aria-hidden="true" tabindex="-1"></a>以下にsplit-plot designの作成方法を示します。split-plot designを作成する場合、まずは変更しにくい説明変数のみを<span class="in">`model`</span>に設定した計画を<span class="in">`gen_design`</span>関数で作成します。この計画のオブジェクトを再び<span class="in">`gen_design`</span>関数の<span class="in">`splitplotdesign`</span>引数に設定します。実験は一つ目の計画の<span class="in">`trials`</span>の整数倍とします。Split-plot designの結果として、以下のように変えにくい変数（下の例では<span class="in">`nutrient`</span>）の値に比較的変更が少ない実験を計画することができます。</span>
+<span id="cb172-910"><a href="#cb172-910" aria-hidden="true" tabindex="-1"></a>以下にsplit-plot designの作成方法を示します。split-plot designを作成する場合、まずは変更しにくい説明変数のみを<span class="in">`model`</span>に設定した計画を<span class="in">`gen_design`</span>関数で作成します。この計画のオブジェクトを再び<span class="in">`gen_design`</span>関数の<span class="in">`splitplotdesign`</span>引数に設定します。実験は<span class="in">`splitplotdesign`</span>に指定した計画の<span class="in">`trials`</span>の整数倍とします。Split-plot designの結果として、以下のように変えにくい変数（下の例では<span class="in">`nutrient`</span>）の値に比較的変更が少ない実験を計画することができます。</span>
 <span id="cb172-911"><a href="#cb172-911" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-912"><a href="#cb172-912" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="split-plot designの作成"}</span></span>
 <span id="cb172-913"><a href="#cb172-913" aria-hidden="true" tabindex="-1"></a><span class="co"># 変更しにくい説明変数のみをモデルに含めた計画を作成する</span></span>
@@ -4876,7 +4876,7 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb172-960"><a href="#cb172-960" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-961"><a href="#cb172-961" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Power（検出力）を計算する</span></span>
 <span id="cb172-962"><a href="#cb172-962" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-963"><a href="#cb172-963" aria-hidden="true" tabindex="-1"></a>実験計画において、<span class="co">[</span><span class="ot">29章</span><span class="co">](chapter29.qmd#sec-power)</span>で説明したPower（検出力）の評価は重要です。検出力が80%（場合によっては90%）以上となるよう実験数（例数）を設計するのがよいとされています。実験計画においても同様に検出力を80%以上とするため、<span class="in">`skpr`</span>には検出力を計算するための関数（<span class="in">`eval_design`</span>）も備わっています。<span class="in">`eval_design`</span>関数はそれぞれのパラメータについてそれぞれPowerを計算します。</span>
+<span id="cb172-963"><a href="#cb172-963" aria-hidden="true" tabindex="-1"></a>実験計画において、<span class="co">[</span><span class="ot">29章</span><span class="co">](chapter29.qmd#sec-power)</span>で説明したPower（検出力）の評価は重要です。検出力が80%（場合によっては90%）以上となるよう実験数（例数）を設計するのがよいとされています。実験計画においても同様に検出力を80%以上とするため、<span class="in">`skpr`</span>には検出力を計算するための関数（<span class="in">`eval_design`</span>）も備わっています。<span class="in">`eval_design`</span>関数はそれぞれのパラメータについてPowerを計算します。</span>
 <span id="cb172-964"><a href="#cb172-964" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-965"><a href="#cb172-965" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Powerの計算"}</span></span>
 <span id="cb172-966"><a href="#cb172-966" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_design</span>(od_d)</span>
@@ -4955,7 +4955,7 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb172-1039"><a href="#cb172-1039" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-1040"><a href="#cb172-1040" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 量の最大・最小値を設定する：Xvert関数</span></span>
 <span id="cb172-1041"><a href="#cb172-1041" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-1042"><a href="#cb172-1042" aria-hidden="true" tabindex="-1"></a>上記の<span class="in">`SCD`</span>、<span class="in">`SLD`</span>関数では、すべての説明変数が0～1の条件を取ります。割合として考えれば不自然ではありませんが、ホットケーキミックスの割合を考える場合にはあまり使えません。ホットケーキミックスには小麦粉、砂糖、でんぷん、油脂、ベーキングパウダーなどが含まれます。最適なホットケーキミックスのレシピを考える時、砂糖100%や油脂100%、ベーキングパウダー100%のレシピを考える意味はほとんどありませんし、小麦粉が10%以下のレシピを考えてもあまりうまくいかないでしょう。</span>
+<span id="cb172-1042"><a href="#cb172-1042" aria-hidden="true" tabindex="-1"></a>上記の<span class="in">`SCD`</span>、<span class="in">`SLD`</span>関数では、すべての説明変数が0～1の条件を取ります。割合として考えれば不自然ではありませんが、ホットケーキミックスのレシピを調べる場合にはあまり使えません。ホットケーキミックスには小麦粉、砂糖、でんぷん、油脂、ベーキングパウダーなどが含まれます。最適なホットケーキミックスのレシピを考える時、砂糖100%や油脂100%、ベーキングパウダー100%のレシピを考える意味はほとんどありませんし、小麦粉が10%以下のレシピを考えてもあまりうまくいかないでしょう。</span>
 <span id="cb172-1043"><a href="#cb172-1043" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-1044"><a href="#cb172-1044" aria-hidden="true" tabindex="-1"></a>このように、成分（説明変数）ごとに最小、最大の量を指定しておきたい場合に用いる<span class="in">`mixexp`</span>の関数が<span class="in">`Xvert`</span>関数です。<span class="in">`Xvert`</span>関数では、説明変数の数（<span class="in">`nfac`</span>）、各説明変数の最小割合（<span class="in">`lc`</span>）、最大割合（<span class="in">`uc`</span>）を指定することでmixture experimentsの計画を作成することができます。</span>
 <span id="cb172-1045"><a href="#cb172-1045" aria-hidden="true" tabindex="-1"></a></span>

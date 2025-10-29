@@ -242,7 +242,7 @@ edgeに特性を持たせたい場合には、上記の`from`と`to`からなる
 
 この2つのデータフレームを用いて、グラフを作成します。`graph_from_data_frame`では、`vertices`引数にvertexを表現したデータフレームを設定することで、edgeとは別にvertexやその特性を設定することができます。
 
-```{r, filename="データフレームからグラフを作成する"}
+```{r, filename="グラフにAttributesを付与する"}
 # edgeのデータフレームに列を追加する（weightは特性）
 d_edge$weight <- c(1, 2, 3)
 
@@ -1055,19 +1055,19 @@ g |>
   unmorph() # morphをもとに戻す
 ```
 
-`morph`で変形したグラフをそのまま固定するための関数が`crystallise`関数です。`crystallise`関数を用いると、`morph`で指定した変形の状態などが固定され、tibbleとしてデータが返ってきます。
+`morph`で変形したグラフをそのまま固定するための関数が`crystallise`関数です。`crystallise`関数を用いると、`morph`で指定した変形の状態などが固定され、tibbleとしてデータが返ってきます。このtibbleの列としてグラフが保存されています。
 
 ```{r, filename="crystallise関数"}
-g |> 
-  mutate(group = group_infomap()) |> # クラスターに分けて
-  morph(to_split, group) |> # グループで一時的に分割して
-  crystallise() # crystalliseして固定してしまう
+(crystallised_g <- 
+  g |> 
+    mutate(group = group_infomap()) |> # クラスターに分けて
+    morph(to_split, group) |> # グループで一時的に分割して
+    crystallise() # crystalliseして固定してしまう
+)
 
-g |> 
-  mutate(group = group_infomap()) |> 
-  morph(to_split, group) |> 
-  crystallise() |> 
-  class() # classからgraph関係のものがなくなり、tibbleになっている
+crystallised_g |> class() # classからgraph関係のものがなくなり、tibbleになっている
+
+crystallised_g$graph[1] # 列の要素はグラフになっている
 ```
 
 ### 中心性
@@ -1108,8 +1108,8 @@ g |>
   activate(nodes) |> 
   mutate(
     node_eff = node_efficiency(), # nodeの効率（igraph::local_efficiency）
-    node_core = node_coreness(), # k-core分解（igraph::coreness）
-    node_clos = node_closeness_impact()) # nodeを取り除いたときのclosenessへの影響の大きさ
+    node_core = node_coreness() # k-core分解（igraph::coreness）
+  )
 ```
 
 edgeの評価では、edgeの性質を論理型で返すような関数が主に設定されています。edgeの評価に関する関数はそもそも引数にedgeのtibbleを取るように設定されていません。nodeの場合と同じく、edgeの評価の関数も`mutate`関数内で用いることが想定されています。
@@ -1131,7 +1131,7 @@ graphの評価に関する関数は`igraph`に設定されている関数群と�
 
 [GeekforGeeksのネットワークに関するページ](https://www.geeksforgeeks.org/graph-measurements-length-distance-diameter-eccentricity-radius-center/?ref=lbp)
 
-[グラフ理論講義ノート#8 井上純一先生（北海道大学 情報科学研究科）](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://ocw.hokudai.ac.jp/wp-content/uploads/2016/01/GraphTheory-2007-Note-08.pdf)
+[グラフ理論講義ノート#8 井上純一先生（北海道大学 情報科学研究科）](https://ocw.hokudai.ac.jp/wp-content/uploads/2016/01/GraphTheory-2007-Note-08.pdf)
 
 ```{r, error=TRUE, filename="graphの評価"}
 g |> graph_diameter() # 直接呼び出せない
@@ -1212,7 +1212,7 @@ play_geometry(10, 3) |> plot()
 
 `purrr`の`map`関数と同様に、node、edgeのtibbleに関数を適用して演算を行う関数が`map_`関数群です。
 
-`map_`関数群には大きく分けるとbfs（breath first search）を演算に用いるもの（`map_bfs_`関数）と、dfs（depth first search）を用いるもの（`map_dfs_`関数）があります。
+`map_`関数群には大きく分けるとbfs（breath first search、幅優先探索）を演算に用いるもの（`map_bfs_`関数）と、dfs（depth first search、深さ優先探索）を用いるもの（`map_dfs_`関数）があります。
 
 `map_`関数も単独では呼び出すことができず、`mutate`関数内で呼び出すことが想定された関数で、`map_`関数内で引数（`.f`引数）として設定する関数は無名関数のみとなります。この`.f`関数で指定する無名関数については引数が定められていて（`node`, `rank`, `path`など）、かなり使い方が複雑です。また、bfs、dfsで到達不可能なパスが存在すると演算ができなくなります。
 

@@ -378,7 +378,7 @@ Shinyアプリの起動後に、`input$n1`を変更した場合には、上記�
 
 #### observeEvent
 
-`reactive`は比較的使い方を理解しやすいのですが、`observe`は何も返さず、使い方のわからない関数です。これは、`observe`が他の関数を準備するために作成されたprimitiveな（大元の）関数であるためです。`observe`をより分かりやすく、実用的に利用するための関数が`observeEvent`関数です。`observeEvent`関数は第一引数に`input$inputId`、第二引数にスクリプトを取ります。`observeEvent`は主に`actionButton`と共に用い、`actionButton`を押した時に後ろに記載したコード実行されるような場合に用います。`observeEvent`自体は返り値を返さないので、この関数自体を`output$outputId`に代入することはできません。
+`reactive`は比較的使い方を理解しやすいのですが、`observe`は何も返さず、使い方のわからない関数です。これは、`observe`が他の関数を準備するために作成されたprimitiveな（大元の）関数であるためです。`observe`をより分かりやすく、実用的に利用するための関数が`observeEvent`関数です。`observeEvent`関数は第一引数に`input$inputId`、第二引数にスクリプトを取ります。`observeEvent`は主に`actionButton`と共に用い、`actionButton`を押した時に後ろに記載したコードが実行されるような場合に用います。`observeEvent`自体は返り値を返さないので、この関数自体を`output$outputId`に代入することはできません。
 
 ```{r, eval=FALSE, filename="server.R: observeEvent関数"}
 observeEvent(input$inputButton1, {message("button pressed.")})
@@ -415,7 +415,7 @@ z$a # render関数などの中で呼び出さないとエラー
 
 `reactiveVal`は1つの値のみ、`reactiveValues`はリストのように複数の値を保存することができます。`reactiveVal`は通常のRのコンソールでも呼び出すことができますが、`reactiveValues`は`reactive`/observerの中でしか呼び出せません。`reactiveValues`ではリストのように、`$`を用いて値を呼び出します。
 
-`reactiveVal`も`reactiveValues`もいまいち使い方が難しい関数ですが、数値を一時的に保存する場合には単なる`reactive`や通常の変数ではなく、こちらを使うことを想定されているのかもしれません。
+`reactiveVal`も`reactiveValues`もいまいち使い方が難しい関数ですが、数値を一時的に保存する場合には単なる`reactive`や通常の変数ではなく、こちらを使うことが想定されているのかもしれません。
 
 ### reactiveTimerとinvalidatedLater
 
