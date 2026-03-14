@@ -852,6 +852,17 @@ iris |>
   theme_bw()
 ```
 
+### 軸の最小値：expand_limits関数
+
+上記のグラフでは、`Sepal.Width`も`Sepal.Length`も最小値が0になっておらず、いわゆる「下駄をはいている」グラフになっています。`ggplot2`でx軸、y軸の最小値を指定する場合、`expand_limits`関数を用います。`expand_limits`では、x軸の最小値、y軸の最小値をそれぞれ`x`、`y`の引数に指定します。
+
+```{r, filename="expand_limits関数で軸の最小値を指定する"}
+iris |> 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) + 
+  geom_point() +
+  expand_limits(x = 0, y = 0)
+```
+
 ## グラフの保存：ggsave
 
 `ggplot2`のグラフを保存する時には、`ggsave`関数を用います。`ggsave`関数は第一引数にファイル名、第二引数に`ggplot2`のプロットのオブジェクトを取ります。ファイルの形式はファイル名の拡張子に従い決定します。例えば、ファイル名が「.pdf」で終わっていればPDF、「.jpg」で終わっていればJPEGでグラフが保存されます。

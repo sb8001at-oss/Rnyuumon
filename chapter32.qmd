@@ -304,13 +304,16 @@ sc.iris@.Data
 
 第二主成分は、第一主成分を定めた軸に垂直な面において、最もばらつきが多い軸に沿った値となります。第一主成分の軸と第二主成分の軸は互いに直行している、90度に交わっているので、**第一主成分と第二主成分の相関はほぼゼロ**になります。この特徴のため、[30章](chapter30.qmd#主成分回帰)で説明した主成分回帰では説明変数同士が相関しているときに起こる問題、多重共線性を避けることができます。
 
+ばらつきを残すのは、ばらつきには多くの情報が含まれるからです。クラスの全員が100点を取れるテストでは、学生の学力を比べることはできません。一方で点数がばらつくテストであれば、学生の学力をテストの成績で評価することができる、つまり学力の情報が含まれていることになります。主成分分析では、データのばらつきを残しつつデータの次元を減らすことで、データの持っている情報を残したままデータを要約することができます。
+
 以下に、主成分分析の軸のイメージを示します。軸は互いに垂直に交わっているのがわかると思います。PC1を横に、PC2を縦になるように回転させたのが、下の第一主成分と第二主成分でのプロットのイメージとなります。
 
-:::{.callout-tip collapse="true"}
+#### 主成分分析の軸のイメージ{.unnumbered}
 
-## 主成分分析における主成分の軸のイメージ（スクリプト）
-
-```{r, eval=FALSE}
+```{r}
+#| code-fold: true
+ 
+## 主成分分析における主成分の軸のイメージのスクリプト
 iris_temp <- iris |> filter(Species != "setosa") |> _[ ,1:3]
 iris.pc2 <- prcomp(iris_temp)
 
@@ -374,71 +377,7 @@ fig <-
 fig
 ```
 
-:::
-
-```{r, echo=FALSE}
-iris_temp <- iris |> filter(Species != "setosa") |> _[,1:3]
-iris.pc2 <- prcomp(iris_temp)
-
-pc1 <- iris.pc2$x[,1]
-pc2 <- iris.pc2$x[,2]
-pc3 <- iris.pc2$x[,2]
-center1 <- iris.pc2$center[1]
-center2 <- iris.pc2$center[2]
-center3 <- iris.pc2$center[3]
-
-iris_temp$pc1_Sepal.Length <- pc1 * iris.pc2$rotation[1, 1] + center1
-iris_temp$pc1_Sepal.Width <- pc1 * iris.pc2$rotation[2, 1] + center2
-iris_temp$pc1_Petal.Length <- pc1 * iris.pc2$rotation[3, 1] + center3
-iris_temp$pc2_Sepal.Length <- pc2 * iris.pc2$rotation[1, 2] + center1
-iris_temp$pc2_Sepal.Width <- pc2 * iris.pc2$rotation[2, 2] + center2
-iris_temp$pc2_Petal.Length <- pc2 * iris.pc2$rotation[3, 2] + center3
-iris_temp$pc3_Sepal.Length <- pc3 * iris.pc2$rotation[1, 3] + center1
-iris_temp$pc3_Sepal.Width <- pc3 * iris.pc2$rotation[2, 3] + center2
-iris_temp$pc3_Petal.Length <- pc3 * iris.pc2$rotation[3, 3] + center3
-
-pacman::p_load(plotly)
-
-fig <- 
-  plot_ly(
-    iris_temp, 
-    x=~Sepal.Length, 
-    y=~Sepal.Width, 
-    z=~Petal.Length, 
-    type="scatter3d",
-    mode="markers",
-    name = 'data',  
-    marker=list(color="orange", size=3)) |> 
-  add_trace(
-    x=~pc1_Sepal.Length, 
-    y=~pc1_Sepal.Width, 
-    z=~pc1_Petal.Length, 
-    type="scatter3d", 
-    mode="markers+lines",
-    name = 'PC1', 
-    marker=list(color="red", size=0.1),
-    line=list(color="red", width=5)) |> 
-  add_trace(
-    x=~pc2_Sepal.Length, 
-    y=~pc2_Sepal.Width, 
-    z=~pc2_Petal.Length, 
-    type="scatter3d",
-    mode="markers+lines",
-    name = 'PC2',
-    marker=list(color="red", size=0.1),
-    line=list(color="blue", width=5)) |> 
-  add_trace(
-    x=~pc3_Sepal.Length, 
-    y=~pc3_Sepal.Width, 
-    z=~pc3_Petal.Length, 
-    type="scatter3d", 
-    mode="markers+lines",
-    name = 'PC3',
-    marker=list(color="red", size=0.1),
-    line=list(color="green", width=5))
-
-fig
-```
+<hr>
 
 ```{r, echo=FALSE}
 data.frame(pc1, pc2) |> 
@@ -475,7 +414,7 @@ iris.pc <- prcomp(iris[ ,1:4])
 iris.pc
 ```
 
-`prcomp`関数の返り値を`summary`関数の引数に取ると、標準偏差、分散の配分（Proportion of Variance）、積算の分配の配分（Cumulative Proportion）が示されます。このうち、分散の配分はその主成分によってばらつきをどれだけ説明できているかを示すものです。下の例では、PC1で92.5%程度のばらつきを示すことができている、つまり、PC1でデータの差を十分説明できていることがわかります。
+`prcomp`関数の返り値を`summary`関数の引数に取ると、標準偏差、分散の配分（Proportion of Variance）、積算の分配の配分（Cumulative Proportion）が示されます。このうち、分散の配分はその主成分によってばらつきをどれだけ説明できているか、つまり主成分に対する各要素の寄与率を示すものです。下の例では、PC1で92.5%程度のばらつきを示すことができている、つまり、PC1でデータの差を十分説明できていることがわかります。
 
 ```{r, filename="summaryの結果"}
 iris.pc |> summary()
@@ -488,6 +427,92 @@ iris.pc <- prcomp(iris[ ,1:4])
 irispcd <- iris.pc$x |> as.data.frame()
 irispcd$Species <- iris$Species
 ggplot(irispcd, aes(x = PC1, y = PC2, color = Species)) + geom_point(size = 2)
+```
+
+### 主成分分析の結果をグラフで表示：factoextraパッケージ
+
+主成分分析の結果をまとめ、グラフにする方法には上に示した第一主成分、第二主成分を軸としたプロットの他にも様々な手法があります。主成分分析の結果を簡単にグラフにできるライブラリとして、`factoextra`パッケージ[@factoextra_bib]があります。`factoextra`パッケージで提供される関数を用いることで、上記の`procomp`関数で計算した結果を簡単にきれいなグラフとして表示することができます。
+
+`fviz_screeplot`関数は上記のProportion of Variance、寄与率をグラフとして表示するための関数です。
+
+```{r, filename="寄与率をグラフにする：fviz_screeplot"}
+pacman::p_load(factoextra) # factoextraパッケージの読み込み
+
+fviz_screeplot(iris.pc, addlabels = TRUE)
+```
+
+`fviz_pca_ind`関数は第一主成分、第二主成分をそれぞれx、y軸に配置した散布図を表示するための関数です。`habillage`引数に行のラベルを指定すると、ラベルに従いプロットの形と色を指定してくれます。また、`repel=TRUE`を指定すると軸ラベルを被らないように表示してくれます。
+
+```{r, filename="主成分のプロット：fviz_pca_ind関数"}
+fviz_pca_ind(iris.pc, habillage = iris$Species, repel = TRUE)
+```
+
+ただし、このままではやや数値とプロットが被ってうるさいグラフになってしまいますので、`geom`引数を`"point"`や`"text"`のみで指定して表示したほうが見やすく、理解しやすいでしょう。
+
+:::{.panel-tabset}
+
+## geom = "text"
+
+```{r, filename="fviz_pca_ind関数：geom引数を指定する"}
+fviz_pca_ind(iris.pc, habillage = iris$Species, geom = "text", title = "geom = \"text\"")
+```
+
+## geom = "point"
+
+```{r, filename="fviz_pca_ind関数：geom引数を指定する"}
+fviz_pca_ind(iris.pc, habillage = iris$Species, geom = "point", title = "geom = \"point\"")
+```
+
+:::
+
+また、`addEllipses=TRUE`を指定すると、`habillage`引数で指定した群ごとに範囲を楕円で囲ってくれます。
+
+```{r, filename="fviz_pca_ind関数：addEllipses=TRUEを指定"}
+fviz_pca_ind(
+  iris.pc, 
+  geom = "point",
+  habillage = iris$Species,
+  addEllipses = TRUE,
+  repel = TRUE)
+```
+
+`fviz_contrib`関数は各主成分に対する要素の寄与率をグラフにするための関数です。`choice="var"`で寄与率の表示を指定し、`axes`が主成分の指定（`1`だと第一主成分、`2`だと第二主成分）のための引数です。`top`引数を指定すると各要素のうち寄与率の大きいものから`top`引数の数値の数だけを選んで表示させることができます。
+
+:::{.panel-tabset}
+
+## 第一主成分
+
+```{r, filename="各主成分への寄与率の表示：fviz_contrib関数"}
+fviz_contrib(iris.pc, choice = "var", axes = 1, top = 4)
+```
+
+## 第二主成分
+
+```{r, filename="各主成分への寄与率の表示：fviz_contrib関数"}
+fviz_contrib(iris.pc, choice = "var", axes = 2, top = 4)
+```
+
+:::
+
+同様に第一主成分、第二主成分への寄与率をグラフで表示するための関数が`fviz_pca_var`関数です。c`fviz_pca_var`関数では寄与率の大きさが矢印で示されます。`col.var`関数は数値に依存した色指定の方法で、`gradient.cols`は色のグラデーションを指定する引数です。
+
+```{r, filename="各主成分への寄与率のグラフ：fviz_pca_var関数"}
+fviz_pca_var(
+  iris.pc, 
+  col.var="contrib",
+  gradient.cols = c("#F8766D", "#00BA38", "#00BFC4"),
+  repel = TRUE
+)
+```
+
+`fviz_pca_biplot`関数を用いると、`fviz_pca_ind`関数の散布図と`fviz_pca_var`関数の寄与率を同時に表示することもできます。
+
+```{r, filename="fviz_pca_biplot関数"}
+fviz_pca_biplot(
+  iris.pc,
+  geom = "point",
+  habillage = iris$Species,
+  repel = TRUE)
 ```
 
 ## 因子分析

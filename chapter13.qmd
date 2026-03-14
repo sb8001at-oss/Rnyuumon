@@ -299,7 +299,9 @@ str_match_all(x, "n") # パターンがあれば、それをすべて返す
 
 ### 文字列をつなぐ：str_cとstr_flatten
 
-`str_c`関数と`str_flatten`関数はいずれも文字列をつなぐ関数です。ともに`paste`関数と`paste0`関数とほぼ同じですが、`NA`の取り扱いが少しだけ異なり、`paste`関数が`NA`を文字列としてつないでしまうのに対して、`str_c`関数は文字列を繋がずに`NA`を返します。
+`str_c`関数と`str_flatten`関数はいずれも文字列をつなぐ関数です。ともに`paste`関数と`paste0`関数とほぼ同じですが、`str_flatten`は`paste`関数に引数`collapse=""`を指定した場合と同じ結果を返します。
+
+また、 `NA`の取り扱いが少しだけ異なり、`paste`関数が`NA`を文字列としてつないでしまうのに対して、`str_c`関数は文字列を繋がずに`NA`を返します。
 
 ```{r, filename="文字列をつなぐ：str_c関数"}
 x
@@ -308,9 +310,11 @@ str_c(x[1], x[2]) # paste0と同じ
 
 str_c(x[1], x[2], sep=" ") # pasteと同じ
 
-str_flatten(c("a", "dog", "is", "running")) # paste0と同じ
+str_c(c("a", "dog", "is", "running")) # paste0と同じだが、ベクターの要素はつながない
 
-str_flatten(c("a", "dog", "is", "running"), collapse= " ") # pasteと同じ
+str_flatten(c("a", "dog", "is", "running")) # paste(collapse="")と同じ
+
+str_flatten(c("a", "dog", "is", "running"), collapse= " ") # paste(collapse=" ")と同じ
 
 paste("A", NA)
 

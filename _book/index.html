@@ -308,7 +308,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
@@ -715,6 +715,24 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">実験計画法</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter49.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">因果推論：因果の基礎と傾向スコア</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter50.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">因果推論：差分の差分法と回帰不連続デザイン</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter51.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">因果推論：因果のネットワーク</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -746,13 +764,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <div class="quarto-title-block"><div><h1 class="title">R入門</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-body">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
@@ -775,10 +793,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 
 </header>
 <section id="はじめに" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="はじめに">はじめに</h2><p><img src="./image/favicon_small.png" title="R入門" class="quarto-cover-image nolightbox img-fluid"></p>
-<p>その昔（2000年代初頭）、Rを初めて学ぶときには、CRANのホームページから英語のマニュアルを入手し、読むしかありませんでした。いくつかのRの教科書がすでに出版されていましたが、多くの教科書はプログラミングの入門については取り扱っておらず、統計手法の使い方、高度な統計について、あるいはパッケージのマニュアルなどについての説明が記載されていました。2000年代初頭に大学生であった私にはRはとても難しく、英語のマニュアルも読めず、インターネットに落ちているコードをコピペしては自分のデータを入力し、使い方もよくわからずに統計の計算をしていたものでした。簡単な統計はExcelや、怪しげなフリーソフトを用いて行っていました。どのソフトにも手法がないような統計の手法にだけ、Rを用いたのです。</p>
+<p>その昔（2000年代初頭）、Rを初めて学ぶときには、CRANのホームページから英語のマニュアルを入手し、読むしかありませんでした。いくつかのRの教科書がすでに出版されていましたが、多くの教科書はプログラミングの入門については取り扱っておらず、統計手法の使い方、高度な統計について、あるいはパッケージのマニュアルなどについての説明が記載されていました。2000年代初頭に大学生であった私にはRはとても難しく、英語のマニュアルも読めず、インターネットに落ちているコードをコピペしては自分のデータを入力し、使い方もよくわからずに統計の計算をしていたものでした。簡単な統計はExcelや、怪しげなフリーソフトを用いて行っていました。どのソフトでも計算できない統計の手法にだけ、Rを用いたのです。</p>
 <p>時は流れ、2010年代、私は再びRと向き合うことになりました。その当時、研究で得たデータに対して、最小二乗法を用いて回帰を行い、測定できないパラメータを計算したかったのです。当時は最小二乗法しか回帰の方法を知らず、最小二乗法を解くために<strong><a href="https://www.ruby-lang.org/ja/">Ruby</a></strong>を勉強していました。Rubyでも二乗誤差の計算ができることは分かっていましたが、配列（Rでいうところのベクターみたいなもの）の計算には繰り返し計算を使うしかなく、二乗誤差の計算を組むだけでも大変でした。二乗誤差を計算しても、最小値を求めることがどうしてもできず、今でいうところのグリッドサーチで最小値を求めようとしていました。</p>
 <p>グリッドサーチでは到底最小値が求まらないことは分かっていました。そこで、私はRという統計学の言語のことを思い出したのです。しかし、当時の私は海外におり、教科書を買うこともできませんでした。</p>
-<p>その時、Rを学ぶ光明となったのは、<strong>R-tips</strong>というホームページでした。R-tipsはデザインこそ昔ながらのHTMLでしたが、Rを一から学ぶための情報がすべて含まれており、始めから最後まで読み通し、学ぶことでRの使い方を覚えることができました。その後、Rを用いてマイクロアレイ（今でいうところの高速シークエンサーによるトランスクリプトーム）のデータを取り扱うようになり、<a href="https://www.iu.a.u-tokyo.ac.jp/~kadota/r.html"><strong>(Rで)マイクロアレイデータ解析</strong></a> <span class="citation" data-cites="門田幸二2022-10-25">(<a href="references.html#ref-%E9%96%80%E7%94%B0%E5%B9%B8%E4%BA%8C2022-10-25" role="doc-biblioref">門田幸二 2022</a>)</span>というホームページに書かれているコードを読むようになりました。R-tipsで学んだことを参考に、「(Rで)マイクロアレイデータ解析」のコードを読み解き、やがて私はRがある程度使えるようになりました。この2つのホームページがあったから、私はRを使えるようになったと言えます。</p>
+<p>その時、Rを学ぶ光明となったのは、<strong>R-tips</strong>というホームページでした。R-tipsはデザインこそ昔ながらのHTMLでしたが、Rを一から学ぶための情報がすべて含まれており、始めから最後まで読み通し、学ぶことでRの使い方を覚えることができました。その後、Rを用いてマイクロアレイ（今でいうところの高速シークエンサーによるトランスクリプトーム）のデータを取り扱うようになり、<a href="https://www.iu.a.u-tokyo.ac.jp/~kadota/r.html"><strong>(Rで)マイクロアレイデータ解析</strong></a> <span class="citation" data-cites="門田幸二2022-10-25">(<a href="references.html#ref-%E9%96%80%E7%94%B0%E5%B9%B8%E4%BA%8C2022-10-25" role="doc-biblioref">門田幸二 2022</a>)</span>というホームページに書かれているコードを読むようになりました。R-tipsで学んだことを参考に、「(Rで)マイクロアレイデータ解析」のコードを読み解き、やがて私はRをある程度使えるようになりました。この2つのホームページがあったから、私はRを使えるようになったと言えます。</p>
 <p>そして時は流れ202X年、私はしがないサラリーマンになりました。<a href="https://www.iu.a.u-tokyo.ac.jp/~kadota/r.html">(Rで)マイクロアレイデータ解析</a>のホームページはまだ更新されており、生き残っています。しかし、R-tipsのホームページはもうありません。<a href="https://www.amazon.co.jp/R-Tips-%E7%AC%AC3%E7%89%88-%E3%83%87%E3%83%BC%E3%82%BF%E8%A7%A3%E6%9E%90%E7%92%B0%E5%A2%83R%E3%81%AE%E5%9F%BA%E6%9C%AC%E6%8A%80%E3%83%BB%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E3%82%B9%E6%B4%BB%E7%94%A8%E9%9B%86/dp/4274219585"><strong>R-tipsは教科書</strong></a> <span class="citation" data-cites="Funao2016-10-12">(<a href="references.html#ref-Funao2016-10-12" role="doc-biblioref">舟尾暢男 2016</a>)</span> になったのです。日本語でどこでも読めて、Rを一から学べるホームページはなくなってしまいました。今でこそ私は英語のマニュアルを読み、理解することができます。しかし、Rも英語も何も知らない若年の初学者であったなら、Rを学ぶことを躊躇したでしょう。もちろん、昔と比べるとRについての情報はネット上にたくさん転がっており、落穂ひろいしながらRを学んでいくことはできます。しかし、R-tipsがそうであったように、一つのホームページで、広告などもなく、いちいち検索することもなくRについての情報を一度に得ることは（教科書を除けば）できなくなってしまいました。</p>
 <p>私も稀にRの初学者に使い方を教えようとすることがあります。しかし、一か所にRの基本的な使い方に関する情報が集まったような資料はあまりありません。プレゼンテーションを用いて教えるにしても、プログラミング言語の学習にはプレゼンテーションはあまり向いていません。すべてをプレゼンテーションで伝えようとするととても時間がかかってしまいます。ですので、大したR使いではない私がこのようなものを作るのはどうかとは思いつつ、R-tipsのようなものを作ることにしました。</p>
 <p>Rでホームページを作る、教科書を作ることは昔は現実的ではありませんでした。しかし、今ではRを使って簡単なWebアプリを作ったり、教科書を作ったりすることは比較的簡単にできます。この文書もRで作成しています。私が学び始めたときのように、統計しかできないプログラミング言語ではないのです。</p>
@@ -1303,7 +1321,7 @@ calloutの表示
       }
     }
   });
-  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+  </script><nav class="page-navigation column-body"><div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
       <a href="./chapter1.html" class="pagination-link" aria-label="Rのインストール">
@@ -1313,13 +1331,13 @@ calloutの表示
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## はじめに {.unnumbered}</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>その昔（2000年代初頭）、Rを初めて学ぶときには、CRANのホームページから英語のマニュアルを入手し、読むしかありませんでした。いくつかのRの教科書がすでに出版されていましたが、多くの教科書はプログラミングの入門については取り扱っておらず、統計手法の使い方、高度な統計について、あるいはパッケージのマニュアルなどについての説明が記載されていました。2000年代初頭に大学生であった私にはRはとても難しく、英語のマニュアルも読めず、インターネットに落ちているコードをコピペしては自分のデータを入力し、使い方もよくわからずに統計の計算をしていたものでした。簡単な統計はExcelや、怪しげなフリーソフトを用いて行っていました。どのソフトにも手法がないような統計の手法にだけ、Rを用いたのです。</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>その昔（2000年代初頭）、Rを初めて学ぶときには、CRANのホームページから英語のマニュアルを入手し、読むしかありませんでした。いくつかのRの教科書がすでに出版されていましたが、多くの教科書はプログラミングの入門については取り扱っておらず、統計手法の使い方、高度な統計について、あるいはパッケージのマニュアルなどについての説明が記載されていました。2000年代初頭に大学生であった私にはRはとても難しく、英語のマニュアルも読めず、インターネットに落ちているコードをコピペしては自分のデータを入力し、使い方もよくわからずに統計の計算をしていたものでした。簡単な統計はExcelや、怪しげなフリーソフトを用いて行っていました。どのソフトでも計算できない統計の手法にだけ、Rを用いたのです。</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>時は流れ、2010年代、私は再びRと向き合うことになりました。その当時、研究で得たデータに対して、最小二乗法を用いて回帰を行い、測定できないパラメータを計算したかったのです。当時は最小二乗法しか回帰の方法を知らず、最小二乗法を解くために**[Ruby](https://www.ruby-lang.org/ja/)**を勉強していました。Rubyでも二乗誤差の計算ができることは分かっていましたが、配列（Rでいうところのベクターみたいなもの）の計算には繰り返し計算を使うしかなく、二乗誤差の計算を組むだけでも大変でした。二乗誤差を計算しても、最小値を求めることがどうしてもできず、今でいうところのグリッドサーチで最小値を求めようとしていました。</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>グリッドサーチでは到底最小値が求まらないことは分かっていました。そこで、私はRという統計学の言語のことを思い出したのです。しかし、当時の私は海外におり、教科書を買うこともできませんでした。</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>その時、Rを学ぶ光明となったのは、**R-tips**というホームページでした。R-tipsはデザインこそ昔ながらのHTMLでしたが、Rを一から学ぶための情報がすべて含まれており、始めから最後まで読み通し、学ぶことでRの使い方を覚えることができました。その後、Rを用いてマイクロアレイ（今でいうところの高速シークエンサーによるトランスクリプトーム）のデータを取り扱うようになり、[**(Rで)マイクロアレイデータ解析**](https://www.iu.a.u-tokyo.ac.jp/~kadota/r.html) <span class="co">[</span><span class="ot">@門田幸二2022-10-25</span><span class="co">]</span>というホームページに書かれているコードを読むようになりました。R-tipsで学んだことを参考に、「(Rで)マイクロアレイデータ解析」のコードを読み解き、やがて私はRがある程度使えるようになりました。この2つのホームページがあったから、私はRを使えるようになったと言えます。</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>その時、Rを学ぶ光明となったのは、**R-tips**というホームページでした。R-tipsはデザインこそ昔ながらのHTMLでしたが、Rを一から学ぶための情報がすべて含まれており、始めから最後まで読み通し、学ぶことでRの使い方を覚えることができました。その後、Rを用いてマイクロアレイ（今でいうところの高速シークエンサーによるトランスクリプトーム）のデータを取り扱うようになり、[**(Rで)マイクロアレイデータ解析**](https://www.iu.a.u-tokyo.ac.jp/~kadota/r.html) <span class="co">[</span><span class="ot">@門田幸二2022-10-25</span><span class="co">]</span>というホームページに書かれているコードを読むようになりました。R-tipsで学んだことを参考に、「(Rで)マイクロアレイデータ解析」のコードを読み解き、やがて私はRをある程度使えるようになりました。この2つのホームページがあったから、私はRを使えるようになったと言えます。</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>そして時は流れ202X年、私はしがないサラリーマンになりました。<span class="co">[</span><span class="ot">(Rで)マイクロアレイデータ解析</span><span class="co">](https://www.iu.a.u-tokyo.ac.jp/~kadota/r.html)</span>のホームページはまだ更新されており、生き残っています。しかし、R-tipsのホームページはもうありません。<span class="co">[</span><span class="ot">**R-tipsは教科書**</span><span class="co">](https://www.amazon.co.jp/R-Tips-%E7%AC%AC3%E7%89%88-%E3%83%87%E3%83%BC%E3%82%BF%E8%A7%A3%E6%9E%90%E7%92%B0%E5%A2%83R%E3%81%AE%E5%9F%BA%E6%9C%AC%E6%8A%80%E3%83%BB%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E3%82%B9%E6%B4%BB%E7%94%A8%E9%9B%86/dp/4274219585)</span> <span class="co">[</span><span class="ot">@Funao2016-10-12</span><span class="co">]</span> になったのです。日本語でどこでも読めて、Rを一から学べるホームページはなくなってしまいました。今でこそ私は英語のマニュアルを読み、理解することができます。しかし、Rも英語も何も知らない若年の初学者であったなら、Rを学ぶことを躊躇したでしょう。もちろん、昔と比べるとRについての情報はネット上にたくさん転がっており、落穂ひろいしながらRを学んでいくことはできます。しかし、R-tipsがそうであったように、一つのホームページで、広告などもなく、いちいち検索することもなくRについての情報を一度に得ることは（教科書を除けば）できなくなってしまいました。</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>

@@ -290,7 +290,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
@@ -697,6 +697,24 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">実験計画法</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter49.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">因果推論：因果の基礎と傾向スコア</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter50.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">因果推論：差分の差分法と回帰不連続デザイン</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter51.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">因果推論：因果のネットワーク</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -740,7 +758,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter8.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">条件判断（Control structures）</span></a></li></ol></nav><div class="quarto-title">
+<main class="content column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter8.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">条件判断（Control structures）</span></a></li></ol></nav><div class="quarto-title">
 <div class="quarto-title-block"><div><h1 class="title">
 <span class="chapter-number">8</span>&nbsp; <span class="chapter-title">条件判断（Control structures）</span>
 </h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
@@ -748,7 +766,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-body">
 
     
   
@@ -908,7 +926,6 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <p>Rで最もよく用いられる論理演算子は<strong><code>&amp;</code>、<code>|</code></strong>の2つです。<code>&amp;</code>は論理積（<code>A &amp; B</code>でAかB）、<code>|</code>は論理和（<code>A | B</code>でAまたはB）を示す演算子です。</p>
 <p>この2つによく似た<code>&amp;&amp;</code>と<code>||</code>の演算子もありますが、これら2つはベクターの<strong>始めの値だけ</strong>を評価するという特徴を持っています（Rのバージョン4.3以降では<code>&amp;&amp;</code>や<code>||</code>でベクターを比較するとエラーが出ます）。<code>&amp;&amp;</code>と<code>||</code>を用いるとプログラムが予想外の挙動を取ることがあるので、できるだけ<code>&amp;</code>と<code>|</code>だけを用いたほうがよいでしょう。</p>
-<p>RにはNAND（否定論理積）、NOR（否定論理和）などを表す専用の論理演算子はありませんが、XOR（排他的論理和）を表す関数（<code>xor</code>関数）はあります。</p>
 <div class="cell" data-filename="論理演算子">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -970,11 +987,20 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co"># 比較する要素が1つでないとエラー</span></span>
 <span><span class="co">#（以前はインデックス1の要素のみを比較していた）</span></span>
 <span><span class="va">logic1</span> <span class="op">&amp;&amp;</span> <span class="va">logic2</span> </span>
-<span><span class="co">## Error in logic1 &amp;&amp; logic2: 'length = 4' in coercion to 'logical(1)'</span></span>
+<span><span class="co">## Error in `logic1 &amp;&amp; logic2`:</span></span>
+<span><span class="co">## ! 'length = 4' in coercion to 'logical(1)'</span></span>
 <span><span class="va">logic1</span> <span class="op">||</span> <span class="va">logic2</span></span>
-<span><span class="co">## Error in logic1 || logic2: 'length = 4' in coercion to 'logical(1)'</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">xor</a></span><span class="op">(</span><span class="va">logic1</span>, <span class="va">logic2</span><span class="op">)</span> <span class="co"># 排他的論理和</span></span>
+<span><span class="co">## Error in `logic1 || logic2`:</span></span>
+<span><span class="co">## ! 'length = 4' in coercion to 'logical(1)'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>RにはNAND（否定論理積）、NOR（否定論理和）などを表す専用の論理演算子はありませんが、XOR（排他的論理和）を表す関数（<code>xor</code>関数）はあります。また、要素のいずれか1つが<code>TRUE</code>なら<code>TRUE</code>を返す<code>any</code>関数、すべてが<code>TRUE</code>の時だけ<code>TRUE</code>を返す<code>all</code>関数などの関数も論理演算に用いることができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>論理演算子による演算</strong></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">xor</a></span><span class="op">(</span><span class="va">logic1</span>, <span class="va">logic2</span><span class="op">)</span> <span class="co"># 排他的論理和</span></span>
 <span><span class="co">## [1] FALSE  TRUE  TRUE FALSE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">xor</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">T</span><span class="op">)</span> <span class="co"># 両方がTRUEならFALSEを返す</span></span>
 <span><span class="co">## [1] FALSE</span></span>
@@ -992,7 +1018,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>!による論理値の反転</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">!</span><span class="cn">TRUE</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">!</span><span class="cn">TRUE</span></span>
 <span><span class="co">## [1] FALSE</span></span>
 <span><span class="op">!</span><span class="cn">FALSE</span></span>
 <span><span class="co">## [1] TRUE</span></span>
@@ -1041,7 +1067,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>if文の使い方</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span> <span class="st">"Hello R"</span> <span class="co"># 1行で書く場合（"Hello R"が返ってくる）</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span> <span class="st">"Hello R"</span> <span class="co"># 1行で書く場合（"Hello R"が返ってくる）</span></span>
 <span><span class="co">## [1] "Hello R"</span></span>
 <span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="st">"Hello FALSE"</span> <span class="co"># 条件式がFALSEなので、何も返ってこない</span></span>
@@ -1060,7 +1086,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>条件式が数値の時のif文</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">{</span><span class="st">"0はFALSEなので、これは表示されません"</span><span class="op">}</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">{</span><span class="st">"0はFALSEなので、これは表示されません"</span><span class="op">}</span></span>
 <span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">{</span><span class="st">"-1はTRUE扱いなので、表示されます"</span><span class="op">}</span></span>
 <span><span class="co">## [1] "-1はTRUE扱いなので、表示されます"</span></span>
@@ -1078,7 +1104,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>if else文</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="co"># xは2</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="co"># xは2</span></span>
 <span></span>
 <span><span class="co"># xは2なので、2番目の処理が返ってくる</span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span><span class="op">{</span> <span class="co"># =が1つだと代入になるのでエラーが出る</span></span>
@@ -1099,7 +1125,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ifelse関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># TRUEなので2番目の処理が返ってくる</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># TRUEなので2番目の処理が返ってくる</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">&lt;</span> <span class="fl">3</span>, <span class="st">"One is smaller than three."</span>, <span class="st">"One is not smaller than three."</span><span class="op">)</span></span>
 <span><span class="co">## [1] "One is smaller than three."</span></span>
 <span></span>
@@ -1116,7 +1142,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>switch文（条件が数値のとき）</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 条件が1のときは、2番目の引数の処理が返ってくる</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 条件が1のときは、2番目の引数の処理が返ってくる</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span><span class="op">)</span> </span>
 <span><span class="co">## [1] "first"</span></span>
 <span></span>
@@ -1133,7 +1159,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>switch文（条件が文字列のとき）</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 条件式に対応したもの（=で繋いだもの）が返ってくる</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 条件式に対応したもの（=で繋いだもの）が返ってくる</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span><span class="st">"dog"</span>, dog <span class="op">=</span> <span class="st">"犬"</span>, cat <span class="op">=</span> <span class="st">"猫"</span>, monkey <span class="op">=</span> <span class="st">"猿"</span>, pig <span class="op">=</span> <span class="st">"豚"</span><span class="op">)</span></span>
 <span><span class="co">## [1] "犬"</span></span>
 <span></span>
@@ -1626,7 +1652,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
       }
     }
   });
-  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+  </script><nav class="page-navigation column-body"><div class="nav-page nav-page-previous">
       <a href="./chapter7.html" class="pagination-link" aria-label="型・クラスの確認と変換">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">型・クラスの確認と変換</span></span>
       </a>          
@@ -1637,262 +1663,264 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 条件判断（Control structures）</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## 条件判断とは？</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>プログラミングでは、ある条件のときはこの処理、別の条件のときはこの処理...、といった具合に、条件によって行う処理を変えたいことがよくあります。例えば、じゃんけんでは出した手の条件によって勝ち・負け・引き分けという3つの処理を行うことになります。このように、条件によって処理を変えることを、**条件判断**と呼びます。</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## 条件と論理型（logical）</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>条件として用いられるのは、**論理型（logical）**です。論理型は`TRUE`（真）と`FALSE`（偽）の2つの値を持ちます。論理型はそれそのものを用いる場合と、比較演算子の演算結果として得る場合があります。Rでは、**`TRUE`を`T`、`FALSE`を`F`**と表記することができます。</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="論理型"}</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="cn">FALSE</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>T</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>F</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(T, F, T, F) <span class="co"># logicalはベクターにもできる</span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">3</span> <span class="co"># 3は1より大きいのでTRUE</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">3</span> <span class="co"># 1は3より大きくないのでFALSE</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## 数値としての論理型</span></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>論理型は、Rの内部では数値として取り扱われています。Rでは**`TRUE`は`1`、`FALSE`は`0`**と同一です。ですので、ベクター中の`TRUE`の数を足し算で計算することができます。また、**`0`以外が`TRUE`、`0`が`FALSE`**として扱われる場合もあります。条件判断では<span class="in">`0`</span>を<span class="in">`FALSE`</span>として用いる場合もあります。</span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="数値としての真偽値"}</span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>T <span class="sc">+</span> T <span class="sc">+</span> F <span class="co"># 足し算すると2が返ってくる</span></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(T, T, F, T, F, T, F)</span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vec) <span class="co"># sumはベクターの要素を足し算する関数</span></span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## 他言語でのTRUEとFALSEの数値変換</span></span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>RではTRUEが1、FALSEが0ですが、他の言語ではFALSEが-1のものもあります。言語によりTRUE/FALSEの仕様は異なります。</span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## 比較演算子</span></span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">3章</span><span class="co">](chapter3.qmd#論理型logical)</span>で説明した通り、**比較演算子**とは、演算子の右と左を比較して、その関係が正しい（<span class="in">`TRUE`</span>）のか、間違っているのか（<span class="in">`FALSE`</span>）を返す演算子です。Rで利用できる比較演算子は以下の表の通りです。</span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">operator =</span> <span class="fu">c</span>(<span class="st">"=="</span>, <span class="st">"!="</span>, <span class="st">"&lt;"</span>, <span class="st">"&lt;="</span>, <span class="st">"&gt;"</span>, <span class="st">"&gt;="</span>),</span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"等しい"</span>, <span class="st">"等しくない"</span>, <span class="st">"小なり"</span>, <span class="st">"小なりイコール"</span>, <span class="st">"大なり"</span>, <span class="st">"大なりイコール"</span>)</span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"比較演算子"</span>, <span class="st">"比較演算子の意味"</span>)</span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表1：Rで使える比較演算子"</span>)</span>
-<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="比較演算子"}</span></span>
-<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">==</span> <span class="dv">1</span> <span class="co"># 等しいのでTRUE</span></span>
-<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">==</span> <span class="dv">2</span> <span class="co"># 等しくないのでFALSE</span></span>
-<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">!=</span> <span class="dv">1</span> <span class="co"># 等しいのでFALSE</span></span>
-<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">!=</span> <span class="dv">2</span> <span class="co"># 等しくないのでTRUE</span></span>
-<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">2</span> <span class="co"># 1は2より小さいのでTRUE</span></span>
-<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span> <span class="co"># 1は1より小さくないのでFALSE</span></span>
-<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;=</span> <span class="dv">2</span> <span class="co"># 2は1より小さいのでTRUE</span></span>
-<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;=</span> <span class="dv">1</span> <span class="co"># 1は1に等しいのでTURE</span></span>
-<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">&gt;</span> <span class="dv">2</span> <span class="co"># 3は2より大きいのでTRUE</span></span>
-<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">2</span> <span class="co"># 2は2より大きくないのでFALSE</span></span>
-<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="co"># 3は2より大きいのでTRUE</span></span>
-<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="co"># 2は2と等しいのでTRUE</span></span>
-<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## 論理演算子</span></span>
-<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>論理型は、**論理演算子**による計算に使うことができます。論理演算子とは、論理型のオブジェクト2つ以上を用いた演算（論理演算）を行うために用いるものです。</span>
-<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a>論理演算として主要なものは、論理和（AとBのどちらか片方がTRUEならTRUE、どちらもFALSEならFALSE）、論理積（AとBのどちらもTRUEならTRUE、どちらかがFALSEならFALSE）、否定論理和（AとBのどちらかがTRUEならFALSE、どちらもFALSEならTRUE）、否定論理積（AとBのどちらもTRUEならFALSE、どちらかがFALSEならTRUE）、排他的論理和（AとBのどちらかがTRUEならTRUE、両方がFALSEまたはTRUEならFALSE）などで、これらを用いることで論理型を用いた様々な表現を行うことができます。</span>
-<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a><span class="al">![論理演算子](./image/Logical_operators.png)</span></span>
-<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>Rで最もよく用いられる論理演算子は**`&amp;`、`|`**の2つです。<span class="in">`&amp;`</span>は論理積（<span class="in">`A &amp; B`</span>でAかB）、<span class="in">`|`</span>は論理和（<span class="in">`A | B`</span>でAまたはB）を示す演算子です。</span>
-<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>この2つによく似た<span class="in">`&amp;&amp;`</span>と<span class="in">`||`</span>の演算子もありますが、これら2つはベクターの**始めの値だけ**を評価するという特徴を持っています（Rのバージョン4.3以降では<span class="in">`&amp;&amp;`</span>や<span class="in">`||`</span>でベクターを比較するとエラーが出ます）。<span class="in">`&amp;&amp;`</span>と<span class="in">`||`</span>を用いるとプログラムが予想外の挙動を取ることがあるので、できるだけ<span class="in">`&amp;`</span>と<span class="in">`|`</span>だけを用いたほうがよいでしょう。</span>
-<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>RにはNAND（否定論理積）、NOR（否定論理和）などを表す専用の論理演算子はありませんが、XOR（排他的論理和）を表す関数（<span class="in">`xor`</span>関数）はあります。</span>
-<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="論理演算子", echo=FALSE}</span></span>
-<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a>  <span class="at">operator =</span> <span class="fu">c</span>(<span class="st">"&amp;"</span>, <span class="st">"&amp;&amp;"</span>, <span class="st">"|"</span>, <span class="st">"||"</span>, <span class="st">"!"</span>, <span class="st">"xor"</span>,<span class="st">"any"</span>, <span class="st">"all"</span>),</span>
-<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"論理積（AかつB）"</span>, <span class="st">"論理積（ベクターの始めの要素のみ評価）"</span>, <span class="st">"論理和（AまたはB）"</span>, <span class="st">"論理和（ベクターの始めの要素のみ評価）"</span>, <span class="st">"否定演算子（真偽を反転）"</span>, <span class="st">"排他的論理和"</span>, <span class="st">"いずれかが真の時に真を返す"</span>, <span class="st">"すべてが真の時に真を返す"</span>)</span>
-<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"論理演算子"</span>, <span class="st">"演算子の意味"</span>)</span>
-<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：Rで使える論理演算子"</span>)</span>
-<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="論理演算子による演算", error=TRUE}</span></span>
-<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>logic1 <span class="ot">&lt;-</span> <span class="fu">c</span>(T, F, T, F)</span>
-<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>logic2 <span class="ot">&lt;-</span> <span class="fu">c</span>(T, T, F, F)</span>
-<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a>logic1 <span class="sc">&amp;</span> logic2 <span class="co"># &amp; は論理積（AND）</span></span>
-<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>logic1 <span class="sc">|</span> logic2 <span class="co"># | は論理和（OR）</span></span>
-<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a><span class="co"># 比較する要素が1つでないとエラー</span></span>
-<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a><span class="co">#（以前はインデックス1の要素のみを比較していた）</span></span>
-<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>logic1 <span class="sc">&amp;&amp;</span> logic2 </span>
-<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>logic1 <span class="sc">||</span> logic2</span>
-<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a><span class="fu">xor</span>(logic1, logic2) <span class="co"># 排他的論理和</span></span>
-<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a><span class="fu">xor</span>(T, T) <span class="co"># 両方がTRUEならFALSEを返す</span></span>
-<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a><span class="fu">any</span>(logic1) <span class="co"># いずれか1つがTRUEなのでTRUE</span></span>
-<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(logic1) <span class="co"># すべてがTRUEでは無いのでFALSE</span></span>
-<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>論理演算子として、**`!`（エクスクラメーションマーク、否定演算子）**も用いることができます。<span class="in">`!`</span>は論理型の前に置くことで、論理型を反転（<span class="in">`TRUE`</span>を<span class="in">`FALSE`</span>に、<span class="in">`FALSE`</span>を<span class="in">`TRUE`</span>に）させます。</span>
-<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="!による論理値の反転"}</span></span>
-<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span><span class="cn">TRUE</span></span>
-<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span><span class="cn">FALSE</span></span>
-<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span>(<span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">3</span>)</span>
-<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span>(<span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">3</span>)</span>
-<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a><span class="fu">## 条件分岐の文</span></span>
-<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>上記のように、比較演算子や論理演算子を用いると、論理型を得ることができます。この論理型に従い、行う処理を変えるものを、**条件分岐**と呼びます。条件分岐では、条件分岐の文（Control structures）というものが用いられます。Rでは、条件分岐の文として、**`if`文と`switch`文**の2つが設定されています。</span>
-<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"if文"</span>, </span>
-<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ifelse関数"</span>, </span>
-<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>            <span class="st">"switch文"</span>),</span>
-<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>  <span class="at">structure =</span> <span class="fu">c</span>(<span class="st">"if(条件式){TRUEのときの演算}else{FALSEのときの演算}"</span>, </span>
-<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>                <span class="st">"ifelse(条件式, TRUEのときの演算, FALSEのときの演算)"</span>, </span>
-<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>                <span class="st">"switch(評価する値, 評価の既定値=既定値のときの演算)"</span>)</span>
-<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"条件分岐"</span>, <span class="st">"条件分岐の形式"</span>)</span>
-<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：Rで使える条件分岐"</span>)</span>
-<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a><span class="fu">### if文</span></span>
-<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a><span class="in">`if`</span>文は最もシンプルな条件分岐の文です。<span class="in">`if`</span>文では、**条件式**に従い、実行する処理が変わります。Rでの<span class="in">`if`</span>文は、以下の形を取ります。</span>
-<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a>**if(条件式){TRUEのときに実施する処理}**</span>
-<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a>条件式を**`if()`**のカッコの中に書きます。`if`文は1行で書くこともできますし、複数行に渡って書くこともできます。複数行に処理を書くときには、**中括弧（`{}`）**を条件式の後に書き、中括弧の中に処理を書きます。</span>
-<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="if文の使い方"}</span></span>
-<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="cn">TRUE</span>) <span class="st">"Hello R"</span> <span class="co"># 1行で書く場合（"Hello R"が返ってくる）</span></span>
-<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="cn">FALSE</span>) <span class="st">"Hello FALSE"</span> <span class="co"># 条件式がFALSEなので、何も返ってこない</span></span>
-<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="cn">TRUE</span>){ <span class="co"># 複数行で書く時には中括弧（{}）を用いる</span></span>
-<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hello R"</span></span>
-<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="cn">FALSE</span>){<span class="st">"Hello FALSE"</span>} <span class="co"># 1行のif文で中括弧を使ってもよい</span></span>
-<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a><span class="in">`if`</span>文の条件が<span class="in">`0`</span>のときには、<span class="in">`0`</span>が<span class="in">`FALSE`</span>であると判断されて、処理が実行されません。一方で条件が<span class="in">`0`</span>以外である場合には、<span class="in">`TRUE`</span>であると判断されて処理が実行されます。<span class="in">`if(0)`</span>とするとその処理が行われないので、**Rでは`if(0)`がコメントアウトに使われる**こともあります。</span>
-<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="条件式が数値の時のif文"}</span></span>
-<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="dv">0</span>){<span class="st">"0はFALSEなので、これは表示されません"</span>}</span>
-<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">-</span><span class="dv">1</span>){<span class="st">"-1はTRUE扱いなので、表示されます"</span>}</span>
-<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">-</span><span class="fl">0.005</span>){<span class="st">"0以外はTRUEとして処理されます"</span>}</span>
-<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a><span class="fu">#### if else文</span></span>
-<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a><span class="in">`if`</span>文ではさらに条件を分岐させることもできます。条件を追加する場合には、<span class="in">`if`</span>文の後に、<span class="in">`else if()`</span>を繋げます。<span class="in">`else if()`</span>のカッコの中に2つ目の条件を書くことで、条件を分離させることができます。<span class="in">`else`</span>だけを書いて、<span class="in">`if()`</span>の条件式をつけない場合には、どの条件にも合わない時に実行する処理になります。ですので、<span class="in">`if else`</span>文は以下の形を取ります。</span>
-<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a>**if(条件式1){**\</span>
-<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a>**式1がTRUEのときの処理**\</span>
-<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a>**}else if(条件式2){**\</span>
-<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a>**式1がFALSE、式2がTRUEのときの処理**\</span>
-<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a>**}else{**\</span>
-<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a>**式1、2がFALSEのときの処理**\</span>
-<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a>**}**</span>
-<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="if else文"}</span></span>
-<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="co"># xは2</span></span>
-<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a><span class="co"># xは2なので、2番目の処理が返ってくる</span></span>
-<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">1</span>){ <span class="co"># =が1つだと代入になるのでエラーが出る</span></span>
-<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a>  <span class="st">"first"</span></span>
-<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">2</span>){</span>
-<span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a>  <span class="st">"second"</span></span>
-<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a>  <span class="st">"others"</span></span>
-<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a><span class="fu">#### ifelse関数</span></span>
-<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a>条件分岐が2つしかない場合には、<span class="in">`ifelse`</span>関数を用いることもできます。<span class="in">`ifelse`</span>関数は3つの引数、「(条件式)、(<span class="in">`TRUE`</span>のときの処理)、(<span class="in">`FALSE`</span>のときの処理)」を取ります。条件が1つだけで、簡単な処理のみを行うのであれば<span class="in">`ifelse`</span>関数で十分な場合もあります。</span>
-<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ifelse関数"}</span></span>
-<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a><span class="co"># TRUEなので2番目の処理が返ってくる</span></span>
-<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a><span class="fu">ifelse</span>(<span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">3</span>, <span class="st">"One is smaller than three."</span>, <span class="st">"One is not smaller than three."</span>)</span>
-<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a><span class="co"># FALSEなので3番目の処理が返ってくる</span></span>
-<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a><span class="fu">ifelse</span>(<span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">3</span>, <span class="st">"One is larger than three."</span>, <span class="st">"One is not larger than three."</span>) </span>
-<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a><span class="fu">### switch文</span></span>
-<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a>条件式ではなく、特定の値に対応して処理を変えたい場合には、<span class="in">`switch`</span>文を用います。<span class="in">`switch`</span>文では、**始めの引数が条件を指定する値、それに続く引数が条件に対応した処理**となります。条件を指定する値には、数値または文字列を用いることができます。条件が数値の場合と文字列の場合では、やや使い方が異なります。</span>
-<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="switch文（条件が数値のとき）"}</span></span>
-<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a><span class="co"># 条件が1のときは、2番目の引数の処理が返ってくる</span></span>
-<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">1</span>, <span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span>) </span>
-<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a><span class="co"># 条件が2のときは、3番目の引数の処理が返ってくる</span></span>
-<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">2</span>, <span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span>) </span>
-<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a><span class="co"># 条件が5のときは、6番目の引数の処理がないので何も返ってこない</span></span>
-<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">5</span>, <span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span>) </span>
-<span id="cb12-238"><a href="#cb12-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-239"><a href="#cb12-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="switch文（条件が文字列のとき）"}</span></span>
-<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a><span class="co"># 条件式に対応したもの（=で繋いだもの）が返ってくる</span></span>
-<span id="cb12-242"><a href="#cb12-242" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="st">"dog"</span>, <span class="at">dog =</span> <span class="st">"犬"</span>, <span class="at">cat =</span> <span class="st">"猫"</span>, <span class="at">monkey =</span> <span class="st">"猿"</span>, <span class="at">pig =</span> <span class="st">"豚"</span>)</span>
-<span id="cb12-243"><a href="#cb12-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-244"><a href="#cb12-244" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="st">"monkey"</span>, <span class="at">dog =</span> <span class="st">"犬"</span>, <span class="at">cat =</span> <span class="st">"猫"</span>, <span class="at">monkey =</span> <span class="st">"猿"</span>, <span class="at">pig =</span> <span class="st">"豚"</span>)</span>
-<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a><span class="co"># horseは引数に登録していないので、何も返ってこない</span></span>
-<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="st">"horse"</span>, <span class="at">dog =</span> <span class="st">"犬"</span>, <span class="at">cat =</span> <span class="st">"猫"</span>, <span class="at">monkey =</span> <span class="st">"猿"</span>, <span class="at">pig =</span> <span class="st">"豚"</span>)</span>
-<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-250"><a href="#cb12-250" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
-<span id="cb12-251"><a href="#cb12-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a><span class="fu">## ライブラリで設定されている条件分岐</span></span>
-<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-254"><a href="#cb12-254" aria-hidden="true" tabindex="-1"></a>インストールしたばかりのRでは、上記の<span class="in">`if`</span>文、<span class="in">`if else`</span>文、<span class="in">`ifelse`</span>関数、<span class="in">`switch`</span>文しか使えませんが、**ライブラリ**というものを用いると、他の条件分岐（<span class="in">`if_else`</span>関数や<span class="in">`case_which`</span>文、<span class="in">`case_when`</span>文）を用いることもできます。詳細については<span class="co">[</span><span class="ot">20章</span><span class="co">](chapter20.qmd#if_else関数)</span>で説明します。</span>
-<span id="cb12-255"><a href="#cb12-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-256"><a href="#cb12-256" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 条件判断（Control structures）</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## 条件判断とは？</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>プログラミングでは、ある条件のときはこの処理、別の条件のときはこの処理...、といった具合に、条件によって行う処理を変えたいことがよくあります。例えば、じゃんけんでは出した手の条件によって勝ち・負け・引き分けという3つの処理を行うことになります。このように、条件によって処理を変えることを、**条件判断**と呼びます。</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## 条件と論理型（logical）</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>条件として用いられるのは、**論理型（logical）**です。論理型は`TRUE`（真）と`FALSE`（偽）の2つの値を持ちます。論理型はそれそのものを用いる場合と、比較演算子の演算結果として得る場合があります。Rでは、**`TRUE`を`T`、`FALSE`を`F`**と表記することができます。</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="論理型"}</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="cn">FALSE</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>T</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>F</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(T, F, T, F) <span class="co"># logicalはベクターにもできる</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">3</span> <span class="co"># 3は1より大きいのでTRUE</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">3</span> <span class="co"># 1は3より大きくないのでFALSE</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## 数値としての論理型</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>論理型は、Rの内部では数値として取り扱われています。Rでは**`TRUE`は`1`、`FALSE`は`0`**と同一です。ですので、ベクター中の`TRUE`の数を足し算で計算することができます。また、**`0`以外が`TRUE`、`0`が`FALSE`**として扱われる場合もあります。条件判断では<span class="in">`0`</span>を<span class="in">`FALSE`</span>として用いる場合もあります。</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="数値としての真偽値"}</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>T <span class="sc">+</span> T <span class="sc">+</span> F <span class="co"># 足し算すると2が返ってくる</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(T, T, F, T, F, T, F)</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vec) <span class="co"># sumはベクターの要素を足し算する関数</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## 他言語でのTRUEとFALSEの数値変換</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>RではTRUEが1、FALSEが0ですが、他の言語ではFALSEが-1のものもあります。言語によりTRUE/FALSEの仕様は異なります。</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## 比較演算子</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">3章</span><span class="co">](chapter3.qmd#論理型logical)</span>で説明した通り、**比較演算子**とは、演算子の右と左を比較して、その関係が正しい（<span class="in">`TRUE`</span>）のか、間違っているのか（<span class="in">`FALSE`</span>）を返す演算子です。Rで利用できる比較演算子は以下の表の通りです。</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">operator =</span> <span class="fu">c</span>(<span class="st">"=="</span>, <span class="st">"!="</span>, <span class="st">"&lt;"</span>, <span class="st">"&lt;="</span>, <span class="st">"&gt;"</span>, <span class="st">"&gt;="</span>),</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"等しい"</span>, <span class="st">"等しくない"</span>, <span class="st">"小なり"</span>, <span class="st">"小なりイコール"</span>, <span class="st">"大なり"</span>, <span class="st">"大なりイコール"</span>)</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"比較演算子"</span>, <span class="st">"比較演算子の意味"</span>)</span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表1：Rで使える比較演算子"</span>)</span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="比較演算子"}</span></span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">==</span> <span class="dv">1</span> <span class="co"># 等しいのでTRUE</span></span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">==</span> <span class="dv">2</span> <span class="co"># 等しくないのでFALSE</span></span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">!=</span> <span class="dv">1</span> <span class="co"># 等しいのでFALSE</span></span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">!=</span> <span class="dv">2</span> <span class="co"># 等しくないのでTRUE</span></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">2</span> <span class="co"># 1は2より小さいのでTRUE</span></span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span> <span class="co"># 1は1より小さくないのでFALSE</span></span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;=</span> <span class="dv">2</span> <span class="co"># 2は1より小さいのでTRUE</span></span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&lt;=</span> <span class="dv">1</span> <span class="co"># 1は1に等しいのでTURE</span></span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">&gt;</span> <span class="dv">2</span> <span class="co"># 3は2より大きいのでTRUE</span></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">2</span> <span class="co"># 2は2より大きくないのでFALSE</span></span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="co"># 3は2より大きいのでTRUE</span></span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="co"># 2は2と等しいのでTRUE</span></span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## 論理演算子</span></span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a>論理型は、**論理演算子**による計算に使うことができます。論理演算子とは、論理型のオブジェクト2つ以上を用いた演算（論理演算）を行うために用いるものです。</span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a>論理演算として主要なものは、論理和（AとBのどちらか片方がTRUEならTRUE、どちらもFALSEならFALSE）、論理積（AとBのどちらもTRUEならTRUE、どちらかがFALSEならFALSE）、否定論理和（AとBのどちらかがTRUEならFALSE、どちらもFALSEならTRUE）、否定論理積（AとBのどちらもTRUEならFALSE、どちらかがFALSEならTRUE）、排他的論理和（AとBのどちらかがTRUEならTRUE、両方がFALSEまたはTRUEならFALSE）などで、これらを用いることで論理型を用いた様々な表現を行うことができます。</span>
+<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a><span class="al">![論理演算子](./image/Logical_operators.png)</span></span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a>Rで最もよく用いられる論理演算子は**`&amp;`、`|`**の2つです。<span class="in">`&amp;`</span>は論理積（<span class="in">`A &amp; B`</span>でAかB）、<span class="in">`|`</span>は論理和（<span class="in">`A | B`</span>でAまたはB）を示す演算子です。</span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a>この2つによく似た<span class="in">`&amp;&amp;`</span>と<span class="in">`||`</span>の演算子もありますが、これら2つはベクターの**始めの値だけ**を評価するという特徴を持っています（Rのバージョン4.3以降では<span class="in">`&amp;&amp;`</span>や<span class="in">`||`</span>でベクターを比較するとエラーが出ます）。<span class="in">`&amp;&amp;`</span>と<span class="in">`||`</span>を用いるとプログラムが予想外の挙動を取ることがあるので、できるだけ<span class="in">`&amp;`</span>と<span class="in">`|`</span>だけを用いたほうがよいでしょう。</span>
+<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="論理演算子", echo=FALSE}</span></span>
+<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a>  <span class="at">operator =</span> <span class="fu">c</span>(<span class="st">"&amp;"</span>, <span class="st">"&amp;&amp;"</span>, <span class="st">"|"</span>, <span class="st">"||"</span>, <span class="st">"!"</span>, <span class="st">"xor"</span>,<span class="st">"any"</span>, <span class="st">"all"</span>),</span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"論理積（AかつB）"</span>, <span class="st">"論理積（ベクターの始めの要素のみ評価）"</span>, <span class="st">"論理和（AまたはB）"</span>, <span class="st">"論理和（ベクターの始めの要素のみ評価）"</span>, <span class="st">"否定演算子（真偽を反転）"</span>, <span class="st">"排他的論理和"</span>, <span class="st">"いずれかが真の時に真を返す"</span>, <span class="st">"すべてが真の時に真を返す"</span>)</span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"論理演算子"</span>, <span class="st">"演算子の意味"</span>)</span>
+<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：Rで使える論理演算子"</span>)</span>
+<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="論理演算子による演算", error=TRUE}</span></span>
+<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a>logic1 <span class="ot">&lt;-</span> <span class="fu">c</span>(T, F, T, F)</span>
+<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a>logic2 <span class="ot">&lt;-</span> <span class="fu">c</span>(T, T, F, F)</span>
+<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a>logic1 <span class="sc">&amp;</span> logic2 <span class="co"># &amp; は論理積（AND）</span></span>
+<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a>logic1 <span class="sc">|</span> logic2 <span class="co"># | は論理和（OR）</span></span>
+<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a><span class="co"># 比較する要素が1つでないとエラー</span></span>
+<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a><span class="co">#（以前はインデックス1の要素のみを比較していた）</span></span>
+<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a>logic1 <span class="sc">&amp;&amp;</span> logic2 </span>
+<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a>logic1 <span class="sc">||</span> logic2</span>
+<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a>RにはNAND（否定論理積）、NOR（否定論理和）などを表す専用の論理演算子はありませんが、XOR（排他的論理和）を表す関数（<span class="in">`xor`</span>関数）はあります。また、要素のいずれか1つが<span class="in">`TRUE`</span>なら<span class="in">`TRUE`</span>を返す<span class="in">`any`</span>関数、すべてが<span class="in">`TRUE`</span>の時だけ<span class="in">`TRUE`</span>を返す<span class="in">`all`</span>関数などの関数も論理演算に用いることができます。</span>
+<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="論理演算子による演算", error=TRUE}</span></span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="fu">xor</span>(logic1, logic2) <span class="co"># 排他的論理和</span></span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a><span class="fu">xor</span>(T, T) <span class="co"># 両方がTRUEならFALSEを返す</span></span>
+<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a><span class="fu">any</span>(logic1) <span class="co"># いずれか1つがTRUEなのでTRUE</span></span>
+<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(logic1) <span class="co"># すべてがTRUEでは無いのでFALSE</span></span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a>論理演算子として、**`!`（エクスクラメーションマーク、否定演算子）**も用いることができます。<span class="in">`!`</span>は論理型の前に置くことで、論理型を反転（<span class="in">`TRUE`</span>を<span class="in">`FALSE`</span>に、<span class="in">`FALSE`</span>を<span class="in">`TRUE`</span>に）させます。</span>
+<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="!による論理値の反転"}</span></span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span><span class="cn">TRUE</span></span>
+<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span><span class="cn">FALSE</span></span>
+<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span>(<span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">3</span>)</span>
+<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span>(<span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">3</span>)</span>
+<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a><span class="fu">## 条件分岐の文</span></span>
+<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a>上記のように、比較演算子や論理演算子を用いると、論理型を得ることができます。この論理型に従い、行う処理を変えるものを、**条件分岐**と呼びます。条件分岐では、条件分岐の文（Control structures）というものが用いられます。Rでは、条件分岐の文として、**`if`文と`switch`文**の2つが設定されています。</span>
+<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"if文"</span>, </span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ifelse関数"</span>, </span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a>            <span class="st">"switch文"</span>),</span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a>  <span class="at">structure =</span> <span class="fu">c</span>(<span class="st">"if(条件式){TRUEのときの演算}else{FALSEのときの演算}"</span>, </span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a>                <span class="st">"ifelse(条件式, TRUEのときの演算, FALSEのときの演算)"</span>, </span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>                <span class="st">"switch(評価する値, 評価の既定値=既定値のときの演算)"</span>)</span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"条件分岐"</span>, <span class="st">"条件分岐の形式"</span>)</span>
+<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：Rで使える条件分岐"</span>)</span>
+<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a><span class="fu">### if文</span></span>
+<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a><span class="in">`if`</span>文は最もシンプルな条件分岐の文です。<span class="in">`if`</span>文では、**条件式**に従い、実行する処理が変わります。Rでの<span class="in">`if`</span>文は、以下の形を取ります。</span>
+<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a>**if(条件式){TRUEのときに実施する処理}**</span>
+<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a>条件式を**`if()`**のカッコの中に書きます。`if`文は1行で書くこともできますし、複数行に渡って書くこともできます。複数行に処理を書くときには、**中括弧（`{}`）**を条件式の後に書き、中括弧の中に処理を書きます。</span>
+<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="if文の使い方"}</span></span>
+<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="cn">TRUE</span>) <span class="st">"Hello R"</span> <span class="co"># 1行で書く場合（"Hello R"が返ってくる）</span></span>
+<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="cn">FALSE</span>) <span class="st">"Hello FALSE"</span> <span class="co"># 条件式がFALSEなので、何も返ってこない</span></span>
+<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="cn">TRUE</span>){ <span class="co"># 複数行で書く時には中括弧（{}）を用いる</span></span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hello R"</span></span>
+<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="cn">FALSE</span>){<span class="st">"Hello FALSE"</span>} <span class="co"># 1行のif文で中括弧を使ってもよい</span></span>
+<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a><span class="in">`if`</span>文の条件が<span class="in">`0`</span>のときには、<span class="in">`0`</span>が<span class="in">`FALSE`</span>であると判断されて、処理が実行されません。一方で条件が<span class="in">`0`</span>以外である場合には、<span class="in">`TRUE`</span>であると判断されて処理が実行されます。<span class="in">`if(0)`</span>とするとその処理が行われないので、**Rでは`if(0)`がコメントアウトに使われる**こともあります。</span>
+<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="条件式が数値の時のif文"}</span></span>
+<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="dv">0</span>){<span class="st">"0はFALSEなので、これは表示されません"</span>}</span>
+<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">-</span><span class="dv">1</span>){<span class="st">"-1はTRUE扱いなので、表示されます"</span>}</span>
+<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">-</span><span class="fl">0.005</span>){<span class="st">"0以外はTRUEとして処理されます"</span>}</span>
+<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a><span class="fu">#### if else文</span></span>
+<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a><span class="in">`if`</span>文ではさらに条件を分岐させることもできます。条件を追加する場合には、<span class="in">`if`</span>文の後に、<span class="in">`else if()`</span>を繋げます。<span class="in">`else if()`</span>のカッコの中に2つ目の条件を書くことで、条件を分離させることができます。<span class="in">`else`</span>だけを書いて、<span class="in">`if()`</span>の条件式をつけない場合には、どの条件にも合わない時に実行する処理になります。ですので、<span class="in">`if else`</span>文は以下の形を取ります。</span>
+<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a>**if(条件式1){**\</span>
+<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a>**式1がTRUEのときの処理**\</span>
+<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a>**}else if(条件式2){**\</span>
+<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a>**式1がFALSE、式2がTRUEのときの処理**\</span>
+<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a>**}else{**\</span>
+<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a>**式1、2がFALSEのときの処理**\</span>
+<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a>**}**</span>
+<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="if else文"}</span></span>
+<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="co"># xは2</span></span>
+<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a><span class="co"># xは2なので、2番目の処理が返ってくる</span></span>
+<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">1</span>){ <span class="co"># =が1つだと代入になるのでエラーが出る</span></span>
+<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a>  <span class="st">"first"</span></span>
+<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span>(x <span class="sc">==</span> <span class="dv">2</span>){</span>
+<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a>  <span class="st">"second"</span></span>
+<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a>  <span class="st">"others"</span></span>
+<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a><span class="fu">#### ifelse関数</span></span>
+<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a>条件分岐が2つしかない場合には、<span class="in">`ifelse`</span>関数を用いることもできます。<span class="in">`ifelse`</span>関数は3つの引数、「(条件式)、(<span class="in">`TRUE`</span>のときの処理)、(<span class="in">`FALSE`</span>のときの処理)」を取ります。条件が1つだけで、簡単な処理のみを行うのであれば<span class="in">`ifelse`</span>関数で十分な場合もあります。</span>
+<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ifelse関数"}</span></span>
+<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a><span class="co"># TRUEなので2番目の処理が返ってくる</span></span>
+<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a><span class="fu">ifelse</span>(<span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">3</span>, <span class="st">"One is smaller than three."</span>, <span class="st">"One is not smaller than three."</span>)</span>
+<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a><span class="co"># FALSEなので3番目の処理が返ってくる</span></span>
+<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a><span class="fu">ifelse</span>(<span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">3</span>, <span class="st">"One is larger than three."</span>, <span class="st">"One is not larger than three."</span>) </span>
+<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a><span class="fu">### switch文</span></span>
+<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a>条件式ではなく、特定の値に対応して処理を変えたい場合には、<span class="in">`switch`</span>文を用います。<span class="in">`switch`</span>文では、**始めの引数が条件を指定する値、それに続く引数が条件に対応した処理**となります。条件を指定する値には、数値または文字列を用いることができます。条件が数値の場合と文字列の場合では、やや使い方が異なります。</span>
+<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="switch文（条件が数値のとき）"}</span></span>
+<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a><span class="co"># 条件が1のときは、2番目の引数の処理が返ってくる</span></span>
+<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">1</span>, <span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span>) </span>
+<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a><span class="co"># 条件が2のときは、3番目の引数の処理が返ってくる</span></span>
+<span id="cb13-236"><a href="#cb13-236" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">2</span>, <span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span>) </span>
+<span id="cb13-237"><a href="#cb13-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-238"><a href="#cb13-238" aria-hidden="true" tabindex="-1"></a><span class="co"># 条件が5のときは、6番目の引数の処理がないので何も返ってこない</span></span>
+<span id="cb13-239"><a href="#cb13-239" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">5</span>, <span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span>) </span>
+<span id="cb13-240"><a href="#cb13-240" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-241"><a href="#cb13-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-242"><a href="#cb13-242" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="switch文（条件が文字列のとき）"}</span></span>
+<span id="cb13-243"><a href="#cb13-243" aria-hidden="true" tabindex="-1"></a><span class="co"># 条件式に対応したもの（=で繋いだもの）が返ってくる</span></span>
+<span id="cb13-244"><a href="#cb13-244" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="st">"dog"</span>, <span class="at">dog =</span> <span class="st">"犬"</span>, <span class="at">cat =</span> <span class="st">"猫"</span>, <span class="at">monkey =</span> <span class="st">"猿"</span>, <span class="at">pig =</span> <span class="st">"豚"</span>)</span>
+<span id="cb13-245"><a href="#cb13-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="st">"monkey"</span>, <span class="at">dog =</span> <span class="st">"犬"</span>, <span class="at">cat =</span> <span class="st">"猫"</span>, <span class="at">monkey =</span> <span class="st">"猿"</span>, <span class="at">pig =</span> <span class="st">"豚"</span>)</span>
+<span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a><span class="co"># horseは引数に登録していないので、何も返ってこない</span></span>
+<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="st">"horse"</span>, <span class="at">dog =</span> <span class="st">"犬"</span>, <span class="at">cat =</span> <span class="st">"猫"</span>, <span class="at">monkey =</span> <span class="st">"猿"</span>, <span class="at">pig =</span> <span class="st">"豚"</span>)</span>
+<span id="cb13-250"><a href="#cb13-250" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-251"><a href="#cb13-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-252"><a href="#cb13-252" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb13-253"><a href="#cb13-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-254"><a href="#cb13-254" aria-hidden="true" tabindex="-1"></a><span class="fu">## ライブラリで設定されている条件分岐</span></span>
+<span id="cb13-255"><a href="#cb13-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-256"><a href="#cb13-256" aria-hidden="true" tabindex="-1"></a>インストールしたばかりのRでは、上記の<span class="in">`if`</span>文、<span class="in">`if else`</span>文、<span class="in">`ifelse`</span>関数、<span class="in">`switch`</span>文しか使えませんが、**ライブラリ**というものを用いると、他の条件分岐（<span class="in">`if_else`</span>関数や<span class="in">`case_which`</span>文、<span class="in">`case_when`</span>文）を用いることもできます。詳細については<span class="co">[</span><span class="ot">20章</span><span class="co">](chapter20.qmd#if_else関数)</span>で説明します。</span>
+<span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">

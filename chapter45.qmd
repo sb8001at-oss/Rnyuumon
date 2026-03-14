@@ -120,7 +120,7 @@ sfobj <- st_read(url)
 
 e-statのデータはそのデータの種類ごとにファイル形式や列名の記載方法が異なるため、Rではやや読み込みにくいです。
 
-e-statのデータを整理して読み込みます。読み込んだデータフレームと`sf`オブジェクトを結合させるためには、両方のオブジェクトに共通する列が必要となります。下の例では、`sf`オブジェクトに含まれる`N03_004`（市町村名）の列をデータフレーム側にも準備することで、市町村名を用いてデータを結合できるようにしています。
+まずはe-statのデータを整理して読み込みます。読み込んだデータフレームと`sf`オブジェクトを結合させるためには、両方のオブジェクトに共通する列が必要となります。下の例では、`sf`オブジェクトに含まれる`N03_004`（市町村名）の列をデータフレーム側にも準備することで、市町村名を用いてデータを結合できるようにしています。
 
 データフレームと`sf`オブジェクトの結合には、[20章](chapter20.qmd#データフレームの結合)で説明した`dplyr`の`join`関数を用いるのが良いでしょう。この際に、`join`で結合する先を`sf`オブジェクトとすること、共通する列を`by=join_by(列名)`で指定することが重要となります。`sf`オブジェクト側ではなく、データフレーム側を結合先にしてしまうと`geometry`の列がなくなります。
 
@@ -388,7 +388,7 @@ geometryがPOINTである場合には、`st_distance`で各POINT間の距離行�
 # 距離行列（地理空間上の距離）、POINTのみ計算できる
 d1 |> st_distance() |> _[1:4, 1:4]
 
-d1[[1]] |> st_distance() |> _[1:4, 1:4] # stcでも計算できる
+d1[[1]] |> st_distance() |> _[1:4, 1:4] # sfcでも計算できる
 
 # 地理空間上の距離、LINESTRINGのみ計算できる
 st_linestring(rbind(c(135, 35), c(130, 30))) |> st_length()
@@ -927,7 +927,7 @@ Nara_sfobj |>
 
 ### 背景のマップを描画する
 
-背景のマップを表示する場合には、`addProviderTiles`関数を追加します。`addProviderTiles`では引数でどのようなマップを表示するかを選択します。マップの種類は、[leafletのプレビュー](https://leaflet-extras.github.io/leaflet-providers/preview/)を参考に選びましょう。以下の例では、`"OpenstreetMap.Mapnik"`（地名がその地域の原語に従い表示されるOpenstreetMap）を選択しています。
+背景のマップを表示する場合には、`addProviderTiles`関数を追加します。`addProviderTiles`では引数でどのようなマップを表示するかを選択します。マップの種類は、[leafletのプレビュー](https://leaflet-extras.github.io/leaflet-providers/preview/)を参考に選びましょう。以下の例では、`"OpenstreetMap.Mapnik"`（地名がその地域の言語に従い表示されるOpenstreetMap）を選択しています。
 
 ```{r, filename="背景のマップをaddProviderTilesで設定する"}
 Nara_sfobj |> 

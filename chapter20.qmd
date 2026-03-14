@@ -8,7 +8,7 @@ knitr::opts_chunk$set(
 
 データを取得し、そのデータをそのまま統計に用いることは稀です。データ解析では、**データの整理整頓（data wrangling、data cleaning）**に多くの時間が割かれています。データの整理整頓には様々なツールが用いられます。前述の`apply`関数群もデータの要約等の整理整頓に用いることができます。
 
-ただし、[前章](chapter19.qmd)で説明した通り、`apply`関数群は関数ごとに引数の順序や引数に与えるデータ型、返り値のデータ型などが異なっており、使い勝手がよいとは言えません。同様の機能を持つ[plyrパッケージ](https://cran.r-project.org/web/packages/plyr/index.html) [@plyr_bib]というライブラリもありますが、やはり使い勝手が良くなかったため、それほど用いられていません。
+ただし、[前章](chapter19.qmd)で説明した通り、`apply`関数群は関数ごとに引数の順序や引数に与えるデータ型、返り値のデータ型などが異なっており、使い勝手がよいとは言えません。同様の機能を持つ[`plyr`パッケージ](https://cran.r-project.org/web/packages/plyr/index.html) [@plyr_bib]というライブラリもありますが、やはり使い勝手が良くなかったため、それほど用いられていません。
 
 現在では、これらの関数・ライブラリに代わり、データの整理整頓には[`tidyr`](https://tidyr.tidyverse.org/) [@tidyr_bib]・[`dplyr`](https://dplyr.tidyverse.org/) [@dplyr_bib]を用いるのがRでは事実上のデフォルトとなっています。`tidyr`・`dplyr`の特徴は以下の通りです。
 
@@ -292,6 +292,8 @@ knitr::kable(d, caption="表2：dplyrの関数群")
 
 `filter`関数は、データフレームから条件に従い行を選択するための関数です。Rにはよく似た`subset`という関数がありますが、他の`tidyverse`の関数と共に用いる場合は`filter`関数を用いたほうが良いでしょう。
 
+![dplyr::filter](./image/dplyr_filter.png)
+
 `filter`関数はデータフレームを第一引数、条件式を第二引数に取る関数です。第二引数に指定した条件に合致した行のみを選択することができます。下の例では、`Species`の列の要素が`setosa`である行を選択しています。
 
 ```{r, filename="filter関数で行を選択"}
@@ -301,6 +303,8 @@ iris |> tibble() |> filter(Species == "setosa")
 ### select関数
 
 `select`関数は、データフレームから列を選択するための関数です。`select`関数もデータフレームを第一引数にとり、それ以降に列名を引数に取ります。`select`関数を用いると、引数で指定した列のみを含むデータフレームが返ってきます。また、マイナスで列名を指定すると、その列を取り除いたデータフレームが返ってきます。
+
+![dplyr::select](./image/dplyr_select.png)
 
 ```{r, filename="select関数で列を選択"}
 iris |> tibble() |> select(Sepal.Length, Sepal.Width, Species)
@@ -319,6 +323,8 @@ knitr::kable(d, caption="表3：selectに用いる列選択の関数")
 
 `arrange`関数は、データフレームを指定した列に従い、昇順（小さいものが上）に並べ替える関数です。`order`関数を用いてもデータフレームの並べ替えはできますが、`arrange`関数を用いるとより簡単に並べ替えを行うことができます。
 
+![dplyr::arrange](./image/dplyr_arrange.png)
+
 `arrange`関数のヘルパーとして、`desc`関数が設定されています。`desc`関数はデータフレームを降順（大きいものが上）に並べ替える場合に用います。
 
 ```{r, filename="arrange関数で並べ替え"}
@@ -330,6 +336,8 @@ iris |> tibble() |> arrange(desc(Sepal.Length)) # 降順に並べ替え
 ### mutate関数
 
 `mutate`関数は、データフレームに新しい列を追加する関数です。`mutate`は[16章](chapter16.qmd#データフレームの列の演算)で説明した`within`関数に似た働きを持ち、第一引数にデータフレーム、第二引数に「新しい列の名前 = 値」という形で、追加したい列の名前と値を指定します。値の計算には、すでにデータフレームに存在する列名を用いることができます。したがって、「列のデータを加工・演算して新しい列を作る」場合に`mutate`関数を用いることになります。
+
+![dplyr::mutate](./image/dplyr_mutate.png)
 
 データフレームの列のインデックスに値を代入しても同様の列の追加を行うことができますが、パイプ演算子の途中で代入を行うことはできません。`mutate`関数を用いれば、パイプ演算子中で列を追加し、以降の演算に用いることができます。
 
@@ -351,6 +359,8 @@ iris |> summarise(m = mean(Sepal.Length), s=sd(Sepal.Length))
 
 `group_by`関数は、文字列か因子の列に従い、データフレームの行をグループ化するための関数です。
 
+![dplyr::group_by](./image/dplyr_group_by.png)
+
 `tidyr`・`dplyr`でデータフレームを取り扱うと、データフレームは自動的に**`tibble`に変換**されます。`group_by`関数でデータフレームをグループ化すると、`tibble`に`group`というものが追加され、クラスに「`grouped_df`」というものが追加されます。`group_by`関数の機能はこれだけです。
 
 グループ化した`tibble`は、`ungroup`関数でグループ解除できます。
@@ -369,6 +379,8 @@ ungroup(d) # グループの解除
 上記のように、`summarise`関数も`group_by`関数も、どちらも単独ではいまいちよく分からない関数ですが、組み合わせて使用することで、[19章](chapter19.qmd#aggregate関数)で解説した`aggregate`関数と同じように、**カテゴリごとの集計計算**を行うことができます。
 
 まずはデータフレームを`group_by`関数でグループ化します。このグループ化したデータフレームに`summarise`関数で計算を適用すると、計算をグループごとに実行してくれます。下の例では、`Species`でグループ化した後に、`Sepal.Length`の平均を`summarise`関数で計算しています。結果として、`Species`ごとに`Sepal.Length`の平均値を計算したデータフレームが返ってきます。グループ化した場合は、グループ化に用いた列を結果のデータフレームに残してくれます。
+
+![dplyr::summarise](./image/dplyr_summarise.png)
 
 この`group_by`と`summarise`を用いると、カテゴリごとに平均値や標準偏差などを求め、その結果をデータフレームとしたものを返り値として得ることができます。
 
@@ -477,6 +489,24 @@ iris |> tally() # 行数を数える関数
 
 iris |> group_by(Species) |> tally() # グループごとに行数を数える関数
 ```
+
+`mutate`関数にはよく似た機能を持つ類似した関数がいくつかあります。`mutate_if`は第2引数にデータの型やクラスを確認し、論理型を返す関数（`is.numeric`や`is.character`など）を取り、`TRUE`を返す列にのみ第3引数の関数を適用する関数です。`mutate_if(data.frame, is.numeric, round)`とすると、`data.frame`のうち、数値の列のみを四捨五入し、結果を返します。
+
+```{r, filename="mutate_if関数"}
+# 数値の列を四捨五入する
+iris |> mutate_if(is.numeric, round) |> head()
+```
+
+`mutate_at`関数は指定した列に指定した関数を適用する関数、`mutate_all`はすべての列に指定した関数を適用する関数です。この2つは`mutate_if`よりは使用する場面が限られるかもしれません。
+
+```{r, filename="mutate_atとmutate_all"}
+# Sepal.Lengthの列だけ四捨五入する 
+iris |> mutate_at("Sepal.Length", round) |> head()
+
+# すべての列を四捨五入する
+iris[, 1:4] |> mutate_all(round) |> head()
+```
+
 
 ## tibble
 

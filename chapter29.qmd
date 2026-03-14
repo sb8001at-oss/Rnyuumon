@@ -542,6 +542,30 @@ anova(lm(height ~ sex + residence, data = d))
 
 上の例では、sex（性別）間の差はp=0.00075で統計的に有意であり、residence（居住地）間の差ではp=0.636で差があるとは言えない、という結果になります。
 
+:::{.callout-tip collapse="true"}
+## 分散分析表をデータフレームにする
+
+分散分析の結果は分散分析表として示すことが多いですが、Rの出力はデータフレームではなく、Consoleに表示されます。データフレームとして分散分析結果を取得するには、`broom`パッケージ[@broom_bib]の`tidy`関数を用います。`tidy`関数は分散分析だけでなく、様々な統計解析の結果をデータフレームに変換してくれます。
+
+```{r, filename="broom::tidy関数で結果をデータフレームに変換する"}
+pacman::p_load(broom)
+anova(lm(height ~ sex + residence, data = d)) |> tidy()
+
+# tidy関数でデータフレームに変換可能な統計解析結果（オブジェクト）の一覧
+methods(tidy) |> head(10)
+```
+
+また、`broom`には`tidy`の他に`glance`、`augment`という2つの関数を備えています。`glance`は統計量に次の章で紹介するAICなどを示してくれる関数、`augment`はデータに残差などを追加してくれる関数となっています。
+
+```{r, filename="glance関数とaugment関数"}
+lm(height ~ sex + residence, data = d) |> glance()
+
+lm(height ~ sex + residence, data = d) |> augment() |> head()
+```
+
+
+:::
+
 #### 交互作用
 
 一元分散分析にはない二元分散分析の要素として、**交互作用**があります。交互作用とは、群1が変化すると、群2の効果が変化することを指します。ただ、これではよくわからないので、下の図1で交互作用について説明します。
@@ -758,6 +782,57 @@ friedman.test(breaks ~ tension | wool, data = wb) # tensionの群間差
 kruskal.test(iris$Sepal.Length ~ iris$Species)
 ```
 
+### 正規性の検定：Shapiro-Wilk検定
+
+正規性の検定（Shapiro-Wilk検定）は、データが正規分布しているかどうかを検定で判別するための検定手法です。「データが正規分布している」が帰無仮説ですので、正規分布していないデータが与えられたときにp値が小さくなり、帰無仮説が棄却されます。Shapiro-Wilk検定は`shapiro.test`関数を用いて計算することができます。
+
+また、`DescTools`パッケージ[@DescTools_bib]の`LillieTest`関数も正規性の検定の手法（Kolmogorov-Smirnov検定）を提供しています。Kolmogorov-Smirnov検定もShapiro-Wilk検定と同じく、帰無仮説は「データが正規分布している」です。
+
+ただし、この検定よりは、qqプロットのような正規性を図から調べるような方法や、ヒストグラムでの左右対称性の確認、データが連続的であるかどうかなどを指標にして判別する方がよいように思います。
+
+```{r, filename="正規性の検定"}
+rn <- rnorm(100)
+rn |> shapiro.test() # 正規乱数は正規分布しているので棄却されない
+DescTools::LillieTest(rn) # Kolmogorov-Smirnov検定
+
+ru <- runif(100)
+ru |> shapiro.test() # 一様乱数は正規分布していないので棄却される
+DescTools::LillieTest(ru) # Kolmogorov-Smirnov検定
+```
+
+### 分散の均一性の検定
+
+分散の均一性の検定は、2つの群で分散が同じであるかどうかを検定するための検定手法です。分散の均一性の検定は`var.test`関数で計算することができます。帰無仮説は「2つの分散が同じ」ですので、p<0.05であれば帰無仮説を棄却し、2つの群で分散が異なると結論します。
+
+```{r, filename="分散の均一性の検定"}
+# 正規分布同士の分散の均一性の検定（異なっていれば帰無仮説を棄却）
+var.test(rnorm(10), rnorm(10))
+
+# 正規分布と一様分布の分散の均一性の検定
+var.test(rnorm(10), runif(10, min = -1, max = 1))
+```
+
+### 外れ値の検定
+
+データが外れ値（outlier）かどうかを判別する場合には、外れ値の検定というものを用いる場合もあります。この検定では、代表値（平均など）から一番外れたデータが外れ値かどうかを検定し、外れ値であれば帰無仮説を棄却するものとなっています。Rでは[outlier](https://cran.r-project.org/web/packages/outliers/outliers.pdf)パッケージ [@outliers_bib]の関数である`chisq.out.test`、`grubbs.test`、`dixon.test`で検定を行うことができます。
+
+ただし、この検定で**外れ値であると判断されても、データは取り除いてはいけません**。これらの検定はデータが正規分布していることを仮定しており、正規分布していないデータでは外れ値とはならない場合があります。検定は外れ値を取り除くためのものではなく、外れ値である可能性を把握し、データの取得に問題がなかったか検討したり、分布が正規性を持つかどうかを評価しなおしたりするためのものです。
+
+基礎研究などで極端な外れ値が取れた場合には何か理由を付けてデータを取り除きたくなるものですが、この検定を用いてもデータを取り除くことはできません。このような検定を用いずに、データと向き合う方が良いように思います。
+
+```{r, filename="外れ値の検定"}
+pacman::p_load(outliers)
+
+# 正規乱数
+x <- c(rnorm(10), 10)
+
+chisq.out.test(x)
+
+grubbs.test(x)
+
+dixon.test(x)
+```
+
 ## その他の検定
 
 上記の検定が群間の平均値の差を調べる場合に用いられる主な検定となります。これらの他にも非常にたくさんの検定手法があり、Rで演算することができます。
@@ -822,55 +897,4 @@ poisson.test(c(120, 230), c(100, 200))
 ```{r, filename="多変量分散分析：manova関数"}
 # 目的変数はcbind関数で行列として渡す
 manova(cbind(Sepal.Length, Sepal.Width) ~ Species, data = iris) |> summary()
-```
-
-### 正規性の検定：Shapiro-Wilk検定
-
-正規性の検定（Shapiro-Wilk検定）は、データが正規分布しているかどうかを検定で判別するための検定手法です。「データが正規分布している」が帰無仮説ですので、正規分布していないデータが与えられたときにp値が小さくなり、帰無仮説が棄却されます。Shapiro-Wilk検定は`shapiro.test`関数を用いて計算することができます。
-
-また、`DescTools`パッケージ[@DescTools_bib]の`LillieTest`関数も正規性の検定の手法（Kolmogorov-Smirnov検定）を提供しています。Kolmogorov-Smirnov検定もShapiro-Wilk検定と同じく、帰無仮説は「データが正規分布している」です。
-
-ただし、この検定よりは、qqプロットのような正規性を図から調べるような方法や、ヒストグラムでの左右対称性の確認、データが連続的であるかどうかなどを指標にして判別する方がよいように思います。
-
-```{r, filename="正規性の検定"}
-rn <- rnorm(100)
-rn |> shapiro.test() # 正規乱数は正規分布しているので棄却されない
-DescTools::LillieTest(rn) # Kolmogorov-Smirnov検定
-
-ru <- runif(100)
-ru |> shapiro.test() # 一様乱数は正規分布していないので棄却される
-DescTools::LillieTest(ru) # Kolmogorov-Smirnov検定
-```
-
-### 分散の均一性の検定
-
-分散の均一性の検定は、2つの群で分散が同じであるかどうかを検定するための検定手法です。分散の均一性の検定は`var.test`関数で計算することができます。帰無仮説は「2つの分散が同じ」ですので、p<0.05であれば帰無仮説を棄却し、2つの群で分散が異なると結論します。
-
-```{r, filename="分散の均一性の検定"}
-# 正規分布同士の分散の均一性の検定（異なっていれば帰無仮説を棄却）
-var.test(rnorm(10), rnorm(10))
-
-# 正規分布と一様分布の分散の均一性の検定
-var.test(rnorm(10), runif(10, min = -1, max = 1))
-```
-
-### 外れ値の検定
-
-データが外れ値（outlier）かどうかを判別する場合には、外れ値の検定というものを用いる場合もあります。この検定では、代表値（平均など）から一番外れたデータが外れ値かどうかを検定し、外れ値であれば帰無仮説を棄却するものとなっています。Rでは[outlier](https://cran.r-project.org/web/packages/outliers/outliers.pdf)パッケージ [@outliers_bib]の関数である`chisq.out.test`、`grubbs.test`、`dixon.test`で検定を行うことができます。
-
-ただし、この検定で**外れ値であると判断されても、データは取り除いてはいけません**。これらの検定はデータが正規分布していることを仮定しており、正規分布していないデータでは外れ値とはならない場合があります。検定は外れ値を取り除くためのものではなく、外れ値である可能性を把握し、データの取得に問題がなかったか検討したり、分布が正規性を持つかどうかを評価しなおしたりするためのものです。
-
-基礎研究などで極端な外れ値が取れた場合には何か理由を付けてデータを取り除きたくなるものですが、この検定を用いてもデータを取り除くことはできません。このような検定を用いずに、データと向き合う方が良いように思います。
-
-```{r, filename="外れ値の検定"}
-pacman::p_load(outliers)
-
-# 正規乱数
-x <- c(rnorm(10), 10)
-
-chisq.out.test(x)
-
-grubbs.test(x)
-
-dixon.test(x)
 ```

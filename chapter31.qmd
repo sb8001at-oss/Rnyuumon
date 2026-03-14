@@ -357,11 +357,11 @@ label <- train.iris$Species %>% as.numeric - 1
 
 # 全然最適化されていない訓練
 xg.iris <- xgboost(
-  data = xg.train.iris, 
-  label = label,
-  nround = 5, # 計算の繰り返し回数
-  num_class = 3, # 分類するクラスの数
-  objective = "multi:softmax") # 3値分類以上だとこの形にする。2値なら"binary:logistic"を指定
+  x = xg.train.iris, 
+  y = label,
+  nthreads = 1,
+  nround = 5 # 計算の繰り返し回数
+  )
 ```
 
 ```{r, filename="XGBoostで生成した分類器での予測"}

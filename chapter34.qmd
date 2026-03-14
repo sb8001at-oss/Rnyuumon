@@ -626,6 +626,29 @@ df_step |>
 ```
 -->
 
+### survminerパッケージ：ggforest関数でフォレストプロットを作成する
+
+`survminer`パッケージが提供している`ggforest`関数を用いても、フォレストプロットを作成することができます。上記のように`ggplot2`を用いるよりも、`ggforest`関数を用いた方がはるかに簡単にフォレストプロットを作成することができます。
+
+```{r, filename="ggforest関数でフォレストプロットを作成する"}
+pacman::p_load("survminer")
+
+result_step |> 
+  ggforest(data = cancer |> na.omit())
+```
+
+:::{.callout-tip collapse="true"}
+## survminerパッケージの便利な関数
+
+`survminer`パッケージには、上記の`ggforest`関数だけでなく、以下に示すようにカプランマイヤー曲線に`ggplot2`のfacetを用いる関数である、`ggsurvplot_facet`などの便利な関数がたくさん備わっています。`ggsurvfit`と比較してみて、使いやすい方を用いるとよいでしょう。
+
+```{r, filename="ggsurvlplot_facet関数"}
+# ggsurvplot_facet関数のexampleに示されている例
+survfit( Surv(time, status) ~ sex, data = colon) |> 
+  ggsurvplot_facet(colon, facet.by = "rx")
+```
+:::
+
 ## パラメトリックな手法
 
 カプランマイヤー曲線、log-rank検定はノンパラメトリックな手法、Cox回帰はセミパラメトリックな手法であるとされています。これは、いずれも明確な確率分布に基づいて計算する統計手法では無いからです。

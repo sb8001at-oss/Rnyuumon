@@ -1,0 +1,158 @@
+# Tips：並列演算 {.unnumbered}
+
+## 並列演算：doParallelパッケージ
+
+```{r}
+pacman::p_load(doParallel, tictoc, tidyverse)
+```
+
+```{r}
+cores <- detectCores() - 1
+cores
+```
+
+```{r}
+cl <- makeCluster(cores)
+```
+
+```{r}
+registerDoParallel(cl)
+```
+
+
+```{r}
+tic()
+for(i in 1:200){
+  temp <- mean(rnorm(1000000))
+}
+toc()
+```
+
+```{r}
+tic()
+result <- foreach(i=1:200) %dopar% {
+  temp <- mean(rnorm(1000000))
+}
+toc()
+```
+
+```{r}
+stopCluster(cl)
+```
+
+## 並列演算：futurizeパッケージ
+
+```{r}
+pacman::p_load(futurize, furrr)
+```
+
+```{r}
+f <- function(x){
+  result <- numeric(100000)
+  for(i in 1:100000){
+    temp <- sample(x, 20, replace = TRUE)
+    result[i] <- mean(temp)
+  }
+  summary(result)
+}
+```
+
+
+```{r}
+# 通常の演算
+tic()
+temp <- iris[, 1:4] |> map(f)
+toc()
+```
+
+```{r}
+tic()
+temp <- iris[, 1:4] |> lapply(f) |> futurize(seed=TRUE)
+toc()
+```
+
+```{r}
+# 通常の演算とおなじ
+plan(sequential)
+
+tic()
+temp <- iris[, 1:4] |> map(f) |> futurize(seed=TRUE)
+toc()
+
+```
+
+```{r}
+# multisessionだとちょっと速い
+plan(multisession, workers = 2)
+
+tic()
+temp <- iris[, 1:4] |> map(f) |> futurize(seed=TRUE)
+toc()
+```
+
+
+```{r}
+tic()
+temp <- iris[, 1:4] |> lapply(f) |> futurize(seed=TRUE)
+toc()
+```
+
+```{r}
+# clusterも早くなる
+plan(cluster, workers = 2)
+
+tic()
+temp <- iris[, 1:4] |> map(f) |> futurize(seed=TRUE)
+toc()
+
+tic()
+temp <- iris[, 1:4] |> lapply(f) |> futurize(seed=TRUE)
+toc()
+```
+
+```{r}
+# workers = 2 より速い
+plan(cluster, workers = 4)
+
+tic()
+temp <- iris[, 1:4] |> map(f) |> futurize(seed=TRUE)
+toc()
+
+tic()
+temp <- iris[, 1:4] |> lapply(f) |> futurize(seed=TRUE)
+toc()
+
+tic()
+temp <- iris[, c(1:4, 1:4)] |> map(f) |> futurize(seed=TRUE)
+toc()
+```
+
+```{r}
+plan(cluster, workers = 8) # 4までは早くなって，8では早くはならない（演算が4つだからかも）
+
+tic()
+temp <- iris[, 1:4] |> map(f) |> futurize(seed=TRUE)
+toc()
+
+tic()
+temp <- iris[, 1:4] |> lapply(f) |> futurize(seed=TRUE)
+toc()
+
+# workers = 4より速い（8列の演算を回している）
+tic()
+temp <- iris[, c(1:4, 1:4)] |> map(f) |> futurize(seed=TRUE)
+toc()
+```
+
+```{r}
+# これは機能しない
+plan(multicore, workers = 8)
+
+tic()
+temp <- iris[, 1:4] |> map(f) |> futurize(seed=TRUE)
+toc()
+
+tic()
+temp <- iris[, 1:4] |> lapply(f) |> futurize(seed=TRUE)
+toc()
+```
