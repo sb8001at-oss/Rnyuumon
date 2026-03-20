@@ -81,7 +81,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./summary.html" rel="next">
+<link href="./Tips_ParallelComputing.html" rel="next">
 <link href="./chapter50.html" rel="prev">
 <link href="./favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -764,6 +764,23 @@ window.Quarto = {
 </li>
       </ul>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tips</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_ParallelComputing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tips：並列演算</span></a>
+  </div>
+</li>
+      </ul>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
@@ -1225,7 +1242,7 @@ effect = “direct”とeffect = “total”の違い
 <span class="header-section-number">51.2</span> ベイジアンネットワーク</h2>
 <p>上記の通り、DAGを作成することで共変量を整理することができます。しかし、DAG自体には統計的にデータを処理する機能はありません。したがって、実際にデータを取った後、DAGだけではデータから因果関係の正しさを評価することはできません。</p>
 <p>また、データをDAGに当てはめた場合に、各共変量がどの程度目的変数に影響を与えているのかを定量的に評価することもDAGだけではできません。</p>
-<p>このような、データを取得した時にDAGの適切さや共変量の影響を大きさを定量的に評価するための手法の一つが、<strong>ベイジアンネットワーク</strong>です。ベイジアンネットワークでは、データを基にDAGの構造を推定することができます。また、推定したDAGの構造を用いたり、あらかじめDAGの構造を指定して、共変量間の統計的な関係を評価することができます。</p>
+<p>このような、データを取得した時にDAGの適切さや共変量の影響の大きさを定量的に評価するための手法の一つが、<strong>ベイジアンネットワーク</strong>です。ベイジアンネットワークでは、データを基にDAGの構造を推定することができます。また、推定したDAGの構造を用いたり、あらかじめDAGの構造を指定して、共変量間の統計的な関係を評価することができます。</p>
 <section id="ベイジアンネットワーク確率的な依存関係" class="level3" data-number="51.2.1"><h3 data-number="51.2.1" class="anchored" data-anchor-id="ベイジアンネットワーク確率的な依存関係">
 <span class="header-section-number">51.2.1</span> ベイジアンネットワーク：確率的な依存関係</h3>
 <p>ベイジアンネットワークでは、因果関係ではなく、<strong>確率的な依存関係（Probabilistic Dependencies）</strong>を評価します。上記の<code>dagitty</code>などを用いてDAGを作成する場合には、その作成者の知識や経験から「存在すると考えられる因果関係」を記載します。しかし、実際に因果性を評価するとなると、ここまで述べてきたように高いハードル（無作為化、共変量の調整など）があります。</p>
@@ -1707,7 +1724,7 @@ F 0 0 0 0 0 0</code></pre>
 </section></section><section id="bnlearn条件付き確率の評価" class="level4" data-number="51.2.3.6"><h4 data-number="51.2.3.6" class="anchored" data-anchor-id="bnlearn条件付き確率の評価">
 <span class="header-section-number">51.2.3.6</span> bnlearn：条件付き確率の評価</h4>
 <p><code>bnlearn</code>では、DAGの構造を推定、もしくは指定した後、上記の条件付き確率を評価することができます。</p>
-<p>条件付き確率の評価には<code>bn.fit</code>関数を用います。<code>bn.fit</code>関数は<code>score</code>関数と同様に、第一引数にDAGの構造を推定/指定した<code>bn</code>オブジェクト、第二引数にデータを指定したデータフレームを取ります。また、<code>method</code>引数には計算の方法を指定します。以下の例では、<code>method="mle"</code>、最尤法で確率の計算を行います。</p>
+<p>条件付き確率の評価には<code>bn.fit</code>関数を用います。<code>bn.fit</code>関数は<code>score</code>関数と同様に、第一引数にDAGの構造を推定/指定した<code>bn</code>オブジェクト、第二引数に結果を含むデータフレームを取ります。また、<code>method</code>引数には計算の方法を指定します。以下の例では、<code>method="mle"</code>、最尤法で確率の計算を行います。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1799,7 +1816,7 @@ D            a          b          c
 </section></section></section><section id="bnlearnその他の機能について" class="level3" data-number="51.2.4"><h3 data-number="51.2.4" class="anchored" data-anchor-id="bnlearnその他の機能について">
 <span class="header-section-number">51.2.4</span> bnlearn：その他の機能について</h3>
 <p>以上の通り、<code>bnlearn</code>の機能の基礎について簡単に述べてきましたが、上に紹介した手法は<code>bnlearn</code>のほんの一部について紹介したに過ぎません。<code>bnlearn</code>には、さらに以下のような演算に関する機能が備わっています。</p>
-<p>このテキストですべてを説明することはできませんので、さらに詳しく<code>bnlearn</code>の機能を学びたい場合には、<a href="reference.qmd#因果推論">文献</a>を参考にして下さい。</p>
+<p>このテキストですべてを説明することはできませんので、さらに詳しく<code>bnlearn</code>の機能を学びたい場合には、<a href="./references.html#因果推論">文献</a>を参考にして下さい。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -2494,7 +2511,7 @@ E(x_{jpn} \cdot x_{eng}) \\
 <figure class="figure"><p><a href="./image/lavaan_modelsyntax.png" class="lightbox" data-gallery="quarto-lightbox-gallery-36" title="lavaan：パスモデルの指定"><img src="./image/lavaan_modelsyntax.png" class="img-fluid figure-img" alt="lavaan：パスモデルの指定"></a></p>
 <figcaption>lavaan：パスモデルの指定</figcaption></figure>
 </div>
-<p>上記の図の<span class="math inline">\(y \sim x_1 + x_2 + x_3\)</span>は顕在変数間の回帰を意味しており、<span class="math inline">\(y\)</span>が目的変数、<span class="math inline">\(x_1\)</span>～<span class="math inline">\(x_3\)</span>が説明変数です。<span class="math inline">\(f \sim x_1 + x_2 + x_3\)</span>は潜在変数<code>f</code>と顕在変数、<span class="math inline">\(x_1\)</span>～<span class="math inline">\(x_3\)</span>の関係を示します。したがって、顕在変数間の回帰は<code>~</code>で、潜在変数と顕在変数の関係は<code>=~</code>で表すことになります。<span class="math inline">\(x_1 \sim \sim x_1\)</span>は<span class="math inline">\(x_1\)</span>の分散、<span class="math inline">\(x_1 \sim \sim x_2\)</span>は<span class="math inline">\(x_1\)</span>と<span class="math inline">\(x_2\)</span>の共分散を意味しています。</p>
+<p>上記の図の<span class="math inline">\(y \sim x_1 + x_2 + x_3\)</span>は顕在変数間の回帰を意味しており、<span class="math inline">\(y\)</span>が目的変数、<span class="math inline">\(x_1\)</span>～<span class="math inline">\(x_3\)</span>が説明変数です。<span class="math inline">\(f \sim = x_1 + x_2 + x_3\)</span>は潜在変数<code>f</code>と顕在変数、<span class="math inline">\(x_1\)</span>～<span class="math inline">\(x_3\)</span>の関係を示します。したがって、顕在変数間の回帰は<code>~</code>で、潜在変数と顕在変数の関係は<code>=~</code>で表すことになります。<span class="math inline">\(x_1 \sim \sim x_1\)</span>は<span class="math inline">\(x_1\)</span>の分散、<span class="math inline">\(x_1 \sim \sim x_2\)</span>は<span class="math inline">\(x_1\)</span>と<span class="math inline">\(x_2\)</span>の共分散を意味しています。</p>
 <p>このシンタックスは文字列で設定し、<code>lavaan</code>の関数の引数とします。以下の例では、文系教科の能力（<code>humanities</code>）を潜在変数、国語（<code>japanese</code>）、英語（<code>english</code>）、社会（<code>social</code>）の点数を顕在変数としたパスモデルを作成しています。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -3177,8 +3194,8 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./summary.html" class="pagination-link" aria-label="おわりに">
-        <span class="nav-page-text">おわりに</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./Tips_ParallelComputing.html" class="pagination-link" aria-label="Tips：並列演算">
+        <span class="nav-page-text">Tips：並列演算</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
@@ -3446,7 +3463,7 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
 <span id="cb120-262"><a href="#cb120-262" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-263"><a href="#cb120-263" aria-hidden="true" tabindex="-1"></a>また、データをDAGに当てはめた場合に、各共変量がどの程度目的変数に影響を与えているのかを定量的に評価することもDAGだけではできません。</span>
 <span id="cb120-264"><a href="#cb120-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-265"><a href="#cb120-265" aria-hidden="true" tabindex="-1"></a>このような、データを取得した時にDAGの適切さや共変量の影響を大きさを定量的に評価するための手法の一つが、**ベイジアンネットワーク**です。ベイジアンネットワークでは、データを基にDAGの構造を推定することができます。また、推定したDAGの構造を用いたり、あらかじめDAGの構造を指定して、共変量間の統計的な関係を評価することができます。</span>
+<span id="cb120-265"><a href="#cb120-265" aria-hidden="true" tabindex="-1"></a>このような、データを取得した時にDAGの適切さや共変量の影響の大きさを定量的に評価するための手法の一つが、**ベイジアンネットワーク**です。ベイジアンネットワークでは、データを基にDAGの構造を推定することができます。また、推定したDAGの構造を用いたり、あらかじめDAGの構造を指定して、共変量間の統計的な関係を評価することができます。</span>
 <span id="cb120-266"><a href="#cb120-266" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-267"><a href="#cb120-267" aria-hidden="true" tabindex="-1"></a><span class="fu">### ベイジアンネットワーク：確率的な依存関係</span></span>
 <span id="cb120-268"><a href="#cb120-268" aria-hidden="true" tabindex="-1"></a></span>
@@ -3755,7 +3772,7 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
 <span id="cb120-573"><a href="#cb120-573" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-574"><a href="#cb120-574" aria-hidden="true" tabindex="-1"></a><span class="in">`bnlearn`</span>では、DAGの構造を推定、もしくは指定した後、上記の条件付き確率を評価することができます。</span>
 <span id="cb120-575"><a href="#cb120-575" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-576"><a href="#cb120-576" aria-hidden="true" tabindex="-1"></a>条件付き確率の評価には<span class="in">`bn.fit`</span>関数を用います。<span class="in">`bn.fit`</span>関数は<span class="in">`score`</span>関数と同様に、第一引数にDAGの構造を推定/指定した<span class="in">`bn`</span>オブジェクト、第二引数にデータを指定したデータフレームを取ります。また、<span class="in">`method`</span>引数には計算の方法を指定します。以下の例では、<span class="in">`method="mle"`</span>、最尤法で確率の計算を行います。</span>
+<span id="cb120-576"><a href="#cb120-576" aria-hidden="true" tabindex="-1"></a>条件付き確率の評価には<span class="in">`bn.fit`</span>関数を用います。<span class="in">`bn.fit`</span>関数は<span class="in">`score`</span>関数と同様に、第一引数にDAGの構造を推定/指定した<span class="in">`bn`</span>オブジェクト、第二引数に結果を含むデータフレームを取ります。また、<span class="in">`method`</span>引数には計算の方法を指定します。以下の例では、<span class="in">`method="mle"`</span>、最尤法で確率の計算を行います。</span>
 <span id="cb120-577"><a href="#cb120-577" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-578"><a href="#cb120-578" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="条件付き確率の推定"}</span></span>
 <span id="cb120-579"><a href="#cb120-579" aria-hidden="true" tabindex="-1"></a><span class="co"># pdag2dag：方向が無いedgeの方向を定める関数</span></span>
@@ -3793,7 +3810,7 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
 <span id="cb120-611"><a href="#cb120-611" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-612"><a href="#cb120-612" aria-hidden="true" tabindex="-1"></a>以上の通り、<span class="in">`bnlearn`</span>の機能の基礎について簡単に述べてきましたが、上に紹介した手法は<span class="in">`bnlearn`</span>のほんの一部について紹介したに過ぎません。<span class="in">`bnlearn`</span>には、さらに以下のような演算に関する機能が備わっています。</span>
 <span id="cb120-613"><a href="#cb120-613" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-614"><a href="#cb120-614" aria-hidden="true" tabindex="-1"></a>このテキストですべてを説明することはできませんので、さらに詳しく<span class="in">`bnlearn`</span>の機能を学びたい場合には、<span class="co">[</span><span class="ot">文献</span><span class="co">](reference.qmd#因果推論)</span>を参考にして下さい。</span>
+<span id="cb120-614"><a href="#cb120-614" aria-hidden="true" tabindex="-1"></a>このテキストですべてを説明することはできませんので、さらに詳しく<span class="in">`bnlearn`</span>の機能を学びたい場合には、<span class="co">[</span><span class="ot">文献</span><span class="co">](references.qmd#因果推論)</span>を参考にして下さい。</span>
 <span id="cb120-615"><a href="#cb120-615" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-616"><a href="#cb120-616" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
 <span id="cb120-617"><a href="#cb120-617" aria-hidden="true" tabindex="-1"></a><span class="fu">## 条件付き確率とDAG</span></span>
@@ -4261,7 +4278,7 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
 <span id="cb120-1079"><a href="#cb120-1079" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-1080"><a href="#cb120-1080" aria-hidden="true" tabindex="-1"></a><span class="al">![lavaan：パスモデルの指定](./image/lavaan_modelsyntax.png)</span></span>
 <span id="cb120-1081"><a href="#cb120-1081" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-1082"><a href="#cb120-1082" aria-hidden="true" tabindex="-1"></a>上記の図の$y \sim x_1 + x_2 + x_3$は顕在変数間の回帰を意味しており、$y$が目的変数、$x_1$～$x_3$が説明変数です。$f \sim x_1 + x_2 + x_3$は潜在変数<span class="in">`f`</span>と顕在変数、$x_1$～$x_3$の関係を示します。したがって、顕在変数間の回帰は<span class="in">`~`</span>で、潜在変数と顕在変数の関係は<span class="in">`=~`</span>で表すことになります。$x_1 \sim \sim x_1$は$x_1$の分散、$x_1 \sim \sim x_2$は$x_1$と$x_2$の共分散を意味しています。</span>
+<span id="cb120-1082"><a href="#cb120-1082" aria-hidden="true" tabindex="-1"></a>上記の図の$y \sim x_1 + x_2 + x_3$は顕在変数間の回帰を意味しており、$y$が目的変数、$x_1$～$x_3$が説明変数です。$f \sim = x_1 + x_2 + x_3$は潜在変数<span class="in">`f`</span>と顕在変数、$x_1$～$x_3$の関係を示します。したがって、顕在変数間の回帰は<span class="in">`~`</span>で、潜在変数と顕在変数の関係は<span class="in">`=~`</span>で表すことになります。$x_1 \sim \sim x_1$は$x_1$の分散、$x_1 \sim \sim x_2$は$x_1$と$x_2$の共分散を意味しています。</span>
 <span id="cb120-1083"><a href="#cb120-1083" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-1084"><a href="#cb120-1084" aria-hidden="true" tabindex="-1"></a>このシンタックスは文字列で設定し、<span class="in">`lavaan`</span>の関数の引数とします。以下の例では、文系教科の能力（<span class="in">`humanities`</span>）を潜在変数、国語（<span class="in">`japanese`</span>）、英語（<span class="in">`english`</span>）、社会（<span class="in">`social`</span>）の点数を顕在変数としたパスモデルを作成しています。</span>
 <span id="cb120-1085"><a href="#cb120-1085" aria-hidden="true" tabindex="-1"></a></span>
