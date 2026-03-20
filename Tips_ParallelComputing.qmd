@@ -1,4 +1,4 @@
-# Tips：並列演算 {.unnumbered}
+# 並列演算（Parallel Computing） {.unnumbered}
 
 ```{r, echo=FALSE, message=FALSE}
 library(tidyverse)
@@ -17,15 +17,15 @@ for(i in 1:5){sqrt(i)}
 for(i in 6:10){sqrt(i)}
 ```
 
-時間のかかる演算を少しでも速くするため、繰り返しのある演算を分割し、分割した演算を複数立ち上げたR（セッション）で演算することで計算速度を速める手法のことを**並列演算**と呼びます
+時間のかかる演算を少しでも速くするため、繰り返しのある演算を分割し、分割した演算を複数立ち上げたR（セッション）で演算することで計算速度を速める手法のことを**並列演算（Parallel Computing）**と呼びます。
 
 ## セッション
 
 Rの**セッション**とは、Rが起動して演算できる状態であることを示す言葉です。R GUIを起動するとRのセッションが1つ立ち上がります。同時にR GUIをもう一つ開くこともでき、1つ目のRと2つ目のRで別の演算を行うことができます。
 
-並列演算では、Rをたくさん立ち上げる、つまりセッションをたくさん準備して、そのそれぞれのセッションに演算を分割することで演算速度を速めます。この立ち上げたセッションのことをクラスターとも呼びます。
+並列演算では、Rをたくさん立ち上げる、つまりセッションをたくさん準備して、そのそれぞれのセッションに演算を分割することで演算速度を速めます。この立ち上げたセッションのまとまりのことをクラスターとも呼びます。
 
-重い演算を用いる統計のライブラリではライブラリの機能自体に並列演算が組み込まれている場合があります。一方で、自分で書いたスクリプトで並列演算を行いたい場合、自分で演算を分割して複数のセッションに投げる、というのは大変ですので、ライブラリを利用してRに並列演算を任せることになります。
+重い演算を用いる統計のライブラリでは、ライブラリの機能自体に並列演算が組み込まれている場合があります。一方で、自分で書いたスクリプトで並列演算を行いたい場合、自分で演算を分割して複数のセッションに投げる、というのは大変ですので、ライブラリを利用してRに並列演算を任せることになります。
 
 ## 並列演算の手法
 
@@ -34,11 +34,11 @@ Rの**セッション**とは、Rが起動して演算できる状態である�
 - Socket：Rのセッションを新規に立ち上げ、それぞれのセッションで演算を行う手法
 - Fork：Rの現在のセッションをコピーし、複数のセッションでそれぞれ演算を行う手法
 
-あまり変わらないように見えますが、Socketでは現在のセッションの情報を別のセッションでは持ち越せない、つまりライブラリの読み込みや変数は別のセッションには存在しないのに対し、Forkではライブラリの読み込みや変数の状態も持ち越せます。
+あまり変わらないように見えますが、Socketでは現在のセッションの情報を別のセッションでは持ち越せない、つまりライブラリの読み込みの状態や変数は別のセッションには持ち込まれないのに対し、Forkではライブラリの読み込みの状態や変数も（メモリを共有する形で）持ち込めます。
 
-Socketでは各セッションでライブラリの読み込みや変数の設定を行う必要があり、時間が取られます。一方でForkはライブラリの読み込みや変数の設定がなく、ライブラリの読み込みや変数に関するメモリをセッション間で共有します。
+Socketでは各セッションでライブラリの読み込みや変数の設定を行う必要があり、時間が取られます。一方でForkはライブラリの読み込みや変数の設定を行うことなく演算ができます。
 
-何より違うのは、**Windowsでは基本的にForkを使えない**、ということです。ですので、LinuxやMacOSではSocketもForkも使えるのに対し、WindowsではSocketしか使えません。また、RStudioはForkと相性があまりよくありません。自分のPCでForkが利用可能かどうかは、以下の`parallelly::supportsMulticore`関数で確認することができます[@parallelly_bib]。利用可能であれば`TRUE`が、利用できなければ`FALSE`が返ってきます。
+何より違うのは、**Windowsでは基本的にForkを使えない**、ということです。ですので、LinuxやMacOSではSocketもForkも使えるのに対し、WindowsではSocketしか使えません。また、RStudioはForkと相性があまりよくありません。自分のPCでForkが利用可能かどうかは、以下の`parallelly::supportsMulticore`関数で確認することができます[@parallelly_bib]。Forkが利用可能であれば`TRUE`が、利用できなければ`FALSE`が返ってきます。
 
 ```{r, filename="parallelly::supportsMulticore関数でForkが使えるか確認する"}
 pacman::p_load(parallelly)
@@ -47,7 +47,7 @@ supportsMulticore()
 
 ## 並列演算のライブラリ
 
-[CRAN: Task Views](https://CRAN.R-project.org/view=HighPerformanceComputing)には`Rmpi`と`snow`がRの並列演算のコアパッケージであるとされています。これらは基本のライブラリで、他のライブラリの開発に用いることが想定されており、Rのユーザーが自分のスクリプトで利用するのは難しいです。
+[CRAN: Task Views](https://CRAN.R-project.org/view=HighPerformanceComputing)には`Rmpi`[@rmpi_bib]と`snow`[@snow_bib]がRの並列演算のコアパッケージであるとされています。これらは基本のライブラリで、他のライブラリの開発などに用いることが想定されており、Rのユーザーが自分のスクリプトで利用するのは難しいです。
 
 ユーザー向けの並列演算のライブラリとして、現在では主に以下の3つが利用されています。
 
@@ -55,7 +55,7 @@ supportsMulticore()
 - `foreach` + `doParallel`パッケージ[@foreach_bib; @doParallel_bib]
 - `future`パッケージ[@RJ-2021-048]
 
-`parallel`が最も昔から用いられているパッケージで、長年よく利用されていたのが`foreach`と`doParallel`パッケージです。`future`は2017年頃から開発が始まり、2021年にver.1.0となった新しいパッケージです。`future`には[futureverse](https://www.futureverse.org/)というパッケージ群があり、`parallel`・`foreach`よりも簡単で安全なパッケージとなっています。また、2026年には`futurize`[@futurize_bib]という`future`の特徴をより簡単に利用できるライブラリが発表されており、さらに簡単に並列演算ができるようになっています。
+`parallel`が最も昔から用いられているパッケージで、長年よく利用されていたのが`foreach`と`doParallel`パッケージです。`future`は2017年頃から開発が始まり、2021年にver.1.0となった新しいパッケージです。`future`には[futureverse](https://www.futureverse.org/)というパッケージ群があり、`parallel`・`foreach`よりも簡単で安全に並列演算ができるパッケージとなっています。また、2026年には`futurize`[@futurize_bib]という`future`をより簡単に利用できるライブラリが発表されています。
 
 ここではまず`parallel`、`foreach`から説明しますが、とりあえず並列演算を試してみたい、という場合には右のメニューから`future`パッケージの記事を選んで読んでいただければと思います。
 
@@ -63,21 +63,21 @@ supportsMulticore()
 
 まずは`parallel`パッケージから説明します。`parallel`はSocket・Forkの両方に対応し、[19章](chapter19.qmd)で説明した`apply`関数に相当する演算を並列化することができるライブラリです。
 
-まずは`parallel`パッケージをインストールし、読み込みます。[21章](chapter21.qmd#演算時間の計測)で紹介した演算時間計測のためのパッケージである`tictoc`も同時に読み込んでおきます。
+まずは`parallel`パッケージをインストールし、読み込みます。[21章](chapter21.qmd#演算時間の計測)で紹介した演算時間計測のためのパッケージである`tictoc`[@tictoc_bib]も同時に読み込んでおきます。
 
 ```{r, filename="parallelパッケージの読み込み"}
 pacman::p_load(parallel, tictoc)
 ```
 
-次に、自分のPCの**CPUのコア**の数を`detectCores`関数で調べます。現代のPCに搭載されているCPUでは、通常6個以上のコアを持ちます。このコアはPCでマルチタスクを行うために用いられているPCの演算の基本単位で、並列演算の場合には複数のコアを利用して演算を行います。私の使っているPCではコアは20個ですので、並列演算は最大で20まで設定できます。
+次に、自分のPCの**CPUのコア**の数を`detectCores`関数で調べます。現代のPCに搭載されているCPUは、通常6個以上のコアを持ちます。このコアはPCでマルチタスクを行うために用いられているCPUの演算の基本単位で、並列演算の場合には複数のコアを利用して演算を行います。私の使っているPCではコアは20個ですので、並列演算は最大で20まで設定できます。
 
-ただし、すべてのコアをRに捧げてしまうと他のことがPCでできなくなってしまいますので、利用するコアは最大でも`detectCores`の返り値から1を引いた数、私のPCであれば19、で設定するのがよいでしょう。
+ただし、すべてのコアをRに捧げてしまうと他のことがPCでできなくなったり、演算が遅くなってしまいますので、利用するコアは最大でも`detectCores`の返り値から1を引いた数、私のPCであれば19、で設定するのがよいでしょう。
 
 ```{r, filename="CPUのコアの数を調べる"}
 detectCores()
 ```
 
-次に、まずは通常の演算（上から順番に計算するので**sequential**と呼ばれます）で重めの計算をしてみます。以下の関数は2秒待った後で引数`x`をそのまま返す関数です。
+まずは通常の演算（上から順番に計算するので**sequential**と呼ばれます）で重めの計算をしてみます。以下の関数は2秒待った後で引数`x`をそのまま返す関数です。
 
 ```{r, filename="2秒待つ関数"}
 f <- function(x = 1){
@@ -98,7 +98,7 @@ lapply(1:3, f) |> system.time()
 mclapply(1:3, f, mc.cores = 3) |> system.time()
 ```
 
-`mclapply`をDockerの[rocker/rstudio](https://hub.docker.com/r/rocker/rstudio)で実行すると2秒で計算が終わります。2秒かかる`f`関数を3回行う演算が`f`関数1回分で終わっていることになります。ですので、LinuxやMacOSでは`mclapply`を用いることでForkでの並列演算を行うことができます。
+`mclapply`をDockerの[rocker/rstudio](https://hub.docker.com/r/rocker/rstudio)で実行すると2秒で計算が終わります。2秒かかる`f`関数を3回行う演算が`f`関数1回分で終わっていることになります。ですので、LinuxやMacOSでは`mclapply`を用いることでForkでの並列演算を行うことができています。
 
 ![Linuxでのmclapplyの実行](./image/mclapply.png){width=500}
 
@@ -157,7 +157,7 @@ f2 <- function(x){
 lapply(1:3, f2)
 ```
 
-一方で、Socketの並列演算を行う`parLapply`関数で`f2`関数を呼び出すと、エラーが出ます。これは、Socketでは現在のセッションで呼び出したライブラリや定義した変数は別のセッションにはコピーされないため、ライブラリで設定されている関数が利用できないためです。
+一方で、Socketの並列演算を行う`parLapply`関数で`f2`関数を呼び出すと、エラーが出ます。これは、Socketでは現在のセッションで呼び出したライブラリや定義した変数は別のセッションにはコピーされないため、ライブラリで設定されている関数（`str_c`）が利用できないためです。
 
 ```{r, error=TRUE, filename="Socketではライブラリの状態はコピーされない"}
 cl <- makeCluster(3)
@@ -187,7 +187,7 @@ f3 <- function(x){
 parLapply(cl, 1:3, f3)
 ```
 
-上記のライブラリの設定の場合と同じく、`clusterEvalQ`関数でy変数を設定しておくと、`parLapply`の演算が実行されます。
+上記のライブラリの設定の場合と同じく、`clusterEvalQ`関数で変数`y`を設定しておくと、`parLapply`の演算が実行されます。
 
 ```{r, filename="clusterEvalQ関数で変数を指定する"}
 clusterEvalQ(cl, y <- 2)
@@ -232,7 +232,7 @@ foreach(i = vec) %do% {eval}
 foreach(i = 1:3) %do% {f(i)}
 ```
 
-ですので、上記の`foreach`関数は下の`lapply`と同じ演算を行うことになります。
+ですので、上記の`foreach`関数は下の`lapply`と同じ演算になります。
 
 ```{r, filename="foreachと同じ演算のlapply"}
 lapply(1:3, f)
@@ -242,7 +242,7 @@ lapply(1:3, f)
 
 ```{r, filename="%:%でネストする"}
 # for(i in 1:2) for(j in 1:2){paste("i=", i, "j=", j, "i+J=", i + j)}とほぼ同じだが、
-# 返り値がリストであるところが異なる
+# 返り値があり、リストを返すところが異なる
 foreach(i = 1:2) %:% foreach(j = 1:2) %do% {paste("i=", i, "j=", j, "i+J=", i + j)}
 ```
 
@@ -254,7 +254,7 @@ a <- foreach(i = 1:3) %do% {f(i)}
 toc()
 ```
 
-`foreach`の引数`.combine`に演算結果を結合する方法を指定することもできます。`.combine=c`とすると返り値はベクター、`.combine=cbind`とすると返り値は行列になります。
+`foreach`の引数`.combine`には演算結果を結合する方法を指定することもできます。`.combine=c`を指定すると返り値はベクター、`.combine=cbind`を指定すると返り値は行列になります。
 
 ```{r, filename=".combine引数を指定する"}
 foreach(i = 1:3, .combine = c) %do% {f(i)} # 返り値はベクター
@@ -268,7 +268,7 @@ foreach(i = 1:3, .combine = cbind) %do% {f(i)} # 返り値は行列
 
 ```{r, filename="%dopar%演算子"}
 tic()
-a <- foreach(i = 1:3) %dopar% {f(1)}
+a <- foreach(i = 1:3) %dopar% {f(i)}
 toc()
 ```
 
@@ -304,7 +304,6 @@ a <- foreach(i=1:19) %dopar% {f2(1)}
 a <- foreach(i=1:7, .packages = "stringr") %dopar% {f2(1)}
 ```
 
-
 `parallel`の場合と同様に、並列演算のためのRのセッションを閉じる時には`stopCluster`関数を用います。
 
 ```{r, filename="セッションの終了"}
@@ -323,15 +322,15 @@ foreach(i = 1:3) %dopar% {f(i)}
 
 ## futureパッケージ
 
-`future`パッケージは最後発の、よりモダンな並列演算のためのライブラリです。`future`は基礎的な並列演算の関数を提供するためのパッケージで、この`future`を使ったライブラリ群（`future.apply`、`furrr`、`doFuture`、`futurize`）と共に[futureverse](https://www.futureverse.org/)というパッケージ群が整備されています。ただし、futureverseには`tidyverse`のように一度にライブラリをインストール・ロードできるような仕組みはありません。
+`future`パッケージは最後発の、よりモダンな並列演算のためのライブラリです。`future`は基礎的な並列演算の関数を提供するためのライブラリで、この`future`を使ったライブラリ群（`future.apply`、`furrr`、`doFuture`、`futurize`）と共に[futureverse](https://www.futureverse.org/)というパッケージ群が整備されています。ただし、futureverseには`tidyverse`のように一度にライブラリをインストール・ロードできるような仕組みはありません。
 
 ```{r, filename="ライブラリの読み込み"}
 pacman::p_load(future)
 ```
 
-### 演算方法の指定
+### 並列演算方法の指定
 
-`future`では、演算の方法を`plan`関数で指定します。`plan(sequential)`は通常のRと同じ演算、`plan(multisession)`はSocketでの並列演算、`plan(multicore)`はForkでの並列演算をそれぞれ指定します。
+`future`では、並列演算の方法を`plan`関数で指定します。`plan(sequential)`は通常のRと同じ演算、`plan(multisession)`はSocketでの並列演算、`plan(multicore)`はForkでの並列演算をそれぞれ指定します。
 
 ```{r, filename="plan関数でモードの選択"}
 plan(sequential)
@@ -406,6 +405,7 @@ d %<-% {f(3)}
 `future`では現在のセッションで読み込んでいるライブラリを自動的にクラスターで読み込んだ上で演算してくれる場合もあります。以下の例では`stringr`の関数を用いていますが、問題なく演算が行われています。また、読み込むライブラリを指定する場合には`future`関数の`packages`引数として文字列で指定することもできます。
 
 ```{r, filename="futureでのライブラリの読み込み"}
+# ライブラリを明示するときは a <- future({f2(1)}, packages="stringr") とする
 a %<-% {f2(1)}
 b %<-% {f2(2)}
 d %<-% {f2(3)}
@@ -437,7 +437,7 @@ y
 
 上記の通り`future`では簡単に並列演算を実装することができます。しかし、並列演算するそれぞれのコードはいちいち記述しないといけませんし、`apply`関数などで利用するにはやや不便です。
 
-この問題に対応するため、futureverseでは`apply`関数、`purrr`の関数（[44章](chapter44.qmd)参照）、`foreach`での並列演算を行うための以下の3つのライブラリ群を備えています。
+この問題に対応するため、futureverseでは`apply`関数、`purrr`の関数（[44章](chapter44.qmd)参照）[@purrr_bib]、`foreach`での並列演算を行うための以下の3つのライブラリ群を備えています。
 
 - `future.apply`：`apply`関数の並列化[@RJ-2021-048]
 - `furrr`：`purrr`の並列化[@furrr_bib]
@@ -459,13 +459,13 @@ future_map(1:5, sqrt)
 foreach(i = 1:3) %dofuture% {f(1)}
 ```
 
-## 並列演算：futurizeパッケージ
+## futurizeパッケージ
 
 とは言っても、それぞれのパッケージにはたくさんの関数が設定されており、覚えるのも大変です。昔から用いていた`apply`や`purrr`、`foreach`の関数をそのまま並列化できたほうが便利です。
 
 そこで、futureverseでは今まで用いていた関数をそのまま`future`の手法で並列化するためのライブラリである`futurize`パッケージを提供しています。
 
-この`futurize`パッケージの`futurize`関数を用いるだけで今まで使っていた関数を並列化することができます。
+この`futurize`パッケージの`futurize`関数を用いるだけで、今まで使っていた関数を並列化することができます。
 
 `futurize`を利用する際には`future.apply`、`furrr`、`doFuture`も読み込む必要があります。
 
