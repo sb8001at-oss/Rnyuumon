@@ -415,7 +415,7 @@ p1 | p2
 
 `survfit`関数は`formula`を引数に取りますが、この`formula`の左辺は上で紹介した`Surv`関数の返り値となります。通常はこの左辺に直接`Surv`関数を書き込んで用います。生存時間に対する説明変数がない場合には、`formula`の右辺は`1`とします。`data`引数にデータフレームを指定するのは線形回帰の`lm`関数と同じです。
 
-`survfit`関数の返り値として、カプランマイヤー曲線で示されているリスク集団の数（`n`）、イベントの起こった回数（`events`）、生存割合が50％となる日数（`median`）、生存割合が50％となる日数の95％信頼区間（`0.95LCL`、`0.95UCL`）が表示されます。
+`survfit`関数の返り値として、カプランマイヤー曲線で示されているリスク集団の数（`n`）、イベントの起こった回数（`events`）、生存割合が50％となる日数（`median`）、生存割合が50％となる日数の95％信頼区間（`0.95 LCL`、`0.95 UCL`）が表示されます。
 
 ```{r, filename="survfit関数でカプランマイヤー曲線の計算"}
 result_km <- survfit(Surv(time, status) ~ 1, data = cancer)
@@ -494,6 +494,85 @@ result_km2 |>
   add_confidence_interval() +
   add_pvalue() # p値を表記
 ```
+
+### 一般化Wilcoxon検定
+
+生存時間の検定のうち、初期の生存率の差に重みをつけて評価する手法が一般化Wilcoxon検定（Gehan-Wilcoxon test）です。Rでの一般化Wilcoxon検定の計算にはlog-rank検定と同様に`survdiff`関数を用います。一般化Wilcoxon検定の場合にも、`survdiff`関数の引数はほぼlog-rank検定と同じですが、引数に`rho=1`を指定する部分が異なります。`rho`のデフォルト値は0で、`rho=0`の時にはlog-rank検定となります。
+
+```{r, filename="一般化Wilcoxon検定"}
+survdiff(Surv(time, status) ~ sex, data = cancer, rho=1) 
+```
+
+log-rankと一般化Wilcoxonを比較すると、log-rank検定ではより後期の生存時間の差が大きいと有意になりやすく、一般化Wilcoxon検定ではより初期の生存時間の差が大きいと有意になりやすい特徴があります。
+
+以下の例では、後期の生存時間に差がある場合を示しています。log-rankの方が一般化Wilcoxonよりもp値が小さめになっています。
+
+```{r, filename="後期の生存時間に差がある場合", echo=FALSE}
+set.seed(0)
+n <- 125
+
+sv_temp <- 
+  data.frame(
+    sv = c(
+      rweibull(n, shape = 0.8, scale = 115) |> round(),
+      rweibull(n, shape = 1.2, scale = 95) |> round()
+    ),
+    sex =rep(
+      c("male", "female"),
+      c(n, n)
+    ),
+    status = rep(c(0, 1), c(30, 70)) |> sample(n * 2, replace = TRUE)
+  )
+```
+
+
+```{r, filename="後期の生存時間に差がある場合"}
+survfit(Surv(sv, status) ~ sex, data = sv_temp) |> 
+  ggsurvfit() +
+  add_confidence_interval()+
+  add_censor_mark()
+
+# log-rank
+survdiff(Surv(sv) ~ sex, data = sv_temp, rho=0) 
+
+# 一般化Wilcoxon
+survdiff(Surv(sv) ~ sex, data = sv_temp, rho=1) 
+```
+
+次の例では初期の生存時間に差がある場合を示しています。先ほどとは逆にlog-rankの方が一般化Wilcoxonよりもp値が大きくなっています。
+
+```{r, filename="初期の生存時間に差がある場合", echo=FALSE}
+set.seed(0)
+n <- 30
+
+sv_temp <- 
+  data.frame(
+    sv = c(
+      rgamma(n, shape = 0.7, scale = 100) |> round(),
+      rgamma(n, shape = 1.3, scale = 100) |> round()
+    ),
+    sex =rep(
+      c("male", "female"),
+      c(n, n)
+    ),
+    status = c(0, 1) |> sample(n * 2, replace = TRUE)
+  )
+```
+
+
+```{r, filename="初期の生存時間に差がある場合"}
+survfit(Surv(sv, status) ~ sex, data = sv_temp) |> 
+  ggsurvfit() +
+  add_confidence_interval()+
+  add_censor_mark()
+
+# log-rank
+survdiff(Surv(sv) ~ sex, data = sv_temp, rho=0) 
+
+# 一般化Wilcoxon
+survdiff(Surv(sv) ~ sex, data = sv_temp, rho=1) 
+```
+
 
 ## Cox回帰
 

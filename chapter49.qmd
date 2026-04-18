@@ -186,7 +186,7 @@ dagitty(
 :::{.callout-tip collapse="true"}
 ## Lalondeのデータセット（NSW）
 
-因果推論に関連するライブラリでは、`lalonde`（`nsw`）というデータセットがよく用いられています。
+因果推論に関連するパッケージでは、`lalonde`（`nsw`）というデータセットがよく用いられています。
 
 この`lalonde`は`cobalt`パッケージ[@cobalt_bib]で提供されているデータです。`lalonde`は[Lalonde の統計解析に関する論文](https://business.baylor.edu/scott_cunningham/teaching/lalonde-1986.pdf)[@lalonde1986evaluating]で解析に用いられたデータで、1970年代に実施された社会科学的な実験（The National Supported Work Demonstration、NSW）の結果となっています。
 
@@ -214,7 +214,7 @@ data.frame(
   knitr::kable(caption="cobalt::lalondeの列の意味")
 ```
 
-また、同様に`DRDID`パッケージ[@DRDID_bib]の`nsw`データセットもLalonde (1986)を引用したデータセットになっています。この`nsw`は19204行（`nsw_long`という縦持ちのデータセットは38408行）もあるデータセットになっていて、`treated`の列に`NA`のデータが18482行含まれています。`DRDID`ライブラリの関数の例では、`experimental`の列を割付群として用いています。
+また、同様に`DRDID`パッケージ[@DRDID_bib]の`nsw`データセットもLalonde (1986)を引用したデータセットになっています。この`nsw`は19204行（`nsw_long`という縦持ちのデータセットは38408行）もあるデータセットになっていて、`treated`の列に`NA`のデータが18482行含まれています。`DRDID`パッケージの関数の例では、`experimental`の列を割付群として用いています。
 
 ```{r, filename="DRDID::nswのデータセット"}
 DRDID::nsw |> dim()
@@ -536,7 +536,7 @@ match_nearest |> summary() |> plot(abs = FALSE)
 最近傍法と類似した方法。対照群が処置群より少ない時はあまりうまくいかない。`optmatch`パッケージ[@optmatch_bib]をインストールする必要がある。
 
 ```{r, filename="method=\"optimal\""}
-# optmatchライブラリが必要
+# optmatchパッケージが必要
 match_optimal <- 
   matchit(
     got ~ distvct + age + tinc + any, 
@@ -587,7 +587,7 @@ match_quick |> summary() |> plot(abs = FALSE)
 ```{r, filename="method=\"genetic\"", message=FALSE, warning=FALSE}
 #| cache: TRUE
 
-# Matching、rgenoudライブラリが必要、すごく時間がかかる
+# Matching、rgenoudパッケージが必要、すごく時間がかかる
 match_genetic <- 
   matchit(
     got ~ distvct + age + tinc + any, 
@@ -605,7 +605,7 @@ match_genetic |> summary() |> plot(abs = FALSE)
 層別マッチングの一種で、同一の共変量値を持つデータのみが同じサブクラスに割り当てられるようにする手法。一致しないとデータはUnmatchedとして取り除かれる。`Matching`パッケージ[@Matching_bib]、`rgenoud`パッケージ[@rgenoud_bib; @rgenoud_bib2]を使用する。
 
 ```{r, filename="method=\"exact\""}
-# Matching、rgenoudライブラリが必要
+# Matching、rgenoudパッケージが必要
 match_exact <- 
   matchit(
     got ~ distvct + age + tinc + any, 
@@ -847,7 +847,7 @@ $$w_{ATT}=Z+\frac{(1-Z) \cdot e(x)}{1-e(x)}$$
 
 RでIPWの演算を行う場合、上記のように傾向スコアを`glm`関数から計算し、各データの重みを演算した後、`lm`関数や`glm`関数の重み（`weight`引数）に指定すれは計算することができます。
 
-しかし、やや手間がかかる上に、共変量の調整の程度などを評価するのも大変です。ですので、ここではIPWを含めた重み付け回帰のライブラリである`WeightIt`パッケージ[@WeightIt_bib]を利用したIPWについて簡単に説明します。`WeightIt`パッケージでは、共変量の調整の評価に`cobalt`パッケージ[@cobalt_bib]を用います。
+しかし、やや手間がかかる上に、共変量の調整の程度などを評価するのも大変です。ですので、ここではIPWを含めた重み付け回帰のパッケージである`WeightIt`パッケージ[@WeightIt_bib]を利用したIPWについて簡単に説明します。`WeightIt`パッケージでは、共変量の調整の評価に`cobalt`パッケージ[@cobalt_bib]を用います。
 
 `WeightIt`パッケージでは、`weightit`関数を用いて重みを演算します。`weightit`関数では、`matchit`関数と同様に割付群（以下の例では`got`）を目的変数とし、共変量を説明変数としたformulaを指定します。`method`引数には傾向スコアを演算する手法を指定し（以下の例では`glm`）、`estimand`引数には最終的に評価するもの（`"ATE"`や`"ATT"`）を指定します。
 
@@ -905,9 +905,9 @@ $\hat{C}_{AIPW}(X_i)$の式の前半の項は処置群の結果（$r_1$）、後
 
 ### 2重ロバスト法：AIPWパッケージ
 
-Rで2重ロバスト法の計算を行う場合、TMLEでの演算を行う`tmle`パッケージ[@tmle_bib]や`tmle3`パッケージ[@tmle3_bib]、AIPWでの演算を行う`CausalGAM`[@CausalGAM_bib]や`npcausal`[@npcausal_bib]などのライブラリを用います。
+Rで2重ロバスト法の計算を行う場合、TMLEでの演算を行う`tmle`パッケージ[@tmle_bib]や`tmle3`パッケージ[@tmle3_bib]、AIPWでの演算を行う`CausalGAM`[@CausalGAM_bib]や`npcausal`[@npcausal_bib]などのパッケージを用います。
 
-ここでは、これらのRのライブラリのうち、`AIPW`パッケージ[@AIPW_bib]の使い方について簡単に説明します。`AIPW`は`SuperLearner`[@SuperLearner_bib]という機械学習パッケージの機能を用い、クロスバリデーションを用いて2重ロバストな効果の推定値（ATE）を評価するライブラリです。
+ここでは、これらのRのパッケージのうち、`AIPW`パッケージ[@AIPW_bib]の使い方について簡単に説明します。`AIPW`は`SuperLearner`[@SuperLearner_bib]という機械学習パッケージの機能を用い、クロスバリデーションを用いて2重ロバストな効果の推定値（ATE）を評価するパッケージです。
 
 以下の例は`AIPW`パッケージの関数の例として示されているものです。この例では、`eager_sim_obs`というデータセットを用いて、AIPWの演算用のデータを準備しています。`eager_sim_obs`はEAGeR Study[@mone2015preconception]という、アスピリンが妊娠の成功率に与える影響を評価した研究のデータで、各列の意味はそれぞれ以下の通りです。
 
@@ -942,7 +942,7 @@ exposure <- eager_sim_obs$sim_A # 割付群
 covariates <- as.matrix(eager_sim_obs[-1:-2]) # その他の共変量
 ```
 
-次に、`AIPW`のオブジェクトを操作し、AIPWの演算を行っています。この`AIPW`パッケージは、[22章](chapter22.qmd#rのクラスとアトリビュートattributes)でほんの少しだけ触れている`R6`オブジェクト[@R6_bib]を用いており、他のRの関数・ライブラリと比較して演算の方法がやや特殊です。
+次に、`AIPW`のオブジェクトを操作し、AIPWの演算を行っています。この`AIPW`パッケージは、[22章](chapter22.qmd#rのクラスとアトリビュートattributes)でほんの少しだけ触れている`R6`オブジェクト[@R6_bib]を用いており、他のRの関数・パッケージと比較して演算の方法がやや特殊です。
 
 `AIPW`では、まず`AIPW$new`メソッドを用いて、AIPWの演算に与えるデータを設定していきます。この`$new`は`R6`におけるメソッド、関数のようなもので、引数を取って指定します。引数として、`Y`に目的変数、`A`に割付、`W`に共変量を設定します。
 

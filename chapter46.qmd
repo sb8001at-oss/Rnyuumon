@@ -29,19 +29,19 @@ linkやedge、つまりネットワークのつながりには、大きく分け
 
 この他にランダムなグラフの作成、グラフの類似性の評価や検定を用いたネットワーク解析もあります。
 
-## Rでのネットワーク解析のライブラリ
+## Rでのネットワーク解析のパッケージ
 
-Rでの主要なネットワーク解析ライブラリには、[`statnet`](https://statnet.org/)[@statnet_bib1; @statnet_bib2]系ライブラリと[`igraph`](https://r.igraph.org/index.html)[@igraph_bib1; @igraph_bib2]系ライブラリの2系統があります。どちらもネットワーク解析を行うために必要十分な機能を備えていますが、オブジェクトの取り扱いや関数名の特徴が異なります。どちらを使うかは好みで決めてしまってよいですが、`igraph`系の方が情報が多いため比較的使いやすいと思います。
+Rでの主要なネットワーク解析パッケージには、[`statnet`](https://statnet.org/)[@statnet_bib1; @statnet_bib2]系パッケージと[`igraph`](https://r.igraph.org/index.html)[@igraph_bib1; @igraph_bib2]系パッケージの2系統があります。どちらもネットワーク解析を行うために必要十分な機能を備えていますが、オブジェクトの取り扱いや関数名の特徴が異なります。どちらを使うかは好みで決めてしまってよいですが、`igraph`系の方が情報が多いため比較的使いやすいと思います。
 
-`statnet`は`sna`[@sna_bib]や`network`[@network_bib1; @network_bib2]などの一連のネットワーク解析用ライブラリの総称で、`tidyverse`のように`install.packages("statnet")`で一度にインストールし、`library(statnet)`で一度にロードすることができます。`statnet`はよくできたライブラリ群だと思うのですが、解説文（Documentation）があまり充実しておらず、なかなか手を付けにくい印象があります。
+`statnet`は`sna`[@sna_bib]や`network`[@network_bib1; @network_bib2]などの一連のネットワーク解析用パッケージの総称で、`tidyverse`のように`install.packages("statnet")`で一度にインストールし、`library(statnet)`で一度にロードすることができます。`statnet`はよくできたパッケージ群だと思うのですが、解説文（Documentation）があまり充実しておらず、なかなか手を付けにくい印象があります。
 
-`igraph`はネットワーク解析に必要な関数を一通り備えたライブラリで、RだけでなくpythonやMathematica、Cにも機能を提供しています。ネット上にも`igraph`の情報はたくさん落ちており、`statnet`よりは間口が広く学びやすいかと思います。ただし、`statnet`も`igraph`もたくさんの機能を備えたライブラリであり、学習コストは高めです。
+`igraph`はネットワーク解析に必要な関数を一通り備えたパッケージで、RだけでなくpythonやMathematica、Cにも機能を提供しています。ネット上にも`igraph`の情報はたくさん落ちており、`statnet`よりは間口が広く学びやすいかと思います。ただし、`statnet`も`igraph`もたくさんの機能を備えたパッケージであり、学習コストは高めです。
 
-この`igraph`、非常にたくさんの関数を備えたライブラリではあるのですが、関数の命名規則や引数の形が一定ではなく、そのまま使うとやや使いにくいです。また、`tidyverse`などのRの標準的なパッケージとの相性もあまりよくありません。この命名や`tidyverse`との整合性を取るためのライブラリが`tidygraph`[@tidygraph_bib]です。`tidygraph`はほぼ`igraph`のwrapper（関数名と引数の形を整えたもの）ですが、`igraph`をそのまま使うよりは使いやすく、パイプ演算子との相性も悪くありません。
+この`igraph`、非常にたくさんの関数を備えたパッケージではあるのですが、関数の命名規則や引数の形が一定ではなく、そのまま使うとやや使いにくいです。また、`tidyverse`などのRの標準的なパッケージとの相性もあまりよくありません。この命名や`tidyverse`との整合性を取るためのパッケージが`tidygraph`[@tidygraph_bib]です。`tidygraph`はほぼ`igraph`のwrapper（関数名と引数の形を整えたもの）ですが、`igraph`をそのまま使うよりは使いやすく、パイプ演算子との相性も悪くありません。
 
 この章ではまず`igraph`について説明し、その後に`tidygraph`と`igraph`の関数との対応を説明することにします。
 
-```{r, filename="ライブラリのロード"}
+```{r, filename="パッケージのロード"}
 pacman::p_load(igraph, tidygraph, tidyverse)
 ```
 
@@ -761,7 +761,7 @@ g <- sample_tree(n = 30) # ランダムな木構造型ネットワークを作�
 plot(g, layout=layout_as_tree(g))
 ```
 
-とは言っても`igraph`に登録されている`sample_`関数だけでも10種以上あり、それぞれのアルゴリズムも複雑です。また、グラフの類似性や検定を用いたネットワーク解析に関しては`igraph`のみでは対応できず、別のライブラリ（`statnet`、`sna`）が必要となります。上記のネットワーク解析に関しても詳細な説明は加えていませんので、詳細を理解したい方は教科書（[Rで学ぶデータサイエンス ネットワーク分析](https://www.amazon.co.jp/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E5%88%86%E6%9E%90-%E7%AC%AC2%E7%89%88-R%E3%81%A7%E5%AD%A6%E3%81%B6%E3%83%87%E3%83%BC%E3%82%BF%E3%82%B5%E3%82%A4%E3%82%A8%E3%83%B3%E3%82%B9-%E9%88%B4%E6%9C%A8-%E5%8A%AA/dp/4320113152)[@金明哲2017-05-24]）を一読されることをおすすめいたします。
+とは言っても`igraph`に登録されている`sample_`関数だけでも10種以上あり、それぞれのアルゴリズムも複雑です。また、グラフの類似性や検定を用いたネットワーク解析に関しては`igraph`のみでは対応できず、別のパッケージ（`statnet`、`sna`）が必要となります。上記のネットワーク解析に関しても詳細な説明は加えていませんので、詳細を理解したい方は教科書（[Rで学ぶデータサイエンス ネットワーク分析](https://www.amazon.co.jp/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E5%88%86%E6%9E%90-%E7%AC%AC2%E7%89%88-R%E3%81%A7%E5%AD%A6%E3%81%B6%E3%83%87%E3%83%BC%E3%82%BF%E3%82%B5%E3%82%A4%E3%82%A8%E3%83%B3%E3%82%B9-%E9%88%B4%E6%9C%A8-%E5%8A%AA/dp/4320113152)[@金明哲2017-05-24]）を一読されることをおすすめいたします。
 
 以下に`sample_`と`make_`関数の一覧を示します。
 
@@ -970,7 +970,7 @@ g |> plot(layout = layout_as_bipartite, vertex.color = c("orange", "lightblue")[
 
 ここまで説明してきた`igraph`は非常に多機能でよくできたパッケージではありますが、関数名や引数名があまり一定ではなく、使用する際に関数名や引数名をチェックしないとうまく使うことができません。引数の指定方法も多岐に渡っており、統一した手法でグラフを取り扱うことができず、使いにくさがあります。
 
-このような問題を解決するためのライブラリが`tidygraph`パッケージです。`tidygraph`パッケージは基本的に`tibble`を用いてグラフを作成し、`tidyverse`（特に`dplyr`）とパイプ演算子を用いてグラフを編集することを目的として構成されています。
+このような問題を解決するためのパッケージが`tidygraph`パッケージです。`tidygraph`パッケージは基本的に`tibble`を用いてグラフを作成し、`tidyverse`（特に`dplyr`）とパイプ演算子を用いてグラフを編集することを目的として構成されています。
 
 とは言え、`igraph`が非常に機能豊富なパッケージであったのと同様に、`tidygraph`も機能豊富で、利用の難易度は高めです。また、解説文等が少ないため、使い方を理解するのが難しい関数もあります。`dplyr::mutate`関数内以外では使えない関数がたくさんあるなど、使い方もやや複雑です。
 
@@ -1228,13 +1228,13 @@ g |>
   }))
 ```
 
-## グラフ表示のライブラリ
+## グラフ表示のパッケージ
 
-上記のように、グラフの表示はグラフの理解において非常に重要です。`igraph`を用いることでグラフを様々な形式で表示することができますが、デザイン的には`ggplot2`などとは異なり、Rのデフォルトのプロットに近い形での表示となります。Rには、`igraph`だけでなく、グラフを表示するためのライブラリがいくつかありますので、以下に簡単に紹介します。
+上記のように、グラフの表示はグラフの理解において非常に重要です。`igraph`を用いることでグラフを様々な形式で表示することができますが、デザイン的には`ggplot2`などとは異なり、Rのデフォルトのプロットに近い形での表示となります。Rには、`igraph`だけでなく、グラフを表示するためのパッケージがいくつかありますので、以下に簡単に紹介します。
 
 ### ggraph
 
-`ggraph`[@ggraph_bib]は上記の`tidygraph`の開発者が開発した、`tbl_graph`を`ggplot2`の文法・デザインで描画するためのライブラリです。仕組みは比較的単純で、以下の例のように`tbl_graph`を`ggplot2`のグラフ表示に適したtibbleに変形し（`create_layout`関数）、`ggplot2`の文法でこの`tibble`を表示しています。この変換において、nodeの位置を`layout`引数で指定した位置に指定させています。
+`ggraph`[@ggraph_bib]は上記の`tidygraph`の開発者が開発した、`tbl_graph`を`ggplot2`の文法・デザインで描画するためのパッケージです。仕組みは比較的単純で、以下の例のように`tbl_graph`を`ggplot2`のグラフ表示に適したtibbleに変形し（`create_layout`関数）、`ggplot2`の文法でこの`tibble`を表示しています。この変換において、nodeの位置を`layout`引数で指定した位置に指定させています。
 
 `layout`引数には`"auto"`、`"igraph"`、`"dendrogram"`、`"manual"`、`"linear"`、`"matrix"`、`"treemap"`などの様々な値を指定することができます。`layout`による違いは後ほど説明します。
 
@@ -1753,11 +1753,11 @@ g |>
 
 上記のように`igraph`の`plot`関数や`ggraph`で静的なグラフを準備すれば、論文や出版物、プレゼンテーションで示すグラフとしては十分ですが、Web上ではグラフをインタラクティブに示すことでグラフの構造を読み取りやすくできる場合があります。
 
-このようなインタラクティブなグラフの表示を行うためのライブラリが`networkD3`[@networkD3_bib]です。`networkD3`はJavascriptのグラフィックライブラリである[D3.js](https://d3js.org/)をRに持ち込んで、ネットワークの表記ができるようにしたものです。
+このようなインタラクティブなグラフの表示を行うためのパッケージが`networkD3`[@networkD3_bib]です。`networkD3`はJavascriptのグラフィックライブラリである[D3.js](https://d3js.org/)をRに持ち込んで、ネットワークの表記ができるようにしたものです。
 
-D3.jsを用いることができるライブラリには[`r2d3`](https://rstudio.github.io/r2d3/)[@r2d3_bib]もありますが、`r2d3`との違いはネットワークの表記にのみ対応していることで、`r2d3`でもネットワークを表記することはできます。ただし、`r2d3`はデータの準備がかなり独特（[`r2d3`のgithubページ](https://github.com/rstudio/r2d3/blob/main/vignettes/gallery/dendogram/flare.csv)を参照。idの列にネットワークの情報を入力）ですので、`networkD3`の方が比較的使いやすいでしょう。
+D3.jsを用いることができるパッケージには[`r2d3`](https://rstudio.github.io/r2d3/)[@r2d3_bib]もありますが、`r2d3`との違いはネットワークの表記にのみ対応していることで、`r2d3`でもネットワークを表記することはできます。ただし、`r2d3`はデータの準備がかなり独特（[`r2d3`のgithubページ](https://github.com/rstudio/r2d3/blob/main/vignettes/gallery/dendogram/flare.csv)を参照。idの列にネットワークの情報を入力）ですので、`networkD3`の方が比較的使いやすいでしょう。
 
-```{r, filename="ライブラリの読み込み"}
+```{r, filename="パッケージの読み込み"}
 pacman::p_load(networkD3)
 ```
 
@@ -1852,13 +1852,13 @@ sankeyNetwork(Links = Energy$links, Nodes = Energy$nodes, Source = "source",
 
 [visNetwork](https://datastorm-open.github.io/visNetwork/)[@visNetwork_bib]はD3.jsとは異なるJavascriptのビジュアライゼーションライブラリである[vis.js](https://visjs.org/)を用いたインタラクティブなネットワーク描画に関するパッケージです。上記の`NetworkD3`とは少し違う感じでネットワークが描画されるので、好みの方を用いるとよいでしょう。
 
-```{r, filename="ライブラリの読み込み"}
+```{r, filename="パッケージの読み込み"}
 pacman::p_load(visNetwork)
 ```
 
 #### visNetwork関数
 
-`visNetwork`関数は、`NetworkD3`の`forceNetwork`関数に近い使い勝手の関数で、`forceNetwork`関数と同様にnodeとedgeのデータフレームを引数に取る関数です。ただし、`forceNetwork`関数が引数で色やnode名の指定を行うのに対し、`visNetwork`関数は引数に取ったデータフレームの列名に従ってネットワークを描画するという特徴があります。Rの他のグラフィックライブラリとは少し使い勝手が異なります。
+`visNetwork`関数は、`NetworkD3`の`forceNetwork`関数に近い使い勝手の関数で、`forceNetwork`関数と同様にnodeとedgeのデータフレームを引数に取る関数です。ただし、`forceNetwork`関数が引数で色やnode名の指定を行うのに対し、`visNetwork`関数は引数に取ったデータフレームの列名に従ってネットワークを描画するという特徴があります。Rの他のグラフィックパッケージとは少し使い勝手が異なります。
 
 nodeに指定するデータフレームには`id`という名前の列が、edgeに指定するデータフレームには`from`と`to`という名前の列が必要です。この列名を読み取って、`visNetwork`はグラフを描画します。
 

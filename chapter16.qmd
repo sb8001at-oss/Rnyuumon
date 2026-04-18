@@ -387,6 +387,32 @@ within(iris6, Sepal_multiple <- Sepal.Length * Sepal.Width) #代入は<-、=だ�
 expand.grid(sex=c("M", "F"), age=c(20,25), location=c("Osaka", "Kobe"))
 ```
 
+:::{.callout-tip collapse="true"}
+## attachとdetach
+
+リスト、データフレームでは、`attach`関数を用いて、要素や列の名前だけでその要素を取り出せるようにすることができます。
+
+```{r, filename="attach関数"}
+# データフレームやリストを引数に取る
+attach(iris)
+
+# 列名で要素を呼び出せる
+head(Sepal.Length)
+```
+
+ただし、この`attach`を用いると扱っているものがデータフレームなのかベクターなのかわからなくなってしまいますし、データフレームの利点である行方向への情報も失われてしまいます。ですので、`attach`関数はなるべく使わないほうがよいでしょう。
+
+`attach`したデータフレームを基に戻し、列名だけで呼び出せなくする場合には`detach`関数を用います。
+
+```{r, error=TRUE, filename="detach関数"}
+# detach関数の引数にattachしたデータフレームを取る
+detach(iris)
+
+# 列名で呼び出せなくなる
+head(Sepal.Length)
+```
+
+:::
 
 ## 行列（matrix）
 

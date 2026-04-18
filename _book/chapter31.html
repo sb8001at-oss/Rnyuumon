@@ -431,7 +431,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -752,6 +752,18 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">並列演算（Parallel Computing）</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System関連の関数</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S3class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S3クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -826,7 +838,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>SVM：e1071ライブラリの読み込み</strong></pre>
+<pre><strong>SVM：e1071パッケージの読み込み</strong></pre>
 </div>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1079,7 +1091,7 @@ tidymodelsパッケージでのデータ準備
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>ナイーブベイズに限らず、文字列を訓練データとした機械学習は増えています。ChatGPTなどのAIも、入力した文書を分類器などのアルゴリズムに代入し、予測値として回答を返す形となっていると思われます。ただし、文字列には余計な文字（例えばスペースや記号、日本語のような粘着語では助詞など）がたくさん含まれており、そのまま分類器に与えることはできません。</p>
-<p>ですので、文字列を用いた機械学習を行う際には、文字列を取り扱うための専用のライブラリやソフトウェアを用いて文字列の前処理を行う必要があります。</p>
+<p>ですので、文字列を用いた機械学習を行う際には、文字列を取り扱うための専用のパッケージやソフトウェアを用いて文字列の前処理を行う必要があります。</p>
 <p>今回の例のように英語であれば、Rのパッケージ（以下に示す<a href="https://cran.r-project.org/web/packages/tm/index.html">tm</a> <span class="citation" data-cites="tm_bib">(<a href="references.html#ref-tm_bib" role="doc-biblioref">Feinerer, Hornik, and Meyer 2008</a>)</span>や<a href="https://cran.r-project.org/web/packages/SnowballC/index.html">SnowballC</a> <span class="citation" data-cites="SnowballC_bib">(<a href="references.html#ref-SnowballC_bib" role="doc-biblioref">Bouchet-Valat 2023</a>)</span>など）を用いて文字列をコーパス（単語のまとまり）にまとめたり、そのコーパスの数を数えたりすることができます。日本語であれば、<a href="https://taku910.github.io/mecab/">MeCab</a>（形態素分析という、単語で区切って品詞のラベルをつけるためのツール、Rからは<a href="http://rmecab.jp/wiki/index.php?RMeCab">RMeCab</a>パッケージ<span class="citation" data-cites="RMeCab_bib">(<a href="references.html#ref-RMeCab_bib" role="doc-biblioref">Ishida and Kudo 2023</a>)</span>を用いて使用できる）などを用いた前処理を必要とします。</p>
 <p>前処理を行った文字列のデータと、Ham/Spamのラベルを組み合わせて分類器の学習を行います。新規のメールの分類では、やはり文字列を同様に前処理した上で分類器に与え、Ham/Spamの判定を行うことになります。</p>
 <p>以下に、前処理のコードを示します。かなり複雑ですが、この流れでナイーブベイズの訓練データ・テストデータを作成することができます。</p>
@@ -1088,7 +1100,7 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>ナイーブベイズ：文字列の前処理</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 文字列の操作を行うためのライブラリ</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 文字列の操作を行うためのパッケージ</span></span>
 <span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tm</span>, <span class="va">SnowballC</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># SMS Spam Collection Datasetをロード（kaggleから拾ってくる）</span></span>
@@ -1973,7 +1985,7 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
 <span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>Rでは、サポートベクターマシンを含めた色々な機械学習の手法が<span class="co">[</span><span class="ot">e1071</span><span class="co">](https://cran.r-project.org/web/packages/e1071/index.html)</span>パッケージ <span class="co">[</span><span class="ot">@e1071_bib</span><span class="co">]</span>により提供されています。</span>
 <span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="SVM：e1071ライブラリの読み込み"}</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="SVM：e1071パッケージの読み込み"}</span></span>
 <span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(e1071)</span>
 <span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
@@ -2170,7 +2182,7 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
 <span id="cb20-225"><a href="#cb20-225" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-226"><a href="#cb20-226" aria-hidden="true" tabindex="-1"></a>ナイーブベイズに限らず、文字列を訓練データとした機械学習は増えています。ChatGPTなどのAIも、入力した文書を分類器などのアルゴリズムに代入し、予測値として回答を返す形となっていると思われます。ただし、文字列には余計な文字（例えばスペースや記号、日本語のような粘着語では助詞など）がたくさん含まれており、そのまま分類器に与えることはできません。</span>
 <span id="cb20-227"><a href="#cb20-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-228"><a href="#cb20-228" aria-hidden="true" tabindex="-1"></a>ですので、文字列を用いた機械学習を行う際には、文字列を取り扱うための専用のライブラリやソフトウェアを用いて文字列の前処理を行う必要があります。</span>
+<span id="cb20-228"><a href="#cb20-228" aria-hidden="true" tabindex="-1"></a>ですので、文字列を用いた機械学習を行う際には、文字列を取り扱うための専用のパッケージやソフトウェアを用いて文字列の前処理を行う必要があります。</span>
 <span id="cb20-229"><a href="#cb20-229" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-230"><a href="#cb20-230" aria-hidden="true" tabindex="-1"></a>今回の例のように英語であれば、Rのパッケージ（以下に示す<span class="co">[</span><span class="ot">tm</span><span class="co">](https://cran.r-project.org/web/packages/tm/index.html)</span> <span class="co">[</span><span class="ot">@tm_bib</span><span class="co">]</span>や<span class="co">[</span><span class="ot">SnowballC</span><span class="co">](https://cran.r-project.org/web/packages/SnowballC/index.html)</span> <span class="co">[</span><span class="ot">@SnowballC_bib</span><span class="co">]</span>など）を用いて文字列をコーパス（単語のまとまり）にまとめたり、そのコーパスの数を数えたりすることができます。日本語であれば、<span class="co">[</span><span class="ot">MeCab</span><span class="co">](https://taku910.github.io/mecab/)</span>（形態素分析という、単語で区切って品詞のラベルをつけるためのツール、Rからは<span class="co">[</span><span class="ot">RMeCab</span><span class="co">](http://rmecab.jp/wiki/index.php?RMeCab)</span>パッケージ<span class="co">[</span><span class="ot">@RMeCab_bib</span><span class="co">]</span>を用いて使用できる）などを用いた前処理を必要とします。</span>
 <span id="cb20-231"><a href="#cb20-231" aria-hidden="true" tabindex="-1"></a></span>
@@ -2179,7 +2191,7 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
 <span id="cb20-234"><a href="#cb20-234" aria-hidden="true" tabindex="-1"></a>以下に、前処理のコードを示します。かなり複雑ですが、この流れでナイーブベイズの訓練データ・テストデータを作成することができます。</span>
 <span id="cb20-235"><a href="#cb20-235" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-236"><a href="#cb20-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ナイーブベイズ：文字列の前処理"}</span></span>
-<span id="cb20-237"><a href="#cb20-237" aria-hidden="true" tabindex="-1"></a><span class="co"># 文字列の操作を行うためのライブラリ</span></span>
+<span id="cb20-237"><a href="#cb20-237" aria-hidden="true" tabindex="-1"></a><span class="co"># 文字列の操作を行うためのパッケージ</span></span>
 <span id="cb20-238"><a href="#cb20-238" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tm, SnowballC)</span>
 <span id="cb20-239"><a href="#cb20-239" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-240"><a href="#cb20-240" aria-hidden="true" tabindex="-1"></a><span class="co"># SMS Spam Collection Datasetをロード（kaggleから拾ってくる）</span></span>

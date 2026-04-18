@@ -458,7 +458,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -777,6 +777,18 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="./Tips_ParallelComputing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">並列演算（Parallel Computing）</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System関連の関数</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S3class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
       </ul>
@@ -1283,7 +1295,7 @@ effect = “direct”とeffect = “total”の違い
 <p>もう一つの方法は、DAGに<strong>スコア</strong>をつけ、そのスコアが最も優れているDAGを構造の推定結果として得る方法です。このスコアは<a href="./chapter30.html#aicによるモデル選択">30章</a>で説明したAICでのモデル選択に似たものです。AICによるモデル選択では、AICが最小となるモデルを採用しました。DAGの構造推定でも同様に、AICに当たるようなスコアが最小となる構造をDAGの推定結果とします。</p>
 </section></section><section id="ベイジアンネットワークbnlearnパッケージ" class="level3" data-number="51.2.3"><h3 data-number="51.2.3" class="anchored" data-anchor-id="ベイジアンネットワークbnlearnパッケージ">
 <span class="header-section-number">51.2.3</span> ベイジアンネットワーク：bnlearnパッケージ</h3>
-<p>Rでベイジアンネットワークの演算を行うためのライブラリが、上ですでに紹介した<code>bnlearn</code>パッケージ<span class="citation" data-cites="bnlearn_bib">(<a href="references.html#ref-bnlearn_bib" role="doc-biblioref">Scutari and Denis 2021</a>)</span>です。<code>bnlearn</code>パッケージでは、</p>
+<p>Rでベイジアンネットワークの演算を行うためのパッケージが、上ですでに紹介した<code>bnlearn</code>パッケージ<span class="citation" data-cites="bnlearn_bib">(<a href="references.html#ref-bnlearn_bib" role="doc-biblioref">Scutari and Denis 2021</a>)</span>です。<code>bnlearn</code>パッケージでは、</p>
 <ul>
 <li>DAGの構造を推定する</li>
 <li>DAGの構造を指定する</li>
@@ -2254,9 +2266,9 @@ vote            female      male
 <span class="header-section-number">51.3</span> 構造方程式モデリング（Structural equation modeling）</h2>
 <p><strong>構造方程式モデリング</strong>（Structural Equation Modeling、SEM、共分散構造分析とも呼ばれる）はベイジアンネットワークと同様にネットワークを用いて変数同士の因果関係を評価する手法の一つです。</p>
 <p>構造方程式モデリングでは変数同士の関係を取り扱い、データとして取得できる変数だけでなく、データとしては取得できない変数である、<strong>潜在変数（latent variables）</strong>をネットワークに組み込み、評価します。</p>
-<p>潜在変数（latent variables）とは、我々が評価したいと思うことがあるけれども、実際に数値として評価することは難しいもののことを指します。例えば、やる気や元気、町の住みやすさや清潔度、治安などは各個人や各都市によって度合いが異なることは分かりますが、具体的に数値として測定することはできません。学校や会社でやる気がない人がいても、「やる気… たったの5か… ゴミめ…」<span class="citation" data-cites="dragonball_17_bib">(<a href="references.html#ref-dragonball_17_bib" role="doc-biblioref">明 1989</a>)</span>とは評価できません。</p>
+<p>潜在変数（latent variables）とは、我々が評価したいと思うことがあるけれども、実際に数値として評価することは難しいもののことを指します。例えば、やる気や元気、町の住みやすさや清潔度、治安などは各個人や各都市によって度合いが異なることは分かりますが、具体的に数値として測定することはできません。学校や会社でやる気がない人がいても、「やる気… たったの5か… ゴミめ…」<span class="citation" data-cites="dragonball_17_bib">(<a href="references.html#ref-dragonball_17_bib" role="doc-biblioref">鳥山明 1989</a>)</span>とは評価できません。</p>
 <p>構造方程式モデリングでは、実際に測定できる変数（測定結果）と共に、このやる気や元気などの潜在変数をネットワークに組み込むことで、潜在変数自体を評価するとともに、潜在変数とデータとして取得できる変数の間の関係を評価します。</p>
-<p>潜在変数を評価する別の手法として、32章で説明した<a href="./chapter32.html#因子分析">因子分析</a>があります。因子分析の例では、学校の成績から「理系度」・「文系度」を評価する例を挙げましたが、「理系度」・「文系度」が潜在変数、学校の成績が測定可能な変数に当たります。構造方程式モデリングはこの因子分析に線形回帰を持ち込んだような統計手法となっています。</p>
+<p>潜在変数を評価する別の手法として、<a href="./chapter32.html#因子分析">32章で説明した因子分析</a>があります。因子分析の例では、学校の成績から「理系度」・「文系度」を評価する例を挙げましたが、「理系度」・「文系度」が潜在変数、学校の成績が測定可能な変数に当たります。構造方程式モデリングはこの因子分析に線形回帰を持ち込んだような統計手法となっています。</p>
 <section id="構造方程式モデリングネットワーク" class="level3" data-number="51.3.1"><h3 data-number="51.3.1" class="anchored" data-anchor-id="構造方程式モデリングネットワーク">
 <span class="header-section-number">51.3.1</span> 構造方程式モデリング：ネットワーク</h3>
 <p>構造方程式モデリングではDAGによく似た、巡回のない（Acyclic）ネットワークを用いて解析を行います。構造方程式モデリングのネットワークは以下の図のような構造をしています。</p>
@@ -2299,7 +2311,7 @@ Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</code></pre>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>構造方程式モデリングについては、<a href="https://www.amazon.co.jp/dp/4254126581">共分散構造分析: 構造方程式モデリング (入門編)</a>、<a href="https://www.amazon.co.jp/dp/4489021801">共分散構造分析: 構造方程式モデリング (R編)</a>や<a href="https://www2.kobe-u.ac.jp/~bunji/files/lecture/MVA/html/">神戸大学経済学部の分寺先生の講義資料</a>に詳しく記載されています。ここでは計算の初歩だけを説明しますので、より詳しくは上記の資料をご参照ください。</p>
+<p>構造方程式モデリングについては、<a href="https://www.amazon.co.jp/dp/4254126581">共分散構造分析: 構造方程式モデリング (入門編)</a><span class="citation" data-cites="kyobunnsannkouzoukaiseki_kiso_bib">(<a href="references.html#ref-kyobunnsannkouzoukaiseki_kiso_bib" role="doc-biblioref">秀樹 1998</a>)</span>、<a href="https://www.amazon.co.jp/dp/4489021801">共分散構造分析: 構造方程式モデリング (R編)</a><span class="citation" data-cites="kyobunnsannkouzoukaiseki_R_bib">(<a href="references.html#ref-kyobunnsannkouzoukaiseki_R_bib" role="doc-biblioref">秀樹 2014</a>)</span>や<a href="https://www2.kobe-u.ac.jp/~bunji/files/lecture/MVA/html/">神戸大学経済学部の分寺先生の講義資料</a>に詳しく記載されています。ここでは計算の初歩だけを説明しますので、より詳しくは上記の資料をご参照ください。</p>
 <p>構造方程式モデリングの矢印は線形、つまり数式では<span class="math inline">\(y = \beta x + \epsilon\)</span>という形を仮定します。この式では<span class="math inline">\(x\)</span>が原因側（矢印のもと）、<span class="math inline">\(y\)</span>が結果側（矢印の先）になります。<span class="math inline">\(\beta\)</span>と<span class="math inline">\(\epsilon\)</span>はそれぞれ因子負荷量、エラー項を示します。</p>
 <p>まずは簡単な例として、以下のようなモデルを考えてみます。国語、英語、社会のテストの成績（測定可能な変数）が文系科目の能力（潜在変数）による影響を受けている、とするモデルです。</p>
 <div class="quarto-figure quarto-figure-center">
@@ -2477,7 +2489,7 @@ E(x_{jpn} \cdot x_{eng}) \\
 </div>
 </section><section id="lavaanパッケージ" class="level3" data-number="51.3.3"><h3 data-number="51.3.3" class="anchored" data-anchor-id="lavaanパッケージ">
 <span class="header-section-number">51.3.3</span> lavaanパッケージ</h3>
-<p>Rで構造方程式モデリングの計算を行うためのライブラリが<code>lavaan</code>パッケージ<span class="citation" data-cites="lavaan_bib1 lavaan_bib2">(<a href="references.html#ref-lavaan_bib1" role="doc-biblioref">Rosseel, Jorgensen, and De Wilde 2025</a>; <a href="references.html#ref-lavaan_bib2" role="doc-biblioref">Rosseel 2012</a>)</span>です。<code>lavaan</code>パッケージではパスモデルを簡単なコードで作成することができ、顕在変数のデータと作成したパスモデルから因子負荷量を演算することができます。以下では、まず簡単なパスモデルを用いて因子負荷量の演算を行い、その後もう少し複雑なモデルについても説明します。</p>
+<p>Rで構造方程式モデリングの計算を行うためのパッケージが<code>lavaan</code>パッケージ<span class="citation" data-cites="lavaan_bib1 lavaan_bib2">(<a href="references.html#ref-lavaan_bib1" role="doc-biblioref">Rosseel, Jorgensen, and De Wilde 2025</a>; <a href="references.html#ref-lavaan_bib2" role="doc-biblioref">Rosseel 2012</a>)</span>です。<code>lavaan</code>パッケージではパスモデルを簡単なコードで作成することができ、顕在変数のデータと作成したパスモデルから因子負荷量を演算することができます。以下では、まず簡単なパスモデルを用いて因子負荷量の演算を行い、その後もう少し複雑なモデルについても説明します。</p>
 <p>用いるデータは上のcalloutで用いた各科目のテストの成績です。国語、英語、社会の点数から文系教科の能力を評価するパスモデルについて評価していきます。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -2580,7 +2592,7 @@ E(x_{jpn} \cdot x_{eng}) \\
 </section><section id="パスモデルを表示するlavaanplot関数" class="level4" data-number="51.3.3.3"><h4 data-number="51.3.3.3" class="anchored" data-anchor-id="パスモデルを表示するlavaanplot関数">
 <span class="header-section-number">51.3.3.3</span> パスモデルを表示する：lavaanPlot関数</h4>
 <p>上記のように因子負荷量を演算することはできますが、因子負荷量の演算はパスモデルに従ったものであり、パスモデルを見ないと因子負荷量がどのようにパスモデル上で配置されているのかいまいちよくわかりません。</p>
-<p>このパスモデルと因子負荷量を同時に表示させる機能を提供しているのが<code>lavaanPlot</code>パッケージです。このライブラリで提供されている<code>lavaanPlot</code>関数は上記の<code>lavaan</code>の<code>sem</code>関数の演算結果を引数に取り、使用したパスモデルと因子負荷量を同時に表示してくれます。</p>
+<p>このパスモデルと因子負荷量を同時に表示させる機能を提供しているのが<code>lavaanPlot</code>パッケージです。このパッケージで提供されている<code>lavaanPlot</code>関数は上記の<code>lavaan</code>の<code>sem</code>関数の演算結果を引数に取り、使用したパスモデルと因子負荷量を同時に表示してくれます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -2722,8 +2734,14 @@ Verma, Thomas S, and Judea Pearl. 2022. <span>“Equivalence and Synthesis of Ca
 <div id="ref-verma1992algorithm" class="csl-entry" role="listitem">
 Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Set of Observed Independencies Has a Causal Explanation.”</span> In <em>Uncertainty in Artificial Intelligence</em>, 323–30. Elsevier.
 </div>
+<div id="ref-kyobunnsannkouzoukaiseki_kiso_bib" class="csl-entry" role="listitem">
+秀樹. 1998. <em>共分散構造分析: 構造方程式モデリング (入門編)</em>. 単行本. <a href="https://www.amazon.co.jp/dp/4254126581">https://www.amazon.co.jp/dp/4254126581</a>.
+</div>
+<div id="ref-kyobunnsannkouzoukaiseki_R_bib" class="csl-entry" role="listitem">
+———. 2014. <em>共分散構造分析 (R編)</em>. 単行本. <a href="https://www.amazon.co.jp/dp/4489021801">https://www.amazon.co.jp/dp/4489021801</a>.
+</div>
 <div id="ref-dragonball_17_bib" class="csl-entry" role="listitem">
-明. 1989. <em>DRAGON BALL 17巻</em>. 単行本. <a href="https://www.amazon.co.jp/dp/B00A47VSOG/">https://www.amazon.co.jp/dp/B00A47VSOG/</a>.
+鳥山明. 1989. <em>DRAGON BALL 17巻</em>. 単行本. <a href="https://www.amazon.co.jp/dp/B00A47VSOG/">https://www.amazon.co.jp/dp/B00A47VSOG/</a>.
 </div>
 </div>
 </section></section></section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -3517,7 +3535,7 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
 <span id="cb120-316"><a href="#cb120-316" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-317"><a href="#cb120-317" aria-hidden="true" tabindex="-1"></a><span class="fu">### ベイジアンネットワーク：bnlearnパッケージ</span></span>
 <span id="cb120-318"><a href="#cb120-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-319"><a href="#cb120-319" aria-hidden="true" tabindex="-1"></a>Rでベイジアンネットワークの演算を行うためのライブラリが、上ですでに紹介した<span class="in">`bnlearn`</span>パッケージ<span class="co">[</span><span class="ot">@bnlearn_bib</span><span class="co">]</span>です。<span class="in">`bnlearn`</span>パッケージでは、</span>
+<span id="cb120-319"><a href="#cb120-319" aria-hidden="true" tabindex="-1"></a>Rでベイジアンネットワークの演算を行うためのパッケージが、上ですでに紹介した<span class="in">`bnlearn`</span>パッケージ<span class="co">[</span><span class="ot">@bnlearn_bib</span><span class="co">]</span>です。<span class="in">`bnlearn`</span>パッケージでは、</span>
 <span id="cb120-320"><a href="#cb120-320" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-321"><a href="#cb120-321" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>DAGの構造を推定する</span>
 <span id="cb120-322"><a href="#cb120-322" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>DAGの構造を指定する</span>
@@ -4086,7 +4104,7 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
 <span id="cb120-887"><a href="#cb120-887" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-888"><a href="#cb120-888" aria-hidden="true" tabindex="-1"></a>構造方程式モデリングでは、実際に測定できる変数（測定結果）と共に、このやる気や元気などの潜在変数をネットワークに組み込むことで、潜在変数自体を評価するとともに、潜在変数とデータとして取得できる変数の間の関係を評価します。</span>
 <span id="cb120-889"><a href="#cb120-889" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-890"><a href="#cb120-890" aria-hidden="true" tabindex="-1"></a>潜在変数を評価する別の手法として、32章で説明した<span class="co">[</span><span class="ot">因子分析</span><span class="co">](chapter32.qmd#因子分析)</span>があります。因子分析の例では、学校の成績から「理系度」・「文系度」を評価する例を挙げましたが、「理系度」・「文系度」が潜在変数、学校の成績が測定可能な変数に当たります。構造方程式モデリングはこの因子分析に線形回帰を持ち込んだような統計手法となっています。</span>
+<span id="cb120-890"><a href="#cb120-890" aria-hidden="true" tabindex="-1"></a>潜在変数を評価する別の手法として、<span class="co">[</span><span class="ot">32章で説明した因子分析</span><span class="co">](chapter32.qmd#因子分析)</span>があります。因子分析の例では、学校の成績から「理系度」・「文系度」を評価する例を挙げましたが、「理系度」・「文系度」が潜在変数、学校の成績が測定可能な変数に当たります。構造方程式モデリングはこの因子分析に線形回帰を持ち込んだような統計手法となっています。</span>
 <span id="cb120-891"><a href="#cb120-891" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-892"><a href="#cb120-892" aria-hidden="true" tabindex="-1"></a><span class="fu">### 構造方程式モデリング：ネットワーク</span></span>
 <span id="cb120-893"><a href="#cb120-893" aria-hidden="true" tabindex="-1"></a></span>
@@ -4114,7 +4132,7 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
 <span id="cb120-915"><a href="#cb120-915" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
 <span id="cb120-916"><a href="#cb120-916" aria-hidden="true" tabindex="-1"></a><span class="fu">## 構造方程式モデリングにおける共分散行列の演算</span></span>
 <span id="cb120-917"><a href="#cb120-917" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-918"><a href="#cb120-918" aria-hidden="true" tabindex="-1"></a>構造方程式モデリングについては、<span class="co">[</span><span class="ot">共分散構造分析: 構造方程式モデリング (入門編)</span><span class="co">](https://www.amazon.co.jp/dp/4254126581)</span>、<span class="co">[</span><span class="ot">共分散構造分析: 構造方程式モデリング (R編)</span><span class="co">](https://www.amazon.co.jp/dp/4489021801)</span>や<span class="co">[</span><span class="ot">神戸大学経済学部の分寺先生の講義資料</span><span class="co">](https://www2.kobe-u.ac.jp/~bunji/files/lecture/MVA/html/)</span>に詳しく記載されています。ここでは計算の初歩だけを説明しますので、より詳しくは上記の資料をご参照ください。</span>
+<span id="cb120-918"><a href="#cb120-918" aria-hidden="true" tabindex="-1"></a>構造方程式モデリングについては、<span class="co">[</span><span class="ot">共分散構造分析: 構造方程式モデリング (入門編)</span><span class="co">](https://www.amazon.co.jp/dp/4254126581)[</span><span class="ot">@kyobunnsannkouzoukaiseki_kiso_bib</span><span class="co">]</span>、<span class="co">[</span><span class="ot">共分散構造分析: 構造方程式モデリング (R編)</span><span class="co">](https://www.amazon.co.jp/dp/4489021801)[</span><span class="ot">@kyobunnsannkouzoukaiseki_R_bib</span><span class="co">]</span>や<span class="co">[</span><span class="ot">神戸大学経済学部の分寺先生の講義資料</span><span class="co">](https://www2.kobe-u.ac.jp/~bunji/files/lecture/MVA/html/)</span>に詳しく記載されています。ここでは計算の初歩だけを説明しますので、より詳しくは上記の資料をご参照ください。</span>
 <span id="cb120-919"><a href="#cb120-919" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-920"><a href="#cb120-920" aria-hidden="true" tabindex="-1"></a>構造方程式モデリングの矢印は線形、つまり数式では$y = \beta x + \epsilon$という形を仮定します。この式では$x$が原因側（矢印のもと）、$y$が結果側（矢印の先）になります。$\beta$と$\epsilon$はそれぞれ因子負荷量、エラー項を示します。</span>
 <span id="cb120-921"><a href="#cb120-921" aria-hidden="true" tabindex="-1"></a></span>
@@ -4260,7 +4278,7 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
 <span id="cb120-1061"><a href="#cb120-1061" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-1062"><a href="#cb120-1062" aria-hidden="true" tabindex="-1"></a><span class="fu">### lavaanパッケージ</span></span>
 <span id="cb120-1063"><a href="#cb120-1063" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-1064"><a href="#cb120-1064" aria-hidden="true" tabindex="-1"></a>Rで構造方程式モデリングの計算を行うためのライブラリが<span class="in">`lavaan`</span>パッケージ<span class="co">[</span><span class="ot">@lavaan_bib1; @lavaan_bib2</span><span class="co">]</span>です。<span class="in">`lavaan`</span>パッケージではパスモデルを簡単なコードで作成することができ、顕在変数のデータと作成したパスモデルから因子負荷量を演算することができます。以下では、まず簡単なパスモデルを用いて因子負荷量の演算を行い、その後もう少し複雑なモデルについても説明します。</span>
+<span id="cb120-1064"><a href="#cb120-1064" aria-hidden="true" tabindex="-1"></a>Rで構造方程式モデリングの計算を行うためのパッケージが<span class="in">`lavaan`</span>パッケージ<span class="co">[</span><span class="ot">@lavaan_bib1; @lavaan_bib2</span><span class="co">]</span>です。<span class="in">`lavaan`</span>パッケージではパスモデルを簡単なコードで作成することができ、顕在変数のデータと作成したパスモデルから因子負荷量を演算することができます。以下では、まず簡単なパスモデルを用いて因子負荷量の演算を行い、その後もう少し複雑なモデルについても説明します。</span>
 <span id="cb120-1065"><a href="#cb120-1065" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-1066"><a href="#cb120-1066" aria-hidden="true" tabindex="-1"></a>用いるデータは上のcalloutで用いた各科目のテストの成績です。国語、英語、社会の点数から文系教科の能力を評価するパスモデルについて評価していきます。</span>
 <span id="cb120-1067"><a href="#cb120-1067" aria-hidden="true" tabindex="-1"></a></span>
@@ -4322,7 +4340,7 @@ Verma, Thomas, and Judea Pearl. 1992. <span>“An Algorithm for Deciding If a Se
 <span id="cb120-1123"><a href="#cb120-1123" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-1124"><a href="#cb120-1124" aria-hidden="true" tabindex="-1"></a>上記のように因子負荷量を演算することはできますが、因子負荷量の演算はパスモデルに従ったものであり、パスモデルを見ないと因子負荷量がどのようにパスモデル上で配置されているのかいまいちよくわかりません。</span>
 <span id="cb120-1125"><a href="#cb120-1125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb120-1126"><a href="#cb120-1126" aria-hidden="true" tabindex="-1"></a>このパスモデルと因子負荷量を同時に表示させる機能を提供しているのが<span class="in">`lavaanPlot`</span>パッケージです。このライブラリで提供されている<span class="in">`lavaanPlot`</span>関数は上記の<span class="in">`lavaan`</span>の<span class="in">`sem`</span>関数の演算結果を引数に取り、使用したパスモデルと因子負荷量を同時に表示してくれます。</span>
+<span id="cb120-1126"><a href="#cb120-1126" aria-hidden="true" tabindex="-1"></a>このパスモデルと因子負荷量を同時に表示させる機能を提供しているのが<span class="in">`lavaanPlot`</span>パッケージです。このパッケージで提供されている<span class="in">`lavaanPlot`</span>関数は上記の<span class="in">`lavaan`</span>の<span class="in">`sem`</span>関数の演算結果を引数に取り、使用したパスモデルと因子負荷量を同時に表示してくれます。</span>
 <span id="cb120-1127"><a href="#cb120-1127" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-1128"><a href="#cb120-1128" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="lavaanPlot関数でパスモデルと因子負荷量を表示する", eval=FALSE}</span></span>
 <span id="cb120-1129"><a href="#cb120-1129" aria-hidden="true" tabindex="-1"></a>lavaanPlot<span class="sc">::</span><span class="fu">lavaanPlot</span>(<span class="at">model =</span> fit_edc_simple, <span class="at">coefs =</span> <span class="cn">TRUE</span>) <span class="co"># coefs=Tを指定しないと因子負荷量が表示されない</span></span>

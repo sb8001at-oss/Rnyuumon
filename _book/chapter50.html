@@ -456,7 +456,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -775,6 +775,18 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="./Tips_ParallelComputing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">並列演算（Parallel Computing）</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System関連の関数</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S3class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
       </ul>
@@ -1308,7 +1320,7 @@ CausalImpactの中身
 <figure class="figure"><p><a href="./image/counterfactual.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="反実仮想（Counterfactual）"><img src="./image/counterfactual.png" class="img-fluid figure-img" width="500" alt="反実仮想（Counterfactual）"></a></p>
 <figcaption>反実仮想（Counterfactual）</figcaption></figure>
 </div>
-<p>共変量として何を選ぶべきかについては<code>CausalImpact</code>のreferenceにも文献にもはっきりとは述べられていませんが、Googleがウェブ広告の効果を評価するために作成したライブラリですので、おそらく広告とは関係のないサイトからのアクセス数などを共変量とするのだと思います。<code>CausalImpact</code>では共変量が無いと演算ができないので、評価したい対象と、少なくとももう一つ時系列のデータが必要です。共変量には「処置の影響を受けないもの」という制約があります。共変量を対照としているのかと思っていたのですがそういうわけでもなさそうで、共変量が何なのか理解するのが難しいです。</p>
+<p>共変量として何を選ぶべきかについては<code>CausalImpact</code>のreferenceにも文献にもはっきりとは述べられていませんが、Googleがウェブ広告の効果を評価するために作成したパッケージですので、おそらく広告とは関係のないサイトからのアクセス数などを共変量とするのだと思います。<code>CausalImpact</code>では共変量が無いと演算ができないので、評価したい対象と、少なくとももう一つ時系列のデータが必要です。共変量には「処置の影響を受けないもの」という制約があります。共変量を対照としているのかと思っていたのですがそういうわけでもなさそうで、共変量が何なのか理解するのが難しいです。</p>
 <p><code>CausalImpact</code>ではSpike-and-Slab priorという事前分布を用いています。Spike-and-Slab priorでは、モデルに組み込んだ方がよい対照は弱情報事前分布に影響し、組み込まない方がよい対照は結果に影響しなくなる、つまりモデル選択のような効果を持ちます。共変量にこのSpike-and-Slab priorが適用されているのかはちょっと読み解けませんでした。</p>
 <p>Spike-and-Slab priorの理解には<a href="https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/2018-08.pdf">この文献</a><span class="citation" data-cites="田辺竜ノ介2017spike">(<a href="references.html#ref-%E7%94%B0%E8%BE%BA%E7%AB%9C%E3%83%8E%E4%BB%8B2017spike" role="doc-biblioref">田辺竜ノ介 2017</a>)</span>や、<a href="https://wessel.ai/assets/write-ups/Bruinsma,%20Spike%20and%20Slab%20Priors.pdf">こちらの記事</a><span class="citation" data-cites="Bryubsna_spike">(<a href="references.html#ref-Bryubsna_spike" role="doc-biblioref">Bruinsma, n.d.</a>)</span>、<a href="https://zenn.dev/tatamiya/scraps/9d14f3d1ee5a37">こちらのZennの記事（Spike-and-Slab 事前分布を理解する）</a>などが参考になります。</p>
 <p><code>CausalImpact</code>については<a href="https://tjo.hatenablog.com/entry/2019/09/10/080000">この記事（{CausalImpact}を使う上での注意点を簡単にまとめてみた）</a>や<a href="https://ill-identified.hatenablog.com/entry/2019/10/09/120000">こちらの記事（[R] CausalImpact でできること, できないこと）</a>も参考になります。簡単に使えるので簡単に使ってしまいそうですが、よく理解した上で実際のデータに適用したほうがよいでしょう。</p>
@@ -2540,7 +2552,7 @@ Zeileis, Achim, and Gabor Grothendieck. 2005. <span>“Zoo: S3 Infrastructure fo
 <span id="cb41-273"><a href="#cb41-273" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-274"><a href="#cb41-274" aria-hidden="true" tabindex="-1"></a><span class="al">![反実仮想（Counterfactual）](./image/counterfactual.png)</span>{width=500}</span>
 <span id="cb41-275"><a href="#cb41-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-276"><a href="#cb41-276" aria-hidden="true" tabindex="-1"></a>共変量として何を選ぶべきかについては<span class="in">`CausalImpact`</span>のreferenceにも文献にもはっきりとは述べられていませんが、Googleがウェブ広告の効果を評価するために作成したライブラリですので、おそらく広告とは関係のないサイトからのアクセス数などを共変量とするのだと思います。<span class="in">`CausalImpact`</span>では共変量が無いと演算ができないので、評価したい対象と、少なくとももう一つ時系列のデータが必要です。共変量には「処置の影響を受けないもの」という制約があります。共変量を対照としているのかと思っていたのですがそういうわけでもなさそうで、共変量が何なのか理解するのが難しいです。</span>
+<span id="cb41-276"><a href="#cb41-276" aria-hidden="true" tabindex="-1"></a>共変量として何を選ぶべきかについては<span class="in">`CausalImpact`</span>のreferenceにも文献にもはっきりとは述べられていませんが、Googleがウェブ広告の効果を評価するために作成したパッケージですので、おそらく広告とは関係のないサイトからのアクセス数などを共変量とするのだと思います。<span class="in">`CausalImpact`</span>では共変量が無いと演算ができないので、評価したい対象と、少なくとももう一つ時系列のデータが必要です。共変量には「処置の影響を受けないもの」という制約があります。共変量を対照としているのかと思っていたのですがそういうわけでもなさそうで、共変量が何なのか理解するのが難しいです。</span>
 <span id="cb41-277"><a href="#cb41-277" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-278"><a href="#cb41-278" aria-hidden="true" tabindex="-1"></a><span class="in">`CausalImpact`</span>ではSpike-and-Slab priorという事前分布を用いています。Spike-and-Slab priorでは、モデルに組み込んだ方がよい対照は弱情報事前分布に影響し、組み込まない方がよい対照は結果に影響しなくなる、つまりモデル選択のような効果を持ちます。共変量にこのSpike-and-Slab priorが適用されているのかはちょっと読み解けませんでした。</span>
 <span id="cb41-279"><a href="#cb41-279" aria-hidden="true" tabindex="-1"></a></span>

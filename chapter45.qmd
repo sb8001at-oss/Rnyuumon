@@ -10,7 +10,7 @@ pacman::p_load(tidyverse)
 set.seed(0)
 ```
 
-**地理空間情報**は、マップ、つまり地図情報とそれに紐づけられた特性や値（人口や面積など）からなるデータです。Rには、この地理空間情報を取り扱うためのライブラリが一通り備わっており、地理空間情報を地図上に表示したり、緯度・経度の位置情報から地理空間情報に変換し取り扱うことができます。
+**地理空間情報**は、マップ、つまり地図情報とそれに紐づけられた特性や値（人口や面積など）からなるデータです。Rには、この地理空間情報を取り扱うためのパッケージが一通り備わっており、地理空間情報を地図上に表示したり、緯度・経度の位置情報から地理空間情報に変換し取り扱うことができます。
 
 ## ベクタとラスタ
 
@@ -24,11 +24,11 @@ set.seed(0)
 
 ベクタは画像ソフトでの「ドロー系」（Adobe Illustratorなど）、ラスタは「ペイント系」（Adobe PhotoshopやWindows標準のペイントなど）に相当します。
 
-Rで地理空間情報を取り扱う場合、ベクタもラスタも利用可能ですが、用いるライブラリは異なります。ベクタを取り扱う最も代表的なパッケージは[`sf`](https://r-spatial.github.io/sf/)パッケージ[@sf_bib1; @sf_bib2]です。ラスタを取り扱うパッケージはいくつかありますが、2023年現在では[`stars`](https://r-spatial.github.io/stars/)パッケージ[@stars_bib]か、[`terra`](https://rspatial.github.io/terra/)パッケージ[@terra_bib]を用いるのが一般的になっています。
+Rで地理空間情報を取り扱う場合、ベクタもラスタも利用可能ですが、用いるパッケージは異なります。ベクタを取り扱う最も代表的なパッケージは[`sf`](https://r-spatial.github.io/sf/)パッケージ[@sf_bib1; @sf_bib2]です。ラスタを取り扱うパッケージはいくつかありますが、2023年現在では[`stars`](https://r-spatial.github.io/stars/)パッケージ[@stars_bib]か、[`terra`](https://rspatial.github.io/terra/)パッケージ[@terra_bib]を用いるのが一般的になっています。
 
 ## sfパッケージ
 
-`sf`は「simple feature」の略で、地理空間をベクタで表記するISOの規格（[ISO 19125](http://www.iso.org/iso/catalogue_detail.htm?csnumber=40114)）を指します。このISO規格に従い地理空間情報を表現し、データフレームと同じような形で地理空間情報を取り扱えるようにしたライブラリが`sf`です。
+`sf`は「simple feature」の略で、地理空間をベクタで表記するISOの規格（[ISO 19125](http://www.iso.org/iso/catalogue_detail.htm?csnumber=40114)）を指します。このISO規格に従い地理空間情報を表現し、データフレームと同じような形で地理空間情報を取り扱えるようにしたパッケージが`sf`です。
 
 ```{r, filename="sfの読み込み"}
 pacman::p_load(sf)
@@ -90,7 +90,7 @@ plot(Nara_sfobj)
 
 ### sfオブジェクトの保存と読み込み
 
-上記のように、GeoJSONファイルは`st_read`関数で読み込み、`sf`オブジェクトに変換することができます。逆に、この`sf`オブジェクトをファイルとして保存する際には`st_write`関数を用います。`st_write`関数はファイル名の拡張子によりファイル形式を判別して保存してくれる、`ggplot2`における`ggsave`関数のような働きを持ちます。`sf`オブジェクトは通常`.shp`ファイルとして保存します。また、`st_write`関数はGeoJSONへの書き出しにも対応しています。Rや`sf`だけでなく、他の原語やライブラリを利用する際には、GeoJSONの方が取り扱いやすいでしょう。
+上記のように、GeoJSONファイルは`st_read`関数で読み込み、`sf`オブジェクトに変換することができます。逆に、この`sf`オブジェクトをファイルとして保存する際には`st_write`関数を用います。`st_write`関数はファイル名の拡張子によりファイル形式を判別して保存してくれる、`ggplot2`における`ggsave`関数のような働きを持ちます。`sf`オブジェクトは通常`.shp`ファイルとして保存します。また、`st_write`関数はGeoJSONへの書き出しにも対応しています。Rや`sf`だけでなく、他の原語やパッケージを利用する際には、GeoJSONの方が取り扱いやすいでしょう。
 
 ```{r, filename="sfオブジェクトのI/O", eval=FALSE, error=TRUE, warning=FALSE, message=FALSE}
 # .shp（シェープファイル）で保存
@@ -488,9 +488,9 @@ st_crs(Nara_sfobj) <- 4326 # WGS84に変更する（warningが出るが、変換
 
 現在（2023年）ではRでのベクタの取り扱いにはほぼ`sf`が用いられていると思いますが、ラスタデータの取り扱いでは、[`terra`](https://rspatial.github.io/terra/)パッケージ[@terra_bib]と[`stars`](https://r-spatial.github.io/stars/)パッケージ[@stars_bib]が両方用いられています。
 
-`terra`は昔から用いられているラスタデータの取り扱いに関するライブラリである[`raster`](https://cran.r-project.org/web/packages/raster/index.html)パッケージ[@raster_bib]を更新したライブラリで、`sf`との連携が組み込まれています。
+`terra`は昔から用いられているラスタデータの取り扱いに関するパッケージである[`raster`](https://cran.r-project.org/web/packages/raster/index.html)パッケージ[@raster_bib]を更新したパッケージで、`sf`との連携が組み込まれています。
 
-`stars`は`sf`の開発者が作成したラスタデータの取り扱いに関するライブラリです。`terra`と比べるとやや[ダウンロードされていないパッケージ](https://www.datasciencemeta.com/rpackages)ではありますが、ココでは`terra`ではなく`stars`について説明することとします。
+`stars`は`sf`の開発者が作成したラスタデータの取り扱いに関するパッケージです。`terra`と比べるとやや[ダウンロードされていないパッケージ](https://www.datasciencemeta.com/rpackages)ではありますが、ココでは`terra`ではなく`stars`について説明することとします。
 
 ```{r, filename="starsパッケージのロード"}
 pacman::p_load(stars)
@@ -537,10 +537,10 @@ plot(L7_ETMs)
 
 ### GeoTIFFデータの読み込み
 
-ラスタデータは衛星などからの写真・画像として得られることもあります。`stars`では、[GeoTIFF](https://ja.wikipedia.org/wiki/GeoTIFF)ファイル（地理情報を含むTIFFファイル）を読み込んで`stars`ファイルとすることができます。以下の例では、ライブラリのフォルダから`L7_ETMs`のGeoTIFF画像を`read_stars`関数で読み込んでいます。読み込んだデータのクラスは`stars`のみで、上で示した`stars_proxy`とは少し表示が異なります。`stars`はS3クラスで、中身はリストです。
+ラスタデータは衛星などからの写真・画像として得られることもあります。`stars`では、[GeoTIFF](https://ja.wikipedia.org/wiki/GeoTIFF)ファイル（地理情報を含むTIFFファイル）を読み込んで`stars`ファイルとすることができます。以下の例では、パッケージのフォルダから`L7_ETMs`のGeoTIFF画像を`read_stars`関数で読み込んでいます。読み込んだデータのクラスは`stars`のみで、上で示した`stars_proxy`とは少し表示が異なります。`stars`はS3クラスで、中身はリストです。
 
 ```{r, filename="tiff画像をstarsとして読み込む"}
-# ライブラリのフォルダ内のファイルへのパスを取得
+# パッケージのフォルダ内のファイルへのパスを取得
 tif <- system.file("tif/L7_ETMs.tif", package = "stars") 
 
 # 読み込み
@@ -568,7 +568,7 @@ as.data.frame(x) |> head() # データフレームに変換できる
 
 [netCDF](https://ja.wikipedia.org/wiki/NetCDF)（Network Common Data Form）は、気象や海洋などのラスタデータを取り扱う際に広く用いられているバイナリ形式のファイルです。`read_stars`関数でこの`netCDF`をstarsオブジェクトとして読み込むことで、R上で取り扱うことができます。
 
-下の例では、[北米の降雨量・気温・時間をまとめたnetCDFデータ](https://gdo-dcp.ucllnl.org/downscaled_cmip_projections/dcpInterface.html#About)をライブラリのフォルダから`read_stars`関数で読み込み、`stars`オブジェクトとしています。`bcsd_obs_1999.nc`というファイルがnetCDFファイルで、拡張子には.ncが用いられます。読み込み時には登録されているデータの名前（`pr`：降雨量、`tas`：気温）が返ってきます。
+下の例では、[北米の降雨量・気温・時間をまとめたnetCDFデータ](https://gdo-dcp.ucllnl.org/downscaled_cmip_projections/dcpInterface.html#About)をパッケージのフォルダから`read_stars`関数で読み込み、`stars`オブジェクトとしています。`bcsd_obs_1999.nc`というファイルがnetCDFファイルで、拡張子には.ncが用いられます。読み込み時には登録されているデータの名前（`pr`：降雨量、`tas`：気温）が返ってきます。
 
 ```{r}
 # pr（降水量）とtas（気温）があることが返ってくる
@@ -584,7 +584,7 @@ dim(w)
 
 ### ggplot2でstarsオブジェクトをプロットする
 
-`stars`ライブラリには`ggplot2`で`stars`オブジェクトをプロットするための`geom`関数である`geom_stars`関数が備わっています。`geom_stars`関数内でデータを設定することで、自動的に`aes`の内容が決定されてプロットされる仕組みになっています。`ggplot2`のその他の関数（下の例では`facet_wrap`や`scale_fill_viridis`関数）は`ggplot2`と同様に利用することができます。
+`stars`パッケージには`ggplot2`で`stars`オブジェクトをプロットするための`geom`関数である`geom_stars`関数が備わっています。`geom_stars`関数内でデータを設定することで、自動的に`aes`の内容が決定されてプロットされる仕組みになっています。`ggplot2`のその他の関数（下の例では`facet_wrap`や`scale_fill_viridis`関数）は`ggplot2`と同様に利用することができます。
 
 ```{r, filename="ggplo2でstarsオブジェクトからプロットを作成する"}
 pacman::p_load(viridis)
@@ -625,7 +625,7 @@ plot(circle, col = NA, border = 'red', add = TRUE, lwd = 2)
 
 ### starsオブジェクトの整形
 
-`stars`オブジェクトのデータの整形は、`dplyr`を用いて行うことができます。`stars`オブジェクトは`array`のリストであるため、`array`データの整形に関わるライブラリである[`cubelyr`](https://cran.r-project.org/web/packages/cubelyr/index.html)パッケージ[@cubelyr_bib]をロードしておいた方がよい場合もあります。
+`stars`オブジェクトのデータの整形は、`dplyr`を用いて行うことができます。`stars`オブジェクトは`array`のリストであるため、`array`データの整形に関わるパッケージである[`cubelyr`](https://cran.r-project.org/web/packages/cubelyr/index.html)パッケージ[@cubelyr_bib]をロードしておいた方がよい場合もあります。
 
 ```{r, filename="starsオブジェクトの整形"}
 w # 上でロードした北米の降雨量・気温のラスタデータ
@@ -720,13 +720,13 @@ st_as_sf(ma, as_points = FALSE) |> plot() # POLYGONに変換
 
 上述のように、`sf`でも`stars`でも、オブジェクトを`plot`関数の引数に取ることで地図を描画することができます。また、`ggplot2`にも`sf`や`stars`オブジェクトを表示するための手法が存在します。一方で地図データでは比較的大きい面積を占める地理空間と、狭い面積を占める空間（参考：[面積が大きい・小さい市町村](https://www.gsi.go.jp/common/000077945.pdf)）があり、どうしても狭い面積を占める空間は見にくくなってしまいます。この問題は、`plot`や`ggplot2`のグラフが静的であることが原因で起こります。
 
-地理情報を表示する場合には、静的な図ではなく、例えばgoogle mapのように、地図を拡大・縮小して確認できた方が情報を利用しやすく、理解しやすくなります。このような拡大・縮小に対応した、インタラクティブな地図を書くライブラリがRにはいくつも備わっています。インタラクティブな地図を描画するライブラリの代表的なものが、[`tmap`](https://r-tmap.github.io/tmap/)パッケージ[@tmap_bib]と[`leaflet`](https://rstudio.github.io/leaflet/)パッケージ[@leaflet_bib]です。
+地理情報を表示する場合には、静的な図ではなく、例えばgoogle mapのように、地図を拡大・縮小して確認できた方が情報を利用しやすく、理解しやすくなります。このような拡大・縮小に対応した、インタラクティブな地図を書くパッケージがRにはいくつも備わっています。インタラクティブな地図を描画するパッケージの代表的なものが、[`tmap`](https://r-tmap.github.io/tmap/)パッケージ[@tmap_bib]と[`leaflet`](https://rstudio.github.io/leaflet/)パッケージ[@leaflet_bib]です。
 
 `tmap`は`ggplot2`風に用いることができる、比較的簡単に静的・インタラクティブな地図を描画するパッケージです、一方で`leaflet`はより本格的にインタラクティブな地図を描画することができるパッケージです。以下では、まず`tmap`について紹介し、その後`leaflet`について紹介します。
 
 ## tmapパッケージ
 
-`tmap`パッケージは、設定により静的・インタラクティブな地図の描画を切り替えることができる、ggplot2-likeな地図描画ライブラリです。
+`tmap`パッケージは、設定により静的・インタラクティブな地図の描画を切り替えることができる、ggplot2-likeな地図描画パッケージです。
 
 `tmap`パッケージで地図を描画するときには、まず`sf`オブジェクトを`tm_shape`関数の引数に取ります。`ggplot2`での`ggplot`関数と同様に、`tm_shape`関数だけでは地図を描画することはできず、この関数に`+`で他の関数をつないでいくことで地図を描画することができます。たとえば、POLYGONの中身を埋め、境界線を表示した地図を描画する場合には、以下のように`tm_polygons`関数を`+`でつなぎます。
 
@@ -768,7 +768,7 @@ Nara_sfobj |>
 
 ここまでは`tmap`で描画されているのは静的な、拡大・縮小などができないマップでした。`tmap`では、静的なマップ・インタラクティブなマップを表示するモードを`tmap_mode`関数で変更できます。`tmap_mode("view")`と指定すると、インタラクティブなマップが、`tmap_mode("plot")`と指定すると静的なマップが表示されるようになります。モードの設定を行っていないときは静的なマップが表示されます。また、`ttm`関数で`"view"`と`"plot"`を切り替えることもできます。
 
-インタラクティブな地図の表示には、後ほど説明する`leaflet`パッケージでも利用されている、Javascriptの地図表示ライブラリである[leaflet](https://leafletjs.com/)が使用されています。
+インタラクティブな地図の表示には、後ほど説明する`leaflet`パッケージでも利用されている、Javascriptの地図表示パッケージである[leaflet](https://leafletjs.com/)が使用されています。
 
 ```{r, filename="viewモードでインタラクティブな地図を表示"}
 tmap_mode("view")
@@ -895,7 +895,7 @@ pacman::p_load(leaflet)
 
 ### 基本のマップ
 
-`leaflet`は`ggplot2`や`tmap`のように`+`でつなぐタイプのグラフィックライブラリではなく、`plotly`に近い、パイプ演算子で繋いでいくタイプのライブラリです。`leaflet`パッケージでのマップ作製は、まず`sf`オブジェクトを`leaflet`関数の引数とするところからスタートします。次に、パイプ演算子で`addTiles`関数を繋ぎます。この形で引数を取らずに実行すると、世界地図が示されます。
+`leaflet`は`ggplot2`や`tmap`のように`+`でつなぐタイプのグラフィックパッケージではなく、`plotly`に近い、パイプ演算子で繋いでいくタイプのパッケージです。`leaflet`パッケージでのマップ作製は、まず`sf`オブジェクトを`leaflet`関数の引数とするところからスタートします。次に、パイプ演算子で`addTiles`関数を繋ぎます。この形で引数を取らずに実行すると、世界地図が示されます。
 
 ```{r, filename="leafletの基本：leafletとaddTiles"}
 Nara_sfobj |> 

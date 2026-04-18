@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.31">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>10&nbsp; ライブラリ – R入門</title>
+<title>10&nbsp; パッケージとライブラリ – R入門</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -303,7 +303,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter10.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter10.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -431,7 +431,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter10.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -752,6 +752,18 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">並列演算（Parallel Computing）</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System関連の関数</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S3class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S3クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -776,28 +788,28 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   <ul>
 <li><a href="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%81%A8%E3%81%AF" id="toc-ライブラリとは" class="nav-link active" data-scroll-target="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%81%A8%E3%81%AF"><span class="header-section-number">10.1</span> ライブラリとは？</a></li>
   <li>
-<a href="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB" id="toc-ライブラリのインストール" class="nav-link" data-scroll-target="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="header-section-number">10.2</span> ライブラリのインストール</a>
+<a href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB" id="toc-パッケージのインストール" class="nav-link" data-scroll-target="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="header-section-number">10.2</span> パッケージのインストール</a>
   <ul>
 <li><a href="#cran%E3%81%8B%E3%82%89%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB" id="toc-cranからのインストール" class="nav-link" data-scroll-target="#cran%E3%81%8B%E3%82%89%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="header-section-number">10.2.1</span> CRANからのインストール</a></li>
   </ul>
 </li>
   <li>
-<a href="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%82%92%E3%83%AD%E3%83%BC%E3%83%89%E3%81%99%E3%82%8B" id="toc-ライブラリをロードする" class="nav-link" data-scroll-target="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%82%92%E3%83%AD%E3%83%BC%E3%83%89%E3%81%99%E3%82%8B"><span class="header-section-number">10.3</span> ライブラリをロードする</a>
+<a href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E3%83%AD%E3%83%BC%E3%83%89%E3%81%99%E3%82%8B" id="toc-パッケージをロードする" class="nav-link" data-scroll-target="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E3%83%AD%E3%83%BC%E3%83%89%E3%81%99%E3%82%8B"><span class="header-section-number">10.3</span> パッケージをロードする</a>
   <ul>
-<li><a href="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%82%92%E3%83%AD%E3%83%BC%E3%83%89%E3%81%9B%E3%81%9A%E3%81%AB%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B" id="toc-ライブラリをロードせずに使用する" class="nav-link" data-scroll-target="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%82%92%E3%83%AD%E3%83%BC%E3%83%89%E3%81%9B%E3%81%9A%E3%81%AB%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><span class="header-section-number">10.3.1</span> ライブラリをロードせずに使用する</a></li>
+<li><a href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E3%83%AD%E3%83%BC%E3%83%89%E3%81%9B%E3%81%9A%E3%81%AB%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B" id="toc-パッケージをロードせずに使用する" class="nav-link" data-scroll-target="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E3%83%AD%E3%83%BC%E3%83%89%E3%81%9B%E3%81%9A%E3%81%AB%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><span class="header-section-number">10.3.1</span> パッケージをロードせずに使用する</a></li>
   <li><a href="#github%E3%81%8B%E3%82%89%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB" id="toc-githubからのインストール" class="nav-link" data-scroll-target="#github%E3%81%8B%E3%82%89%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="header-section-number">10.3.2</span> githubからのインストール</a></li>
   <li><a href="#bioconductor%E3%81%8B%E3%82%89%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB" id="toc-bioconductorからのインストール" class="nav-link" data-scroll-target="#bioconductor%E3%81%8B%E3%82%89%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="header-section-number">10.3.3</span> Bioconductorからのインストール</a></li>
   </ul>
 </li>
-  <li><a href="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%82%92%E7%B0%A1%E5%8D%98%E3%81%AB%E5%8F%96%E3%82%8A%E6%89%B1%E3%81%86pacman" id="toc-ライブラリを簡単に取り扱うpacman" class="nav-link" data-scroll-target="#%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%E3%82%92%E7%B0%A1%E5%8D%98%E3%81%AB%E5%8F%96%E3%82%8A%E6%89%B1%E3%81%86pacman"><span class="header-section-number">10.4</span> ライブラリを簡単に取り扱う：pacman</a></li>
+  <li><a href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E7%B0%A1%E5%8D%98%E3%81%AB%E5%8F%96%E3%82%8A%E6%89%B1%E3%81%86pacman" id="toc-パッケージを簡単に取り扱うpacman" class="nav-link" data-scroll-target="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E7%B0%A1%E5%8D%98%E3%81%AB%E5%8F%96%E3%82%8A%E6%89%B1%E3%81%86pacman"><span class="header-section-number">10.4</span> パッケージを簡単に取り扱う：pacman</a></li>
   <li><a href="#tidyverse" id="toc-tidyverse" class="nav-link" data-scroll-target="#tidyverse"><span class="header-section-number">10.5</span> tidyverse</a></li>
-  <li><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E4%BE%BF%E5%88%A9%E3%81%AA%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA" id="toc-その他の便利なライブラリ" class="nav-link" data-scroll-target="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E4%BE%BF%E5%88%A9%E3%81%AA%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA"><span class="header-section-number">10.6</span> その他の便利なライブラリ</a></li>
+  <li><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E4%BE%BF%E5%88%A9%E3%81%AA%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8" id="toc-その他の便利なパッケージ" class="nav-link" data-scroll-target="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E4%BE%BF%E5%88%A9%E3%81%AA%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8"><span class="header-section-number">10.6</span> その他の便利なパッケージ</a></li>
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter10.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Rプログラミングの基礎</a></li><li class="breadcrumb-item"><a href="./chapter10.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></a></li></ol></nav><div class="quarto-title">
 <div class="quarto-title-block"><div><h1 class="title">
-<span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span>
+<span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span>
 </h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
@@ -816,53 +828,53 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span class="header-section-number">10.1</span> ライブラリとは？</h2>
 <p>Rは統計のプログラミング言語であり、インストールしてすぐに統計の計算を行うことができるよう設計されています。例えば、代表的な統計処理である、平均値や標準偏差の計算、t検定や分散分析、グラフの作図等は、Rをインストールし、起動した次の瞬間から実行することができます。</p>
 <p>しかし、この素の（nativeな）Rでは、近年開発された現代的な統計手法や、優れたデザインやインタラクティブ性を持つグラフの作成、複雑なデータの効率的な整理、Webページの作成など、現代のプログラミング言語に備わる機能のすべてを用いることはできません。</p>
-<p>Rを含めた多くのプログラミング言語では、nativeな言語にはない機能を後から追加することができます。この追加する機能のセットのことを、<strong>ライブラリ</strong>と呼びます（<strong>パッケージ</strong>と呼ぶこともあります）。</p>
-<p>Rのライブラリは（基本的には）<a href="https://cran.r-project.org/"><strong>CRAN</strong></a>で管理されており、審査が行われた上で登録されています。ライブラリはCRANのリポジトリ（データを格納する場所のこと）に保存されており、RのユーザーはこのCRANのリポジトリから、必要なライブラリを<strong>インストール</strong>して用いることになります。</p>
-<p>ライブラリは、インストールしただけでは用いることができません。ライブラリを<strong>読み込み（ロード、load）</strong>、メモリ上に展開しておくことでライブラリの機能を用いることができるようになります。この読み込みはRを起動するたびに行います。ライブラリの機能は関連する関数群として実装されていますので、ロードすることでライブラリに登録されている関数を用いることができるようになります。</p>
+<p>Rを含めた多くのプログラミング言語では、nativeな言語にはない機能を後から追加することができます。この追加する機能のセットのことを、<strong>パッケージ</strong>と呼びます。また、この追加したパッケージのリストやファイルを保存している場所のことを<strong>ライブラリ</strong>と呼びます。</p>
+<p>Rのパッケージは（基本的には）<a href="https://cran.r-project.org/"><strong>CRAN</strong></a>で管理されており、審査が行われた上で登録されています。パッケージはCRANのリポジトリ（データを格納する場所のこと）に保存されており、RのユーザーはこのCRANのリポジトリから、必要なパッケージを<strong>インストール</strong>して用いることになります。インストールしたパッケージはライブラリ、自分のPCのフォルダに保存されます。</p>
+<p>パッケージは、インストールしただけでは用いることができません。パッケージを<strong>読み込み（ロード、load）</strong>、メモリ上に展開しておくことでパッケージの機能を用いることができるようになります。この読み込みはRを起動するたびに行います。パッケージの機能は関連する関数群として実装されていますので、ロードすることでパッケージに登録されている関数を用いることができるようになります。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-ライブラリを毎回読み込む
+パッケージを毎回読み込む
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>ライブラリをいちいち読み込むのは面倒ではありますが、必要ないライブラリを読み込んでしまうと、その分メモリを食うことになります。必要ないライブラリは読み込まないことで、メモリを節約し、プログラムの動作を軽くすることができます。他の言語にも同様の機能が備わっており、必要なライブラリのみを読み込んで用いるのが一般的です。</p>
-<p>Rでは、デフォルトのワーキングディレクトリに.Rprofileというファイルを保存しておけば、この中身のプログラムをR起動時に実行してくれるという仕組みがあります。.Rprofileにいつも使うライブラリをロードするように、スクリプトを準備しておいてもよいかもしれません。</p>
+<p>パッケージをいちいち読み込むのは面倒ではありますが、必要ないパッケージを読み込んでしまうと、その分メモリを食うことになります。必要ないパッケージは読み込まないことで、メモリを節約し、プログラムの動作を軽くすることができます。他の言語にも同様の機能が備わっており、必要なパッケージのみを読み込んで用いるのが一般的です。</p>
+<p>Rでは、デフォルトのワーキングディレクトリに.Rprofileというファイルを保存しておけば、この中身のプログラムをR起動時に実行してくれるという仕組みがあります。.Rprofileにいつも使うパッケージをロードするように、スクリプトを準備しておいてもよいかもしれません。</p>
 </div>
 </div>
 </div>
-</section><section id="ライブラリのインストール" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="ライブラリのインストール">
-<span class="header-section-number">10.2</span> ライブラリのインストール</h2>
+</section><section id="パッケージのインストール" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="パッケージのインストール">
+<span class="header-section-number">10.2</span> パッケージのインストール</h2>
 <section id="cranからのインストール" class="level3" data-number="10.2.1"><h3 data-number="10.2.1" class="anchored" data-anchor-id="cranからのインストール">
 <span class="header-section-number">10.2.1</span> CRANからのインストール</h3>
-<p>上記のように、ライブラリはまず<strong>インストール</strong>しないと用いることはできません。Rでライブラリをインストールする時には、<code>install.packages</code>関数を用います。<code>install.packages</code>関数の引数は<strong>文字列のライブラリ名</strong>です。ですので、ライブラリ名をダブルクオーテーションで囲う必要があります。ライブラリは自動的にダウンロードされ、<code>.libPaths</code>関数で表示されるフォルダにインストールされます。</p>
+<p>上記のように、パッケージはまず<strong>インストール</strong>しないと用いることはできません。Rでパッケージをインストールする時には、<code>install.packages</code>関数を用います。<code>install.packages</code>関数の引数は<strong>文字列のパッケージ名</strong>です。ですので、パッケージ名をダブルクオーテーションで囲う必要があります。パッケージは自動的にダウンロードされ、<code>.libPaths</code>関数で表示されるフォルダ、つまりライブラリにインストールされます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>ライブラリのインストール</strong></pre>
+<pre><strong>パッケージのインストール</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span> <span class="co"># tidyverseというライブラリをインストールする</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span> <span class="co"># tidyverseというパッケージをインストールする</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"pacman"</span><span class="op">)</span><span class="op">)</span> <span class="co"># 複数のパッケージ名をベクターで与えることもできる</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span> <span class="co"># エラーが出る。ライブラリ名は文字列でないとダメ</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span> <span class="co"># エラーが出る。パッケージ名は文字列でないとダメ</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/libPaths.html">.libPaths</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ライブラリのインストール先を表示</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/libPaths.html">.libPaths</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># パッケージのインストール先（ライブラリ）を表示</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-</section></section><section id="ライブラリをロードする" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="ライブラリをロードする">
-<span class="header-section-number">10.3</span> ライブラリをロードする</h2>
-<p>ライブラリをロードするときには、<code>library</code>関数を用います。<code>library</code>関数の引数は、<strong>文字列ではない</strong>ライブラリ名です。文字列のライブラリ名でも読み込みはできますが、ダブルクオーテーションで囲う必要はありません。</p>
-<p>同様に<code>require</code>関数でもライブラリを読み込むことができます。<code>require</code>関数では、ライブラリの読み込みに成功すると<code>TRUE</code>が、失敗すると<code>FALSE</code>が返り値として返ってくるという特徴があります。</p>
-<p><code>library</code>関数を引数なしで実行すると、インストールされているライブラリの一覧が表示されます。</p>
+</section></section><section id="パッケージをロードする" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="パッケージをロードする">
+<span class="header-section-number">10.3</span> パッケージをロードする</h2>
+<p>パッケージをロードするときには、<code>library</code>関数を用います。<code>library</code>関数の引数は、<strong>文字列ではない</strong>パッケージ名です。文字列のパッケージ名でも読み込みはできますが、ダブルクオーテーションで囲う必要はありません。</p>
+<p>同様に<code>require</code>関数でもパッケージを読み込むことができます。<code>require</code>関数では、パッケージの読み込みに成功すると<code>TRUE</code>が、失敗すると<code>FALSE</code>が返り値として返ってくるという特徴があります。</p>
+<p><code>library</code>関数を引数なしで実行すると、インストールされているパッケージの一覧（ライブラリ）が表示されます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>ライブラリをロードする</strong></pre>
+<pre><strong>パッケージをロードする</strong></pre>
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span> <span class="co"># tidyverseパッケージを読み込む</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/trinker/pacman">"pacman"</a></span><span class="op">)</span> <span class="co"># pacmanパッケージを読み込む（文字列）</span></span>
@@ -884,12 +896,12 @@ libraryをロードするときのメッセージ
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>ライブラリには、読み込み時にメッセージを表示するものがあります。例えば上記の<code>tidyverse</code>パッケージは読み込み時にメッセージが表示されます。</p>
-<p>ライブラリ読み込み時のメッセージを表示させたくない場合には、<code>suppressPackageStartupMessages</code>という関数を用います。</p>
+<p>パッケージには、読み込み時にメッセージを表示するものがあります。例えば上記の<code>tidyverse</code>パッケージは読み込み時にメッセージが表示されます。</p>
+<p>パッケージ読み込み時のメッセージを表示させたくない場合には、<code>suppressPackageStartupMessages</code>という関数を用います。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>メッセージを表示せずにライブラリを読み込む</strong></pre>
+<pre><strong>メッセージを表示せずにパッケージを読み込む</strong></pre>
 </div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -897,17 +909,17 @@ libraryをロードするときのメッセージ
 </div>
 </div>
 </div>
-<section id="ライブラリをロードせずに使用する" class="level3" data-number="10.3.1"><h3 data-number="10.3.1" class="anchored" data-anchor-id="ライブラリをロードせずに使用する">
-<span class="header-section-number">10.3.1</span> ライブラリをロードせずに使用する</h3>
-<p>ライブラリに登録されている関数を用いるには、通常ロードする必要がありますが、ライブラリをロードしなくても個別の機能（関数）を用いることはできます。ライブラリをロードせずにそのライブラリの関数を用いるときには、<strong>「ライブラリ名::関数名」</strong>という形で関数を呼び出します。</p>
+<section id="パッケージをロードせずに使用する" class="level3" data-number="10.3.1"><h3 data-number="10.3.1" class="anchored" data-anchor-id="パッケージをロードせずに使用する">
+<span class="header-section-number">10.3.1</span> パッケージをロードせずに使用する</h3>
+<p>パッケージに登録されている関数を用いるには、通常ロードする必要がありますが、パッケージをロードしなくても個別の機能（関数）を用いることはできます。パッケージをロードせずにそのパッケージの関数を用いるときには、<strong>「パッケージ名::関数名」</strong>という形で関数を呼び出します。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>ライブラリをロードせずに関数を用いる</strong></pre>
+<pre><strong>パッケージをロードせずに関数を用いる</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages("lubridate") であらかじめライブラリのインストールが必要</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages("lubridate") であらかじめパッケージのインストールが必要</span></span>
 <span></span>
-<span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="st">"2023-10-10"</span><span class="op">)</span> <span class="co"># lubridateパッケージの関数はライブラリをロードしないと使えない</span></span>
+<span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="st">"2023-10-10"</span><span class="op">)</span> <span class="co"># lubridateパッケージの関数はパッケージをロードしないと使えない</span></span>
 <span><span class="co">## Error in `ymd()`:</span></span>
 <span><span class="co">## ! could not find function "ymd"</span></span>
 <span></span>
@@ -917,8 +929,8 @@ libraryをロードするときのメッセージ
 </div>
 </section><section id="githubからのインストール" class="level3" data-number="10.3.2"><h3 data-number="10.3.2" class="anchored" data-anchor-id="githubからのインストール">
 <span class="header-section-number">10.3.2</span> githubからのインストール</h3>
-<p>最近では、最新のライブラリはCRANだけでなく、<a href="https://github.co.jp/"><strong>GitHub</strong></a>というプログラム開発プラットフォームからインストールすることもあります。ただし、<strong>GitHubのライブラリはCRANによるチェックを受けていない</strong>ものですので、インストールする際には注意が必要です。GitHubからのライブラリのインストールには、<code>devtools</code> <span class="citation" data-cites="devtools_bib">(<a href="references.html#ref-devtools_bib" role="doc-biblioref">Wickham et al. 2022</a>)</span>パッケージの<code>install_github</code>関数を用います。引数には、ライブラリの<strong>リポジトリ</strong>というものを文字列で取ります。</p>
-<p>例えば、<a href="https://www.displayr.com/">Displayr</a>という会社が開発している<code>flipPlots</code>というライブラリをGitHubからインストールする場合には、GitHubの対象のページのアドレス（<a href="https://github.com/Displayr/flipPlots" class="uri">https://github.com/Displayr/flipPlots</a>）のうち、後ろの2つの項目（<code>Displayr/flipPlots</code>）をリポジトリとして取り扱います。GitHubのページにはリポジトリ名が記載されています。</p>
+<p>最近では、最新のパッケージはCRANだけでなく、<a href="https://github.co.jp/"><strong>GitHub</strong></a>というプログラム開発プラットフォームからインストールすることもあります。ただし、<strong>GitHub上のパッケージはCRANによるチェックを受けていない</strong>ものですので、インストールする際には注意が必要です。GitHubからのパッケージのインストールには、<code>devtools</code> <span class="citation" data-cites="devtools_bib">(<a href="references.html#ref-devtools_bib" role="doc-biblioref">Wickham et al. 2022</a>)</span>パッケージの<code>install_github</code>関数を用います。引数には、パッケージの<strong>リポジトリ</strong>というものを文字列で取ります。</p>
+<p>例えば、<a href="https://www.displayr.com/">Displayr</a>という会社が開発している<code>flipPlots</code>というパッケージをGitHubからインストールする場合には、GitHubの対象のページのアドレス（<a href="https://github.com/Displayr/flipPlots" class="uri">https://github.com/Displayr/flipPlots</a>）のうち、後ろの2つの項目（<code>Displayr/flipPlots</code>）をリポジトリとして取り扱います。GitHubのページにはリポジトリ名が記載されています。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/github_reponame.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="図1：GitHubのリポジトリ名"><img src="./image/github_reponame.png" class="img-fluid figure-img" alt="図1：GitHubのリポジトリ名"></a></p>
 <figcaption>図1：GitHubのリポジトリ名</figcaption></figure>
@@ -926,9 +938,9 @@ libraryをロードするときのメッセージ
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>GitHubからのライブラリのインストール</strong></pre>
+<pre><strong>GitHubからのパッケージのインストール</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># flipPlotsというライブラリをGitHubからインストールする(インストールは自己責任で)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># flipPlotsというパッケージをGitHubからインストールする(インストールは自己責任で)</span></span>
 <span><span class="co"># devtools::install_github("Displayr/flipPlots") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -950,28 +962,28 @@ GitとGithub
 </div>
 </section><section id="bioconductorからのインストール" class="level3" data-number="10.3.3"><h3 data-number="10.3.3" class="anchored" data-anchor-id="bioconductorからのインストール">
 <span class="header-section-number">10.3.3</span> Bioconductorからのインストール</h3>
-<p>生物系の統計手法（DNAのアライメントやシーケンサーデータの処理、系統樹の計算等）のライブラリを専門的に取り扱っているのが、<a href="https://www.bioconductor.org/"><strong>Bioconductor</strong></a>です。Bioconductorに設定されているライブラリはCRANやgithubのものとは取り扱いが少し異なります。</p>
-<p>Bioconductorのライブラリを利用するには、<code>BiocManager</code> <span class="citation" data-cites="BiocManager_bib">(<a href="references.html#ref-BiocManager_bib" role="doc-biblioref">Morgan and Ramos 2023</a>)</span>というライブラリをあらかじめインストールする必要があります。Bioconductorのライブラリのインストールにはこの<code>BiocManeger</code>パッケージの<code>install</code>関数を用います。<code>install</code>関数を引数なしで用いると、Bioconductorのコアライブラリをすべてインストールすることができます。特定のライブラリをインストールするときには、引数に文字列のライブラリ名を入力します。</p>
-<p>インストールしたBioconductorライブラリのロードは通常のライブラリと同様に<code>library</code>関数で行うことができます。</p>
+<p>生物系の統計手法（DNAのアライメントやシーケンサーデータの処理、系統樹の計算等）のパッケージを専門的に取り扱っているのが、<a href="https://www.bioconductor.org/"><strong>Bioconductor</strong></a>です。Bioconductorに設定されているパッケージはCRANやgithubのものとは取り扱いが少し異なります。</p>
+<p>Bioconductorのパッケージを利用するには、<code>BiocManager</code> <span class="citation" data-cites="BiocManager_bib">(<a href="references.html#ref-BiocManager_bib" role="doc-biblioref">Morgan and Ramos 2023</a>)</span>というパッケージをあらかじめインストールする必要があります。Bioconductorのライブラリのインストールにはこの<code>BiocManeger</code>パッケージの<code>install</code>関数を用います。<code>install</code>関数を引数なしで用いると、Bioconductorのコアライブラリをすべてインストールすることができます。特定のパッケージをインストールするときには、引数に文字列のパッケージ名を入力します。</p>
+<p>インストールしたBioconductorのパッケージのロードは通常のパッケージと同様に<code>library</code>関数で行うことができます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Bioconductorのライブラリをインストール</strong></pre>
+<pre><strong>Bioconductorのパッケージをインストール</strong></pre>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span> <span class="co"># BioManagerパッケージのインストール</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html">install</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Bioconductorのコアライブラリをインストールする</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GenomicFeatures"</span>, <span class="st">"AnnotationDbi"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-</section></section><section id="ライブラリを簡単に取り扱うpacman" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="ライブラリを簡単に取り扱うpacman">
-<span class="header-section-number">10.4</span> ライブラリを簡単に取り扱う：pacman</h2>
-<p>ライブラリはインストールしないとロードすることができません。ですので、インストールしていないライブラリをロードしようとするととエラーが出ます。<code>if</code>文を用いると、ライブラリがインストールされていないときにはインストールしてロード、インストールされているときにはロードが実行されるようにすることもできます。</p>
+</section></section><section id="パッケージを簡単に取り扱うpacman" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="パッケージを簡単に取り扱うpacman">
+<span class="header-section-number">10.4</span> パッケージを簡単に取り扱う：pacman</h2>
+<p>パッケージはインストールしないとロードすることができません。ですので、インストールしていないパッケージをロードしようとするととエラーが出ます。<code>if</code>文を用いると、パッケージがインストールされていないときにはインストールしてロード、インストールされているときにはロードが実行されるようにすることもできます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>pacman::p_load関数によるライブラリのロード</strong></pre>
+<pre><strong>pacman::p_load関数によるパッケージのロード</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># climetricsパッケージ（気候変化に関するライブラリ）は</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># climetricsパッケージ（気候変化に関するパッケージ）は</span></span>
 <span><span class="co"># インストールされていないので、エラーが出る</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-gis.net/">climetrics</a></span><span class="op">)</span> </span>
 <span></span>
@@ -981,19 +993,19 @@ GitとGithub
 <span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://r-gis.net/">climetrics</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"climetrics"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>この<code>if</code>文と<code>require</code>関数を用いる書き方は長い間使用されてきましたが、やや複雑で覚えにくいものです。このようなライブラリの取り扱いを簡単にしてくれるのが<code>pacman</code> <span class="citation" data-cites="pacman_bib">(<a href="references.html#ref-pacman_bib" role="doc-biblioref">Rinker and Kurkiewicz 2018</a>)</span>パッケージです。近年では、この<code>pacman</code>パッケージの<code>p_load</code>関数を用いてパッケージをロードすることも増えてきています。<code>p_load</code>関数を用いるには、<code>pacman</code>パッケージをロードする必要があります。ライブラリのロードのために別途<code>pacman</code>だけロードするのは面倒ですので、<code><a href="https://rdrr.io/pkg/pacman/man/p_load.html">pacman::p_load</a></code>という形で、ライブラリをロードすることなく関数だけ用いるのが一般的です。この他に、<a href="https://pak.r-lib.org/index.html"><code>pak</code></a><span class="citation" data-cites="pak_bib">(<a href="references.html#ref-pak_bib" role="doc-biblioref">Csárdi and Hester 2024</a>)</span>と呼ばれるパッケージ管理のライブラリも最近では用いられています。</p>
+<p>この<code>if</code>文と<code>require</code>関数を用いる書き方は長い間使用されてきましたが、やや複雑で覚えにくいものです。このようなパッケージの取り扱いを簡単にしてくれるのが<code>pacman</code> <span class="citation" data-cites="pacman_bib">(<a href="references.html#ref-pacman_bib" role="doc-biblioref">Rinker and Kurkiewicz 2018</a>)</span>パッケージです。近年では、この<code>pacman</code>パッケージの<code>p_load</code>関数を用いてパッケージをロードすることも増えてきています。<code>p_load</code>関数を用いるには、<code>pacman</code>パッケージをロードする必要があります。パッケージのロードのために別途<code>pacman</code>だけロードするのは面倒ですので、<code><a href="https://rdrr.io/pkg/pacman/man/p_load.html">pacman::p_load</a></code>という形で、パッケージをロードすることなく関数だけ用いるのが一般的です。この他に、<a href="https://pak.r-lib.org/index.html"><code>pak</code></a><span class="citation" data-cites="pak_bib">(<a href="references.html#ref-pak_bib" role="doc-biblioref">Csárdi and Hester 2024</a>)</span>と呼ばれるパッケージ管理のパッケージも最近ではよく用いられています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>pacman::p_load関数を用いたライブラリのロード</strong></pre>
+<pre><strong>pacman::p_load関数を用いたパッケージのロード</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ライブラリをロードする（インストールされてなければインストールしてからロードする）</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># パッケージをロードする（インストールされてなければインストールしてからロードする）</span></span>
 <span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>, <span class="va">lubridate</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section><section id="tidyverse" class="level2" data-number="10.5"><h2 data-number="10.5" class="anchored" data-anchor-id="tidyverse">
 <span class="header-section-number">10.5</span> tidyverse</h2>
-<p>近年のRでは、<a href="https://posit.co/"><strong>Posit</strong></a>（旧Rstudio、IDEであるRstudioの開発元）およびPositのチーフサイエンティストである<strong>Hadley Wickham</strong>が中心となって作成された複数のライブラリのセットである、<a href="https://www.tidyverse.org/"><code>tidyverse</code></a> <span class="citation" data-cites="tidyverse_bib">(<a href="references.html#ref-tidyverse_bib" role="doc-biblioref">Wickham et al. 2019</a>)</span>を用いるのがほぼ常識となっています。<code>tidyverse</code>のライブラリ群を用いなくてもRを使うことはできますが、このライブラリ群を用いることでデータの整理・グラフ作成・文字列の処理等を簡単に行うことができるようになります。<code>tidyverse</code>のライブラリ群は以下のように一度にインストール・ロードすることができます。</p>
+<p>近年のRでは、<a href="https://posit.co/"><strong>Posit</strong></a>（旧Rstudio、IDEであるRstudioの開発元）およびPositのチーフサイエンティストである<strong>Hadley Wickham</strong>が中心となって作成された複数のパッケージのセットである、<a href="https://www.tidyverse.org/"><code>tidyverse</code></a> <span class="citation" data-cites="tidyverse_bib">(<a href="references.html#ref-tidyverse_bib" role="doc-biblioref">Wickham et al. 2019</a>)</span>を用いるのがほぼ常識となっています。<code>tidyverse</code>のパッケージ群を用いなくてもRを使うことはできますが、このパッケージ群を用いることでデータの整理・グラフ作成・文字列の処理等を簡単に行うことができるようになります。<code>tidyverse</code>のパッケージ群は以下のように一度にインストール・ロードすることができます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1002,14 +1014,14 @@ GitとGithub
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span> <span class="co"># tideverseのインストール・ロード(install.packages・library関数でも可)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p><code>tidyverse</code>に含まれているライブラリを以下に示します。個別の、重要なライブラリに関しては別章で説明します。</p>
+<p><code>tidyverse</code>に含まれているパッケージを以下に示します。個別の、重要なパッケージに関しては別章で説明します。</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>表1：tidyverseに含まれるライブラリ群</caption>
+<caption>表1：tidyverseに含まれるパッケージ群</caption>
 <thead><tr class="header">
-<th style="text-align: left;">ライブラリ名</th>
-<th style="text-align: left;">ライブラリの主な機能</th>
+<th style="text-align: left;">パッケージ名</th>
+<th style="text-align: left;">パッケージの主な機能</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -1048,16 +1060,16 @@ GitとGithub
 </table>
 </div>
 </div>
-</section><section id="その他の便利なライブラリ" class="level2" data-number="10.6"><h2 data-number="10.6" class="anchored" data-anchor-id="その他の便利なライブラリ">
-<span class="header-section-number">10.6</span> その他の便利なライブラリ</h2>
-<p><code>tidyverse</code>の他にも、データ処理を簡単にしたり、インタラクティブなグラフを作成したり、Rで文書を作成したりするためのライブラリをRは備えています。以下によく用いられるライブラリを示します。統計に関するライブラリも無数に存在します。統計に関するライブラリについては、統計手法の説明の際に紹介します。</p>
+</section><section id="その他の便利なパッケージ" class="level2" data-number="10.6"><h2 data-number="10.6" class="anchored" data-anchor-id="その他の便利なパッケージ">
+<span class="header-section-number">10.6</span> その他の便利なパッケージ</h2>
+<p><code>tidyverse</code>の他にも、データ処理を簡単にしたり、インタラクティブなグラフを作成したり、Rで文書を作成したりするためのパッケージをRは備えています。以下によく用いられるパッケージを示します。統計に関するパッケージも無数に存在します。統計に関するパッケージについては、統計手法の説明の際に紹介します。</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>表2：Rで用いられている便利なライブラリ</caption>
+<caption>表2：Rで用いられている便利なパッケージ</caption>
 <thead><tr class="header">
-<th style="text-align: left;">ライブラリ名</th>
-<th style="text-align: left;">ライブラリの主な機能</th>
+<th style="text-align: left;">パッケージ名</th>
+<th style="text-align: left;">パッケージの主な機能</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -1598,7 +1610,7 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># ライブラリ</span></span>
+<div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># パッケージとライブラリ</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -1612,46 +1624,46 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>しかし、この素の（nativeな）Rでは、近年開発された現代的な統計手法や、優れたデザインやインタラクティブ性を持つグラフの作成、複雑なデータの効率的な整理、Webページの作成など、現代のプログラミング言語に備わる機能のすべてを用いることはできません。</span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>Rを含めた多くのプログラミング言語では、nativeな言語にはない機能を後から追加することができます。この追加する機能のセットのことを、**ライブラリ**と呼びます（**パッケージ**と呼ぶこともあります）。</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>Rを含めた多くのプログラミング言語では、nativeな言語にはない機能を後から追加することができます。この追加する機能のセットのことを、**パッケージ**と呼びます。また、この追加したパッケージのリストやファイルを保存している場所のことを**ライブラリ**と呼びます。</span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>Rのライブラリは（基本的には）<span class="co">[</span><span class="ot">**CRAN**</span><span class="co">](https://cran.r-project.org/)</span>で管理されており、審査が行われた上で登録されています。ライブラリはCRANのリポジトリ（データを格納する場所のこと）に保存されており、RのユーザーはこのCRANのリポジトリから、必要なライブラリを**インストール**して用いることになります。</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>Rのパッケージは（基本的には）<span class="co">[</span><span class="ot">**CRAN**</span><span class="co">](https://cran.r-project.org/)</span>で管理されており、審査が行われた上で登録されています。パッケージはCRANのリポジトリ（データを格納する場所のこと）に保存されており、RのユーザーはこのCRANのリポジトリから、必要なパッケージを**インストール**して用いることになります。インストールしたパッケージはライブラリ、自分のPCのフォルダに保存されます。</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>ライブラリは、インストールしただけでは用いることができません。ライブラリを**読み込み（ロード、load）**、メモリ上に展開しておくことでライブラリの機能を用いることができるようになります。この読み込みはRを起動するたびに行います。ライブラリの機能は関連する関数群として実装されていますので、ロードすることでライブラリに登録されている関数を用いることができるようになります。</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>パッケージは、インストールしただけでは用いることができません。パッケージを**読み込み（ロード、load）**、メモリ上に展開しておくことでパッケージの機能を用いることができるようになります。この読み込みはRを起動するたびに行います。パッケージの機能は関連する関数群として実装されていますので、ロードすることでパッケージに登録されている関数を用いることができるようになります。</span>
 <span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## ライブラリを毎回読み込む</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## パッケージを毎回読み込む</span></span>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>ライブラリをいちいち読み込むのは面倒ではありますが、必要ないライブラリを読み込んでしまうと、その分メモリを食うことになります。必要ないライブラリは読み込まないことで、メモリを節約し、プログラムの動作を軽くすることができます。他の言語にも同様の機能が備わっており、必要なライブラリのみを読み込んで用いるのが一般的です。</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>パッケージをいちいち読み込むのは面倒ではありますが、必要ないパッケージを読み込んでしまうと、その分メモリを食うことになります。必要ないパッケージは読み込まないことで、メモリを節約し、プログラムの動作を軽くすることができます。他の言語にも同様の機能が備わっており、必要なパッケージのみを読み込んで用いるのが一般的です。</span>
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>Rでは、デフォルトのワーキングディレクトリに.Rprofileというファイルを保存しておけば、この中身のプログラムをR起動時に実行してくれるという仕組みがあります。.Rprofileにいつも使うライブラリをロードするように、スクリプトを準備しておいてもよいかもしれません。</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>Rでは、デフォルトのワーキングディレクトリに.Rprofileというファイルを保存しておけば、この中身のプログラムをR起動時に実行してくれるという仕組みがあります。.Rprofileにいつも使うパッケージをロードするように、スクリプトを準備しておいてもよいかもしれません。</span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## ライブラリのインストール</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## パッケージのインストール</span></span>
 <span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="fu">### CRANからのインストール</span></span>
 <span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>上記のように、ライブラリはまず**インストール**しないと用いることはできません。Rでライブラリをインストールする時には、`install.packages`関数を用います。`install.packages`関数の引数は**文字列のライブラリ名**です。ですので、ライブラリ名をダブルクオーテーションで囲う必要があります。ライブラリは自動的にダウンロードされ、<span class="in">`.libPaths`</span>関数で表示されるフォルダにインストールされます。</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>上記のように、パッケージはまず**インストール**しないと用いることはできません。Rでパッケージをインストールする時には、`install.packages`関数を用います。`install.packages`関数の引数は**文字列のパッケージ名**です。ですので、パッケージ名をダブルクオーテーションで囲う必要があります。パッケージは自動的にダウンロードされ、<span class="in">`.libPaths`</span>関数で表示されるフォルダ、つまりライブラリにインストールされます。</span>
 <span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ライブラリのインストール", error=TRUE, eval=FALSE}</span></span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>) <span class="co"># tidyverseというライブラリをインストールする</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パッケージのインストール", error=TRUE, eval=FALSE}</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>) <span class="co"># tidyverseというパッケージをインストールする</span></span>
 <span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"pacman"</span>)) <span class="co"># 複数のパッケージ名をベクターで与えることもできる</span></span>
 <span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(tidyverse) <span class="co"># エラーが出る。ライブラリ名は文字列でないとダメ</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(tidyverse) <span class="co"># エラーが出る。パッケージ名は文字列でないとダメ</span></span>
 <span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>() <span class="co"># ライブラリのインストール先を表示</span></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>() <span class="co"># パッケージのインストール先（ライブラリ）を表示</span></span>
 <span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## ライブラリをロードする</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## パッケージをロードする</span></span>
 <span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>ライブラリをロードするときには、<span class="in">`library`</span>関数を用います。<span class="in">`library`</span>関数の引数は、**文字列ではない**ライブラリ名です。文字列のライブラリ名でも読み込みはできますが、ダブルクオーテーションで囲う必要はありません。</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>パッケージをロードするときには、<span class="in">`library`</span>関数を用います。<span class="in">`library`</span>関数の引数は、**文字列ではない**パッケージ名です。文字列のパッケージ名でも読み込みはできますが、ダブルクオーテーションで囲う必要はありません。</span>
 <span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>同様に<span class="in">`require`</span>関数でもライブラリを読み込むことができます。<span class="in">`require`</span>関数では、ライブラリの読み込みに成功すると<span class="in">`TRUE`</span>が、失敗すると<span class="in">`FALSE`</span>が返り値として返ってくるという特徴があります。</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>同様に<span class="in">`require`</span>関数でもパッケージを読み込むことができます。<span class="in">`require`</span>関数では、パッケージの読み込みに成功すると<span class="in">`TRUE`</span>が、失敗すると<span class="in">`FALSE`</span>が返り値として返ってくるという特徴があります。</span>
 <span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a><span class="in">`library`</span>関数を引数なしで実行すると、インストールされているライブラリの一覧が表示されます。</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a><span class="in">`library`</span>関数を引数なしで実行すると、インストールされているパッケージの一覧（ライブラリ）が表示されます。</span>
 <span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ライブラリをロードする", eval=FALSE, warning=FALSE, message=FALSE}</span></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パッケージをロードする", eval=FALSE, warning=FALSE, message=FALSE}</span></span>
 <span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># tidyverseパッケージを読み込む</span></span>
 <span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"pacman"</span>) <span class="co"># pacmanパッケージを読み込む（文字列）</span></span>
 <span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a></span>
@@ -1664,39 +1676,39 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
 <span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
 <span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## libraryをロードするときのメッセージ</span></span>
 <span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>ライブラリには、読み込み時にメッセージを表示するものがあります。例えば上記の<span class="in">`tidyverse`</span>パッケージは読み込み時にメッセージが表示されます。</span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>パッケージには、読み込み時にメッセージを表示するものがあります。例えば上記の<span class="in">`tidyverse`</span>パッケージは読み込み時にメッセージが表示されます。</span>
 <span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>ライブラリ読み込み時のメッセージを表示させたくない場合には、<span class="in">`suppressPackageStartupMessages`</span>という関数を用います。</span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>パッケージ読み込み時のメッセージを表示させたくない場合には、<span class="in">`suppressPackageStartupMessages`</span>という関数を用います。</span>
 <span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="メッセージを表示せずにライブラリを読み込む", eval=FALSE}</span></span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="メッセージを表示せずにパッケージを読み込む", eval=FALSE}</span></span>
 <span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(tidyverse))</span>
 <span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a><span class="fu">### ライブラリをロードせずに使用する</span></span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a><span class="fu">### パッケージをロードせずに使用する</span></span>
 <span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>ライブラリに登録されている関数を用いるには、通常ロードする必要がありますが、ライブラリをロードしなくても個別の機能（関数）を用いることはできます。ライブラリをロードせずにそのライブラリの関数を用いるときには、**「ライブラリ名::関数名」**という形で関数を呼び出します。</span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>パッケージに登録されている関数を用いるには、通常ロードする必要がありますが、パッケージをロードしなくても個別の機能（関数）を用いることはできます。パッケージをロードせずにそのパッケージの関数を用いるときには、**「パッケージ名::関数名」**という形で関数を呼び出します。</span>
 <span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ライブラリをロードせずに関数を用いる", error=TRUE}</span></span>
-<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("lubridate") であらかじめライブラリのインストールが必要</span></span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パッケージをロードせずに関数を用いる", error=TRUE}</span></span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("lubridate") であらかじめパッケージのインストールが必要</span></span>
 <span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a><span class="fu">ymd</span>(<span class="st">"2023-10-10"</span>) <span class="co"># lubridateパッケージの関数はライブラリをロードしないと使えない</span></span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a><span class="fu">ymd</span>(<span class="st">"2023-10-10"</span>) <span class="co"># lubridateパッケージの関数はパッケージをロードしないと使えない</span></span>
 <span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="st">"2023-10-10"</span>) <span class="co"># パッケージ名::関数名でロードしなくても関数が使える</span></span>
 <span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a><span class="fu">### githubからのインストール</span></span>
 <span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>最近では、最新のライブラリはCRANだけでなく、<span class="co">[</span><span class="ot">**GitHub**</span><span class="co">](https://github.co.jp/)</span>というプログラム開発プラットフォームからインストールすることもあります。ただし、**GitHubのライブラリはCRANによるチェックを受けていない**ものですので、インストールする際には注意が必要です。GitHubからのライブラリのインストールには、`devtools` [@devtools_bib]パッケージの`install_github`関数を用います。引数には、ライブラリの**リポジトリ**というものを文字列で取ります。</span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>最近では、最新のパッケージはCRANだけでなく、<span class="co">[</span><span class="ot">**GitHub**</span><span class="co">](https://github.co.jp/)</span>というプログラム開発プラットフォームからインストールすることもあります。ただし、**GitHub上のパッケージはCRANによるチェックを受けていない**ものですので、インストールする際には注意が必要です。GitHubからのパッケージのインストールには、`devtools` [@devtools_bib]パッケージの`install_github`関数を用います。引数には、パッケージの**リポジトリ**というものを文字列で取ります。</span>
 <span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>例えば、<span class="co">[</span><span class="ot">Displayr</span><span class="co">](https://www.displayr.com/)</span>という会社が開発している<span class="in">`flipPlots`</span>というライブラリをGitHubからインストールする場合には、GitHubの対象のページのアドレス（<span class="ot">&lt;https://github.com/Displayr/flipPlots&gt;</span>）のうち、後ろの2つの項目（<span class="in">`Displayr/flipPlots`</span>）をリポジトリとして取り扱います。GitHubのページにはリポジトリ名が記載されています。</span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>例えば、<span class="co">[</span><span class="ot">Displayr</span><span class="co">](https://www.displayr.com/)</span>という会社が開発している<span class="in">`flipPlots`</span>というパッケージをGitHubからインストールする場合には、GitHubの対象のページのアドレス（<span class="ot">&lt;https://github.com/Displayr/flipPlots&gt;</span>）のうち、後ろの2つの項目（<span class="in">`Displayr/flipPlots`</span>）をリポジトリとして取り扱います。GitHubのページにはリポジトリ名が記載されています。</span>
 <span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a><span class="al">![図1：GitHubのリポジトリ名](./image/github_reponame.png)</span></span>
 <span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="GitHubからのライブラリのインストール", eval=FALSE}</span></span>
-<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a><span class="co"># flipPlotsというライブラリをGitHubからインストールする(インストールは自己責任で)</span></span>
+<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="GitHubからのパッケージのインストール", eval=FALSE}</span></span>
+<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a><span class="co"># flipPlotsというパッケージをGitHubからインストールする(インストールは自己責任で)</span></span>
 <span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github("Displayr/flipPlots") </span></span>
 <span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a></span>
@@ -1710,24 +1722,24 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
 <span id="cb10-110"><a href="#cb10-110" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-111"><a href="#cb10-111" aria-hidden="true" tabindex="-1"></a><span class="fu">### Bioconductorからのインストール</span></span>
 <span id="cb10-112"><a href="#cb10-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a>生物系の統計手法（DNAのアライメントやシーケンサーデータの処理、系統樹の計算等）のライブラリを専門的に取り扱っているのが、<span class="co">[</span><span class="ot">**Bioconductor**</span><span class="co">](https://www.bioconductor.org/)</span>です。Bioconductorに設定されているライブラリはCRANやgithubのものとは取り扱いが少し異なります。</span>
+<span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a>生物系の統計手法（DNAのアライメントやシーケンサーデータの処理、系統樹の計算等）のパッケージを専門的に取り扱っているのが、<span class="co">[</span><span class="ot">**Bioconductor**</span><span class="co">](https://www.bioconductor.org/)</span>です。Bioconductorに設定されているパッケージはCRANやgithubのものとは取り扱いが少し異なります。</span>
 <span id="cb10-114"><a href="#cb10-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-115"><a href="#cb10-115" aria-hidden="true" tabindex="-1"></a>Bioconductorのライブラリを利用するには、<span class="in">`BiocManager`</span> <span class="co">[</span><span class="ot">@BiocManager_bib</span><span class="co">]</span>というライブラリをあらかじめインストールする必要があります。Bioconductorのライブラリのインストールにはこの<span class="in">`BiocManeger`</span>パッケージの<span class="in">`install`</span>関数を用います。<span class="in">`install`</span>関数を引数なしで用いると、Bioconductorのコアライブラリをすべてインストールすることができます。特定のライブラリをインストールするときには、引数に文字列のライブラリ名を入力します。</span>
+<span id="cb10-115"><a href="#cb10-115" aria-hidden="true" tabindex="-1"></a>Bioconductorのパッケージを利用するには、<span class="in">`BiocManager`</span> <span class="co">[</span><span class="ot">@BiocManager_bib</span><span class="co">]</span>というパッケージをあらかじめインストールする必要があります。Bioconductorのライブラリのインストールにはこの<span class="in">`BiocManeger`</span>パッケージの<span class="in">`install`</span>関数を用います。<span class="in">`install`</span>関数を引数なしで用いると、Bioconductorのコアライブラリをすべてインストールすることができます。特定のパッケージをインストールするときには、引数に文字列のパッケージ名を入力します。</span>
 <span id="cb10-116"><a href="#cb10-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-117"><a href="#cb10-117" aria-hidden="true" tabindex="-1"></a>インストールしたBioconductorライブラリのロードは通常のライブラリと同様に<span class="in">`library`</span>関数で行うことができます。</span>
+<span id="cb10-117"><a href="#cb10-117" aria-hidden="true" tabindex="-1"></a>インストールしたBioconductorのパッケージのロードは通常のパッケージと同様に<span class="in">`library`</span>関数で行うことができます。</span>
 <span id="cb10-118"><a href="#cb10-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-119"><a href="#cb10-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Bioconductorのライブラリをインストール", eval=FALSE}</span></span>
+<span id="cb10-119"><a href="#cb10-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Bioconductorのパッケージをインストール", eval=FALSE}</span></span>
 <span id="cb10-120"><a href="#cb10-120" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>) <span class="co"># BioManagerパッケージのインストール</span></span>
 <span id="cb10-121"><a href="#cb10-121" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>() <span class="co"># Bioconductorのコアライブラリをインストールする</span></span>
 <span id="cb10-122"><a href="#cb10-122" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="fu">c</span>(<span class="st">"GenomicFeatures"</span>, <span class="st">"AnnotationDbi"</span>))</span>
 <span id="cb10-123"><a href="#cb10-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-124"><a href="#cb10-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-125"><a href="#cb10-125" aria-hidden="true" tabindex="-1"></a><span class="fu">## ライブラリを簡単に取り扱う：pacman</span></span>
+<span id="cb10-125"><a href="#cb10-125" aria-hidden="true" tabindex="-1"></a><span class="fu">## パッケージを簡単に取り扱う：pacman</span></span>
 <span id="cb10-126"><a href="#cb10-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-127"><a href="#cb10-127" aria-hidden="true" tabindex="-1"></a>ライブラリはインストールしないとロードすることができません。ですので、インストールしていないライブラリをロードしようとするととエラーが出ます。<span class="in">`if`</span>文を用いると、ライブラリがインストールされていないときにはインストールしてロード、インストールされているときにはロードが実行されるようにすることもできます。</span>
+<span id="cb10-127"><a href="#cb10-127" aria-hidden="true" tabindex="-1"></a>パッケージはインストールしないとロードすることができません。ですので、インストールしていないパッケージをロードしようとするととエラーが出ます。<span class="in">`if`</span>文を用いると、パッケージがインストールされていないときにはインストールしてロード、インストールされているときにはロードが実行されるようにすることもできます。</span>
 <span id="cb10-128"><a href="#cb10-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-129"><a href="#cb10-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="pacman::p_load関数によるライブラリのロード", eval=FALSE}</span></span>
-<span id="cb10-130"><a href="#cb10-130" aria-hidden="true" tabindex="-1"></a><span class="co"># climetricsパッケージ（気候変化に関するライブラリ）は</span></span>
+<span id="cb10-129"><a href="#cb10-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="pacman::p_load関数によるパッケージのロード", eval=FALSE}</span></span>
+<span id="cb10-130"><a href="#cb10-130" aria-hidden="true" tabindex="-1"></a><span class="co"># climetricsパッケージ（気候変化に関するパッケージ）は</span></span>
 <span id="cb10-131"><a href="#cb10-131" aria-hidden="true" tabindex="-1"></a><span class="co"># インストールされていないので、エラーが出る</span></span>
 <span id="cb10-132"><a href="#cb10-132" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(climetrics) </span>
 <span id="cb10-133"><a href="#cb10-133" aria-hidden="true" tabindex="-1"></a></span>
@@ -1737,22 +1749,22 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
 <span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(climetrics)) <span class="fu">install.packages</span>(<span class="st">"climetrics"</span>)</span>
 <span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a>この<span class="in">`if`</span>文と<span class="in">`require`</span>関数を用いる書き方は長い間使用されてきましたが、やや複雑で覚えにくいものです。このようなライブラリの取り扱いを簡単にしてくれるのが<span class="in">`pacman`</span> <span class="co">[</span><span class="ot">@pacman_bib</span><span class="co">]</span>パッケージです。近年では、この<span class="in">`pacman`</span>パッケージの<span class="in">`p_load`</span>関数を用いてパッケージをロードすることも増えてきています。<span class="in">`p_load`</span>関数を用いるには、<span class="in">`pacman`</span>パッケージをロードする必要があります。ライブラリのロードのために別途<span class="in">`pacman`</span>だけロードするのは面倒ですので、<span class="in">`pacman::p_load`</span>という形で、ライブラリをロードすることなく関数だけ用いるのが一般的です。この他に、<span class="co">[</span><span class="ot">`pak`</span><span class="co">](https://pak.r-lib.org/index.html)[</span><span class="ot">@pak_bib</span><span class="co">]</span>と呼ばれるパッケージ管理のライブラリも最近では用いられています。</span>
+<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a>この<span class="in">`if`</span>文と<span class="in">`require`</span>関数を用いる書き方は長い間使用されてきましたが、やや複雑で覚えにくいものです。このようなパッケージの取り扱いを簡単にしてくれるのが<span class="in">`pacman`</span> <span class="co">[</span><span class="ot">@pacman_bib</span><span class="co">]</span>パッケージです。近年では、この<span class="in">`pacman`</span>パッケージの<span class="in">`p_load`</span>関数を用いてパッケージをロードすることも増えてきています。<span class="in">`p_load`</span>関数を用いるには、<span class="in">`pacman`</span>パッケージをロードする必要があります。パッケージのロードのために別途<span class="in">`pacman`</span>だけロードするのは面倒ですので、<span class="in">`pacman::p_load`</span>という形で、パッケージをロードすることなく関数だけ用いるのが一般的です。この他に、<span class="co">[</span><span class="ot">`pak`</span><span class="co">](https://pak.r-lib.org/index.html)[</span><span class="ot">@pak_bib</span><span class="co">]</span>と呼ばれるパッケージ管理のパッケージも最近ではよく用いられています。</span>
 <span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="pacman::p_load関数を用いたライブラリのロード"}</span></span>
-<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a><span class="co"># ライブラリをロードする（インストールされてなければインストールしてからロードする）</span></span>
+<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="pacman::p_load関数を用いたパッケージのロード"}</span></span>
+<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a><span class="co"># パッケージをロードする（インストールされてなければインストールしてからロードする）</span></span>
 <span id="cb10-144"><a href="#cb10-144" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, lubridate)</span>
 <span id="cb10-145"><a href="#cb10-145" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-146"><a href="#cb10-146" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-147"><a href="#cb10-147" aria-hidden="true" tabindex="-1"></a><span class="fu">## tidyverse</span></span>
 <span id="cb10-148"><a href="#cb10-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a>近年のRでは、<span class="co">[</span><span class="ot">**Posit**</span><span class="co">](https://posit.co/)</span>（旧Rstudio、IDEであるRstudioの開発元）およびPositのチーフサイエンティストである**Hadley Wickham**が中心となって作成された複数のライブラリのセットである、<span class="co">[</span><span class="ot">`tidyverse`</span><span class="co">](https://www.tidyverse.org/)</span> <span class="co">[</span><span class="ot">@tidyverse_bib</span><span class="co">]</span>を用いるのがほぼ常識となっています。<span class="in">`tidyverse`</span>のライブラリ群を用いなくてもRを使うことはできますが、このライブラリ群を用いることでデータの整理・グラフ作成・文字列の処理等を簡単に行うことができるようになります。<span class="in">`tidyverse`</span>のライブラリ群は以下のように一度にインストール・ロードすることができます。</span>
+<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a>近年のRでは、<span class="co">[</span><span class="ot">**Posit**</span><span class="co">](https://posit.co/)</span>（旧Rstudio、IDEであるRstudioの開発元）およびPositのチーフサイエンティストである**Hadley Wickham**が中心となって作成された複数のパッケージのセットである、<span class="co">[</span><span class="ot">`tidyverse`</span><span class="co">](https://www.tidyverse.org/)</span> <span class="co">[</span><span class="ot">@tidyverse_bib</span><span class="co">]</span>を用いるのがほぼ常識となっています。<span class="in">`tidyverse`</span>のパッケージ群を用いなくてもRを使うことはできますが、このパッケージ群を用いることでデータの整理・グラフ作成・文字列の処理等を簡単に行うことができるようになります。<span class="in">`tidyverse`</span>のパッケージ群は以下のように一度にインストール・ロードすることができます。</span>
 <span id="cb10-150"><a href="#cb10-150" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-151"><a href="#cb10-151" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="tidyverseのインストールと読み込み", message=FALSE, warning=FALSE}</span></span>
 <span id="cb10-152"><a href="#cb10-152" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse) <span class="co"># tideverseのインストール・ロード(install.packages・library関数でも可)</span></span>
 <span id="cb10-153"><a href="#cb10-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-154"><a href="#cb10-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-155"><a href="#cb10-155" aria-hidden="true" tabindex="-1"></a><span class="in">`tidyverse`</span>に含まれているライブラリを以下に示します。個別の、重要なライブラリに関しては別章で説明します。</span>
+<span id="cb10-155"><a href="#cb10-155" aria-hidden="true" tabindex="-1"></a><span class="in">`tidyverse`</span>に含まれているパッケージを以下に示します。個別の、重要なパッケージに関しては別章で説明します。</span>
 <span id="cb10-156"><a href="#cb10-156" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-157"><a href="#cb10-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb10-158"><a href="#cb10-158" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -1760,13 +1772,13 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
 <span id="cb10-160"><a href="#cb10-160" aria-hidden="true" tabindex="-1"></a>  description <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"データフレームの編集"</span>, <span class="st">"データフレームの変形（縦・横持ち）"</span>, <span class="st">"現代的なデザインのグラフ作成"</span>, <span class="st">"使いやすいデータフレームの提供"</span>, <span class="st">"文字列の処理"</span>, <span class="st">"リストへの関数の適用"</span>, <span class="st">"データ読み込み"</span>, <span class="st">"因子（factor）の処理"</span>)</span>
 <span id="cb10-161"><a href="#cb10-161" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb10-162"><a href="#cb10-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-163"><a href="#cb10-163" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ライブラリ名"</span>, <span class="st">"ライブラリの主な機能"</span>)</span>
-<span id="cb10-164"><a href="#cb10-164" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表1：tidyverseに含まれるライブラリ群"</span>)</span>
+<span id="cb10-163"><a href="#cb10-163" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"パッケージ名"</span>, <span class="st">"パッケージの主な機能"</span>)</span>
+<span id="cb10-164"><a href="#cb10-164" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表1：tidyverseに含まれるパッケージ群"</span>)</span>
 <span id="cb10-165"><a href="#cb10-165" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-166"><a href="#cb10-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-167"><a href="#cb10-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## その他の便利なライブラリ</span></span>
+<span id="cb10-167"><a href="#cb10-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## その他の便利なパッケージ</span></span>
 <span id="cb10-168"><a href="#cb10-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-169"><a href="#cb10-169" aria-hidden="true" tabindex="-1"></a><span class="in">`tidyverse`</span>の他にも、データ処理を簡単にしたり、インタラクティブなグラフを作成したり、Rで文書を作成したりするためのライブラリをRは備えています。以下によく用いられるライブラリを示します。統計に関するライブラリも無数に存在します。統計に関するライブラリについては、統計手法の説明の際に紹介します。</span>
+<span id="cb10-169"><a href="#cb10-169" aria-hidden="true" tabindex="-1"></a><span class="in">`tidyverse`</span>の他にも、データ処理を簡単にしたり、インタラクティブなグラフを作成したり、Rで文書を作成したりするためのパッケージをRは備えています。以下によく用いられるパッケージを示します。統計に関するパッケージも無数に存在します。統計に関するパッケージについては、統計手法の説明の際に紹介します。</span>
 <span id="cb10-170"><a href="#cb10-170" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-171"><a href="#cb10-171" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb10-172"><a href="#cb10-172" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -1774,8 +1786,8 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
 <span id="cb10-174"><a href="#cb10-174" aria-hidden="true" tabindex="-1"></a>  description <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"パイプ演算子を提供"</span>, <span class="st">"Excelファイルの読み込み"</span>, <span class="st">"Googleスプレッドシートの読み込み"</span>, <span class="st">"日時データの処理"</span>, <span class="st">"統計結果の変形"</span>, <span class="st">"美しい表の作成"</span>, <span class="st">"インタラクティブなグラフの作成"</span>, <span class="st">"文書の作成"</span>, <span class="st">"Webアプリケーションの作成"</span>, <span class="st">"ライブラリのインストール・ロード"</span>)</span>
 <span id="cb10-175"><a href="#cb10-175" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb10-176"><a href="#cb10-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ライブラリ名"</span>, <span class="st">"ライブラリの主な機能"</span>)</span>
-<span id="cb10-178"><a href="#cb10-178" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：Rで用いられている便利なライブラリ"</span>)</span>
+<span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"パッケージ名"</span>, <span class="st">"パッケージの主な機能"</span>)</span>
+<span id="cb10-178"><a href="#cb10-178" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：Rで用いられている便利なパッケージ"</span>)</span>
 <span id="cb10-179"><a href="#cb10-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

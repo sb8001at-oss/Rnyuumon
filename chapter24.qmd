@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Rでは、ライブラリを用いることなく、論文に使用できるレベルのグラフを作成することができます。Rでのグラフ作成に用いる関数には、
+Rでは、パッケージを用いることなく、論文に使用できるレベルのグラフを作成することができます。Rでのグラフ作成に用いる関数には、
 
 - 高レベルグラフィック関数（High-level plotting functions）
 - 低レベルグラフィック関数（Low-level plotting functions）
@@ -20,13 +20,13 @@ Rでは通常、高レベルグラフィック関数で作成したグラフを�
 
 :::{.callout-tip collapse="true"}
 
-## グラフ作成に関するライブラリ
+## グラフ作成に関するパッケージ
 
-Rでは、ライブラリを読み込むことなくグラフを作成することができますが、現在では、[`ggplot2`](https://ggplot2.tidyverse.org/index.html)をグラフ作成に用いるのが事実上のデフォルトのようになっています。`ggplot2`については[後の章](chapter26.qmd)で詳しく説明します。
+Rでは、パッケージを読み込むことなくグラフを作成することができますが、現在では、[`ggplot2`](https://ggplot2.tidyverse.org/index.html)をグラフ作成に用いるのが事実上のデフォルトのようになっています。`ggplot2`については[後の章](chapter26.qmd)で詳しく説明します。
 
 `ggplot2`には、`ggplot2`に機能を追加するような[Extensions](https://exts.ggplot2.tidyverse.org/gallery/)もたくさん作成されています。
 
-`ggplot2`の他にも、この章で紹介する3Dグラフ作成ライブラリである[`rgl`パッケージ](https://dmurdoch.github.io/rgl/) [@rgl_bib]、インタラクティブなグラフを作成することができる[`plotly`](https://plotly.com/r/) [@plotly_bib]、`ggplot2`にお株を奪われたような形ではありますが、複数のグラフを簡単に並べて書くことができる[`lattice`](https://lattice.r-forge.r-project.org/) [@lattice_bib]、`plotly`のようにインタラクティブなグラフ作成できる[`dygraphs`](https://rstudio.github.io/dygraphs/) [@dygraphs_bib]などがあります。
+`ggplot2`の他にも、この章で紹介する3Dグラフ作成パッケージである[`rgl`パッケージ](https://dmurdoch.github.io/rgl/) [@rgl_bib]、インタラクティブなグラフを作成することができる[`plotly`](https://plotly.com/r/) [@plotly_bib]、`ggplot2`にお株を奪われたような形ではありますが、複数のグラフを簡単に並べて書くことができる[`lattice`](https://lattice.r-forge.r-project.org/) [@lattice_bib]、`plotly`のようにインタラクティブなグラフ作成できる[`dygraphs`](https://rstudio.github.io/dygraphs/) [@dygraphs_bib]などがあります。
 
 :::
 
@@ -41,13 +41,13 @@ knitr::kable(d, caption="表1：高レベルグラフィック関数の一覧")
 
 ## plot関数
 
-`plot`関数は、Rでは最も基本的で、かつ利用範囲の広いグラフ作成関数です。`plot`関数は典型的なジェネリック関数で、グラフを引数に適した形で表示してくれます。ライブラリを呼び出していない場合、`plot`関数で呼び出されている関数は以下の30種類です。
+`plot`関数は、Rでは最も基本的で、かつ利用範囲の広いグラフ作成関数です。`plot`関数は典型的なジェネリック関数で、グラフを引数に適した形で表示してくれます。パッケージを呼び出していない場合、`plot`関数で呼び出されている関数は以下の30種類です。
 
 ```{r, filename="ジェネリック関数としてのplot関数"}
 methods("plot")
 ```
 
-ライブラリには、そのライブラリで使用するオブジェクトを引数とするのに適した形の`plot`関数が設定されていることも多く、ライブラリを使用した場合にはこの30種類よりも多くのグラフを`plot`関数だけで描画することができます。
+パッケージには、そのパッケージで使用するオブジェクトを引数とするのに適した形の`plot`関数が設定されていることも多く、パッケージを使用した場合にはこの30種類よりも多くのグラフを`plot`関数だけで描画することができます。
 
 ### 散布図
 
@@ -365,7 +365,7 @@ persp(x = 1:nrow(volcano), y = 1:ncol(volcano), z = volcano, theta = 45, phi = 3
 
 ## rglパッケージ：3次元グラフ
 
-`rgl`パッケージは、[OpenGL](https://www.opengl.org/) [@woo1999opengl]という、C言語の3Dグラフィックスライブラリを利用したRのグラフ作成ライブラリです。`rgl`パッケージの関数群を用いることで、R上でマウスを使って視点をグリグリ動かすことができる3次元グラフを作成することができます。
+`rgl`パッケージは、[OpenGL](https://www.opengl.org/) [@woo1999opengl]という、C言語の3Dグラフィックスライブラリを利用したRのグラフ作成パッケージです。`rgl`パッケージの関数群を用いることで、R上でマウスを使って視点をグリグリ動かすことができる3次元グラフを作成することができます。
 
 ```{r, collapse=TRUE, error=TRUE, filename="rglパッケージで3次元グラフ"}
 pacman::p_load(rgl)
@@ -392,7 +392,7 @@ venn(list(A = 1:5, B = 3:8))
 title(main="Venn Diagram（ベン図）の例")
 ```
 
-ベン図を描画する場合には、`gplots`ライブラリ[@gplots_bib]の`venn`関数を用います。`venn`関数はリストを引数に取り、リストの各要素を集合としてベン図を描画します。
+ベン図を描画する場合には、`gplots`パッケージ[@gplots_bib]の`venn`関数を用います。`venn`関数はリストを引数に取り、リストの各要素を集合としてベン図を描画します。
 
 ```{r, filename="gplots::venn関数でベン図を描く"}
 pacman::p_load(gplots)
@@ -407,7 +407,7 @@ venn(list(A=sample(1:10, 3), B=sample(1:10, 3), C=sample(1:10, 3), D=sample(1:10
 venn(list(A=sample(1:10, 3), B=sample(1:10, 3), C=sample(1:10, 3), D=sample(1:10, 3), E=sample(1:10, 3), G=sample(1:10, 3)))
 ```
 
-また、`DescTools`ライブラリ[@DescTools_bib]の`PlotVenn`関数でもベン図を描画することができます。`PlotVenn`関数も`venn`関数と同様にリストを引数に取ります。リストの要素の最大値が5つなのも`venn`関数と同じです。また、`col`引数に色を指定することで集合の色を変更することもできます。`col`引数には単に色をベクターで指定することもできますが、`SetAlpha`関数を用いて透明度（`alpha`）を指定することもできます。
+また、`DescTools`パッケージ[@DescTools_bib]の`PlotVenn`関数でもベン図を描画することができます。`PlotVenn`関数も`venn`関数と同様にリストを引数に取ります。リストの要素の最大値が5つなのも`venn`関数と同じです。また、`col`引数に色を指定することで集合の色を変更することもできます。`col`引数には単に色をベクターで指定することもできますが、`SetAlpha`関数を用いて透明度（`alpha`）を指定することもできます。
 
 ```{r, filename="DescTools::PlotVenn関数"}
 pacman::p_load(DescTools)

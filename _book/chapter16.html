@@ -428,7 +428,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -747,6 +747,18 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   <div class="sidebar-item-container"> 
   <a href="./Tips_ParallelComputing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">並列演算（Parallel Computing）</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System関連の関数</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S3class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
       </ul>
@@ -1621,6 +1633,51 @@ rank関数で並べ替え
 <span><span class="co">## 8   F  25     Kobe</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+attachとdetach
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>リスト、データフレームでは、<code>attach</code>関数を用いて、要素や列の名前だけでその要素を取り出せるようにすることができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>attach関数</strong></pre>
+</div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データフレームやリストを引数に取る</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/attach.html">attach</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 列名で要素を呼び出せる</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span></span>
+<span><span class="co">## [1] 5.1 4.9 4.7 4.6 5.0 5.4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>ただし、この<code>attach</code>を用いると扱っているものがデータフレームなのかベクターなのかわからなくなってしまいますし、データフレームの利点である行方向への情報も失われてしまいます。ですので、<code>attach</code>関数はなるべく使わないほうがよいでしょう。</p>
+<p><code>attach</code>したデータフレームを基に戻し、列名だけで呼び出せなくする場合には<code>detach</code>関数を用います。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>detach関数</strong></pre>
+</div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># detach関数の引数にattachしたデータフレームを取る</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/detach.html">detach</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 列名で呼び出せなくなる</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span></span>
+<span><span class="co">## Error:</span></span>
+<span><span class="co">## ! object 'Sepal.Length' not found</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section></section><section id="行列matrix" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="行列matrix">
 <span class="header-section-number">16.3</span> 行列（matrix）</h2>
 <p>Rは高校数学で学んだ行列、線形代数の行列計算を行うためのクラスである、<strong>行列（matrix）</strong>を持ちます。行列はベクターと同様に同じ型を持つ要素の集合で、行と列の2つの<strong>次元（dimension）</strong>を持ちます。</p>
@@ -1632,7 +1689,7 @@ rank関数で並べ替え
 <div class="code-with-filename-file">
 <pre><strong>行列の作成とインデックス</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="co"># 列方向にベクターが配置される</span></span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="co"># 列方向にベクターが配置される</span></span>
 <span><span class="va">mat</span></span>
 <span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
 <span><span class="co">## [1,]    1    4    7   10</span></span>
@@ -1721,7 +1778,7 @@ rank関数で並べ替え
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1730,7 +1787,7 @@ rank関数で並べ替え
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Rには、次元を3つ以上持つクラスである、arrayも存在しますが、matrixほどには使用頻度は高くありません。</p>
 </div>
@@ -1804,7 +1861,7 @@ rank関数で並べ替え
 <div class="code-with-filename-file">
 <pre><strong>行列の演算子</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 要素が1~16のランダムな行列を作成</span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 要素が1~16のランダムな行列を作成</span></span>
 <span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">4</span><span class="op">)</span> </span>
 <span><span class="va">mat</span></span>
 <span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
@@ -1859,7 +1916,7 @@ rank関数で並べ替え
 <div class="code-with-filename-file">
 <pre><strong>行列式・転置・逆行列</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/det.html">det</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="co"># matの行列式</span></span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/det.html">det</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="co"># matの行列式</span></span>
 <span><span class="co">## [1] -712</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="co"># matを転置</span></span>
@@ -1891,7 +1948,7 @@ rank関数で並べ替え
 <p>ただし、<code>upper.tri</code>関数、<code>lower.tri</code>関数の返り値をそのまま行列のインデックスに用いても上三角行列・下三角行列を作ることはできません。上三角行列を作成する場合には、<code>lower.tri</code>関数の返り値をインデックスに取り、このインデックスに0を代入します。</p>
 <p>逆に、下三角行列を作成する場合には、<code>upper.tri</code>関数の返り値をインデックスに取り、このインデックスに0を代入します。このように0を下三角・上三角に代入することで、上三角行列・下三角行列を得ることができます。</p>
 <div class="cell">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="co"># 3行3列の単位行列</span></span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="co"># 3行3列の単位行列</span></span>
 <span><span class="co">##      [,1] [,2] [,3]</span></span>
 <span><span class="co">## [1,]    1    0    0</span></span>
 <span><span class="co">## [2,]    0    1    0</span></span>
@@ -2416,538 +2473,564 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb23" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># リスト・データフレーム・行列</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## リスト（list）</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>**リスト（list）**は様々なデータ型・クラスのオブジェクトを一つにまとめたものです。リストの要素となるのは、ベクター、リスト、データフレーム、行列などで、どのようなデータ型・クラスであってもリストの要素にすることができます。</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>リストの作成には、<span class="in">`list`</span>関数を用います。<span class="in">`list`</span>関数の引数がリストの要素となります。</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストの作成"}</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co"># リストの作成（=の左が名前（names）、右が要素）</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">y =</span> <span class="st">"dog"</span>, <span class="at">z =</span> <span class="fu">c</span>(T, F, T, T, F))</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>lst <span class="co"># リストを表示する</span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストの名前</span></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>ベクターと同様に、リストの要素には**名前（names）**をつけることができ、要素を名前から呼び出すことができます。名前からの呼び出しでは、ベクターと同じように四角カッコ（<span class="in">`[ ]`</span>）内に文字列を記入して呼び出してもよいですし、<span class="in">`$`</span>（ドルマーク）を用いて呼び出すこともできます。ただし、<span class="in">`[ ]`</span>と<span class="in">`$`</span>では、返り値の型が異なります（<span class="in">`[ ]`</span>ではリスト、<span class="in">`$`</span>では要素が返ってくる）。</span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>名前の確認・設定はベクターと同じ方法で行います。リストの名前の確認・変更には、<span class="in">`names`</span>関数を用います。<span class="in">`names`</span>関数の引数にリストを取ると、そのリストの名前が返ってきます。<span class="in">`names`</span>関数の引数にリストを取り、文字列ベクターを代入するとリストの名前を設定できます。</span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストの名前"}</span></span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lst) <span class="co"># リストの名前を表示する</span></span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lst) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>) <span class="co"># リストの名前を変更する</span></span>
-<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lst) <span class="co"># 変更後の名前</span></span>
-<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>lst[<span class="st">"a"</span>] <span class="co"># 名前での要素の呼び出し（リストが返ってくる）</span></span>
-<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>lst<span class="sc">$</span>a <span class="co"># ドルマーク（$）を用いた呼び出し（要素が返ってくる）</span></span>
-<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストのインデックス</span></span>
-<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>リストのインデックスは、基本的には**二重角カッコ（`[[ ]]`）**で指定します。通常の角カッコ（`[ ]`）で指定すると、**リストの要素がリストのまま**返ってきます。角カッコ（<span class="in">`[ ]`</span>）で返ってくるのはリストですので、コロンを用いて複数の要素をリストとして取り出すことができます。</span>
-<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>リストの要素（ベクターや行列）のさらに要素を取り出すには、二重角カッコの後に、ベクターや行列に対応したインデックス指定（<span class="in">`[1]`</span>や<span class="in">`[1, 2]`</span>など）をつけることになります。</span>
-<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストのインデックス"}</span></span>
-<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>lst[<span class="dv">1</span>] <span class="co"># リストの1番目の要素（リストが返ってくる）</span></span>
-<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a>lst[[<span class="dv">1</span>]] <span class="co"># リストの1番目の要素（要素が返ってくる）</span></span>
-<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a>lst[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="co"># リストの1~2番目の要素（リストが返ってくる）</span></span>
-<span id="cb23-51"><a href="#cb23-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a>lst[[<span class="dv">1</span>]][<span class="dv">2</span>] <span class="co"># リストの1番目の要素（ベクター）の2つ目の要素</span></span>
-<span id="cb23-53"><a href="#cb23-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-54"><a href="#cb23-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-55"><a href="#cb23-55" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストの長さ（length）</span></span>
-<span id="cb23-56"><a href="#cb23-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-57"><a href="#cb23-57" aria-hidden="true" tabindex="-1"></a>リストは、名前（names）の他に、**長さ（length）**の特性を持ちます。リストのlengthはリストの要素の数です。リストのlengthもベクターと同じく、<span class="in">`length`</span>関数で確認することができます。</span>
-<span id="cb23-58"><a href="#cb23-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-59"><a href="#cb23-59" aria-hidden="true" tabindex="-1"></a>リストのアトリビュートは<span class="in">`attributes`</span>関数で確認することができます。アトリビュートを<span class="in">`attr`</span>関数で別途追加しない場合には、アトリビュートとしては名前を設定したリストでは<span class="in">`names`</span>だけが表示されます。各要素のデータ型は<span class="in">`str`</span>関数や<span class="in">`summary`</span>関数を用いて確認することができます。</span>
-<span id="cb23-60"><a href="#cb23-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-61"><a href="#cb23-61" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストの長さとデータ型"}</span></span>
-<span id="cb23-62"><a href="#cb23-62" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(lst)</span>
-<span id="cb23-63"><a href="#cb23-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-64"><a href="#cb23-64" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(lst)</span>
-<span id="cb23-65"><a href="#cb23-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-66"><a href="#cb23-66" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(lst)</span>
-<span id="cb23-67"><a href="#cb23-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-68"><a href="#cb23-68" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lst)</span>
-<span id="cb23-69"><a href="#cb23-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-70"><a href="#cb23-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-71"><a href="#cb23-71" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストへの要素の追加</span></span>
-<span id="cb23-72"><a href="#cb23-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-73"><a href="#cb23-73" aria-hidden="true" tabindex="-1"></a><span class="in">`c`</span>関数を用いることで、リストに要素を追加することができます。また、リストに要素を追加する場合には、ドルマークを用いて設定されていない名前を指定し、代入を行うこともできます。設定されている名前を用いて代入した場合には、その要素が書き換えられます。</span>
-<span id="cb23-74"><a href="#cb23-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-75"><a href="#cb23-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストへの要素の追加"}</span></span>
-<span id="cb23-76"><a href="#cb23-76" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">c</span>(lst, <span class="at">d =</span> <span class="st">"added object"</span>) <span class="co"># リストに名前dの要素を追加</span></span>
-<span id="cb23-77"><a href="#cb23-77" aria-hidden="true" tabindex="-1"></a>lst</span>
-<span id="cb23-78"><a href="#cb23-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-79"><a href="#cb23-79" aria-hidden="true" tabindex="-1"></a><span class="co"># リストに名前eの要素を追加（データフレームにも使える）</span></span>
-<span id="cb23-80"><a href="#cb23-80" aria-hidden="true" tabindex="-1"></a>lst<span class="sc">$</span>e <span class="ot">&lt;-</span> <span class="st">"objects can be added with named index"</span> <span class="co"># 名前eの要素を追加</span></span>
-<span id="cb23-81"><a href="#cb23-81" aria-hidden="true" tabindex="-1"></a>lst<span class="sc">$</span>d <span class="ot">&lt;-</span> <span class="st">"changed object"</span> <span class="co"># dの要素を変更</span></span>
-<span id="cb23-82"><a href="#cb23-82" aria-hidden="true" tabindex="-1"></a>lst <span class="co"># 追加・変更後のリスト</span></span>
-<span id="cb23-83"><a href="#cb23-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-84"><a href="#cb23-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-85"><a href="#cb23-85" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストのベクター化</span></span>
-<span id="cb23-86"><a href="#cb23-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-87"><a href="#cb23-87" aria-hidden="true" tabindex="-1"></a>リストを全部まとめて1つのベクターにする場合には、<span class="in">`unlist`</span>関数を用います。<span class="in">`unlist`</span>関数はリストの要素をすべて1次元のベクターに変更します。ベクターに変更すると、ベクターの型が要素の型によって変更されるので、注意が必要です。<span class="in">`unlist`</span>関数はリストだけでなく、データフレームの行のデータをベクターにするのにも用いられます。</span>
-<span id="cb23-88"><a href="#cb23-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-89"><a href="#cb23-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストのベクター化"}</span></span>
-<span id="cb23-90"><a href="#cb23-90" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(lst[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]) <span class="co"># 文字列のベクターに変換される</span></span>
-<span id="cb23-91"><a href="#cb23-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-92"><a href="#cb23-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-93"><a href="#cb23-93" aria-hidden="true" tabindex="-1"></a><span class="fu">## データフレーム（data.frame）</span></span>
-<span id="cb23-94"><a href="#cb23-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-95"><a href="#cb23-95" aria-hidden="true" tabindex="-1"></a>Rで最も使用頻度が高いクラスの一つが**データフレーム（data.frame）**です。データフレームはExcelの表のような構造を持つクラスで、<span class="in">`data.frame`</span>関数を用いて作成することができます。<span class="in">`data.frame`</span>関数の引数は各列のベクターで、各列の名前を引数で設定することができます（リストと同じく、「列名=ベクター」という形で設定）。</span>
-<span id="cb23-96"><a href="#cb23-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-97"><a href="#cb23-97" aria-hidden="true" tabindex="-1"></a>データフレームは、**同じ長さのベクターを列に取ったリスト**です。ですので、<span class="in">`class`</span>関数ではデータフレーム、<span class="in">`mode`</span>関数ではリストが返ってきます。</span>
-<span id="cb23-98"><a href="#cb23-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-99"><a href="#cb23-99" aria-hidden="true" tabindex="-1"></a>データフレームの作成時に、長さの異なるベクターを用いた場合には、**反復（recycling）**のルールに従い、短いベクターが長いベクターの長さに合わせて反復されます。</span>
-<span id="cb23-100"><a href="#cb23-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-101"><a href="#cb23-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="データフレームを作成する"}</span></span>
-<span id="cb23-102"><a href="#cb23-102" aria-hidden="true" tabindex="-1"></a><span class="co"># データフレームをdata.frame関数で作成する</span></span>
-<span id="cb23-103"><a href="#cb23-103" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">z =</span> <span class="fu">c</span>(T, T, F, T))</span>
-<span id="cb23-104"><a href="#cb23-104" aria-hidden="true" tabindex="-1"></a>d</span>
-<span id="cb23-105"><a href="#cb23-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-106"><a href="#cb23-106" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(d) <span class="co"># classはdata.frame</span></span>
-<span id="cb23-107"><a href="#cb23-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-108"><a href="#cb23-108" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(d) <span class="co"># modeはlist</span></span>
-<span id="cb23-109"><a href="#cb23-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-110"><a href="#cb23-110" aria-hidden="true" tabindex="-1"></a><span class="co"># 長さが異なるベクターを用いると、反復が適用される</span></span>
-<span id="cb23-111"><a href="#cb23-111" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">z =</span> T)</span>
-<span id="cb23-112"><a href="#cb23-112" aria-hidden="true" tabindex="-1"></a>d2</span>
-<span id="cb23-113"><a href="#cb23-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-114"><a href="#cb23-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-115"><a href="#cb23-115" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストからデータフレームを作成する</span></span>
-<span id="cb23-116"><a href="#cb23-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-117"><a href="#cb23-117" aria-hidden="true" tabindex="-1"></a>データフレームはリストと同じですので、長さが同じベクターからなるリストはそのままデータフレームに変換できます。データフレームへの変換には<span class="in">`as.data.frame`</span>関数を用います。この変換は、<span class="in">`data.frame`</span>関数を用いても行うことができます。</span>
-<span id="cb23-118"><a href="#cb23-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-119"><a href="#cb23-119" aria-hidden="true" tabindex="-1"></a>長さが異なるベクターや、ベクター以外の要素を含むリストをデータフレームに変換しようとすると、エラーが出ます。反復は行われません。</span>
-<span id="cb23-120"><a href="#cb23-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-121"><a href="#cb23-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="リストをデータフレームに変換"}</span></span>
-<span id="cb23-122"><a href="#cb23-122" aria-hidden="true" tabindex="-1"></a><span class="co"># 長さが同じベクターのリストは、そのままデータフレームに変換できる</span></span>
-<span id="cb23-123"><a href="#cb23-123" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">z =</span> <span class="fu">c</span>(T, T, F, T))</span>
-<span id="cb23-124"><a href="#cb23-124" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(lst)</span>
-<span id="cb23-125"><a href="#cb23-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-126"><a href="#cb23-126" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(lst)</span>
-<span id="cb23-127"><a href="#cb23-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-128"><a href="#cb23-128" aria-hidden="true" tabindex="-1"></a><span class="co"># 長さが異なるベクターのリストは、データフレームに変換できない</span></span>
-<span id="cb23-129"><a href="#cb23-129" aria-hidden="true" tabindex="-1"></a>lst2 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">y =</span> <span class="st">"dog"</span>, <span class="at">z =</span> <span class="fu">c</span>(T, F, T, T, F))</span>
-<span id="cb23-130"><a href="#cb23-130" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(lst2) <span class="co"># エラー</span></span>
-<span id="cb23-131"><a href="#cb23-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-132"><a href="#cb23-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-133"><a href="#cb23-133" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームのインデックス</span></span>
-<span id="cb23-134"><a href="#cb23-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-135"><a href="#cb23-135" aria-hidden="true" tabindex="-1"></a>データフレームはリストではありますが、行（横方向）と列（縦方向）を持つ、表の形で表されます。データフレームは表型のデータですので、行・列の2つの**次元（dimension）**を持ちます。</span>
-<span id="cb23-136"><a href="#cb23-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-137"><a href="#cb23-137" aria-hidden="true" tabindex="-1"></a>データフレームの要素をインデックスで指定する場合には、**`[行, 列]`**という形を用います。このとき、インデックスの数値は行・列共に1行目が1、1列目が1となります。インデックスは数値のベクターで指定することもできます。数値のベクターで指定した場合には、ベクターに記載した順番に行・列を取り出すことになります。</span>
-<span id="cb23-138"><a href="#cb23-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-139"><a href="#cb23-139" aria-hidden="true" tabindex="-1"></a>ベクターと同様に、データフレームのインデックスは**コロン（`:`）を用いた連続整数**の形でも指定できますし、**論理型（`TRUE`と`FALSE`）のベクター**を用いても指定できます。論理型のベクターの長さが行数・列数に足りない場合には、ベクターが反復されます。**マイナスのインデックスを用いた場合には、指定した行・列が削除**されます。</span>
-<span id="cb23-140"><a href="#cb23-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-141"><a href="#cb23-141" aria-hidden="true" tabindex="-1"></a>インデックスでデータフレームの列のみを指定した場合には、返り値としてその列のベクターが返ってきます。一方、**行のみを指定した場合には、ベクターではなく、その行がデータフレーム**として返ってきます。行をベクターに変換するには、<span class="in">`unlist`</span>関数を用います。</span>
-<span id="cb23-142"><a href="#cb23-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-143"><a href="#cb23-143" aria-hidden="true" tabindex="-1"></a>データフレームのインデックスの指定時には、コンマで行列を区切らず、1つのインデックスだけで指定することもできます。インデックスを1つだけ指定した場合には、ベクターではなく、データフレームが返ってきます。</span>
-<span id="cb23-144"><a href="#cb23-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-145"><a href="#cb23-145" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="データフレームのインデックス"}</span></span>
-<span id="cb23-146"><a href="#cb23-146" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">b =</span> <span class="fu">seq</span>(<span class="dv">4</span>, <span class="fl">6.5</span>, <span class="at">by =</span> <span class="fl">0.5</span>), <span class="at">c =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">6</span>))</span>
-<span id="cb23-147"><a href="#cb23-147" aria-hidden="true" tabindex="-1"></a>d1</span>
-<span id="cb23-148"><a href="#cb23-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-149"><a href="#cb23-149" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span>, <span class="dv">1</span>] <span class="co"># 1行1列目の要素を取り出す</span></span>
-<span id="cb23-150"><a href="#cb23-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-151"><a href="#cb23-151" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span>] <span class="co"># 1~3行目、1列目の要素を取り出す（ベクター）</span></span>
-<span id="cb23-152"><a href="#cb23-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-153"><a href="#cb23-153" aria-hidden="true" tabindex="-1"></a>d1[<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">1</span>), ] <span class="co"># 5行目、2行目、1行目を取り出す</span></span>
-<span id="cb23-154"><a href="#cb23-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-155"><a href="#cb23-155" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span>, ] <span class="co"># 1行目の要素を取り出す（データフレーム）</span></span>
-<span id="cb23-156"><a href="#cb23-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-157"><a href="#cb23-157" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(d1[<span class="dv">1</span>, ]) <span class="co"># 1行目の要素を取り出して、ベクターに変換する</span></span>
-<span id="cb23-158"><a href="#cb23-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-159"><a href="#cb23-159" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, ] <span class="co"># 2~3行目の要素を取り出す（データフレーム）</span></span>
-<span id="cb23-160"><a href="#cb23-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-161"><a href="#cb23-161" aria-hidden="true" tabindex="-1"></a>d1[, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>] <span class="co"># 2~3列目の要素を取り出す（データフレーム）</span></span>
-<span id="cb23-162"><a href="#cb23-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-163"><a href="#cb23-163" aria-hidden="true" tabindex="-1"></a>d1[<span class="fu">c</span>(T, T, F, T, F, F), ] <span class="co"># 論理型もインデックスに使用できる</span></span>
-<span id="cb23-164"><a href="#cb23-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-165"><a href="#cb23-165" aria-hidden="true" tabindex="-1"></a>d1[<span class="fu">c</span>(T, T, F), ] <span class="co"># 反復</span></span>
-<span id="cb23-166"><a href="#cb23-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-167"><a href="#cb23-167" aria-hidden="true" tabindex="-1"></a>d1[, <span class="fu">c</span>(T, T, F)] <span class="co"># 列のインデックスにも論理型を使用できる</span></span>
-<span id="cb23-168"><a href="#cb23-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-169"><a href="#cb23-169" aria-hidden="true" tabindex="-1"></a>d1[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">2</span>, ] <span class="co"># 1~2行目を削除</span></span>
-<span id="cb23-170"><a href="#cb23-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-171"><a href="#cb23-171" aria-hidden="true" tabindex="-1"></a>d1[, <span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">2</span>] <span class="co"># 1~2列目を削除</span></span>
-<span id="cb23-172"><a href="#cb23-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-173"><a href="#cb23-173" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span>] <span class="co"># 1列目を取り出す（データフレーム）</span></span>
-<span id="cb23-174"><a href="#cb23-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-175"><a href="#cb23-175" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(d1[<span class="dv">1</span>]) <span class="co"># 行・列で指定（[,1]）しないと、データフレームが返ってくる</span></span>
-<span id="cb23-176"><a href="#cb23-176" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-177"><a href="#cb23-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-178"><a href="#cb23-178" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの行数・列数</span></span>
-<span id="cb23-179"><a href="#cb23-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-180"><a href="#cb23-180" aria-hidden="true" tabindex="-1"></a>データフレームには、行方向と列方向の長さがあります。この行方向と列方向の長さを返すのが、<span class="in">`dim`</span>関数、<span class="in">`nrow`</span>関数、<span class="in">`ncol`</span>関数です。<span class="in">`dim`</span>関数は、データフレームを引数に取り、行数,列数の2つの値のベクターを返します。<span class="in">`nrow`</span>関数はデータフレームの行数を、<span class="in">`ncol`</span>関数はデータフレームの列数を返す関数です。</span>
-<span id="cb23-181"><a href="#cb23-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-182"><a href="#cb23-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="データフレームの行・列数"}</span></span>
-<span id="cb23-183"><a href="#cb23-183" aria-hidden="true" tabindex="-1"></a>d <span class="co"># dは4行3列のデータフレーム</span></span>
-<span id="cb23-184"><a href="#cb23-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-185"><a href="#cb23-185" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(d) <span class="co"># 4行3列なので、4と3が返ってくる</span></span>
-<span id="cb23-186"><a href="#cb23-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-187"><a href="#cb23-187" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(d) <span class="co"># 行数が返ってくる</span></span>
-<span id="cb23-188"><a href="#cb23-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-189"><a href="#cb23-189" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(d) <span class="co"># 列数が返ってくる</span></span>
-<span id="cb23-190"><a href="#cb23-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-191"><a href="#cb23-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-192"><a href="#cb23-192" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの名前</span></span>
-<span id="cb23-193"><a href="#cb23-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-194"><a href="#cb23-194" aria-hidden="true" tabindex="-1"></a>データフレームの各行・各列には、それぞれ名前をつけることができます。データフレームの**行の名前は`rownames`関数、列の名前は`colnames`関数**で求めることができます。</span>
-<span id="cb23-195"><a href="#cb23-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-196"><a href="#cb23-196" aria-hidden="true" tabindex="-1"></a>列名は<span class="in">`data.frame`</span>関数でデータフレームを作成するときにつけることができます。また、ベクターと同様に、**`colnames`関数に列名を代入する**形でも列名をつけることができます。</span>
-<span id="cb23-197"><a href="#cb23-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-198"><a href="#cb23-198" aria-hidden="true" tabindex="-1"></a>行名をつける場合には、**`rownames`関数に行名を代入**します。特に行名を指定していない場合には、行の番号が1, 2, 3,...といった形で行名として設定されます。</span>
-<span id="cb23-199"><a href="#cb23-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-200"><a href="#cb23-200" aria-hidden="true" tabindex="-1"></a>行名・列名のいずれもインデックスとして利用することができます。特に**列名は、`$`（ドルマーク）を用いた形**で列の取り出しに用いることができます。</span>
-<span id="cb23-201"><a href="#cb23-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-202"><a href="#cb23-202" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="データフレームの行名・列名"}</span></span>
-<span id="cb23-203"><a href="#cb23-203" aria-hidden="true" tabindex="-1"></a>d</span>
-<span id="cb23-204"><a href="#cb23-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-205"><a href="#cb23-205" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="co"># 列名</span></span>
-<span id="cb23-206"><a href="#cb23-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-207"><a href="#cb23-207" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>) <span class="co"># 列名を変更する</span></span>
-<span id="cb23-208"><a href="#cb23-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-209"><a href="#cb23-209" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(d) <span class="co"># 行名</span></span>
-<span id="cb23-210"><a href="#cb23-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-211"><a href="#cb23-211" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span>, <span class="st">"aa"</span>) <span class="co"># 行名を変更する</span></span>
-<span id="cb23-212"><a href="#cb23-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-213"><a href="#cb23-213" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"x"</span>, ] <span class="co"># 行名をインデックスに用いることもできる</span></span>
-<span id="cb23-214"><a href="#cb23-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-215"><a href="#cb23-215" aria-hidden="true" tabindex="-1"></a>d[, <span class="st">"a"</span>] <span class="co"># 列名もインデックス指定に使うことができる</span></span>
-<span id="cb23-216"><a href="#cb23-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-217"><a href="#cb23-217" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>a <span class="co"># ドルマークを使って列を指定することもできる</span></span>
-<span id="cb23-218"><a href="#cb23-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-219"><a href="#cb23-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-220"><a href="#cb23-220" aria-hidden="true" tabindex="-1"></a>データフレームにおいても、インデックスに論理型のベクターを使用することができるため、**列名と比較演算子を利用して、行を選択する**ことができます。</span>
-<span id="cb23-221"><a href="#cb23-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-222"><a href="#cb23-222" aria-hidden="true" tabindex="-1"></a>インデックスでの比較演算子の利用と同様に条件によって行を選択する際に用いる関数が<span class="in">`subset`</span>関数です。<span class="in">`subset`</span>関数は第一引数にデータフレーム、第二引数に比較演算子を用いた条件式を記載することで、条件に合った行のみを取り出すことができます。</span>
-<span id="cb23-223"><a href="#cb23-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-224"><a href="#cb23-224" aria-hidden="true" tabindex="-1"></a>行のデータを利用して論理型ベクターを作成し、列を選択する事もできます。</span>
-<span id="cb23-225"><a href="#cb23-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-226"><a href="#cb23-226" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, 比較演算子を用いた行・列の選択}</span></span>
-<span id="cb23-227"><a href="#cb23-227" aria-hidden="true" tabindex="-1"></a>d1</span>
-<span id="cb23-228"><a href="#cb23-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-229"><a href="#cb23-229" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span>b <span class="sc">&gt;</span> <span class="dv">5</span> <span class="co"># b列が5以上ならTRUE</span></span>
-<span id="cb23-230"><a href="#cb23-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-231"><a href="#cb23-231" aria-hidden="true" tabindex="-1"></a>d1[d1<span class="sc">$</span>b <span class="sc">&gt;</span> <span class="dv">5</span>, ] <span class="co"># b列が5以上の行を選択</span></span>
-<span id="cb23-232"><a href="#cb23-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-233"><a href="#cb23-233" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(d1, d1<span class="sc">$</span>b <span class="sc">&gt;</span> <span class="dv">5</span>) <span class="co"># 上と同じ行の選択をsubset関数で行う</span></span>
-<span id="cb23-234"><a href="#cb23-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-235"><a href="#cb23-235" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span>, ] <span class="sc">&gt;</span> <span class="dv">3</span> <span class="co"># 1行目の値が3以上ならTRUE</span></span>
-<span id="cb23-236"><a href="#cb23-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-237"><a href="#cb23-237" aria-hidden="true" tabindex="-1"></a>d1[, d1[<span class="dv">1</span>, ] <span class="sc">&gt;</span> <span class="dv">3</span>] <span class="co"># 1行目が3以上になる列（2列目）を選択</span></span>
-<span id="cb23-238"><a href="#cb23-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-239"><a href="#cb23-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-240"><a href="#cb23-240" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
-<span id="cb23-241"><a href="#cb23-241" aria-hidden="true" tabindex="-1"></a><span class="fu">## 名前に日本語をつける</span></span>
-<span id="cb23-242"><a href="#cb23-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-243"><a href="#cb23-243" aria-hidden="true" tabindex="-1"></a>列名に日本語をつけても、<span class="in">`$`</span>を用いて列の要素を呼び出すことはできます。ただし、英語入力・日本語入力を切り替えないとスクリプトを書くことができなくなってしまうため、効率はよくありません。できれば列名に日本語は避けた方がよいでしょう。</span>
-<span id="cb23-244"><a href="#cb23-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-245"><a href="#cb23-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="日本語の列名"}</span></span>
-<span id="cb23-246"><a href="#cb23-246" aria-hidden="true" tabindex="-1"></a>df_jpn <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">y =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">z =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">7</span>)</span>
-<span id="cb23-247"><a href="#cb23-247" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df_jpn) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"佐藤"</span>, <span class="st">"鈴木"</span>, <span class="st">"高橋"</span>)</span>
-<span id="cb23-248"><a href="#cb23-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-249"><a href="#cb23-249" aria-hidden="true" tabindex="-1"></a>df_jpn<span class="sc">$</span>佐藤</span>
-<span id="cb23-250"><a href="#cb23-250" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-251"><a href="#cb23-251" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb23-252"><a href="#cb23-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-253"><a href="#cb23-253" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの並べ替え</span></span>
-<span id="cb23-254"><a href="#cb23-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-255"><a href="#cb23-255" aria-hidden="true" tabindex="-1"></a>データフレームの並べ替えには、<span class="in">`order`</span>関数を用います。<span class="in">`order`</span>関数はベクターの要素の順番に数値を付け、返すだけの関数です。データフレームのインデックスはベクターを取ることができ、ベクターに記載した数値の順番に行を取得します。ですので、<span class="in">`order`</span>関数の返り値を行のインデックスとして用いると、<span class="in">`order`</span>関数の返り値の通りにデータフレームが並べ替えられます。</span>
-<span id="cb23-256"><a href="#cb23-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-257"><a href="#cb23-257" aria-hidden="true" tabindex="-1"></a><span class="in">`order`</span>関数には<span class="in">`decreasing`</span>（降順）という引数を設定できます。<span class="in">`decreasing`</span>のデフォルト値は<span class="in">`FALSE`</span>で、通常は<span class="in">`order`</span>関数を用いた並べかえは昇順（一番小さいものが一番上）になります。<span class="in">`decreasing`</span>を<span class="in">`TRUE`</span>に設定すると、<span class="in">`order`</span>関数の結果が逆順になります。したがって、<span class="in">`decreasing=TRUE`</span>とした場合には、データフレームを降順（一番大きなものが一番上）に並べ替えることができます。</span>
-<span id="cb23-258"><a href="#cb23-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-259"><a href="#cb23-259" aria-hidden="true" tabindex="-1"></a><span class="in">`rev`</span>関数は引数にベクターを取り、ベクターを逆順に変換する関数です。この<span class="in">`rev`</span>関数を用いても、データフレームを降順に並べ替えることができます。</span>
-<span id="cb23-260"><a href="#cb23-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-261"><a href="#cb23-261" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="データフレームの並べ替え"}</span></span>
-<span id="cb23-262"><a href="#cb23-262" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">z =</span> <span class="fu">c</span>(T, T, F, T))</span>
-<span id="cb23-263"><a href="#cb23-263" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(d<span class="sc">$</span>x) <span class="co"># x列の順序を返す(文字列はアルファベット順)</span></span>
-<span id="cb23-264"><a href="#cb23-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-265"><a href="#cb23-265" aria-hidden="true" tabindex="-1"></a>d[<span class="fu">order</span>(d<span class="sc">$</span>x),] <span class="co"># x列を昇順に並べ替え</span></span>
-<span id="cb23-266"><a href="#cb23-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-267"><a href="#cb23-267" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(d<span class="sc">$</span>x, <span class="at">decreasing=</span><span class="cn">TRUE</span>)</span>
-<span id="cb23-268"><a href="#cb23-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-269"><a href="#cb23-269" aria-hidden="true" tabindex="-1"></a>d[<span class="fu">order</span>(d<span class="sc">$</span>x, <span class="at">decreasing=</span><span class="cn">TRUE</span>), ] <span class="co"># x列を降順に並べ替え</span></span>
-<span id="cb23-270"><a href="#cb23-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-271"><a href="#cb23-271" aria-hidden="true" tabindex="-1"></a>d[<span class="fu">rev</span>(<span class="fu">order</span>(d<span class="sc">$</span>x)), ] <span class="co"># rev関数でもベクターを逆順にできる</span></span>
-<span id="cb23-272"><a href="#cb23-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-273"><a href="#cb23-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-274"><a href="#cb23-274" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
-<span id="cb23-275"><a href="#cb23-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-276"><a href="#cb23-276" aria-hidden="true" tabindex="-1"></a><span class="fu">## rank関数で並べ替え</span></span>
-<span id="cb23-277"><a href="#cb23-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-278"><a href="#cb23-278" aria-hidden="true" tabindex="-1"></a><span class="in">`order`</span>関数の代わりに<span class="in">`rank`</span>関数を用いることもできます。ただし、<span class="in">`rank`</span>関数はデフォルトではタイデータ（同じ値のデータ）に整数で順位を付けないので（2.5位が2つなど）、タイデータがあるとうまく並び替えができません。並べ替えの場合には<span class="in">`order`</span>関数の方が使い勝手がよいでしょう。</span>
-<span id="cb23-279"><a href="#cb23-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-280"><a href="#cb23-280" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb23-281"><a href="#cb23-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-282"><a href="#cb23-282" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームに行・列を追加する</span></span>
-<span id="cb23-283"><a href="#cb23-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-284"><a href="#cb23-284" aria-hidden="true" tabindex="-1"></a>データフレームに列を追加する方法はいくつかあります。</span>
-<span id="cb23-285"><a href="#cb23-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-286"><a href="#cb23-286" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`$`</span>（ドルマーク）に列名に使われていない名前を指定し、ベクターを代入する</span>
-<span id="cb23-287"><a href="#cb23-287" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>現在の列数+1のインデックスを指定し、ベクターを代入する</span>
-<span id="cb23-288"><a href="#cb23-288" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`cbind`</span>関数を用いる</span>
-<span id="cb23-289"><a href="#cb23-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-290"><a href="#cb23-290" aria-hidden="true" tabindex="-1"></a><span class="in">`$`</span>と新しい列名を用いて、ベクターを代入した場合には、最も右側にその列名を持つ列が追加されます。数値のインデックスで指定した場合には、Vにインデックスが付いた列名（V1、V2など）が自動的に設定され、列が追加されます。<span class="in">`cbind`</span>関数を用いた場合には、1つ目の引数（データフレーム）に2つ目の引数（ベクターもしくはデータフレーム）が右側から追加されます。</span>
-<span id="cb23-291"><a href="#cb23-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-292"><a href="#cb23-292" aria-hidden="true" tabindex="-1"></a>データフレームに行を追加する方法もほぼ同じです。行を追加する場合には、<span class="in">`cbind`</span>関数ではなく、<span class="in">`rbind`</span>関数を用います。</span>
-<span id="cb23-293"><a href="#cb23-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-294"><a href="#cb23-294" aria-hidden="true" tabindex="-1"></a>ただし、データフレームに行をベクターで追加する場合には、**追加した行に従い各列のデータ型が変化**します。データ型の変換を起こさないように行を追加するには、追加する行がデータフレームである必要があります。さらに、追加するデータフレームの列名が元のデータフレームの列名と一致する必要があります。</span>
-<span id="cb23-295"><a href="#cb23-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-296"><a href="#cb23-296" aria-hidden="true" tabindex="-1"></a>データフレームに行を追加すると予期せぬ型変換が起こり、間違いの原因となりますので、行の追加を行うときには型を逐次確認することをおすすめします。</span>
-<span id="cb23-297"><a href="#cb23-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-298"><a href="#cb23-298" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="列・行の追加"}</span></span>
-<span id="cb23-299"><a href="#cb23-299" aria-hidden="true" tabindex="-1"></a>d3 <span class="ot">&lt;-</span> d</span>
-<span id="cb23-300"><a href="#cb23-300" aria-hidden="true" tabindex="-1"></a>d3</span>
-<span id="cb23-301"><a href="#cb23-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-302"><a href="#cb23-302" aria-hidden="true" tabindex="-1"></a>d3<span class="sc">$</span>newCol <span class="ot">&lt;-</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">8</span></span>
-<span id="cb23-303"><a href="#cb23-303" aria-hidden="true" tabindex="-1"></a>d3[, <span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">13</span></span>
-<span id="cb23-304"><a href="#cb23-304" aria-hidden="true" tabindex="-1"></a>d3[<span class="dv">5</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"rat"</span>, <span class="dv">6</span>, T, <span class="dv">9</span>, <span class="dv">14</span>) <span class="co"># 各列の型に沿ったベクターを追加</span></span>
-<span id="cb23-305"><a href="#cb23-305" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(d3) <span class="co"># すべての列が文字列になる</span></span>
-<span id="cb23-306"><a href="#cb23-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-307"><a href="#cb23-307" aria-hidden="true" tabindex="-1"></a>d</span>
-<span id="cb23-308"><a href="#cb23-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-309"><a href="#cb23-309" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(d, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) <span class="co"># 列を追加</span></span>
-<span id="cb23-310"><a href="#cb23-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-311"><a href="#cb23-311" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(d, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="co"># 行を追加する（列のデータ型が変化する）</span></span>
-<span id="cb23-312"><a href="#cb23-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-313"><a href="#cb23-313" aria-hidden="true" tabindex="-1"></a><span class="co"># データフレームを追加する場合は、列名が同じである必要がある</span></span>
-<span id="cb23-314"><a href="#cb23-314" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(d, <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="st">"pig"</span>, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">z =</span> <span class="cn">TRUE</span>)) </span>
-<span id="cb23-315"><a href="#cb23-315" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-316"><a href="#cb23-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-317"><a href="#cb23-317" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの要約</span></span>
-<span id="cb23-318"><a href="#cb23-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-319"><a href="#cb23-319" aria-hidden="true" tabindex="-1"></a>データフレームの各列の要約を調べる場合には、ベクターなどと同様に、<span class="in">`summary`</span>関数を用います。<span class="in">`summary`</span>関数はデータフレームを引数に取ると、列が文字列の場合にはデータ型と要素の数、論理型や因子の場合はそのレベルごとの要素の数、数値型であれば平均値や中央値、最大値・最小値などを示してくれます。</span>
-<span id="cb23-320"><a href="#cb23-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-321"><a href="#cb23-321" aria-hidden="true" tabindex="-1"></a>データフレームの列方向の合計値を求める場合には<span class="in">`colSums`</span>関数を、行方向の合計値を求める場合には<span class="in">`rowSums`</span>関数を用います。データフレームに文字列の列がある場合には、<span class="in">`colSums`</span>関数・<span class="in">`rowSums`</span>関数はエラーを返します。</span>
-<span id="cb23-322"><a href="#cb23-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-323"><a href="#cb23-323" aria-hidden="true" tabindex="-1"></a>同様の関数に、<span class="in">`colMeans`</span>関数、<span class="in">`rowMeans`</span>関数もあります。これらはそれぞれ列方向・行方向の平均値を計算する関数です。</span>
-<span id="cb23-324"><a href="#cb23-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-325"><a href="#cb23-325" aria-hidden="true" tabindex="-1"></a>データフレームの一部を確認したいときには、ベクターと同様に<span class="in">`head`</span>関数と<span class="in">`tail`</span>関数を用いることができます。<span class="in">`head`</span>関数はデータフレームの上から6行を、<span class="in">`tail`</span>関数はデータフレームの下から6行をそれぞれ表示します。</span>
-<span id="cb23-326"><a href="#cb23-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-327"><a href="#cb23-327" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="データフレームの情報を調べる"}</span></span>
-<span id="cb23-328"><a href="#cb23-328" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(d) <span class="co"># データフレームの要約</span></span>
-<span id="cb23-329"><a href="#cb23-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-330"><a href="#cb23-330" aria-hidden="true" tabindex="-1"></a>d1</span>
-<span id="cb23-331"><a href="#cb23-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-332"><a href="#cb23-332" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(d1) <span class="co"># 列方向に合計した値</span></span>
-<span id="cb23-333"><a href="#cb23-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-334"><a href="#cb23-334" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(d) <span class="co"># 数値以外が含まれているとエラーになる</span></span>
-<span id="cb23-335"><a href="#cb23-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-336"><a href="#cb23-336" aria-hidden="true" tabindex="-1"></a><span class="fu">rowSums</span>(d1) <span class="co"># 行方向に合計した値</span></span>
-<span id="cb23-337"><a href="#cb23-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-338"><a href="#cb23-338" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>(d1) <span class="co"># 列方向の平均値</span></span>
-<span id="cb23-339"><a href="#cb23-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-340"><a href="#cb23-340" aria-hidden="true" tabindex="-1"></a><span class="fu">rowMeans</span>(d1) <span class="co"># 行方向の平均値</span></span>
-<span id="cb23-341"><a href="#cb23-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-342"><a href="#cb23-342" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d1) <span class="co"># データフレームの上から6行を表示</span></span>
-<span id="cb23-343"><a href="#cb23-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-344"><a href="#cb23-344" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(d1) <span class="co"># データフレームの下から6行を表示</span></span>
-<span id="cb23-345"><a href="#cb23-345" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-346"><a href="#cb23-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-347"><a href="#cb23-347" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb23-348"><a href="#cb23-348" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb23-349"><a href="#cb23-349" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> <span class="fu">c</span>(<span class="st">"data.frame(x, y)"</span>, <span class="st">"dim(x)"</span>, <span class="st">"ncol(x)"</span>, <span class="st">"nrow(x)"</span>, <span class="st">"colnames(x)"</span>, <span class="st">"rownames(x)"</span>, <span class="st">"colnames(x) &lt;- y"</span>, <span class="st">"rownames(x) &lt;- y"</span>, <span class="st">"subset(x, 条件)"</span>, <span class="st">"x[order(x$name), ]"</span>, <span class="st">"cbind(x, y)"</span>, <span class="st">"rbind(x, y)"</span>, <span class="st">"summary(x)"</span>, <span class="st">"colSums(x)"</span>, <span class="st">"rowSums(x)"</span>, <span class="st">"colMeans(x)"</span>, <span class="st">"rowMeans(x)"</span>, <span class="st">"head(x)"</span>, <span class="st">"tail(x)"</span>),</span>
-<span id="cb23-350"><a href="#cb23-350" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"データフレームを作成する"</span>, <span class="st">"次元（dimension）を返す"</span>,<span class="st">"列数を返す"</span>, <span class="st">"行数を返す"</span>, <span class="st">"列の名前を返す"</span>, <span class="st">"行の名前を返す"</span>, <span class="st">"yを列の名前に設定する"</span>, <span class="st">"yを行の名前に設定する"</span>, <span class="st">"条件に適合した行を抽出する"</span>, <span class="st">"name列で昇順に並べ替え"</span>,  <span class="st">"列を追加する"</span>, <span class="st">"行を追加する"</span>, <span class="st">"データフレームの要約を表示"</span>, <span class="st">"列（縦）方向の和を返す"</span>, <span class="st">"行（横）方向の和を返す"</span>, <span class="st">"列（縦）方向の平均値を返す"</span>, <span class="st">"行（横）方向の平均値を返す"</span>, <span class="st">"データフレームの上から6行を表示"</span>, <span class="st">"データフレームの下から6行を表示"</span>)</span>
-<span id="cb23-351"><a href="#cb23-351" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-352"><a href="#cb23-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-353"><a href="#cb23-353" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"関数名"</span>, <span class="st">"データフレームに適用する演算"</span>)</span>
-<span id="cb23-354"><a href="#cb23-354" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表1：データフレームに関する関数"</span>, <span class="at">format =</span> <span class="st">"html"</span>)</span>
-<span id="cb23-355"><a href="#cb23-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-356"><a href="#cb23-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-357"><a href="#cb23-357" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
-<span id="cb23-358"><a href="#cb23-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-359"><a href="#cb23-359" aria-hidden="true" tabindex="-1"></a><span class="fu">## データフレームの要約</span></span>
-<span id="cb23-360"><a href="#cb23-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-361"><a href="#cb23-361" aria-hidden="true" tabindex="-1"></a>もっと複雑なデータフレームの要約を行う場合には、<span class="in">`apply`</span>関数群や<span class="in">`dplyr`</span>パッケージ <span class="co">[</span><span class="ot">@dplyr_bib</span><span class="co">]</span>、<span class="in">`tidyr`</span>パッケージ <span class="co">[</span><span class="ot">@tidyr_bib</span><span class="co">]</span>などを用います。<span class="in">`apply`</span>関数群、<span class="in">`dplyr`</span>、<span class="in">`tidyr`</span>に関しては<span class="co">[</span><span class="ot">19章</span><span class="co">](./chapter19.html)</span>、<span class="co">[</span><span class="ot">20章</span><span class="co">](./chapter20.html)</span>でそれぞれ紹介します。</span>
-<span id="cb23-362"><a href="#cb23-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-363"><a href="#cb23-363" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb23-364"><a href="#cb23-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-365"><a href="#cb23-365" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの列の演算</span></span>
-<span id="cb23-366"><a href="#cb23-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-367"><a href="#cb23-367" aria-hidden="true" tabindex="-1"></a>データフレームの列同士の演算は<span class="in">`$`</span>を用いても表現できますが、<span class="in">`with`</span>関数を用いても計算することができます。<span class="in">`with`</span>関数はデータフレームを引数に取り、列名の演算を第2引数に取ります。返り値はベクターになります。</span>
-<span id="cb23-368"><a href="#cb23-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-369"><a href="#cb23-369" aria-hidden="true" tabindex="-1"></a>同様の関数として、<span class="in">`within`</span>関数というものもあります。<span class="in">`within`</span>関数は<span class="in">`with`</span>と同じくデータフレームと列の演算を引数に取りますが、列の演算を列名に代入することで、演算結果がデータフレームに新たな列として追加されます。</span>
-<span id="cb23-370"><a href="#cb23-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-371"><a href="#cb23-371" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="列の演算：with関数とwithin関数"}</span></span>
-<span id="cb23-372"><a href="#cb23-372" aria-hidden="true" tabindex="-1"></a>iris6 <span class="ot">&lt;-</span> <span class="fu">head</span>(iris) <span class="co"># 始めの6行を選択</span></span>
-<span id="cb23-373"><a href="#cb23-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-374"><a href="#cb23-374" aria-hidden="true" tabindex="-1"></a><span class="co"># Sepal.Lengthの列とSepal.Widthの列の値を掛ける</span></span>
-<span id="cb23-375"><a href="#cb23-375" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(iris6, Sepal.Length <span class="sc">*</span> Sepal.Width) </span>
-<span id="cb23-376"><a href="#cb23-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-377"><a href="#cb23-377" aria-hidden="true" tabindex="-1"></a><span class="co"># Sepal.Lengthの列とSepal.Widthの列の値を掛けて、値を列として登録する</span></span>
-<span id="cb23-378"><a href="#cb23-378" aria-hidden="true" tabindex="-1"></a><span class="fu">within</span>(iris6, Sepal_multiple <span class="ot">&lt;-</span> Sepal.Length <span class="sc">*</span> Sepal.Width) <span class="co">#代入は&lt;-、=だとエラー</span></span>
-<span id="cb23-379"><a href="#cb23-379" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-380"><a href="#cb23-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-381"><a href="#cb23-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-382"><a href="#cb23-382" aria-hidden="true" tabindex="-1"></a><span class="fu">### 組み合わせのデータフレームを作成する</span></span>
-<span id="cb23-383"><a href="#cb23-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-384"><a href="#cb23-384" aria-hidden="true" tabindex="-1"></a>様々な要素について、すべての組み合わせを含むデータを作りたい、という場合が時にあります。このような場合には、<span class="in">`expand.grid`</span>関数を用いると簡単に組み合わせのデータフレームを作成することができます。<span class="in">`expand.grid`</span>関数は<span class="in">`data.frame`</span>関数と同じように引数を設定し、引数に設定したベクターのすべての組み合わせを含むデータフレームを作成してくれます。</span>
-<span id="cb23-385"><a href="#cb23-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-386"><a href="#cb23-386" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="expand.grid関数"}</span></span>
-<span id="cb23-387"><a href="#cb23-387" aria-hidden="true" tabindex="-1"></a><span class="fu">expand.grid</span>(<span class="at">sex=</span><span class="fu">c</span>(<span class="st">"M"</span>, <span class="st">"F"</span>), <span class="at">age=</span><span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">25</span>), <span class="at">location=</span><span class="fu">c</span>(<span class="st">"Osaka"</span>, <span class="st">"Kobe"</span>))</span>
-<span id="cb23-388"><a href="#cb23-388" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-389"><a href="#cb23-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-390"><a href="#cb23-390" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-391"><a href="#cb23-391" aria-hidden="true" tabindex="-1"></a><span class="fu">## 行列（matrix）</span></span>
-<span id="cb23-392"><a href="#cb23-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-393"><a href="#cb23-393" aria-hidden="true" tabindex="-1"></a>Rは高校数学で学んだ行列、線形代数の行列計算を行うためのクラスである、**行列（matrix）**を持ちます。行列はベクターと同様に同じ型を持つ要素の集合で、行と列の2つの**次元（dimension）**を持ちます。</span>
-<span id="cb23-394"><a href="#cb23-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-395"><a href="#cb23-395" aria-hidden="true" tabindex="-1"></a>データフレームも行列と同様に次元を持ちますが、データフレームが行方向には異なるデータ型を取ることができるのに対して、行列はすべての要素のデータ型が同じです。また、データフレームがリストであるのに対し、行列は縦・横の2つの次元を持つベクターです。</span>
-<span id="cb23-396"><a href="#cb23-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-397"><a href="#cb23-397" aria-hidden="true" tabindex="-1"></a>行列の基本的な取り扱い（インデックス、行・列の追加、行名・列名）はデータフレームとほぼ同じです。上に述べたデータフレームの取り扱いに関する方法は、概ね行列にも適用することができます。</span>
-<span id="cb23-398"><a href="#cb23-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-399"><a href="#cb23-399" aria-hidden="true" tabindex="-1"></a>行列の作成には、<span class="in">`matrix`</span>関数を用います。<span class="in">`matrix`</span>関数は第一引数にベクター、<span class="in">`nrow`</span>引数に行の数、<span class="in">`ncol`</span>引数に列の数を指定します。<span class="in">`matrix`</span>関数はベクターの数値を縦方向（列方向）に並べて配置します。数値を横（行方向）に並べて配置する場合には、<span class="in">`byrow`</span>引数を<span class="in">`TRUE`</span>に指定します。</span>
-<span id="cb23-400"><a href="#cb23-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-401"><a href="#cb23-401" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="行列の作成とインデックス"}</span></span>
-<span id="cb23-402"><a href="#cb23-402" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="co"># 列方向にベクターが配置される</span></span>
-<span id="cb23-403"><a href="#cb23-403" aria-hidden="true" tabindex="-1"></a>mat</span>
-<span id="cb23-404"><a href="#cb23-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-405"><a href="#cb23-405" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>) <span class="co"># 行方向に配置するとき</span></span>
-<span id="cb23-406"><a href="#cb23-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-407"><a href="#cb23-407" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(mat) <span class="co"># 行数・列数を返す</span></span>
-<span id="cb23-408"><a href="#cb23-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-409"><a href="#cb23-409" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(mat) <span class="co"># 行数</span></span>
-<span id="cb23-410"><a href="#cb23-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-411"><a href="#cb23-411" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(mat) <span class="co"># 列数</span></span>
-<span id="cb23-412"><a href="#cb23-412" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-413"><a href="#cb23-413" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span>) <span class="co"># 列名の設定</span></span>
-<span id="cb23-414"><a href="#cb23-414" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span>) <span class="co"># 行名の設定</span></span>
-<span id="cb23-415"><a href="#cb23-415" aria-hidden="true" tabindex="-1"></a>mat</span>
-<span id="cb23-416"><a href="#cb23-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-417"><a href="#cb23-417" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat) <span class="co"># 列名の取得</span></span>
-<span id="cb23-418"><a href="#cb23-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-419"><a href="#cb23-419" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat) <span class="co"># 行名の取得</span></span>
-<span id="cb23-420"><a href="#cb23-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-421"><a href="#cb23-421" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span>, <span class="dv">1</span>] <span class="co"># 1行1列目の要素</span></span>
-<span id="cb23-422"><a href="#cb23-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-423"><a href="#cb23-423" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span>, ] <span class="co"># 1行目の要素</span></span>
-<span id="cb23-424"><a href="#cb23-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-425"><a href="#cb23-425" aria-hidden="true" tabindex="-1"></a>mat[, <span class="dv">1</span>] <span class="co"># 1列目の要素</span></span>
-<span id="cb23-426"><a href="#cb23-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-427"><a href="#cb23-427" aria-hidden="true" tabindex="-1"></a>mat[<span class="sc">-</span><span class="dv">1</span>, ] <span class="co"># 1行目を削除</span></span>
-<span id="cb23-428"><a href="#cb23-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-429"><a href="#cb23-429" aria-hidden="true" tabindex="-1"></a>mat[<span class="fu">c</span>(T, T, F), ] <span class="co"># 論理型でも指定できる</span></span>
-<span id="cb23-430"><a href="#cb23-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-431"><a href="#cb23-431" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ] <span class="co"># 1~2行目の要素</span></span>
-<span id="cb23-432"><a href="#cb23-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-433"><a href="#cb23-433" aria-hidden="true" tabindex="-1"></a>mat[, <span class="st">"dog"</span>] <span class="co"># インデックスは列名でも指定できる</span></span>
-<span id="cb23-434"><a href="#cb23-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-435"><a href="#cb23-435" aria-hidden="true" tabindex="-1"></a>mat<span class="sc">$</span>dog <span class="co"># ドルマークを用いることはできない</span></span>
-<span id="cb23-436"><a href="#cb23-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-437"><a href="#cb23-437" aria-hidden="true" tabindex="-1"></a>mat[<span class="st">"first"</span>, ] <span class="co"># 行名での指定</span></span>
-<span id="cb23-438"><a href="#cb23-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-439"><a href="#cb23-439" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(mat, <span class="at">rat =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>)) <span class="co"># 列の追加</span></span>
-<span id="cb23-440"><a href="#cb23-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-441"><a href="#cb23-441" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(mat, <span class="at">fourth =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)) <span class="co"># 行の追加</span></span>
-<span id="cb23-442"><a href="#cb23-442" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-443"><a href="#cb23-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-444"><a href="#cb23-444" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
-<span id="cb23-445"><a href="#cb23-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-446"><a href="#cb23-446" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3次元以上のクラス：array</span></span>
-<span id="cb23-447"><a href="#cb23-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-448"><a href="#cb23-448" aria-hidden="true" tabindex="-1"></a>Rには、次元を3つ以上持つクラスである、arrayも存在しますが、matrixほどには使用頻度は高くありません。</span>
-<span id="cb23-449"><a href="#cb23-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-450"><a href="#cb23-450" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb23-451"><a href="#cb23-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-452"><a href="#cb23-452" aria-hidden="true" tabindex="-1"></a><span class="fu">### 行列の演算</span></span>
-<span id="cb23-453"><a href="#cb23-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-454"><a href="#cb23-454" aria-hidden="true" tabindex="-1"></a>統計の計算には、線形代数（行列）が用いられます。Rには行列の演算に関する関数が一通り揃っています。</span>
-<span id="cb23-455"><a href="#cb23-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-456"><a href="#cb23-456" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb23-457"><a href="#cb23-457" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb23-458"><a href="#cb23-458" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> <span class="fu">c</span>(<span class="st">"*"</span>, <span class="st">"%*%"</span>, <span class="st">"%o%"</span>, <span class="st">"%x%"</span>, <span class="st">"diag"</span>, <span class="st">"det"</span>, <span class="st">"t"</span>, <span class="st">"upper.tri"</span>, <span class="st">"lower.tri"</span>, <span class="st">"solve"</span>, <span class="st">"qr"</span>),</span>
-<span id="cb23-459"><a href="#cb23-459" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"スカラー積"</span>, <span class="st">"行列の積"</span>, <span class="st">"外積"</span>, <span class="st">"クロネッカー積"</span>, <span class="st">"単位行列を作成する"</span>, <span class="st">"行列式を返す"</span>, <span class="st">"転置を返す"</span>, <span class="st">"上三角行列にTRUEを返す"</span>, <span class="st">"下三角行列にTRUEを返す"</span>, <span class="st">"逆行列を返す"</span>, <span class="st">"QR分解"</span>)</span>
-<span id="cb23-460"><a href="#cb23-460" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-461"><a href="#cb23-461" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-462"><a href="#cb23-462" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"関数名"</span>, <span class="st">"行列に適用する演算"</span>)</span>
-<span id="cb23-463"><a href="#cb23-463" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：行列に関する関数"</span>)</span>
-<span id="cb23-464"><a href="#cb23-464" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-465"><a href="#cb23-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-466"><a href="#cb23-466" aria-hidden="true" tabindex="-1"></a><span class="fu">### 行列の積</span></span>
-<span id="cb23-467"><a href="#cb23-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-468"><a href="#cb23-468" aria-hidden="true" tabindex="-1"></a>Rでは、<span class="in">`%*%`</span>を演算子として行列の積の計算を行います。単に「<span class="in">`*`</span>」で計算すると、行列の積ではなく、スカラー積が返ってきます。行列同士を「<span class="in">`*`</span>」で掛け算した場合には、行列の各要素をそれぞれ掛け算したもの（アダマール積）が返ってきます。行列の演算子として、他に外積（<span class="in">`%o%`</span>）やクロネッカー積（<span class="in">`%x%`</span>）の演算子も設定されています。</span>
-<span id="cb23-469"><a href="#cb23-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-470"><a href="#cb23-470" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb23-471"><a href="#cb23-471" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb23-472"><a href="#cb23-472" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-473"><a href="#cb23-473" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-474"><a href="#cb23-474" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="行列の演算子"}</span></span>
-<span id="cb23-475"><a href="#cb23-475" aria-hidden="true" tabindex="-1"></a><span class="co"># 要素が1~16のランダムな行列を作成</span></span>
-<span id="cb23-476"><a href="#cb23-476" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">16</span>, <span class="dv">16</span>), <span class="at">nrow=</span><span class="dv">4</span>) </span>
-<span id="cb23-477"><a href="#cb23-477" aria-hidden="true" tabindex="-1"></a>mat</span>
-<span id="cb23-478"><a href="#cb23-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-479"><a href="#cb23-479" aria-hidden="true" tabindex="-1"></a><span class="co"># スカラー積（行列の値をすべて3倍にする）</span></span>
-<span id="cb23-480"><a href="#cb23-480" aria-hidden="true" tabindex="-1"></a>mat <span class="sc">*</span> <span class="dv">3</span> </span>
-<span id="cb23-481"><a href="#cb23-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-482"><a href="#cb23-482" aria-hidden="true" tabindex="-1"></a><span class="co"># アダマール積（同じ行・列同士の値を掛け算する）</span></span>
-<span id="cb23-483"><a href="#cb23-483" aria-hidden="true" tabindex="-1"></a>mat <span class="sc">*</span> mat </span>
-<span id="cb23-484"><a href="#cb23-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-485"><a href="#cb23-485" aria-hidden="true" tabindex="-1"></a>mat <span class="sc">%*%</span> mat <span class="co"># 行列の積</span></span>
-<span id="cb23-486"><a href="#cb23-486" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-487"><a href="#cb23-487" aria-hidden="true" tabindex="-1"></a>mat[, <span class="dv">1</span>] <span class="sc">%o%</span> mat[, <span class="dv">2</span>] <span class="co"># 外積</span></span>
-<span id="cb23-488"><a href="#cb23-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-489"><a href="#cb23-489" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="sc">%x%</span> mat[<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>] <span class="co"># クロネッカー積</span></span>
-<span id="cb23-490"><a href="#cb23-490" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-491"><a href="#cb23-491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-492"><a href="#cb23-492" aria-hidden="true" tabindex="-1"></a><span class="fu">### 行列式・転置・逆行列の演算</span></span>
-<span id="cb23-493"><a href="#cb23-493" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-494"><a href="#cb23-494" aria-hidden="true" tabindex="-1"></a>行列式は<span class="in">`det`</span>関数、行列の転置は<span class="in">`t`</span>関数、逆行列は<span class="in">`solve`</span>関数で求めることができます。<span class="in">`t`</span>関数は行列だけでなく、データフレームを引数に取ることができますが、**`t`関数の返り値は必ず行列**になります。データフレームを<span class="in">`t`</span>関数の引数にして転置する場合にはデータ型が変換されることが多いため、注意が必要です。</span>
-<span id="cb23-495"><a href="#cb23-495" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-496"><a href="#cb23-496" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="行列式・転置・逆行列"}</span></span>
-<span id="cb23-497"><a href="#cb23-497" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(mat) <span class="co"># matの行列式</span></span>
-<span id="cb23-498"><a href="#cb23-498" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-499"><a href="#cb23-499" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(mat) <span class="co"># matを転置</span></span>
-<span id="cb23-500"><a href="#cb23-500" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-501"><a href="#cb23-501" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(mat) <span class="co"># matの逆行列</span></span>
-<span id="cb23-502"><a href="#cb23-502" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-503"><a href="#cb23-503" aria-hidden="true" tabindex="-1"></a>mat <span class="sc">%*%</span> <span class="fu">solve</span>(mat) <span class="co"># 概ね単位行列になる</span></span>
-<span id="cb23-504"><a href="#cb23-504" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb23-505"><a href="#cb23-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-506"><a href="#cb23-506" aria-hidden="true" tabindex="-1"></a><span class="fu">### 単位行列・三角行列の作成</span></span>
-<span id="cb23-507"><a href="#cb23-507" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-508"><a href="#cb23-508" aria-hidden="true" tabindex="-1"></a><span class="in">`diag`</span>関数は単位行列を作成するための関数です。<span class="in">`diag`</span>関数は数値を引数に取り、その数値の行数・列数の単位行列を返します。</span>
-<span id="cb23-509"><a href="#cb23-509" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-510"><a href="#cb23-510" aria-hidden="true" tabindex="-1"></a>三角行列の作成には、<span class="in">`upper.tri`</span>関数と<span class="in">`lower.tri`</span>関数を用います。この2つの関数は、行列を引数に取り、行列と同じ行数・列数の論理型の上三角行列（上が<span class="in">`TRUE`</span>、下三角が<span class="in">`FALSE`</span>の行列）、下三角行列（下が<span class="in">`TRUE`</span>、上三角が<span class="in">`FALSE`</span>の行列）をそれぞれ返します。いずれも対角成分は<span class="in">`FALSE`</span>となります。</span>
-<span id="cb23-511"><a href="#cb23-511" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-512"><a href="#cb23-512" aria-hidden="true" tabindex="-1"></a>ただし、<span class="in">`upper.tri`</span>関数、<span class="in">`lower.tri`</span>関数の返り値をそのまま行列のインデックスに用いても上三角行列・下三角行列を作ることはできません。上三角行列を作成する場合には、<span class="in">`lower.tri`</span>関数の返り値をインデックスに取り、このインデックスに0を代入します。</span>
-<span id="cb23-513"><a href="#cb23-513" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-514"><a href="#cb23-514" aria-hidden="true" tabindex="-1"></a>逆に、下三角行列を作成する場合には、<span class="in">`upper.tri`</span>関数の返り値をインデックスに取り、このインデックスに0を代入します。このように0を下三角・上三角に代入することで、上三角行列・下三角行列を得ることができます。</span>
-<span id="cb23-515"><a href="#cb23-515" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-518"><a href="#cb23-518" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb23-519"><a href="#cb23-519" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(<span class="dv">3</span>) <span class="co"># 3行3列の単位行列</span></span>
-<span id="cb23-520"><a href="#cb23-520" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-521"><a href="#cb23-521" aria-hidden="true" tabindex="-1"></a><span class="fu">upper.tri</span>(mat) <span class="co"># 上三角行列にTRUEを返す</span></span>
-<span id="cb23-522"><a href="#cb23-522" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-523"><a href="#cb23-523" aria-hidden="true" tabindex="-1"></a><span class="fu">lower.tri</span>(mat) <span class="co"># 下三角行列にTRUEを返す</span></span>
-<span id="cb23-524"><a href="#cb23-524" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-525"><a href="#cb23-525" aria-hidden="true" tabindex="-1"></a>mat.u <span class="ot">&lt;-</span> mat</span>
-<span id="cb23-526"><a href="#cb23-526" aria-hidden="true" tabindex="-1"></a>mat.l <span class="ot">&lt;-</span> mat</span>
-<span id="cb23-527"><a href="#cb23-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-528"><a href="#cb23-528" aria-hidden="true" tabindex="-1"></a>mat.u[<span class="fu">lower.tri</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># 下三角行列のみに0を代入</span></span>
-<span id="cb23-529"><a href="#cb23-529" aria-hidden="true" tabindex="-1"></a>mat.l[<span class="fu">upper.tri</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># 上三角行列のみに0を代入</span></span>
-<span id="cb23-530"><a href="#cb23-530" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-531"><a href="#cb23-531" aria-hidden="true" tabindex="-1"></a>mat.u <span class="co"># 下三角に0を代入すると上三角行列が得られる</span></span>
-<span id="cb23-532"><a href="#cb23-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-533"><a href="#cb23-533" aria-hidden="true" tabindex="-1"></a>mat.l <span class="co"># 上三角に0を代入すると下三角行列が得られる</span></span>
-<span id="cb23-534"><a href="#cb23-534" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<div class="sourceCode" id="cb25" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># リスト・データフレーム・行列</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## リスト（list）</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>**リスト（list）**は様々なデータ型・クラスのオブジェクトを一つにまとめたものです。リストの要素となるのは、ベクター、リスト、データフレーム、行列などで、どのようなデータ型・クラスであってもリストの要素にすることができます。</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>リストの作成には、<span class="in">`list`</span>関数を用います。<span class="in">`list`</span>関数の引数がリストの要素となります。</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストの作成"}</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co"># リストの作成（=の左が名前（names）、右が要素）</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">y =</span> <span class="st">"dog"</span>, <span class="at">z =</span> <span class="fu">c</span>(T, F, T, T, F))</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>lst <span class="co"># リストを表示する</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストの名前</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>ベクターと同様に、リストの要素には**名前（names）**をつけることができ、要素を名前から呼び出すことができます。名前からの呼び出しでは、ベクターと同じように四角カッコ（<span class="in">`[ ]`</span>）内に文字列を記入して呼び出してもよいですし、<span class="in">`$`</span>（ドルマーク）を用いて呼び出すこともできます。ただし、<span class="in">`[ ]`</span>と<span class="in">`$`</span>では、返り値の型が異なります（<span class="in">`[ ]`</span>ではリスト、<span class="in">`$`</span>では要素が返ってくる）。</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>名前の確認・設定はベクターと同じ方法で行います。リストの名前の確認・変更には、<span class="in">`names`</span>関数を用います。<span class="in">`names`</span>関数の引数にリストを取ると、そのリストの名前が返ってきます。<span class="in">`names`</span>関数の引数にリストを取り、文字列ベクターを代入するとリストの名前を設定できます。</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストの名前"}</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lst) <span class="co"># リストの名前を表示する</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lst) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>) <span class="co"># リストの名前を変更する</span></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lst) <span class="co"># 変更後の名前</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>lst[<span class="st">"a"</span>] <span class="co"># 名前での要素の呼び出し（リストが返ってくる）</span></span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>lst<span class="sc">$</span>a <span class="co"># ドルマーク（$）を用いた呼び出し（要素が返ってくる）</span></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストのインデックス</span></span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>リストのインデックスは、基本的には**二重角カッコ（`[[ ]]`）**で指定します。通常の角カッコ（`[ ]`）で指定すると、**リストの要素がリストのまま**返ってきます。角カッコ（<span class="in">`[ ]`</span>）で返ってくるのはリストですので、コロンを用いて複数の要素をリストとして取り出すことができます。</span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>リストの要素（ベクターや行列）のさらに要素を取り出すには、二重角カッコの後に、ベクターや行列に対応したインデックス指定（<span class="in">`[1]`</span>や<span class="in">`[1, 2]`</span>など）をつけることになります。</span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストのインデックス"}</span></span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>lst[<span class="dv">1</span>] <span class="co"># リストの1番目の要素（リストが返ってくる）</span></span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>lst[[<span class="dv">1</span>]] <span class="co"># リストの1番目の要素（要素が返ってくる）</span></span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>lst[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="co"># リストの1~2番目の要素（リストが返ってくる）</span></span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>lst[[<span class="dv">1</span>]][<span class="dv">2</span>] <span class="co"># リストの1番目の要素（ベクター）の2つ目の要素</span></span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストの長さ（length）</span></span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>リストは、名前（names）の他に、**長さ（length）**の特性を持ちます。リストのlengthはリストの要素の数です。リストのlengthもベクターと同じく、<span class="in">`length`</span>関数で確認することができます。</span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a>リストのアトリビュートは<span class="in">`attributes`</span>関数で確認することができます。アトリビュートを<span class="in">`attr`</span>関数で別途追加しない場合には、アトリビュートとしては名前を設定したリストでは<span class="in">`names`</span>だけが表示されます。各要素のデータ型は<span class="in">`str`</span>関数や<span class="in">`summary`</span>関数を用いて確認することができます。</span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストの長さとデータ型"}</span></span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(lst)</span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(lst)</span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(lst)</span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lst)</span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストへの要素の追加</span></span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a><span class="in">`c`</span>関数を用いることで、リストに要素を追加することができます。また、リストに要素を追加する場合には、ドルマークを用いて設定されていない名前を指定し、代入を行うこともできます。設定されている名前を用いて代入した場合には、その要素が書き換えられます。</span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストへの要素の追加"}</span></span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">c</span>(lst, <span class="at">d =</span> <span class="st">"added object"</span>) <span class="co"># リストに名前dの要素を追加</span></span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a>lst</span>
+<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a><span class="co"># リストに名前eの要素を追加（データフレームにも使える）</span></span>
+<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a>lst<span class="sc">$</span>e <span class="ot">&lt;-</span> <span class="st">"objects can be added with named index"</span> <span class="co"># 名前eの要素を追加</span></span>
+<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a>lst<span class="sc">$</span>d <span class="ot">&lt;-</span> <span class="st">"changed object"</span> <span class="co"># dの要素を変更</span></span>
+<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a>lst <span class="co"># 追加・変更後のリスト</span></span>
+<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-84"><a href="#cb25-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-85"><a href="#cb25-85" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストのベクター化</span></span>
+<span id="cb25-86"><a href="#cb25-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-87"><a href="#cb25-87" aria-hidden="true" tabindex="-1"></a>リストを全部まとめて1つのベクターにする場合には、<span class="in">`unlist`</span>関数を用います。<span class="in">`unlist`</span>関数はリストの要素をすべて1次元のベクターに変更します。ベクターに変更すると、ベクターの型が要素の型によって変更されるので、注意が必要です。<span class="in">`unlist`</span>関数はリストだけでなく、データフレームの行のデータをベクターにするのにも用いられます。</span>
+<span id="cb25-88"><a href="#cb25-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-89"><a href="#cb25-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="リストのベクター化"}</span></span>
+<span id="cb25-90"><a href="#cb25-90" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(lst[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]) <span class="co"># 文字列のベクターに変換される</span></span>
+<span id="cb25-91"><a href="#cb25-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-92"><a href="#cb25-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-93"><a href="#cb25-93" aria-hidden="true" tabindex="-1"></a><span class="fu">## データフレーム（data.frame）</span></span>
+<span id="cb25-94"><a href="#cb25-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-95"><a href="#cb25-95" aria-hidden="true" tabindex="-1"></a>Rで最も使用頻度が高いクラスの一つが**データフレーム（data.frame）**です。データフレームはExcelの表のような構造を持つクラスで、<span class="in">`data.frame`</span>関数を用いて作成することができます。<span class="in">`data.frame`</span>関数の引数は各列のベクターで、各列の名前を引数で設定することができます（リストと同じく、「列名=ベクター」という形で設定）。</span>
+<span id="cb25-96"><a href="#cb25-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-97"><a href="#cb25-97" aria-hidden="true" tabindex="-1"></a>データフレームは、**同じ長さのベクターを列に取ったリスト**です。ですので、<span class="in">`class`</span>関数ではデータフレーム、<span class="in">`mode`</span>関数ではリストが返ってきます。</span>
+<span id="cb25-98"><a href="#cb25-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-99"><a href="#cb25-99" aria-hidden="true" tabindex="-1"></a>データフレームの作成時に、長さの異なるベクターを用いた場合には、**反復（recycling）**のルールに従い、短いベクターが長いベクターの長さに合わせて反復されます。</span>
+<span id="cb25-100"><a href="#cb25-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-101"><a href="#cb25-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="データフレームを作成する"}</span></span>
+<span id="cb25-102"><a href="#cb25-102" aria-hidden="true" tabindex="-1"></a><span class="co"># データフレームをdata.frame関数で作成する</span></span>
+<span id="cb25-103"><a href="#cb25-103" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">z =</span> <span class="fu">c</span>(T, T, F, T))</span>
+<span id="cb25-104"><a href="#cb25-104" aria-hidden="true" tabindex="-1"></a>d</span>
+<span id="cb25-105"><a href="#cb25-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-106"><a href="#cb25-106" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(d) <span class="co"># classはdata.frame</span></span>
+<span id="cb25-107"><a href="#cb25-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-108"><a href="#cb25-108" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(d) <span class="co"># modeはlist</span></span>
+<span id="cb25-109"><a href="#cb25-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-110"><a href="#cb25-110" aria-hidden="true" tabindex="-1"></a><span class="co"># 長さが異なるベクターを用いると、反復が適用される</span></span>
+<span id="cb25-111"><a href="#cb25-111" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">z =</span> T)</span>
+<span id="cb25-112"><a href="#cb25-112" aria-hidden="true" tabindex="-1"></a>d2</span>
+<span id="cb25-113"><a href="#cb25-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-114"><a href="#cb25-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-115"><a href="#cb25-115" aria-hidden="true" tabindex="-1"></a><span class="fu">### リストからデータフレームを作成する</span></span>
+<span id="cb25-116"><a href="#cb25-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-117"><a href="#cb25-117" aria-hidden="true" tabindex="-1"></a>データフレームはリストと同じですので、長さが同じベクターからなるリストはそのままデータフレームに変換できます。データフレームへの変換には<span class="in">`as.data.frame`</span>関数を用います。この変換は、<span class="in">`data.frame`</span>関数を用いても行うことができます。</span>
+<span id="cb25-118"><a href="#cb25-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-119"><a href="#cb25-119" aria-hidden="true" tabindex="-1"></a>長さが異なるベクターや、ベクター以外の要素を含むリストをデータフレームに変換しようとすると、エラーが出ます。反復は行われません。</span>
+<span id="cb25-120"><a href="#cb25-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-121"><a href="#cb25-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="リストをデータフレームに変換"}</span></span>
+<span id="cb25-122"><a href="#cb25-122" aria-hidden="true" tabindex="-1"></a><span class="co"># 長さが同じベクターのリストは、そのままデータフレームに変換できる</span></span>
+<span id="cb25-123"><a href="#cb25-123" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">z =</span> <span class="fu">c</span>(T, T, F, T))</span>
+<span id="cb25-124"><a href="#cb25-124" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(lst)</span>
+<span id="cb25-125"><a href="#cb25-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-126"><a href="#cb25-126" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(lst)</span>
+<span id="cb25-127"><a href="#cb25-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-128"><a href="#cb25-128" aria-hidden="true" tabindex="-1"></a><span class="co"># 長さが異なるベクターのリストは、データフレームに変換できない</span></span>
+<span id="cb25-129"><a href="#cb25-129" aria-hidden="true" tabindex="-1"></a>lst2 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">y =</span> <span class="st">"dog"</span>, <span class="at">z =</span> <span class="fu">c</span>(T, F, T, T, F))</span>
+<span id="cb25-130"><a href="#cb25-130" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(lst2) <span class="co"># エラー</span></span>
+<span id="cb25-131"><a href="#cb25-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-132"><a href="#cb25-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-133"><a href="#cb25-133" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームのインデックス</span></span>
+<span id="cb25-134"><a href="#cb25-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-135"><a href="#cb25-135" aria-hidden="true" tabindex="-1"></a>データフレームはリストではありますが、行（横方向）と列（縦方向）を持つ、表の形で表されます。データフレームは表型のデータですので、行・列の2つの**次元（dimension）**を持ちます。</span>
+<span id="cb25-136"><a href="#cb25-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-137"><a href="#cb25-137" aria-hidden="true" tabindex="-1"></a>データフレームの要素をインデックスで指定する場合には、**`[行, 列]`**という形を用います。このとき、インデックスの数値は行・列共に1行目が1、1列目が1となります。インデックスは数値のベクターで指定することもできます。数値のベクターで指定した場合には、ベクターに記載した順番に行・列を取り出すことになります。</span>
+<span id="cb25-138"><a href="#cb25-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-139"><a href="#cb25-139" aria-hidden="true" tabindex="-1"></a>ベクターと同様に、データフレームのインデックスは**コロン（`:`）を用いた連続整数**の形でも指定できますし、**論理型（`TRUE`と`FALSE`）のベクター**を用いても指定できます。論理型のベクターの長さが行数・列数に足りない場合には、ベクターが反復されます。**マイナスのインデックスを用いた場合には、指定した行・列が削除**されます。</span>
+<span id="cb25-140"><a href="#cb25-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-141"><a href="#cb25-141" aria-hidden="true" tabindex="-1"></a>インデックスでデータフレームの列のみを指定した場合には、返り値としてその列のベクターが返ってきます。一方、**行のみを指定した場合には、ベクターではなく、その行がデータフレーム**として返ってきます。行をベクターに変換するには、<span class="in">`unlist`</span>関数を用います。</span>
+<span id="cb25-142"><a href="#cb25-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-143"><a href="#cb25-143" aria-hidden="true" tabindex="-1"></a>データフレームのインデックスの指定時には、コンマで行列を区切らず、1つのインデックスだけで指定することもできます。インデックスを1つだけ指定した場合には、ベクターではなく、データフレームが返ってきます。</span>
+<span id="cb25-144"><a href="#cb25-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-145"><a href="#cb25-145" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="データフレームのインデックス"}</span></span>
+<span id="cb25-146"><a href="#cb25-146" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">b =</span> <span class="fu">seq</span>(<span class="dv">4</span>, <span class="fl">6.5</span>, <span class="at">by =</span> <span class="fl">0.5</span>), <span class="at">c =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">6</span>))</span>
+<span id="cb25-147"><a href="#cb25-147" aria-hidden="true" tabindex="-1"></a>d1</span>
+<span id="cb25-148"><a href="#cb25-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-149"><a href="#cb25-149" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span>, <span class="dv">1</span>] <span class="co"># 1行1列目の要素を取り出す</span></span>
+<span id="cb25-150"><a href="#cb25-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-151"><a href="#cb25-151" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span>] <span class="co"># 1~3行目、1列目の要素を取り出す（ベクター）</span></span>
+<span id="cb25-152"><a href="#cb25-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-153"><a href="#cb25-153" aria-hidden="true" tabindex="-1"></a>d1[<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">1</span>), ] <span class="co"># 5行目、2行目、1行目を取り出す</span></span>
+<span id="cb25-154"><a href="#cb25-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-155"><a href="#cb25-155" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span>, ] <span class="co"># 1行目の要素を取り出す（データフレーム）</span></span>
+<span id="cb25-156"><a href="#cb25-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-157"><a href="#cb25-157" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(d1[<span class="dv">1</span>, ]) <span class="co"># 1行目の要素を取り出して、ベクターに変換する</span></span>
+<span id="cb25-158"><a href="#cb25-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-159"><a href="#cb25-159" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, ] <span class="co"># 2~3行目の要素を取り出す（データフレーム）</span></span>
+<span id="cb25-160"><a href="#cb25-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-161"><a href="#cb25-161" aria-hidden="true" tabindex="-1"></a>d1[, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>] <span class="co"># 2~3列目の要素を取り出す（データフレーム）</span></span>
+<span id="cb25-162"><a href="#cb25-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-163"><a href="#cb25-163" aria-hidden="true" tabindex="-1"></a>d1[<span class="fu">c</span>(T, T, F, T, F, F), ] <span class="co"># 論理型もインデックスに使用できる</span></span>
+<span id="cb25-164"><a href="#cb25-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-165"><a href="#cb25-165" aria-hidden="true" tabindex="-1"></a>d1[<span class="fu">c</span>(T, T, F), ] <span class="co"># 反復</span></span>
+<span id="cb25-166"><a href="#cb25-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-167"><a href="#cb25-167" aria-hidden="true" tabindex="-1"></a>d1[, <span class="fu">c</span>(T, T, F)] <span class="co"># 列のインデックスにも論理型を使用できる</span></span>
+<span id="cb25-168"><a href="#cb25-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-169"><a href="#cb25-169" aria-hidden="true" tabindex="-1"></a>d1[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">2</span>, ] <span class="co"># 1~2行目を削除</span></span>
+<span id="cb25-170"><a href="#cb25-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-171"><a href="#cb25-171" aria-hidden="true" tabindex="-1"></a>d1[, <span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">2</span>] <span class="co"># 1~2列目を削除</span></span>
+<span id="cb25-172"><a href="#cb25-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-173"><a href="#cb25-173" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span>] <span class="co"># 1列目を取り出す（データフレーム）</span></span>
+<span id="cb25-174"><a href="#cb25-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-175"><a href="#cb25-175" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(d1[<span class="dv">1</span>]) <span class="co"># 行・列で指定（[,1]）しないと、データフレームが返ってくる</span></span>
+<span id="cb25-176"><a href="#cb25-176" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-177"><a href="#cb25-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-178"><a href="#cb25-178" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの行数・列数</span></span>
+<span id="cb25-179"><a href="#cb25-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-180"><a href="#cb25-180" aria-hidden="true" tabindex="-1"></a>データフレームには、行方向と列方向の長さがあります。この行方向と列方向の長さを返すのが、<span class="in">`dim`</span>関数、<span class="in">`nrow`</span>関数、<span class="in">`ncol`</span>関数です。<span class="in">`dim`</span>関数は、データフレームを引数に取り、行数,列数の2つの値のベクターを返します。<span class="in">`nrow`</span>関数はデータフレームの行数を、<span class="in">`ncol`</span>関数はデータフレームの列数を返す関数です。</span>
+<span id="cb25-181"><a href="#cb25-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-182"><a href="#cb25-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="データフレームの行・列数"}</span></span>
+<span id="cb25-183"><a href="#cb25-183" aria-hidden="true" tabindex="-1"></a>d <span class="co"># dは4行3列のデータフレーム</span></span>
+<span id="cb25-184"><a href="#cb25-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-185"><a href="#cb25-185" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(d) <span class="co"># 4行3列なので、4と3が返ってくる</span></span>
+<span id="cb25-186"><a href="#cb25-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-187"><a href="#cb25-187" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(d) <span class="co"># 行数が返ってくる</span></span>
+<span id="cb25-188"><a href="#cb25-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-189"><a href="#cb25-189" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(d) <span class="co"># 列数が返ってくる</span></span>
+<span id="cb25-190"><a href="#cb25-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-191"><a href="#cb25-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-192"><a href="#cb25-192" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの名前</span></span>
+<span id="cb25-193"><a href="#cb25-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-194"><a href="#cb25-194" aria-hidden="true" tabindex="-1"></a>データフレームの各行・各列には、それぞれ名前をつけることができます。データフレームの**行の名前は`rownames`関数、列の名前は`colnames`関数**で求めることができます。</span>
+<span id="cb25-195"><a href="#cb25-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-196"><a href="#cb25-196" aria-hidden="true" tabindex="-1"></a>列名は<span class="in">`data.frame`</span>関数でデータフレームを作成するときにつけることができます。また、ベクターと同様に、**`colnames`関数に列名を代入する**形でも列名をつけることができます。</span>
+<span id="cb25-197"><a href="#cb25-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-198"><a href="#cb25-198" aria-hidden="true" tabindex="-1"></a>行名をつける場合には、**`rownames`関数に行名を代入**します。特に行名を指定していない場合には、行の番号が1, 2, 3,...といった形で行名として設定されます。</span>
+<span id="cb25-199"><a href="#cb25-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-200"><a href="#cb25-200" aria-hidden="true" tabindex="-1"></a>行名・列名のいずれもインデックスとして利用することができます。特に**列名は、`$`（ドルマーク）を用いた形**で列の取り出しに用いることができます。</span>
+<span id="cb25-201"><a href="#cb25-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-202"><a href="#cb25-202" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="データフレームの行名・列名"}</span></span>
+<span id="cb25-203"><a href="#cb25-203" aria-hidden="true" tabindex="-1"></a>d</span>
+<span id="cb25-204"><a href="#cb25-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-205"><a href="#cb25-205" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="co"># 列名</span></span>
+<span id="cb25-206"><a href="#cb25-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-207"><a href="#cb25-207" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>) <span class="co"># 列名を変更する</span></span>
+<span id="cb25-208"><a href="#cb25-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-209"><a href="#cb25-209" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(d) <span class="co"># 行名</span></span>
+<span id="cb25-210"><a href="#cb25-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-211"><a href="#cb25-211" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span>, <span class="st">"aa"</span>) <span class="co"># 行名を変更する</span></span>
+<span id="cb25-212"><a href="#cb25-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-213"><a href="#cb25-213" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"x"</span>, ] <span class="co"># 行名をインデックスに用いることもできる</span></span>
+<span id="cb25-214"><a href="#cb25-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-215"><a href="#cb25-215" aria-hidden="true" tabindex="-1"></a>d[, <span class="st">"a"</span>] <span class="co"># 列名もインデックス指定に使うことができる</span></span>
+<span id="cb25-216"><a href="#cb25-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-217"><a href="#cb25-217" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>a <span class="co"># ドルマークを使って列を指定することもできる</span></span>
+<span id="cb25-218"><a href="#cb25-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-219"><a href="#cb25-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-220"><a href="#cb25-220" aria-hidden="true" tabindex="-1"></a>データフレームにおいても、インデックスに論理型のベクターを使用することができるため、**列名と比較演算子を利用して、行を選択する**ことができます。</span>
+<span id="cb25-221"><a href="#cb25-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-222"><a href="#cb25-222" aria-hidden="true" tabindex="-1"></a>インデックスでの比較演算子の利用と同様に条件によって行を選択する際に用いる関数が<span class="in">`subset`</span>関数です。<span class="in">`subset`</span>関数は第一引数にデータフレーム、第二引数に比較演算子を用いた条件式を記載することで、条件に合った行のみを取り出すことができます。</span>
+<span id="cb25-223"><a href="#cb25-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-224"><a href="#cb25-224" aria-hidden="true" tabindex="-1"></a>行のデータを利用して論理型ベクターを作成し、列を選択する事もできます。</span>
+<span id="cb25-225"><a href="#cb25-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-226"><a href="#cb25-226" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, 比較演算子を用いた行・列の選択}</span></span>
+<span id="cb25-227"><a href="#cb25-227" aria-hidden="true" tabindex="-1"></a>d1</span>
+<span id="cb25-228"><a href="#cb25-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-229"><a href="#cb25-229" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span>b <span class="sc">&gt;</span> <span class="dv">5</span> <span class="co"># b列が5以上ならTRUE</span></span>
+<span id="cb25-230"><a href="#cb25-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-231"><a href="#cb25-231" aria-hidden="true" tabindex="-1"></a>d1[d1<span class="sc">$</span>b <span class="sc">&gt;</span> <span class="dv">5</span>, ] <span class="co"># b列が5以上の行を選択</span></span>
+<span id="cb25-232"><a href="#cb25-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-233"><a href="#cb25-233" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(d1, d1<span class="sc">$</span>b <span class="sc">&gt;</span> <span class="dv">5</span>) <span class="co"># 上と同じ行の選択をsubset関数で行う</span></span>
+<span id="cb25-234"><a href="#cb25-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-235"><a href="#cb25-235" aria-hidden="true" tabindex="-1"></a>d1[<span class="dv">1</span>, ] <span class="sc">&gt;</span> <span class="dv">3</span> <span class="co"># 1行目の値が3以上ならTRUE</span></span>
+<span id="cb25-236"><a href="#cb25-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-237"><a href="#cb25-237" aria-hidden="true" tabindex="-1"></a>d1[, d1[<span class="dv">1</span>, ] <span class="sc">&gt;</span> <span class="dv">3</span>] <span class="co"># 1行目が3以上になる列（2列目）を選択</span></span>
+<span id="cb25-238"><a href="#cb25-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-239"><a href="#cb25-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-240"><a href="#cb25-240" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb25-241"><a href="#cb25-241" aria-hidden="true" tabindex="-1"></a><span class="fu">## 名前に日本語をつける</span></span>
+<span id="cb25-242"><a href="#cb25-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-243"><a href="#cb25-243" aria-hidden="true" tabindex="-1"></a>列名に日本語をつけても、<span class="in">`$`</span>を用いて列の要素を呼び出すことはできます。ただし、英語入力・日本語入力を切り替えないとスクリプトを書くことができなくなってしまうため、効率はよくありません。できれば列名に日本語は避けた方がよいでしょう。</span>
+<span id="cb25-244"><a href="#cb25-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-245"><a href="#cb25-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="日本語の列名"}</span></span>
+<span id="cb25-246"><a href="#cb25-246" aria-hidden="true" tabindex="-1"></a>df_jpn <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">y =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">z =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">7</span>)</span>
+<span id="cb25-247"><a href="#cb25-247" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df_jpn) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"佐藤"</span>, <span class="st">"鈴木"</span>, <span class="st">"高橋"</span>)</span>
+<span id="cb25-248"><a href="#cb25-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-249"><a href="#cb25-249" aria-hidden="true" tabindex="-1"></a>df_jpn<span class="sc">$</span>佐藤</span>
+<span id="cb25-250"><a href="#cb25-250" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-251"><a href="#cb25-251" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-252"><a href="#cb25-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-253"><a href="#cb25-253" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの並べ替え</span></span>
+<span id="cb25-254"><a href="#cb25-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-255"><a href="#cb25-255" aria-hidden="true" tabindex="-1"></a>データフレームの並べ替えには、<span class="in">`order`</span>関数を用います。<span class="in">`order`</span>関数はベクターの要素の順番に数値を付け、返すだけの関数です。データフレームのインデックスはベクターを取ることができ、ベクターに記載した数値の順番に行を取得します。ですので、<span class="in">`order`</span>関数の返り値を行のインデックスとして用いると、<span class="in">`order`</span>関数の返り値の通りにデータフレームが並べ替えられます。</span>
+<span id="cb25-256"><a href="#cb25-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-257"><a href="#cb25-257" aria-hidden="true" tabindex="-1"></a><span class="in">`order`</span>関数には<span class="in">`decreasing`</span>（降順）という引数を設定できます。<span class="in">`decreasing`</span>のデフォルト値は<span class="in">`FALSE`</span>で、通常は<span class="in">`order`</span>関数を用いた並べかえは昇順（一番小さいものが一番上）になります。<span class="in">`decreasing`</span>を<span class="in">`TRUE`</span>に設定すると、<span class="in">`order`</span>関数の結果が逆順になります。したがって、<span class="in">`decreasing=TRUE`</span>とした場合には、データフレームを降順（一番大きなものが一番上）に並べ替えることができます。</span>
+<span id="cb25-258"><a href="#cb25-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-259"><a href="#cb25-259" aria-hidden="true" tabindex="-1"></a><span class="in">`rev`</span>関数は引数にベクターを取り、ベクターを逆順に変換する関数です。この<span class="in">`rev`</span>関数を用いても、データフレームを降順に並べ替えることができます。</span>
+<span id="cb25-260"><a href="#cb25-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-261"><a href="#cb25-261" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="データフレームの並べ替え"}</span></span>
+<span id="cb25-262"><a href="#cb25-262" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">z =</span> <span class="fu">c</span>(T, T, F, T))</span>
+<span id="cb25-263"><a href="#cb25-263" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(d<span class="sc">$</span>x) <span class="co"># x列の順序を返す(文字列はアルファベット順)</span></span>
+<span id="cb25-264"><a href="#cb25-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-265"><a href="#cb25-265" aria-hidden="true" tabindex="-1"></a>d[<span class="fu">order</span>(d<span class="sc">$</span>x),] <span class="co"># x列を昇順に並べ替え</span></span>
+<span id="cb25-266"><a href="#cb25-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-267"><a href="#cb25-267" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(d<span class="sc">$</span>x, <span class="at">decreasing=</span><span class="cn">TRUE</span>)</span>
+<span id="cb25-268"><a href="#cb25-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-269"><a href="#cb25-269" aria-hidden="true" tabindex="-1"></a>d[<span class="fu">order</span>(d<span class="sc">$</span>x, <span class="at">decreasing=</span><span class="cn">TRUE</span>), ] <span class="co"># x列を降順に並べ替え</span></span>
+<span id="cb25-270"><a href="#cb25-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-271"><a href="#cb25-271" aria-hidden="true" tabindex="-1"></a>d[<span class="fu">rev</span>(<span class="fu">order</span>(d<span class="sc">$</span>x)), ] <span class="co"># rev関数でもベクターを逆順にできる</span></span>
+<span id="cb25-272"><a href="#cb25-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-273"><a href="#cb25-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-274"><a href="#cb25-274" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb25-275"><a href="#cb25-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-276"><a href="#cb25-276" aria-hidden="true" tabindex="-1"></a><span class="fu">## rank関数で並べ替え</span></span>
+<span id="cb25-277"><a href="#cb25-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-278"><a href="#cb25-278" aria-hidden="true" tabindex="-1"></a><span class="in">`order`</span>関数の代わりに<span class="in">`rank`</span>関数を用いることもできます。ただし、<span class="in">`rank`</span>関数はデフォルトではタイデータ（同じ値のデータ）に整数で順位を付けないので（2.5位が2つなど）、タイデータがあるとうまく並び替えができません。並べ替えの場合には<span class="in">`order`</span>関数の方が使い勝手がよいでしょう。</span>
+<span id="cb25-279"><a href="#cb25-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-280"><a href="#cb25-280" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-281"><a href="#cb25-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-282"><a href="#cb25-282" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームに行・列を追加する</span></span>
+<span id="cb25-283"><a href="#cb25-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-284"><a href="#cb25-284" aria-hidden="true" tabindex="-1"></a>データフレームに列を追加する方法はいくつかあります。</span>
+<span id="cb25-285"><a href="#cb25-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-286"><a href="#cb25-286" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`$`</span>（ドルマーク）に列名に使われていない名前を指定し、ベクターを代入する</span>
+<span id="cb25-287"><a href="#cb25-287" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>現在の列数+1のインデックスを指定し、ベクターを代入する</span>
+<span id="cb25-288"><a href="#cb25-288" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`cbind`</span>関数を用いる</span>
+<span id="cb25-289"><a href="#cb25-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-290"><a href="#cb25-290" aria-hidden="true" tabindex="-1"></a><span class="in">`$`</span>と新しい列名を用いて、ベクターを代入した場合には、最も右側にその列名を持つ列が追加されます。数値のインデックスで指定した場合には、Vにインデックスが付いた列名（V1、V2など）が自動的に設定され、列が追加されます。<span class="in">`cbind`</span>関数を用いた場合には、1つ目の引数（データフレーム）に2つ目の引数（ベクターもしくはデータフレーム）が右側から追加されます。</span>
+<span id="cb25-291"><a href="#cb25-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-292"><a href="#cb25-292" aria-hidden="true" tabindex="-1"></a>データフレームに行を追加する方法もほぼ同じです。行を追加する場合には、<span class="in">`cbind`</span>関数ではなく、<span class="in">`rbind`</span>関数を用います。</span>
+<span id="cb25-293"><a href="#cb25-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-294"><a href="#cb25-294" aria-hidden="true" tabindex="-1"></a>ただし、データフレームに行をベクターで追加する場合には、**追加した行に従い各列のデータ型が変化**します。データ型の変換を起こさないように行を追加するには、追加する行がデータフレームである必要があります。さらに、追加するデータフレームの列名が元のデータフレームの列名と一致する必要があります。</span>
+<span id="cb25-295"><a href="#cb25-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-296"><a href="#cb25-296" aria-hidden="true" tabindex="-1"></a>データフレームに行を追加すると予期せぬ型変換が起こり、間違いの原因となりますので、行の追加を行うときには型を逐次確認することをおすすめします。</span>
+<span id="cb25-297"><a href="#cb25-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-298"><a href="#cb25-298" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="列・行の追加"}</span></span>
+<span id="cb25-299"><a href="#cb25-299" aria-hidden="true" tabindex="-1"></a>d3 <span class="ot">&lt;-</span> d</span>
+<span id="cb25-300"><a href="#cb25-300" aria-hidden="true" tabindex="-1"></a>d3</span>
+<span id="cb25-301"><a href="#cb25-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-302"><a href="#cb25-302" aria-hidden="true" tabindex="-1"></a>d3<span class="sc">$</span>newCol <span class="ot">&lt;-</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">8</span></span>
+<span id="cb25-303"><a href="#cb25-303" aria-hidden="true" tabindex="-1"></a>d3[, <span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">13</span></span>
+<span id="cb25-304"><a href="#cb25-304" aria-hidden="true" tabindex="-1"></a>d3[<span class="dv">5</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"rat"</span>, <span class="dv">6</span>, T, <span class="dv">9</span>, <span class="dv">14</span>) <span class="co"># 各列の型に沿ったベクターを追加</span></span>
+<span id="cb25-305"><a href="#cb25-305" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(d3) <span class="co"># すべての列が文字列になる</span></span>
+<span id="cb25-306"><a href="#cb25-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-307"><a href="#cb25-307" aria-hidden="true" tabindex="-1"></a>d</span>
+<span id="cb25-308"><a href="#cb25-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-309"><a href="#cb25-309" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(d, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) <span class="co"># 列を追加</span></span>
+<span id="cb25-310"><a href="#cb25-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-311"><a href="#cb25-311" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(d, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="co"># 行を追加する（列のデータ型が変化する）</span></span>
+<span id="cb25-312"><a href="#cb25-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-313"><a href="#cb25-313" aria-hidden="true" tabindex="-1"></a><span class="co"># データフレームを追加する場合は、列名が同じである必要がある</span></span>
+<span id="cb25-314"><a href="#cb25-314" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(d, <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="st">"pig"</span>, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">z =</span> <span class="cn">TRUE</span>)) </span>
+<span id="cb25-315"><a href="#cb25-315" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-316"><a href="#cb25-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-317"><a href="#cb25-317" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの要約</span></span>
+<span id="cb25-318"><a href="#cb25-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-319"><a href="#cb25-319" aria-hidden="true" tabindex="-1"></a>データフレームの各列の要約を調べる場合には、ベクターなどと同様に、<span class="in">`summary`</span>関数を用います。<span class="in">`summary`</span>関数はデータフレームを引数に取ると、列が文字列の場合にはデータ型と要素の数、論理型や因子の場合はそのレベルごとの要素の数、数値型であれば平均値や中央値、最大値・最小値などを示してくれます。</span>
+<span id="cb25-320"><a href="#cb25-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-321"><a href="#cb25-321" aria-hidden="true" tabindex="-1"></a>データフレームの列方向の合計値を求める場合には<span class="in">`colSums`</span>関数を、行方向の合計値を求める場合には<span class="in">`rowSums`</span>関数を用います。データフレームに文字列の列がある場合には、<span class="in">`colSums`</span>関数・<span class="in">`rowSums`</span>関数はエラーを返します。</span>
+<span id="cb25-322"><a href="#cb25-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-323"><a href="#cb25-323" aria-hidden="true" tabindex="-1"></a>同様の関数に、<span class="in">`colMeans`</span>関数、<span class="in">`rowMeans`</span>関数もあります。これらはそれぞれ列方向・行方向の平均値を計算する関数です。</span>
+<span id="cb25-324"><a href="#cb25-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-325"><a href="#cb25-325" aria-hidden="true" tabindex="-1"></a>データフレームの一部を確認したいときには、ベクターと同様に<span class="in">`head`</span>関数と<span class="in">`tail`</span>関数を用いることができます。<span class="in">`head`</span>関数はデータフレームの上から6行を、<span class="in">`tail`</span>関数はデータフレームの下から6行をそれぞれ表示します。</span>
+<span id="cb25-326"><a href="#cb25-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-327"><a href="#cb25-327" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="データフレームの情報を調べる"}</span></span>
+<span id="cb25-328"><a href="#cb25-328" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(d) <span class="co"># データフレームの要約</span></span>
+<span id="cb25-329"><a href="#cb25-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-330"><a href="#cb25-330" aria-hidden="true" tabindex="-1"></a>d1</span>
+<span id="cb25-331"><a href="#cb25-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-332"><a href="#cb25-332" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(d1) <span class="co"># 列方向に合計した値</span></span>
+<span id="cb25-333"><a href="#cb25-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-334"><a href="#cb25-334" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(d) <span class="co"># 数値以外が含まれているとエラーになる</span></span>
+<span id="cb25-335"><a href="#cb25-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-336"><a href="#cb25-336" aria-hidden="true" tabindex="-1"></a><span class="fu">rowSums</span>(d1) <span class="co"># 行方向に合計した値</span></span>
+<span id="cb25-337"><a href="#cb25-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-338"><a href="#cb25-338" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>(d1) <span class="co"># 列方向の平均値</span></span>
+<span id="cb25-339"><a href="#cb25-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-340"><a href="#cb25-340" aria-hidden="true" tabindex="-1"></a><span class="fu">rowMeans</span>(d1) <span class="co"># 行方向の平均値</span></span>
+<span id="cb25-341"><a href="#cb25-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-342"><a href="#cb25-342" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d1) <span class="co"># データフレームの上から6行を表示</span></span>
+<span id="cb25-343"><a href="#cb25-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-344"><a href="#cb25-344" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(d1) <span class="co"># データフレームの下から6行を表示</span></span>
+<span id="cb25-345"><a href="#cb25-345" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-346"><a href="#cb25-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-347"><a href="#cb25-347" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb25-348"><a href="#cb25-348" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb25-349"><a href="#cb25-349" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> <span class="fu">c</span>(<span class="st">"data.frame(x, y)"</span>, <span class="st">"dim(x)"</span>, <span class="st">"ncol(x)"</span>, <span class="st">"nrow(x)"</span>, <span class="st">"colnames(x)"</span>, <span class="st">"rownames(x)"</span>, <span class="st">"colnames(x) &lt;- y"</span>, <span class="st">"rownames(x) &lt;- y"</span>, <span class="st">"subset(x, 条件)"</span>, <span class="st">"x[order(x$name), ]"</span>, <span class="st">"cbind(x, y)"</span>, <span class="st">"rbind(x, y)"</span>, <span class="st">"summary(x)"</span>, <span class="st">"colSums(x)"</span>, <span class="st">"rowSums(x)"</span>, <span class="st">"colMeans(x)"</span>, <span class="st">"rowMeans(x)"</span>, <span class="st">"head(x)"</span>, <span class="st">"tail(x)"</span>),</span>
+<span id="cb25-350"><a href="#cb25-350" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"データフレームを作成する"</span>, <span class="st">"次元（dimension）を返す"</span>,<span class="st">"列数を返す"</span>, <span class="st">"行数を返す"</span>, <span class="st">"列の名前を返す"</span>, <span class="st">"行の名前を返す"</span>, <span class="st">"yを列の名前に設定する"</span>, <span class="st">"yを行の名前に設定する"</span>, <span class="st">"条件に適合した行を抽出する"</span>, <span class="st">"name列で昇順に並べ替え"</span>,  <span class="st">"列を追加する"</span>, <span class="st">"行を追加する"</span>, <span class="st">"データフレームの要約を表示"</span>, <span class="st">"列（縦）方向の和を返す"</span>, <span class="st">"行（横）方向の和を返す"</span>, <span class="st">"列（縦）方向の平均値を返す"</span>, <span class="st">"行（横）方向の平均値を返す"</span>, <span class="st">"データフレームの上から6行を表示"</span>, <span class="st">"データフレームの下から6行を表示"</span>)</span>
+<span id="cb25-351"><a href="#cb25-351" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-352"><a href="#cb25-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-353"><a href="#cb25-353" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"関数名"</span>, <span class="st">"データフレームに適用する演算"</span>)</span>
+<span id="cb25-354"><a href="#cb25-354" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表1：データフレームに関する関数"</span>, <span class="at">format =</span> <span class="st">"html"</span>)</span>
+<span id="cb25-355"><a href="#cb25-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-356"><a href="#cb25-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-357"><a href="#cb25-357" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb25-358"><a href="#cb25-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-359"><a href="#cb25-359" aria-hidden="true" tabindex="-1"></a><span class="fu">## データフレームの要約</span></span>
+<span id="cb25-360"><a href="#cb25-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-361"><a href="#cb25-361" aria-hidden="true" tabindex="-1"></a>もっと複雑なデータフレームの要約を行う場合には、<span class="in">`apply`</span>関数群や<span class="in">`dplyr`</span>パッケージ <span class="co">[</span><span class="ot">@dplyr_bib</span><span class="co">]</span>、<span class="in">`tidyr`</span>パッケージ <span class="co">[</span><span class="ot">@tidyr_bib</span><span class="co">]</span>などを用います。<span class="in">`apply`</span>関数群、<span class="in">`dplyr`</span>、<span class="in">`tidyr`</span>に関しては<span class="co">[</span><span class="ot">19章</span><span class="co">](./chapter19.html)</span>、<span class="co">[</span><span class="ot">20章</span><span class="co">](./chapter20.html)</span>でそれぞれ紹介します。</span>
+<span id="cb25-362"><a href="#cb25-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-363"><a href="#cb25-363" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-364"><a href="#cb25-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-365"><a href="#cb25-365" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームの列の演算</span></span>
+<span id="cb25-366"><a href="#cb25-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-367"><a href="#cb25-367" aria-hidden="true" tabindex="-1"></a>データフレームの列同士の演算は<span class="in">`$`</span>を用いても表現できますが、<span class="in">`with`</span>関数を用いても計算することができます。<span class="in">`with`</span>関数はデータフレームを引数に取り、列名の演算を第2引数に取ります。返り値はベクターになります。</span>
+<span id="cb25-368"><a href="#cb25-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-369"><a href="#cb25-369" aria-hidden="true" tabindex="-1"></a>同様の関数として、<span class="in">`within`</span>関数というものもあります。<span class="in">`within`</span>関数は<span class="in">`with`</span>と同じくデータフレームと列の演算を引数に取りますが、列の演算を列名に代入することで、演算結果がデータフレームに新たな列として追加されます。</span>
+<span id="cb25-370"><a href="#cb25-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-371"><a href="#cb25-371" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="列の演算：with関数とwithin関数"}</span></span>
+<span id="cb25-372"><a href="#cb25-372" aria-hidden="true" tabindex="-1"></a>iris6 <span class="ot">&lt;-</span> <span class="fu">head</span>(iris) <span class="co"># 始めの6行を選択</span></span>
+<span id="cb25-373"><a href="#cb25-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-374"><a href="#cb25-374" aria-hidden="true" tabindex="-1"></a><span class="co"># Sepal.Lengthの列とSepal.Widthの列の値を掛ける</span></span>
+<span id="cb25-375"><a href="#cb25-375" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(iris6, Sepal.Length <span class="sc">*</span> Sepal.Width) </span>
+<span id="cb25-376"><a href="#cb25-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-377"><a href="#cb25-377" aria-hidden="true" tabindex="-1"></a><span class="co"># Sepal.Lengthの列とSepal.Widthの列の値を掛けて、値を列として登録する</span></span>
+<span id="cb25-378"><a href="#cb25-378" aria-hidden="true" tabindex="-1"></a><span class="fu">within</span>(iris6, Sepal_multiple <span class="ot">&lt;-</span> Sepal.Length <span class="sc">*</span> Sepal.Width) <span class="co">#代入は&lt;-、=だとエラー</span></span>
+<span id="cb25-379"><a href="#cb25-379" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-380"><a href="#cb25-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-381"><a href="#cb25-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-382"><a href="#cb25-382" aria-hidden="true" tabindex="-1"></a><span class="fu">### 組み合わせのデータフレームを作成する</span></span>
+<span id="cb25-383"><a href="#cb25-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-384"><a href="#cb25-384" aria-hidden="true" tabindex="-1"></a>様々な要素について、すべての組み合わせを含むデータを作りたい、という場合が時にあります。このような場合には、<span class="in">`expand.grid`</span>関数を用いると簡単に組み合わせのデータフレームを作成することができます。<span class="in">`expand.grid`</span>関数は<span class="in">`data.frame`</span>関数と同じように引数を設定し、引数に設定したベクターのすべての組み合わせを含むデータフレームを作成してくれます。</span>
+<span id="cb25-385"><a href="#cb25-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-386"><a href="#cb25-386" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="expand.grid関数"}</span></span>
+<span id="cb25-387"><a href="#cb25-387" aria-hidden="true" tabindex="-1"></a><span class="fu">expand.grid</span>(<span class="at">sex=</span><span class="fu">c</span>(<span class="st">"M"</span>, <span class="st">"F"</span>), <span class="at">age=</span><span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">25</span>), <span class="at">location=</span><span class="fu">c</span>(<span class="st">"Osaka"</span>, <span class="st">"Kobe"</span>))</span>
+<span id="cb25-388"><a href="#cb25-388" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-389"><a href="#cb25-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-390"><a href="#cb25-390" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb25-391"><a href="#cb25-391" aria-hidden="true" tabindex="-1"></a><span class="fu">## attachとdetach</span></span>
+<span id="cb25-392"><a href="#cb25-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-393"><a href="#cb25-393" aria-hidden="true" tabindex="-1"></a>リスト、データフレームでは、<span class="in">`attach`</span>関数を用いて、要素や列の名前だけでその要素を取り出せるようにすることができます。</span>
+<span id="cb25-394"><a href="#cb25-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-395"><a href="#cb25-395" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="attach関数"}</span></span>
+<span id="cb25-396"><a href="#cb25-396" aria-hidden="true" tabindex="-1"></a><span class="co"># データフレームやリストを引数に取る</span></span>
+<span id="cb25-397"><a href="#cb25-397" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(iris)</span>
+<span id="cb25-398"><a href="#cb25-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-399"><a href="#cb25-399" aria-hidden="true" tabindex="-1"></a><span class="co"># 列名で要素を呼び出せる</span></span>
+<span id="cb25-400"><a href="#cb25-400" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Sepal.Length)</span>
+<span id="cb25-401"><a href="#cb25-401" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-402"><a href="#cb25-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-403"><a href="#cb25-403" aria-hidden="true" tabindex="-1"></a>ただし、この<span class="in">`attach`</span>を用いると扱っているものがデータフレームなのかベクターなのかわからなくなってしまいますし、データフレームの利点である行方向への情報も失われてしまいます。ですので、<span class="in">`attach`</span>関数はなるべく使わないほうがよいでしょう。</span>
+<span id="cb25-404"><a href="#cb25-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-405"><a href="#cb25-405" aria-hidden="true" tabindex="-1"></a><span class="in">`attach`</span>したデータフレームを基に戻し、列名だけで呼び出せなくする場合には<span class="in">`detach`</span>関数を用います。</span>
+<span id="cb25-406"><a href="#cb25-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-407"><a href="#cb25-407" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="detach関数"}</span></span>
+<span id="cb25-408"><a href="#cb25-408" aria-hidden="true" tabindex="-1"></a><span class="co"># detach関数の引数にattachしたデータフレームを取る</span></span>
+<span id="cb25-409"><a href="#cb25-409" aria-hidden="true" tabindex="-1"></a><span class="fu">detach</span>(iris)</span>
+<span id="cb25-410"><a href="#cb25-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-411"><a href="#cb25-411" aria-hidden="true" tabindex="-1"></a><span class="co"># 列名で呼び出せなくなる</span></span>
+<span id="cb25-412"><a href="#cb25-412" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Sepal.Length)</span>
+<span id="cb25-413"><a href="#cb25-413" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-414"><a href="#cb25-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-415"><a href="#cb25-415" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-416"><a href="#cb25-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-417"><a href="#cb25-417" aria-hidden="true" tabindex="-1"></a><span class="fu">## 行列（matrix）</span></span>
+<span id="cb25-418"><a href="#cb25-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-419"><a href="#cb25-419" aria-hidden="true" tabindex="-1"></a>Rは高校数学で学んだ行列、線形代数の行列計算を行うためのクラスである、**行列（matrix）**を持ちます。行列はベクターと同様に同じ型を持つ要素の集合で、行と列の2つの**次元（dimension）**を持ちます。</span>
+<span id="cb25-420"><a href="#cb25-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-421"><a href="#cb25-421" aria-hidden="true" tabindex="-1"></a>データフレームも行列と同様に次元を持ちますが、データフレームが行方向には異なるデータ型を取ることができるのに対して、行列はすべての要素のデータ型が同じです。また、データフレームがリストであるのに対し、行列は縦・横の2つの次元を持つベクターです。</span>
+<span id="cb25-422"><a href="#cb25-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-423"><a href="#cb25-423" aria-hidden="true" tabindex="-1"></a>行列の基本的な取り扱い（インデックス、行・列の追加、行名・列名）はデータフレームとほぼ同じです。上に述べたデータフレームの取り扱いに関する方法は、概ね行列にも適用することができます。</span>
+<span id="cb25-424"><a href="#cb25-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-425"><a href="#cb25-425" aria-hidden="true" tabindex="-1"></a>行列の作成には、<span class="in">`matrix`</span>関数を用います。<span class="in">`matrix`</span>関数は第一引数にベクター、<span class="in">`nrow`</span>引数に行の数、<span class="in">`ncol`</span>引数に列の数を指定します。<span class="in">`matrix`</span>関数はベクターの数値を縦方向（列方向）に並べて配置します。数値を横（行方向）に並べて配置する場合には、<span class="in">`byrow`</span>引数を<span class="in">`TRUE`</span>に指定します。</span>
+<span id="cb25-426"><a href="#cb25-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-427"><a href="#cb25-427" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE, filename="行列の作成とインデックス"}</span></span>
+<span id="cb25-428"><a href="#cb25-428" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="co"># 列方向にベクターが配置される</span></span>
+<span id="cb25-429"><a href="#cb25-429" aria-hidden="true" tabindex="-1"></a>mat</span>
+<span id="cb25-430"><a href="#cb25-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-431"><a href="#cb25-431" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>) <span class="co"># 行方向に配置するとき</span></span>
+<span id="cb25-432"><a href="#cb25-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-433"><a href="#cb25-433" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(mat) <span class="co"># 行数・列数を返す</span></span>
+<span id="cb25-434"><a href="#cb25-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-435"><a href="#cb25-435" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(mat) <span class="co"># 行数</span></span>
+<span id="cb25-436"><a href="#cb25-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-437"><a href="#cb25-437" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(mat) <span class="co"># 列数</span></span>
+<span id="cb25-438"><a href="#cb25-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-439"><a href="#cb25-439" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span>) <span class="co"># 列名の設定</span></span>
+<span id="cb25-440"><a href="#cb25-440" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span>) <span class="co"># 行名の設定</span></span>
+<span id="cb25-441"><a href="#cb25-441" aria-hidden="true" tabindex="-1"></a>mat</span>
+<span id="cb25-442"><a href="#cb25-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-443"><a href="#cb25-443" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat) <span class="co"># 列名の取得</span></span>
+<span id="cb25-444"><a href="#cb25-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-445"><a href="#cb25-445" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat) <span class="co"># 行名の取得</span></span>
+<span id="cb25-446"><a href="#cb25-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-447"><a href="#cb25-447" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span>, <span class="dv">1</span>] <span class="co"># 1行1列目の要素</span></span>
+<span id="cb25-448"><a href="#cb25-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-449"><a href="#cb25-449" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span>, ] <span class="co"># 1行目の要素</span></span>
+<span id="cb25-450"><a href="#cb25-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-451"><a href="#cb25-451" aria-hidden="true" tabindex="-1"></a>mat[, <span class="dv">1</span>] <span class="co"># 1列目の要素</span></span>
+<span id="cb25-452"><a href="#cb25-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-453"><a href="#cb25-453" aria-hidden="true" tabindex="-1"></a>mat[<span class="sc">-</span><span class="dv">1</span>, ] <span class="co"># 1行目を削除</span></span>
+<span id="cb25-454"><a href="#cb25-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-455"><a href="#cb25-455" aria-hidden="true" tabindex="-1"></a>mat[<span class="fu">c</span>(T, T, F), ] <span class="co"># 論理型でも指定できる</span></span>
+<span id="cb25-456"><a href="#cb25-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-457"><a href="#cb25-457" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ] <span class="co"># 1~2行目の要素</span></span>
+<span id="cb25-458"><a href="#cb25-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-459"><a href="#cb25-459" aria-hidden="true" tabindex="-1"></a>mat[, <span class="st">"dog"</span>] <span class="co"># インデックスは列名でも指定できる</span></span>
+<span id="cb25-460"><a href="#cb25-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-461"><a href="#cb25-461" aria-hidden="true" tabindex="-1"></a>mat<span class="sc">$</span>dog <span class="co"># ドルマークを用いることはできない</span></span>
+<span id="cb25-462"><a href="#cb25-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-463"><a href="#cb25-463" aria-hidden="true" tabindex="-1"></a>mat[<span class="st">"first"</span>, ] <span class="co"># 行名での指定</span></span>
+<span id="cb25-464"><a href="#cb25-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-465"><a href="#cb25-465" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(mat, <span class="at">rat =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>)) <span class="co"># 列の追加</span></span>
+<span id="cb25-466"><a href="#cb25-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-467"><a href="#cb25-467" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(mat, <span class="at">fourth =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)) <span class="co"># 行の追加</span></span>
+<span id="cb25-468"><a href="#cb25-468" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-469"><a href="#cb25-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-470"><a href="#cb25-470" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb25-471"><a href="#cb25-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-472"><a href="#cb25-472" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3次元以上のクラス：array</span></span>
+<span id="cb25-473"><a href="#cb25-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-474"><a href="#cb25-474" aria-hidden="true" tabindex="-1"></a>Rには、次元を3つ以上持つクラスである、arrayも存在しますが、matrixほどには使用頻度は高くありません。</span>
+<span id="cb25-475"><a href="#cb25-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-476"><a href="#cb25-476" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-477"><a href="#cb25-477" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-478"><a href="#cb25-478" aria-hidden="true" tabindex="-1"></a><span class="fu">### 行列の演算</span></span>
+<span id="cb25-479"><a href="#cb25-479" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-480"><a href="#cb25-480" aria-hidden="true" tabindex="-1"></a>統計の計算には、線形代数（行列）が用いられます。Rには行列の演算に関する関数が一通り揃っています。</span>
+<span id="cb25-481"><a href="#cb25-481" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-482"><a href="#cb25-482" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb25-483"><a href="#cb25-483" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb25-484"><a href="#cb25-484" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> <span class="fu">c</span>(<span class="st">"*"</span>, <span class="st">"%*%"</span>, <span class="st">"%o%"</span>, <span class="st">"%x%"</span>, <span class="st">"diag"</span>, <span class="st">"det"</span>, <span class="st">"t"</span>, <span class="st">"upper.tri"</span>, <span class="st">"lower.tri"</span>, <span class="st">"solve"</span>, <span class="st">"qr"</span>),</span>
+<span id="cb25-485"><a href="#cb25-485" aria-hidden="true" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(<span class="st">"スカラー積"</span>, <span class="st">"行列の積"</span>, <span class="st">"外積"</span>, <span class="st">"クロネッカー積"</span>, <span class="st">"単位行列を作成する"</span>, <span class="st">"行列式を返す"</span>, <span class="st">"転置を返す"</span>, <span class="st">"上三角行列にTRUEを返す"</span>, <span class="st">"下三角行列にTRUEを返す"</span>, <span class="st">"逆行列を返す"</span>, <span class="st">"QR分解"</span>)</span>
+<span id="cb25-486"><a href="#cb25-486" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-487"><a href="#cb25-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-488"><a href="#cb25-488" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"関数名"</span>, <span class="st">"行列に適用する演算"</span>)</span>
+<span id="cb25-489"><a href="#cb25-489" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：行列に関する関数"</span>)</span>
+<span id="cb25-490"><a href="#cb25-490" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-491"><a href="#cb25-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-492"><a href="#cb25-492" aria-hidden="true" tabindex="-1"></a><span class="fu">### 行列の積</span></span>
+<span id="cb25-493"><a href="#cb25-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-494"><a href="#cb25-494" aria-hidden="true" tabindex="-1"></a>Rでは、<span class="in">`%*%`</span>を演算子として行列の積の計算を行います。単に「<span class="in">`*`</span>」で計算すると、行列の積ではなく、スカラー積が返ってきます。行列同士を「<span class="in">`*`</span>」で掛け算した場合には、行列の各要素をそれぞれ掛け算したもの（アダマール積）が返ってきます。行列の演算子として、他に外積（<span class="in">`%o%`</span>）やクロネッカー積（<span class="in">`%x%`</span>）の演算子も設定されています。</span>
+<span id="cb25-495"><a href="#cb25-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-496"><a href="#cb25-496" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb25-497"><a href="#cb25-497" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb25-498"><a href="#cb25-498" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-499"><a href="#cb25-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-500"><a href="#cb25-500" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="行列の演算子"}</span></span>
+<span id="cb25-501"><a href="#cb25-501" aria-hidden="true" tabindex="-1"></a><span class="co"># 要素が1~16のランダムな行列を作成</span></span>
+<span id="cb25-502"><a href="#cb25-502" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">16</span>, <span class="dv">16</span>), <span class="at">nrow=</span><span class="dv">4</span>) </span>
+<span id="cb25-503"><a href="#cb25-503" aria-hidden="true" tabindex="-1"></a>mat</span>
+<span id="cb25-504"><a href="#cb25-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-505"><a href="#cb25-505" aria-hidden="true" tabindex="-1"></a><span class="co"># スカラー積（行列の値をすべて3倍にする）</span></span>
+<span id="cb25-506"><a href="#cb25-506" aria-hidden="true" tabindex="-1"></a>mat <span class="sc">*</span> <span class="dv">3</span> </span>
+<span id="cb25-507"><a href="#cb25-507" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-508"><a href="#cb25-508" aria-hidden="true" tabindex="-1"></a><span class="co"># アダマール積（同じ行・列同士の値を掛け算する）</span></span>
+<span id="cb25-509"><a href="#cb25-509" aria-hidden="true" tabindex="-1"></a>mat <span class="sc">*</span> mat </span>
+<span id="cb25-510"><a href="#cb25-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-511"><a href="#cb25-511" aria-hidden="true" tabindex="-1"></a>mat <span class="sc">%*%</span> mat <span class="co"># 行列の積</span></span>
+<span id="cb25-512"><a href="#cb25-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-513"><a href="#cb25-513" aria-hidden="true" tabindex="-1"></a>mat[, <span class="dv">1</span>] <span class="sc">%o%</span> mat[, <span class="dv">2</span>] <span class="co"># 外積</span></span>
+<span id="cb25-514"><a href="#cb25-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-515"><a href="#cb25-515" aria-hidden="true" tabindex="-1"></a>mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="sc">%x%</span> mat[<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>] <span class="co"># クロネッカー積</span></span>
+<span id="cb25-516"><a href="#cb25-516" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-517"><a href="#cb25-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-518"><a href="#cb25-518" aria-hidden="true" tabindex="-1"></a><span class="fu">### 行列式・転置・逆行列の演算</span></span>
+<span id="cb25-519"><a href="#cb25-519" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-520"><a href="#cb25-520" aria-hidden="true" tabindex="-1"></a>行列式は<span class="in">`det`</span>関数、行列の転置は<span class="in">`t`</span>関数、逆行列は<span class="in">`solve`</span>関数で求めることができます。<span class="in">`t`</span>関数は行列だけでなく、データフレームを引数に取ることができますが、**`t`関数の返り値は必ず行列**になります。データフレームを<span class="in">`t`</span>関数の引数にして転置する場合にはデータ型が変換されることが多いため、注意が必要です。</span>
+<span id="cb25-521"><a href="#cb25-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-522"><a href="#cb25-522" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="行列式・転置・逆行列"}</span></span>
+<span id="cb25-523"><a href="#cb25-523" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(mat) <span class="co"># matの行列式</span></span>
+<span id="cb25-524"><a href="#cb25-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-525"><a href="#cb25-525" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(mat) <span class="co"># matを転置</span></span>
+<span id="cb25-526"><a href="#cb25-526" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-527"><a href="#cb25-527" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(mat) <span class="co"># matの逆行列</span></span>
+<span id="cb25-528"><a href="#cb25-528" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-529"><a href="#cb25-529" aria-hidden="true" tabindex="-1"></a>mat <span class="sc">%*%</span> <span class="fu">solve</span>(mat) <span class="co"># 概ね単位行列になる</span></span>
+<span id="cb25-530"><a href="#cb25-530" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-531"><a href="#cb25-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-532"><a href="#cb25-532" aria-hidden="true" tabindex="-1"></a><span class="fu">### 単位行列・三角行列の作成</span></span>
+<span id="cb25-533"><a href="#cb25-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-534"><a href="#cb25-534" aria-hidden="true" tabindex="-1"></a><span class="in">`diag`</span>関数は単位行列を作成するための関数です。<span class="in">`diag`</span>関数は数値を引数に取り、その数値の行数・列数の単位行列を返します。</span>
+<span id="cb25-535"><a href="#cb25-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-536"><a href="#cb25-536" aria-hidden="true" tabindex="-1"></a>三角行列の作成には、<span class="in">`upper.tri`</span>関数と<span class="in">`lower.tri`</span>関数を用います。この2つの関数は、行列を引数に取り、行列と同じ行数・列数の論理型の上三角行列（上が<span class="in">`TRUE`</span>、下三角が<span class="in">`FALSE`</span>の行列）、下三角行列（下が<span class="in">`TRUE`</span>、上三角が<span class="in">`FALSE`</span>の行列）をそれぞれ返します。いずれも対角成分は<span class="in">`FALSE`</span>となります。</span>
+<span id="cb25-537"><a href="#cb25-537" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-538"><a href="#cb25-538" aria-hidden="true" tabindex="-1"></a>ただし、<span class="in">`upper.tri`</span>関数、<span class="in">`lower.tri`</span>関数の返り値をそのまま行列のインデックスに用いても上三角行列・下三角行列を作ることはできません。上三角行列を作成する場合には、<span class="in">`lower.tri`</span>関数の返り値をインデックスに取り、このインデックスに0を代入します。</span>
+<span id="cb25-539"><a href="#cb25-539" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-540"><a href="#cb25-540" aria-hidden="true" tabindex="-1"></a>逆に、下三角行列を作成する場合には、<span class="in">`upper.tri`</span>関数の返り値をインデックスに取り、このインデックスに0を代入します。このように0を下三角・上三角に代入することで、上三角行列・下三角行列を得ることができます。</span>
+<span id="cb25-541"><a href="#cb25-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-544"><a href="#cb25-544" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-545"><a href="#cb25-545" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(<span class="dv">3</span>) <span class="co"># 3行3列の単位行列</span></span>
+<span id="cb25-546"><a href="#cb25-546" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-547"><a href="#cb25-547" aria-hidden="true" tabindex="-1"></a><span class="fu">upper.tri</span>(mat) <span class="co"># 上三角行列にTRUEを返す</span></span>
+<span id="cb25-548"><a href="#cb25-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-549"><a href="#cb25-549" aria-hidden="true" tabindex="-1"></a><span class="fu">lower.tri</span>(mat) <span class="co"># 下三角行列にTRUEを返す</span></span>
+<span id="cb25-550"><a href="#cb25-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-551"><a href="#cb25-551" aria-hidden="true" tabindex="-1"></a>mat.u <span class="ot">&lt;-</span> mat</span>
+<span id="cb25-552"><a href="#cb25-552" aria-hidden="true" tabindex="-1"></a>mat.l <span class="ot">&lt;-</span> mat</span>
+<span id="cb25-553"><a href="#cb25-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-554"><a href="#cb25-554" aria-hidden="true" tabindex="-1"></a>mat.u[<span class="fu">lower.tri</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># 下三角行列のみに0を代入</span></span>
+<span id="cb25-555"><a href="#cb25-555" aria-hidden="true" tabindex="-1"></a>mat.l[<span class="fu">upper.tri</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># 上三角行列のみに0を代入</span></span>
+<span id="cb25-556"><a href="#cb25-556" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-557"><a href="#cb25-557" aria-hidden="true" tabindex="-1"></a>mat.u <span class="co"># 下三角に0を代入すると上三角行列が得られる</span></span>
+<span id="cb25-558"><a href="#cb25-558" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-559"><a href="#cb25-559" aria-hidden="true" tabindex="-1"></a>mat.l <span class="co"># 上三角に0を代入すると下三角行列が得られる</span></span>
+<span id="cb25-560"><a href="#cb25-560" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

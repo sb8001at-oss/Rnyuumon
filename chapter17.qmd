@@ -162,7 +162,7 @@ source("code_hello_world.R")
 
 統計を行うデータは、通常Excelのような表計算ソフトか、データベースで準備するのが一般的です。このようなデータをRで取り込む際には、一昔前までは**「テキストファイルに変換」**してから読み込むのが一般的でした。
 
-最近ではライブラリを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、ライブラリなしのRではこのような読み込みはできません。ライブラリが使用できないときには、以下のような方法でExcelファイルをテキストとして保存し、Rで読み込むことになります。
+最近ではパッケージを使用することでExcelやデータベースのファイルから直接データを読み込むことができますが、パッケージなしのRではこのような読み込みはできません。パッケージが使用できないときには、以下のような方法でExcelファイルをテキストとして保存し、Rで読み込むことになります。
 
 また、Web上に保存されているデータがテキストである場合も少なくありません。このような、Web上のテキストファイルの読み込みにも、以下に示すテキスト読み込みの方法を用いることができます。
 
@@ -316,9 +316,9 @@ write.csv2(df_obj, "filename.csv") #  ヨーロッパ仕様
 
 RのデフォルトのI/Oは上記の通りですが、`read.table`関数、`write.table`関数を用いると、指定する引数が多かったり、読み込んだ列のデータ型が思うように設定されなかったりすることがよく起こります。また、デフォルトの関数群ではその実行速度が遅く、大きなデータを取り扱う場合には読み込みにとても時間がかかる、という問題もあります。
 
-これらの不都合を解決するI/Oに関するライブラリが`readr`パッケージ [@readr_bib]です。`readr`パッケージは、Rのデフォルトの関数名のピリオドをアンダースコア（`_`）に変換した関数群を備えており、列の型をうまく設定してくれる仕組みを備えています。また、デフォルトの関数よりも実行速度が速いため、大きなデータを取り扱う場合には、`readr`の関数群を用いたほうが良いでしょう。
+これらの不都合を解決するI/Oに関するパッケージが`readr`パッケージ [@readr_bib]です。`readr`パッケージは、Rのデフォルトの関数名のピリオドをアンダースコア（`_`）に変換した関数群を備えており、列の型をうまく設定してくれる仕組みを備えています。また、デフォルトの関数よりも実行速度が速いため、大きなデータを取り扱う場合には、`readr`の関数群を用いたほうが良いでしょう。
 
-`readr`パッケージは`tidyverse` [@tidyverse_bib]を構成するライブラリの一つであり、インストール・ロードは`tidyverse`ライブラリのインストール・ロードと同時に行うことができます。
+`readr`パッケージは`tidyverse` [@tidyverse_bib]を構成するパッケージの一つであり、インストール・ロードは`tidyverse`パッケージのインストール・ロードと同時に行うことができます。
 
 ```{r, eval=FALSE, filename="readrの読み込み"}
 pacman::p_load(tidyverse)
@@ -351,7 +351,7 @@ read_table("filename.zip") # zipファイルも直接読み込める
 
 `tibble`は`tibble`関数で、データフレームと同じように作成することができます。また、`as_tibble`関数を用いることで、行列や通常のデータフレームを`tibble`に変換することができます。
 
-`readr`に限らず、`tidyverse`のライブラリ群の関数では返り値を`tibble`とするものが多いです。`tibble`のデータフレームは、表示した時に列のデータ型を表示する、10行以上の行は省略する、列も省略する等の特徴があります。`tibble`については、[20章](chapter20.qmd#tibble)で詳しく説明します。
+`readr`に限らず、`tidyverse`のパッケージ群の関数では返り値を`tibble`とするものが多いです。`tibble`のデータフレームは、表示した時に列のデータ型を表示する、10行以上の行は省略する、列も省略する等の特徴があります。`tibble`については、[20章](chapter20.qmd#tibble)で詳しく説明します。
 
 ```{r, filename="tibble"}
 pacman::p_load(tidyverse)
@@ -382,9 +382,9 @@ write_csv(x, "filename.xz") # lzmaで圧縮して出力
 
 ## readxl
 
-私のようなヘボいR使いは昔から上記のようにExcelをテキストファイルに変換してはRに読み込むというステップを踏み続けてきました。このExcelからテキストへの変換の手間を無くすライブラリが`readxl`パッケージ [@readxl_bib]です。
+私のようなヘボいR使いは昔から上記のようにExcelをテキストファイルに変換してはRに読み込むというステップを踏み続けてきました。このExcelからテキストへの変換の手間を無くすパッケージが`readxl`パッケージ [@readxl_bib]です。
 
-`readxl`パッケージも`tidyverse`と同じく、[Posit Software](https://posit.co/)が開発しているライブラリですが、`tidyverse`には含まれていません。`tidyverse`とは別に、`readxl`パッケージを独立に読み込む必要があります。
+`readxl`パッケージも`tidyverse`と同じく、[Posit Software](https://posit.co/)が開発しているパッケージですが、`tidyverse`には含まれていません。`tidyverse`とは別に、`readxl`パッケージを独立に読み込む必要があります。
 
 `readxl`パッケージは`read_excel`関数以外に、Excelファイルのメタデータ読み込みのための関数などを備えています。
 
@@ -412,22 +412,22 @@ Excelには昔使用されていたファイルである.xlsファイルと、Ex
 .xlsと.xlsxは全然違うファイルですが、`read_excel`関数は拡張子によって.xlsを読み込む`read_xls`関数と.xlsxを読み込む`read_xlsx`関数を切り替えて呼び出しています。
 :::
 
-## その他のデータ読み込みライブラリ
+## その他のデータ読み込みパッケージ
 
-[Posit Software](https://posit.co/)は`readxl`の他にも、多数のデータ読み込み用ライブラリを開発しています。以下に示したライブラリを利用することで、様々なデータ型のファイルをRで読み込み、統計に用いることができます。
+[Posit Software](https://posit.co/)は`readxl`の他にも、多数のデータ読み込み用パッケージを開発しています。以下に示したパッケージを利用することで、様々なデータ型のファイルをRで読み込み、統計に用いることができます。
 
 - [`googlesheets4`](https://googlesheets4.tidyverse.org/)：Googleスプレッドシートの読み込み [@googlesheets4_bib]
 - [`haven`](https://haven.tidyverse.org/)：SAS、SPSS、Stataファイルの読み込み [@haven_bib]
 - [`jsonlite`](https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html)：jsonファイルの読み込み [@jsonlite_bib]
 - [`httr2`](https://httr2.r-lib.org/)：Webからの読み込み [@httr2_bib]
-- [`rvest`](https://rvest.tidyverse.org/)：スクレイピング用ライブラリ [@rvest_bib]
+- [`rvest`](https://rvest.tidyverse.org/)：スクレイピング用パッケージ [@rvest_bib]
 - [`DBI`](https://dbi.r-dbi.org/)：データベースの読み込み [@DBI_bib]
 
 ## data.table
 
 近年のデータサイエンスでは、時に数百万～数千億程度のデータを取り扱うこともあります。個人のPCでRを使ってこのような超大規模のデータを取り扱うのは現実的ではありませんが、数万～数十万行ぐらいのデータをPCで取り扱うことは増えてきています。例えば、生物分野では[マイクロアレイ](https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%A2%E3%83%AC%E3%82%A4)や[高速シークエンサー](https://jp.illumina.com/content/dam/illumina-marketing/apac/japan/documents/pdf/primer_illumina_sequencing_introduction-j.pdf)のデータは数万～数十万行で、分析を個人が、自分のPCで取り扱うこともあるかと思います。自分でマイクロアレイやシークエンサーを使ってデータを出さなくても、[GEO Dataset](https://www.ncbi.nlm.nih.gov/gds)などからデータを取得して、解析してみることも一般的に行われています。
 
-このような超巨大データを取り扱う場合、R謹製の`read.table`関数では手に余りますし、`read_table`関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労することがあります。このような大規模データの読み込みに特化したライブラリが、[`data.table`](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)パッケージ [@datatable_bib]です。`data.table`を用いることで、大規模データを高速に読み込み、利用できます。
+このような超巨大データを取り扱う場合、R謹製の`read.table`関数では手に余りますし、`read_table`関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労することがあります。このような大規模データの読み込みに特化したパッケージが、[`data.table`](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)パッケージ [@datatable_bib]です。`data.table`を用いることで、大規模データを高速に読み込み、利用できます。
 
 `data.table`パッケージでデータを読み込むときには、`fread`関数を用います。`fread`関数はhtmlからの読み込みにも対応しています。読み込んだデータは`data.table`クラスのオブジェクトとなります。
 

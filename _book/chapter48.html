@@ -456,7 +456,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -775,6 +775,18 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="./Tips_ParallelComputing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">並列演算（Parallel Computing）</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System関連の関数</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S3class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
       </ul>
@@ -1677,7 +1689,7 @@ Coefficients:
 </div>
 <p>なぜデータを減らすと求まるパラメータが変わるのかは、データをグラフに示してみるとわかります。パラメータは傾き（横軸：nutrient）か、線のシフト（青と赤の線の幅：water）として計算されます。また、交互作用は青と赤の線の傾きの差です。</p>
 <p>点（データ）が4つあると、傾きも線のシフトも、傾きの差も評価できます。点が3つになると、傾きと線のシフトは計算できますが、傾きの差は線が2本ないため評価できなくなります。点が2つになると、傾きかシフトのいずれかだけが計算できます。ですので、データが減れば求まるパラメータが変わっていくことになります。</p>
-<div class="cell quarto-layout-panel" data-layout-ncol="2" data-layout-nrow="2">
+<div class="cell quarto-layout-panel" data-layout-nrow="2" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><a href="chapter48_files/figure-html/unnamed-chunk-19-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="chapter48_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></a></p>
@@ -2835,7 +2847,7 @@ character(0)</code></pre>
 <p>D-Optimal Design、I-Optimal Design共に最適なデザイン行列は乱数を使った繰り返し計算（Monte Carloアルゴリズム）で計算・作成されます。一部要因配置計画についてはコンピュータが発達する前から直交表を用いて作成されてきましたが、Opitimal Designではデザイン行列の作成に繰り返し計算を用いるため、デザインの作成にはコンピュータが必要です。</p>
 </section></section><section id="rでoptimal-designskpr" class="level2" data-number="48.6"><h2 data-number="48.6" class="anchored" data-anchor-id="rでoptimal-designskpr">
 <span class="header-section-number">48.6</span> RでOptimal Design：skpr</h2>
-<p>RでOptimal Designを作成する場合には、様々なライブラリを利用可能ですが、比較的簡単にOptimal Designを作成・評価できるライブラリとして、以下では<strong><a href="https://tylermorganwall.github.io/skpr/"><code>skpr</code></a>パッケージ</strong><span class="citation" data-cites="skpr_bib">(<a href="references.html#ref-skpr_bib" role="doc-biblioref">Morgan-Wall and Khoury 2021</a>)</span>を紹介します。</p>
+<p>RでOptimal Designを作成する場合には、様々なパッケージを利用可能ですが、比較的簡単にOptimal Designを作成・評価できるパッケージとして、以下では<strong><a href="https://tylermorganwall.github.io/skpr/"><code>skpr</code></a>パッケージ</strong><span class="citation" data-cites="skpr_bib">(<a href="references.html#ref-skpr_bib" role="doc-biblioref">Morgan-Wall and Khoury 2021</a>)</span>を紹介します。</p>
 <section id="実験計画を作成する" class="level3" data-number="48.6.1"><h3 data-number="48.6.1" class="anchored" data-anchor-id="実験計画を作成する">
 <span class="header-section-number">48.6.1</span> 実験計画を作成する</h3>
 <p><code>skpr</code>パッケージで実験計画を作成する場合、まずは<code>expand.grid</code>関数を用いて要因配置計画を作成します。<code>FrF2</code>のように各説明変数の条件を2条件とする必要はなく、3条件以上であってもOptimal Designを作成することができます。</p>
@@ -3316,10 +3328,10 @@ No errors or warnings encountered during power curve generation!</code></pre>
 </section></section></section><section id="mixture-experiment" class="level2" data-number="48.7"><h2 data-number="48.7" class="anchored" data-anchor-id="mixture-experiment">
 <span class="header-section-number">48.7</span> mixture experiment</h2>
 <p>説明変数全体の量は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量の割合を変える場合）の実験のことを<strong>mixture experiment</strong>と呼びます。mixture experimentでは、各説明変数の和が常に1となるよう実験計画が作成されます。</p>
-<p>mixture experimentの実験計画には<code>skpr</code>は対応していないので、別のライブラリ（<a href="https://cran.r-project.org/web/packages/mixexp/index.html"><code>mixexp</code></a><span class="citation" data-cites="mixexp_bib">(<a href="references.html#ref-mixexp_bib" role="doc-biblioref">Lawson and Willden 2016</a>)</span>、<a href="https://cran.r-project.org/web/packages/AlgDesign/index.html"><code>AlgDesign</code></a><span class="citation" data-cites="AlgDesign_bib">(<a href="references.html#ref-AlgDesign_bib" role="doc-biblioref">Wheeler 2025</a>)</span>）を用います。</p>
+<p>mixture experimentの実験計画には<code>skpr</code>は対応していないので、別のパッケージ（<a href="https://cran.r-project.org/web/packages/mixexp/index.html"><code>mixexp</code></a><span class="citation" data-cites="mixexp_bib">(<a href="references.html#ref-mixexp_bib" role="doc-biblioref">Lawson and Willden 2016</a>)</span>、<a href="https://cran.r-project.org/web/packages/AlgDesign/index.html"><code>AlgDesign</code></a><span class="citation" data-cites="AlgDesign_bib">(<a href="references.html#ref-AlgDesign_bib" role="doc-biblioref">Wheeler 2025</a>)</span>）を用います。</p>
 <section id="mixexpパッケージ" class="level3" data-number="48.7.1"><h3 data-number="48.7.1" class="anchored" data-anchor-id="mixexpパッケージ">
 <span class="header-section-number">48.7.1</span> mixexpパッケージ</h3>
-<p><code>mixexp</code>はmixture experimentの実験計画作成のためのライブラリです。このライブラリではOptimal Designではなく、Simplex-Lattice Design <span class="citation" data-cites="Scheffé1958">(<a href="references.html#ref-Scheff%C3%A91958" role="doc-biblioref">Scheffé 1958</a>)</span>に従い計画を作成します。</p>
+<p><code>mixexp</code>はmixture experimentの実験計画作成のためのパッケージです。このパッケージではOptimal Designではなく、Simplex-Lattice Design <span class="citation" data-cites="Scheffé1958">(<a href="references.html#ref-Scheff%C3%A91958" role="doc-biblioref">Scheffé 1958</a>)</span>に従い計画を作成します。</p>
 <p><code>mixexp</code>での実験計画の作成はシンプルで、2つの関数を用います。一つは説明変数の数だけ設定する<code>SCD</code>関数、もう一つは説明変数の数と各説明変数の条件の数を指定する<code>SLD</code>関数です。<code>SCD</code>関数では各説明変数の条件の数を6とすることになります。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -3435,7 +3447,7 @@ No errors or warnings encountered during power curve generation!</code></pre>
 </div>
 </section></section><section id="algdesignパッケージ" class="level3" data-number="48.7.2"><h3 data-number="48.7.2" class="anchored" data-anchor-id="algdesignパッケージ">
 <span class="header-section-number">48.7.2</span> AlgDesignパッケージ</h3>
-<p><code>AlgDesign</code>は<code>skpr</code>と同様にOptimal Designの実験計画を作成するためのライブラリです。<code>AlgDesign</code>にはmixture experimentの実験計画を作成するための関数である、<code>gen.mixture</code>関数があります。<code>gen.mixture</code>は<code>mixexp</code>の<code>SLD</code>とほぼ同じ使い方の、説明変数の数と各説明変数の条件の数を指定して用いる関数です。</p>
+<p><code>AlgDesign</code>は<code>skpr</code>と同様にOptimal Designの実験計画を作成するためのパッケージです。<code>AlgDesign</code>にはmixture experimentの実験計画を作成するための関数である、<code>gen.mixture</code>関数があります。<code>gen.mixture</code>は<code>mixexp</code>の<code>SLD</code>とほぼ同じ使い方の、説明変数の数と各説明変数の条件の数を指定して用いる関数です。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -4809,7 +4821,7 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb172-853"><a href="#cb172-853" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-854"><a href="#cb172-854" aria-hidden="true" tabindex="-1"></a><span class="fu">## RでOptimal Design：skpr</span></span>
 <span id="cb172-855"><a href="#cb172-855" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-856"><a href="#cb172-856" aria-hidden="true" tabindex="-1"></a>RでOptimal Designを作成する場合には、様々なライブラリを利用可能ですが、比較的簡単にOptimal Designを作成・評価できるライブラリとして、以下では**[`skpr`](https://tylermorganwall.github.io/skpr/)パッケージ**<span class="co">[</span><span class="ot">@skpr_bib</span><span class="co">]</span>を紹介します。</span>
+<span id="cb172-856"><a href="#cb172-856" aria-hidden="true" tabindex="-1"></a>RでOptimal Designを作成する場合には、様々なパッケージを利用可能ですが、比較的簡単にOptimal Designを作成・評価できるパッケージとして、以下では**[`skpr`](https://tylermorganwall.github.io/skpr/)パッケージ**<span class="co">[</span><span class="ot">@skpr_bib</span><span class="co">]</span>を紹介します。</span>
 <span id="cb172-857"><a href="#cb172-857" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-858"><a href="#cb172-858" aria-hidden="true" tabindex="-1"></a><span class="fu">### 実験計画を作成する</span></span>
 <span id="cb172-859"><a href="#cb172-859" aria-hidden="true" tabindex="-1"></a></span>
@@ -4970,11 +4982,11 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb172-1014"><a href="#cb172-1014" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-1015"><a href="#cb172-1015" aria-hidden="true" tabindex="-1"></a>説明変数全体の量は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量の割合を変える場合）の実験のことを**mixture experiment**と呼びます。mixture experimentでは、各説明変数の和が常に1となるよう実験計画が作成されます。</span>
 <span id="cb172-1016"><a href="#cb172-1016" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-1017"><a href="#cb172-1017" aria-hidden="true" tabindex="-1"></a>mixture experimentの実験計画には<span class="in">`skpr`</span>は対応していないので、別のライブラリ（<span class="co">[</span><span class="ot">`mixexp`</span><span class="co">](https://cran.r-project.org/web/packages/mixexp/index.html)[</span><span class="ot">@mixexp_bib</span><span class="co">]</span>、<span class="co">[</span><span class="ot">`AlgDesign`</span><span class="co">](https://cran.r-project.org/web/packages/AlgDesign/index.html)[</span><span class="ot">@AlgDesign_bib</span><span class="co">]</span>）を用います。</span>
+<span id="cb172-1017"><a href="#cb172-1017" aria-hidden="true" tabindex="-1"></a>mixture experimentの実験計画には<span class="in">`skpr`</span>は対応していないので、別のパッケージ（<span class="co">[</span><span class="ot">`mixexp`</span><span class="co">](https://cran.r-project.org/web/packages/mixexp/index.html)[</span><span class="ot">@mixexp_bib</span><span class="co">]</span>、<span class="co">[</span><span class="ot">`AlgDesign`</span><span class="co">](https://cran.r-project.org/web/packages/AlgDesign/index.html)[</span><span class="ot">@AlgDesign_bib</span><span class="co">]</span>）を用います。</span>
 <span id="cb172-1018"><a href="#cb172-1018" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-1019"><a href="#cb172-1019" aria-hidden="true" tabindex="-1"></a><span class="fu">### mixexpパッケージ</span></span>
 <span id="cb172-1020"><a href="#cb172-1020" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-1021"><a href="#cb172-1021" aria-hidden="true" tabindex="-1"></a><span class="in">`mixexp`</span>はmixture experimentの実験計画作成のためのライブラリです。このライブラリではOptimal Designではなく、Simplex-Lattice Design <span class="co">[</span><span class="ot">@Scheffé1958</span><span class="co">]</span>に従い計画を作成します。</span>
+<span id="cb172-1021"><a href="#cb172-1021" aria-hidden="true" tabindex="-1"></a><span class="in">`mixexp`</span>はmixture experimentの実験計画作成のためのパッケージです。このパッケージではOptimal Designではなく、Simplex-Lattice Design <span class="co">[</span><span class="ot">@Scheffé1958</span><span class="co">]</span>に従い計画を作成します。</span>
 <span id="cb172-1022"><a href="#cb172-1022" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-1023"><a href="#cb172-1023" aria-hidden="true" tabindex="-1"></a><span class="in">`mixexp`</span>での実験計画の作成はシンプルで、2つの関数を用います。一つは説明変数の数だけ設定する<span class="in">`SCD`</span>関数、もう一つは説明変数の数と各説明変数の条件の数を指定する<span class="in">`SLD`</span>関数です。<span class="in">`SCD`</span>関数では各説明変数の条件の数を6とすることになります。</span>
 <span id="cb172-1024"><a href="#cb172-1024" aria-hidden="true" tabindex="-1"></a></span>
@@ -5011,7 +5023,7 @@ Wheeler, Bob. 2025. <em>AlgDesign: Algorithmic Experimental Design</em>. <a href
 <span id="cb172-1055"><a href="#cb172-1055" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-1056"><a href="#cb172-1056" aria-hidden="true" tabindex="-1"></a><span class="fu">### AlgDesignパッケージ</span></span>
 <span id="cb172-1057"><a href="#cb172-1057" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-1058"><a href="#cb172-1058" aria-hidden="true" tabindex="-1"></a><span class="in">`AlgDesign`</span>は<span class="in">`skpr`</span>と同様にOptimal Designの実験計画を作成するためのライブラリです。<span class="in">`AlgDesign`</span>にはmixture experimentの実験計画を作成するための関数である、<span class="in">`gen.mixture`</span>関数があります。<span class="in">`gen.mixture`</span>は<span class="in">`mixexp`</span>の<span class="in">`SLD`</span>とほぼ同じ使い方の、説明変数の数と各説明変数の条件の数を指定して用いる関数です。</span>
+<span id="cb172-1058"><a href="#cb172-1058" aria-hidden="true" tabindex="-1"></a><span class="in">`AlgDesign`</span>は<span class="in">`skpr`</span>と同様にOptimal Designの実験計画を作成するためのパッケージです。<span class="in">`AlgDesign`</span>にはmixture experimentの実験計画を作成するための関数である、<span class="in">`gen.mixture`</span>関数があります。<span class="in">`gen.mixture`</span>は<span class="in">`mixexp`</span>の<span class="in">`SLD`</span>とほぼ同じ使い方の、説明変数の数と各説明変数の条件の数を指定して用いる関数です。</span>
 <span id="cb172-1059"><a href="#cb172-1059" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb172-1060"><a href="#cb172-1060" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="AlgDesign：gen.mixture関数"}</span></span>
 <span id="cb172-1061"><a href="#cb172-1061" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AlgDesign)</span>

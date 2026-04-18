@@ -428,7 +428,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ライブラリ</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -749,6 +749,18 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">並列演算（Parallel Computing）</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System関連の関数</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S3class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S3クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -801,7 +813,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 
 
 </header><p>Rは<strong>オブジェクト指向プログラミング言語</strong>であるとされています。オブジェクト指向とは、プログラミングで取り扱う「<strong>もの（Objects）</strong>」を<strong>オブジェクト</strong>として扱い、オブジェクトには<strong>クラス</strong>とメソッドが設定されるような形でプログラミング言語を設計する考え方を指す言葉です。</p>
-<p>オブジェクト指向に関わる言葉はたくさんあります（カプセル化・継承・ポリモルフィズム・クラス・インスタンス・メソッド・アクセサ等々、<a href="https://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E6%8C%87%E5%90%91%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0">Wikipedia</a>を参照）。他のオブジェクト指向言語、例えばPythonやRubyではこのあたりの理解がプログラミングにおいてとても重要になるのですが、Rでははっきりと理解していなくても、（少なくとも小規模データの解析やグラフ描画程度であれば）大きな問題にはなりません。オブジェクト指向の概念が重要となるのは、恒久的にメンテナンスを続けて使用され続けるプログラム（例えばライブラリなど）や、オンラインで大規模に開発し、常にメンテナンスが必要となるプログラム（Webアプリケーションなど）を作成する時になります。以下にオブジェクト指向の言葉の意味を説明しますが、なんとなくわかる、という程度で通常のデータ解析で困ることはないでしょう。</p>
+<p>オブジェクト指向に関わる言葉はたくさんあります（カプセル化・継承・ポリモルフィズム・クラス・インスタンス・メソッド・アクセサ等々、<a href="https://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E6%8C%87%E5%90%91%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0">Wikipedia</a>を参照）。他のオブジェクト指向言語、例えばPythonやRubyではこのあたりの理解がプログラミングにおいてとても重要になるのですが、Rでははっきりと理解していなくても、（少なくとも小規模データの解析やグラフ描画程度であれば）大きな問題にはなりません。オブジェクト指向の概念が重要となるのは、恒久的にメンテナンスを続けて使用され続けるプログラム（例えばパッケージなど）や、オンラインで大規模に開発し、常にメンテナンスが必要となるプログラム（Webアプリケーションなど）を作成する時になります。以下にオブジェクト指向の言葉の意味を説明しますが、なんとなくわかる、という程度で通常のデータ解析で困ることはないでしょう。</p>
 <p>この章では、やや抽象的なプログラミングに関する内容について説明します。Rでグラフ作成やデータ処理、統計解析を行うのにすぐに必要となる事項ではありませんので、飛ばして<a href="./chapter23.html">次の章</a>に進んで頂いても問題はありません。</p>
 <section id="クラス" class="level2" data-number="22.1"><h2 data-number="22.1" class="anchored" data-anchor-id="クラス">
 <span class="header-section-number">22.1</span> クラス</h2>
@@ -892,7 +904,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p>このように見ると、リストは大体クラスの要件を満たしているように見えます。ただし、リストでは要素の数を自由自在に増やしたり減らしたりすることができます。例えば、登録されている犬の名前（<code>name</code>）を変えたり、<code>tricks</code>を削って<code>birthday</code>を追加する、といったことがリストでは簡単にできてしまいます。このような変換を行うと、Pythonの型（クラス）で定義したものとは違う要素を持つオブジェクトを簡単に作れてしまうことになります。</p>
 <p>他言語のクラスでは、インスタンスごとに取り扱いが変わることがないように、要素の追加や削除は原則できないようになっています。また、クラスの定義を行うときに、要素のデータ型や要素に対する取り扱いの方法（メソッド）を定義しておき、要素の型、取り扱いの方法を厳密に定めておくのが一般的です。このようにクラスの「要素」・「型」・「取り扱い方」を厳密に定めておくことで、そのクラスのインスタンスをいつ用いても同じ方法で取り扱えることを担保しています。</p>
 <p>このような性質は、「誰が、いつ、どのような形でそのクラスのインスタンスを用いても、同じ方法で取り扱うことができる」ために重要となります。ですので、複数人が関わる大規模な開発や大きなアプリケーション、メンテナンスを常時必要とする長期プロジェクトなどではクラスの厳密な定義が非常に重要となります。</p>
-<p>一方で、Rはその場限りの解析に用いることが多い言語です。もちろん、ライブラリの構築時や、恒常的に組織でメンテナンスし、使い続けるRのプログラムを開発する場合には、クラスの定義と取り扱いは重要となります。ですが、その場限りの解析では、データのカプセル化の役割をリストが十分に果たすことができます。このような理由から、Rでクラスを定義し、用いる方法は（少なくとも簡単な統計解析においては）、あまり重要視されていません。</p>
+<p>一方で、Rはその場限りの解析に用いることが多い言語です。もちろん、パッケージの構築時や、恒常的に組織でメンテナンスし、使い続けるRのプログラムを開発する場合には、クラスの定義と取り扱いは重要となります。ですが、その場限りの解析では、データのカプセル化の役割をリストが十分に果たすことができます。このような理由から、Rでクラスを定義し、用いる方法は（少なくとも簡単な統計解析においては）、あまり重要視されていません。</p>
 </section></section><section id="rのクラスとアトリビュートattributes" class="level2" data-number="22.3"><h2 data-number="22.3" class="anchored" data-anchor-id="rのクラスとアトリビュートattributes">
 <span class="header-section-number">22.3</span> Rのクラスとアトリビュート（attributes）</h2>
 <p>Rではクラスはアトリビュート（attributes）として設定されています。ただし、クラスは必ずしもアトリビュートとして設定されているわけではありません。クラスにはアトリビュートとして設定されるものと、されていないものがあります。</p>
@@ -941,34 +953,34 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </div>
 <p>このようなアトリビュートの差は、<strong>親クラス</strong>（superclass、スーパークラス）と呼ばれるものの違いによります。Rを含め、オブジェクト指向の言語では、クラスを定義するときに、他のクラスの定義を流用し、機能や要素等を追加した上で新しいクラスとすることができます。このように、他のクラスの定義を流用することを、<strong>継承</strong>（inheritance）と呼びます。つまり、数値や文字列、リストなどと、データフレーム、因子、時系列では親クラスが異なるクラスである、ということになります。</p>
-<p>Rで親クラスを把握するときに用いる関数として、<code><a href="https://rdrr.io/pkg/pryr/man/otype.html">pryr::otype</a></code>があります<span class="citation" data-cites="pryr_bib">(<a href="references.html#ref-pryr_bib" role="doc-biblioref">Wickham 2023</a>)</span>。<code><a href="https://rdrr.io/pkg/pryr/man/otype.html">pryr::otype</a></code>の引数にオブジェクトを取ると、そのオブジェクトの親クラスを調べることができます。</p>
+<p>Rで親クラスを把握するときに用いる関数として、<code><a href="https://sloop.r-lib.org/reference/otype.html">sloop::otype</a></code>があります<span class="citation" data-cites="sloop_bib">(<a href="references.html#ref-sloop_bib" role="doc-biblioref">Wickham 2019a</a>)</span>。<code><a href="https://sloop.r-lib.org/reference/otype.html">sloop::otype</a></code>の引数にオブジェクトを取ると、そのオブジェクトの親クラスを調べることができます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>plyr::otypeで親クラスを確認する</strong></pre>
 </div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 数値、文字列はbaseクラスを親とする</span></span>
-<span><span class="fl">1</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fl">1</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "base"</span></span>
-<span><span class="st">"a"</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="st">"a"</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "base"</span></span>
-<span><span class="cn">T</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="cn">T</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "base"</span></span>
 <span></span>
 <span><span class="co"># リスト・行列はbaseクラスを親とする</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "base"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "base"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "base"</span></span>
 <span></span>
 <span><span class="co"># 因子・データフレーム・時系列はS3クラスを親とする</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "S3"</span></span>
-<span><span class="va">iris</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">iris</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "S3"</span></span>
-<span><span class="va">Nile</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">Nile</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "S3"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -980,7 +992,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <pre><strong>S3の例</strong></pre>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">~</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span><span class="op">)</span></span>
-<span><span class="va">lm_obj</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">lm_obj</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "S3"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -991,7 +1003,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">lme4</span><span class="op">)</span></span>
 <span><span class="va">lme4_obj</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, <span class="va">sleepstudy</span><span class="op">)</span></span>
-<span><span class="va">lme4_obj</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">lme4_obj</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] "S4"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -1004,14 +1016,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="va">mod</span> <span class="op">&lt;-</span> </span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu">cmdstan_path</span><span class="op">(</span><span class="op">)</span>, <span class="st">"examples"</span>, <span class="st">"bernoulli"</span>, <span class="st">"bernoulli.stan"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">cmdstan_model</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">mod</span> <span class="op">|&gt;</span> <span class="fu">pryr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pryr/man/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># otypeではS3扱い</span></span>
-<span><span class="co">## [1] "S3"</span></span>
+<span><span class="va">mod</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># otypeではS3扱い</span></span>
+<span><span class="co">## [1] "R6"</span></span>
 <span><span class="va">mod</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 中身はR6</span></span>
 <span><span class="co">## [1] "CmdStanModel" "R6"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>Rにはこの他にも、<a href="http://adv-r.had.co.nz/R5.html"><code>reference class</code></a>（昔はR5として開発されていたものだと思います）、<a href="https://wahani.github.io/aoos/"><code>aoos</code></a> <span class="citation" data-cites="aoos_bib">(<a href="references.html#ref-aoos_bib" role="doc-biblioref">Warnholz 2017</a>)</span>、<a href="https://rconsortium.github.io/S7/"><code>S7</code></a> <span class="citation" data-cites="S7_bib">(<a href="references.html#ref-S7_bib" role="doc-biblioref">Vaughan et al. 2023</a>)</span>などのオブジェクト指向プログラミングに関するクラスがあります。色々あって混乱しているのは、「S3とS4がイマイチ」と思う人が多かったためでしょう。</p>
-<p><code>S7</code>を開発しているのが<code>ggplot2</code>を開発したHadley Wickhamなので（2023年現在）、いずれは<code>S7</code>が主流になるのかもしれませんが、現状では簡単にRにオブジェクト指向のクラスを持ち込む場合にはS3を、少し複雑なプロジェクトにはS4を用いるのが一般的であるように見えます。特に<a href="https://www.bioconductor.org/">Bioconductor</a>のライブラリではS4のオブジェクトが用いられています。</p>
+<p><code>S7</code>を開発しているのが<code>ggplot2</code>を開発したHadley Wickhamなので（2023年現在）、いずれは<code>S7</code>が主流になるのかもしれませんが、現状では簡単にRにオブジェクト指向のクラスを持ち込む場合にはS3を、少し複雑なプロジェクトにはS4を用いるのが一般的であるように見えます。特に<a href="https://www.bioconductor.org/">Bioconductor</a>のパッケージではS4のオブジェクトが用いられています。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1030,7 +1042,7 @@ S3クラスとS4クラス
 </div>
 </section><section id="rでのs3s4クラスオブジェクトの取り扱い" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="rでのs3s4クラスオブジェクトの取り扱い">
 <span class="header-section-number">22.4</span> RでのS3、S4クラスオブジェクトの取り扱い</h2>
-<p>上に述べたように、Rではライブラリを作成する等の特殊な場合を除いて、クラスを定義することはありません。クラスの定義は入門で学ぶには少し高度な内容となるので、他の文献<span class="citation" data-cites="Wickham_Hadley2019-05-24 Hadley_Wickham2016-02-10">(<a href="references.html#ref-Wickham_Hadley2019-05-24" role="doc-biblioref">Wickham 2019</a>, <a href="references.html#ref-Hadley_Wickham2016-02-10" role="doc-biblioref">2016</a>)</span>に説明を譲ります。</p>
+<p>上に述べたように、Rではパッケージを作成する等の特殊な場合を除いて、クラスを定義することはありません。クラスの定義は入門で学ぶには少し高度な内容となるので、他の文献<span class="citation" data-cites="Wickham_Hadley2019-05-24 Hadley_Wickham2016-02-10">(<a href="references.html#ref-Wickham_Hadley2019-05-24" role="doc-biblioref">Wickham 2019b</a>, <a href="references.html#ref-Hadley_Wickham2016-02-10" role="doc-biblioref">2016</a>)</span>に説明を譲ります。</p>
 <p>しかし、統計の関数の返り値はS3やS4を親クラスとしたオブジェクトとなっている場合が多いため、オブジェクトの取り扱い方を理解しておくことは統計解析において重要となります。</p>
 <p>典型的なS3の例として線形回帰の結果（lmオブジェクト）、S4の例として線形混合モデルの結果（lmerModオブジェクト、<a href="https://cran.r-project.org/web/packages/lme4/index.html">lme4パッケージ</a> <span class="citation" data-cites="lme4_bib">(<a href="references.html#ref-lme4_bib" role="doc-biblioref">Bates et al. 2015</a>)</span>より）を用いて、オブジェクトの取り扱い方を説明します。</p>
 <p>S3オブジェクトでもS4オブジェクトでも、オブジェクトの内容を確認する場合には、まず<code>str</code>関数でオブジェクトの構造を理解するところから始めます。</p>
@@ -1222,11 +1234,11 @@ Warnholz, Sebastian. 2017. <em>Aoos: Another Object Orientation System</em>. <a 
 <div id="ref-Hadley_Wickham2016-02-10" class="csl-entry" role="listitem">
 Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広, 市川太祐, 高柳慎一, and 福島真太朗. 単行本. 共立出版.
 </div>
-<div id="ref-Wickham_Hadley2019-05-24" class="csl-entry" role="listitem">
-———. 2019. <em>Advanced r, Second Edition (Chapman &amp; Hall/CRC the r Series) (English Edition)</em>. Kindle版. Chapman; Hall/CRC.
+<div id="ref-sloop_bib" class="csl-entry" role="listitem">
+———. 2019a. <em>Sloop: Helpers for ’OOP’ in r</em>. <a href="https://doi.org/10.32614/CRAN.package.sloop">https://doi.org/10.32614/CRAN.package.sloop</a>.
 </div>
-<div id="ref-pryr_bib" class="csl-entry" role="listitem">
-———. 2023. <em>Pryr: Tools for Computing on the Language</em>. <a href="https://CRAN.R-project.org/package=pryr">https://CRAN.R-project.org/package=pryr</a>.
+<div id="ref-Wickham_Hadley2019-05-24" class="csl-entry" role="listitem">
+———. 2019b. <em>Advanced r, Second Edition (Chapman &amp; Hall/CRC the r Series) (English Edition)</em>. Kindle版. Chapman; Hall/CRC.
 </div>
 </div>
 </section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -1709,12 +1721,12 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(<span class="st">"reticulate"</span>, <span class="st">"pryr"</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(<span class="st">"reticulate"</span>, <span class="st">"sloop"</span>)</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>Rは**オブジェクト指向プログラミング言語**であるとされています。オブジェクト指向とは、プログラミングで取り扱う「**もの（Objects）**」を**オブジェクト**として扱い、オブジェクトには**クラス**とメソッドが設定されるような形でプログラミング言語を設計する考え方を指す言葉です。</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>オブジェクト指向に関わる言葉はたくさんあります（カプセル化・継承・ポリモルフィズム・クラス・インスタンス・メソッド・アクセサ等々、<span class="co">[</span><span class="ot">Wikipedia</span><span class="co">](https://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E6%8C%87%E5%90%91%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0)</span>を参照）。他のオブジェクト指向言語、例えばPythonやRubyではこのあたりの理解がプログラミングにおいてとても重要になるのですが、Rでははっきりと理解していなくても、（少なくとも小規模データの解析やグラフ描画程度であれば）大きな問題にはなりません。オブジェクト指向の概念が重要となるのは、恒久的にメンテナンスを続けて使用され続けるプログラム（例えばライブラリなど）や、オンラインで大規模に開発し、常にメンテナンスが必要となるプログラム（Webアプリケーションなど）を作成する時になります。以下にオブジェクト指向の言葉の意味を説明しますが、なんとなくわかる、という程度で通常のデータ解析で困ることはないでしょう。</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>オブジェクト指向に関わる言葉はたくさんあります（カプセル化・継承・ポリモルフィズム・クラス・インスタンス・メソッド・アクセサ等々、<span class="co">[</span><span class="ot">Wikipedia</span><span class="co">](https://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E6%8C%87%E5%90%91%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0)</span>を参照）。他のオブジェクト指向言語、例えばPythonやRubyではこのあたりの理解がプログラミングにおいてとても重要になるのですが、Rでははっきりと理解していなくても、（少なくとも小規模データの解析やグラフ描画程度であれば）大きな問題にはなりません。オブジェクト指向の概念が重要となるのは、恒久的にメンテナンスを続けて使用され続けるプログラム（例えばパッケージなど）や、オンラインで大規模に開発し、常にメンテナンスが必要となるプログラム（Webアプリケーションなど）を作成する時になります。以下にオブジェクト指向の言葉の意味を説明しますが、なんとなくわかる、という程度で通常のデータ解析で困ることはないでしょう。</span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>この章では、やや抽象的なプログラミングに関する内容について説明します。Rでグラフ作成やデータ処理、統計解析を行うのにすぐに必要となる事項ではありませんので、飛ばして<span class="co">[</span><span class="ot">次の章</span><span class="co">](chapter23.qmd)</span>に進んで頂いても問題はありません。</span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
@@ -1796,7 +1808,7 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
 <span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a>このような性質は、「誰が、いつ、どのような形でそのクラスのインスタンスを用いても、同じ方法で取り扱うことができる」ために重要となります。ですので、複数人が関わる大規模な開発や大きなアプリケーション、メンテナンスを常時必要とする長期プロジェクトなどではクラスの厳密な定義が非常に重要となります。</span>
 <span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a>一方で、Rはその場限りの解析に用いることが多い言語です。もちろん、ライブラリの構築時や、恒常的に組織でメンテナンスし、使い続けるRのプログラムを開発する場合には、クラスの定義と取り扱いは重要となります。ですが、その場限りの解析では、データのカプセル化の役割をリストが十分に果たすことができます。このような理由から、Rでクラスを定義し、用いる方法は（少なくとも簡単な統計解析においては）、あまり重要視されていません。</span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a>一方で、Rはその場限りの解析に用いることが多い言語です。もちろん、パッケージの構築時や、恒常的に組織でメンテナンスし、使い続けるRのプログラムを開発する場合には、クラスの定義と取り扱いは重要となります。ですが、その場限りの解析では、データのカプセル化の役割をリストが十分に果たすことができます。このような理由から、Rでクラスを定義し、用いる方法は（少なくとも簡単な統計解析においては）、あまり重要視されていません。</span>
 <span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rのクラスとアトリビュート（attributes）</span></span>
 <span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a></span>
@@ -1820,23 +1832,23 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
 <span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a>このようなアトリビュートの差は、**親クラス**（superclass、スーパークラス）と呼ばれるものの違いによります。Rを含め、オブジェクト指向の言語では、クラスを定義するときに、他のクラスの定義を流用し、機能や要素等を追加した上で新しいクラスとすることができます。このように、他のクラスの定義を流用することを、**継承**（inheritance）と呼びます。つまり、数値や文字列、リストなどと、データフレーム、因子、時系列では親クラスが異なるクラスである、ということになります。</span>
 <span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a>Rで親クラスを把握するときに用いる関数として、<span class="in">`pryr::otype`</span>があります<span class="co">[</span><span class="ot">@pryr_bib</span><span class="co">]</span>。<span class="in">`pryr::otype`</span>の引数にオブジェクトを取ると、そのオブジェクトの親クラスを調べることができます。</span>
+<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a>Rで親クラスを把握するときに用いる関数として、<span class="in">`sloop::otype`</span>があります<span class="co">[</span><span class="ot">@sloop_bib</span><span class="co">]</span>。<span class="in">`sloop::otype`</span>の引数にオブジェクトを取ると、そのオブジェクトの親クラスを調べることができます。</span>
 <span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="plyr::otypeで親クラスを確認する"}</span></span>
 <span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a><span class="co"># 数値、文字列はbaseクラスを親とする</span></span>
-<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
-<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="st">"a"</span> <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
-<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a>T <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="st">"a"</span> <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a>T <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
 <span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a><span class="co"># リスト・行列はbaseクラスを親とする</span></span>
-<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
-<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
-<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
 <span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a><span class="co"># 因子・データフレーム・時系列はS3クラスを親とする</span></span>
-<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
-<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
-<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a>Nile <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a>Nile <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
 <span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a>上のように、数値や文字列、リストなどのアトリビュートにクラスを持たないオブジェクトの親クラスはbase、因子やデータフレーム、時系列などのアトリビュートを持つオブジェクトの親クラスはS3となっています。</span>
@@ -1845,13 +1857,13 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
 <span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="S3の例"}</span></span>
 <span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a>lm_obj <span class="ot">&lt;-</span> <span class="fu">lm</span>(iris<span class="sc">$</span>Sepal.Length<span class="sc">~</span>iris<span class="sc">$</span>Sepal.Width)</span>
-<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a>lm_obj <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a>lm_obj <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
 <span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="S4の例"}</span></span>
 <span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(lme4)</span>
 <span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>lme4_obj <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reaction <span class="sc">~</span> Days <span class="sc">+</span> (Days <span class="sc">|</span> Subject), sleepstudy)</span>
-<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a>lme4_obj <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>()</span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a>lme4_obj <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>()</span>
 <span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="R6の例"}</span></span>
@@ -1859,13 +1871,13 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
 <span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> </span>
 <span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.path</span>(<span class="fu">cmdstan_path</span>(), <span class="st">"examples"</span>, <span class="st">"bernoulli"</span>, <span class="st">"bernoulli.stan"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cmdstan_model</span>()</span>
-<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a>mod <span class="sc">|&gt;</span> pryr<span class="sc">::</span><span class="fu">otype</span>() <span class="co"># otypeではS3扱い</span></span>
+<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a>mod <span class="sc">|&gt;</span> sloop<span class="sc">::</span><span class="fu">otype</span>() <span class="co"># otypeではS3扱い</span></span>
 <span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a>mod <span class="sc">|&gt;</span> <span class="fu">class</span>() <span class="co"># 中身はR6</span></span>
 <span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a>Rにはこの他にも、<span class="co">[</span><span class="ot">`reference class`</span><span class="co">](http://adv-r.had.co.nz/R5.html)</span>（昔はR5として開発されていたものだと思います）、<span class="co">[</span><span class="ot">`aoos`</span><span class="co">](https://wahani.github.io/aoos/)</span> <span class="co">[</span><span class="ot">@aoos_bib</span><span class="co">]</span>、<span class="co">[</span><span class="ot">`S7`</span><span class="co">](https://rconsortium.github.io/S7/)</span> <span class="co">[</span><span class="ot">@S7_bib</span><span class="co">]</span>などのオブジェクト指向プログラミングに関するクラスがあります。色々あって混乱しているのは、「S3とS4がイマイチ」と思う人が多かったためでしょう。</span>
 <span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a><span class="in">`S7`</span>を開発しているのが<span class="in">`ggplot2`</span>を開発したHadley Wickhamなので（2023年現在）、いずれは<span class="in">`S7`</span>が主流になるのかもしれませんが、現状では簡単にRにオブジェクト指向のクラスを持ち込む場合にはS3を、少し複雑なプロジェクトにはS4を用いるのが一般的であるように見えます。特に<span class="co">[</span><span class="ot">Bioconductor</span><span class="co">](https://www.bioconductor.org/)</span>のライブラリではS4のオブジェクトが用いられています。</span>
+<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a><span class="in">`S7`</span>を開発しているのが<span class="in">`ggplot2`</span>を開発したHadley Wickhamなので（2023年現在）、いずれは<span class="in">`S7`</span>が主流になるのかもしれませんが、現状では簡単にRにオブジェクト指向のクラスを持ち込む場合にはS3を、少し複雑なプロジェクトにはS4を用いるのが一般的であるように見えます。特に<span class="co">[</span><span class="ot">Bioconductor</span><span class="co">](https://www.bioconductor.org/)</span>のパッケージではS4のオブジェクトが用いられています。</span>
 <span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
 <span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## S3クラスとS4クラス</span></span>
@@ -1875,7 +1887,7 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
 <span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## RでのS3、S4クラスオブジェクトの取り扱い</span></span>
 <span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a>上に述べたように、Rではライブラリを作成する等の特殊な場合を除いて、クラスを定義することはありません。クラスの定義は入門で学ぶには少し高度な内容となるので、他の文献<span class="co">[</span><span class="ot">@Wickham_Hadley2019-05-24; @Hadley_Wickham2016-02-10</span><span class="co">]</span>に説明を譲ります。</span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a>上に述べたように、Rではパッケージを作成する等の特殊な場合を除いて、クラスを定義することはありません。クラスの定義は入門で学ぶには少し高度な内容となるので、他の文献<span class="co">[</span><span class="ot">@Wickham_Hadley2019-05-24; @Hadley_Wickham2016-02-10</span><span class="co">]</span>に説明を譲ります。</span>
 <span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a>しかし、統計の関数の返り値はS3やS4を親クラスとしたオブジェクトとなっている場合が多いため、オブジェクトの取り扱い方を理解しておくことは統計解析において重要となります。</span>
 <span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a></span>
