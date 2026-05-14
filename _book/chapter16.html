@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>16&nbsp; リスト・データフレーム・行列 – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -761,6 +763,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -845,7 +853,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>リストの作成</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># リストの作成（=の左が名前（names）、右が要素）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># リストの作成（=の左が名前（names）、右が要素）</span></span>
 <span><span class="va">lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, y <span class="op">=</span> <span class="st">"dog"</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">lst</span> <span class="co"># リストを表示する</span></span>
 <span><span class="co">## $x</span></span>
@@ -855,7 +863,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [1] "dog"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $z</span></span>
-<span><span class="co">## [1]  TRUE FALSE  TRUE  TRUE FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1]  TRUE FALSE  TRUE  TRUE FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="リストの名前" class="level3" data-number="16.1.1"><h3 data-number="16.1.1" class="anchored" data-anchor-id="リストの名前">
@@ -867,7 +875,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>リストの名前</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">lst</span><span class="op">)</span> <span class="co"># リストの名前を表示する</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">lst</span><span class="op">)</span> <span class="co"># リストの名前を表示する</span></span>
 <span><span class="co">## [1] "x" "y" "z"</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">lst</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span> <span class="co"># リストの名前を変更する</span></span>
@@ -880,7 +888,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [1] 1 2 3 4</span></span>
 <span></span>
 <span><span class="va">lst</span><span class="op">$</span><span class="va">a</span> <span class="co"># ドルマーク（$）を用いた呼び出し（要素が返ってくる）</span></span>
-<span><span class="co">## [1] 1 2 3 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 1 2 3 4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="リストのインデックス" class="level3" data-number="16.1.2"><h3 data-number="16.1.2" class="anchored" data-anchor-id="リストのインデックス">
@@ -892,7 +900,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>リストのインデックス</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="co"># リストの1番目の要素（リストが返ってくる）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="co"># リストの1番目の要素（リストが返ってくる）</span></span>
 <span><span class="co">## $a</span></span>
 <span><span class="co">## [1] 1 2 3 4</span></span>
 <span></span>
@@ -907,7 +915,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [1] "dog"</span></span>
 <span></span>
 <span><span class="va">lst</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="co"># リストの1番目の要素（ベクター）の2つ目の要素</span></span>
-<span><span class="co">## [1] 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="リストの長さlength" class="level3" data-number="16.1.3"><h3 data-number="16.1.3" class="anchored" data-anchor-id="リストの長さlength">
@@ -919,7 +927,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>リストの長さとデータ型</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lst</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lst</span><span class="op">)</span></span>
 <span><span class="co">## [1] 3</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span><span class="op">(</span><span class="va">lst</span><span class="op">)</span></span>
@@ -936,7 +944,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">##   Length Class  Mode     </span></span>
 <span><span class="co">## a 4      -none- numeric  </span></span>
 <span><span class="co">## b 1      -none- character</span></span>
-<span><span class="co">## c 5      -none- logical</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## c 5      -none- logical</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="リストへの要素の追加" class="level3" data-number="16.1.4"><h3 data-number="16.1.4" class="anchored" data-anchor-id="リストへの要素の追加">
@@ -947,7 +955,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>リストへの要素の追加</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lst</span>, d <span class="op">=</span> <span class="st">"added object"</span><span class="op">)</span> <span class="co"># リストに名前dの要素を追加</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lst</span>, d <span class="op">=</span> <span class="st">"added object"</span><span class="op">)</span> <span class="co"># リストに名前dの要素を追加</span></span>
 <span><span class="va">lst</span></span>
 <span><span class="co">## $a</span></span>
 <span><span class="co">## [1] 1 2 3 4</span></span>
@@ -978,7 +986,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [1] "changed object"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $e</span></span>
-<span><span class="co">## [1] "objects can be added with named index"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "objects can be added with named index"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="リストのベクター化" class="level3" data-number="16.1.5"><h3 data-number="16.1.5" class="anchored" data-anchor-id="リストのベクター化">
@@ -989,9 +997,9 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>リストのベクター化</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">lst</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span> <span class="co"># 文字列のベクターに変換される</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">lst</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span> <span class="co"># 文字列のベクターに変換される</span></span>
 <span><span class="co">##      a1      a2      a3      a4       b      c1      c2      c3      c4      c5 </span></span>
-<span><span class="co">##     "1"     "2"     "3"     "4"   "dog"  "TRUE" "FALSE"  "TRUE"  "TRUE" "FALSE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##     "1"     "2"     "3"     "4"   "dog"  "TRUE" "FALSE"  "TRUE"  "TRUE" "FALSE"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="データフレームdata.frame" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="データフレームdata.frame">
@@ -1004,7 +1012,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>データフレームを作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データフレームをdata.frame関数で作成する</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データフレームをdata.frame関数で作成する</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">d</span></span>
 <span><span class="co">##       x y     z</span></span>
@@ -1026,7 +1034,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## 1 dog 1 TRUE</span></span>
 <span><span class="co">## 2 cat 2 TRUE</span></span>
 <span><span class="co">## 3 dog 3 TRUE</span></span>
-<span><span class="co">## 4 cat 4 TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 4 cat 4 TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="リストからデータフレームを作成する" class="level3" data-number="16.2.1"><h3 data-number="16.2.1" class="anchored" data-anchor-id="リストからデータフレームを作成する">
@@ -1038,7 +1046,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>リストをデータフレームに変換</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 長さが同じベクターのリストは、そのままデータフレームに変換できる</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 長さが同じベクターのリストは、そのままデータフレームに変換できる</span></span>
 <span><span class="va">lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">lst</span><span class="op">)</span></span>
 <span><span class="co">##       x y     z</span></span>
@@ -1058,7 +1066,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="va">lst2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, y <span class="op">=</span> <span class="st">"dog"</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">lst2</span><span class="op">)</span> <span class="co"># エラー</span></span>
 <span><span class="co">## Error:</span></span>
-<span><span class="co">## ! arguments imply differing number of rows: 4, 1, 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ! arguments imply differing number of rows: 4, 1, 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="データフレームのインデックス" class="level3" data-number="16.2.2"><h3 data-number="16.2.2" class="anchored" data-anchor-id="データフレームのインデックス">
@@ -1073,7 +1081,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>データフレームのインデックス</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6.5</span>, by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6.5</span>, by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">d1</span></span>
 <span><span class="co">##   a   b c</span></span>
 <span><span class="co">## 1 1 4.0 1</span></span>
@@ -1159,7 +1167,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## 6 6</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">d1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="co"># 行・列で指定（[,1]）しないと、データフレームが返ってくる</span></span>
-<span><span class="co">## [1] "data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "data.frame"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="データフレームの行数列数" class="level3" data-number="16.2.3"><h3 data-number="16.2.3" class="anchored" data-anchor-id="データフレームの行数列数">
@@ -1170,7 +1178,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>データフレームの行・列数</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="co"># dは4行3列のデータフレーム</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="co"># dは4行3列のデータフレーム</span></span>
 <span><span class="co">##       x y     z</span></span>
 <span><span class="co">## 1   dog 1  TRUE</span></span>
 <span><span class="co">## 2   cat 2  TRUE</span></span>
@@ -1184,7 +1192,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [1] 4</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="co"># 列数が返ってくる</span></span>
-<span><span class="co">## [1] 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="データフレームの名前" class="level3" data-number="16.2.4"><h3 data-number="16.2.4" class="anchored" data-anchor-id="データフレームの名前">
@@ -1198,7 +1206,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>データフレームの行名・列名</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span></span>
 <span><span class="co">##       x y     z</span></span>
 <span><span class="co">## 1   dog 1  TRUE</span></span>
 <span><span class="co">## 2   cat 2  TRUE</span></span>
@@ -1223,14 +1231,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [1] "dog"   "cat"   "pig"   "horse"</span></span>
 <span></span>
 <span><span class="va">d</span><span class="op">$</span><span class="va">a</span> <span class="co"># ドルマークを使って列を指定することもできる</span></span>
-<span><span class="co">## [1] "dog"   "cat"   "pig"   "horse"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "dog"   "cat"   "pig"   "horse"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>データフレームにおいても、インデックスに論理型のベクターを使用することができるため、<strong>列名と比較演算子を利用して、行を選択する</strong>ことができます。</p>
 <p>インデックスでの比較演算子の利用と同様に条件によって行を選択する際に用いる関数が<code>subset</code>関数です。<code>subset</code>関数は第一引数にデータフレーム、第二引数に比較演算子を用いた条件式を記載することで、条件に合った行のみを取り出すことができます。</p>
 <p>行のデータを利用して論理型ベクターを作成し、列を選択する事もできます。</p>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d1</span></span>
 <span><span class="co">##   a   b c</span></span>
 <span><span class="co">## 1 1 4.0 1</span></span>
 <span><span class="co">## 2 2 4.5 1</span></span>
@@ -1259,15 +1267,15 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## 1 FALSE TRUE FALSE</span></span>
 <span></span>
 <span><span class="va">d1</span><span class="op">[</span>, <span class="va">d1</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">]</span> <span class="co"># 1行目が3以上になる列（2列目）を選択</span></span>
-<span><span class="co">## [1] 4.0 4.5 5.0 5.5 6.0 6.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 4.0 4.5 5.0 5.5 6.0 6.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-名前に日本語をつける
+<span class="screen-reader-only">Tip</span>名前に日本語をつける
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1279,11 +1287,11 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>日本語の列名</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_jpn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">6</span>, z <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_jpn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">6</span>, z <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">df_jpn</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"佐藤"</span>, <span class="st">"鈴木"</span>, <span class="st">"高橋"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df_jpn</span><span class="op">$</span><span class="va">佐藤</span></span>
-<span><span class="co">## [1] 1 2 3 4 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 1 2 3 4 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1299,7 +1307,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>データフレームの並べ替え</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">x</span><span class="op">)</span> <span class="co"># x列の順序を返す(文字列はアルファベット順)</span></span>
 <span><span class="co">## [1] 2 1 4 3</span></span>
 <span></span>
@@ -1325,16 +1333,16 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## 3   pig 3 FALSE</span></span>
 <span><span class="co">## 4 horse 4  TRUE</span></span>
 <span><span class="co">## 1   dog 1  TRUE</span></span>
-<span><span class="co">## 2   cat 2  TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 2   cat 2  TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-rank関数で並べ替え
+<span class="screen-reader-only">Tip</span>rank関数で並べ替え
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1363,7 +1371,7 @@ rank関数で並べ替え
 <div class="code-with-filename-file">
 <pre><strong>列・行の追加</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span></span>
 <span><span class="va">d3</span></span>
 <span><span class="co">##       x y     z</span></span>
 <span><span class="co">## 1   dog 1  TRUE</span></span>
@@ -1375,14 +1383,12 @@ rank関数で並べ替え
 <span><span class="va">d3</span><span class="op">[</span>, <span class="fl">5</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">:</span><span class="fl">13</span></span>
 <span><span class="va">d3</span><span class="op">[</span><span class="fl">5</span>, <span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"rat"</span>, <span class="fl">6</span>, <span class="cn">T</span>, <span class="fl">9</span>, <span class="fl">14</span><span class="op">)</span> <span class="co"># 各列の型に沿ったベクターを追加</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">d3</span><span class="op">)</span> <span class="co"># すべての列が文字列になる</span></span>
-<span><span class="co">##       x                  y                  z                newCol         </span></span>
-<span><span class="co">##  Length:5           Length:5           Length:5           Length:5          </span></span>
-<span><span class="co">##  Class :character   Class :character   Class :character   Class :character  </span></span>
-<span><span class="co">##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  </span></span>
-<span><span class="co">##       V5           </span></span>
-<span><span class="co">##  Length:5          </span></span>
-<span><span class="co">##  Class :character  </span></span>
-<span><span class="co">##  Mode  :character</span></span>
+<span><span class="co">##          x             y             z           newCol          V5   </span></span>
+<span><span class="co">##  Length   :5   Length   :5   Length   :5   Length   :5   Length   :5  </span></span>
+<span><span class="co">##  N.unique :5   N.unique :5   N.unique :2   N.unique :5   N.unique :5  </span></span>
+<span><span class="co">##  N.blank  :0   N.blank  :0   N.blank  :0   N.blank  :0   N.blank  :0  </span></span>
+<span><span class="co">##  Min.nchar:3   Min.nchar:1   Min.nchar:4   Min.nchar:1   Min.nchar:2  </span></span>
+<span><span class="co">##  Max.nchar:5   Max.nchar:1   Max.nchar:5   Max.nchar:1   Max.nchar:2</span></span>
 <span></span>
 <span><span class="va">d</span></span>
 <span><span class="co">##       x y     z</span></span>
@@ -1413,7 +1419,7 @@ rank関数で並べ替え
 <span><span class="co">## 2   cat 2  TRUE</span></span>
 <span><span class="co">## 3   pig 3 FALSE</span></span>
 <span><span class="co">## 4 horse 4  TRUE</span></span>
-<span><span class="co">## 5   pig 1  TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 5   pig 1  TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="データフレームの要約" class="level3" data-number="16.2.7"><h3 data-number="16.2.7" class="anchored" data-anchor-id="データフレームの要約">
@@ -1427,14 +1433,14 @@ rank関数で並べ替え
 <div class="code-with-filename-file">
 <pre><strong>データフレームの情報を調べる</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="co"># データフレームの要約</span></span>
-<span><span class="co">##       x                   y            z          </span></span>
-<span><span class="co">##  Length:4           Min.   :1.00   Mode :logical  </span></span>
-<span><span class="co">##  Class :character   1st Qu.:1.75   FALSE:1        </span></span>
-<span><span class="co">##  Mode  :character   Median :2.50   TRUE :3        </span></span>
-<span><span class="co">##                     Mean   :2.50                  </span></span>
-<span><span class="co">##                     3rd Qu.:3.25                  </span></span>
-<span><span class="co">##                     Max.   :4.00</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="co"># データフレームの要約</span></span>
+<span><span class="co">##          x           y            z          </span></span>
+<span><span class="co">##  Length   :4   Min.   :1.00   Mode :logical  </span></span>
+<span><span class="co">##  N.unique :4   1st Qu.:1.75   FALSE:1        </span></span>
+<span><span class="co">##  N.blank  :0   Median :2.50   TRUE :3        </span></span>
+<span><span class="co">##  Min.nchar:3   Mean   :2.50                  </span></span>
+<span><span class="co">##  Max.nchar:5   3rd Qu.:3.25                  </span></span>
+<span><span class="co">##                Max.   :4.00</span></span>
 <span></span>
 <span><span class="va">d1</span></span>
 <span><span class="co">##   a   b c</span></span>
@@ -1479,12 +1485,12 @@ rank関数で並べ替え
 <span><span class="co">## 3 3 5.0 1</span></span>
 <span><span class="co">## 4 4 5.5 1</span></span>
 <span><span class="co">## 5 5 6.0 1</span></span>
-<span><span class="co">## 6 6 6.5 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 6 6 6.5 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="caption-top table table-sm table-striped small">
 <caption>表1：データフレームに関する関数</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">関数名</th>
@@ -1572,18 +1578,18 @@ rank関数で並べ替え
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-データフレームの要約
+<span class="screen-reader-only">Tip</span>データフレームの要約
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>もっと複雑なデータフレームの要約を行う場合には、<code>apply</code>関数群や<code>dplyr</code>パッケージ <span class="citation" data-cites="dplyr_bib">(<a href="references.html#ref-dplyr_bib" role="doc-biblioref">Wickham et al. 2023</a>)</span>、<code>tidyr</code>パッケージ <span class="citation" data-cites="tidyr_bib">(<a href="references.html#ref-tidyr_bib" role="doc-biblioref">Wickham, Vaughan, and Girlich 2023</a>)</span>などを用います。<code>apply</code>関数群、<code>dplyr</code>、<code>tidyr</code>に関しては<a href="./chapter19.html">19章</a>、<a href="./chapter20.html">20章</a>でそれぞれ紹介します。</p>
+<p>もっと複雑なデータフレームの要約を行う場合には、<code>apply</code>関数群や<code>dplyr</code>パッケージ <span class="citation" data-cites="dplyr_bib">(<a href="#ref-dplyr_bib" role="doc-biblioref">Wickham, François, et al. 2023</a>)</span>、<code>tidyr</code>パッケージ <span class="citation" data-cites="tidyr_bib">(<a href="#ref-tidyr_bib" role="doc-biblioref">Wickham, Vaughan, et al. 2023</a>)</span>などを用います。<code>apply</code>関数群、<code>dplyr</code>、<code>tidyr</code>に関しては<a href="./chapter19.html">19章</a>、<a href="./chapter20.html">20章</a>でそれぞれ紹介します。</p>
 </div>
 </div>
 </div>
@@ -1596,7 +1602,7 @@ rank関数で並べ替え
 <div class="code-with-filename-file">
 <pre><strong>列の演算：with関数とwithin関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span> <span class="co"># 始めの6行を選択</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span> <span class="co"># 始めの6行を選択</span></span>
 <span></span>
 <span><span class="co"># Sepal.Lengthの列とSepal.Widthの列の値を掛ける</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">iris6</span>, <span class="va">Sepal.Length</span> <span class="op">*</span> <span class="va">Sepal.Width</span><span class="op">)</span> </span>
@@ -1610,7 +1616,7 @@ rank関数で並べ替え
 <span><span class="co">## 3          4.7         3.2          1.3         0.2  setosa          15.04</span></span>
 <span><span class="co">## 4          4.6         3.1          1.5         0.2  setosa          14.26</span></span>
 <span><span class="co">## 5          5.0         3.6          1.4         0.2  setosa          18.00</span></span>
-<span><span class="co">## 6          5.4         3.9          1.7         0.4  setosa          21.06</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 6          5.4         3.9          1.7         0.4  setosa          21.06</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="組み合わせのデータフレームを作成する" class="level3" data-number="16.2.9"><h3 data-number="16.2.9" class="anchored" data-anchor-id="組み合わせのデータフレームを作成する">
@@ -1621,7 +1627,7 @@ rank関数で並べ替え
 <div class="code-with-filename-file">
 <pre><strong>expand.grid関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>sex<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span>, age<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">25</span><span class="op">)</span>, location<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Osaka"</span>, <span class="st">"Kobe"</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>sex<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span>, age<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">25</span><span class="op">)</span>, location<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Osaka"</span>, <span class="st">"Kobe"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">##   sex age location</span></span>
 <span><span class="co">## 1   M  20    Osaka</span></span>
 <span><span class="co">## 2   F  20    Osaka</span></span>
@@ -1630,16 +1636,16 @@ rank関数で並べ替え
 <span><span class="co">## 5   M  20     Kobe</span></span>
 <span><span class="co">## 6   F  20     Kobe</span></span>
 <span><span class="co">## 7   M  25     Kobe</span></span>
-<span><span class="co">## 8   F  25     Kobe</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 8   F  25     Kobe</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-attachとdetach
+<span class="screen-reader-only">Tip</span>attachとdetach
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1651,12 +1657,12 @@ attachとdetach
 <div class="code-with-filename-file">
 <pre><strong>attach関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データフレームやリストを引数に取る</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データフレームやリストを引数に取る</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/attach.html">attach</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 列名で要素を呼び出せる</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span></span>
-<span><span class="co">## [1] 5.1 4.9 4.7 4.6 5.0 5.4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 5.1 4.9 4.7 4.6 5.0 5.4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ただし、この<code>attach</code>を用いると扱っているものがデータフレームなのかベクターなのかわからなくなってしまいますし、データフレームの利点である行方向への情報も失われてしまいます。ですので、<code>attach</code>関数はなるべく使わないほうがよいでしょう。</p>
@@ -1666,13 +1672,13 @@ attachとdetach
 <div class="code-with-filename-file">
 <pre><strong>detach関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># detach関数の引数にattachしたデータフレームを取る</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># detach関数の引数にattachしたデータフレームを取る</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/detach.html">detach</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 列名で呼び出せなくなる</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span></span>
 <span><span class="co">## Error:</span></span>
-<span><span class="co">## ! object 'Sepal.Length' not found</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ! object 'Sepal.Length' not found</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1689,7 +1695,7 @@ attachとdetach
 <div class="code-with-filename-file">
 <pre><strong>行列の作成とインデックス</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="co"># 列方向にベクターが配置される</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="co"># 列方向にベクターが配置される</span></span>
 <span><span class="va">mat</span></span>
 <span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
 <span><span class="co">## [1,]    1    4    7   10</span></span>
@@ -1774,16 +1780,16 @@ attachとdetach
 <span><span class="co">## first    1   4   7    10</span></span>
 <span><span class="co">## second   2   5   8    11</span></span>
 <span><span class="co">## third    3   6   9    12</span></span>
-<span><span class="co">## fourth   1   1   1     1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## fourth   1   1   1     1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-3次元以上のクラス：array
+<span class="screen-reader-only">Tip</span>3次元以上のクラス：array
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1861,7 +1867,7 @@ attachとdetach
 <div class="code-with-filename-file">
 <pre><strong>行列の演算子</strong></pre>
 </div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 要素が1~16のランダムな行列を作成</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 要素が1~16のランダムな行列を作成</span></span>
 <span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">4</span><span class="op">)</span> </span>
 <span><span class="va">mat</span></span>
 <span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
@@ -1905,7 +1911,7 @@ attachとdetach
 <span><span class="co">## [1,]   99  144   22   32</span></span>
 <span><span class="co">## [2,]   90   72   20   16</span></span>
 <span><span class="co">## [3,]   44   64  154  224</span></span>
-<span><span class="co">## [4,]   40   32  140  112</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [4,]   40   32  140  112</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="行列式転置逆行列の演算" class="level3" data-number="16.3.3"><h3 data-number="16.3.3" class="anchored" data-anchor-id="行列式転置逆行列の演算">
@@ -1916,7 +1922,7 @@ attachとdetach
 <div class="code-with-filename-file">
 <pre><strong>行列式・転置・逆行列</strong></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/det.html">det</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="co"># matの行列式</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/det.html">det</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="co"># matの行列式</span></span>
 <span><span class="co">## [1] -712</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="co"># matを転置</span></span>
@@ -1938,7 +1944,7 @@ attachとdetach
 <span><span class="co">## [1,]  1.000000e+00    0 0.000000e+00 4.440892e-16</span></span>
 <span><span class="co">## [2,]  0.000000e+00    1 3.552714e-15 4.440892e-16</span></span>
 <span><span class="co">## [3,] -1.776357e-15    0 1.000000e+00 0.000000e+00</span></span>
-<span><span class="co">## [4,] -8.881784e-16    0 1.776357e-15 1.000000e+00</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [4,] -8.881784e-16    0 1.776357e-15 1.000000e+00</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="単位行列三角行列の作成" class="level3" data-number="16.3.4"><h3 data-number="16.3.4" class="anchored" data-anchor-id="単位行列三角行列の作成">
@@ -1948,7 +1954,11 @@ attachとdetach
 <p>ただし、<code>upper.tri</code>関数、<code>lower.tri</code>関数の返り値をそのまま行列のインデックスに用いても上三角行列・下三角行列を作ることはできません。上三角行列を作成する場合には、<code>lower.tri</code>関数の返り値をインデックスに取り、このインデックスに0を代入します。</p>
 <p>逆に、下三角行列を作成する場合には、<code>upper.tri</code>関数の返り値をインデックスに取り、このインデックスに0を代入します。このように0を下三角・上三角に代入することで、上三角行列・下三角行列を得ることができます。</p>
 <div class="cell">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="co"># 3行3列の単位行列</span></span>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>単位行列・三角行列など</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="co"># 3行3列の単位行列</span></span>
 <span><span class="co">##      [,1] [,2] [,3]</span></span>
 <span><span class="co">## [1,]    1    0    0</span></span>
 <span><span class="co">## [2,]    0    1    0</span></span>
@@ -1986,13 +1996,14 @@ attachとdetach
 <span><span class="co">## [1,]    9    0    0    0</span></span>
 <span><span class="co">## [2,]    4   14    0    0</span></span>
 <span><span class="co">## [3,]    7   12   11    0</span></span>
-<span><span class="co">## [4,]    1    3   10    8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [4,]    1    3   10    8</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </div>
 
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-dplyr_bib" class="csl-entry" role="listitem">
 Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. <em>Dplyr: A Grammar of Data Manipulation</em>. <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>.
 </div>
@@ -2064,13 +2075,14 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2473,7 +2485,7 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb25" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># リスト・データフレーム・行列</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># リスト・データフレーム・行列</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -3014,24 +3026,23 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
 <span id="cb25-539"><a href="#cb25-539" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-540"><a href="#cb25-540" aria-hidden="true" tabindex="-1"></a>逆に、下三角行列を作成する場合には、<span class="in">`upper.tri`</span>関数の返り値をインデックスに取り、このインデックスに0を代入します。このように0を下三角・上三角に代入することで、上三角行列・下三角行列を得ることができます。</span>
 <span id="cb25-541"><a href="#cb25-541" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-544"><a href="#cb25-544" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-545"><a href="#cb25-545" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(<span class="dv">3</span>) <span class="co"># 3行3列の単位行列</span></span>
+<span id="cb25-542"><a href="#cb25-542" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="単位行列・三角行列など"}</span></span>
+<span id="cb25-543"><a href="#cb25-543" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(<span class="dv">3</span>) <span class="co"># 3行3列の単位行列</span></span>
+<span id="cb25-544"><a href="#cb25-544" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-545"><a href="#cb25-545" aria-hidden="true" tabindex="-1"></a><span class="fu">upper.tri</span>(mat) <span class="co"># 上三角行列にTRUEを返す</span></span>
 <span id="cb25-546"><a href="#cb25-546" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-547"><a href="#cb25-547" aria-hidden="true" tabindex="-1"></a><span class="fu">upper.tri</span>(mat) <span class="co"># 上三角行列にTRUEを返す</span></span>
+<span id="cb25-547"><a href="#cb25-547" aria-hidden="true" tabindex="-1"></a><span class="fu">lower.tri</span>(mat) <span class="co"># 下三角行列にTRUEを返す</span></span>
 <span id="cb25-548"><a href="#cb25-548" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-549"><a href="#cb25-549" aria-hidden="true" tabindex="-1"></a><span class="fu">lower.tri</span>(mat) <span class="co"># 下三角行列にTRUEを返す</span></span>
-<span id="cb25-550"><a href="#cb25-550" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-551"><a href="#cb25-551" aria-hidden="true" tabindex="-1"></a>mat.u <span class="ot">&lt;-</span> mat</span>
-<span id="cb25-552"><a href="#cb25-552" aria-hidden="true" tabindex="-1"></a>mat.l <span class="ot">&lt;-</span> mat</span>
-<span id="cb25-553"><a href="#cb25-553" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-554"><a href="#cb25-554" aria-hidden="true" tabindex="-1"></a>mat.u[<span class="fu">lower.tri</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># 下三角行列のみに0を代入</span></span>
-<span id="cb25-555"><a href="#cb25-555" aria-hidden="true" tabindex="-1"></a>mat.l[<span class="fu">upper.tri</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># 上三角行列のみに0を代入</span></span>
+<span id="cb25-549"><a href="#cb25-549" aria-hidden="true" tabindex="-1"></a>mat.u <span class="ot">&lt;-</span> mat</span>
+<span id="cb25-550"><a href="#cb25-550" aria-hidden="true" tabindex="-1"></a>mat.l <span class="ot">&lt;-</span> mat</span>
+<span id="cb25-551"><a href="#cb25-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-552"><a href="#cb25-552" aria-hidden="true" tabindex="-1"></a>mat.u[<span class="fu">lower.tri</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># 下三角行列のみに0を代入</span></span>
+<span id="cb25-553"><a href="#cb25-553" aria-hidden="true" tabindex="-1"></a>mat.l[<span class="fu">upper.tri</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># 上三角行列のみに0を代入</span></span>
+<span id="cb25-554"><a href="#cb25-554" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-555"><a href="#cb25-555" aria-hidden="true" tabindex="-1"></a>mat.u <span class="co"># 下三角に0を代入すると上三角行列が得られる</span></span>
 <span id="cb25-556"><a href="#cb25-556" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-557"><a href="#cb25-557" aria-hidden="true" tabindex="-1"></a>mat.u <span class="co"># 下三角に0を代入すると上三角行列が得られる</span></span>
-<span id="cb25-558"><a href="#cb25-558" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-559"><a href="#cb25-559" aria-hidden="true" tabindex="-1"></a>mat.l <span class="co"># 上三角に0を代入すると下三角行列が得られる</span></span>
-<span id="cb25-560"><a href="#cb25-560" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb25-557"><a href="#cb25-557" aria-hidden="true" tabindex="-1"></a>mat.l <span class="co"># 上三角に0を代入すると下三角行列が得られる</span></span>
+<span id="cb25-558"><a href="#cb25-558" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -3046,7 +3057,11 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer>

@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>14&nbsp; 因子（factor） – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -761,6 +763,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -822,7 +830,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>因子を作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">## [1] dog   cat   pig   horse</span></span>
 <span><span class="co">## Levels: cat dog horse pig</span></span>
@@ -834,7 +842,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co"># 4つのラベルを1回ずつ16個まで繰り返す因子</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/gl.html">gl</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">16</span>, labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"pig"</span>, <span class="st">"rat"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co">##  [1] cat dog pig rat cat dog pig rat cat dog pig rat cat dog pig rat</span></span>
-<span><span class="co">## Levels: cat dog pig rat</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Levels: cat dog pig rat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>因子と文字列を表示したときの違いは、</p>
@@ -848,7 +856,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>因子と文字列の違い</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="co"># これは文字列のベクター（ダブルクオーテーション付き）</span></span>
 <span><span class="co">##  [1] "dog"   "dog"   "dog"   "dog"   "dog"   "cat"   "cat"   "cat"   "cat"  </span></span>
 <span><span class="co">## [10] "pig"   "pig"   "pig"   "horse" "horse"</span></span>
@@ -857,7 +865,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="va">fx</span> <span class="co"># こちらは因子のベクター（Levelsを表示）</span></span>
 <span><span class="co">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   pig   pig   pig  </span></span>
 <span><span class="co">## [13] horse horse</span></span>
-<span><span class="co">## Levels: cat dog horse pig</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Levels: cat dog horse pig</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="因子のレベルlevels" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="因子のレベルlevels">
@@ -869,7 +877,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>因子のレベルとその順番</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nlevels.html">nlevels</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nlevels.html">nlevels</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span></span>
 <span><span class="co">## [1] 4</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span> <span class="co"># levelsはアルファベット順になる</span></span>
@@ -878,7 +886,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">fx2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">fx2</span><span class="op">)</span> <span class="co"># levelsは数値順になる</span></span>
-<span><span class="co">## [1] "1" "2" "3" "4"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "1" "2" "3" "4"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="因子のクラスと型" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="因子のクラスと型">
@@ -889,7 +897,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>因子のクラス・型</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span></span>
 <span><span class="co">## [1] "factor"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mode.html">mode</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span></span>
 <span><span class="co">## [1] "numeric"</span></span>
@@ -900,7 +908,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="va">fch</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span><span class="op">)</span></span>
 <span><span class="va">fch</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">fch</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mode.html">mode</a></span><span class="op">(</span><span class="va">fch</span><span class="op">)</span></span>
-<span><span class="co">## [1] "numeric"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "numeric"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>因子はそもそも型が数値ですので、<code>as.numeric</code>関数で数値に変換できます。このときの数値はレベルの順番に1、2、3…となります。また、因子を<code>as.character</code>関数を用いて文字列に変換することもできます。文字列に変換した場合には、レベルの名前がそのまま出力されます。</p>
@@ -910,7 +918,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>因子から数値・文字列への変換</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fx</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fx</span></span>
 <span><span class="co">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   pig   pig   pig  </span></span>
 <span><span class="co">## [13] horse horse</span></span>
 <span><span class="co">## Levels: cat dog horse pig</span></span>
@@ -933,7 +941,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">##    dog    dog    dog    dog    dog    cat    cat    cat    cat    pig    pig </span></span>
 <span><span class="co">## monkey monkey monkey </span></span>
 <span><span class="co">##    pig  horse  horse </span></span>
-<span><span class="co">## Levels: cat dog horse pig</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Levels: cat dog horse pig</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>因子の各レベルの要素の個数を数える場合には、<code>table</code>関数を用います。<code>table</code>関数を用いると、各レベルと、そのレベルの要素の数が返ってきます。<code>table</code>関数は複数の因子や、因子のリスト、データフレームなどを引数に取ることもできます。同様に、<code>summary</code>関数でも要素の数を数えることができます。</p>
@@ -942,7 +950,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>因子の個数を数える：table関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span></span>
 <span><span class="co">## fx</span></span>
 <span><span class="co">##   cat   dog horse   pig </span></span>
 <span><span class="co">##     4     5     2     3</span></span>
@@ -960,7 +968,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co"># summary関数でもレベルの要素の数を得ることができる</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span></span>
 <span><span class="co">##   cat   dog horse   pig </span></span>
-<span><span class="co">##     4     5     2     3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##     4     5     2     3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="レベルの順序を変更する" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="レベルの順序を変更する">
@@ -971,7 +979,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>レベルの順序を変更する</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fx</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fx</span></span>
 <span><span class="co">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   pig   pig   pig  </span></span>
 <span><span class="co">## [13] horse horse</span></span>
 <span><span class="co">## Levels: cat dog horse pig</span></span>
@@ -987,7 +995,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">##  [1] 2 2 2 2 2 1 1 1 1 4 4 4 3 3</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">fx2</span><span class="op">)</span> <span class="co"># 変更後の順序</span></span>
-<span><span class="co">##  [1] 4 4 4 4 4 1 1 1 1 3 3 3 2 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [1] 4 4 4 4 4 1 1 1 1 3 3 3 2 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1022,7 +1030,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </section><section id="forcats" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="forcats">
 <span class="header-section-number">14.4</span> forcats</h2>
 <p>Rでは因子のレベル順を変更し、グラフや統計結果の表示順を定める場合があります。特に統計学的検定の計算では、対照群（Control）と処理群（Treatment）が因子の順番によって決まる場合があり、因子の順序が計算上重要となります。</p>
-<p>デフォルトのRの関数群でも因子の順序などを編集することはできますが、因子の演算を行う専門のパッケージである<code>forcats</code> <span class="citation" data-cites="forcats_bib">(<a href="references.html#ref-forcats_bib" role="doc-biblioref">Wickham 2023</a>)</span>を用いると、より簡潔に、統一感のある因子の演算を行うことができます。<code>forcats</code>も<code>tidyverse</code> <span class="citation" data-cites="tidyverse_bib">(<a href="references.html#ref-tidyverse_bib" role="doc-biblioref">Wickham et al. 2019</a>)</span>に含まれるパッケージの一つです。</p>
+<p>デフォルトのRの関数群でも因子の順序などを編集することはできますが、因子の演算を行う専門のパッケージである<code>forcats</code> <span class="citation" data-cites="forcats_bib">(<a href="#ref-forcats_bib" role="doc-biblioref">Wickham 2023</a>)</span>を用いると、より簡潔に、統一感のある因子の演算を行うことができます。<code>forcats</code>も<code>tidyverse</code> <span class="citation" data-cites="tidyverse_bib">(<a href="#ref-tidyverse_bib" role="doc-biblioref">Wickham et al. 2019</a>)</span>に含まれるパッケージの一つです。</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1114,7 +1122,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>forcats 因子を確認する</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># tidyverseをロードすると、forcatもロードされる</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># tidyverseをロードすると、forcatもロードされる</span></span>
 <span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fx</span></span>
@@ -1138,7 +1146,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span></span>
 <span><span class="fu">fct_unique</span><span class="op">(</span><span class="va">fx</span><span class="op">)</span> <span class="co"># levelsとほとんど同じ関数(因子を返す、levelsは文字列を返す)</span></span>
 <span><span class="co">## [1] cat   dog   horse pig  </span></span>
-<span><span class="co">## Levels: cat dog horse pig</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Levels: cat dog horse pig</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="因子を結合する" class="level3" data-number="14.4.2"><h3 data-number="14.4.2" class="anchored" data-anchor-id="因子を結合する">
@@ -1149,7 +1157,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>forcats：因子を結合する</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fx3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"rat"</span>, <span class="st">"mouse"</span>, <span class="st">"sheep"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fx3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"rat"</span>, <span class="st">"mouse"</span>, <span class="st">"sheep"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">fx</span>, <span class="va">fx3</span><span class="op">)</span></span>
 <span><span class="co">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   pig   pig   pig  </span></span>
@@ -1171,7 +1179,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
 <span><span class="co">##  [1] rat   rat   rat   mouse mouse mouse mouse sheep sheep sheep sheep sheep</span></span>
-<span><span class="co">## Levels: cat dog horse pig mouse rat sheep</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Levels: cat dog horse pig mouse rat sheep</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="レベルの操作" class="level3" data-number="14.4.3"><h3 data-number="14.4.3" class="anchored" data-anchor-id="レベルの操作">
@@ -1184,7 +1192,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>forcats：レベルを操作する</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fct_relevel</span><span class="op">(</span><span class="va">fx</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span><span class="op">)</span><span class="op">)</span> <span class="co"># factor(fx, levels=c("dog", "cat", "pig", "horse"))と同じ</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fct_relevel</span><span class="op">(</span><span class="va">fx</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"pig"</span>, <span class="st">"horse"</span><span class="op">)</span><span class="op">)</span> <span class="co"># factor(fx, levels=c("dog", "cat", "pig", "horse"))と同じ</span></span>
 <span><span class="co">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   pig   pig   pig  </span></span>
 <span><span class="co">## [13] horse horse</span></span>
 <span><span class="co">## Levels: dog cat pig horse</span></span>
@@ -1212,7 +1220,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu">fct_shuffle</span><span class="op">(</span><span class="va">fx</span><span class="op">)</span> <span class="co"># レベルをランダムに並べ替える</span></span>
 <span><span class="co">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   pig   pig   pig  </span></span>
 <span><span class="co">## [13] horse horse</span></span>
-<span><span class="co">## Levels: horse pig dog cat</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Levels: pig cat dog horse</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="レベル名の変更" class="level3" data-number="14.4.4"><h3 data-number="14.4.4" class="anchored" data-anchor-id="レベル名の変更">
@@ -1224,13 +1232,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>forcats：レベル名を変更する</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fct_recode</span><span class="op">(</span><span class="va">fx</span>, mouse<span class="op">=</span><span class="st">"dog"</span>, rat<span class="op">=</span><span class="st">"cat"</span>, monkey<span class="op">=</span><span class="st">"pig"</span>, cow<span class="op">=</span><span class="st">"horse"</span><span class="op">)</span> <span class="co"># ラベルを付け替える</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fct_recode</span><span class="op">(</span><span class="va">fx</span>, mouse<span class="op">=</span><span class="st">"dog"</span>, rat<span class="op">=</span><span class="st">"cat"</span>, monkey<span class="op">=</span><span class="st">"pig"</span>, cow<span class="op">=</span><span class="st">"horse"</span><span class="op">)</span> <span class="co"># ラベルを付け替える</span></span>
 <span><span class="co">##  [1] mouse  mouse  mouse  mouse  mouse  rat    rat    rat    rat    monkey</span></span>
 <span><span class="co">## [11] monkey monkey cow    cow   </span></span>
 <span><span class="co">## Levels: rat mouse cow monkey</span></span>
 <span></span>
 <span><span class="fu">fct_anon</span><span class="op">(</span><span class="va">fx</span><span class="op">)</span> <span class="co"># 因子を匿名化（anonymize）する</span></span>
-<span><span class="co">##  [1] 1 1 1 1 1 2 2 2 2 4 4 4 3 3</span></span>
+<span><span class="co">##  [1] 1 1 1 1 1 2 2 2 2 3 3 3 4 4</span></span>
 <span><span class="co">## Levels: 1 2 3 4</span></span>
 <span></span>
 <span><span class="fu">fct_collapse</span><span class="op">(</span><span class="va">fx</span>, dogcat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span><span class="op">)</span><span class="op">)</span> <span class="co"># レベルを結合する</span></span>
@@ -1246,19 +1254,19 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu">fct_other</span><span class="op">(</span><span class="va">fx</span>, keep<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dog"</span>, <span class="st">"cat"</span><span class="op">)</span><span class="op">)</span> <span class="co"># keep以外のレベルをotherに変える</span></span>
 <span><span class="co">##  [1] dog   dog   dog   dog   dog   cat   cat   cat   cat   Other Other Other</span></span>
 <span><span class="co">## [13] Other Other</span></span>
-<span><span class="co">## Levels: cat dog Other</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Levels: cat dog Other</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-forcats_bib" class="csl-entry" role="listitem">
 Wickham, Hadley. 2023. <em>Forcats: Tools for Working with Categorical Variables (Factors)</em>. <a href="https://CRAN.R-project.org/package=forcats">https://CRAN.R-project.org/package=forcats</a>.
 </div>
 <div id="ref-tidyverse_bib" class="csl-entry" role="listitem">
-Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
 </div>
 </div>
 </section></section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -1325,13 +1333,14 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino 
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1734,7 +1743,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino 
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 因子（factor）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 因子（factor）</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -1953,7 +1962,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino 
 <span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_lump_min</span>(fx, <span class="at">min=</span><span class="dv">4</span>) <span class="co"># 2つより少ない個数しかない因子をotherに変える</span></span>
 <span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a><span class="fu">fct_other</span>(fx, <span class="at">keep=</span><span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"cat"</span>)) <span class="co"># keep以外のレベルをotherに変える</span></span>
-<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -1968,7 +1977,11 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino 
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer>

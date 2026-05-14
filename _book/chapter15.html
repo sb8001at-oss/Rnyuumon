@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>15&nbsp; ベクター – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -70,14 +73,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -112,7 +115,7 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
-</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -123,7 +126,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -769,6 +772,12 @@ window.Quarto = {
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -847,7 +856,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>c関数とappend関数でベクターを作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="co"># 一つの数値はベクター</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="co"># 一つの数値はベクター</span></span>
 <span><span class="co">## [1] 1</span></span>
 <span></span>
 <span><span class="st">"moji"</span> <span class="co"># 一つの文字列もベクター</span></span>
@@ -862,7 +871,7 @@ window.Quarto = {
 <span></span>
 <span><span class="co"># append関数では、ベクターの挿入場所を指定できる</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/append.html">append</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="st">"added"</span>, after<span class="op">=</span><span class="fl">1</span><span class="op">)</span> </span>
-<span><span class="co">## [1] "1"     "added" "2"     "3"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "1"     "added" "2"     "3"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="連続する数値ベクターを作成するコロンsepseq" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="連続する数値ベクターを作成するコロンsepseq">
@@ -876,7 +885,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>連続した数値ベクターを作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span> <span class="co"># 1から3までの整数のベクター</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span> <span class="co"># 1から3までの整数のベクター</span></span>
 <span><span class="co">## [1] 1 2 3</span></span>
 <span></span>
 <span><span class="op">-</span><span class="fl">5</span><span class="op">:</span><span class="fl">5</span> <span class="co"># -5から5までの整数のベクター</span></span>
@@ -901,7 +910,7 @@ window.Quarto = {
 <span><span class="co">##  [1] 1 2 3 1 2 3 1 2 3 1 2 3 1 2 3</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="co"># xの要素を1、2、3回繰り返す</span></span>
-<span><span class="co">## [1] 1 2 2 3 3 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 1 2 2 3 3 3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="ベクターの型" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="ベクターの型">
@@ -913,7 +922,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ベクターの型・クラス</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="co"># 数値ベクター（numeric）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="co"># 数値ベクター（numeric）</span></span>
 <span><span class="co">## [1] "numeric"</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"added"</span><span class="op">)</span><span class="op">)</span> <span class="co"># 文字列ベクター（character）</span></span>
@@ -957,7 +966,7 @@ window.Quarto = {
 <span><span class="co">## [1] TRUE</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/is.recursive.html">is.atomic</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="co"># リストはベクターではない</span></span>
-<span><span class="co">## [1] FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="演算と反復recycling" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="演算と反復recycling">
@@ -968,7 +977,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ベクターの演算</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">+</span> <span class="fl">1</span></span>
 <span><span class="co">## [1] 2 3 4</span></span>
 <span><span class="va">x</span> <span class="op">-</span> <span class="fl">1</span></span>
@@ -978,7 +987,7 @@ window.Quarto = {
 <span><span class="va">x</span> <span class="op">/</span> <span class="fl">2</span></span>
 <span><span class="co">## [1] 0.5 1.0 1.5</span></span>
 <span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">3</span></span>
-<span><span class="co">## [1] 1 2 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 1 2 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ベクターの演算時には、<strong>反復（recycling）</strong>のルールが適用されます。長いベクターと短いベクターの演算で、反復のルールを確認してみましょう。</p>
@@ -987,7 +996,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>反復（recycling）</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># 長さ3のベクター</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># 長さ3のベクター</span></span>
 <span><span class="va">x</span> <span class="co"># 長さ3のベクター</span></span>
 <span><span class="co">## [1] 1 2 3</span></span>
 <span><span class="va">y</span></span>
@@ -1012,7 +1021,7 @@ window.Quarto = {
 <span><span class="va">x</span> <span class="op">*</span> <span class="va">z</span></span>
 <span><span class="co">## [1] 2 4 6 2 4 6</span></span>
 <span><span class="va">x</span> <span class="op">/</span> <span class="va">z</span></span>
-<span><span class="co">## [1] 0.5 1.0 1.5 0.5 1.0 1.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 0.5 1.0 1.5 0.5 1.0 1.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>長さが同じベクターでは、ベクターのインデックスが一致するもの同士が演算されていることがわかります。例えば、<code>x</code>（<code>c(1, 2, 3)</code>）と<code>y</code>（<code>c(2, 3, 4)</code>）の足し算は、1+2、2+3、3+4の結果となります。</p>
@@ -1022,10 +1031,10 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>反復の書き下し</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span> <span class="co"># このような書き方は</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span> <span class="co"># このような書き方は</span></span>
 <span><span class="co">## [1] 2 3 4</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># 自動的にこのような計算とされる</span></span>
-<span><span class="co">## [1] 2 3 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 2 3 4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>このルールでは、<strong>短いベクターの長さがもう一方のベクターの長さの約数でない場合、中途半端に反復される</strong>ことになります。下の場合では、<code>c(1, 2)</code>が反復されて、<code>c(1, 2, 1)</code>として取り扱われています。このような場合には、Rは警告（warning）を出します。</p>
@@ -1034,10 +1043,10 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>長さが中途半端なベクターの演算</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">## Warning in c(1, 2) + c(1, 2, 3): longer object length is not a multiple of</span></span>
 <span><span class="co">## shorter object length</span></span>
-<span><span class="co">## [1] 2 4 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 2 4 4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="インデックス" class="level2" data-number="15.5"><h2 data-number="15.5" class="anchored" data-anchor-id="インデックス">
@@ -1049,7 +1058,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ベクターのインデックス</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">:</span><span class="fl">11</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">:</span><span class="fl">11</span></span>
 <span><span class="va">x</span></span>
 <span><span class="co">##  [1]  2  3  4  5  6  7  8  9 10 11</span></span>
 <span></span>
@@ -1063,7 +1072,7 @@ window.Quarto = {
 <span><span class="co">## [1] 11  6  3</span></span>
 <span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span> <span class="co"># 4番目から6番目までの要素を取り出す</span></span>
-<span><span class="co">## [1] 5 6 7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 5 6 7</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><strong>インデックスをマイナスで指定すると、そのインデックスが指定する要素を削除</strong>することができます。インデックスをマイナスのベクターで指定すると、そのマイナスで指定した位置の要素が削除されます。</p>
@@ -1072,14 +1081,14 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>インデックスをマイナスで指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="fl">4</span><span class="op">]</span> <span class="co"># 4番目の要素を削除する</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="fl">4</span><span class="op">]</span> <span class="co"># 4番目の要素を削除する</span></span>
 <span><span class="co">## [1]  2  3  4  6  7  8  9 10 11</span></span>
 <span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">5</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span> <span class="co"># 5番目から8番目までの要素を削除する</span></span>
 <span><span class="co">## [1]  2  3  4  5 10 11</span></span>
 <span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="fl">5</span><span class="op">:</span><span class="op">-</span><span class="fl">8</span><span class="op">]</span> <span class="co"># 上と同じ</span></span>
-<span><span class="co">## [1]  2  3  4  5 10 11</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1]  2  3  4  5 10 11</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>インデックスは数値だけでなく、<strong>論理型（<code>TRUE</code>と<code>FALSE</code>）で指定</strong>することもできます。<code>[ ]</code>の中に、<code>TRUE</code>（<code>T</code>）と<code>FALSE</code>（<code>F</code>）のベクターを与えると、<code>TRUE</code>のインデックスにある要素だけを取り出すことができます。この指定では、反復（recycling）が適用されるので、ベクターの長さより論理型ベクターの長さが短ければ、論理型ベクターが反復されて使用されます。論理型ベクターの方が長い場合には反復は行われず、論理型ベクターが余分に長い分だけ<code>NA</code>が返ってきます。</p>
@@ -1088,14 +1097,14 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>インデックスに論理型を指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span><span class="op">)</span><span class="op">]</span> <span class="co"># インデックスは論理型でもよい</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span><span class="op">)</span><span class="op">]</span> <span class="co"># インデックスは論理型でもよい</span></span>
 <span><span class="co">## [1]  2  3  4  5  7  8  9 10</span></span>
 <span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">F</span><span class="op">)</span><span class="op">]</span> <span class="co"># 反復（recycling）が適用され、2つ置きに要素を取り出すことになる</span></span>
 <span><span class="co">## [1]  2  4  6  8 10</span></span>
 <span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span><span class="op">)</span><span class="op">]</span> <span class="co"># 論理型の方が長いと、NAが返ってくる</span></span>
-<span><span class="co">## [1]  2  3  4  5  7  8  9 10 NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1]  2  3  4  5  7  8  9 10 NA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>インデックスを論理型ベクターで指定できるため、比較演算子を用いてベクターの要素を取り出すこともできます。例えば、<code>x[x &gt; 5]</code>という形で比較演算子を用いてインデックスを指定すると、<code>x</code>のベクターのうち、5より大きい要素のみを取り出すことができます。</p>
@@ -1104,7 +1113,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>比較演算子でインデックスを指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">==</span> <span class="fl">5</span> <span class="co"># 論理型を比較演算子で作る</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">==</span> <span class="fl">5</span> <span class="co"># 論理型を比較演算子で作る</span></span>
 <span><span class="co">##  [1] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE</span></span>
 <span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="va">x</span> <span class="op">==</span> <span class="fl">5</span><span class="op">]</span> <span class="co"># 比較演算子を含む演算もインデックスに取れる</span></span>
@@ -1120,7 +1129,7 @@ window.Quarto = {
 <span><span class="co">##  [1]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</span></span>
 <span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">7</span><span class="op">)</span><span class="op">]</span> <span class="co"># 2と7である要素を取り出す</span></span>
-<span><span class="co">## [1] 2 7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 2 7</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ベクターの一部を確認したいときには、<code>head</code>関数と<code>tail</code>関数を用います。<code>head</code>関数はベクターの始めから6つ目までを、<code>tail</code>関数はベクターの後ろから6つ目までを表示する関数です。どちらも第二引数に数値を入れると、その長さのベクターを取り出すことができます。</p>
@@ -1129,11 +1138,11 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>head関数とtail関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># 始めの6つを表示</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># 始めの6つを表示</span></span>
 <span><span class="co">## [1] 2 3 4 5 6 7</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># 最後の6つを表示</span></span>
-<span><span class="co">## [1]  6  7  8  9 10 11</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1]  6  7  8  9 10 11</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="インデックスの位置を特定する" class="level2" data-number="15.6"><h2 data-number="15.6" class="anchored" data-anchor-id="インデックスの位置を特定する">
@@ -1144,12 +1153,12 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>which関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cat"</span>, <span class="st">"fat"</span>, <span class="st">"dog"</span>, <span class="st">"rat"</span>, <span class="st">"mat"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cat"</span>, <span class="st">"fat"</span>, <span class="st">"dog"</span>, <span class="st">"rat"</span>, <span class="st">"mat"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="st">"cat"</span><span class="op">)</span> <span class="co"># catはインデックス1</span></span>
 <span><span class="co">## [1] 1</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="st">"rat"</span><span class="op">)</span> <span class="co"># ratはインデックス4</span></span>
-<span><span class="co">## [1] 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="ベクターの要素に名前を付ける" class="level2" data-number="15.7"><h2 data-number="15.7" class="anchored" data-anchor-id="ベクターの要素に名前を付ける">
@@ -1164,7 +1173,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ベクターの要素の名前</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>dog <span class="op">=</span> <span class="fl">1</span>, cat <span class="op">=</span> <span class="fl">2</span>, pig <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="co"># 名前付きべクターをc関数で作る</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>dog <span class="op">=</span> <span class="fl">1</span>, cat <span class="op">=</span> <span class="fl">2</span>, pig <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="co"># 名前付きべクターをc関数で作る</span></span>
 <span><span class="co">## dog cat pig </span></span>
 <span><span class="co">##   1   2   3</span></span>
 <span></span>
@@ -1179,16 +1188,16 @@ window.Quarto = {
 <span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">cat</span> <span class="co"># 呼び出せない</span></span>
 <span><span class="co">## Error in `x$cat`:</span></span>
-<span><span class="co">## ! $ operator is invalid for atomic vectors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ! $ operator is invalid for atomic vectors</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-連想配列とベクター
+<span class="screen-reader-only">Tip</span>連想配列とベクター
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1206,11 +1215,11 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ベクターの長さ</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># 要素が3つなので長さは3</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># 要素が3つなので長さは3</span></span>
 <span><span class="co">## [1] 3</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># ベクターは次元（dimension）を持たない</span></span>
-<span><span class="co">## NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="ベクターの並べ替えと要素の順番" class="level2" data-number="15.9"><h2 data-number="15.9" class="anchored" data-anchor-id="ベクターの並べ替えと要素の順番">
@@ -1222,7 +1231,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ベクターの並べ替えと要素の順番</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 昇順に並べ替え</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -1239,7 +1248,7 @@ window.Quarto = {
 <span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># タイデータに順番を付ける</span></span>
 <span><span class="co">## [1] 5 2 6 4 1 3</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># タイデータを真ん中の順番にする</span></span>
-<span><span class="co">## [1] 5.0 2.5 6.0 4.0 1.0 2.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 5.0 2.5 6.0 4.0 1.0 2.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="重複する要素を取り除く" class="level2" data-number="15.10"><h2 data-number="15.10" class="anchored" data-anchor-id="重複する要素を取り除く">
@@ -1250,9 +1259,9 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>unique関数で重複を取り除く</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"cat"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"cat"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">## [1] "cat" "dog"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "cat" "dog"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="アトリビュートattributeを付ける" class="level4" data-number="15.10.0.1"><h4 data-number="15.10.0.1" class="anchored" data-anchor-id="アトリビュートattributeを付ける">
@@ -1264,7 +1273,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>attributeの確認</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hoge"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"rat"</span>, <span class="st">"hat"</span>, <span class="st">"mat"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hoge"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"rat"</span>, <span class="st">"hat"</span>, <span class="st">"mat"</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">hoge</span> <span class="co"># 呼び出せない</span></span>
 <span><span class="co">## Error in `x$hoge`:</span></span>
 <span><span class="co">## ! $ operator is invalid for atomic vectors</span></span>
@@ -1274,16 +1283,16 @@ window.Quarto = {
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># アトリビュートにhogeがあることを確認</span></span>
 <span><span class="co">##  chr [1:4] "cat" "dog" "cat" "cat"</span></span>
-<span><span class="co">##  - attr(*, "hoge")= chr [1:3] "rat" "hat" "mat"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  - attr(*, "hoge")= chr [1:3] "rat" "hat" "mat"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-アトリビュートの使い道
+<span class="screen-reader-only">Tip</span>アトリビュートの使い道
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1302,21 +1311,21 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>sample関数と復元・非復元抽出</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span> <span class="co"># 1~10の整数から5つをランダムに取り出す</span></span>
-<span><span class="co">## [1] 4 8 6 7 3</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span> <span class="co"># 1~10の整数から5つをランダムに取り出す</span></span>
+<span><span class="co">## [1]  6  7  9 10  4</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span> <span class="co"># ランダムに取り出すので、上とは異なる結果となる</span></span>
-<span><span class="co">## [1]  3  9 10  4  8</span></span>
+<span><span class="co">## [1] 4 2 9 8 7</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">5</span>, replace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># 非復元抽出</span></span>
-<span><span class="co">## [1]  8  6  9 10  5</span></span>
+<span><span class="co">## [1] 2 4 7 9 8</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">15</span>, replace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># エラー（1度しか取り出せない）</span></span>
 <span><span class="co">## Error in `sample.int()`:</span></span>
 <span><span class="co">## ! cannot take a sample larger than the population when 'replace = FALSE'</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">15</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co"># 復元抽出ではエラーとならない</span></span>
-<span><span class="co">##  [1]  7 10  5  1  7  8  2  3  8  3  9  9  4  9  2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [1]  5  4  4  5  3  8  4  5  5  6  5  1  2 10  6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="ベクターを切り分けるsplit" class="level2" data-number="15.12"><h2 data-number="15.12" class="anchored" data-anchor-id="ベクターを切り分けるsplit">
@@ -1327,7 +1336,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>split関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span> <span class="co"># xは1~5を5回繰り返すベクター</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span> <span class="co"># xは1~5を5回繰り返すベクター</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># xを切り分けるための因子</span></span>
 <span></span>
 <span><span class="va">x</span></span>
@@ -1341,7 +1350,7 @@ window.Quarto = {
 <span><span class="co">##  [1] 1 2 3 4 5 1 2 3 4 5</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $`2`</span></span>
-<span><span class="co">##  [1] 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [1] 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1468,7 +1477,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ベクターと集合の演算</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">x</span></span>
 <span><span class="co">##  [1] 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5</span></span>
@@ -1507,7 +1516,7 @@ window.Quarto = {
 <span><span class="co">## [1] 5</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">anyDuplicated</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="co"># 重複がないので0が返ってくる</span></span>
-<span><span class="co">## [1] 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 
@@ -1578,13 +1587,14 @@ window.Quarto = {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1987,7 +1997,7 @@ window.Quarto = {
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb22" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># ベクター</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># ベクター</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -2412,7 +2422,7 @@ window.Quarto = {
 <span id="cb22-423"><a href="#cb22-423" aria-hidden="true" tabindex="-1"></a><span class="fu">anyDuplicated</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">4</span>)) <span class="co"># 5番目の要素で重複があるので5を返す</span></span>
 <span id="cb22-424"><a href="#cb22-424" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-425"><a href="#cb22-425" aria-hidden="true" tabindex="-1"></a><span class="fu">anyDuplicated</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)) <span class="co"># 重複がないので0が返ってくる</span></span>
-<span id="cb22-426"><a href="#cb22-426" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb22-426"><a href="#cb22-426" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -2427,7 +2437,11 @@ window.Quarto = {
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

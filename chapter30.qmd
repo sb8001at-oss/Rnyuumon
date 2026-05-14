@@ -32,7 +32,7 @@ Rで相関係数を計算する場合には、`cor`関数を用います。`cor`
 
 また、`GGally`パッケージ[@GGally_bib]の`ggpairs`関数を用いれば、相関係数、`cor.test`の結果、散布図を一度に確認することができます。
 
-```{r, filename="相関係数の計算"}
+```{r, filename="相関係数の計算", message=FALSE}
 # 2変量の相関（ピアソンの相関係数）
 cor(iris$Sepal.Length, iris$Sepal.Width)
 
@@ -786,7 +786,7 @@ cbind(cbpp$incidence, cbpp$size - cbpp$incidence) |> head() # 左が牛肺疫に
 glmer(cbind(incidence, size - incidence) ~ period |> as.numeric() + (1 | herd), family = "binomial", data = cbpp)
 ```
 
-`lme4`パッケージの他に、RではGLMMの計算に関わるパッケージとして、[`glmm`](https://cran.r-project.org/web/packages/glmm/index.html) [@glmm_bib]や[`MCMCglmm`](https://cran.r-project.org/web/packages/MCMCglmm/index.html) [@MCMCglmm_bib]などがあります。一般化線形モデル・一般化線形混合モデルについて詳しく知りたい方は[データ解析のための統計モデリング入門](https://www.amazon.co.jp/%E3%83%87%E3%83%BC%E3%82%BF%E8%A7%A3%E6%9E%90%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E4%B8%80%E8%88%AC%E5%8C%96%E7%B7%9A%E5%BD%A2%E3%83%A2%E3%83%87%E3%83%AB%E3%83%BB%E9%9A%8E%E5%B1%A4%E3%83%99%E3%82%A4%E3%82%BA%E3%83%A2%E3%83%87%E3%83%AB%E3%83%BBMCMC-%E7%A2%BA%E7%8E%87%E3%81%A8%E6%83%85%E5%A0%B1%E3%81%AE%E7%A7%91%E5%AD%A6-%E4%B9%85%E4%BF%9D-%E6%8B%93%E5%BC%A5/dp/400006973X/ref=sr_1_2?crid=2YDRTUCPZM4HJ&dib=eyJ2IjoiMSJ9.cLlyysXZ_iLOvRYhmMJO8JrLu9tI7C8BlfM7l-0RNeVcFhLjF1qiYu15YvB-rT3Lrpa8oFEXcgLjWYGoh0zZkiPv9d5OFqty6iHTINEyi_6ufuJ_m6rRoH5wQ7TGJFAN651BEnLDZSDbd00hNfVQe6E6exjz-me5Pc9uszWcbYM0xrlzNDIJLfKjaDW54iHjw0crxJ2958tU_HIWu8CyQKgGozQCr5-qa18BMNosh4lsn-4zDcwPLFxvELOeJV8Wl5Spd9jMCTr1kH-fLzwap-WclLOmTVanOXxEYKktzUo.AC94qccYjYbiT6GFuTJIqo4x3g9GOmWkp_8PFHe2fec&dib_tag=se&keywords=%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0&qid=1727527212&sprefix=toukeimoderin%2Caps%2C173&sr=8-2)をご一読されるのが良いでしょう。
+`lme4`パッケージの他に、RではGLMMの計算に関わるパッケージとして、[`glmm`](https://cran.r-project.org/web/packages/glmm/index.html) [@glmm_bib]や[`MCMCglmm`](https://cran.r-project.org/web/packages/MCMCglmm/index.html) [@MCMCglmm_bib]などがあります。一般化線形モデル・一般化線形混合モデルについて詳しく知りたい方は[データ解析のための統計モデリング入門](https://www.amazon.co.jp/dp/400006973X)をご一読されるのが良いでしょう。
 
 ## ベイズモデル
 
@@ -829,7 +829,7 @@ $$p(A|B) \propto p(B|A) \cdot p(A)$$
 
 という形に変形できます。この式を見ると、$p(A)$は既知のAの確率、$p(B|A)$はAとBが入れ替わっている、つまり尤度で、尤度と既知の確率の掛け算に条件付き確率$p(A|B)$が比例する、という式になっています。この式のうち、$p(A)$を**事前分布**、$p(B|A)$をデータから得られる**尤度**、$p(A|B)$を**事後分布**とします。この式は既知の事前分布とデータから計算できる尤度が分かれば、データが得られた後に更新された事後分布がわかるという、データが取れたときの確率の更新の式として用いられています。
 
-このベイズの法則を用いて、事前分布を仮に置き（無情報事前分布というものを用います）、データの尤度から事後分布を推定するのがベイズ統計モデリングと呼ばれる手法です。ただし、事前分布と尤度から事後分布を数理的に計算するのが難しいため、数理的に計算ができる事前分布である共役事前分布というものを用いたり、乱数計算（Malkov Chain Monte Carlo法：MCMC）を用いて計算します。詳しく学びたい方は[RとStanではじめる ベイズ統計モデリングによるデータ分析入門](https://www.amazon.co.jp/%E5%AE%9F%E8%B7%B5Data-Science%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA-R%E3%81%A8Stan%E3%81%A7%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-%E3%83%99%E3%82%A4%E3%82%BA%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AB%E3%82%88%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E5%88%86%E6%9E%90%E5%85%A5%E9%96%80-%E9%A6%AC%E5%A0%B4/dp/4065165369/ref=sr_1_9?crid=20JO6XKOMB6C6&dib=eyJ2IjoiMSJ9.ccSkcwrrFMGkM6w1Nb-wbu8EfVftH3K7zLvCgdrJYRC2N0YErf1EkcI9wTaYqCM0axrUblr9PWD-I3v0-RaQRXkK2us7vXdCqh5WW-yDhDj51QhPYPTtliXcb2RLhVXDQWwO7IM1i6VxsVCMGasJccQMmf_K3ss3kzYerpy87qlYPaaM8LK2ug9hwI280LlcEruKWf8MQp56koO4bwPcznWJJLJ9EWiJOa8j9H6m-M_SExCBbYEMS5j2Gt63-4IgzbwVWQEm-Tptv3NIaF9BPdd5r7WsvsvMK7-39DtrS0k.H_18-Puii7nrliRkOeR2uXLZNUTTqmsctKSaMe8CvxA&dib_tag=se&keywords=%E3%83%99%E3%82%A4%E3%82%BA%E7%B5%B1%E8%A8%88&qid=1744457056&sprefix=beizutouke%2Caps%2C173&sr=8-9)や[StanとRでベイズ統計モデリング](https://www.amazon.co.jp/Stan%E3%81%A8R%E3%81%A7%E3%83%99%E3%82%A4%E3%82%BA%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0-Wonderful-R-%E6%9D%BE%E6%B5%A6-%E5%81%A5%E5%A4%AA%E9%83%8E/dp/4320112423/ref=sr_1_21?crid=20JO6XKOMB6C6&dib=eyJ2IjoiMSJ9.ccSkcwrrFMGkM6w1Nb-wbu8EfVftH3K7zLvCgdrJYRC2N0YErf1EkcI9wTaYqCM0axrUblr9PWD-I3v0-RaQRXkK2us7vXdCqh5WW-yDhDj51QhPYPTtliXcb2RLhVXDQWwO7IM1i6VxsVCMGasJccQMmf_K3ss3kzYerpy87qlYPaaM8LK2ug9hwI280LlcEruKWf8MQp56koO4bwPcznWJJLJ9EWiJOa8j9H6m-M_SExCBbYEMS5j2Gt63-4IgzbwVWQEm-Tptv3NIaF9BPdd5r7WsvsvMK7-39DtrS0k.H_18-Puii7nrliRkOeR2uXLZNUTTqmsctKSaMe8CvxA&dib_tag=se&keywords=%E3%83%99%E3%82%A4%E3%82%BA%E7%B5%B1%E8%A8%88&qid=1744457056&sprefix=beizutouke%2Caps%2C173&sr=8-21)を読むのがよいでしょう。
+このベイズの法則を用いて、事前分布を仮に置き（無情報事前分布というものを用います）、データの尤度から事後分布を推定するのがベイズ統計モデリングと呼ばれる手法です。ただし、事前分布と尤度から事後分布を数理的に計算するのが難しいため、数理的に計算ができる事前分布である共役事前分布というものを用いたり、乱数計算（Malkov Chain Monte Carlo法：MCMC）を用いて計算します。詳しく学びたい方は[RとStanではじめる ベイズ統計モデリングによるデータ分析入門](https://www.amazon.co.jp/dp/4065165369)や[StanとRでベイズ統計モデリング](https://www.amazon.co.jp/dp/4320112423)を読むのがよいでしょう。
 
 :::
 
@@ -853,7 +853,7 @@ summary(fit1)
 plot(fit1, ask = FALSE)
 ```
 
-`brm`関数は[Stan](https://mc-stan.org/) [@stan_bib]という乱数計算プログラムに依存しています。さらに複雑なベイズ統計を用いる場合には、[rstan](https://cran.r-project.org/web/packages/rstan/index.html) [@rstan_bib]や[CmdStanR](https://github.com/stan-dev/cmdstanr/tree/master)といったパッケージを利用し、Stanの言語で統計モデルを直接記述し、計算する必要があります。興味がある方には教科書（[データ解析のための統計モデリング入門](https://www.amazon.co.jp/%E3%83%87%E3%83%BC%E3%82%BF%E8%A7%A3%E6%9E%90%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E4%B8%80%E8%88%AC%E5%8C%96%E7%B7%9A%E5%BD%A2%E3%83%A2%E3%83%87%E3%83%AB%E3%83%BB%E9%9A%8E%E5%B1%A4%E3%83%99%E3%82%A4%E3%82%BA%E3%83%A2%E3%83%87%E3%83%AB%E3%83%BBMCMC-%E7%A2%BA%E7%8E%87%E3%81%A8%E6%83%85%E5%A0%B1%E3%81%AE%E7%A7%91%E5%AD%A6-%E4%B9%85%E4%BF%9D-%E6%8B%93%E5%BC%A5/dp/400006973X/ref=sr_1_2?crid=2YDRTUCPZM4HJ&dib=eyJ2IjoiMSJ9.cLlyysXZ_iLOvRYhmMJO8JrLu9tI7C8BlfM7l-0RNeVcFhLjF1qiYu15YvB-rT3Lrpa8oFEXcgLjWYGoh0zZkiPv9d5OFqty6iHTINEyi_6ufuJ_m6rRoH5wQ7TGJFAN651BEnLDZSDbd00hNfVQe6E6exjz-me5Pc9uszWcbYM0xrlzNDIJLfKjaDW54iHjw0crxJ2958tU_HIWu8CyQKgGozQCr5-qa18BMNosh4lsn-4zDcwPLFxvELOeJV8Wl5Spd9jMCTr1kH-fLzwap-WclLOmTVanOXxEYKktzUo.AC94qccYjYbiT6GFuTJIqo4x3g9GOmWkp_8PFHe2fec&dib_tag=se&keywords=%E7%B5%B1%E8%A8%88%E3%83%A2%E3%83%87%E3%83%AA%E3%83%B3%E3%82%B0&qid=1727527212&sprefix=toukeimoderin%2Caps%2C173&sr=8-2)、[RとStanではじめる ベイズ統計モデリングによるデータ分析入門](https://www.amazon.co.jp/dp/B07WFD5RFS/)や[StanとRでベイズ統計モデリング]((https://www.amazon.co.jp/dp/4320112423/))）を読むことをおススメします。
+`brm`関数は[Stan](https://mc-stan.org/) [@stan_bib]という乱数計算プログラムに依存しています。さらに複雑なベイズ統計を用いる場合には、[rstan](https://cran.r-project.org/web/packages/rstan/index.html) [@rstan_bib]や[CmdStanR](https://github.com/stan-dev/cmdstanr/tree/master)といったパッケージを利用し、Stanの言語で統計モデルを直接記述し、計算する必要があります。興味がある方には教科書（[データ解析のための統計モデリング入門](https://www.amazon.co.jp/dp/400006973X)、[RとStanではじめる ベイズ統計モデリングによるデータ分析入門](https://www.amazon.co.jp/dp/B07WFD5RFS/)や[StanとRでベイズ統計モデリング](https://www.amazon.co.jp/dp/4320112423/)）を読むことをおススメします。
 
 ## ガウス過程回帰
 
@@ -1670,8 +1670,6 @@ plot(gam_trees1)
 以下の例では、1973年のNYの大気汚染データ（`airquality`）のうち、オゾン量（`Ozone`）を目的変数、日照（`Solar.R`）、風量（`Wind`）、気温（`Temp`）、5月1日からの日数（`days`）を説明変数とするGAMの計算を行っています。
 
 ```{r, filename="airqualityのデータをGAMで計算"}
-pacman::p_load(mgcv)
-
 aq <- airquality |> mutate(days = 1:nrow(airquality)) # 前準備
 
 # GAMの演算

@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>17&nbsp; データの読み込みと書き出し（I/O） – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/kbd/kbd.js"></script>
 <link href="site_libs/quarto-contrib/kbd/kbd.css" rel="stylesheet">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
@@ -766,6 +768,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -902,8 +910,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ワーキングディレクトリの確認と設定</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ワーキングディレクトリを確認</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"directory/name/as/character"</span><span class="op">)</span> <span class="co"># ワーキングディレクトリを変更</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ワーキングディレクトリを確認</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"directory/name/as/character"</span><span class="op">)</span> <span class="co"># ワーキングディレクトリを変更</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="絶対パスと相対パス" class="level3" data-number="17.1.2"><h3 data-number="17.1.2" class="anchored" data-anchor-id="絶対パスと相対パス">
@@ -929,10 +937,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>相対パスと絶対パス</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"../"</span><span class="op">)</span> <span class="co"># 一つ上のフォルダにワーキングディレクトリを移動</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"../"</span><span class="op">)</span> <span class="co"># 一つ上のフォルダにワーキングディレクトリを移動</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"./NameF"</span><span class="op">)</span> <span class="co"># 一つ下の「NameF」というフォルダにワーキングディレクトリを移動</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"NameF"</span><span class="op">)</span> <span class="co"># 上と同じ</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"NameF/NameF2"</span><span class="op">)</span> <span class="co"># NameFフォルダ内のNameF2というフォルダに移動</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"NameF/NameF2"</span><span class="op">)</span> <span class="co"># NameFフォルダ内のNameF2というフォルダに移動</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="ディレクトリ内のファイルの確認" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="ディレクトリ内のファイルの確認">
@@ -943,11 +951,11 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ディレクトリ内のファイル・フォルダの確認</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ディレクトリ名とファイル名が返ってくる</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ディレクトリ名とファイル名が返ってくる</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># dir関数と同じ</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.dirs</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ディレクトリ名のみ返ってくる</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># サブフォルダ内のファイル名も取得する</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># サブフォルダ内のファイル名も取得する</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="フォルダとファイルの作成" class="level2" data-number="17.3"><h2 data-number="17.3" class="anchored" data-anchor-id="フォルダとファイルの作成">
@@ -958,10 +966,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ディレクトリとファイルの作成</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"tmp"</span><span class="op">)</span> <span class="co"># 現在のワーキングディレクトリに「tmp」というフォルダを作成</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"tmp"</span><span class="op">)</span> <span class="co"># 現在のワーキングディレクトリに「tmp」というフォルダを作成</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"tmp"</span><span class="op">)</span> <span class="co"># 作成したフォルダにワーキングディレクトリを移動</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.create</a></span><span class="op">(</span><span class="st">"filename.txt"</span><span class="op">)</span> <span class="co"># 空のテキストファイルを作成</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"Hello world"</span>, file<span class="op">=</span><span class="st">"helloworld.txt"</span><span class="op">)</span> <span class="co"># Hello worldと書き込まれたテキストファイルを作成</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"Hello world"</span>, file<span class="op">=</span><span class="st">"helloworld.txt"</span><span class="op">)</span> <span class="co"># Hello worldと書き込まれたテキストファイルを作成</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="ワークスペースイメージ.rdataの保存" class="level2" data-number="17.4"><h2 data-number="17.4" class="anchored" data-anchor-id="ワークスペースイメージ.rdataの保存">
@@ -985,9 +993,9 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ワークスペースの保存と読み込み</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 現在メモリ上にある全てのオブジェクトを表示</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 現在メモリ上にある全てのオブジェクトを表示</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html">save.image</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ワークスペースのイメージを保存する</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">".Rdata"</span><span class="op">)</span> <span class="co"># ワークスペースのイメージを読み込む</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">".Rdata"</span><span class="op">)</span> <span class="co"># ワークスペースのイメージを読み込む</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="オブジェクトの保存と読み込み" class="level2" data-number="17.5"><h2 data-number="17.5" class="anchored" data-anchor-id="オブジェクトの保存と読み込み">
@@ -1001,7 +1009,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>オブジェクトの保存と読み込み</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html">save</a></span><span class="op">(</span><span class="va">x</span>, file <span class="op">=</span> <span class="st">"Robject.rda"</span><span class="op">)</span> <span class="co"># オブジェクトを保存</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># xを削除する</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"Robject.rda"</span><span class="op">)</span> <span class="co"># オブジェクトの読み込み</span></span>
@@ -1011,7 +1019,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu"><a href="https://rdrr.io/r/base/dput.html">dget</a></span><span class="op">(</span><span class="st">"Robject_dput.rda"</span><span class="op">)</span> <span class="co"># オブジェクトが返ってくる</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dput.html">dget</a></span><span class="op">(</span><span class="st">"Robject.rda"</span><span class="op">)</span> <span class="co"># エラー。saveで保存するとdgetで読み込めない</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"Robject_dput.rda"</span><span class="op">)</span> <span class="co"># エラー。dputで保存するとloadで読み込めない</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"Robject_dput.rda"</span><span class="op">)</span> <span class="co"># エラー。dputで保存するとloadで読み込めない</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="プログラムを呼び出す" class="level3" data-number="17.5.1"><h3 data-number="17.5.1" class="anchored" data-anchor-id="プログラムを呼び出す">
@@ -1022,7 +1030,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>source関数でプログラムの呼び出し</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"code_hello_world.R"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"code_hello_world.R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="データの読み込み" class="level2" data-number="17.6"><h2 data-number="17.6" class="anchored" data-anchor-id="データの読み込み">
@@ -1046,12 +1054,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p>これらのうち、スペース切りテキストについてはデータにスペースが入っていると読み込みが難しくなるため、通常は避けられます。固定幅テキストはやや取り扱いにくいため、Excelからの変換には用いません。したがって、Excelファイルは主にコンマ切りテキストかタブ切りテキストに変換して、Rで読み込むことになります。</p>
 <p>Excelファイルからコンマ切り・タブ切りテキストへの変換はExcel上で行います。Excelの「ファイル」メニューから「名前を付けて保存」を選択し、ファイル名の下のドロップダウンリストから「CSV UTF-8 (コンマ区切り)(*.csv)」もしくは「テキスト (タブ区切り)(*.txt)」を選択します。拡張子である「.csv」や「.txt」は自動的に付与されます。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-エンコーディング
+<span class="screen-reader-only">Tip</span>エンコーディング
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1066,12 +1074,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <figcaption>図8：Excelでコンマ切り・タブ切りテキストを作成する</figcaption></figure>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Excelの空欄データ
+<span class="screen-reader-only">Tip</span>Excelの空欄データ
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1099,7 +1107,7 @@ Excelの空欄データ
 <div class="code-with-filename-file">
 <pre><strong>scan関数でテキストファイルを読み込む</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/scan.html">scan</a></span><span class="op">(</span><span class="st">"./data/scansample.txt"</span>, sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span> <span class="co"># コンマ切りテキストを読み込む</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/scan.html">scan</a></span><span class="op">(</span><span class="st">"./data/scansample.txt"</span>, sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span> <span class="co"># コンマ切りテキストを読み込む</span></span>
 <span><span class="co">## [1] 1 2 3 4 5 6 7 8</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/scan.html">scan</a></span><span class="op">(</span><span class="st">"./data/scansample.txt"</span>, sep <span class="op">=</span> <span class="st">","</span>, what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="co"># 出力をリストにする</span></span>
@@ -1107,7 +1115,7 @@ Excelの空欄データ
 <span><span class="co">## [1] "1" "3" "5" "7"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
-<span><span class="co">## [1] "2" "4" "6" "8"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "2" "4" "6" "8"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="read.table関数" class="level3" data-number="17.6.3"><h3 data-number="17.6.3" class="anchored" data-anchor-id="read.table関数">
@@ -1301,22 +1309,22 @@ Excelの空欄データ
 <div class="code-with-filename-file">
 <pre><strong>テキストファイルの読み込み</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"filename.txt"</span>, sep<span class="op">=</span><span class="st">"\t"</span>, header<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"filename.txt"</span>, sep<span class="op">=</span><span class="st">"\t"</span>, header<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"filename.txt"</span>, sep<span class="op">=</span><span class="st">"\t"</span>, header<span class="op">=</span><span class="cn">T</span>, stringAsFactors <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"filename.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv2</a></span><span class="op">(</span><span class="st">"filename.csv"</span><span class="op">)</span> <span class="co"># ヨーロッパ仕様</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="st">"filename.tsv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim2</a></span><span class="op">(</span><span class="st">"filename.tsv"</span><span class="op">)</span> <span class="co"># ヨーロッパ仕様</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/read.fwf.html">read.fwf</a></span><span class="op">(</span><span class="st">"filename.txt"</span><span class="op">)</span> <span class="co"># 固定幅テキスト</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/read.fwf.html">read.fwf</a></span><span class="op">(</span><span class="st">"filename.txt"</span><span class="op">)</span> <span class="co"># 固定幅テキスト</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-ヨーロッパで準備されたファイルのデータ読み込み
+<span class="screen-reader-only">Tip</span>ヨーロッパで準備されたファイルのデータ読み込み
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1332,18 +1340,18 @@ Excelの空欄データ
 <p>WindowsではテキストファイルのエンコーディングがShift JIS（CP932）になっている場合がありますので、「<code>fileEncoding = "CP932"</code>」を引数に指定しないと読み込めないことがあります。エンコーディングがUTF-8であれば、<code>fileEncoding</code>を指定する必要はありません。</p>
 </section></section><section id="クリップボードからの読み込み" class="level3" data-number="17.6.5"><h3 data-number="17.6.5" class="anchored" data-anchor-id="クリップボードからの読み込み">
 <span class="header-section-number">17.6.5</span> クリップボードからの読み込み</h3>
-<p>Rでは、コピーしたテキストをクリップボードから読み込むこともできます。<kbd aria-hidden="true">Ctrl+C</kbd><span class="visually-hidden">Ctrl+C</span>などでコピーしたテキストを読み込む場合には、<code>read.table</code>関数の引数に<code>"clipboard"</code>を指定します。</p>
+<p>Rでは、コピーしたテキストをクリップボードから読み込むこともできます。<kbd title="Ctrl+C" aria-hidden="true">Ctrl+C</kbd><span class="visually-hidden">Ctrl+C</span>などでコピーしたテキストを読み込む場合には、<code>read.table</code>関数の引数に<code>"clipboard"</code>を指定します。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>クリップボードの内容を読み込む</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"clipboard"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"clipboard"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="データの書き出し" class="level2" data-number="17.7"><h2 data-number="17.7" class="anchored" data-anchor-id="データの書き出し">
 <span class="header-section-number">17.7</span> データの書き出し</h2>
-<p>Rからのデータの書き出しでは、通常テキストファイルが書き出されます。Excelファイルに直接書き出すこともできなくは無いのですが（<a href="https://cran.r-project.org/web/packages/xlsx/index.html"><code>xlsx</code></a>パッケージ <span class="citation" data-cites="xlsx_bib">(<a href="references.html#ref-xlsx_bib" role="doc-biblioref">Dragulescu and Arendt 2020</a>)</span>を利用する）、それほど一般的ではありません。データの書き出しに用いられる関数には、<code>write</code>関数、<code>write.table</code>関数などがあります。</p>
+<p>Rからのデータの書き出しでは、通常テキストファイルが書き出されます。Excelファイルに直接書き出すこともできなくは無いのですが（<a href="https://cran.r-project.org/web/packages/xlsx/index.html"><code>xlsx</code></a>パッケージ <span class="citation" data-cites="xlsx_bib">(<a href="#ref-xlsx_bib" role="doc-biblioref">Dragulescu and Arendt 2020</a>)</span>を利用する）、それほど一般的ではありません。データの書き出しに用いられる関数には、<code>write</code>関数、<code>write.table</code>関数などがあります。</p>
 <section id="writecat関数" class="level3" data-number="17.7.1"><h3 data-number="17.7.1" class="anchored" data-anchor-id="writecat関数">
 <span class="header-section-number">17.7.1</span> write・cat関数</h3>
 <p>ベクターや行列などのデータの書き出しには、<code>write</code>関数・<code>cat</code>関数を用います。<code>write</code>関数は<code>cat</code>関数のラッパーで、2つの関数の間には大きな差はありません。<code>cat</code>関数はオブジェクトをコンソールに表示するために用いられますが、ファイルを出力する事もできます。<code>print</code>関数を用いてもコンソールへ表示することはできますが、ファイルを保存することはできません。</p>
@@ -1353,12 +1361,12 @@ Excelの空欄データ
 <div class="code-with-filename-file">
 <pre><strong>cat・write関数でのオブジェクトの表示</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">vec</span><span class="op">)</span> <span class="co"># consoleにvecを表示</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/write.html">write</a></span><span class="op">(</span><span class="va">vec</span>, <span class="st">""</span><span class="op">)</span> <span class="co"># cat関数と同じ（第2引数が無いとファイル保存が行われる）</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">vec</span><span class="op">)</span> <span class="co"># print関数でも表示できる</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">vec</span><span class="op">)</span> <span class="co"># print関数でも表示できる</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1366,9 +1374,9 @@ Excelの空欄データ
 <div class="code-with-filename-file">
 <pre><strong>cat・write関数でのファイルの保存</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">vec</span>, file<span class="op">=</span><span class="st">"cat.txt"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">vec</span>, file<span class="op">=</span><span class="st">"cat.txt"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/write.html">write</a></span><span class="op">(</span><span class="va">vec</span>, file<span class="op">=</span><span class="st">"vector.txt"</span>, sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">vec</span>, <span class="st">"print.txt"</span><span class="op">)</span> <span class="co"># エラー</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">vec</span>, <span class="st">"print.txt"</span><span class="op">)</span> <span class="co"># エラー</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="write.table関数" class="level3" data-number="17.7.2"><h3 data-number="17.7.2" class="anchored" data-anchor-id="write.table関数">
@@ -1382,26 +1390,26 @@ Excelの空欄データ
 <div class="code-with-filename-file">
 <pre><strong>write.table関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span><span class="op">(</span><span class="va">df_obj</span>, <span class="st">"filename.txt"</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span><span class="op">(</span><span class="va">df_obj</span>, <span class="st">"filename.txt"</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 列名あり、行名なし、ダブルクオーテーションなしで出力</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span><span class="op">(</span><span class="va">df_obj</span>, <span class="st">"filename.txt"</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, col.names <span class="op">=</span> <span class="cn">T</span>, row.names <span class="op">=</span> <span class="cn">F</span>, quote <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">df_obj</span>, <span class="st">"filename.csv"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv2</a></span><span class="op">(</span><span class="va">df_obj</span>, <span class="st">"filename.csv"</span><span class="op">)</span> <span class="co">#  ヨーロッパ仕様</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv2</a></span><span class="op">(</span><span class="va">df_obj</span>, <span class="st">"filename.csv"</span><span class="op">)</span> <span class="co">#  ヨーロッパ仕様</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="readr" class="level2" data-number="17.8"><h2 data-number="17.8" class="anchored" data-anchor-id="readr">
 <span class="header-section-number">17.8</span> readr</h2>
 <p>RのデフォルトのI/Oは上記の通りですが、<code>read.table</code>関数、<code>write.table</code>関数を用いると、指定する引数が多かったり、読み込んだ列のデータ型が思うように設定されなかったりすることがよく起こります。また、デフォルトの関数群ではその実行速度が遅く、大きなデータを取り扱う場合には読み込みにとても時間がかかる、という問題もあります。</p>
-<p>これらの不都合を解決するI/Oに関するパッケージが<code>readr</code>パッケージ <span class="citation" data-cites="readr_bib">(<a href="references.html#ref-readr_bib" role="doc-biblioref">Wickham, Hester, and Bryan 2023</a>)</span>です。<code>readr</code>パッケージは、Rのデフォルトの関数名のピリオドをアンダースコア（<code>_</code>）に変換した関数群を備えており、列の型をうまく設定してくれる仕組みを備えています。また、デフォルトの関数よりも実行速度が速いため、大きなデータを取り扱う場合には、<code>readr</code>の関数群を用いたほうが良いでしょう。</p>
-<p><code>readr</code>パッケージは<code>tidyverse</code> <span class="citation" data-cites="tidyverse_bib">(<a href="references.html#ref-tidyverse_bib" role="doc-biblioref">Wickham et al. 2019</a>)</span>を構成するパッケージの一つであり、インストール・ロードは<code>tidyverse</code>パッケージのインストール・ロードと同時に行うことができます。</p>
+<p>これらの不都合を解決するI/Oに関するパッケージが<code>readr</code>パッケージ <span class="citation" data-cites="readr_bib">(<a href="#ref-readr_bib" role="doc-biblioref">Wickham, Hester, et al. 2023</a>)</span>です。<code>readr</code>パッケージは、Rのデフォルトの関数名のピリオドをアンダースコア（<code>_</code>）に変換した関数群を備えており、列の型をうまく設定してくれる仕組みを備えています。また、デフォルトの関数よりも実行速度が速いため、大きなデータを取り扱う場合には、<code>readr</code>の関数群を用いたほうが良いでしょう。</p>
+<p><code>readr</code>パッケージは<code>tidyverse</code> <span class="citation" data-cites="tidyverse_bib">(<a href="#ref-tidyverse_bib" role="doc-biblioref">Wickham et al. 2019</a>)</span>を構成するパッケージの一つであり、インストール・ロードは<code>tidyverse</code>パッケージのインストール・ロードと同時に行うことができます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>readrの読み込み</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="readrテキストデータの読み込み" class="level3" data-number="17.8.1"><h3 data-number="17.8.1" class="anchored" data-anchor-id="readrテキストデータの読み込み">
@@ -1414,7 +1422,7 @@ Excelの空欄データ
 <div class="code-with-filename-file">
 <pre><strong>readrでテキストファイルを読み込む</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">read_table</span><span class="op">(</span><span class="st">"filename.txt"</span><span class="op">)</span> <span class="co"># sep=" "（スペース切り）がデフォルト</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">read_table</span><span class="op">(</span><span class="st">"filename.txt"</span><span class="op">)</span> <span class="co"># sep=" "（スペース切り）がデフォルト</span></span>
 <span><span class="fu">read_csv</span><span class="op">(</span><span class="st">"filename.csv"</span><span class="op">)</span> <span class="co"># コンマ切りテキスト</span></span>
 <span><span class="fu">read_tsv</span><span class="op">(</span><span class="st">"filename.tsv"</span><span class="op">)</span> <span class="co"># タブ切りテキスト</span></span>
 <span><span class="fu">read_delim</span><span class="op">(</span><span class="st">"filename.txt"</span>, delim<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span> <span class="co"># delim引数に区切りを指定</span></span>
@@ -1423,7 +1431,7 @@ Excelの空欄データ
 <span></span>
 <span><span class="fu">read_delim</span><span class="op">(</span><span class="fu">clipboard</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># クリップボードの読み込み</span></span>
 <span></span>
-<span><span class="fu">read_table</span><span class="op">(</span><span class="st">"filename.zip"</span><span class="op">)</span> <span class="co"># zipファイルも直接読み込める</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">read_table</span><span class="op">(</span><span class="st">"filename.zip"</span><span class="op">)</span> <span class="co"># zipファイルも直接読み込める</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="tibble" class="level3" data-number="17.8.2"><h3 data-number="17.8.2" class="anchored" data-anchor-id="tibble">
@@ -1436,7 +1444,7 @@ Excelの空欄データ
 <div class="code-with-filename-file">
 <pre><strong>tibble</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># tibbleを作成する（data.frame関数とほぼ同じ）</span></span>
 <span><span class="fu">tibble</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">F</span>, <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
@@ -1462,7 +1470,7 @@ Excelの空欄データ
 <span><span class="co">##  8          5           3.4          1.5         0.2 setosa </span></span>
 <span><span class="co">##  9          4.4         2.9          1.4         0.2 setosa </span></span>
 <span><span class="co">## 10          4.9         3.1          1.5         0.1 setosa </span></span>
-<span><span class="co">## # ℹ 140 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 140 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="readrテキストファイルの書き出し" class="level3" data-number="17.8.3"><h3 data-number="17.8.3" class="anchored" data-anchor-id="readrテキストファイルの書き出し">
@@ -1474,19 +1482,19 @@ Excelの空欄データ
 <div class="code-with-filename-file">
 <pre><strong>readrでのファイル書き出し</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">write_csv</span><span class="op">(</span><span class="va">x</span>, <span class="st">"filename.csv"</span><span class="op">)</span> <span class="co"># コンマ切り</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">write_csv</span><span class="op">(</span><span class="va">x</span>, <span class="st">"filename.csv"</span><span class="op">)</span> <span class="co"># コンマ切り</span></span>
 <span><span class="fu">write_tsv</span><span class="op">(</span><span class="va">x</span>, <span class="st">"filename.tsv"</span><span class="op">)</span> <span class="co"># タブ切り</span></span>
 <span><span class="fu">write_delim</span><span class="op">(</span><span class="va">x</span>, <span class="st">"filename.txt"</span><span class="op">)</span> <span class="co"># スペース切り</span></span>
 <span><span class="fu">write_csv2</span><span class="op">(</span><span class="va">x</span>, <span class="st">"filename.csv"</span><span class="op">)</span> <span class="co"># ヨーロッパ仕様</span></span>
 <span></span>
 <span><span class="fu">write_csv</span><span class="op">(</span><span class="va">x</span>, <span class="st">"filename.gz"</span><span class="op">)</span> <span class="co"># gzipで圧縮して出力</span></span>
 <span><span class="fu">write_csv</span><span class="op">(</span><span class="va">x</span>, <span class="st">"filename.bz2"</span><span class="op">)</span> <span class="co"># bzip2で圧縮して出力</span></span>
-<span><span class="fu">write_csv</span><span class="op">(</span><span class="va">x</span>, <span class="st">"filename.xz"</span><span class="op">)</span> <span class="co"># lzmaで圧縮して出力</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">write_csv</span><span class="op">(</span><span class="va">x</span>, <span class="st">"filename.xz"</span><span class="op">)</span> <span class="co"># lzmaで圧縮して出力</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="readxl" class="level2" data-number="17.9"><h2 data-number="17.9" class="anchored" data-anchor-id="readxl">
 <span class="header-section-number">17.9</span> readxl</h2>
-<p>私のようなヘボいR使いは昔から上記のようにExcelをテキストファイルに変換してはRに読み込むというステップを踏み続けてきました。このExcelからテキストへの変換の手間を無くすパッケージが<code>readxl</code>パッケージ <span class="citation" data-cites="readxl_bib">(<a href="references.html#ref-readxl_bib" role="doc-biblioref">Wickham and Bryan 2023</a>)</span>です。</p>
+<p>私のようなヘボいR使いは昔から上記のようにExcelをテキストファイルに変換してはRに読み込むというステップを踏み続けてきました。このExcelからテキストへの変換の手間を無くすパッケージが<code>readxl</code>パッケージ <span class="citation" data-cites="readxl_bib">(<a href="#ref-readxl_bib" role="doc-biblioref">Wickham and Bryan 2023</a>)</span>です。</p>
 <p><code>readxl</code>パッケージも<code>tidyverse</code>と同じく、<a href="https://posit.co/">Posit Software</a>が開発しているパッケージですが、<code>tidyverse</code>には含まれていません。<code>tidyverse</code>とは別に、<code>readxl</code>パッケージを独立に読み込む必要があります。</p>
 <p><code>readxl</code>パッケージは<code>read_excel</code>関数以外に、Excelファイルのメタデータ読み込みのための関数などを備えています。</p>
 <div class="cell">
@@ -1494,18 +1502,18 @@ Excelの空欄データ
 <div class="code-with-filename-file">
 <pre><strong>readxlでExcelファイルを読み込む</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">readxl</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">readxl</span><span class="op">)</span></span>
 <span><span class="fu">read_excel</span><span class="op">(</span><span class="st">"filename.xlsx"</span>, sheet <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># read_xlsxが読み込まれる</span></span>
-<span><span class="fu">read_excel</span><span class="op">(</span><span class="st">"filename.xls"</span>, sheet <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># read_xlsが読み込まれる</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">read_excel</span><span class="op">(</span><span class="st">"filename.xls"</span>, sheet <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># read_xlsが読み込まれる</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-read_excel関数とExcelファイルの種類
+<span class="screen-reader-only">Tip</span>read_excel関数とExcelファイルの種類
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1526,34 +1534,34 @@ read_excel関数とExcelファイルの種類
 <p><a href="https://posit.co/">Posit Software</a>は<code>readxl</code>の他にも、多数のデータ読み込み用パッケージを開発しています。以下に示したパッケージを利用することで、様々なデータ型のファイルをRで読み込み、統計に用いることができます。</p>
 <ul>
 <li>
-<a href="https://googlesheets4.tidyverse.org/"><code>googlesheets4</code></a>：Googleスプレッドシートの読み込み <span class="citation" data-cites="googlesheets4_bib">(<a href="references.html#ref-googlesheets4_bib" role="doc-biblioref">Bryan 2023</a>)</span>
+<a href="https://googlesheets4.tidyverse.org/"><code>googlesheets4</code></a>：Googleスプレッドシートの読み込み <span class="citation" data-cites="googlesheets4_bib">(<a href="#ref-googlesheets4_bib" role="doc-biblioref">Bryan 2023</a>)</span>
 </li>
 <li>
-<a href="https://haven.tidyverse.org/"><code>haven</code></a>：SAS、SPSS、Stataファイルの読み込み <span class="citation" data-cites="haven_bib">(<a href="references.html#ref-haven_bib" role="doc-biblioref">Wickham, Miller, and Smith 2023</a>)</span>
+<a href="https://haven.tidyverse.org/"><code>haven</code></a>：SAS、SPSS、Stataファイルの読み込み <span class="citation" data-cites="haven_bib">(<a href="#ref-haven_bib" role="doc-biblioref">Wickham, Miller, et al. 2023</a>)</span>
 </li>
 <li>
-<a href="https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html"><code>jsonlite</code></a>：jsonファイルの読み込み <span class="citation" data-cites="jsonlite_bib">(<a href="references.html#ref-jsonlite_bib" role="doc-biblioref">Ooms 2014</a>)</span>
+<a href="https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html"><code>jsonlite</code></a>：jsonファイルの読み込み <span class="citation" data-cites="jsonlite_bib">(<a href="#ref-jsonlite_bib" role="doc-biblioref">Ooms 2014</a>)</span>
 </li>
 <li>
-<a href="https://httr2.r-lib.org/"><code>httr2</code></a>：Webからの読み込み <span class="citation" data-cites="httr2_bib">(<a href="references.html#ref-httr2_bib" role="doc-biblioref">Wickham 2023</a>)</span>
+<a href="https://httr2.r-lib.org/"><code>httr2</code></a>：Webからの読み込み <span class="citation" data-cites="httr2_bib">(<a href="#ref-httr2_bib" role="doc-biblioref">Wickham 2023</a>)</span>
 </li>
 <li>
-<a href="https://rvest.tidyverse.org/"><code>rvest</code></a>：スクレイピング用パッケージ <span class="citation" data-cites="rvest_bib">(<a href="references.html#ref-rvest_bib" role="doc-biblioref">Wickham 2022</a>)</span>
+<a href="https://rvest.tidyverse.org/"><code>rvest</code></a>：スクレイピング用パッケージ <span class="citation" data-cites="rvest_bib">(<a href="#ref-rvest_bib" role="doc-biblioref">Wickham 2022</a>)</span>
 </li>
 <li>
-<a href="https://dbi.r-dbi.org/"><code>DBI</code></a>：データベースの読み込み <span class="citation" data-cites="DBI_bib">(<a href="references.html#ref-DBI_bib" role="doc-biblioref">R Special Interest Group on Databases (R-SIG-DB), Wickham, and Müller 2024</a>)</span>
+<a href="https://dbi.r-dbi.org/"><code>DBI</code></a>：データベースの読み込み <span class="citation" data-cites="DBI_bib">(<a href="#ref-DBI_bib" role="doc-biblioref">R Special Interest Group on Databases (R-SIG-DB) et al. 2024</a>)</span>
 </li>
 </ul></section><section id="data.table" class="level2" data-number="17.12"><h2 data-number="17.12" class="anchored" data-anchor-id="data.table">
 <span class="header-section-number">17.12</span> data.table</h2>
 <p>近年のデータサイエンスでは、時に数百万～数千億程度のデータを取り扱うこともあります。個人のPCでRを使ってこのような超大規模のデータを取り扱うのは現実的ではありませんが、数万～数十万行ぐらいのデータをPCで取り扱うことは増えてきています。例えば、生物分野では<a href="https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%A2%E3%83%AC%E3%82%A4">マイクロアレイ</a>や<a href="https://jp.illumina.com/content/dam/illumina-marketing/apac/japan/documents/pdf/primer_illumina_sequencing_introduction-j.pdf">高速シークエンサー</a>のデータは数万～数十万行で、分析を個人が、自分のPCで取り扱うこともあるかと思います。自分でマイクロアレイやシークエンサーを使ってデータを出さなくても、<a href="https://www.ncbi.nlm.nih.gov/gds">GEO Dataset</a>などからデータを取得して、解析してみることも一般的に行われています。</p>
-<p>このような超巨大データを取り扱う場合、R謹製の<code>read.table</code>関数では手に余りますし、<code>read_table</code>関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労することがあります。このような大規模データの読み込みに特化したパッケージが、<a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html"><code>data.table</code></a>パッケージ <span class="citation" data-cites="datatable_bib">(<a href="references.html#ref-datatable_bib" role="doc-biblioref">Barrett, Dowle, and Srinivasan 2023</a>)</span>です。<code>data.table</code>を用いることで、大規模データを高速に読み込み、利用できます。</p>
+<p>このような超巨大データを取り扱う場合、R謹製の<code>read.table</code>関数では手に余りますし、<code>read_table</code>関数を用いても、読み込んだ後のデータ処理が重く、取り扱いに苦労することがあります。このような大規模データの読み込みに特化したパッケージが、<a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html"><code>data.table</code></a>パッケージ <span class="citation" data-cites="datatable_bib">(<a href="#ref-datatable_bib" role="doc-biblioref">Barrett et al. 2023</a>)</span>です。<code>data.table</code>を用いることで、大規模データを高速に読み込み、利用できます。</p>
 <p><code>data.table</code>パッケージでデータを読み込むときには、<code>fread</code>関数を用います。<code>fread</code>関数はhtmlからの読み込みにも対応しています。読み込んだデータは<code>data.table</code>クラスのオブジェクトとなります。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>data.tableパッケージのfread関数でファイルを読み込む</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">data.table</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">data.table</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># flights14（NYのフライトデータ、25万行11列）をinputとする</span></span>
 <span><span class="va">input</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv"</span></span>
@@ -1562,7 +1570,7 @@ read_excel関数とExcelファイルの種類
 <span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="fu">fread</span><span class="op">(</span><span class="va">input</span><span class="op">)</span> <span class="co"># 219MBのデータ読み込み</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>data.table</code>の取り扱いの方法はほぼデータフレームと同じです。<code>data.table</code>はインデックスからデータの要約ができる機構を備えています。ただし、<a href="./chapter20.html">20章</a>で説明する<code>tidyr</code>・<code>dplyr</code>の関数も適用できますので、データの要約は<code>tidyr</code>・<code>dplyr</code>で行ってもよいでしょう。</p>
@@ -1571,7 +1579,7 @@ read_excel関数とExcelファイルの種類
 <div class="code-with-filename-file">
 <pre><strong>data.tableクラスの取り扱い</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span><span class="op">[</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">]</span> <span class="co"># 通常のインデックスに対応</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span><span class="op">[</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">]</span> <span class="co"># 通常のインデックスに対応</span></span>
 <span></span>
 <span><span class="va">flights</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span> <span class="co"># 行列を指定しない場合は、行のインデックスになる</span></span>
 <span></span>
@@ -1581,16 +1589,16 @@ read_excel関数とExcelファイルの種類
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">flights</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">month</span>, <span class="va">day</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="co"># monthとdayの列を選択</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">flights</span><span class="op">$</span><span class="va">origin</span><span class="op">)</span> <span class="co"># originの列を抽出</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">flights</span><span class="op">$</span><span class="va">origin</span><span class="op">)</span> <span class="co"># originの列を抽出</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-data.tableでのデータ取り扱い
+<span class="screen-reader-only">Tip</span>data.tableでのデータ取り扱い
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1604,7 +1612,7 @@ data.tableでのデータ取り扱い
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-datatable_bib" class="csl-entry" role="listitem">
 Barrett, Tyson, Matt Dowle, and Arun Srinivasan. 2023. <em>Data.table: Extension of ‘Data.frame‘</em>. <a href="https://CRAN.R-project.org/package=data.table">https://CRAN.R-project.org/package=data.table</a>.
 </div>
@@ -1624,10 +1632,10 @@ R Special Interest Group on Databases (R-SIG-DB), Hadley Wickham, and Kirill Mü
 Wickham, Hadley. 2022. <em>Rvest: Easily Harvest (Scrape) Web Pages</em>. <a href="https://CRAN.R-project.org/package=rvest">https://CRAN.R-project.org/package=rvest</a>.
 </div>
 <div id="ref-httr2_bib" class="csl-entry" role="listitem">
-———. 2023. <em>Httr2: Perform HTTP Requests and Process the Responses</em>. <a href="https://CRAN.R-project.org/package=httr2">https://CRAN.R-project.org/package=httr2</a>.
+Wickham, Hadley. 2023. <em>Httr2: Perform HTTP Requests and Process the Responses</em>. <a href="https://CRAN.R-project.org/package=httr2">https://CRAN.R-project.org/package=httr2</a>.
 </div>
 <div id="ref-tidyverse_bib" class="csl-entry" role="listitem">
-Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
 </div>
 <div id="ref-readxl_bib" class="csl-entry" role="listitem">
 Wickham, Hadley, and Jennifer Bryan. 2023. <em>Readxl: Read Excel Files</em>. <a href="https://CRAN.R-project.org/package=readxl">https://CRAN.R-project.org/package=readxl</a>.
@@ -1703,13 +1711,14 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2112,7 +2121,7 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb21" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># データの読み込みと書き出し（I/O）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># データの読み込みと書き出し（I/O）</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -2578,7 +2587,7 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
 <span id="cb21-464"><a href="#cb21-464" aria-hidden="true" tabindex="-1"></a><span class="fu">## data.tableでのデータ取り扱い</span></span>
 <span id="cb21-465"><a href="#cb21-465" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-466"><a href="#cb21-466" aria-hidden="true" tabindex="-1"></a> <span class="in">`data.table`</span>が使われ始めた頃は、<span class="in">`data.table`</span>オブジェクトの取り扱い方がデータフレームとは大きく異なっており、かなりとっつきにくかったのですが、現在ではデータフレームとほぼ同じ取り扱いができるようになっています。</span>
-<span id="cb21-467"><a href="#cb21-467" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb21-467"><a href="#cb21-467" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -2593,7 +2602,11 @@ Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import and Expor
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

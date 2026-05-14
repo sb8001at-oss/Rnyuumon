@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>38&nbsp; Quarto：chunkとchunk option – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -59,7 +62,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -94,14 +96,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/kbd/kbd.js"></script>
 <link href="site_libs/quarto-contrib/kbd/kbd.css" rel="stylesheet">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
@@ -783,6 +785,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -854,18 +862,18 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>chunk</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># この間にコードを記載する</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>a</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># この間にコードを記載する</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># この間にコードを記載する</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>a</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 2 3 4 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 2 3 4 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>chunkはRだけではなく、Pythonのコード、Markdownを書き下すとき、<a href="./chapter37.html#フローチャートなど">37章</a>で説明した<a href="https://mermaid.js.org/">Mermaid</a>や<a href="https://graphviz.org/">Graphviz</a>などを用いる場合にも使用します。</p>
 <div class="cell">
@@ -873,10 +881,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>Pythonを実行する</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>] <span class="co"># リスト（Rにはない記法）</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -884,25 +892,25 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>Markdownのchunk</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{markdown}</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="al">![](.image/toba.jpg)</span> # 変換されず、そのまま表示される</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>Rstudioでは、<strong><kbd aria-hidden="true">Ctrl+ALT+I</kbd><span class="visually-hidden">Ctrl+ALT+I</span></strong>のショートカットで文章にチャンクを挿入することができます。</p>
+<p>Rstudioでは、<strong><kbd title="Ctrl+ALT+I" aria-hidden="true">Ctrl+ALT+I</kbd><span class="visually-hidden">Ctrl+ALT+I</span></strong>のショートカットで文章にチャンクを挿入することができます。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Pythonの実行
+<span class="screen-reader-only">Tip</span>Pythonの実行
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>上記のように、PythonのchunkがRのQuartoに含まれている場合には、<a href="https://rstudio.github.io/reticulate/"><code>reticulate</code></a>パッケージ<span class="citation" data-cites="reticulate_bib">(<a href="references.html#ref-reticulate_bib" role="doc-biblioref">Ushey, Allaire, and Tang 2025</a>)</span>（reticulated python、<em>Malayopython reticulatus</em>、和名：<a href="https://en.wikipedia.org/wiki/Reticulated_python">アミメニシキヘビ</a>より）により、Pythonのコードが実行されます。<code>reticulate::repl_python</code>関数を実行すると、コンソールの記号が<code>&gt;&gt;&gt;</code>に変化します。この記号が出ているときには、コンソールはPythonを実行するモードになっています。<code>exit</code>と入力することでPython実行モードからRの実行モードに戻すことができます。</p>
+<p>上記のように、PythonのchunkがRのQuartoに含まれている場合には、<a href="https://rstudio.github.io/reticulate/"><code>reticulate</code></a>パッケージ<span class="citation" data-cites="reticulate_bib">(<a href="#ref-reticulate_bib" role="doc-biblioref">Ushey et al. 2025</a>)</span>（reticulated python、<em>Malayopython reticulatus</em>、和名：<a href="https://en.wikipedia.org/wiki/Reticulated_python">アミメニシキヘビ</a>より）により、Pythonのコードが実行されます。<code>reticulate::repl_python</code>関数を実行すると、コンソールの記号が<code>&gt;&gt;&gt;</code>に変化します。この記号が出ているときには、コンソールはPythonを実行するモードになっています。<code>exit</code>と入力することでPython実行モードからRの実行モードに戻すことができます。</p>
 <p>Pythonのみを利用したQuartoでは、knitrではなくpython3というエンジン（Jupyterと同じものだと思います）が利用されるため、reticulateは呼び出されません。</p>
 </div>
 </div>
@@ -916,10 +924,10 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>chunk optionの利用</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># eval = FALSEはコードを実行しない際のchunk option</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ])</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><a href="./chapter35.html">35章</a>に示した通り、主なchunk optionには以下のようなものがあります。</p>
@@ -997,12 +1005,12 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>chunk optionをchunk内で宣言する</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: margin</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell page-columns page-full">
@@ -1010,7 +1018,7 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>chunk optionで.column-marginを設定し、右にアウトプットを表示</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 <div class="no-row-height column-margin column-container"><div class="cell-output-display">
@@ -1031,7 +1039,7 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>様々なchunk optionの設定</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8" data-cap-location="margin"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-cap-location="margin"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| filename: "様々なchunk optionの設定"</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "figure caption：出力した図にキャプションが付く（cap-location: marginなので右に表示）"</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "図が読みだせません"</span></span>
@@ -1039,7 +1047,7 @@ Pythonの実行
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#| cap-location: margin</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display page-columns page-full">
 <div class="quarto-figure quarto-figure-center page-columns page-full">
@@ -1060,9 +1068,9 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>通常の出力</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "通常の出力", echo="fenced"}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "通常の出力", echo="fenced"}</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する</code></pre>
@@ -1074,11 +1082,11 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>results: asis</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo="fenced", filename = "results: asis"}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo="fenced", filename = "results: asis"}</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: asis</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"[マークダウン](https://daringfireball.net/projects/markdown/)を**変換して**表示する</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><a href="https://daringfireball.net/projects/markdown/">マークダウン</a>を<strong>変換して</strong>表示する</p>
 </div>
@@ -1091,12 +1099,12 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>layout-ncolでグラフを横に並べる</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">color =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell quarto-layout-panel" data-layout-ncol="2">
@@ -1118,26 +1126,26 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>code-foldとcode-overflow</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</span>)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode markdown code-overflow-wrap code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode markdown code-overflow-wrap code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -1149,14 +1157,14 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>code-line-numbers</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "code-line-numbersを指定する"}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "code-line-numbersを指定する"}</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>a <span class="sc">+</span> b</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1164,9 +1172,9 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>code-line-numbersを指定する</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb16-2"><a href="#cb16-2"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb16-3"><a href="#cb16-3"></a>a <span class="sc">+</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-3"><a href="#cb16-3"></a>a <span class="sc">+</span> b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1178,11 +1186,11 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>cacheの設定</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: true</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="dv">1000000</span>, <span class="fu">rnorm</span>(<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1196,7 +1204,16 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>code annotation</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" data-llms-code-original="```{r}
+library(palmerpenguins)
+penguins$species |> levels() # <1>
+penguins |> 
+  group_by(species) |> 
+  summarise(mean_bm = mean(na.omit(body_mass_g))) # <2>
+```
+
+1. penguinsには3種のペンギンのデータが含まれる
+2. ジェンツーペンギンは一回り大きい"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>penguins<span class="sc">$</span>species <span class="sc">|&gt;</span> <span class="fu">levels</span>() <span class="co"># &lt;1&gt;</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
@@ -1205,15 +1222,19 @@ Pythonの実行
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>penguinsには3種のペンギンのデータが含まれる</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>ジェンツーペンギンは一回り大きい</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>ジェンツーペンギンは一回り大きい</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-18"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-18" data-llms-code-original="library(palmerpenguins)
+penguins$species |> levels() # <1>
+penguins |> 
+  group_by(species) |> 
+  summarise(mean_bm = mean(na.omit(body_mass_g))) # <2>"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-2" class="code-annotation-target"><a href="#annotated-cell-18-2" aria-hidden="true" tabindex="-1"></a>penguins<span class="sc">$</span>species <span class="sc">|&gt;</span> <span class="fu">levels</span>()</span>
 <span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
 <span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span> </span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-18-5" class="code-annotation-target"><a href="#annotated-cell-18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bm =</span> <span class="fu">mean</span>(<span class="fu">na.omit</span>(body_mass_g)))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-18-5" class="code-annotation-target"><a href="#annotated-cell-18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bm =</span> <span class="fu">mean</span>(<span class="fu">na.omit</span>(body_mass_g)))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
@@ -1245,7 +1266,7 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>インラインコードで出力する変数</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>次に、以下のように、<code>{r}</code>で囲い、Markdownの文中に記載することで、その文中のRのコードを実行することが出来ます。</p>
@@ -1254,17 +1275,17 @@ Pythonの実行
 <div class="code-with-filename-file">
 <pre><strong>インラインコード</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>変数<span class="in">`temp`</span>には<span class="in">`{\r} temp`</span>が代入されている。 # バックスラッシュは不要</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>変数<span class="in">`temp`</span>には<span class="in">`{\r} temp`</span>が代入されている。 # バックスラッシュは不要</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>変数<code>temp</code>には0.0318226が代入されている。</p>
+<p>変数<code>temp</code>には0.665197が代入されている。</p>
 <hr>
 <p>ただし、このインラインコードに長いスクリプトを書いてしまうと理解しにくいため、上記のように変数を呼びだす程度の利用にとどめる方がよいでしょう。</p>
 
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-reticulate_bib" class="csl-entry" role="listitem">
 Ushey, Kevin, JJ Allaire, and Yuan Tang. 2025. <em>Reticulate: Interface to ’Python’</em>. <a href="https://CRAN.R-project.org/package=reticulate">https://CRAN.R-project.org/package=reticulate</a>.
 </div>
@@ -1336,13 +1357,14 @@ Ushey, Kevin, JJ Allaire, and Yuan Tang. 2025. <em>Reticulate: Interface to ’P
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1747,7 +1769,289 @@ Ushey, Kevin, JJ Allaire, and Yuan Tang. 2025. <em>Reticulate: Interface to ’P
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb22" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Quarto：chunkとchunk option</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-shortcodes="false" data-llms-code-original="# Quarto：chunkとchunk option
+
+```{r, echo = FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+## chunk
+
+R markdownでRのコードを書くときには、**chunk**というものを用います。QuartoでもR markdownと同じく、chunkを用いてコードを書きます。chunkではbacktick3つ（`` ``` ``）の後にプログラミング言語の名前（Rの場合は`r`）を中括弧の中（`{}`）に記載します。次の行以降にRのスクリプトを書き、最後にbacktick3つ（`` ``` ``）を記載します。backtickの間のコードはQuartoをRenderする際に実行されます。
+
+````{markdown, filename=&quot;chunk&quot;}
+quarto-executable-code-5450563D
+
+```r
+# この間にコードを記載する
+a <- c(1, 2, 3, 4, 5)
+a
+```
+````
+
+```{r, collapse=TRUE}
+# この間にコードを記載する
+a <- c(1, 2, 3, 4, 5)
+a
+```
+
+chunkはRだけではなく、Pythonのコード、Markdownを書き下すとき、[37章](chapter37.qmd#フローチャートなど)で説明した[Mermaid](https://mermaid.js.org/)や[Graphviz](https://graphviz.org/)などを用いる場合にも使用します。
+
+````{markdown, filename=&quot;Pythonを実行する&quot;}
+quarto-executable-code-5450563D
+
+```python
+a = [1, 2, 3, 4, 5] # リスト（Rにはない記法）
+print(a)
+```
+````
+
+````{markdown, filename=&quot;Markdownのchunk&quot;}
+quarto-executable-code-5450563D
+
+```markdown
+![](.image/toba.jpg) # 変換されず、そのまま表示される
+```
+````
+
+Rstudioでは、**{{< kbd Ctrl+ALT+I >}}**のショートカットで文章にチャンクを挿入することができます。
+
+:::{.callout-tip collapse=&quot;true&quot;}
+## Pythonの実行
+
+上記のように、PythonのchunkがRのQuartoに含まれている場合には、[`reticulate`](https://rstudio.github.io/reticulate/)パッケージ[@reticulate_bib]（reticulated python、*Malayopython reticulatus*、和名：[アミメニシキヘビ](https://en.wikipedia.org/wiki/Reticulated_python)より）により、Pythonのコードが実行されます。`reticulate::repl_python`関数を実行すると、コンソールの記号が`>>>`に変化します。この記号が出ているときには、コンソールはPythonを実行するモードになっています。`exit`と入力することでPython実行モードからRの実行モードに戻すことができます。
+
+Pythonのみを利用したQuartoでは、knitrではなくpython3というエンジン（Jupyterと同じものだと思います）が利用されるため、reticulateは呼び出されません。
+:::
+
+## chunk option
+
+chunkには**chunk option**と呼ばれる、chunk実行時の設定を変更する機能があります。chunk optionは**chunkの`{}`の中**に以下のように記載し、用います。
+
+````{markdown, filename=&quot;chunk optionの利用&quot;}
+```{r, eval = FALSE}
+# eval = FALSEはコードを実行しない際のchunk option
+knitr::kable(iris[1:2, ])
+```
+````
+
+[35章](chapter35.qmd)に示した通り、主なchunk optionには以下のようなものがあります。
+
+```{r, echo=FALSE, message=FALSE}
+d <- read_excel(&quot;./data/chapter34_Rmarkdown.xlsx&quot;, sheet = 3)
+knitr::kable(d)
+```
+
+例えば、パッケージの読み込み時にメッセージが出る場合には`message=FALSE`を設定することで、メッセージが表示されないようにすることができます。エラーが出る処理を出力したいのであれば`error=TRUE`を、Rでの演算を実行したくない場合は`eval=FALSE`を、Rのスクリプトを表示したくない場合には`echo=FALSE`を設定するとよいでしょう。
+
+:::{callout-tip collapse=&quot;true&quot;}
+## chunk optionとYAMLの設定：echoとcode-fold
+
+YAML・chunk optionのどちらでも、`echo`や`code-fold`を指定することはできますが、YAMLで`code-fold: false`、chunkで`echo=FALSE`と、矛盾する指定を行うとエラーが出てRenderできなくなります。
+:::
+
+### chunk optionの記載位置について
+
+このchunk optionについては、QuartoではR markdownより大幅に拡張されています。例えば[前章で説明したレイアウト](chapter37.qmd#描画の幅の設定)に関しては、chunk optionに記載することでも設定することができます。
+
+chunk optionがたくさんあるため、`{}`の中にchunk optionを記載すると読みにくく、管理しにくくなります。Quartoでは以下のように、chunkの中に`#|`に続けて記載することで、chunk optionを設定できます。この場合、`=`を用いて指定していた値は、YAMLのように`:`を用いて記載します。
+
+````{markdown, filename=&quot;chunk optionをchunk内で宣言する&quot;}
+quarto-executable-code-5450563D
+
+```r
+#| message: false
+#| column: margin
+
+plot(cars)
+```
+````
+
+```{r, filename=&quot;chunk optionで.column-marginを設定し、右にアウトプットを表示&quot;}
+#| message: false
+#| column: margin
+#| collapse: true
+
+plot(cars)
+```
+
+`column`に設定する幅には、`margin`の他に`body`、`page`、`screen`の3つに加えて、`-outset`、`-inset`の2種、`-right`、`-left`の2つを後につけることで、表示する幅をコントロールすることもできます。
+
+### 図のキャプションやコード表示の指定：fig-cap/echo
+
+chunk optionには、出力される図（グラフなど）のキャプション（`fig-cap`）、図を読み出すことが出来ないときに表示されるテキスト（`fig-alt`）などを設定することもできます。
+
+また、以下のように`echo: fenced`を設定すると、表示されるコードにchunkが付いた形で表示されます。
+
+quarto-executable-code-5450563D
+
+```r
+#| filename: &quot;様々なchunk optionの設定&quot;
+#| fig-cap: &quot;figure caption：出力した図にキャプションが付く（cap-location: marginなので右に表示）&quot;
+#| fig-alt: &quot;図が読みだせません&quot;
+#| fig.height: 4
+#| cap-location: margin
+#| echo: fenced
+ 
+plot(cars)
+```
+
+また、`echo:fenced`の代わりに、括弧を2重（`{{}}`）にすることでもchunkを表示させることができます。ただし、この方法では他のオプションを指定しにくいため、`echo:fenced`を用いた方がよいでしょう。
+
+### 出力の表示方法の変更：results: asis
+
+以下の例のように、`cat`関数の返り値は通常文字列の返り値として、以下のように表示されます。
+
+```{r, filename = &quot;通常の出力&quot;, echo=&quot;fenced&quot;}
+cat(&quot;[マークダウン](https://daringfireball.net/projects/markdown/)を**そのまま**表示する\n&quot;)
+```
+
+`results: asis`はchunkの演算結果を通常の結果の表示方法ではなく、Markdownとしてそのまま出力するためのオプションです。`results: asis`を設定すると返り値が通常のMarkdownとして取り扱われ、リンクや太字の表示がMarkdownに従い変換されます。使いどころは難しいのですが、Rの出力の表示を変えたいときには使うことがあるかもしれません。
+
+```{r, echo=&quot;fenced&quot;, filename = &quot;results: asis&quot;}
+#| results: asis
+
+cat(&quot;[マークダウン](https://daringfireball.net/projects/markdown/)を**変換して**表示する\n&quot;)
+```
+
+### 図を複数列に並べて表示する：layout-ncol
+
+`layout-ncol`を用いることでRの出力するグラフを2列に並べることができます。
+
+````{markdown, filename=&quot;layout-ncolでグラフを横に並べる&quot;}
+```{r, echo = FALSE}
+#| layout-ncol: 2
+
+plot(cars)
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point(size=2)
+```
+````
+
+```{r, echo = FALSE}
+#| layout-ncol: 2
+
+plot(cars)
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point(size=2)
+```
+
+### コードの表示を折りたたむ：code-fold/code-overflow
+
+また、コードを折りたたむ場合には`code-fold: true`、長いコードを折り返し表示したい場合には`code-overflow: wrap`を指定します。
+
+````{markdown, filename=&quot;code-foldとcode-overflow&quot;}
+quarto-executable-code-5450563D
+
+```r
+#| echo: fenced
+#| code-overflow: wrap
+#| code-fold: true
+#| eval: false
+
+print(&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.&quot;)
+```
+````
+
+quarto-executable-code-5450563D
+
+```r
+#| echo: fenced
+#| code-overflow: wrap
+#| code-fold: true
+#| eval: false
+
+print(&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.&quot;)
+```
+
+### コードの行に番号を付ける：code-line-numbers
+
+`code-line-numbers`はコードの行に番号をつけるためのオプションです。`true`に指定することで、コードの行の頭に数字が付きます。後で説明するcode annotationという機能よりは簡潔に行数を表示し、説明しやすくすることができます。
+
+````{markdown, filename=&quot;code-line-numbers&quot;}
+```{r, filename = &quot;code-line-numbersを指定する&quot;}
+#| code-line-numbers: true
+#| eval: false
+
+a <- 1
+b <- 2
+a + b
+```
+````
+
+```{r, filename = &quot;code-line-numbersを指定する&quot;}
+#| code-line-numbers: true
+#| eval: false
+
+a <- 1
+b <- 2
+a + b
+```
+
+### 実行結果をキャッシュする：cache
+
+[cache](https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5_(%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0))（キャッシュ）とは、演算結果を保存しておくことで、コードを書き換えない時には以前に保存した結果を、コードを書き換えた時には新たな演算を実行するための、chunkの機能のことです。計算が重いchunkでは`cache:true`と設定しておくと、Renderするときの演算の時間を省略できます。
+
+````{markdown, filename=&quot;cacheの設定&quot;}
+quarto-executable-code-5450563D
+
+```r
+#| cache: true
+
+replicate(1000000, rnorm(1)) |> head()
+```
+````
+
+## code annotation
+
+code annotationとは、実行するRコードの行に番号を付け、その番号を引用して説明文を加えることができる、chunkの機能のことです。コードの内容を説明するときに使用すると、わかりやすいコードの説明を作成することができます。
+
+code annotationを用いる場合には、コードの行に`# <1>`などの数値を加え、chunkの下に箇条書き（`1. XXX`など）を記載します。箇条書きの数値の記載と、`# <1>`の数値が対応し、コードと箇条書きの両方に同じ形の番号が示されます。
+
+````{markdown, filename=&quot;code annotation&quot;}
+quarto-executable-code-5450563D
+
+```r
+library(palmerpenguins)
+penguins$species |> levels() # <1>
+penguins |> 
+  group_by(species) |> 
+  summarise(mean_bm = mean(na.omit(body_mass_g))) # <2>
+```
+
+1. penguinsには3種のペンギンのデータが含まれる
+2. ジェンツーペンギンは一回り大きい
+````
+
+```{r, message=FALSE}
+library(palmerpenguins)
+penguins$species |> levels() # <1>
+penguins |> 
+  group_by(species) |> 
+  summarise(mean_bm = mean(na.omit(body_mass_g))) # <2>
+```
+
+1. penguinsには3種のペンギンのデータが含まれる
+2. ジェンツーペンギンは一回り大きい
+
+## インラインのコード
+
+Quartoでは、chunkを書かずに、Markdownの文中でRを実行することもできます。例えば、chunkを用いて演算結果を変数に代入します。
+
+```{r, filename=&quot;インラインコードで出力する変数&quot;}
+temp <- rnorm(1)
+```
+
+次に、以下のように、`{r}`で囲い、Markdownの文中に記載することで、その文中のRのコードを実行することが出来ます。
+
+````{markdown, filename=&quot;インラインコード&quot;, eval=FALSE}
+変数`temp`には`{\r} temp`が代入されている。 # バックスラッシュは不要
+````
+
+変数`temp`には`{r} temp`が代入されている。
+
+<hr>
+
+ただし、このインラインコードに長いスクリプトを書いてしまうと理解しにくいため、上記のように変数を呼びだす程度の利用にとどめる方がよいでしょう。"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Quarto：chunkとchunk option</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE, message=FALSE}</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -2012,7 +2316,7 @@ Ushey, Kevin, JJ Allaire, and Yuan Tang. 2025. <em>Reticulate: Interface to ’P
 <span id="cb22-281"><a href="#cb22-281" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">hr</span><span class="dt">&gt;</span></span>
 <span id="cb22-282"><a href="#cb22-282" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-283"><a href="#cb22-283" aria-hidden="true" tabindex="-1"></a>ただし、このインラインコードに長いスクリプトを書いてしまうと理解しにくいため、上記のように変数を呼びだす程度の利用にとどめる方がよいでしょう。</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
@@ -2028,8 +2332,12 @@ Ushey, Kevin, JJ Allaire, and Yuan Tang. 2025. <em>Reticulate: Interface to ’P
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
-</div>
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
+    </div>
   </div>
 </footer>
 <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

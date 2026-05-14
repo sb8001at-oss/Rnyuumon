@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>47&nbsp; Shiny – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -764,6 +766,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -859,7 +867,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 
 
 </header><p>データを解析した後には、その結果を用いて他の人にデータや解析の意味を説明する必要があります。説明するために用いるものの一つが文書やプレゼンテーションです。文書やプレゼンテーションはR markdown・Quarto（<a href="./chapter35.html">35章～43章</a>参照）で作成することができます。</p>
-<p>もう一つの方法は、データを表示するためのウェブページを作成する方法です。ウェブページもR markdownで作成することはできますが、R markdownだけではインタラクティブなウェブページ、例えばデータを入力して、そのデータに応じたグラフを作成するようなもの、は作成することができません。このインタラクティブなウェブページを作成するためのRのツールが<strong><a href="https://shiny.posit.co/">Shiny</a></strong><span class="citation" data-cites="shiny_bib">(<a href="references.html#ref-shiny_bib" role="doc-biblioref">Chang et al. 2024</a>)</span>です。</p>
+<p>もう一つの方法は、データを表示するためのウェブページを作成する方法です。ウェブページもR markdownで作成することはできますが、R markdownだけではインタラクティブなウェブページ、例えばデータを入力して、そのデータに応じたグラフを作成するようなもの、は作成することができません。このインタラクティブなウェブページを作成するためのRのツールが<strong><a href="https://shiny.posit.co/">Shiny</a></strong><span class="citation" data-cites="shiny_bib">(<a href="#ref-shiny_bib" role="doc-biblioref">Chang et al. 2024</a>)</span>です。</p>
 <section id="shinyとwebアプリケーション" class="level2" data-number="47.1"><h2 data-number="47.1" class="anchored" data-anchor-id="shinyとwebアプリケーション">
 <span class="header-section-number">47.1</span> Shinyとwebアプリケーション</h2>
 <p>Shinyは<strong>webアプリケーション</strong>と呼ばれる、webページ（HTML）の生成（ユーザーインターフェース/フロントエンド）とサーバでの演算（サーバサイド）を行うアプリケーションの一種です。</p>
@@ -878,8 +886,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>生存時間解析シミュレーター</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"surv_sim"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"surv_sim"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -887,8 +895,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>k-meansのアニメーション</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"kmeans_animated"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"kmeans_animated"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -896,8 +904,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>時系列：ARIMAシミュレーター</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"ARIMAsim"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"ARIMAsim"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="shinyの基礎" class="level2" data-number="47.3"><h2 data-number="47.3" class="anchored" data-anchor-id="shinyの基礎">
@@ -934,7 +942,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <figure class="figure"><p><a href="./image/web_app.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="図6：Shinyアプリのおおまかな仕組み"><img src="./image/web_app.png" class="img-fluid figure-img" alt="図6：Shinyアプリのおおまかな仕組み"></a></p>
 <figcaption>図6：Shinyアプリのおおまかな仕組み</figcaption></figure>
 </div>
-<p>通常のWebアプリケーションフレームワークでは、Rの部分に別の言語（RubyやPythonなど）が入り、さらにデータベースと接続されているのが一般的です。Shinyではデータベースは必須ではありませんが、もちろんデータベースを用いたWebアプリケーションを作成することもできます。データベースを用いたアプリケーションを作成する場合には、データベースを取り使うためのパッケージ（<a href="&quot;https://dbi.r-dbi.org/&quot;"><code>DBI</code></a><span class="citation" data-cites="DBI_bib">(<a href="references.html#ref-DBI_bib" role="doc-biblioref">R Special Interest Group on Databases (R-SIG-DB), Wickham, and Müller 2024</a>)</span>や<a href="&quot;https://dbplyr.tidyverse.org/&quot;"><code>dbplyr</code></a><span class="citation" data-cites="dbplyr_bib">(<a href="references.html#ref-dbplyr_bib" role="doc-biblioref">Wickham, Girlich, and Ruiz 2024</a>)</span>など）を用いることになります。</p>
+<p>通常のWebアプリケーションフレームワークでは、Rの部分に別の言語（RubyやPythonなど）が入り、さらにデータベースと接続されているのが一般的です。Shinyではデータベースは必須ではありませんが、もちろんデータベースを用いたWebアプリケーションを作成することもできます。データベースを用いたアプリケーションを作成する場合には、データベースを取り使うためのパッケージ（<a href="&quot;https://dbi.r-dbi.org/&quot;"><code>DBI</code></a><span class="citation" data-cites="DBI_bib">(<a href="#ref-DBI_bib" role="doc-biblioref">R Special Interest Group on Databases (R-SIG-DB) et al. 2024</a>)</span>や<a href="&quot;https://dbplyr.tidyverse.org/&quot;"><code>dbplyr</code></a><span class="citation" data-cites="dbplyr_bib">(<a href="#ref-dbplyr_bib" role="doc-biblioref">Wickham et al. 2024</a>)</span>など）を用いることになります。</p>
 <p>上記のUI、Serverをそれぞれ構築するためのファイルが、<code>ui.R</code>と<code>server.R</code>です。ココからはまず<code>ui.R</code>の構築について説明し、その後<code>server.R</code>について説明します。</p>
 </section><section id="ui.rユーザーインターフェース" class="level2" data-number="47.4"><h2 data-number="47.4" class="anchored" data-anchor-id="ui.rユーザーインターフェース">
 <span class="header-section-number">47.4</span> ui.R（ユーザーインターフェース）</h2>
@@ -1060,7 +1068,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>レイアウトの例</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarPanel</a></span><span class="op">(</span></span>
 <span>      <span class="co"># サイドバーの中身を記載</span></span>
@@ -1079,7 +1087,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Rは関数型言語ですので、すべてのレイアウトは関数、つまりカッコつきのスクリプトになります。また、<code>sidebarPanel</code>や1枚目の<code>tabPanel</code>のカッコの後にコンマがついています。1つのカッコの中に複数の要素がある場合にはコンマが必要です。ただし、カッコ内の最後の要素（上の例では<code>tabPanel(title = "パネル2")</code>）にはコンマは必要ありません。</p>
@@ -1092,9 +1100,9 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>HTMLの記述</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span> ヘッダー <span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span> ヘッダー <span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span> # 改行</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span> パラグラフ（文）<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span> パラグラフ（文）<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Shinyも基本的にはHTMLをRから出力する仕組みとなっているため、Webアプリに文章を追加したい場合などにはHTMLを記述する必要があります。ShinyにはHTMLを直接挿入できる<code>HTML</code>関数が備わっているため、HTMLをそのまま入力することができます。</p>
@@ -1103,7 +1111,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>HTML関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"&lt;p&gt;HTML直打ち&lt;/p&gt;"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"&lt;p&gt;HTML直打ち&lt;/p&gt;"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>しかし、<code>HTML</code>関数を用いるとHTMLのタグ（<code>&lt;p&gt;</code>など）を入力しないといけないため、やや煩雑です。Shinyには、HTMLを追加するための専用の関数（<code><a href="https://rstudio.github.io/htmltools/reference/builder.html">shiny::tags</a></code>に登録されている関数）が備わっています。こちらを用いることで、簡単にヘッダーや文章を追加することができます。</p>
@@ -1112,10 +1120,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>HTMLを記載するための関数群</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html">h1</a></span><span class="op">(</span><span class="st">"ヘッダー1"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html">h1</a></span><span class="op">(</span><span class="st">"ヘッダー1"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html">p</a></span><span class="op">(</span><span class="st">"パラグラフ"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html">br</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 改行</span></span>
-<span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html">hr</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 水平線</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html">hr</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 水平線</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>HTMLを追加する関数の一覧は<code>names(shiny::tags)</code>で確認できます。</p>
@@ -1124,7 +1132,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>shiny::tags</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">shiny</span><span class="fu">::</span><span class="va"><a href="https://rstudio.github.io/htmltools/reference/builder.html">tags</a></span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="co"># 10個だけ表示</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">shiny</span><span class="fu">::</span><span class="va"><a href="https://rstudio.github.io/htmltools/reference/builder.html">tags</a></span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="co"># 10個だけ表示</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "a"                "abbr"             "address"          "animate"         
@@ -1141,14 +1149,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>Input関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/numericInput.html">numericInput</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/numericInput.html">numericInput</a></span><span class="op">(</span></span>
 <span>  inputId <span class="op">=</span> <span class="st">"numeric_input"</span>, </span>
 <span>  label <span class="op">=</span> <span class="st">"数値の入力"</span>, </span>
 <span>  value <span class="op">=</span> <span class="fl">10</span>, </span>
 <span>  min <span class="op">=</span> <span class="fl">0</span>, </span>
 <span>  max <span class="op">=</span> <span class="fl">20</span>, </span>
 <span>  step <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>すべての<code>Input</code>関数は、<code>inputId</code>を第一引数に取ります。この<code>inputId</code>には文字列で指定し、server側で入力データを受け取るときに用います。<code>inputId</code>の使い方についてはserverの解説時に詳しく説明します。第二引数に<code>label</code>を文字列として取ります。<code>label</code>はcontrol widgetsの題名としてwidgetに表示されます。3つ目以降の引数はそれぞれの<code>Input</code>関数で異なっており、<code>numericInput</code>では初期値（<code>value</code>）、最小値（<code>min</code>）、最大値（<code>max</code>）、増加の幅（<code>step</code>）を引数で設定することができます。</p>
@@ -1253,7 +1261,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>outputをrender関数で準備する</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">output</span><span class="op">$</span><span class="va">outputId</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="st">"Hello world!"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">output</span><span class="op">$</span><span class="va">outputId</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="st">"Hello world!"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>この<code>outputId</code>はui側で読みだして利用します。上記のスクリプトの場合では、<code>outputId</code>には<code>"Hello world!"</code>が入っていますので、ui側で<code>outputId</code>を用いて文字列として<code>"Hello world!"</code>を出力することができます。</p>
@@ -1266,7 +1274,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>inputIdを用いてoutputを準備する</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">output</span><span class="op">$</span><span class="va">outputId</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Hello world"</span>, <span class="va">input</span><span class="op">$</span><span class="va">inputId</span>, <span class="st">"!"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">output</span><span class="op">$</span><span class="va">outputId</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Hello world"</span>, <span class="va">input</span><span class="op">$</span><span class="va">inputId</span>, <span class="st">"!"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上記のような形で<code>outputId</code>を準備すると、<code>renderText</code>内のスクリプトが実行されることで、<code>input$inputId</code>の値（文字列や日付、数値等）に従って<code>output$outputId</code>が作成されます。この準備した<code>outputId</code>をui側で利用してやれば、inputの内容に従ったoutputを表示することができます。</p>
@@ -1322,7 +1330,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>render関数内に複数のスクリプトを記載する</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1行スクリプトの場合には中カッコが無くても問題ない</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1行スクリプトの場合には中カッコが無くても問題ない</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>output_text1 <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="st">"Hello world!"</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2行以上の時に中カッコなしだとエラー</span></span>
@@ -1337,7 +1345,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">renderText</span>({</span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    temp <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Hello world,"</span>, input<span class="sc">$</span>input_name, <span class="st">"!"</span>)</span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    temp</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  })</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>server.Rには、複数の<code>output$outputId</code>を置くことができます。通常のRスクリプトとは異なり、server.Rの演算は上から下に順番に行われるわけではなく、inputの変更に従って必要な部分が実行される形となっています。また、server.Rでは、演算の部分とテキスト・グラフ・表を準備する部分を分離して記載する方法もあります。この分けて計算する部分（<code>reactive</code>や<code>observe</code>などの関数を用いた演算）に関してはやや複雑ですので、後ほど説明します。</p>
@@ -1401,7 +1409,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>Output関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput</a></span><span class="op">(</span><span class="st">"outputID"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput</a></span><span class="op">(</span><span class="st">"outputID"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>Input</code>関数→<code>render</code>関数→<code>Output</code>関数の流れができれば、入力に従う出力を返す、Shinyアプリが出来上がります。inputで<code>inputId</code>を設定し、serverでは<code>input$InputId</code>を変数として用いて<code>output$outputId</code>を作成します。<code>outputId</code>は<code>Output</code>関数の引数とすることでUIに配置します。一連の流れは以下の図のような形となります。</p>
@@ -1427,10 +1435,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ui.R</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 実際にはuiにlayoutが必要</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 実際にはuiにlayoutが必要</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">"n1"</span>,<span class="st">"N of rpois 1:"</span>,<span class="at">min =</span> <span class="dv">1000000</span>,<span class="at">max =</span> <span class="dv">5000000</span>,<span class="at">value =</span> <span class="dv">2000000</span>),</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">"n2"</span>,<span class="st">"N of rpois 2:"</span>,<span class="at">min =</span> <span class="dv">1000000</span>,<span class="at">max =</span> <span class="dv">5000000</span>,<span class="at">value =</span> <span class="dv">2000000</span>),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">verbatimTextOutput</span>(<span class="st">"output_rpois"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">verbatimTextOutput</span>(<span class="st">"output_rpois"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1438,13 +1446,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>server.R</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#実際にはserverに`function`が必要</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#実際にはserverに`function`が必要</span></span>
 <span><span class="va">r1</span> <span class="op">&lt;-</span> <span class="va">input</span><span class="op">$</span><span class="va">n1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">r2</span> <span class="op">&lt;-</span> <span class="va">input</span><span class="op">$</span><span class="va">n2</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">output</span><span class="op">$</span><span class="fu">output_rpois</span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">r1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">r2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上記は、平均値5のポアソン分布に従う乱数を100万～500万個、2セット作成し、その平均値を文字列として返すだけのShinyアプリです。返ってくる値はほぼ5になるので何の意味もないアプリですが、このShinyを走らせた場合、1つ目の<code>sliderInput</code>（<code>input$n1</code>）を変更すると、1つ目の<code>sliderInput</code>の返り値（<code>mean(r1)</code>）だけでなく、2つ目の<code>sliderInput</code>の返り値（<code>mean(r2)</code>）も計算され、値が変化します。</p>
@@ -1478,12 +1486,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>server.R（reactive関数を用いた方法）</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">r1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">n1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">r1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">n1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">r2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">n2</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">output</span><span class="op">$</span><span class="fu">output_rpois</span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu">r1</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu">r2</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上のコードでは、<code>reactive</code>関数の引数として<code>input$n1 |&gt; rpois(5)</code>を取り、<code>r1</code>に代入しています。この<code>r1</code>は関数オブジェクトになっており、値を呼び出す場合にはカッコを付ける（<code>r1()</code>）必要があります。同様に<code>r2</code>を<code>reactive</code>関数を用いて準備しています。</p>
@@ -1502,7 +1510,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>server.R: observeEvent関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">inputButton1</span>, <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"button pressed."</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">inputButton1</span>, <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"button pressed."</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="eventreactive" class="level4" data-number="47.8.3.2"><h4 data-number="47.8.3.2" class="anchored" data-anchor-id="eventreactive">
@@ -1513,7 +1521,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>server.R: eventReactive関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">buttonpressed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">inputButton1</span>, <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="st">"button pressed."</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">buttonpressed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">inputButton1</span>, <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="st">"button pressed."</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="reactivevalとreactivevalue" class="level3" data-number="47.8.4"><h3 data-number="47.8.4" class="anchored" data-anchor-id="reactivevalとreactivevalue">
@@ -1525,7 +1533,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>reactiveValとreactiveValue</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveVal.html">reactiveVal</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="co"># xとyにreactiveVal(5)を代入</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveVal.html">reactiveVal</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="co"># xとyにreactiveVal(5)を代入</span></span>
 <span><span class="va">x</span> <span class="co"># xは5（Quartoでは演算されない）</span></span>
 <span><span class="va">y</span> <span class="co"># yも5（Quartoでは演算されない）</span></span>
 <span></span>
@@ -1534,7 +1542,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="va">y</span> <span class="co"># yも10になる（Quartoでは演算されない）</span></span>
 <span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveValues.html">reactiveValues</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">10</span>, b <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># reactiveValuesには複数の値を設定できる</span></span>
-<span><span class="va">z</span><span class="op">$</span><span class="va">a</span> <span class="co"># render関数などの中で呼び出さないとエラー</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">z</span><span class="op">$</span><span class="va">a</span> <span class="co"># render関数などの中で呼び出さないとエラー</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>値渡し（Rの変数はほぼすべてこちら）とは異なり、上記の例であれば<code>x</code>が変更されると<code>y</code>も変更される、参照渡しが行われます。</p>
@@ -1548,14 +1556,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>reactiveTimer</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveTimer.html">reactiveTimer</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveTimer.html">reactiveTimer</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">output</span><span class="op">$</span><span class="va">outputId</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html">a</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># reactiveTimerをrender関数内で呼び出す</span></span>
 <span></span>
 <span>  <span class="co"># 2秒ごとに表示される</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Hello world, "</span>, <span class="va">input</span><span class="op">$</span><span class="va">inputId</span>, <span class="st">"! "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="op">}</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上記の例では、<code>input$inputId</code>の変更が<code>output$outputId</code>の更新を引き起こさず、2秒（2000ミリ秒）おきに<code>output$outputId</code>が更新されるようになります。この<code>reactiveTimer</code>と類似した関数として、<code>invalidateLater</code>関数があります。<code>invalidateLater</code>関数は<code>reactiveTimer</code>と同じく初期のShinyから実装されている関数で、より安全でシンプルな関数であるとされています。<code>invalidateLater</code>関数は直接<code>render</code>関数内に書いて用います。ですので、上のコードと同じ演算を以下のような形で実装することができます。</p>
@@ -1564,10 +1572,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>invalidatedLater</strong></pre>
 </div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">output</span><span class="op">$</span><span class="va">outputId</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">output</span><span class="op">$</span><span class="va">outputId</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="fu">invalidatedLater</span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Hello world, "</span>, <span class="va">input</span><span class="op">$</span><span class="va">inputId</span>, <span class="st">"! "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="app.r" class="level2" data-number="47.9"><h2 data-number="47.9" class="anchored" data-anchor-id="app.r">
@@ -1586,7 +1594,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>app.Rの構成</strong></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
 <span>  <span class="co"># ....コードを記載....</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -1594,19 +1602,19 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span>  <span class="co"># .....コードを記載....</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="shinyに機能を追加するextensions" class="level2" data-number="47.10"><h2 data-number="47.10" class="anchored" data-anchor-id="shinyに機能を追加するextensions">
 <span class="header-section-number">47.10</span> Shinyに機能を追加する（Extensions）</h2>
 <p>Shinyには、上記の<code>layout</code>、<code>Input</code>、<code>Output</code>、<code>render</code>などの基本的な関数だけでなく、追加の機能を与えるためのパッケージ（Extensions）が豊富に存在します。以下に代表的なExtensionsの例を示します。</p>
 <ul>
-<li><p><a href="https://rstudio.github.io/shinythemes/">shinythemes</a><span class="citation" data-cites="shinythemes_bib">(<a href="references.html#ref-shinythemes_bib" role="doc-biblioref">Chang 2021</a>)</span>：ShinyのデザインをBootstrapに従って変更するためのパッケージです。</p></li>
-<li><p><a href="https://rstudio.github.io/shinydashboard/">shinydashboard</a><span class="citation" data-cites="shinydashboard_bib">(<a href="references.html#ref-shinydashboard_bib" role="doc-biblioref">Chang and Borges Ribeiro 2021</a>)</span>：Shinyで<a href="https://www.google.com/search?sca_esv=a526368c5945871d&amp;sxsrf=ADLYWIK4gJvNmzBBQh-pQzFeWnI_SKxx2A:1724140556539&amp;q=%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89&amp;udm=2&amp;fbs=AEQNm0BqbPbAzSj6PhNr7nv9Ltx-oFh8tVsgXi1MyFbswNtTUOS5b68chsyOj2QEdx4EPnNHj-rfVa2Eb1VCscGX2ZUj9zg7pD9WhuxXJAj12GW6oeBqw4eGvVgzQxyKznl1ExGJi168qSx2eeXjUNvCmZhFwSaQtcsiZCK7bt8rXXw1KNDgJdghBt7mcicHH5U9gHGYPNgxAD0CsYaK3uh78b4Yn_p-W815iG5byNmUmiBRo1Utr2Q&amp;sa=X&amp;ved=2ahUKEwjP16iLjIOIAxXSslYBHSrNMxYQtKgLegQIGRAB&amp;biw=1912&amp;bih=970&amp;dpr=1">ダッシュボード</a>を簡単に作成するためのパッケージです。基本的にはShinyにダッシュボード用のレイアウト関数を追加するパッケージとなっています。</p></li>
-<li><p><a href="https://rstudio.github.io/bslib/">bslib</a><span class="citation" data-cites="bslib_bib">(<a href="references.html#ref-bslib_bib" role="doc-biblioref">Sievert, Cheng, and Aden-Buie 2024</a>)</span>：<code>shinythemes</code>と同様にShinyのデザインを変更するためのパッケージです。こちらは<a href="./chapter38.html">前章</a>で紹介したR markdown・QuartoのHTML出力のデザインを変更することもできます。また、レイアウトの関数をいくつか備えており、これらのレイアウト関数を用いることでダッシュボードを作成することもできます。<code>shinythemes</code>と<code>shinydashboard</code>はかなり前に開発されたパッケージであるため、この<code>bslib</code>に統合されたような形となっているようです。デザイン性の高いShinyアプリを作成するのであれば、まずこのパッケージを用いることを検討するのがよいでしょう。</p></li>
-<li><p><a href="https://rstudio.github.io/DT/">DT</a><span class="citation" data-cites="DT_bib">(<a href="references.html#ref-DT_bib" role="doc-biblioref">Xie, Cheng, and Tan 2024</a>)</span>：ShinyやR markdownにJavascript製の表を表示するためのパッケージです。Javascriptで開発され、用いられている<a href="https://datatables.net/">DataTables</a>というライブラリをRに持ち込んだものです。Shinyで用いるための専用の<code>Output</code>、<code>render</code>関数を備えています。</p></li>
-<li><p><a href="https://daattali.com/shiny/shinycssloaders-demo/">shinycssloaders</a><span class="citation" data-cites="shinycssloaders_bib">(<a href="references.html#ref-shinycssloaders_bib" role="doc-biblioref">Sali and Attali 2020</a>)</span>：Shinyにデータを演算中（ローディング中）であることを示すアニメーションを追加するためのパッケージです。計算が重めのShinyを作成する際に用いるとよいでしょう。</p></li>
-<li><p><a href="https://datastorm-open.github.io/shinymanager/">shinymanager</a><span class="citation" data-cites="shinymanager_bib">(<a href="references.html#ref-shinymanager_bib" role="doc-biblioref">Thieurmel and Perrier 2022</a>)</span>：ShinyにIDとパスワードによるログイン機構を追加するためのパッケージです。セキュリティ的には怪しいので、あまり信用はできませんが、社内のシステムで用いるぐらいなら耐えられるかもしれません。</p></li>
+<li><p><a href="https://rstudio.github.io/shinythemes/">shinythemes</a><span class="citation" data-cites="shinythemes_bib">(<a href="#ref-shinythemes_bib" role="doc-biblioref">Chang 2021</a>)</span>：ShinyのデザインをBootstrapに従って変更するためのパッケージです。</p></li>
+<li><p><a href="https://rstudio.github.io/shinydashboard/">shinydashboard</a><span class="citation" data-cites="shinydashboard_bib">(<a href="#ref-shinydashboard_bib" role="doc-biblioref">Chang and Borges Ribeiro 2021</a>)</span>：Shinyで<a href="https://www.google.com/search?sca_esv=a526368c5945871d&amp;sxsrf=ADLYWIK4gJvNmzBBQh-pQzFeWnI_SKxx2A:1724140556539&amp;q=%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89&amp;udm=2&amp;fbs=AEQNm0BqbPbAzSj6PhNr7nv9Ltx-oFh8tVsgXi1MyFbswNtTUOS5b68chsyOj2QEdx4EPnNHj-rfVa2Eb1VCscGX2ZUj9zg7pD9WhuxXJAj12GW6oeBqw4eGvVgzQxyKznl1ExGJi168qSx2eeXjUNvCmZhFwSaQtcsiZCK7bt8rXXw1KNDgJdghBt7mcicHH5U9gHGYPNgxAD0CsYaK3uh78b4Yn_p-W815iG5byNmUmiBRo1Utr2Q&amp;sa=X&amp;ved=2ahUKEwjP16iLjIOIAxXSslYBHSrNMxYQtKgLegQIGRAB&amp;biw=1912&amp;bih=970&amp;dpr=1">ダッシュボード</a>を簡単に作成するためのパッケージです。基本的にはShinyにダッシュボード用のレイアウト関数を追加するパッケージとなっています。</p></li>
+<li><p><a href="https://rstudio.github.io/bslib/">bslib</a><span class="citation" data-cites="bslib_bib">(<a href="#ref-bslib_bib" role="doc-biblioref">Sievert et al. 2024</a>)</span>：<code>shinythemes</code>と同様にShinyのデザインを変更するためのパッケージです。こちらは<a href="./chapter38.html">前章</a>で紹介したR markdown・QuartoのHTML出力のデザインを変更することもできます。また、レイアウトの関数をいくつか備えており、これらのレイアウト関数を用いることでダッシュボードを作成することもできます。<code>shinythemes</code>と<code>shinydashboard</code>はかなり前に開発されたパッケージであるため、この<code>bslib</code>に統合されたような形となっているようです。デザイン性の高いShinyアプリを作成するのであれば、まずこのパッケージを用いることを検討するのがよいでしょう。</p></li>
+<li><p><a href="https://rstudio.github.io/DT/">DT</a><span class="citation" data-cites="DT_bib">(<a href="#ref-DT_bib" role="doc-biblioref">Xie et al. 2024</a>)</span>：ShinyやR markdownにJavascript製の表を表示するためのパッケージです。Javascriptで開発され、用いられている<a href="https://datatables.net/">DataTables</a>というライブラリをRに持ち込んだものです。Shinyで用いるための専用の<code>Output</code>、<code>render</code>関数を備えています。</p></li>
+<li><p><a href="https://daattali.com/shiny/shinycssloaders-demo/">shinycssloaders</a><span class="citation" data-cites="shinycssloaders_bib">(<a href="#ref-shinycssloaders_bib" role="doc-biblioref">Sali and Attali 2020</a>)</span>：Shinyにデータを演算中（ローディング中）であることを示すアニメーションを追加するためのパッケージです。計算が重めのShinyを作成する際に用いるとよいでしょう。</p></li>
+<li><p><a href="https://datastorm-open.github.io/shinymanager/">shinymanager</a><span class="citation" data-cites="shinymanager_bib">(<a href="#ref-shinymanager_bib" role="doc-biblioref">Thieurmel and Perrier 2022</a>)</span>：ShinyにIDとパスワードによるログイン機構を追加するためのパッケージです。セキュリティ的には怪しいので、あまり信用はできませんが、社内のシステムで用いるぐらいなら耐えられるかもしれません。</p></li>
 </ul>
 <p>Shinyにはこの他にもたくさんのExtensionsが存在します。この<a href="https://github.com/nanxstats/awesome-shiny-extensions">Githubのページ</a>に一覧が示されていますので、参考にされるとよいでしょう。</p>
 <p>また、Shinyの開発を行っている企業である<a href="https://www.appsilon.com/">appsilon</a>は、Shiny開発のフレームワークやデザインに関するパッケージを多数開発しています。ハイエンドなShinyアプリを開発したいのであればチャレンジする価値があるかと思います。</p>
@@ -1625,7 +1633,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <figure class="figure"><p><a href="./image/publish_button.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="図：Publishボタン"><img src="./image/publish_button.png" class="img-fluid figure-img" alt="図：Publishボタン"></a></p>
 <figcaption>図：Publishボタン</figcaption></figure>
 </div>
-<p>publishボタンを押すと、初回には2つのパッケージ（<code>packrat</code><span class="citation" data-cites="packrat_bib">(<a href="references.html#ref-packrat_bib" role="doc-biblioref">Atkins et al. 2023</a>)</span>と<code>rsconnect</code><span class="citation" data-cites="rsconnect_bib">(<a href="references.html#ref-rsconnect_bib" role="doc-biblioref">Atkins et al. 2024</a>)</span>）のインストールが求められますので、RStudioの指示に従いパッケージをインストールします。</p>
+<p>publishボタンを押すと、初回には2つのパッケージ（<code>packrat</code><span class="citation" data-cites="packrat_bib">(<a href="#ref-packrat_bib" role="doc-biblioref">Atkins et al. 2023</a>)</span>と<code>rsconnect</code><span class="citation" data-cites="rsconnect_bib">(<a href="#ref-rsconnect_bib" role="doc-biblioref">Atkins et al. 2024</a>)</span>）のインストールが求められますので、RStudioの指示に従いパッケージをインストールします。</p>
 <p>次に、接続するアカウントの種類を選択するウインドウが表示されますので、「shinyapps.io」を選択します。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/select_connectAccount.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="図：サービスの選択画面"><img src="./image/select_connectAccount.png" class="img-fluid figure-img" alt="図：サービスの選択画面"></a></p>
@@ -1664,8 +1672,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>runGitHub関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span> <span class="co"># shinyの読み込み</span></span>
-<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"surv_sim"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span> <span class="co"># runGitHub関数で"surv_sim"というレポジトリのアプリを読み込み、実行</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span> <span class="co"># shinyの読み込み</span></span>
+<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"surv_sim"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span> <span class="co"># runGitHub関数で"surv_sim"というレポジトリのアプリを読み込み、実行</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上記の例では、<code>"sb8001at-oss"</code>というアカウントのGitHubのレポジトリである<code>"surv_sim"</code>を読み込み、Rで実行させるためのコードです。GitHubではこのようなレポジトリを通常<code>sb8001at-oss/surv_sim</code>という形で表現します。このレポジトリは公開されているもので、<a href="https://github.com/sb8001at-oss/surv_sim">このページ</a>でコードを確認することができます。</p>
@@ -1679,15 +1687,15 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>Shinyのサンプルアプリ</strong></pre>
 </div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span> <span class="co"># shinyの読み込み</span></span>
-<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"shiny_sample"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">)</span> <span class="co"># shinyの読み込み</span></span>
+<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"shiny_sample"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-packrat_bib" class="csl-entry" role="listitem">
 Atkins, Aron, Toph Allen, Kevin Ushey, Jonathan McPherson, Joe Cheng, and JJ Allaire. 2023. <em>Packrat: A Dependency Management System for Projects and Their r Package Dependencies</em>. <a href="https://CRAN.R-project.org/package=packrat">https://CRAN.R-project.org/package=packrat</a>.
 </div>
@@ -1701,7 +1709,7 @@ Chang, Winston. 2021. <em>Shinythemes: Themes for Shiny</em>. <a href="https://C
 Chang, Winston, and Barbara Borges Ribeiro. 2021. <em>Shinydashboard: Create Dashboards with ’Shiny’</em>. <a href="https://CRAN.R-project.org/package=shinydashboard">https://CRAN.R-project.org/package=shinydashboard</a>.
 </div>
 <div id="ref-shiny_bib" class="csl-entry" role="listitem">
-Chang, Winston, Joe Cheng, JJ Allaire, Carson Sievert, Barret Schloerke, Yihui Xie, Jeff Allen, Jonathan McPherson, Alan Dipert, and Barbara Borges. 2024. <em>Shiny: Web Application Framework for r</em>. <a href="https://CRAN.R-project.org/package=shiny">https://CRAN.R-project.org/package=shiny</a>.
+Chang, Winston, Joe Cheng, JJ Allaire, et al. 2024. <em>Shiny: Web Application Framework for r</em>. <a href="https://CRAN.R-project.org/package=shiny">https://CRAN.R-project.org/package=shiny</a>.
 </div>
 <div id="ref-DBI_bib" class="csl-entry" role="listitem">
 R Special Interest Group on Databases (R-SIG-DB), Hadley Wickham, and Kirill Müller. 2024. <em>DBI: R Database Interface</em>. <a href="https://CRAN.R-project.org/package=DBI">https://CRAN.R-project.org/package=DBI</a>.
@@ -1786,13 +1794,14 @@ Xie, Yihui, Joe Cheng, and Xianying Tan. 2024. <em>DT: A Wrapper of the JavaScri
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2195,7 +2204,7 @@ Xie, Yihui, Joe Cheng, and Xianying Tan. 2024. <em>DT: A Wrapper of the JavaScri
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb26" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Shiny</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Shiny</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>データを解析した後には、その結果を用いて他の人にデータや解析の意味を説明する必要があります。説明するために用いるものの一つが文書やプレゼンテーションです。文書やプレゼンテーションはR markdown・Quarto（<span class="co">[</span><span class="ot">35章～43章</span><span class="co">](chapter35.qmd)</span>参照）で作成することができます。</span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -2764,7 +2773,7 @@ Xie, Yihui, Joe Cheng, and Xianying Tan. 2024. <em>DT: A Wrapper of the JavaScri
 <span id="cb26-567"><a href="#cb26-567" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Shinyのサンプルアプリ", eval=FALSE}</span></span>
 <span id="cb26-568"><a href="#cb26-568" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(shiny)) <span class="fu">install.packages</span>((<span class="st">"shiny"</span>)) <span class="co"># shinyの読み込み</span></span>
 <span id="cb26-569"><a href="#cb26-569" aria-hidden="true" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">runGitHub</span>(<span class="st">"shiny_sample"</span>, <span class="st">"sb8001at-oss"</span>)</span>
-<span id="cb26-570"><a href="#cb26-570" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb26-570"><a href="#cb26-570" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -2779,7 +2788,11 @@ Xie, Yihui, Joe Cheng, and Xianying Tan. 2024. <em>DT: A Wrapper of the JavaScri
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

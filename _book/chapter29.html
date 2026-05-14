@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>29&nbsp; 検定 – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -132,7 +134,7 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
-</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -143,7 +145,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -789,6 +791,12 @@ window.Quarto = {
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -935,7 +943,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>t.test関数でt検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, mean <span class="op">=</span> <span class="fl">0.25</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, mean <span class="op">=</span> <span class="fl">0.25</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, mean <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 1群のt検定（平均値が0と有意に異なるかを検定する）</span></span>
@@ -978,16 +986,16 @@ window.Quarto = {
 <span><span class="co">##  -1.0873669  0.6676961</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## mean of x mean of y </span></span>
-<span><span class="co">## 0.6089240 0.8187593</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 0.6089240 0.8187593</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-検定とp値
+<span class="screen-reader-only">Tip</span>検定とp値
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -995,7 +1003,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>昔から論文などでは、取得したデータに対して検定を行い、p値を示すことが一般的です。ただし、このp値はデータとの関係がいまいちよくわからないパラメータですし、何よりデータ数が増えると値が小さくなるため、差があるという結論が出やすくなります。データ数が大きければ、ほんの少ししか差が無くても、検定では帰無仮説を棄却することになります。</p>
 <p>p値がよく用いられるのは、結果として「差がある」かどうか、つまり0か1かという結論が出せるからです。通常意思決定は0か1かで行うため、0か1かの結論を付けられる検定は人に説明しやすい性質を持ちます。ただし、「差がある」からといって「差に意味がある」かどうかは明確ではありません。</p>
-<p>いろいろなところに記載されている通り（例えば、<a href="https://www.nature.com/articles/s41562-017-0189-z">Nature human behaviourの論文</a> <span class="citation" data-cites="benjamin2018redefine">(<a href="references.html#ref-benjamin2018redefine" role="doc-biblioref">Benjamin et al. 2018</a>)</span>や<a href="https://www.nature.com/articles/nmeth.4120">Nature methodsの論文</a> <span class="citation" data-cites="e6a4d0acbb644e5b84bf4e80a435599e">(<a href="references.html#ref-e6a4d0acbb644e5b84bf4e80a435599e" role="doc-biblioref">Altman and Krzywinski 2016</a>)</span>など）、検定とp値のみで結論付けるのはあまりいい方法ではありません。結果の表示や有意性については、信頼区間を用いて示した方が良いとされています。</p>
+<p>いろいろなところに記載されている通り（例えば、<a href="https://www.nature.com/articles/s41562-017-0189-z">Nature human behaviourの論文</a> <span class="citation" data-cites="benjamin2018redefine">(<a href="#ref-benjamin2018redefine" role="doc-biblioref"><span class="nocase">Benjamin et al.</span> 2018</a>)</span>や<a href="https://www.nature.com/articles/nmeth.4120">Nature methodsの論文</a> <span class="citation" data-cites="e6a4d0acbb644e5b84bf4e80a435599e">(<a href="#ref-e6a4d0acbb644e5b84bf4e80a435599e" role="doc-biblioref">Altman and Krzywinski 2016</a>)</span>など）、検定とp値のみで結論付けるのはあまりいい方法ではありません。結果の表示や有意性については、信頼区間を用いて示した方が良いとされています。</p>
 <p>検定では、通常p値が0.05未満（p &lt; 0.05）であれば有意な差がある、0.01や0.001未満（p &lt; 0.01、p &lt; 0.001）ならよりはっきりとした有意差があるとします。この0.05、0.01、0.001という値には特に意味はありませんが、習慣上この3つの値を用いることが多いです。</p>
 </div>
 </div>
@@ -1008,7 +1016,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>t検定の結果を呼び出す</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="va">result_t</span> <span class="co"># t検定の結果</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  One Sample t-test</span></span>
@@ -1040,16 +1048,16 @@ window.Quarto = {
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">result_t</span><span class="op">)</span> <span class="co"># names関数で呼び出すための名前を調べることができる</span></span>
 <span><span class="co">##  [1] "statistic"   "parameter"   "p.value"     "conf.int"    "estimate"   </span></span>
-<span><span class="co">##  [6] "null.value"  "stderr"      "alternative" "method"      "data.name"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [6] "null.value"  "stderr"      "alternative" "method"      "data.name"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-p値を図示する
+<span class="screen-reader-only">Tip</span>p値を図示する
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1058,7 +1066,7 @@ p値を図示する
 <p>上の<code>result_t</code>の結果では、t統計量は1.5975513、p値は0.1446073となっています。このp値は自由度9のt分布から計算することができます。下の図は自由度9のt分布で、縦線はx=1.5975513、つまりt統計量の値です。t統計量より値が大きい確率、つまり下図の青で示した面積の2倍がp値となります。この面積はt分布の積分から計算することができ、0.0723037となります。2倍となるのは、次に説明する両側検定となっているためです。</p>
 <p>t検定では、そのデータでのt統計量が得られるよりも稀な事象が起こる確率を下図の青の面積（p値の0.5倍）として求めます。この確率が非常に小さければ、帰無仮説の下でこのデータが取れることは稀である、つまり帰無仮説が成立しているのは矛盾しているとして、帰無仮説を棄却します。</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># p値の計算（t分布で1.5975513となる場合の累積分布関数から計算する）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># p値の計算（t分布で1.5975513となる場合の累積分布関数から計算する）</span></span>
 <span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">pt</a></span><span class="op">(</span><span class="fl">1.5975513</span>, df <span class="op">=</span> <span class="fl">9</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span></span>
 <span><span class="co">## [1] 0.1446073</span></span>
 <span></span>
@@ -1069,7 +1077,7 @@ p値を図示する
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">tvalue</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span>, fill <span class="op">=</span> <span class="st">"#00BFC4"</span>, data <span class="op">=</span> <span class="va">t_temp</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">tvalue</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span>, fill <span class="op">=</span> <span class="st">"#F8766D"</span>, data <span class="op">=</span> <span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">col_t</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">result_t</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">result_t</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><a href="chapter29_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="chapter29_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></a></p>
@@ -1086,20 +1094,20 @@ p値を図示する
 <p>一方で、t分布の左側5%以下、右側95%以上の片方のみを検定に用いる場合もあります。この片側のみを用いる検定のことを<strong>片側検定</strong>と呼びます。片側検定には、下側のみを用いるものと上側のみを用いるものがそれぞれあります。いずれの場合においても、検定に用いる確率を片側に割り振ることになり、有意差が出やすくなる特徴があります。片側検定は基礎研究ではまず使われませんが、治験などではよく用いられています（優越性・非劣性試験）。</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">両側検定</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">片側検定（下側）</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">片側検定（上側）</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">両側検定</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">片側検定（下側）</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">片側検定（上側）</a></li>
 </ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, tvalue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="co"># 自由度5のt分布</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, tvalue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="co"># 自由度5のt分布</span></span>
 <span><span class="co"># 両側5％（片側2.5%）</span></span>
 <span><span class="va">t_temp</span> <span class="op">&lt;-</span> <span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>col_95 <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.025</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|</span> <span class="va">x</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, <span class="va">tvalue</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">t_temp</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">tvalue</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span>, fill <span class="op">=</span> <span class="st">"#00BFC4"</span>, data <span class="op">=</span> <span class="va">t_temp</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">tvalue</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span>, fill <span class="op">=</span> <span class="st">"#F8766D"</span>, data <span class="op">=</span> <span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">col_95</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">tvalue</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span>, fill <span class="op">=</span> <span class="st">"#F8766D"</span>, data <span class="op">=</span> <span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">col_95</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><a href="chapter29_files/figure-html/unnamed-chunk-4-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="chapter29_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></a></p>
@@ -1110,13 +1118,13 @@ p値を図示する
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span>, tvalue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="co"># 自由度5のt分布</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span>, tvalue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="co"># 自由度5のt分布</span></span>
 <span><span class="co"># 下側5％</span></span>
 <span><span class="va">t_temp</span> <span class="op">&lt;-</span> <span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>col_95 <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.05</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, <span class="va">tvalue</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">t_temp</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">tvalue</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span>, fill<span class="op">=</span><span class="st">"#00BFC4"</span>, data<span class="op">=</span><span class="va">t_temp</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">tvalue</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span>, fill<span class="op">=</span><span class="st">"#F8766D"</span>, data<span class="op">=</span><span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">col_95</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">tvalue</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span>, fill<span class="op">=</span><span class="st">"#F8766D"</span>, data<span class="op">=</span><span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">col_95</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><a href="chapter29_files/figure-html/unnamed-chunk-5-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="chapter29_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></a></p>
@@ -1127,13 +1135,13 @@ p値を図示する
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span>, tvalue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="co"># 自由度5のt分布</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span>, tvalue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, by<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="co"># 自由度5のt分布</span></span>
 <span><span class="co"># 上側5％</span></span>
 <span><span class="va">t_temp</span> <span class="op">&lt;-</span> <span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>col_95 <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.95</span>, df <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, <span class="va">tvalue</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">t_temp</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">tvalue</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span>, fill<span class="op">=</span><span class="st">"#00BFC4"</span>, data<span class="op">=</span><span class="va">t_temp</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">tvalue</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span>, fill<span class="op">=</span><span class="st">"#F8766D"</span>, data<span class="op">=</span><span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">col_95</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">tvalue</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span>, fill<span class="op">=</span><span class="st">"#F8766D"</span>, data<span class="op">=</span><span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">col_95</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><a href="chapter29_files/figure-html/unnamed-chunk-6-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="chapter29_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></a></p>
@@ -1150,7 +1158,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>片側のt検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 下側検定</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 下側検定</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span>, alternative <span class="op">=</span> <span class="st">"less"</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  One Sample t-test</span></span>
@@ -1176,16 +1184,16 @@ p値を図示する
 <span><span class="co">##  -0.08978688         Inf</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## mean of x </span></span>
-<span><span class="co">##  0.608924</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  0.608924</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-検定の仕組み
+<span class="screen-reader-only">Tip</span>検定の仕組み
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1202,13 +1210,13 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>t統計量を計算する</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">175</span>, <span class="fl">177.5</span>, <span class="fl">180</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">175</span>, <span class="fl">177.5</span>, <span class="fl">180</span><span class="op">)</span></span>
 <span><span class="va">height</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] 177.5</span></span>
 <span><span class="va">height</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] 2.5</span></span>
 <span><span class="op">(</span><span class="va">height</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">170</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">height</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="op">)</span> <span class="op">/</span> <span class="fl">3</span> <span class="op">^</span> <span class="fl">0.5</span><span class="op">)</span> <span class="co"># t統計量</span></span>
-<span><span class="co">## [1] 5.196152</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 5.196152</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>次に、「p値を計算」します。p値は、上記の通りt統計量が計算した値以上の値を取りうる確率として計算されます。t統計量が計算した値以上の値を取りうる確率はt分布を用いて計算することができ、自由度<span class="math inline">\(n-1\)</span>の時、t統計量が5.196152以上となる確率は以下の通り計算できます。</p>
@@ -1217,8 +1225,8 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>t統計量が3.4641以上となる確率</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">pt</a></span><span class="op">(</span><span class="fl">5.196152</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">## [1] 0.01754936</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">pt</a></span><span class="op">(</span><span class="fl">5.196152</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">## [1] 0.01754936</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ただし、t検定は両側検定ですので、この確率を2倍としたものがp値となります。</p>
@@ -1227,13 +1235,13 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>p値を計算する</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">pt</a></span><span class="op">(</span><span class="fl">5.196152</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span></span>
-<span><span class="co">## [1] 0.03509872</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">pt</a></span><span class="op">(</span><span class="fl">5.196152</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span></span>
+<span><span class="co">## [1] 0.03509872</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>この結果は<code>t.test</code>関数で計算した時と一致します。</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">height</span>, mu<span class="op">=</span><span class="fl">170</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">height</span>, mu<span class="op">=</span><span class="fl">170</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  One Sample t-test</span></span>
 <span><span class="co">## </span></span>
@@ -1244,7 +1252,7 @@ p値を図示する
 <span><span class="co">##  171.2897 183.7103</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## mean of x </span></span>
-<span><span class="co">##     177.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##     177.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>p値は0.035ですので、平均値が170cmと仮定した時、今回得た平均値177.5cm、標準偏差2.5の3つのデータよりも極端なデータが取れる確率は3.5%ぐらいある、ということになります。3.5%であれば20回同じ試行を行っても今回のようなデータは1回とれるかどうかというところですので、身長の平均値が170cmであると仮定とすると非常に稀なことが起こったことになります。検定では、この程度（20回に1回以下、p&lt;0.05）の稀なことが起こったときには、平均値が170cmと仮定するのはおかしい、つまり帰無仮説が成立していないと考えます。</p>
 <p>帰無仮説が成立していない、つまり「男子学生3人の身長の平均が170cmである」は正しくないので、「男子学生3人の身長の平均が170cmではない」、つまり男子学生3人の身長の平均は170cmとは異なるとします。この「男子学生3人の身長の平均は170cmとは異なる」を帰無仮説と対になる対立仮説と呼びます。帰無仮説を捨てて（棄却して）、対立仮説を受け入れることで、差があるかどうかを評価するわけです。</p>
@@ -1260,7 +1268,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>対応のあるt検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 各行に対応があるとする</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 各行に対応があるとする</span></span>
 <span><span class="co"># （同じ行のxとyの値に関連がある、例えばxが投薬前、yが投薬後の同じ人の値とする）</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
 <span><span class="co">##              x         y</span></span>
@@ -1286,7 +1294,7 @@ p値を図示する
 <span><span class="co">##  -1.1612848  0.7416141</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## mean difference </span></span>
-<span><span class="co">##      -0.2098354</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##      -0.2098354</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="信頼区間" class="level3" data-number="29.3.4"><h3 data-number="29.3.4" class="anchored" data-anchor-id="信頼区間">
@@ -1297,7 +1305,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>信頼区間の計算</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># xの90%信頼区間を計算する</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># xの90%信頼区間を計算する</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span>, conf.level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">$</span><span class="va">conf.int</span></span>
 <span><span class="co">## [1] -0.08978688  1.30763480</span></span>
 <span><span class="co">## attr(,"conf.level")</span></span>
@@ -1307,16 +1315,16 @@ p値を図示する
 <span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, conf.level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">$</span><span class="va">conf.int</span></span>
 <span><span class="co">## [1] -0.9246307  0.5049599</span></span>
 <span><span class="co">## attr(,"conf.level")</span></span>
-<span><span class="co">## [1] 0.9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 0.9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-信頼区間の意味
+<span class="screen-reader-only">Tip</span>信頼区間の意味
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1336,7 +1344,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>formulaを引数にしたt検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># fはaとbからなる因子</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># fはaとbからなる因子</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">f</span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="co"># 数値と因子のデータフレーム（aとbの2群）</span></span>
 <span><span class="co">##              x f</span></span>
@@ -1363,7 +1371,7 @@ p値を図示する
 <span><span class="co">##  -0.985218  2.712395</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## mean in group a mean in group b </span></span>
-<span><span class="co">##       1.0407182       0.1771297</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##       1.0407182       0.1771297</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>formulaは文字列から作成することもできます。文字列からformulaに変換する場合には、<code>formula</code>関数を用います。</p>
@@ -1372,8 +1380,8 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>文字列をformulaに変換する</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html">formula</a></span><span class="op">(</span><span class="st">"x ~ f"</span><span class="op">)</span></span>
-<span><span class="co">## x ~ f</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html">formula</a></span><span class="op">(</span><span class="st">"x ~ f"</span><span class="op">)</span></span>
+<span><span class="co">## x ~ f</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="sec-power" class="level3" data-number="29.3.6"><h3 data-number="29.3.6" class="anchored" data-anchor-id="sec-power">
@@ -1397,7 +1405,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>t検定の検出力の計算</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/power.t.test.html">power.t.test</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, delta <span class="op">=</span> <span class="fl">4</span>, sd <span class="op">=</span> <span class="fl">5</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="co"># powerを計算</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/power.t.test.html">power.t.test</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, delta <span class="op">=</span> <span class="fl">4</span>, sd <span class="op">=</span> <span class="fl">5</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="co"># powerを計算</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##      Two-sample t test power calculation </span></span>
 <span><span class="co">## </span></span>
@@ -1421,16 +1429,16 @@ p値を図示する
 <span><span class="co">##           power = 0.8</span></span>
 <span><span class="co">##     alternative = two.sided</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## NOTE: n is number in *each* group</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## NOTE: n is number in *each* group</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-αとβを図示する
+<span class="screen-reader-only">Tip</span>αとβを図示する
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1438,7 +1446,7 @@ p値を図示する
 <div class="callout-body-container callout-body">
 <p>αとβは、帰無仮説における分布（H<sub>0</sub>）とデータの分布（H<sub>1</sub>）から、以下の図のように示すことができます。この図において、左の平均値0の分布がH<sub>0</sub>の分布、右がH<sub>1</sub>の分布となります。縦線はα=0.05とする線で、H<sub>0</sub>のこの線より右側がαとなります。H<sub>1</sub>の分布におけるこの縦線より左側がβとなります。ですので、H<sub>1</sub>の分布から青色の部分βを引いた部分（1-β）が検出力となります。</p>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_temp</span> <span class="op">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_temp</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>    x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span>, <span class="fl">7</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, </span>
 <span>    tvalue_h0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">dt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span>, <span class="fl">7</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, df <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span>
@@ -1459,7 +1467,7 @@ p値を図示する
 <span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">tvalue_h0</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span>, fill <span class="op">=</span> <span class="st">"#F8766D"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, data <span class="op">=</span> <span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">alpha</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_area</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">tvalue_h1</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span>, fill <span class="op">=</span> <span class="st">"#00BFC4"</span>, alpha <span class="op">=</span> <span class="fl">0.3</span>, data <span class="op">=</span> <span class="va">t_temp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">1.75305</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"左の分布が帰無仮説での分布、右の分布がデータの分布、赤がα、青がβ"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"左の分布が帰無仮説での分布、右の分布がデータの分布、赤がα、青がβ"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><a href="chapter29_files/figure-html/unnamed-chunk-17-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="chapter29_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></a></p>
@@ -1478,14 +1486,14 @@ p値を図示する
 <p>上の式の<span class="math inline">\(\bar{x_1}\)</span>、<span class="math inline">\(\bar{x_2}\)</span>はそれぞれ2群の平均値で、分子の<span class="math inline">\(\bar{x_1}-\bar{x_2}\)</span>は2群の平均値の差です。また、<span class="math inline">\(s\)</span>は2群の標準偏差をプールしたもので、以下の式で表されます。</p>
 <p><span class="math display">\[s=\sqrt{\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}}\]</span></p>
 <p>この式の<span class="math inline">\(n_1\)</span>、<span class="math inline">\(n_2\)</span>はそれぞれ2群のデータ数、<span class="math inline">\(s_1\)</span>、<span class="math inline">\(s_2\)</span>は2群の標準偏差です。したがって、Cohen’s dは平均値の差を標準偏差で割ったような値となっています。</p>
-<p>これだけだと意味が分かりにくいのですが、このCohen’s dにはおおよその差の大きさの指標が決められていて、dが0.2未満なら差がとても小さく、0.2～0.5なら小さく、0.5～0.8なら中程度、0.8以上だと大きいとされています<span class="citation" data-cites="cohen2013statistical">(<a href="references.html#ref-cohen2013statistical" role="doc-biblioref">Cohen 2013</a>)</span>。</p>
-<p>この効果量の計算に用いるパッケージが<a href="https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html"><code>effectsize</code></a><span class="citation" data-cites="effectsize_bib">(<a href="references.html#ref-effectsize_bib" role="doc-biblioref">Ben-Shachar, Lüdecke, and Makowski 2020</a>)</span>です。<code>effectsize</code>の<code>cohens_d</code>関数はformulaを引数に取り、2群間の効果量であるCohen’s dを返す関数です。引数は<code>t.test</code>関数と同じように指定します。<code>cohens_d</code>関数を実行すると、以下のようにCohen’s dと差の95%信頼区間が表示されます。</p>
+<p>これだけだと意味が分かりにくいのですが、このCohen’s dにはおおよその差の大きさの指標が決められていて、dが0.2未満なら差がとても小さく、0.2～0.5なら小さく、0.5～0.8なら中程度、0.8以上だと大きいとされています<span class="citation" data-cites="cohen2013statistical">(<a href="#ref-cohen2013statistical" role="doc-biblioref">Cohen 2013</a>)</span>。</p>
+<p>この効果量の計算に用いるパッケージが<a href="https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html"><code>effectsize</code></a><span class="citation" data-cites="effectsize_bib">(<a href="#ref-effectsize_bib" role="doc-biblioref">Ben-Shachar et al. 2020</a>)</span>です。<code>effectsize</code>の<code>cohens_d</code>関数はformulaを引数に取り、2群間の効果量であるCohen’s dを返す関数です。引数は<code>t.test</code>関数と同じように指定します。<code>cohens_d</code>関数を実行すると、以下のようにCohen’s dと差の95%信頼区間が表示されます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Cohen's dを計算する</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/effectsize/">effectsize</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/effectsize/">effectsize</a></span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="co"># 上で作成したデータフレームを利用</span></span>
 <span><span class="co">##              x f</span></span>
 <span><span class="co">## 1   1.51295428 a</span></span>
@@ -1504,7 +1512,7 @@ p値を図示する
 <span><span class="co">## -------------------------</span></span>
 <span><span class="co">## 0.73      | [-0.58, 2.00]</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## - Estimated using pooled SD.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## - Estimated using pooled SD.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>また、Cohen’s dの評価を調べる場合には<code>interpret_cohens_d</code>関数を用います。<code>interpret_cohens_d</code>関数の引数はCohen’s dの値で、Cohen’s dの値をCohen (1988)に従いVery small、Small、Medium、Largeの4段階で評価してくれます。</p>
@@ -1513,9 +1521,9 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>interpret_cohens_d関数で効果量を評価する</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/interpret_cohens_d.html">interpret_cohens_d</a></span><span class="op">(</span><span class="fl">0.73</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/interpret_cohens_d.html">interpret_cohens_d</a></span><span class="op">(</span><span class="fl">0.73</span><span class="op">)</span></span>
 <span><span class="co">## [1] "medium"</span></span>
-<span><span class="co">## (Rules: cohen1988)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## (Rules: cohen1988)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Cohen’s dの他に、以下で説明する分散分析に関しても<code>effectsize</code>で効果量を計算することができます。<a href="https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html"><code>effectsize</code>の説明に関するページ</a>に詳しい説明があるので、興味のある方は一読してみるとよいでしょう。</p>
@@ -1549,14 +1557,14 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>カイ二乗検定：データの準備</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データは行列で与える</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データは行列で与える</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">12</span>, <span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"observed"</span>, <span class="st">"expected"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
 <span><span class="co">##        observed expected</span></span>
 <span><span class="co">## male          4        8</span></span>
-<span><span class="co">## female       12        8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## female       12        8</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>fisher.test</code>も<code>chisq.test</code>も、この行列を引数に取ることで計算を行うことができます。フィッシャーの正確検定では、オッズ比（2項確率の成功確率/失敗確率、p/(1-p)）の信頼区間も同時に得られます。</p>
@@ -1565,7 +1573,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>フィッシャーの正確検定・カイ二乗検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># フィッシャーの正確検定</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># フィッシャーの正確検定</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/fisher.test.html">fisher.test</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Fisher's Exact Test for Count Data</span></span>
@@ -1585,7 +1593,7 @@ p値を図示する
 <span><span class="co">##  Pearson's Chi-squared test with Yates' continuity correction</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  x</span></span>
-<span><span class="co">## X-squared = 1.2, df = 1, p-value = 0.2733</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## X-squared = 1.2, df = 1, p-value = 0.2733</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>fisher.test</code>も<code>chisq.test</code>も、カテゴリが2つ以上の場合（例えば血液型など）でも、検定を行うことができます。</p>
@@ -1594,7 +1602,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>カテゴリが2つ以上の場合の検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">6</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">6</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"observed"</span>, <span class="st">"expected"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"O"</span>, <span class="st">"AB"</span><span class="op">)</span></span>
 <span><span class="va">mat</span></span>
@@ -1619,7 +1627,7 @@ p値を図示する
 <span><span class="co">##  Pearson's Chi-squared test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  mat</span></span>
-<span><span class="co">## X-squared = 3.0195, df = 3, p-value = 0.3886</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## X-squared = 3.0195, df = 3, p-value = 0.3886</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>fisher.test</code>も<code>chisq.test</code>も、度数に変換した行列だけでなく、因子のベクターを引数に取ることができます。因子のベクターは2つ必要で、2つのベクターのデータフレームを<code>table</code>関数の引数にしたものを検定の対象とするものです。</p>
@@ -1628,7 +1636,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>因子ベクターを用いた検定の計算</strong></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="co"># 因子のデータフレームを作成</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>,</span>
@@ -1669,19 +1677,19 @@ p値を図示する
 <span><span class="co">##  Pearson's Chi-squared test with Yates' continuity correction</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  d$x and d$y</span></span>
-<span><span class="co">## X-squared = 0, df = 1, p-value = 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## X-squared = 0, df = 1, p-value = 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="分散分析" class="level2" data-number="29.5"><h2 data-number="29.5" class="anchored" data-anchor-id="分散分析">
 <span class="header-section-number">29.5</span> 分散分析</h2>
 <p>正規分布する2群の平均値の差を評価する場合には、t検定を用います。t検定は2群の差を調べる際には用いることができますが、3群以上の平均値の差を検定することはできません。このような、3群以上の平均値の差を検定したい場合には、<strong>分散分析（Analysis of variance、ANOVA）</strong>を用います。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-分散と平均値の差
+<span class="screen-reader-only">Tip</span>分散と平均値の差
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1706,13 +1714,13 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>oneway.test関数で一元分散分析</strong></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/oneway.test.html">oneway.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/oneway.test.html">oneway.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  One-way analysis of means (not assuming equal variances)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  iris$Sepal.Length and iris$Species</span></span>
 <span><span class="co">## F = 138.91, num df = 2.000, denom df = 92.211, p-value &lt; 2.2e-16</span></span>
-<span><span class="co"># oneway.test(Sepal.Length ~ Species, data = iris) # 上と同じ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co"># oneway.test(Sepal.Length ~ Species, data = iris) # 上と同じ</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>oneway.test</code>関数は一元分散分析以外に利用できないこと、分散分析表と呼ばれる表が表示されないことから、Rではそれほど用いられません。Rでよく用いられる分散分析の関数は、次の<code>aov</code>関数と<code>anova</code>関数です。</p>
@@ -1725,7 +1733,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>aov関数で一元分散分析</strong></pre>
 </div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aov_iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">Species</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aov_iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">Species</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
 <span><span class="va">aov_iris</span> <span class="co"># 単に返り値を表示しても、p値は表示されない</span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">##    aov(formula = Sepal.Length ~ Species, data = iris)</span></span>
@@ -1744,7 +1752,7 @@ p値を図示する
 <span><span class="co">## Species       2  63.21  31.606   119.3 &lt;2e-16 ***</span></span>
 <span><span class="co">## Residuals   147  38.96   0.265                   </span></span>
 <span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="anova関数" class="level4" data-number="29.5.1.3"><h4 data-number="29.5.1.3" class="anchored" data-anchor-id="anova関数">
@@ -1757,7 +1765,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>anova関数で一元分散分析</strong></pre>
 </div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span> <span class="co"># 線形回帰の計算</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span> <span class="co"># 線形回帰の計算</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">lm_iris</span><span class="op">)</span> <span class="co"># 回帰の計算結果を引数に取る</span></span>
 <span><span class="co">## Analysis of Variance Table</span></span>
 <span><span class="co">## </span></span>
@@ -1766,7 +1774,7 @@ p値を図示する
 <span><span class="co">## iris$Species   2 63.212  31.606  119.26 &lt; 2.2e-16 ***</span></span>
 <span><span class="co">## Residuals    147 38.956   0.265                      </span></span>
 <span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="二元分散分析" class="level3" data-number="29.5.2"><h3 data-number="29.5.2" class="anchored" data-anchor-id="二元分散分析">
@@ -1777,7 +1785,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>二元分散分析に用いるデータの例</strong></pre>
 </div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">175</span>, <span class="fl">169</span>, <span class="fl">168</span>, <span class="fl">153</span>, <span class="fl">153</span>, <span class="fl">151</span>, <span class="fl">181</span>, <span class="fl">180</span>, <span class="fl">174</span>, <span class="fl">158</span>, <span class="fl">155</span>, <span class="fl">169</span><span class="op">)</span>, <span class="co"># 身長</span></span>
 <span>  sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="co"># 性別</span></span>
 <span>  residence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Osaka"</span>, <span class="st">"Kobe"</span><span class="op">)</span><span class="op">)</span> <span class="co"># 居住地</span></span>
@@ -1796,7 +1804,7 @@ p値を図示する
 <span><span class="co">## 9     174   M     Osaka</span></span>
 <span><span class="co">## 10    158   F      Kobe</span></span>
 <span><span class="co">## 11    155   F     Osaka</span></span>
-<span><span class="co">## 12    169   F      Kobe</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 12    169   F      Kobe</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>二元分散分析も、基本的には一元分散分析と同じく、<code>aov</code>関数や<code>anova</code>関数を用いて計算します。二元分散分析を行う場合には、formulaの右辺に、<strong>群を指定する要素を足し算でつなぎます</strong>。上記のデータフレームの例であれば、<code>height</code>が目的変数なのでformulaの左辺へ、<code>sex</code>と<code>residence</code>が群（説明変数）なので、右辺に<strong><code>sex+residence</code></strong>を置くことになります。</p>
@@ -1805,7 +1813,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>aov関数で二元分散分析</strong></pre>
 </div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aov_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">residence</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aov_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">residence</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">aov_d</span><span class="op">)</span></span>
 <span><span class="co">##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    </span></span>
@@ -1813,7 +1821,7 @@ p値を図示する
 <span><span class="co">## residence    1    9.4     9.4    0.24 0.635956    </span></span>
 <span><span class="co">## Residuals    9  351.6    39.1                     </span></span>
 <span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1821,7 +1829,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>anova関数で二元分散分析</strong></pre>
 </div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">residence</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">residence</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Analysis of Variance Table</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Response: height</span></span>
@@ -1830,29 +1838,29 @@ p値を図示する
 <span><span class="co">## residence  1   9.37    9.37   0.240 0.6359557    </span></span>
 <span><span class="co">## Residuals  9 351.63   39.07                      </span></span>
 <span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上の例では、sex（性別）間の差はp=0.00075で統計的に有意であり、residence（居住地）間の差ではp=0.636で差があるとは言えない、という結果になります。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-分散分析表をデータフレームにする
+<span class="screen-reader-only">Tip</span>分散分析表をデータフレームにする
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>分散分析の結果は分散分析表として示すことが多いですが、Rの出力はデータフレームではなく、Consoleに表示されます。データフレームとして分散分析結果を取得するには、<code>broom</code>パッケージ<span class="citation" data-cites="broom_bib">(<a href="references.html#ref-broom_bib" role="doc-biblioref">Robinson et al. 2025</a>)</span>の<code>tidy</code>関数を用います。<code>tidy</code>関数は分散分析だけでなく、様々な統計解析の結果をデータフレームに変換してくれます。</p>
+<p>分散分析の結果は分散分析表として示すことが多いですが、Rの出力はデータフレームではなく、Consoleに表示されます。データフレームとして分散分析結果を取得するには、<code>broom</code>パッケージ<span class="citation" data-cites="broom_bib">(<a href="#ref-broom_bib" role="doc-biblioref">Robinson et al. 2025</a>)</span>の<code>tidy</code>関数を用います。<code>tidy</code>関数は分散分析だけでなく、様々な統計解析の結果をデータフレームに変換してくれます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>broom::tidy関数で結果をデータフレームに変換する</strong></pre>
 </div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">broom</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">broom</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">residence</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">tidy</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 3 × 6</span></span>
 <span><span class="co">##   term         df  sumsq meansq statistic   p.value</span></span>
@@ -1865,7 +1873,7 @@ p値を図示する
 <span><span class="fu"><a href="https://rdrr.io/r/utils/methods.html">methods</a></span><span class="op">(</span><span class="va">tidy</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">##  [1] "tidy.aareg"     "tidy.acf"       "tidy.anova"     "tidy.aov"      </span></span>
 <span><span class="co">##  [5] "tidy.aovlist"   "tidy.Arima"     "tidy.betamfx"   "tidy.betareg"  </span></span>
-<span><span class="co">##  [9] "tidy.biglm"     "tidy.binDesign"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [9] "tidy.biglm"     "tidy.binDesign"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>また、<code>broom</code>には<code>tidy</code>の他に<code>glance</code>、<code>augment</code>という2つの関数を備えています。<code>glance</code>は統計量に次の章で紹介するAICなどを示してくれる関数、<code>augment</code>はデータに残差などを追加してくれる関数となっています。</p>
@@ -1874,7 +1882,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>glance関数とaugment関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">residence</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">glance</span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">residence</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">glance</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 12</span></span>
 <span><span class="co">##   r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC</span></span>
 <span><span class="co">##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
@@ -1890,7 +1898,7 @@ p値を図示する
 <span><span class="co">## 3    168 M     Osaka        174.  -5.88 0.208   6.21 0.0979      -1.06 </span></span>
 <span><span class="co">## 4    153 F     Kobe         157.  -4.12 0.208   6.42 0.0483      -0.742</span></span>
 <span><span class="co">## 5    153 F     Osaka        155.  -2.25 0.333   6.56 0.0324      -0.441</span></span>
-<span><span class="co">## 6    151 F     Kobe         157.  -6.12 0.208   6.17 0.106       -1.10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 6    151 F     Kobe         157.  -6.12 0.208   6.17 0.106       -1.10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1910,7 +1918,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>交互作用ありの二元分散分析</strong></pre>
 </div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aov_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">*</span> <span class="va">residence</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aov_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">*</span> <span class="va">residence</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">aov_d</span><span class="op">)</span></span>
 <span><span class="co">##               Df Sum Sq Mean Sq F value  Pr(&gt;F)   </span></span>
@@ -1919,7 +1927,7 @@ p値を図示する
 <span><span class="co">## sex:residence  1    9.4     9.4   0.219 0.65219   </span></span>
 <span><span class="co">## Residuals      8  342.3    42.8                   </span></span>
 <span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上の例では、交互作用（sex:residence）のp値が0.652なので、「交互作用がないという仮説を棄却しない」という結果になります。交互作用があるとは言えないため、性別（sex）の有意差は信頼できると言えます。</p>
@@ -1931,7 +1939,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>共分散分析に用いるデータの例</strong></pre>
 </div>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ToothGrowth</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ToothGrowth</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">dose</span>, y <span class="op">=</span> <span class="va">len</span>, color <span class="op">=</span> <span class="va">supp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_abline</span><span class="op">(</span>intercept <span class="op">=</span> <span class="fl">11.55</span>, slope <span class="op">=</span> <span class="fl">7.811</span>, color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1941,7 +1949,7 @@ p値を図示する
 <span>    x <span class="op">=</span> <span class="st">"投与したビタミンCの量"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"モルモットの歯の長さ"</span>, </span>
 <span>    color <span class="op">=</span> <span class="st">"投与方法"</span>,</span>
-<span>    caption <span class="op">=</span> <span class="st">"OJ：オレンジジュースに加える、VC：ビタミンCそのまま"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>    caption <span class="op">=</span> <span class="st">"OJ：オレンジジュースに加える、VC：ビタミンCそのまま"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1956,7 +1964,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>aov関数で共分散分析</strong></pre>
 </div>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aov_ToothGrowth</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">supp</span> <span class="op">*</span> <span class="va">dose</span>, data <span class="op">=</span> <span class="va">ToothGrowth</span><span class="op">)</span> <span class="co"># suppは因子、doseは数値</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aov_ToothGrowth</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">supp</span> <span class="op">*</span> <span class="va">dose</span>, data <span class="op">=</span> <span class="va">ToothGrowth</span><span class="op">)</span> <span class="co"># suppは因子、doseは数値</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">aov_ToothGrowth</span><span class="op">)</span></span>
 <span><span class="co">##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    </span></span>
@@ -1965,7 +1973,7 @@ p値を図示する
 <span><span class="co">## supp:dose    1   88.9    88.9   5.333 0.024631 *  </span></span>
 <span><span class="co">## Residuals   56  933.6    16.7                     </span></span>
 <span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>共分散分析の結果として、因子に対するp値（上の例ではsupp）、数値に対するp値（上の例ではdose）、交互作用に関するp値（上の例ではsupp:dose）が得られます。</p>
@@ -1976,17 +1984,17 @@ p値を図示する
 </section></section><section id="多重比較" class="level2" data-number="29.6"><h2 data-number="29.6" class="anchored" data-anchor-id="多重比較">
 <span class="header-section-number">29.6</span> 多重比較</h2>
 <p>分散分析では、3群以上の平均値の差の検定を行います。ただし、分散分析でわかるのは、3群に差があるのかどうかであって、どの群の間に差があるのかはよくわかりません。</p>
-<p>どの群とどの群の間に差があるかを知りたい場合、もっとも単純に考えると2群ずつのt検定を繰り返せばよいように思います。しかし、 検出力と例数（ <a href="#sec-power" class="quarto-xref"><span>Section 29.3.6</span></a> ）で説明した通り、検定には第一の過誤という、「差があると結論しても実際には差がなかった」ということが起こります。この第一の過誤の確率はp値となります。ですので、例えばp=0.05のt検定を2回行えば、どちらか一方の検定が間違いである確率は、<span class="math inline">\(1-(1-0.05)^2=0.0975\)</span>となり、0.05より大きい確率で間違いを含んでしまいます。</p>
+<p>どの群とどの群の間に差があるかを知りたい場合、もっとも単純に考えると2群ずつのt検定を繰り返せばよいように思います。しかし、 検出力と例数（ <a href="#sec-power" class="quarto-xref"><span class="quarto-unresolved-ref">sec-power</span></a> ）で説明した通り、検定には第一の過誤という、「差があると結論しても実際には差がなかった」ということが起こります。この第一の過誤の確率はp値となります。ですので、例えばp=0.05のt検定を2回行えば、どちらか一方の検定が間違いである確率は、<span class="math inline">\(1-(1-0.05)^2=0.0975\)</span>となり、0.05より大きい確率で間違いを含んでしまいます。</p>
 <p>この検定を繰り返すと検定に間違いが含まれる確率が0.05より大きくなる問題のことを<strong>多重性の問題</strong>と呼びます。この多重性の問題を解決するために、第一の過誤の確率を調整するのが<strong>多重比較の方法</strong>です。多重比較の方法には様々なものがあります。Rで利用可能な多重比較の方法を以下に示していきます。</p>
 <section id="scheffeの方法" class="level3" data-number="29.6.1"><h3 data-number="29.6.1" class="anchored" data-anchor-id="scheffeの方法">
 <span class="header-section-number">29.6.1</span> Scheffeの方法</h3>
-<p>Scheffeの方法は、昔は教科書等にも書かれていた多重比較の方法なのですが、最近はあまり紹介されているところを見ないものです。RでScheffeの方法を用いるためには、<a href="https://cran.r-project.org/web/packages/DescTools/index.html">DescTools</a>パッケージ <span class="citation" data-cites="DescTools_bib">(<a href="references.html#ref-DescTools_bib" role="doc-biblioref">Signorell 2023</a>)</span>の<code>ScheffeTest</code>関数を利用する必要があります。<code>ScheffeTest</code>関数は<code>aov</code>関数の返り値を引数に取り、多重比較による各群の総当たりの調整済みp値を計算してくれます。</p>
+<p>Scheffeの方法は、昔は教科書等にも書かれていた多重比較の方法なのですが、最近はあまり紹介されているところを見ないものです。RでScheffeの方法を用いるためには、<a href="https://cran.r-project.org/web/packages/DescTools/index.html">DescTools</a>パッケージ <span class="citation" data-cites="DescTools_bib">(<a href="#ref-DescTools_bib" role="doc-biblioref">Signorell 2023</a>)</span>の<code>ScheffeTest</code>関数を利用する必要があります。<code>ScheffeTest</code>関数は<code>aov</code>関数の返り値を引数に取り、多重比較による各群の総当たりの調整済みp値を計算してくれます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Scheffeの方法による多重比較</strong></pre>
 </div>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">DescTools</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">DescTools</span><span class="op">)</span></span>
 <span><span class="fu">ScheffeTest</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##   Posthoc multiple comparisons of means: Scheffe Test </span></span>
@@ -1999,7 +2007,7 @@ p値を図示する
 <span><span class="co">## virginica-versicolor 0.652 0.3973953 0.9066047 2.0e-08 ***</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="tukeyの方法" class="level3" data-number="29.6.2"><h3 data-number="29.6.2" class="anchored" data-anchor-id="tukeyの方法">
@@ -2010,7 +2018,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>Tukeyの方法による多重比較</strong></pre>
 </div>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">##   Tukey multiple comparisons of means</span></span>
 <span><span class="co">##     95% family-wise confidence level</span></span>
 <span><span class="co">## </span></span>
@@ -2020,7 +2028,7 @@ p値を図示する
 <span><span class="co">##                       diff       lwr       upr p adj</span></span>
 <span><span class="co">## versicolor-setosa    0.930 0.6862273 1.1737727     0</span></span>
 <span><span class="co">## virginica-setosa     1.582 1.3382273 1.8257727     0</span></span>
-<span><span class="co">## virginica-versicolor 0.652 0.4082273 0.8957727     0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## virginica-versicolor 0.652 0.4082273 0.8957727     0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="dunnettの方法" class="level3" data-number="29.6.3"><h3 data-number="29.6.3" class="anchored" data-anchor-id="dunnettの方法">
@@ -2032,7 +2040,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>Dunnettの方法による多重比較</strong></pre>
 </div>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">DescTools</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">DescTools</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Speciesの一番初めのレベル（Setosa）を対照群とする</span></span>
 <span><span class="fu">DunnettTest</span><span class="op">(</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">Species</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
@@ -2060,7 +2068,7 @@ p値を図示する
 <span><span class="co">## versicolor-virginica -0.652 -0.881968 -0.422032 5.5e-09 ***</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="p値を調整する方法" class="level3" data-number="29.6.4"><h3 data-number="29.6.4" class="anchored" data-anchor-id="p値を調整する方法">
@@ -2072,14 +2080,14 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>p.adjust関数でp値を調整する</strong></pre>
 </div>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># p値をベクターで準備</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># p値をベクターで準備</span></span>
 <span><span class="va">p_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.005</span>, <span class="fl">0.06</span>, by <span class="op">=</span> <span class="fl">0.005</span><span class="op">)</span></span>
 <span><span class="va">p_vec</span></span>
 <span><span class="co">##  [1] 0.005 0.010 0.015 0.020 0.025 0.030 0.035 0.040 0.045 0.050 0.055 0.060</span></span>
 <span></span>
 <span><span class="co"># holmの方法でp値を調整</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/p.adjust.html">p.adjust</a></span><span class="op">(</span><span class="va">p_vec</span>, method <span class="op">=</span> <span class="st">"holm"</span><span class="op">)</span></span>
-<span><span class="co">##  [1] 0.06 0.11 0.15 0.18 0.20 0.21 0.21 0.21 0.21 0.21 0.21 0.21</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [1] 0.06 0.11 0.15 0.18 0.20 0.21 0.21 0.21 0.21 0.21 0.21 0.21</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>また、総当たりのt検定を行い、p値を上記の手法で補正する関数として、<code>pairwise.t.test</code>関数が設定されています。<code>pairwise.t.test</code>関数は数値ベクターと因子ベクターを引数に取り、<code>p.adjust.method</code>引数にp値の調整方法を指定して用います。</p>
@@ -2088,7 +2096,7 @@ p値を図示する
 <div class="code-with-filename-file">
 <pre><strong>pairwise.t.test関数でp値調整済み総当たりt検定を行う</strong></pre>
 </div>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># formulaは使えない</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># formulaは使えない</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Species</span>, p.adjust.method <span class="op">=</span> <span class="st">"holm"</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Pairwise comparisons using t tests with pooled SD </span></span>
@@ -2099,7 +2107,7 @@ p値を図示する
 <span><span class="co">## versicolor 1.8e-15 -         </span></span>
 <span><span class="co">## virginica  &lt; 2e-16 2.8e-09   </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## P value adjustment method: holm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## P value adjustment method: holm</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>p値調整の手法ごとのp値の値を比較したグラフを以下に示します。</p>
@@ -2112,18 +2120,18 @@ p値を図示する
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Gatekeeping法
+<span class="screen-reader-only">Tip</span>Gatekeeping法
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>多重比較の方法には、この他にGatekeeping法と呼ばれるものもあります。Gatekeeping法は研究デザインとの関連性が高い手法で、基礎研究ではまずお目にかからないものです。近年の第III相治験のような、ガチガチに研究デザインを固めてから行う大規模研究以外ではまず使うことはないでしょう。RにはこのGatekeeping法の計算に関連したパッケージとして<a href="https://gpaux.github.io/Mediana/">Mediana</a>パッケージ <span class="citation" data-cites="Mediana_bib">(<a href="references.html#ref-Mediana_bib" role="doc-biblioref">Paux and Dmitrienko. 2019</a>)</span>や <a href="https://gsrmtp.r-forge.r-project.org/">gMCP</a>パッケージ <span class="citation" data-cites="gMCP_bib">(<a href="references.html#ref-gMCP_bib" role="doc-biblioref">Bretz et al. 2011</a>)</span>があります。</p>
+<p>多重比較の方法には、この他にGatekeeping法と呼ばれるものもあります。Gatekeeping法は研究デザインとの関連性が高い手法で、基礎研究ではまずお目にかからないものです。近年の第III相治験のような、ガチガチに研究デザインを固めてから行う大規模研究以外ではまず使うことはないでしょう。RにはこのGatekeeping法の計算に関連したパッケージとして<a href="https://gpaux.github.io/Mediana/">Mediana</a>パッケージ <span class="citation" data-cites="Mediana_bib">(<a href="#ref-Mediana_bib" role="doc-biblioref">Paux and Dmitrienko. 2019</a>)</span>や <a href="https://gsrmtp.r-forge.r-project.org/">gMCP</a>パッケージ <span class="citation" data-cites="gMCP_bib">(<a href="#ref-gMCP_bib" role="doc-biblioref">Bretz et al. 2011</a>)</span>があります。</p>
 </div>
 </div>
 </div>
@@ -2141,7 +2149,7 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>ノンパラメトリック検定：Wilcoxonの順位和検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">rlnorm</a></span><span class="op">(</span><span class="fl">10</span>, meanlog <span class="op">=</span> <span class="fl">0</span>, sdlog <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">rlnorm</a></span><span class="op">(</span><span class="fl">10</span>, meanlog <span class="op">=</span> <span class="fl">0</span>, sdlog <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">rlnorm</a></span><span class="op">(</span><span class="fl">10</span>, meanlog <span class="op">=</span> <span class="fl">1</span>, sdlog <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -2161,7 +2169,7 @@ Gatekeeping法
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  x by f</span></span>
 <span><span class="co">## W = 22, p-value = 0.05556</span></span>
-<span><span class="co">## alternative hypothesis: true location shift is not equal to 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## alternative hypothesis: true location shift is not equal to 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="friedmanのランク和検定" class="level3" data-number="29.7.2"><h3 data-number="29.7.2" class="anchored" data-anchor-id="friedmanのランク和検定">
@@ -2173,7 +2181,7 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>ノンパラメトリック検定：Friedmanのランク和検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris_temp</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris_temp</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">iris_temp</span> <span class="co"># 3列の行列</span></span>
 <span><span class="co">##    Sepal.Length Sepal.Width Petal.Length</span></span>
 <span><span class="co">## 1           5.1         3.5          1.4</span></span>
@@ -2192,7 +2200,7 @@ Gatekeeping法
 <span><span class="co">##  Friedman rank sum test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  iris_temp</span></span>
-<span><span class="co">## Friedman chi-squared = 20, df = 2, p-value = 4.54e-05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Friedman chi-squared = 20, df = 2, p-value = 4.54e-05</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>同様に、<code>friedman.test</code>関数は繰り返しのない、同じ群のデータが1つしかないような場合の2因子ブロックデザインにも対応しています。この場合、群分けに当たる変数が2つ必要です。引数にはformulaを用いるのですが、formulaの設定方法が他の検定の関数とはやや異なります。formulaでは、群間差を検討する因子を<code>~</code>の後に置き、検討しない方のもう一因子を<code>|</code>を挟んで右側に置きます。ですので、formulaの形は<code>目的変数 ~ 因子1 | 因子2</code>という形で設定します。</p>
@@ -2201,9 +2209,13 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>引数がformulaの時のfriedman.test</strong></pre>
 </div>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wb</span> <span class="op">&lt;-</span> <span class="va">warpbreaks</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">wool</span>, <span class="va">tension</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">summarise</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">breaks</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## `summarise()` has grouped output by 'wool'. You can override using the</span></span>
-<span><span class="co">## `.groups` argument.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wb</span> <span class="op">&lt;-</span> <span class="va">warpbreaks</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">wool</span>, <span class="va">tension</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">summarise</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">breaks</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## `summarise()` has regrouped the output.</span></span>
+<span><span class="co">## ℹ Summaries were computed grouped by wool and tension.</span></span>
+<span><span class="co">## ℹ Output is grouped by wool.</span></span>
+<span><span class="co">## ℹ Use `summarise(.groups = "drop_last")` to silence this message.</span></span>
+<span><span class="co">## ℹ Use `summarise(.by = c(wool, tension))` for per-operation grouping</span></span>
+<span><span class="co">##   (`?dplyr::dplyr_by`) instead.</span></span>
 <span></span>
 <span><span class="va">wb</span> <span class="co"># 因子が2つあるデータフレーム</span></span>
 <span><span class="co">## # A tibble: 6 × 3</span></span>
@@ -2237,7 +2249,7 @@ Gatekeeping法
 <span><span class="co">##  Friedman rank sum test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  breaks and tension and wool</span></span>
-<span><span class="co">## Friedman chi-squared = 1, df = 2, p-value = 0.6065</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Friedman chi-squared = 1, df = 2, p-value = 0.6065</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="kruskal-wallisのランク和検定" class="level3" data-number="29.7.3"><h3 data-number="29.7.3" class="anchored" data-anchor-id="kruskal-wallisのランク和検定">
@@ -2248,25 +2260,25 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>ノンパラメトリック検定：Kruskal-Wallisのランク和検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Kruskal-Wallis rank sum test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  iris$Sepal.Length by iris$Species</span></span>
-<span><span class="co">## Kruskal-Wallis chi-squared = 96.937, df = 2, p-value &lt; 2.2e-16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Kruskal-Wallis chi-squared = 96.937, df = 2, p-value &lt; 2.2e-16</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="正規性の検定shapiro-wilk検定" class="level3" data-number="29.7.4"><h3 data-number="29.7.4" class="anchored" data-anchor-id="正規性の検定shapiro-wilk検定">
 <span class="header-section-number">29.7.4</span> 正規性の検定：Shapiro-Wilk検定</h3>
 <p>正規性の検定（Shapiro-Wilk検定）は、データが正規分布しているかどうかを検定で判別するための検定手法です。「データが正規分布している」が帰無仮説ですので、正規分布していないデータが与えられたときにp値が小さくなり、帰無仮説が棄却されます。Shapiro-Wilk検定は<code>shapiro.test</code>関数を用いて計算することができます。</p>
-<p>また、<code>DescTools</code>パッケージ<span class="citation" data-cites="DescTools_bib">(<a href="references.html#ref-DescTools_bib" role="doc-biblioref">Signorell 2023</a>)</span>の<code>LillieTest</code>関数も正規性の検定の手法（Kolmogorov-Smirnov検定）を提供しています。Kolmogorov-Smirnov検定もShapiro-Wilk検定と同じく、帰無仮説は「データが正規分布している」です。</p>
+<p>また、<code>DescTools</code>パッケージ<span class="citation" data-cites="DescTools_bib">(<a href="#ref-DescTools_bib" role="doc-biblioref">Signorell 2023</a>)</span>の<code>LillieTest</code>関数も正規性の検定の手法（Kolmogorov-Smirnov検定）を提供しています。Kolmogorov-Smirnov検定もShapiro-Wilk検定と同じく、帰無仮説は「データが正規分布している」です。</p>
 <p>ただし、この検定よりは、qqプロットのような正規性を図から調べるような方法や、ヒストグラムでの左右対称性の確認、データが連続的であるかどうかなどを指標にして判別する方がよいように思います。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>正規性の検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="va">rn</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/shapiro.test.html">shapiro.test</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 正規乱数は正規分布しているので棄却されない</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Shapiro-Wilk normality test</span></span>
@@ -2292,7 +2304,7 @@ Gatekeeping法
 <span><span class="co">##  Lilliefors (Kolmogorov-Smirnov) normality test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  ru</span></span>
-<span><span class="co">## D = 0.096454, p-value = 0.02274</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## D = 0.096454, p-value = 0.02274</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="分散の均一性の検定" class="level3" data-number="29.7.5"><h3 data-number="29.7.5" class="anchored" data-anchor-id="分散の均一性の検定">
@@ -2303,7 +2315,7 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>分散の均一性の検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 正規分布同士の分散の均一性の検定（異なっていれば帰無仮説を棄却）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 正規分布同士の分散の均一性の検定（異なっていれば帰無仮説を棄却）</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/var.test.html">var.test</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  F test to compare two variances</span></span>
@@ -2329,12 +2341,12 @@ Gatekeeping法
 <span><span class="co">##   1.224275 19.843813</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## ratio of variances </span></span>
-<span><span class="co">##           4.928922</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##           4.928922</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="外れ値の検定" class="level3" data-number="29.7.6"><h3 data-number="29.7.6" class="anchored" data-anchor-id="外れ値の検定">
 <span class="header-section-number">29.7.6</span> 外れ値の検定</h3>
-<p>データが外れ値（outlier）かどうかを判別する場合には、外れ値の検定というものを用いる場合もあります。この検定では、代表値（平均など）から一番外れたデータが外れ値かどうかを検定し、外れ値であれば帰無仮説を棄却するものとなっています。Rでは<a href="https://cran.r-project.org/web/packages/outliers/outliers.pdf">outlier</a>パッケージ <span class="citation" data-cites="outliers_bib">(<a href="references.html#ref-outliers_bib" role="doc-biblioref">Komsta 2022</a>)</span>の関数である<code>chisq.out.test</code>、<code>grubbs.test</code>、<code>dixon.test</code>で検定を行うことができます。</p>
+<p>データが外れ値（outlier）かどうかを判別する場合には、外れ値の検定というものを用いる場合もあります。この検定では、代表値（平均など）から一番外れたデータが外れ値かどうかを検定し、外れ値であれば帰無仮説を棄却するものとなっています。Rでは<a href="https://cran.r-project.org/web/packages/outliers/outliers.pdf">outlier</a>パッケージ <span class="citation" data-cites="outliers_bib">(<a href="#ref-outliers_bib" role="doc-biblioref">Komsta 2022</a>)</span>の関数である<code>chisq.out.test</code>、<code>grubbs.test</code>、<code>dixon.test</code>で検定を行うことができます。</p>
 <p>ただし、この検定で<strong>外れ値であると判断されても、データは取り除いてはいけません</strong>。これらの検定はデータが正規分布していることを仮定しており、正規分布していないデータでは外れ値とはならない場合があります。検定は外れ値を取り除くためのものではなく、外れ値である可能性を把握し、データの取得に問題がなかったか検討したり、分布が正規性を持つかどうかを評価しなおしたりするためのものです。</p>
 <p>基礎研究などで極端な外れ値が取れた場合には何か理由を付けてデータを取り除きたくなるものですが、この検定を用いてもデータを取り除くことはできません。このような検定を用いずに、データと向き合う方が良いように思います。</p>
 <div class="cell">
@@ -2342,7 +2354,7 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>外れ値の検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">outliers</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">outliers</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 正規乱数</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span></span>
@@ -2369,7 +2381,7 @@ Gatekeeping法
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  x</span></span>
 <span><span class="co">## Q = 0.81998, p-value &lt; 2.2e-16</span></span>
-<span><span class="co">## alternative hypothesis: highest value 10 is an outlier</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## alternative hypothesis: highest value 10 is an outlier</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="その他の検定" class="level2" data-number="29.8"><h2 data-number="29.8" class="anchored" data-anchor-id="その他の検定">
@@ -2384,7 +2396,7 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>2項検定：binom.test関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># xは成功回数、nは試行回数、pは成功確率（pのデフォルト値は0.5）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># xは成功回数、nは試行回数、pは成功確率（pのデフォルト値は0.5）</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/binom.test.html">binom.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">10</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> </span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Exact binomial test</span></span>
@@ -2396,7 +2408,7 @@ Gatekeeping法
 <span><span class="co">##  0.02521073 0.55609546</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## probability of success </span></span>
-<span><span class="co">##                    0.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##                    0.2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>また、上記の演算結果には、成功確率の95%信頼区間が記載されています（0.0252 ~ 0.5561）。この95%信頼区間が<code>p</code>引数で指定した成功確率を含まない場合、有意差がある、という結論となります。信頼区間の幅は<code>t.test</code>関数と同じく、<code>conf.level</code>引数で指定することができます。</p>
@@ -2405,10 +2417,10 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>2項確率の信頼区間</strong></pre>
 </div>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/binom.test.html">binom.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">4</span>, n <span class="op">=</span> <span class="fl">20</span>, p <span class="op">=</span> <span class="fl">0.5</span>, conf.level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">$</span><span class="va">conf.int</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/binom.test.html">binom.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">4</span>, n <span class="op">=</span> <span class="fl">20</span>, p <span class="op">=</span> <span class="fl">0.5</span>, conf.level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">$</span><span class="va">conf.int</span></span>
 <span><span class="co">## [1] 0.07135388 0.40102812</span></span>
 <span><span class="co">## attr(,"conf.level")</span></span>
-<span><span class="co">## [1] 0.9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 0.9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>binom.test</code>関数は<code>t.test</code>関数と同様に片側、両側検定とすることもできます。</p>
@@ -2417,7 +2429,7 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>binom.test：片側検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 下側検定</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 下側検定</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/binom.test.html">binom.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">5</span>, n <span class="op">=</span> <span class="fl">20</span>, p <span class="op">=</span> <span class="fl">0.5</span>, alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"less"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Exact binomial test</span></span>
@@ -2443,7 +2455,7 @@ Gatekeeping法
 <span><span class="co">##  0.5444176 1.0000000</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## probability of success </span></span>
-<span><span class="co">##                   0.75</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##                   0.75</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="項確率の比較prop.test関数" class="level3" data-number="29.8.2"><h3 data-number="29.8.2" class="anchored" data-anchor-id="項確率の比較prop.test関数">
@@ -2455,7 +2467,7 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>prop.test関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">73</span>, <span class="fl">48</span>, <span class="fl">60</span>, <span class="fl">59</span><span class="op">)</span> <span class="co"># 表が出た回数</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">73</span>, <span class="fl">48</span>, <span class="fl">60</span>, <span class="fl">59</span><span class="op">)</span> <span class="co"># 表が出た回数</span></span>
 <span><span class="va">th</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">5</span><span class="op">)</span> <span class="co"># 試行回数</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span><span class="va">hd</span>, <span class="va">th</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
@@ -2466,7 +2478,7 @@ Gatekeeping法
 <span><span class="co">## alternative hypothesis: two.sided</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## prop 1 prop 2 prop 3 prop 4 prop 5 </span></span>
-<span><span class="co">##   0.28   0.73   0.48   0.60   0.59</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##   0.28   0.73   0.48   0.60   0.59</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="ポアソン分布の確率を演算poisson.test関数" class="level3" data-number="29.8.3"><h3 data-number="29.8.3" class="anchored" data-anchor-id="ポアソン分布の確率を演算poisson.test関数">
@@ -2478,7 +2490,7 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>poisson.test関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 時間単位100で120回起こるイベントの確率を時間単位1あたり1回起こるイベントと異なるかを評価</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 時間単位100で120回起こるイベントの確率を時間単位1あたり1回起こるイベントと異なるかを評価</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/poisson.test.html">poisson.test</a></span><span class="op">(</span><span class="fl">120</span>, T <span class="op">=</span> <span class="fl">100</span>, r <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Exact Poisson test</span></span>
@@ -2504,7 +2516,7 @@ Gatekeeping法
 <span><span class="co">##  0.829721 1.306785</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## rate ratio </span></span>
-<span><span class="co">##   1.043478</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##   1.043478</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="多元の分散分析manova関数" class="level3" data-number="29.8.4"><h3 data-number="29.8.4" class="anchored" data-anchor-id="多元の分散分析manova関数">
@@ -2515,25 +2527,25 @@ Gatekeeping法
 <div class="code-with-filename-file">
 <pre><strong>多変量分散分析：manova関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 目的変数はcbind関数で行列として渡す</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 目的変数はcbind関数で行列として渡す</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/manova.html">manova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span><span class="op">)</span> <span class="op">~</span> <span class="va">Species</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">##            Df  Pillai approx F num Df den Df    Pr(&gt;F)    </span></span>
 <span><span class="co">## Species     2 0.94531   65.878      4    294 &lt; 2.2e-16 ***</span></span>
 <span><span class="co">## Residuals 147                                             </span></span>
 <span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-e6a4d0acbb644e5b84bf4e80a435599e" class="csl-entry" role="listitem">
 Altman, Naomi, and Martin Krzywinski. 2016. <span>“Points of Significance: P Values and the Search for Significance.”</span> <em>Nature Methods</em> 14 (1): 3–4. <a href="https://doi.org/10.1038/nmeth.4120">https://doi.org/10.1038/nmeth.4120</a>.
 </div>
 <div id="ref-benjamin2018redefine" class="csl-entry" role="listitem">
-Benjamin, Daniel J, James O Berger, Magnus Johannesson, Brian A Nosek, E-J Wagenmakers, Richard Berk, Kenneth A Bollen, et al. 2018. <span>“Redefine Statistical Significance.”</span> <em>Nature Human Behaviour</em> 2 (1): 6–10.
+<span class="nocase">Benjamin, Daniel J, James O Berger, Magnus Johannesson, et al.</span> 2018. <span>“Redefine Statistical Significance.”</span> <em>Nature Human Behaviour</em> 2 (1): 6–10.
 </div>
 <div id="ref-effectsize_bib" class="csl-entry" role="listitem">
 Ben-Shachar, Mattan S., Daniel Lüdecke, and Dominique Makowski. 2020. <span>“<span class="nocase">e</span>ffectsize: Estimation of Effect Size Indices and Standardized Parameters.”</span> <em>Journal of Open Source Software</em> 5 (56): 2815. <a href="https://doi.org/10.21105/joss.02815">https://doi.org/10.21105/joss.02815</a>.
@@ -2542,7 +2554,7 @@ Ben-Shachar, Mattan S., Daniel Lüdecke, and Dominique Makowski. 2020. <span>“
 Bretz, Frank, Martin Posch, Ekkehard Glimm, Florian Klinglmueller, Willi Maurer, and Kornelius Rohmeyer. 2011. <span>“Graphical Approaches for Multiple Comparison Procedures Using Weighted Bonferroni, Simes or Parametric Tests.”</span> <em>Biometrical Journal</em> 53 (6): 894–913. <a href="https://doi.org/10.1002/bimj.201000239">https://doi.org/10.1002/bimj.201000239</a>.
 </div>
 <div id="ref-cohen2013statistical" class="csl-entry" role="listitem">
-Cohen, Jacob. 2013. <em>Statistical Power Analysis for the Behavioral Sciences</em>. routledge.
+Cohen, Jacob. 2013. <em>Statistical Power Analysis for the Behavioral Sciences</em>. Routledge.
 </div>
 <div id="ref-outliers_bib" class="csl-entry" role="listitem">
 Komsta, Lukasz. 2022. <em>Outliers: Tests for Outliers</em>. <a href="https://CRAN.R-project.org/package=outliers">https://CRAN.R-project.org/package=outliers</a>.
@@ -2621,13 +2633,14 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -3030,7 +3043,7 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb53" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 検定</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 検定</span></span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -3932,7 +3945,7 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
 <span id="cb53-902"><a href="#cb53-902" aria-hidden="true" tabindex="-1"></a><span class="co"># 目的変数はcbind関数で行列として渡す</span></span>
 <span id="cb53-903"><a href="#cb53-903" aria-hidden="true" tabindex="-1"></a><span class="fu">manova</span>(<span class="fu">cbind</span>(Sepal.Length, Sepal.Width) <span class="sc">~</span> Species, <span class="at">data =</span> iris) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span>
 <span id="cb53-904"><a href="#cb53-904" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -3947,7 +3960,11 @@ Signorell, Andri. 2023. <em>DescTools: Tools for Descriptive Statistics</em>. <a
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

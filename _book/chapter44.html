@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>44&nbsp; purrr – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -764,6 +766,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -833,14 +841,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   
 
 
-</header><p><a href="https://purrr.tidyverse.org/"><code>purrr</code></a>パッケージ<span class="citation" data-cites="purrr_bib">(<a href="references.html#ref-purrr_bib" role="doc-biblioref">Wickham and Henry 2023</a>)</span>はリストや行列に関数を適用する関数、<a href="./chapter15.html">apply関数群</a>に似たものを提供するパッケージです。<code>purrr</code>で提供される関数は、<code>map</code>関数と呼ばれる一連の関数になります。</p>
+</header><p><a href="https://purrr.tidyverse.org/"><code>purrr</code></a>パッケージ<span class="citation" data-cites="purrr_bib">(<a href="#ref-purrr_bib" role="doc-biblioref">Wickham and Henry 2023</a>)</span>はリストや行列に関数を適用する関数、<a href="./chapter15.html">apply関数群</a>に似たものを提供するパッケージです。<code>purrr</code>で提供される関数は、<code>map</code>関数と呼ばれる一連の関数になります。</p>
 <p><code>purrr</code>は<code>tidyverse</code>に含まれるパッケージですので、<code>tidyverse</code>をロードすると同時に呼び出されます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>purrr関数のロード</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="map関数" class="level2" data-number="44.1"><h2 data-number="44.1" class="anchored" data-anchor-id="map関数">
@@ -856,7 +864,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ベクターを引数とするmap関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="va">x</span> <span class="op">+</span> <span class="fl">3</span><span class="op">}</span> <span class="co"># xに3を足す関数</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="va">x</span> <span class="op">+</span> <span class="fl">3</span><span class="op">}</span> <span class="co"># xに3を足す関数</span></span>
 <span><span class="va">vec</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
 <span><span class="fu">map</span><span class="op">(</span><span class="va">vec</span>, <span class="va">f</span><span class="op">)</span> <span class="co"># ベクターの要素を関数の引数とし、結果をリストで返す</span></span>
 <span><span class="co">## [[1]]</span></span>
@@ -866,7 +874,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [1] 5</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[3]]</span></span>
-<span><span class="co">## [1] 6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>リストを引数に取った時にも同様に、<code>map</code>関数はリストの要素を関数の引数としたリストを返します。こちらの計算はほぼ<code>lapply</code>と同じです。</p>
@@ -879,7 +887,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>リストを引数とするmap関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">map</span><span class="op">(</span><span class="va">lst</span>, <span class="va">f</span><span class="op">)</span></span>
 <span><span class="co">## [[1]]</span></span>
 <span><span class="co">## [1] 4</span></span>
@@ -898,7 +906,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [1] 4 6</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[3]]</span></span>
-<span><span class="co">## [1] 4 6 7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 4 6 7</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="返り値がベクターのmap関数" class="level3" data-number="44.1.1"><h3 data-number="44.1.1" class="anchored" data-anchor-id="返り値がベクターのmap関数">
@@ -915,7 +923,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ベクターを返り値とするmap関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">map_chr</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">class</span><span class="op">)</span> <span class="co"># ベクターを引数に取る場合</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">map_chr</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">class</span><span class="op">)</span> <span class="co"># ベクターを引数に取る場合</span></span>
 <span><span class="co">## [1] "integer" "integer" "integer"</span></span>
 <span></span>
 <span><span class="fu">map_chr</span><span class="op">(</span><span class="va">lst</span>, <span class="va">mode</span><span class="op">)</span> <span class="co"># リストを引数に取る場合</span></span>
@@ -940,16 +948,16 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## ! Result must be length 1, not 2.</span></span>
 <span></span>
 <span><span class="fu">map_vec</span><span class="op">(</span><span class="va">lst</span>, <span class="va">class</span><span class="op">)</span> <span class="co"># 返り値の型を特定しない場合</span></span>
-<span><span class="co">## [1] "numeric" "numeric" "numeric"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "numeric" "numeric" "numeric"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-map関数と返り値の型
+<span class="screen-reader-only">Tip</span>map関数と返り値の型
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -971,7 +979,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>チルダで引数あり関数を指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="co"># 1~10から15回サンプリングする試行を4回繰り返す（返り値はリスト）</span></span>
 <span><span class="fu">map</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">15</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co">## [[1]]</span></span>
@@ -1004,7 +1012,7 @@ map関数と返り値の型
 <span><span class="co">## [12,]   10    4    7    3</span></span>
 <span><span class="co">## [13,]    6    3    8    8</span></span>
 <span><span class="co">## [14,]   10    6    6    6</span></span>
-<span><span class="co">## [15,]    7   10   10    7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [15,]    7   10   10    7</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="applyとmap" class="level2" data-number="44.2"><h2 data-number="44.2" class="anchored" data-anchor-id="applyとmap">
@@ -1015,7 +1023,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>applyとmap関数の演算</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span></span>
 <span><span class="co">## Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span></span>
 <span><span class="co">##     5.843333     3.057333     3.758000     1.199333</span></span>
 <span></span>
@@ -1034,7 +1042,7 @@ map関数と返り値の型
 <span></span>
 <span><span class="fu">map_dbl</span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">mean</span><span class="op">)</span></span>
 <span><span class="co">## Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span></span>
-<span><span class="co">##     5.843333     3.057333     3.758000     1.199333</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##     5.843333     3.057333     3.758000     1.199333</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="map関数とmap_dbl関数の違い" class="level3" data-number="44.2.1"><h3 data-number="44.2.1" class="anchored" data-anchor-id="map関数とmap_dbl関数の違い">
@@ -1045,7 +1053,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>map関数とmap_vec関数の違い</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f2</span> <span class="op">&lt;-</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f2</span> <span class="op">&lt;-</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">map</span><span class="op">(</span><span class="va">lst</span>, <span class="va">f2</span><span class="op">)</span> <span class="co"># mapは複数要素の結果を返す</span></span>
 <span><span class="co">## [[1]]</span></span>
@@ -1062,7 +1070,7 @@ map関数と返り値の型
 <span><span class="co">## Error in `map_dbl()`:</span></span>
 <span><span class="co">## ℹ In index: 2.</span></span>
 <span><span class="co">## Caused by error:</span></span>
-<span><span class="co">## ! Result must be length 1, not 2.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ! Result must be length 1, not 2.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="関数内で引数の位置を指定する" class="level3" data-number="44.2.2"><h3 data-number="44.2.2" class="anchored" data-anchor-id="関数内で引数の位置を指定する">
@@ -1073,7 +1081,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>関数内で引数の位置を指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumprod</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 累積積のベクターを返すcumprod関数</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumprod</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 累積積のベクターを返すcumprod関数</span></span>
 <span><span class="co">## [1]  2  6 24</span></span>
 <span></span>
 <span><span class="fu">map</span><span class="op">(</span><span class="va">lst</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span><span class="op">)</span> <span class="co"># xを関数内で定義</span></span>
@@ -1113,16 +1121,16 @@ map関数と返り値の型
 <span><span class="co">## Error in `map()`:</span></span>
 <span><span class="co">## ℹ In index: 1.</span></span>
 <span><span class="co">## Caused by error in `.f()`:</span></span>
-<span><span class="co">## ! object 'y' not found</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ! object 'y' not found</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-関数とスコープ
+<span class="screen-reader-only">Tip</span>関数とスコープ
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1132,7 +1140,7 @@ map関数と返り値の型
 <p>Rでは、ほとんどの変数はグローバルスコープと呼ばれる、どこでも大体呼び出せるスコープで定義されます。ただし、関数の定義の中で宣言した変数は関数外から呼び出すことはできません。これは関数の中での変数宣言がローカルスコープ（その場だけで呼び出せるスコープ）になっているからです。</p>
 <p><code>map</code>関数では、<code>.x</code>はローカルスコープの変数を呼び出し、<code>x</code>はグローバルスコープの変数を呼び出している形となります。</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 関数内はローカルスコープなので、yはグローバルスコープには存在しない</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 関数内はローカルスコープなので、yはグローバルスコープには存在しない</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1</span>; <span class="va">x</span><span class="op">}</span></span>
 <span><span class="va">y</span></span>
 <span><span class="co">## Error:</span></span>
@@ -1149,7 +1157,7 @@ map関数と返り値の型
 <span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">y</span></span>
-<span><span class="co">## [1] 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1162,7 +1170,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>チルダの有無による違い</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">map</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># runif(2)は返ってこない</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">map</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># runif(2)は返ってこない</span></span>
 <span><span class="co">## [[1]]</span></span>
 <span><span class="co">## [1] 1</span></span>
 <span><span class="co">## </span></span>
@@ -1180,14 +1188,14 @@ map関数と返り値の型
 <span><span class="co">## [1] 0.3999944 0.3253522</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[3]]</span></span>
-<span><span class="co">## [1] 0.7570871 0.2026923</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 0.7570871 0.2026923</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="関数の位置に数値を入れる" class="level3" data-number="44.2.4"><h3 data-number="44.2.4" class="anchored" data-anchor-id="関数の位置に数値を入れる">
 <span class="header-section-number">44.2.4</span> 関数の位置に数値を入れる</h3>
 <p>関数の位置に数値を入れると、インデックスとして取り扱われます。<code>lst</code>の各要素のインデックス<code>[1]</code>はすべて<code>1</code>になっているため、<code>map_dbl(lst, 1)</code>は<code>1</code>が3つのベクターが返ってきます。<code>map_dbl(lst, 2)</code>の場合、lstの1つ目の要素のインデックス<code>[2]</code>は定義されていないため、演算ができずエラーが返ってきます。</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span> <span class="co"># lstの各要素の始めのインデックスは1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span> <span class="co"># lstの各要素の始めのインデックスは1</span></span>
 <span><span class="co">## [[1]]</span></span>
 <span><span class="co">## [1] 1</span></span>
 <span><span class="co">## </span></span>
@@ -1205,7 +1213,7 @@ map関数と返り値の型
 <span><span class="co">## Error in `map_dbl()`:</span></span>
 <span><span class="co">## ℹ In index: 1.</span></span>
 <span><span class="co">## Caused by error:</span></span>
-<span><span class="co">## ! Result must be length 1, not 0.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ! Result must be length 1, not 0.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="複数の引数を指定する" class="level3" data-number="44.2.5"><h3 data-number="44.2.5" class="anchored" data-anchor-id="複数の引数を指定する">
 <span class="header-section-number">44.2.5</span> 複数の引数を指定する</h3>
@@ -1217,7 +1225,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>map関数で2つ目の引数を指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f3</span> <span class="op">&lt;-</span> \<span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">}</span> <span class="co"># 単にベクターをつなぐ関数</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f3</span> <span class="op">&lt;-</span> \<span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">}</span> <span class="co"># 単にベクターをつなぐ関数</span></span>
 <span><span class="va">vec</span></span>
 <span><span class="co">## [1] 1 2 3</span></span>
 <span></span>
@@ -1239,7 +1247,7 @@ map関数と返り値の型
 <span><span class="co">## [1] 2.0000000 0.1216919 0.2454885</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[3]]</span></span>
-<span><span class="co">## [1] 3.0000000 0.1216919 0.2454885</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 3.0000000 0.1216919 0.2454885</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="パイプ演算子とmap関数" class="level3" data-number="44.2.6"><h3 data-number="44.2.6" class="anchored" data-anchor-id="パイプ演算子とmap関数">
@@ -1250,7 +1258,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>パイプ演算子を利用したmap関数の演算</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span></span>
 <span><span class="co">## [[1]]</span></span>
 <span><span class="co">## [1] 1</span></span>
 <span><span class="co">## </span></span>
@@ -1271,7 +1279,7 @@ map関数と返り値の型
 <span><span class="co">## [1]  1  3 12</span></span>
 <span></span>
 <span><span class="va">lst</span> <span class="op">|&gt;</span> <span class="fu">map</span><span class="op">(</span><span class="va">cumprod</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">map_dbl</span><span class="op">(</span><span class="va">sum</span><span class="op">)</span> <span class="co"># 累積積の和をベクターで返す</span></span>
-<span><span class="co">## [1]  1  4 16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1]  1  4 16</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="統計でのmap関数の使用" class="level3" data-number="44.2.7"><h3 data-number="44.2.7" class="anchored" data-anchor-id="統計でのmap関数の使用">
@@ -1285,7 +1293,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>map関数を用いて一度に線形回帰を計算する</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">irisPL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span> <span class="co"># speciesで3つのデータフレームのリストにする</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">irisPL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span> <span class="co"># speciesで3つのデータフレームのリストにする</span></span>
 <span></span>
 <span><span class="co"># irisPLはデータフレーム3つのリスト</span></span>
 <span><span class="va">irisPL</span><span class="op">$</span><span class="va">setosa</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span>; <span class="va">irisPL</span><span class="op">$</span><span class="va">versicolor</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span>; <span class="va">irisPL</span><span class="op">$</span><span class="va">virginica</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span></span>
@@ -1350,7 +1358,7 @@ map関数と返り値の型
 <span><span class="co"># 線形回帰の係数のうち、傾き（2つ目の要素）だけをベクターで取り出す</span></span>
 <span><span class="va">irisPL</span> <span class="op">|&gt;</span> <span class="fu">map</span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">Sepal.Width</span>, data <span class="op">=</span> <span class="va">.x</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">map</span><span class="op">(</span><span class="va">coef</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">map_dbl</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">##     setosa versicolor  virginica </span></span>
-<span><span class="co">##  0.6904897  0.8650777  0.9015345</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  0.6904897  0.8650777  0.9015345</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><a href="./chapter20.html#ネストnestしたデータ">20章</a>で紹介したように、この<code>map</code>による計算は<code>dplyr</code>の<code>group_by</code>関数・<code>nest</code>関数と合わせて用いることができます。かなり使い方が複雑ですが、うまく用いることでデータフレームの列として線形回帰の結果や係数などを出力することができます。</p>
@@ -1359,7 +1367,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>map関数でネストしたデータフレームを取り扱う</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ネストしたデータフレームでのmap</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ネストしたデータフレームでのmap</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">iris</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -1382,16 +1390,16 @@ map関数と返り値の型
 <span><span class="va">d</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># setosaでの線形回帰の係数（切片・傾き）を呼び出し</span></span>
 <span><span class="co">## [[1]]</span></span>
 <span><span class="co">## (Intercept) Sepal.Width </span></span>
-<span><span class="co">##   2.6390012   0.6904897</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##   2.6390012   0.6904897</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-複雑さと抽象化
+<span class="screen-reader-only">Tip</span>複雑さと抽象化
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1469,7 +1477,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>modify関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 引数にデータフレームを準備する</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 引数にデータフレームを準備する</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span>
 <span>  y <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span></span>
@@ -1490,7 +1498,7 @@ map関数と返り値の型
 <span><span class="co">##   x y</span></span>
 <span><span class="co">## 1 1 2</span></span>
 <span><span class="co">## 2 3 5</span></span>
-<span><span class="co">## 3 6 9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 3 6 9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="map2関数" class="level2" data-number="44.5"><h2 data-number="44.5" class="anchored" data-anchor-id="map2関数">
@@ -1507,7 +1515,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>引数を2つ取る：map2関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span></span>
 <span><span class="co">## [[1]]</span></span>
 <span><span class="co">## [1] 1</span></span>
 <span><span class="co">## </span></span>
@@ -1540,7 +1548,7 @@ map関数と返り値の型
 <span><span class="co">## [1] 101 104 108</span></span>
 <span></span>
 <span><span class="fu">map2_dbl</span><span class="op">(</span><span class="va">lst</span>, <span class="va">vec</span>, <span class="va">sum</span>, <span class="fl">100</span><span class="op">)</span> <span class="co"># 100もsumの引数に含まれる</span></span>
-<span><span class="co">## [1] 102 106 111</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 102 106 111</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="walk関数" class="level2" data-number="44.6"><h2 data-number="44.6" class="anchored" data-anchor-id="walk関数">
@@ -1556,7 +1564,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>返り値を返さない：walk関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"the first"</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"the first"</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">month.name</span> <span class="co"># 月の名前の文字列</span></span>
 <span><span class="co">##  [1] "January"   "February"  "March"     "April"     "May"       "June"     </span></span>
@@ -1638,7 +1646,7 @@ map関数と返り値の型
 <span><span class="co">## [1] "September the first was a sunny day."</span></span>
 <span><span class="co">## [1] "October the first was a sunny day."</span></span>
 <span><span class="co">## [1] "November the first was a sunny day."</span></span>
-<span><span class="co">## [1] "December the first was a sunny day."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "December the first was a sunny day."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="imap関数" class="level2" data-number="44.7"><h2 data-number="44.7" class="anchored" data-anchor-id="imap関数">
@@ -1649,7 +1657,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>imap関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">imap</span><span class="op">(</span><span class="va">iris</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">.y</span>, <span class="st">"is"</span>, <span class="va">.x</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="co"># .yにcolnames（要素の名前）が入っている</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">imap</span><span class="op">(</span><span class="va">iris</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">.y</span>, <span class="st">"is"</span>, <span class="va">.x</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="co"># .yにcolnames（要素の名前）が入っている</span></span>
 <span><span class="co">## $Sepal.Length</span></span>
 <span><span class="co">## [1] "Sepal.Length is 5.1"</span></span>
 <span><span class="co">## </span></span>
@@ -1673,7 +1681,7 @@ map関数と返り値の型
 <span><span class="co">## [1] "2 / 4"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[3]]</span></span>
-<span><span class="co">## [1] "3 / 8"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "3 / 8"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="pmap関数" class="level2" data-number="44.8"><h2 data-number="44.8" class="anchored" data-anchor-id="pmap関数">
@@ -1684,7 +1692,7 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>pmap関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,</span>
 <span>  y <span class="op">=</span> <span class="fl">4</span><span class="op">:</span><span class="fl">1</span>,</span>
 <span>  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">4</span><span class="op">)</span></span>
@@ -1703,7 +1711,7 @@ map関数と返り値の型
 <span></span>
 <span><span class="co"># apply(iris[1:5, 1:4], 1, sum)と同じで、横方向に合計を計算している</span></span>
 <span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu">pmap_dbl</span><span class="op">(</span><span class="va">sum</span><span class="op">)</span></span>
-<span><span class="co">## [1] 10.2  9.5  9.4  9.4 10.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 10.2  9.5  9.4  9.4 10.2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="reduceaccumulate関数" class="level2" data-number="44.9"><h2 data-number="44.9" class="anchored" data-anchor-id="reduceaccumulate関数">
@@ -1714,19 +1722,19 @@ map関数と返り値の型
 <div class="code-with-filename-file">
 <pre><strong>reduce・accumulate関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">reduce</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="va">`-`</span><span class="op">)</span> <span class="co"># ((1-2)-3)-4の計算</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">reduce</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="va">`-`</span><span class="op">)</span> <span class="co"># ((1-2)-3)-4の計算</span></span>
 <span><span class="co">## [1] -8</span></span>
 <span></span>
 <span><span class="fu">reduce</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="va">sum</span><span class="op">)</span> <span class="co"># ((1+2)+3)+4の計算</span></span>
 <span><span class="co">## [1] 10</span></span>
 <span></span>
 <span><span class="fu">accumulate</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="va">sum</span><span class="op">)</span> <span class="co"># 上の演算を順々にベクターとして返す</span></span>
-<span><span class="co">## [1]  1  3  6 10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1]  1  3  6 10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>reduce</code>関数や<code>accumulate</code>関数を用いると、<code>for</code>文での繰り返し計算を行うことなく、簡単に複雑な計算を行うことができます。下の例では、3つのベクターからなるリストを用いて、各ベクターのすべてに含まれる要素を<code>reduce</code>関数を用いて計算しています。また、<code>accumulate</code>関数を用いると<code>reduce</code>関数での計算過程を追うことができるため、計算をトレースすることができます。</p>
 <div class="cell">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">temp</span> <span class="op">&lt;-</span> <span class="fu">map</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">5</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">temp</span> <span class="co"># 1:10から5つサンプリングしたベクター3つのリスト</span></span>
 <span><span class="co">## [[1]]</span></span>
@@ -1755,13 +1763,17 @@ map関数と返り値の型
 <span><span class="co">## [1] 7 1 2</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[3]]</span></span>
-<span><span class="co">## [1] 7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 7</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="map_ifとmap_at関数" class="level2" data-number="44.10"><h2 data-number="44.10" class="anchored" data-anchor-id="map_ifとmap_at関数">
 <span class="header-section-number">44.10</span> map_ifとmap_at関数</h2>
 <p><code>map_if</code>関数は第二引数に条件式を取り、条件式が<code>TRUE</code>となる場合のみ第三引数に取った関数を適用する関数です。<code>iris</code>のように、数値と因子（<code>Species</code>）が混じっているような場合に、数値の列のみを計算の対象としたい場合などに利用できます。また、<code>map_at</code>関数は第二引数にインデックスを取り、インデックスで指定したリストの位置のみを計算の対象とする関数です。</p>
 <div class="cell">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 数値だけ平均に変換する</span></span>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>map_ifとmap_at</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 数値だけ平均に変換する</span></span>
 <span><span class="va">iris</span> <span class="op">|&gt;</span> <span class="fu">map_if</span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">mean</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## List of 5</span></span>
 <span><span class="co">##  $ Sepal.Length: num 5.84</span></span>
@@ -1777,13 +1789,14 @@ map関数と返り値の型
 <span><span class="co">##  $ Sepal.Width : num [1:150] 3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...</span></span>
 <span><span class="co">##  $ Petal.Length: num [1:150] 1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...</span></span>
 <span><span class="co">##  $ Petal.Width : logi FALSE</span></span>
-<span><span class="co">##  $ Species     : logi FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  $ Species     : logi FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </div>
 
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-purrr_bib" class="csl-entry" role="listitem">
 Wickham, Hadley, and Lionel Henry. 2023. <em>Purrr: Functional Programming Tools</em>. <a href="https://CRAN.R-project.org/package=purrr">https://CRAN.R-project.org/package=purrr</a>.
 </div>
@@ -1852,13 +1865,14 @@ Wickham, Hadley, and Lionel Henry. 2023. <em>Purrr: Functional Programming Tools
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2261,7 +2275,7 @@ Wickham, Hadley, and Lionel Henry. 2023. <em>Purrr: Functional Programming Tools
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb24" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># purrr</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># purrr</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`purrr`</span><span class="co">](https://purrr.tidyverse.org/)</span>パッケージ<span class="co">[</span><span class="ot">@purrr_bib</span><span class="co">]</span>はリストや行列に関数を適用する関数、<span class="co">[</span><span class="ot">apply関数群</span><span class="co">](chapter15.qmd)</span>に似たものを提供するパッケージです。<span class="in">`purrr`</span>で提供される関数は、<span class="in">`map`</span>関数と呼ばれる一連の関数になります。</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -2682,14 +2696,14 @@ Wickham, Hadley, and Lionel Henry. 2023. <em>Purrr: Functional Programming Tools
 <span id="cb24-421"><a href="#cb24-421" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-422"><a href="#cb24-422" aria-hidden="true" tabindex="-1"></a><span class="in">`map_if`</span>関数は第二引数に条件式を取り、条件式が<span class="in">`TRUE`</span>となる場合のみ第三引数に取った関数を適用する関数です。<span class="in">`iris`</span>のように、数値と因子（<span class="in">`Species`</span>）が混じっているような場合に、数値の列のみを計算の対象としたい場合などに利用できます。また、<span class="in">`map_at`</span>関数は第二引数にインデックスを取り、インデックスで指定したリストの位置のみを計算の対象とする関数です。</span>
 <span id="cb24-423"><a href="#cb24-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-426"><a href="#cb24-426" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb24-427"><a href="#cb24-427" aria-hidden="true" tabindex="-1"></a><span class="co"># 数値だけ平均に変換する</span></span>
-<span id="cb24-428"><a href="#cb24-428" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> <span class="fu">map_if</span>(is.numeric, mean) <span class="sc">|&gt;</span> <span class="fu">str</span>()</span>
-<span id="cb24-429"><a href="#cb24-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-430"><a href="#cb24-430" aria-hidden="true" tabindex="-1"></a><span class="co"># 4列目と5列目だけ関数で評価する</span></span>
-<span id="cb24-431"><a href="#cb24-431" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> <span class="fu">map_at</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>), is.character) <span class="sc">|&gt;</span> <span class="fu">str</span>()</span>
-<span id="cb24-432"><a href="#cb24-432" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb24-424"><a href="#cb24-424" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="map_ifとmap_at"}</span></span>
+<span id="cb24-425"><a href="#cb24-425" aria-hidden="true" tabindex="-1"></a><span class="co"># 数値だけ平均に変換する</span></span>
+<span id="cb24-426"><a href="#cb24-426" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> <span class="fu">map_if</span>(is.numeric, mean) <span class="sc">|&gt;</span> <span class="fu">str</span>()</span>
+<span id="cb24-427"><a href="#cb24-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-428"><a href="#cb24-428" aria-hidden="true" tabindex="-1"></a><span class="co"># 4列目と5列目だけ関数で評価する</span></span>
+<span id="cb24-429"><a href="#cb24-429" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> <span class="fu">map_at</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>), is.character) <span class="sc">|&gt;</span> <span class="fu">str</span>()</span>
+<span id="cb24-430"><a href="#cb24-430" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -2704,7 +2718,11 @@ Wickham, Hadley, and Lionel Henry. 2023. <em>Purrr: Functional Programming Tools
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

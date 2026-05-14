@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>S3クラス – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -81,7 +83,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./summary.html" rel="next">
+<link href="./Tips_S4class.html" rel="next">
 <link href="./Tips_systems.html" rel="prev">
 <link href="./favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -761,6 +763,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -817,14 +825,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 
 
 </header><p>オブジェクト指向とクラスについてはすでに<a href="./chapter22.html">22章</a>で紹介しました。Rには、S3、S4、R6、S7などのオブジェクト指向プログラミングに関するクラスが備わっています。ここでは、<strong>S3クラス</strong>について簡単に説明します。</p>
-<p>S3クラスはRの基になったS言語で初めに設定されたオブジェクト指向プログラミングに関するクラスで、S ver.3で設定されたためにS3と呼ばれているものです。</p>
-<p>S3は非常にシンプルです。オブジェクトのattributeにclassが設定されるとS3クラスのオブジェクトとして認識されます。以下の例は、ベクターにclassを設定しただけのものです。<code><a href="https://sloop.r-lib.org/reference/otype.html">sloop::otype</a></code><span class="citation" data-cites="sloop_bib">(<a href="references.html#ref-sloop_bib" role="doc-biblioref">Wickham 2019a</a>)</span>でクラスを調べると、S3となっています。</p>
+<p>S3クラスはRの基になったS言語で初めに設定されたオブジェクト指向プログラミングに関するクラスで、S ver.3（1992年）で設定されたためにS3と呼ばれているものです。</p>
+<p>S3は非常にシンプルです。オブジェクトのattributeに<code>class</code>が設定されるとS3クラスのオブジェクトとして認識されます。以下の例は、ベクターに<code>class</code>を設定しただけのものです。<code><a href="https://sloop.r-lib.org/reference/otype.html">sloop::otype</a></code><span class="citation" data-cites="sloop_bib">(<a href="#ref-sloop_bib" role="doc-biblioref">Wickham 2019b</a>)</span>でクラスを調べると、S3となっています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>attributeにクラスを設定するとS3クラス</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ただのベクター</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ただのベクター</span></span>
 <span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
 <span></span>
 <span><span class="co"># クラスはbase</span></span>
@@ -840,16 +848,16 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span></span>
 <span><span class="co"># S3と判定される</span></span>
 <span><span class="va">v</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## [1] "S3"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "S3"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-sloop::otype
+<span class="screen-reader-only">Tip</span>sloop::otype
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -861,7 +869,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>sloop::otypeの中身</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">sloop</span><span class="fu">::</span><span class="va"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">sloop</span><span class="fu">::</span><span class="va"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span></span>
 <span><span class="co">## function (x) </span></span>
 <span><span class="co">## {</span></span>
 <span><span class="co">##     if (!is.object(x)) {</span></span>
@@ -884,8 +892,8 @@ sloop::otype
 <span><span class="co">##         }</span></span>
 <span><span class="co">##     }</span></span>
 <span><span class="co">## }</span></span>
-<span><span class="co">## &lt;bytecode: 0x000001c109e4bca8&gt;</span></span>
-<span><span class="co">## &lt;environment: namespace:sloop&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## &lt;bytecode: 0x0000023181778990&gt;</span></span>
+<span><span class="co">## &lt;environment: namespace:sloop&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -899,7 +907,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>S3クラスの例：lmクラス</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">cars</span><span class="op">$</span><span class="va">dist</span> <span class="op">~</span> <span class="va">cars</span><span class="op">$</span><span class="va">speed</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">cars</span><span class="op">$</span><span class="va">dist</span> <span class="op">~</span> <span class="va">cars</span><span class="op">$</span><span class="va">speed</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># lmクラスはS3</span></span>
 <span><span class="va">result_lm</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -907,7 +915,7 @@ sloop::otype
 <span></span>
 <span><span class="co"># attributeからクラスを取り除くと、listになる</span></span>
 <span><span class="va">result_lm</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## [1] "list"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "list"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>リストなので、値をリストと同じように置き換えることができます。</p>
@@ -916,7 +924,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>S3オブジェクトの要素を置き換える</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 傾きと切片を返すcoef関数</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 傾きと切片を返すcoef関数</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">result_lm</span><span class="op">)</span></span>
 <span><span class="co">## (Intercept)  cars$speed </span></span>
 <span><span class="co">##  -17.579095    3.932409</span></span>
@@ -930,7 +938,7 @@ sloop::otype
 <span></span>
 <span><span class="co"># coefで呼び出せるものが傾きと切片ではなく、dogになる</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">result_lm</span><span class="op">)</span></span>
-<span><span class="co">## [1] "dog"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "dog"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>…PythonやRubyのような真面目なオブジェクト指向プログラミング言語を使いこなしている方からすると、このS3クラスを設定する意味があるのか疑わしいと思われるでしょうし、型安全な言語から見ると狂気のような仕様ですが、Rで最も用いられているクラスはこのS3です。</p>
@@ -941,19 +949,20 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>lmクラスに設定されているジェネリック関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/methods.html">methods</a></span><span class="op">(</span>class<span class="op">=</span><span class="st">"lm"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/methods.html">methods</a></span><span class="op">(</span>class<span class="op">=</span><span class="st">"lm"</span><span class="op">)</span></span>
 <span><span class="co">##  [1] add1           alias          anova          case.names     coerce        </span></span>
 <span><span class="co">##  [6] confint        cooks.distance deviance       dfbeta         dfbetas       </span></span>
-<span><span class="co">## [11] drop1          dummy.coef     effects        extractAIC     family        </span></span>
-<span><span class="co">## [16] formula        fortify        hatvalues      influence      initialize    </span></span>
-<span><span class="co">## [21] kappa          labels         logLik         model.frame    model.matrix  </span></span>
-<span><span class="co">## [26] nobs           plot           predict        print          proj          </span></span>
-<span><span class="co">## [31] qr             residuals      rstandard      rstudent       show          </span></span>
-<span><span class="co">## [36] simulate       slotsFromS3    summary        variable.names vcov          </span></span>
-<span><span class="co">## see '?methods' for accessing help and source code</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [11] dffits         drop1          dummy.coef     effects        extractAIC    </span></span>
+<span><span class="co">## [16] family         formula        fortify        hatvalues      influence     </span></span>
+<span><span class="co">## [21] initialize     kappa          labels         logLik         model.frame   </span></span>
+<span><span class="co">## [26] model.matrix   nobs           plot           predict        print         </span></span>
+<span><span class="co">## [31] proj           qr             residuals      rstandard      rstudent      </span></span>
+<span><span class="co">## [36] show           simulate       slotsFromS3    summary        variable.names</span></span>
+<span><span class="co">## [41] vcov          </span></span>
+<span><span class="co">## see '?methods' for accessing help and source code</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>とは言っても、<code>lm</code>クラスほどにシンプルだといろいろ心配になります。以下では、<a href="https://adv-r.hadley.nz/s3.html">Advanced RのS3クラスの章</a><span class="citation" data-cites="Hadley_Wickham2016-02-10 Wickham_Hadley2019-05-24">(<a href="references.html#ref-Hadley_Wickham2016-02-10" role="doc-biblioref">Wickham 2016</a>, <a href="references.html#ref-Wickham_Hadley2019-05-24" role="doc-biblioref">2019b</a>)</span>を参考に、もう少しまともなS3クラスの設定について説明していきます。</p>
+<p>とは言っても、<code>lm</code>クラスほどにシンプルだといろいろ心配になります。以下では、<a href="https://adv-r.hadley.nz/s3.html">Advanced RのS3クラスの章</a><span class="citation" data-cites="Hadley_Wickham2016-02-10 Wickham_Hadley2019-05-24">(<a href="#ref-Hadley_Wickham2016-02-10" role="doc-biblioref">Wickham 2016</a>, <a href="#ref-Wickham_Hadley2019-05-24" role="doc-biblioref">2019a</a>)</span>を参考に、もう少しまともなS3クラスの設定について説明していきます。</p>
 <section id="s3クラスの設計constructorvalidatorhelper" class="level2"><h2 class="anchored" data-anchor-id="s3クラスの設計constructorvalidatorhelper">S3クラスの設計：Constructor、Validator、Helper</h2>
 <p>Advanced Rには、S3クラスを設計する際には<strong>Constructor</strong>、<strong>Validator</strong>、<strong>Helper</strong>を設定すると良い、と記載されています。それぞれ以下のような意味を持つ関数です。</p>
 <ul>
@@ -973,7 +982,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>Constructorを設計する</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">new_MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span>, <span class="va">trick</span> <span class="op">=</span> <span class="cn">NA</span>, <span class="va">age</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">new_MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span>, <span class="va">trick</span> <span class="op">=</span> <span class="cn">NA</span>, <span class="va">age</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">temp_list</span> <span class="op">&lt;-</span> </span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>      <span class="co"># trimwsは前後のスペースを取り除く関数</span></span>
@@ -986,7 +995,7 @@ sloop::otype
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">temp_list</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"MyDog"</span></span>
 <span>  </span>
 <span>  <span class="va">temp_list</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Constructorを使うと<code>MyDog</code>クラスのオブジェクトを作成することができます。クラスを設定したため、<code>MyDog</code>クラスはS3になります。</p>
@@ -995,9 +1004,9 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>S3クラスのインスタンスを作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pochi</span> <span class="op">&lt;-</span> <span class="fu">new_MyDog</span><span class="op">(</span><span class="st">"pochi"</span>, <span class="st">"おすわり"</span>, <span class="fl">5</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pochi</span> <span class="op">&lt;-</span> <span class="fu">new_MyDog</span><span class="op">(</span><span class="st">"pochi"</span>, <span class="st">"おすわり"</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span>
-<span><span class="co">## [1] "S3"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "S3"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="バリデータvalidator" class="level3"><h3 class="anchored" data-anchor-id="バリデータvalidator">バリデータ（Validator）</h3>
@@ -1007,7 +1016,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>イヌっぽくない値を引数に指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fukuzawa_yukawa</span> <span class="op">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fukuzawa_yukawa</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">new_MyDog</span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"福沢諭吉"</span>, <span class="st">"湯川秀樹"</span><span class="op">)</span>, <span class="st">"学問が得意"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">15</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fukuzawa_yukawa</span></span>
@@ -1021,7 +1030,7 @@ sloop::otype
 <span><span class="co">## [1]  5 15 30</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "MyDog"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "MyDog"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>そもそもどの値もデータ型を固定していないため、<code>name</code>に数値、<code>trick</code>に論理型、<code>age</code>にデータフレームを設定できたりします。これでは訳に立つクラスにはなりそうにありません。</p>
@@ -1034,13 +1043,13 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>Validatorを作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">validate_MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">validate_MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="co"># FALSEの要素があるとエラーになる</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/character.html">is.character</a></span><span class="op">(</span><span class="va">MyDog</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>, <span class="co"># MyDog$nameは文字列でないとダメ</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">MyDog</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span> <span class="co"># MyDog$nameは要素が1つでないとダメ</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>この<code>validate_MyDog</code>関数を用いて<code>MyDog</code>クラスのオブジェクトである<code>pochi</code>と<code>fukuzawa_yukawa</code>を評価すると、<code>pochi</code>は何も返ってこないのに対して、<code>fukuzawa_yukawa</code>ではエラーが返ってきます。<code>MyDog$name</code>の長さが2なので、<code>length(MyDog$name) == 1</code>が<code>FALSE</code>を返すためです。</p>
@@ -1049,7 +1058,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>問題のないnameを指定した場合</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">validate_MyDog</span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">validate_MyDog</span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1057,9 +1066,9 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>問題のあるnameを指定した場合</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">validate_MyDog</span><span class="op">(</span><span class="va">fukuzawa_yukawa</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">validate_MyDog</span><span class="op">(</span><span class="va">fukuzawa_yukawa</span><span class="op">)</span></span>
 <span><span class="co">## Error in `validate_MyDog()`:</span></span>
-<span><span class="co">## ! length(MyDog$name) == 1 is not TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ! length(MyDog$name) == 1 is not TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上記の<code>validate_MyDog</code>関数では<code>MyDog</code>クラスの<code>name</code>だけが検証できる形になっています。実際にクラスを設計する場合には、<code>MyDog</code>クラスの各要素、<code>name</code>、<code>trick</code>、<code>age</code>が矛盾なく登録できるよう、たくさんの設定を追加する必要があります。</p>
@@ -1070,7 +1079,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>より精緻なValidatorを作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">validate_MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">validate_MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">MyDog</span>, <span class="st">"MyDog"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span>,</span>
@@ -1103,7 +1112,7 @@ sloop::otype
 <span>  <span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="ヘルパーhelper" class="level3"><h3 class="anchored" data-anchor-id="ヘルパーhelper">ヘルパー（Helper）</h3>
@@ -1114,11 +1123,11 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>Helperの設定</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span>, <span class="va">trick</span>, <span class="va">age</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span>, <span class="va">trick</span>, <span class="va">age</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">temp</span> <span class="op">&lt;-</span> <span class="fu">new_MyDog</span><span class="op">(</span><span class="va">name</span>, <span class="va">trick</span>, <span class="va">age</span><span class="op">)</span></span>
 <span>  <span class="fu">validate_MyDog</span><span class="op">(</span><span class="va">temp</span><span class="op">)</span></span>
 <span>  <span class="va">temp</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>この<code>MyDog</code>関数を用いることで、引数に問題がある場合にはオブジェクトが作成されないため、（ただのS3と比べると）安全なオブジェクトを作成できます。</p>
@@ -1127,7 +1136,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>引数に問題がなければ適切にオブジェクトが作成される</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">MyDog</span><span class="op">(</span><span class="st">"Pochi"</span>, <span class="st">"sit"</span>, <span class="fl">15</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">MyDog</span><span class="op">(</span><span class="st">"Pochi"</span>, <span class="st">"sit"</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="co">## $name</span></span>
 <span><span class="co">## [1] "Pochi"</span></span>
 <span><span class="co">## </span></span>
@@ -1138,7 +1147,7 @@ sloop::otype
 <span><span class="co">## [1] 15</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "MyDog"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "MyDog"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1146,7 +1155,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>引数に問題があればエラーとなり、オブジェクトが作成されない</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">MyDog</span><span class="op">(</span><span class="st">""</span>, <span class="st">"sit"</span>, <span class="fl">15</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">MyDog</span><span class="op">(</span><span class="st">""</span>, <span class="st">"sit"</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="co">## Error in `validate_MyDog()`:</span></span>
 <span><span class="co">## ! 名前が設定されていません</span></span>
 <span></span>
@@ -1165,7 +1174,7 @@ sloop::otype
 <span></span>
 <span><span class="fu">MyDog</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Pochi"</span>, <span class="st">"Shiro"</span><span class="op">)</span>, <span class="st">"sit"</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="co">## Error in `validate_MyDog()`:</span></span>
-<span><span class="co">## ! length(MyDog$name) == 1 is not TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ! length(MyDog$name) == 1 is not TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Helper関数として、オブジェクトの作成だけではなく、オブジェクトがその型を取るかどうかを評価する関数（<code>is_MyDog</code>）やオブジェクトの値を指定した形で取り出す関数（アクセサ、ゲッター）を準備してもよいでしょう。</p>
@@ -1174,14 +1183,14 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>その他のHelper関数の例</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">is_MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">is_MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">MyDog</span>, <span class="st">"MyDog"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">tricks</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">MyDog</span>, <span class="st">"MyDog"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">MyDog</span><span class="op">$</span><span class="va">name</span>, <span class="st">"は"</span>, <span class="va">MyDog</span><span class="op">$</span><span class="va">trick</span>, <span class="st">"が得意です。"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上記のようにConstructor・Validator・Helperを設定することで、自分で作成したクラスを適切に取り扱うことができるようになります。</p>
@@ -1190,7 +1199,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>MyDogクラスを取り扱う</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pochi</span> <span class="op">&lt;-</span> <span class="fu">MyDog</span><span class="op">(</span><span class="st">"Pochi"</span>, <span class="st">"sit"</span>, <span class="fl">15</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pochi</span> <span class="op">&lt;-</span> <span class="fu">MyDog</span><span class="op">(</span><span class="st">"Pochi"</span>, <span class="st">"sit"</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">pochi</span><span class="op">$</span><span class="va">name</span></span>
 <span><span class="co">## [1] "Pochi"</span></span>
@@ -1198,7 +1207,7 @@ sloop::otype
 <span><span class="fu">is_MyDog</span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span>
 <span><span class="fu">tricks</span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span>
-<span><span class="co">## [1] "Pochiはsitが得意です。"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "Pochiはsitが得意です。"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="ジェネリック関数genelic-functions" class="level2"><h2 class="anchored" data-anchor-id="ジェネリック関数genelic-functions">ジェネリック関数（genelic functions）</h2>
@@ -1211,7 +1220,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>print関数の引数に自作クラスを指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span>
 <span><span class="co">## $name</span></span>
 <span><span class="co">## [1] "Pochi"</span></span>
 <span><span class="co">## </span></span>
@@ -1222,7 +1231,7 @@ sloop::otype
 <span><span class="co">## [1] 15</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "MyDog"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "MyDog"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>print</code>関数として呼び出されているものを確認する場合、<code><a href="https://sloop.r-lib.org/reference/s3_dispatch.html">sloop::s3_dispatch</a></code>関数を用います。<code>pochi</code>はリスト扱いで表示されており、呼び出されている関数は<code>print.default</code>であることがわかります。</p>
@@ -1231,10 +1240,10 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>print関数の引数に自作クラスを指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># print.defaultが呼び出される</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># print.defaultが呼び出される</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/s3_dispatch.html">s3_dispatch</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">##    print.MyDog</span></span>
-<span><span class="co">## =&gt; print.default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## =&gt; print.default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ここで<code>print</code>関数の中身を少し確認します。<code>print</code>関数の情報の2行目をみると<code>UseMethod("print")</code>という記載があります。後で詳しく説明するとおり、Rのジェネリック関数ではこの<code>UseMethod</code>関数が重要な要素となっています。</p>
@@ -1243,11 +1252,11 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>print関数：UseMethodの設定</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">print</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">print</span></span>
 <span><span class="co">## function (x, ...) </span></span>
 <span><span class="co">## UseMethod("print")</span></span>
-<span><span class="co">## &lt;bytecode: 0x000001c0fe003028&gt;</span></span>
-<span><span class="co">## &lt;environment: namespace:base&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## &lt;bytecode: 0x0000023174bb7d18&gt;</span></span>
+<span><span class="co">## &lt;environment: namespace:base&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>関数に<code>UseMethod</code>が設定されている場合、簡単にジェネリック関数を作成することができます。ジェネリック関数の名前は<code>関数名.クラス名</code>とします。<code>MyDog</code>クラスに<code>print</code>関数のジェネリックを設定する場合、関数名を<code>print.MyDog</code>とします。</p>
@@ -1257,12 +1266,12 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>ジェネリック関数の定義：print.MyDog関数を作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">print.MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">print.MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">MyDog</span>, <span class="st">"MyDog"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"name: "</span>, <span class="va">MyDog</span><span class="op">$</span><span class="va">name</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"trick: "</span>, <span class="va">MyDog</span><span class="op">$</span><span class="va">trick</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"age: "</span>, <span class="va">MyDog</span><span class="op">$</span><span class="va">age</span>, <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>この<code>print.MyDog</code>関数は、<code>print</code>関数として呼び出すことができます。<code>print</code>関数の引数に<code>MyDog</code>クラスのオブジェクトを取ると、<code>print.MyDog</code>関数が呼び出され、関数の定義に従いコンソールに表示が返ってきます。</p>
@@ -1271,7 +1280,7 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>ジェネリック関数の利用</strong></pre>
 </div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span>
 <span><span class="co">## name:  Pochi </span></span>
 <span><span class="co">## trick:  sit </span></span>
 <span><span class="co">## age:  15</span></span>
@@ -1279,7 +1288,7 @@ sloop::otype
 <span><span class="co"># print.MyDogが呼び出されていることがわかる</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/s3_dispatch.html">s3_dispatch</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## =&gt; print.MyDog</span></span>
-<span><span class="co">##  * print.default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  * print.default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="新規のジェネリック関数を作成する" class="level3"><h3 class="anchored" data-anchor-id="新規のジェネリック関数を作成する">新規のジェネリック関数を作成する</h3>
@@ -1289,9 +1298,9 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>新しい名前のジェネリック関数：UseMethod関数を用いる</strong></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">getagedays</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">getagedays</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/UseMethod.html">UseMethod</a></span><span class="op">(</span><span class="st">"getagedays"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>この<code>UseMethod</code>関数は引数に設定したオブジェクトのクラスを評価し、適用するジェネリック関数を探す機能を持つものです。この時、クラスの評価は<strong>クラスの継承（inheritance）</strong>の順に従って行われます。</p>
@@ -1302,18 +1311,18 @@ sloop::otype
 <div class="code-with-filename-file">
 <pre><strong>親クラス・子クラス名を返す：.class2関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">.class2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## [1] "matrix"  "array"   "integer" "numeric"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">.class2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## [1] "matrix"  "array"   "integer" "numeric"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>UseMethod</code>は、この継承のサブクラスからスーパークラスまで、ジェネリック関数の存在を評価していき、最もサブクラス寄りにあるジェネリック関数を選択するための関数です。ですので、上で定義した<code>getagedays</code>関数はそれ自体はジェネリック関数を探して実行するための<code>UseMethod</code>を実行していて、引数が与えられた時には<code>"getagedays"</code>から始まるジェネリック関数のうち、最もサブクラス寄りのクラスに対して定義された関数（例えば<code>getagedays.MyDog</code>など）を呼び出して実行しています。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-UseMethod関数が行っていること
+<span class="screen-reader-only">Tip</span>UseMethod関数が行っていること
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1325,9 +1334,9 @@ UseMethod関数が行っていること
 <div class="code-with-filename-file">
 <pre><strong>ジェネリック関数の探し方</strong></pre>
 </div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">classes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">.class2</a></span><span class="op">(</span><span class="va">penguins</span> <span class="op">|&gt;</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">classes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">.class2</a></span><span class="op">(</span><span class="va">penguins</span> <span class="op">|&gt;</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"print"</span>, <span class="st">"."</span>, <span class="va">classes</span><span class="op">)</span></span>
-<span><span class="co">## [1] "print.tbl_df"     "print.tbl"        "print.data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "print.tbl_df"     "print.tbl"        "print.data.frame"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ジェネリック関数の一覧は<code>methods</code>関数で調べることができます。この中から上記の3つの名前の関数に一致する要素があるかどうか評価します。</p>
@@ -1336,10 +1345,10 @@ UseMethod関数が行っていること
 <div class="code-with-filename-file">
 <pre><strong>methods関数の返り値からprint.tsを探す</strong></pre>
 </div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gen_functions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"print"</span>, <span class="st">"."</span>, <span class="va">classes</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gen_functions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"print"</span>, <span class="st">"."</span>, <span class="va">classes</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">gen_functions</span><span class="op">[</span><span class="va">gen_functions</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/methods.html">methods</a></span><span class="op">(</span><span class="st">"print"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">## [1] "print.tbl"        "print.data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "print.tbl"        "print.data.frame"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>2つ出てきて、最も左（サブクラス）である関数は<code>print.tbl</code>です。ですので、<code>tibble</code>を引数に取ったとき、<code>UseMethod</code>はこの<code>print.tbl</code>を実行します。どの名前も一致しない場合には<code>print.default</code>が選択されて、実行されます。</p>
@@ -1347,12 +1356,12 @@ UseMethod関数が行っていること
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-matrixのクラス
+<span class="screen-reader-only">Tip</span>matrixのクラス
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1364,8 +1373,8 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>matrix：baseクラスのオブジェクト</strong></pre>
 </div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## [1] "base"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/otype.html">otype</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## [1] "base"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ですので、<code>.class2</code>関数の引数に取ったときに返ってくるのはS3のクラスではないのですが、承継に関してはクラスとほぼ同じ機能を持ちます（implicit class、「暗黙のクラス」と呼ばれます）。<code>UseMethod</code>自体がこの<code>.class2</code>の順番にクラスに適合する関数を探索する機能を持つため、ジェネリック関数を利用する場合にはS3とほぼ同様の処理が行われます。</p>
@@ -1378,10 +1387,10 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>getagedays.default関数を定義する</strong></pre>
 </div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">getagedays.default</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">getagedays.default</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fl">365</span> <span class="op">*</span> <span class="va">age</span>, <span class="st">"days"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>getagedays</code>は数値の引数に365をかけて文字列を返す関数です。数値を引数に取って実行すれは普通の関数として利用できます。</p>
@@ -1390,8 +1399,8 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>getagedays関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">getagedays</span><span class="op">(</span><span class="fl">15</span><span class="op">)</span></span>
-<span><span class="co">## [1] "5475 days"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">getagedays</span><span class="op">(</span><span class="fl">15</span><span class="op">)</span></span>
+<span><span class="co">## [1] "5475 days"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>次に、ジェネリック関数である<code>getagedays.MyDog</code>関数を設定します。<code>MyDog</code>クラスオブジェクトの<code>age</code>に365をかける関数です。</p>
@@ -1400,9 +1409,9 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>getagedays.MyDog関数を定義する</strong></pre>
 </div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">getagedays.MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">getagedays.MyDog</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fl">365</span> <span class="op">*</span> <span class="va">MyDog</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="st">"days"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>getagedays</code>関数の引数に<code>MyDog</code>クラスのオブジェクトを取ると、<code>getagedays.MyDog</code>が呼び出されます。<code>getagedays</code>関数の引数に数値を取ると<code>getagedays.default</code>が呼び出されているので、ジェネリック関数を一から作成することができています。</p>
@@ -1411,7 +1420,7 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>ジェネリック関数の呼び出しの挙動</strong></pre>
 </div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">getagedays</span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">getagedays</span><span class="op">(</span><span class="va">pochi</span><span class="op">)</span></span>
 <span><span class="co">## [1] "5475 days"</span></span>
 <span></span>
 <span><span class="co"># getagedays.MyDogが呼び出されている</span></span>
@@ -1423,7 +1432,7 @@ matrixのクラス
 <span><span class="fu">getagedays</span><span class="op">(</span><span class="fl">15</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">sloop</span><span class="fu">::</span><span class="fu"><a href="https://sloop.r-lib.org/reference/s3_dispatch.html">s3_dispatch</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">##    getagedays.double</span></span>
 <span><span class="co">##    getagedays.numeric</span></span>
-<span><span class="co">## =&gt; getagedays.default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## =&gt; getagedays.default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="セッターを設定する" class="level2"><h2 class="anchored" data-anchor-id="セッターを設定する">セッターを設定する</h2>
@@ -1433,7 +1442,7 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>リストの値の変更</strong></pre>
 </div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, y <span class="op">=</span> <span class="fl">2</span>, z <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, y <span class="op">=</span> <span class="fl">2</span>, z <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">lst</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">4</span></span>
 <span></span>
@@ -1449,7 +1458,7 @@ matrixのクラス
 <span><span class="co">## [1] 5</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $z</span></span>
-<span><span class="co">## [1] 6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ここまで触ってきた<code>MyDog</code>クラスは<code>validate_MyDog</code>関数を用いて正しい構造になるよう確認していますが、中身はただのリストですので、値を自由に変更できてしまいます。</p>
@@ -1460,14 +1469,14 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>リストのセッターの関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">`[&lt;-`</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">`[&lt;-`</span></span>
 <span><span class="co">## .Primitive("[&lt;-")</span></span>
 <span></span>
 <span><span class="va">`[[&lt;-`</span></span>
 <span><span class="co">## .Primitive("[[&lt;-")</span></span>
 <span></span>
 <span><span class="va">`$&lt;-`</span></span>
-<span><span class="co">## .Primitive("$&lt;-")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## .Primitive("$&lt;-")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>この2つのセッターに<code>MyDog</code>クラスのオブジェクトでのデータの変更に関する設定をジェネリック関数として実装すれば、<code>MyDog</code>クラスのオブジェクトに正しい方法でアクセスする方法、セッター（アクセサ）を準備することができます。</p>
@@ -1476,7 +1485,7 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>ジェネリック関数のセッターを準備する</strong></pre>
 </div>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># [&lt;-と$&lt;- は使えなくする</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># [&lt;-と$&lt;- は使えなくする</span></span>
 <span><span class="va">`[&lt;-.MyDog`</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
@@ -1491,7 +1500,7 @@ matrixのクラス
 <span>  <span class="va">MyDog</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span>  <span class="va">MyDog</span> <span class="op">&lt;-</span> <span class="fu">new_MyDog</span><span class="op">(</span><span class="va">MyDog</span><span class="op">$</span><span class="va">name</span>, <span class="va">MyDog</span><span class="op">$</span><span class="va">trick</span>, <span class="va">MyDog</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></span>
 <span>  <span class="fu">validate_MyDog</span><span class="op">(</span><span class="va">MyDog</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上記のようにジェネリック関数を準備すると、<code>MyDog</code>クラスのオブジェクトには不自然な値を設定することはできなくなります。</p>
@@ -1500,7 +1509,7 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>ジェネリック関数のセッターを利用する</strong></pre>
 </div>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ゲッターには影響はない</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ゲッターには影響はない</span></span>
 <span><span class="va">pochi</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">## [1] "Pochi"</span></span>
 <span></span>
@@ -1528,7 +1537,7 @@ matrixのクラス
 <span><span class="co">## [1] "pochi"</span></span>
 <span></span>
 <span><span class="co"># リストは通常通り扱える</span></span>
-<span><span class="va">lst</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">lst</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>もう少しフォーマルな形で値を変更したいのであれば、セッター専用の以下のような関数を利用してもよいでしょう。</p>
@@ -1537,7 +1546,7 @@ matrixのクラス
 <div class="code-with-filename-file">
 <pre><strong>名前を変更するための関数を設定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">setname</span> <span class="op">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">setname</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">MyDog</span>, <span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="va">MyDog</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span></span>
 <span>    <span class="va">MyDog</span></span>
@@ -1546,17 +1555,17 @@ matrixのクラス
 <span><span class="fu">setname</span><span class="op">(</span><span class="va">pochi</span>, <span class="st">"kuro"</span><span class="op">)</span></span>
 <span><span class="co">## name:  kuro </span></span>
 <span><span class="co">## trick:  sit </span></span>
-<span><span class="co">## age:  15</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## age:  15</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>これでまともなクラスの設定ができているか、というと微妙なところではありますが、Validatorをより適切に記載したり、セッターの設定を見直すことでより良いS3クラスの設計ができるかもしれません。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Rでのクラス設計
+<span class="screen-reader-only">Tip</span>Rでのクラス設計
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1573,19 +1582,19 @@ Rでのクラス設計
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-NextMethodを用いたセッターの設定
+<span class="screen-reader-only">Tip</span>NextMethodを用いたセッターの設定
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>上記の方法でセッターを設定すれば、とりあえずはきちんとルールに沿って値を変更することはできます。しかし、余計なオブジェクトをたくさん作成し、オブジェクト自体を作り直すような形でセッターを設計しています。</p>
-<p>よりスマートな方法でのセッターの設定を行うための関数が<code>NextMethod</code>です。<a href="https://adv-r.hadley.nz/s3.html">Advanced RのS3クラスの章</a><span class="citation" data-cites="Hadley_Wickham2016-02-10 Wickham_Hadley2019-05-24">(<a href="references.html#ref-Hadley_Wickham2016-02-10" role="doc-biblioref">Wickham 2016</a>, <a href="references.html#ref-Wickham_Hadley2019-05-24" role="doc-biblioref">2019b</a>)</span>には、<code>NextMethod</code>を使ってジェネリック関数を作成する方法について説明があります。ただし、この<code>NextMethod</code>の使い方はかなり難しく（どうも一つ上のスーパークラスのジェネリック関数を呼んでいるようですが、Helpを読んでもよくわからない）、使いこなすのは大変です。</p>
+<p>よりスマートな方法でのセッターの設定を行うための関数が<code>NextMethod</code>です。<a href="https://adv-r.hadley.nz/s3.html">Advanced RのS3クラスの章</a><span class="citation" data-cites="Hadley_Wickham2016-02-10 Wickham_Hadley2019-05-24">(<a href="#ref-Hadley_Wickham2016-02-10" role="doc-biblioref">Wickham 2016</a>, <a href="#ref-Wickham_Hadley2019-05-24" role="doc-biblioref">2019a</a>)</span>には、<code>NextMethod</code>を使ってジェネリック関数を作成する方法について説明があります。ただし、この<code>NextMethod</code>の使い方はかなり難しく（どうも一つ上のスーパークラスのジェネリック関数を呼んでいるようですが、Helpを読んでもよくわからない）、使いこなすのは大変です。</p>
 </div>
 </div>
 </div>
@@ -1593,15 +1602,15 @@ NextMethodを用いたセッターの設定
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-Hadley_Wickham2016-02-10" class="csl-entry" role="listitem">
-Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広, 市川太祐, 高柳慎一, and 福島真太朗. 単行本. 共立出版.
-</div>
-<div id="ref-sloop_bib" class="csl-entry" role="listitem">
-———. 2019a. <em>Sloop: Helpers for ’OOP’ in r</em>. <a href="https://doi.org/10.32614/CRAN.package.sloop">https://doi.org/10.32614/CRAN.package.sloop</a>.
+Wickham, Hadley. 2016. <em>R言語徹底解説</em>. 単行本. Translated by 石田基広, 市川太祐, 高柳慎一, and 福島真太朗. 共立出版.
 </div>
 <div id="ref-Wickham_Hadley2019-05-24" class="csl-entry" role="listitem">
-———. 2019b. <em>Advanced r, Second Edition (Chapman &amp; Hall/CRC the r Series) (English Edition)</em>. Kindle版. Chapman; Hall/CRC.
+Wickham, Hadley. 2019a. <em>Advanced r, Second Edition (Chapman &amp; Hall/CRC the r Series) (English Edition)</em>. Kindle版. Chapman; Hall/CRC.
+</div>
+<div id="ref-sloop_bib" class="csl-entry" role="listitem">
+Wickham, Hadley. 2019b. <em>Sloop: Helpers for ’OOP’ in r</em>. <a href="https://doi.org/10.32614/CRAN.package.sloop">https://doi.org/10.32614/CRAN.package.sloop</a>.
 </div>
 </div>
 </section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -1668,13 +1677,14 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2072,12 +2082,12 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./summary.html" class="pagination-link" aria-label="おわりに">
-        <span class="nav-page-text">おわりに</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./Tips_S4class.html" class="pagination-link" aria-label="S4クラス">
+        <span class="nav-page-text">S4クラス</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb37" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># S3クラス {.unnumbered}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># S3クラス {.unnumbered}</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE, message=FALSE}</span></span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -2089,9 +2099,9 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
 <span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>オブジェクト指向とクラスについてはすでに<span class="co">[</span><span class="ot">22章</span><span class="co">](chapter22.qmd)</span>で紹介しました。Rには、S3、S4、R6、S7などのオブジェクト指向プログラミングに関するクラスが備わっています。ここでは、**S3クラス**について簡単に説明します。</span>
 <span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>S3クラスはRの基になったS言語で初めに設定されたオブジェクト指向プログラミングに関するクラスで、S ver.3で設定されたためにS3と呼ばれているものです。</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>S3クラスはRの基になったS言語で初めに設定されたオブジェクト指向プログラミングに関するクラスで、S ver.3（1992年）で設定されたためにS3と呼ばれているものです。</span>
 <span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>S3は非常にシンプルです。オブジェクトのattributeにclassが設定されるとS3クラスのオブジェクトとして認識されます。以下の例は、ベクターにclassを設定しただけのものです。<span class="in">`sloop::otype`</span><span class="co">[</span><span class="ot">@sloop_bib</span><span class="co">]</span>でクラスを調べると、S3となっています。</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>S3は非常にシンプルです。オブジェクトのattributeに<span class="in">`class`</span>が設定されるとS3クラスのオブジェクトとして認識されます。以下の例は、ベクターに<span class="in">`class`</span>を設定しただけのものです。<span class="in">`sloop::otype`</span><span class="co">[</span><span class="ot">@sloop_bib</span><span class="co">]</span>でクラスを調べると、S3となっています。</span>
 <span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="attributeにクラスを設定するとS3クラス"}</span></span>
 <span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ただのベクター</span></span>
@@ -2600,7 +2610,7 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
 <span id="cb37-521"><a href="#cb37-521" aria-hidden="true" tabindex="-1"></a>上記の方法でセッターを設定すれば、とりあえずはきちんとルールに沿って値を変更することはできます。しかし、余計なオブジェクトをたくさん作成し、オブジェクト自体を作り直すような形でセッターを設計しています。</span>
 <span id="cb37-522"><a href="#cb37-522" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-523"><a href="#cb37-523" aria-hidden="true" tabindex="-1"></a>よりスマートな方法でのセッターの設定を行うための関数が<span class="in">`NextMethod`</span>です。<span class="co">[</span><span class="ot">Advanced RのS3クラスの章</span><span class="co">](https://adv-r.hadley.nz/s3.html)[</span><span class="ot">@Hadley_Wickham2016-02-10; @Wickham_Hadley2019-05-24</span><span class="co">]</span>には、<span class="in">`NextMethod`</span>を使ってジェネリック関数を作成する方法について説明があります。ただし、この<span class="in">`NextMethod`</span>の使い方はかなり難しく（どうも一つ上のスーパークラスのジェネリック関数を呼んでいるようですが、Helpを読んでもよくわからない）、使いこなすのは大変です。</span>
-<span id="cb37-524"><a href="#cb37-524" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb37-524"><a href="#cb37-524" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -2615,7 +2625,11 @@ Wickham, Hadley. 2016. <em>R言語徹底解説</em>. Translated by 石田基広,
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer>

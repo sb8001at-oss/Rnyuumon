@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>34&nbsp; 生存時間解析 – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -132,7 +134,7 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
-</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -143,7 +145,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -789,6 +791,12 @@ window.Quarto = {
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -907,12 +915,12 @@ window.Quarto = {
 <p>指数分布に関しては<a href="./chapter28.html#指数分布">28章</a>でごく簡単に取り扱っています。指数分布は平均値1/λ、標準偏差も1/λとなる分布です。ただし、この指数分布では、<strong>ハザードが時間に対して一定</strong>である場合のみ生存時間をうまく表現することができます。</p>
 <p>ハザードが一定とならない場合には、生存時間は<strong>ワイブル分布</strong>や<strong>ガンマ分布</strong>で表現されます。ワイブル分布やガンマ分布を用いると、ハザードが単調増加したり、単調減少したりするような現象を表現することができます。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-実際のハザードについて
+<span class="screen-reader-only">Tip</span>実際のハザードについて
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -949,18 +957,18 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>指数分布を仮定した場合の生存時間のシミュレーション</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">rexp</a></span><span class="op">(</span><span class="fl">10</span>, rate<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">##  [1]  18  15  14  44 289 123  54  96  15 139</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">rexp</a></span><span class="op">(</span><span class="fl">10</span>, rate<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##  [1]  18  15  14  44 289 123  54  96  15 139</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>以下に、指数分布、ワイブル分布、ガンマ分布を仮定した場合の生存時間、ハザードの形状を示します。f(t)には、この他に対数正規分布や対数ロジスティック分布などを仮定する場合もあるようです<span class="citation" data-cites="武冨奈菜美2023">(<a href="references.html#ref-%E6%AD%A6%E5%86%A8%E5%A5%88%E8%8F%9C%E7%BE%8E2023" role="doc-biblioref">武冨 and 山本 2023</a>)</span>。</p>
+<p>以下に、指数分布、ワイブル分布、ガンマ分布を仮定した場合の生存時間、ハザードの形状を示します。f(t)には、この他に対数正規分布や対数ロジスティック分布などを仮定する場合もあるようです<span class="citation" data-cites="武冨奈菜美2023">(<a href="#ref-%E6%AD%A6%E5%86%A8%E5%A5%88%E8%8F%9C%E7%BE%8E2023" role="doc-biblioref">武冨 and 山本 2023</a>)</span>。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-生存時間と分布のシミュレーション
+<span class="screen-reader-only">Tip</span>生存時間と分布のシミュレーション
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -968,24 +976,24 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>以下のコードを実行することで生存時間と分布のシミュレーションを実行することができます。</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">}</span>;<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"surv_sim"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span><span class="op">}</span>;<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"surv_sim"</span>, <span class="st">"sb8001at-oss"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 </div>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">指数分布</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">ワイブル分布</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">ガンマ分布</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">指数分布</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">ワイブル分布</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">ガンマ分布</a></li>
 </ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>確率分布の式</p>
 <p><span class="math display">\[Exp(x, \lambda)=\lambda \cdot \exp(-\lambda x)\]</span></p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">rexp</a></span><span class="op">(</span><span class="fl">10</span>, rate <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span> </span>
-<span><span class="co">##  [1]  76 124 442 105 104 188  65  34  59 236</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">rexp</a></span><span class="op">(</span><span class="fl">10</span>, rate <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span><span class="co">##  [1]  76 124 442 105 104 188  65  34  59 236</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -1000,8 +1008,8 @@ window.Quarto = {
 <p>確率分布の式</p>
 <p><span class="math display">\[Weibull(x, \lambda, k)=\frac{k}{\lambda}(\frac{x}{\lambda})^{k-1} \cdot \exp(-\frac{x}{\lambda})^k\]</span></p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">rweibull</a></span><span class="op">(</span><span class="fl">10</span>, shape <span class="op">=</span> <span class="fl">0.8</span>, scale <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">##  [1]   8  94  32   8  17  27 434  74 169  17</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">rweibull</a></span><span class="op">(</span><span class="fl">10</span>, shape <span class="op">=</span> <span class="fl">0.8</span>, scale <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##  [1]   8  94  32   8  17  27 434  74 169  17</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -1016,8 +1024,8 @@ window.Quarto = {
 <p>確率分布の式</p>
 <p><span class="math display">\[Gamma(x, \gamma, \beta)=\frac{(\frac{x}{\beta})^{\gamma-1} \cdot \exp(-\frac{x}{\beta})}{\beta \cdot \Gamma(\gamma)}\]</span></p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="fl">10</span>, shape <span class="op">=</span> <span class="fl">0.8</span>, scale <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">##  [1]  11 157 104  68  10  27 234 121  20  65</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="fl">10</span>, shape <span class="op">=</span> <span class="fl">0.8</span>, scale <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##  [1]  11 157 104  68  10  27 234 121  20  65</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -1032,9 +1040,9 @@ window.Quarto = {
 </div>
 </section><section id="survivalパッケージ" class="level2" data-number="34.5"><h2 data-number="34.5" class="anchored" data-anchor-id="survivalパッケージ">
 <span class="header-section-number">34.5</span> survivalパッケージ</h2>
-<p>Rでの生存時間解析は、主に<a href="https://cran.r-project.org/web/packages/survival/index.html"><code>survival</code></a>パッケージ <span class="citation" data-cites="survival-package survival-book">(<a href="references.html#ref-survival-package" role="doc-biblioref">Therneau 2023</a>; <a href="references.html#ref-survival-book" role="doc-biblioref">Terry M. Therneau and Patricia M. Grambsch 2000</a>)</span>を用いて行います。</p>
+<p>Rでの生存時間解析は、主に<a href="https://cran.r-project.org/web/packages/survival/index.html"><code>survival</code></a>パッケージ <span class="citation" data-cites="survival-package survival-book">(<a href="#ref-survival-package" role="doc-biblioref">Therneau 2023</a>; <a href="#ref-survival-book" role="doc-biblioref">Terry M. Therneau and Patricia M. Grambsch 2000</a>)</span>を用いて行います。</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">survival</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">survival</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="生存時間解析のデータ" class="level3" data-number="34.5.1"><h3 data-number="34.5.1" class="anchored" data-anchor-id="生存時間解析のデータ">
 <span class="header-section-number">34.5.1</span> 生存時間解析のデータ</h3>
@@ -1223,14 +1231,14 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ガンのデータセットでの打ち切り</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cancer</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cancer</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">##   inst time status age sex ph.ecog ph.karno pat.karno meal.cal wt.loss</span></span>
 <span><span class="co">## 1    3  306      2  74   1       1       90       100     1175      NA</span></span>
 <span><span class="co">## 2    3  455      2  68   1       0       90        90     1225      15</span></span>
 <span><span class="co">## 3    3 1010      1  56   1       0       90        90       NA      15</span></span>
 <span><span class="co">## 4    5  210      2  57   1       1       90        60     1150      11</span></span>
 <span><span class="co">## 5    1  883      2  60   1       0      100        90       NA       0</span></span>
-<span><span class="co">## 6   12 1022      1  74   1       1       50        80      513       0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 6   12 1022      1  74   1       1       50        80      513       0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Rで打ち切りを取り扱う場合には、まず<code>Surv</code>関数を用いて時間と打ち切りデータを<code>Surv</code>クラスのオブジェクトに変換する必要があります。<code>Surv</code>関数は時間（上の例の<code>time</code>）と打ち切りのデータ（上の例の<code>status</code>）を引数にする関数で、返り値では打ち切りのデータに<code>+</code>が付くことになります。<code>survival</code>パッケージでは、この<code>+</code>が付いたデータを打ち切りとして、解析で取り扱います。打ち切りデータは、打ち切り/死亡をそれぞれ<code>0</code>/<code>1</code>、<code>FALSE</code>/<code>TRUE</code>、<code>1</code>/<code>2</code>のいずれかで取り扱うことになります。</p>
@@ -1239,11 +1247,11 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>Surv関数と打ち切り</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 生存時間と打ち切りデータを引数にする</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 生存時間と打ち切りデータを引数にする</span></span>
 <span><span class="fu">Surv</span><span class="op">(</span><span class="va">cancer</span><span class="op">$</span><span class="va">time</span>, <span class="va">cancer</span><span class="op">$</span><span class="va">status</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
 <span><span class="co">##  [1]  306   455  1010+  210   883  1022+  310   361   218   166   170   654 </span></span>
-<span><span class="co">## [13]  728    71   567   144   613   707    61    88</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [13]  728    71   567   144   613   707    61    88</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="左側打ち切りのデータ" class="level3" data-number="34.6.2"><h3 data-number="34.6.2" class="anchored" data-anchor-id="左側打ち切りのデータ">
@@ -1256,7 +1264,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>左側打ち切りありのデータ</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># startが組み入れ時間、stopが死亡または打ち切り時間、</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># startが組み入れ時間、stopが死亡または打ち切り時間、</span></span>
 <span><span class="co"># eventが打ち切り（0が打ち切り例）</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">survival</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/survival/man/heart.html">heart</a></span><span class="op">)</span></span>
 <span><span class="co">##   start stop event        age      year surgery transplant id</span></span>
@@ -1269,7 +1277,7 @@ window.Quarto = {
 <span></span>
 <span><span class="fu">Surv</span><span class="op">(</span><span class="va">heart</span><span class="op">$</span><span class="va">start</span>, <span class="va">heart</span><span class="op">$</span><span class="va">stop</span>, <span class="va">heart</span><span class="op">$</span><span class="va">event</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">##  [1] ( 0, 50]  ( 0,  6]  ( 0,  1+] ( 1, 16]  ( 0, 36+] (36, 39]  ( 0, 18] </span></span>
-<span><span class="co">##  [8] ( 0,  3]  ( 0, 51+] (51,675]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [8] ( 0,  3]  ( 0, 51+] (51,675]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="カプランマイヤー曲線" class="level2" data-number="34.7"><h2 data-number="34.7" class="anchored" data-anchor-id="カプランマイヤー曲線">
@@ -1335,8 +1343,8 @@ window.Quarto = {
 <p>打ち切りありとなしで異なるのは、day2、つまり打ち切りがある場合には、打ち切りされた例は生存していると換算して計算し、day3ではリスク集団（その時点の事前まで生存しており、イベントが起きる可能性がある集団）が打ち切り+死亡により2人減って4名になる、という変化を取ることです。下に示した通り、表の計算式で計算した左のカプランマイヤー曲線は、右の<code>survival</code>パッケージで計算した結果と一致します。</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">打ち切りを考慮しない場合</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">打ち切りを考慮した場合</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">打ち切りを考慮しない場合</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">打ち切りを考慮した場合</a></li>
 </ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
@@ -1499,13 +1507,13 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>survfit関数でカプランマイヤー曲線の計算</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_km</span> <span class="op">&lt;-</span> <span class="fu">survfit</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">cancer</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_km</span> <span class="op">&lt;-</span> <span class="fu">survfit</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">cancer</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result_km</span></span>
 <span><span class="co">## Call: survfit(formula = Surv(time, status) ~ 1, data = cancer)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##        n events median 0.95LCL 0.95UCL</span></span>
-<span><span class="co">## [1,] 228    165    310     285     363</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1,] 228    165    310     285     363</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>また、<code>survfit</code>関数の返り値を<code>plot</code>関数の引数とすると、カプランマイヤー曲線がグラフとして表示されます。点線は生存時間の95％信頼区間を示します。</p>
@@ -1514,7 +1522,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>カプランマイヤー曲線の表示</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">result_km</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">result_km</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1525,15 +1533,15 @@ window.Quarto = {
 </div>
 </section><section id="ggsurvfitパッケージ" class="level3" data-number="34.7.2"><h3 data-number="34.7.2" class="anchored" data-anchor-id="ggsurvfitパッケージ">
 <span class="header-section-number">34.7.2</span> ggsurvfitパッケージ</h3>
-<p><a href="https://rpkgs.datanovia.com/survminer/index.html"><code>survminer</code></a>パッケージ<span class="citation" data-cites="survminer_bib">(<a href="references.html#ref-survminer_bib" role="doc-biblioref">Kassambara, Kosinski, and Biecek 2021</a>)</span>と<a href="https://www.danieldsjoberg.com/ggsurvfit/"><code>ggsurvfit</code></a>パッケージ <span class="citation" data-cites="ggsurvfit_bib">(<a href="references.html#ref-ggsurvfit_bib" role="doc-biblioref">Sjoberg et al. 2023</a>)</span>はいずれもカプランマイヤー曲線を表示する<code>ggplot2</code>のExtensionです。前者の方が機能が多く、後者はカプランマイヤー曲線の描画に特化したパッケージです。カプランマイヤー曲線をグラフにするためだけであれば後者の<code>ggsurvfit</code>を用いるとよいでしょう。</p>
+<p><a href="https://rpkgs.datanovia.com/survminer/index.html"><code>survminer</code></a>パッケージ<span class="citation" data-cites="survminer_bib">(<a href="#ref-survminer_bib" role="doc-biblioref">Kassambara et al. 2021</a>)</span>と<a href="https://www.danieldsjoberg.com/ggsurvfit/"><code>ggsurvfit</code></a>パッケージ <span class="citation" data-cites="ggsurvfit_bib">(<a href="#ref-ggsurvfit_bib" role="doc-biblioref">Sjoberg et al. 2023</a>)</span>はいずれもカプランマイヤー曲線を表示する<code>ggplot2</code>のExtensionです。前者の方が機能が多く、後者はカプランマイヤー曲線の描画に特化したパッケージです。カプランマイヤー曲線をグラフにするためだけであれば後者の<code>ggsurvfit</code>を用いるとよいでしょう。</p>
 <p><code>ggsurvfit</code>パッケージの<code>ggsurvfit</code>関数は、<code>survfit</code>関数の返り値を引数に取り、<code>ggplot2</code>でグラフを描画する関数です。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>ggsurvfit::ggsurvfit関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">ggsurvfit</span><span class="op">)</span></span>
-<span><span class="va">result_km</span> <span class="op">|&gt;</span> <span class="fu">ggsurvfit</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">ggsurvfit</span><span class="op">)</span></span>
+<span><span class="va">result_km</span> <span class="op">|&gt;</span> <span class="fu">ggsurvfit</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1548,12 +1556,12 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ggsurvfitに要素を追加する</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">ggsurvfit</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">ggsurvfit</span><span class="op">)</span></span>
 <span><span class="va">result_km</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggsurvfit</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">add_confidence_interval</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># 信頼区間の表示</span></span>
 <span>  <span class="fu">add_risktable</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># リスクテーブル（下の表）の表示</span></span>
-<span>  <span class="fu">add_censor_mark</span><span class="op">(</span><span class="op">)</span> <span class="co"># 打ち切り点（グラフ上のプラス）の表示</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">add_censor_mark</span><span class="op">(</span><span class="op">)</span> <span class="co"># 打ち切り点（グラフ上のプラス）の表示</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1570,13 +1578,13 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>説明変数を加えた場合のカプランマイヤー曲線</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_km2</span> <span class="op">&lt;-</span> <span class="fu">survfit</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">cancer</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_km2</span> <span class="op">&lt;-</span> <span class="fu">survfit</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">cancer</span><span class="op">)</span></span>
 <span><span class="va">result_km2</span></span>
 <span><span class="co">## Call: survfit(formula = Surv(time, status) ~ sex, data = cancer)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##         n events median 0.95LCL 0.95UCL</span></span>
 <span><span class="co">## sex=1 138    112    270     212     310</span></span>
-<span><span class="co">## sex=2  90     53    426     348     550</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## sex=2  90     53    426     348     550</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1584,9 +1592,9 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>説明変数ありのカプランマイヤー曲線の表示</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_km2</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_km2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggsurvfit</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">add_confidence_interval</span><span class="op">(</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">add_confidence_interval</span><span class="op">(</span><span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1604,7 +1612,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>log-rank検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">survdiff</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">cancer</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">survdiff</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">cancer</span><span class="op">)</span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## survdiff(formula = Surv(time, status) ~ sex, data = cancer)</span></span>
 <span><span class="co">## </span></span>
@@ -1612,7 +1620,7 @@ window.Quarto = {
 <span><span class="co">## sex=1 138      112     91.6      4.55      10.3</span></span>
 <span><span class="co">## sex=2  90       53     73.4      5.68      10.3</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Chisq= 10.3  on 1 degrees of freedom, p= 0.001</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  Chisq= 10.3  on 1 degrees of freedom, p= 0.001</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="survfit2関数でlog-rank検定" class="level3" data-number="34.8.1"><h3 data-number="34.8.1" class="anchored" data-anchor-id="survfit2関数でlog-rank検定">
@@ -1623,14 +1631,14 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>survfit2関数とlog-rank検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># log-rankのp値を含める場合は、survfit2が必要（survfit2はggsurvfitの関数）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># log-rankのp値を含める場合は、survfit2が必要（survfit2はggsurvfitの関数）</span></span>
 <span><span class="va">result_km2</span> <span class="op">&lt;-</span> <span class="fu">survfit2</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">cancer</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result_km2</span> <span class="op">|&gt;</span> <span class="fu">survfit2_p</span><span class="op">(</span><span class="op">)</span> <span class="co"># log-rankのp値を表示</span></span>
 <span><span class="co">## [1] "p=0.001"</span></span>
 <span></span>
 <span><span class="co"># survfit関数と同じようにplotでカプランマイヤーを表示できる</span></span>
-<span><span class="va">result_km2</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">result_km2</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1638,11 +1646,11 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="va">result_km2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggsurvfit</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">add_confidence_interval</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">add_pvalue</span><span class="op">(</span><span class="op">)</span> <span class="co"># p値を表記</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">add_pvalue</span><span class="op">(</span><span class="op">)</span> <span class="co"># p値を表記</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><a href="chapter34_files/figure-html/unnamed-chunk-27-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="chapter34_files/figure-html/unnamed-chunk-27-2.png" class="img-fluid figure-img" width="672"></a></p>
@@ -1658,7 +1666,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>一般化Wilcoxon検定</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">survdiff</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">cancer</span>, rho<span class="op">=</span><span class="fl">1</span><span class="op">)</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">survdiff</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">cancer</span>, rho<span class="op">=</span><span class="fl">1</span><span class="op">)</span> </span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## survdiff(formula = Surv(time, status) ~ sex, data = cancer, rho = 1)</span></span>
 <span><span class="co">## </span></span>
@@ -1666,7 +1674,7 @@ window.Quarto = {
 <span><span class="co">## sex=1 138     70.4     55.6      3.95      12.7</span></span>
 <span><span class="co">## sex=2  90     28.7     43.5      5.04      12.7</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Chisq= 12.7  on 1 degrees of freedom, p= 4e-04</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  Chisq= 12.7  on 1 degrees of freedom, p= 4e-04</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>log-rankと一般化Wilcoxonを比較すると、log-rank検定ではより後期の生存時間の差が大きいと有意になりやすく、一般化Wilcoxon検定ではより初期の生存時間の差が大きいと有意になりやすい特徴があります。</p>
@@ -1676,10 +1684,10 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>後期の生存時間に差がある場合</strong></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">survfit</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">sv</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">sv_temp</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">survfit</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">sv</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">sv_temp</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggsurvfit</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">add_confidence_interval</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">add_censor_mark</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">add_censor_mark</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1687,7 +1695,7 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="co"># log-rank</span></span>
 <span><span class="fu">survdiff</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">sv</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">sv_temp</span>, rho<span class="op">=</span><span class="fl">0</span><span class="op">)</span> </span>
 <span><span class="co">## Call:</span></span>
@@ -1708,7 +1716,7 @@ window.Quarto = {
 <span><span class="co">## sex=female 125     63.2     62.9   0.00159   0.00479</span></span>
 <span><span class="co">## sex=male   125     62.9     63.2   0.00158   0.00479</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Chisq= 0  on 1 degrees of freedom, p= 0.9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  Chisq= 0  on 1 degrees of freedom, p= 0.9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>次の例では初期の生存時間に差がある場合を示しています。先ほどとは逆にlog-rankの方が一般化Wilcoxonよりもp値が大きくなっています。</p>
 <div class="cell">
@@ -1716,10 +1724,10 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>初期の生存時間に差がある場合</strong></pre>
 </div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">survfit</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">sv</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">sv_temp</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">survfit</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">sv</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">sv_temp</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggsurvfit</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">add_confidence_interval</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">add_censor_mark</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">add_censor_mark</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1727,7 +1735,7 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="co"># log-rank</span></span>
 <span><span class="fu">survdiff</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">sv</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">sv_temp</span>, rho<span class="op">=</span><span class="fl">0</span><span class="op">)</span> </span>
 <span><span class="co">## Call:</span></span>
@@ -1748,7 +1756,7 @@ window.Quarto = {
 <span><span class="co">## sex=female 30     12.8     17.9      1.46      5.27</span></span>
 <span><span class="co">## sex=male   30     17.9     12.8      2.04      5.27</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Chisq= 5.3  on 1 degrees of freedom, p= 0.02</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  Chisq= 5.3  on 1 degrees of freedom, p= 0.02</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section></section><section id="cox回帰" class="level2" data-number="34.9"><h2 data-number="34.9" class="anchored" data-anchor-id="cox回帰">
 <span class="header-section-number">34.9</span> Cox回帰</h2>
@@ -1768,7 +1776,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>Cox回帰</strong></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_km2_cox</span> <span class="op">&lt;-</span> <span class="fu">coxph</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">cancer</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result_km2_cox</span> <span class="op">&lt;-</span> <span class="fu">coxph</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">cancer</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">result_km2_cox</span><span class="op">)</span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## coxph(formula = Surv(time, status) ~ sex, data = cancer)</span></span>
@@ -1786,7 +1794,7 @@ window.Quarto = {
 <span><span class="co">## Concordance= 0.579  (se = 0.021 )</span></span>
 <span><span class="co">## Likelihood ratio test= 10.63  on 1 df,   p=0.001</span></span>
 <span><span class="co">## Wald test            = 10.09  on 1 df,   p=0.001</span></span>
-<span><span class="co">## Score (logrank) test = 10.33  on 1 df,   p=0.001</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Score (logrank) test = 10.33  on 1 df,   p=0.001</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="cox回帰のモデル選択" class="level3" data-number="34.9.1"><h3 data-number="34.9.1" class="anchored" data-anchor-id="cox回帰のモデル選択">
@@ -1798,8 +1806,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>Cox回帰のモデル選択</strong></pre>
 </div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">model_All_coxph</span> <span class="op">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_All_coxph</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">coxph</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">age</span> <span class="op">+</span> <span class="va">ph.ecog</span> <span class="op">+</span> <span class="va">ph.karno</span>, data <span class="op">=</span> <span class="va">cancer</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/step.html">step</a></span><span class="op">(</span><span class="va">model_All_coxph</span>, trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
@@ -1815,7 +1822,7 @@ window.Quarto = {
 <span><span class="co">## ph.karno  0.01778   1.01794  0.01112  1.598 0.110009</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Likelihood ratio test=22.16  on 3 df, p=6.038e-05</span></span>
-<span><span class="co">## n= 167, number of events= 120</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## n= 167, number of events= 120</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="cox回帰のモデル評価" class="level2" data-number="34.10"><h2 data-number="34.10" class="anchored" data-anchor-id="cox回帰のモデル評価">
@@ -1827,7 +1834,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>マルチンゲール残差とシェーンフェルド残差</strong></pre>
 </div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># マルチンゲール残差</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># マルチンゲール残差</span></span>
 <span><span class="va">result_km2_cox</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">residuals</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"martingale"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">##          1          2          3          4          5          6 </span></span>
 <span><span class="co">##  0.1719970 -0.3880051 -3.5060567  0.4814561 -2.5060567 -3.5060567</span></span>
@@ -1835,7 +1842,7 @@ window.Quarto = {
 <span><span class="co"># シェーンフェルド残差</span></span>
 <span><span class="va">result_km2_cox</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">residuals</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"schoenfeld"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">##          5         11         11         11         12         13 </span></span>
-<span><span class="co">##  0.7228149 -0.2764095 -0.2764095 -0.2764095 -0.2793553 -0.2816122</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  0.7228149 -0.2764095 -0.2764095 -0.2764095 -0.2793553 -0.2816122</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>マルチンゲール残差やシェーンフェルド残差を確認する場合には、<code>survminer</code>パッケージの<code>ggcoxdiagnostics</code>関数を用いるのが簡単でよいでしょう。<code>ggcoxdiagnostics</code>関数は引数に<code>coxph</code>関数の返り値と残差の<code>type</code>を取ります。計算結果はグラフで表示され、青の線が概ね一定であれば比例ハザード性が成立しているとします。</p>
@@ -1844,9 +1851,9 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ggcoxdiagnostics関数でCox回帰を評価する</strong></pre>
 </div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">survminer</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">survminer</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">result_step</span> <span class="op">|&gt;</span> <span class="fu">ggcoxdiagnostics</span><span class="op">(</span>type<span class="op">=</span><span class="st">"martingale"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">result_step</span> <span class="op">|&gt;</span> <span class="fu">ggcoxdiagnostics</span><span class="op">(</span>type<span class="op">=</span><span class="st">"martingale"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1854,8 +1861,8 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">result_step</span> <span class="op">|&gt;</span> <span class="fu">ggcoxdiagnostics</span><span class="op">(</span>type<span class="op">=</span><span class="st">"schoenfeld"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="va">result_step</span> <span class="op">|&gt;</span> <span class="fu">ggcoxdiagnostics</span><span class="op">(</span>type<span class="op">=</span><span class="st">"schoenfeld"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><a href="chapter34_files/figure-html/unnamed-chunk-36-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17"><img src="chapter34_files/figure-html/unnamed-chunk-36-2.png" class="img-fluid figure-img" width="672"></a></p>
@@ -1875,7 +1882,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>ハザード比</strong></pre>
 </div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># summary関数の引数にするとハザード比と信頼区間が表示される</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># summary関数の引数にするとハザード比と信頼区間が表示される</span></span>
 <span><span class="va">result_step</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## coxph(formula = Surv(time, status) ~ sex + ph.ecog + ph.karno, </span></span>
@@ -1906,7 +1913,7 @@ window.Quarto = {
 <span><span class="co">##          exp(coef) exp(-coef) lower .95 upper .95</span></span>
 <span><span class="co">## sex      0.5877701  1.7013455 0.3992326 0.8653444</span></span>
 <span><span class="co">## ph.ecog  2.1152378  0.4727601 1.3965408 3.2037956</span></span>
-<span><span class="co">## ph.karno 1.0179354  0.9823806 0.9959836 1.0403710</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ph.karno 1.0179354  0.9823806 0.9959836 1.0403710</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>フォレストプロットは点と線のグラフですので、<a href="./chapter26.html#エラーバーの描画geom_errorbargeom_linerangegeom_pointrange">26章</a>で説明した<code>geom_pointrange</code>を使えば簡単に作成できます。</p>
@@ -1916,7 +1923,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>フォレストプロットの作図</strong></pre>
 </div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 列名にカッコがあると演算に使いにくいので列名を変更（HRinvはHRの逆数）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 列名にカッコがあると演算に使いにくいので列名を変更（HRinvはHRの逆数）</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">df_step</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"HR"</span>, <span class="st">"HRinv"</span>, <span class="st">"lower95"</span>, <span class="st">"upper95"</span><span class="op">)</span></span>
 <span><span class="va">df_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">df_step</span><span class="op">)</span></span>
 <span><span class="va">df_step</span><span class="op">$</span><span class="va">val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">df_step</span><span class="op">)</span></span>
@@ -1924,7 +1931,7 @@ window.Quarto = {
 <span><span class="va">df_step</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">HR</span>, xmax <span class="op">=</span> <span class="va">upper95</span>, xmin <span class="op">=</span> <span class="va">lower95</span>, y <span class="op">=</span> <span class="va">val</span>, color <span class="op">=</span> <span class="va">val</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_pointrange</span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1970,10 +1977,10 @@ df_step |>
 <div class="code-with-filename-file">
 <pre><strong>ggforest関数でフォレストプロットを作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="st">"survminer"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="st">"survminer"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result_step</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">ggforest</span><span class="op">(</span>data <span class="op">=</span> <span class="va">cancer</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">ggforest</span><span class="op">(</span>data <span class="op">=</span> <span class="va">cancer</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1983,12 +1990,12 @@ df_step |>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-survminerパッケージの便利な関数
+<span class="screen-reader-only">Tip</span>survminerパッケージの便利な関数
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -2000,9 +2007,9 @@ survminerパッケージの便利な関数
 <div class="code-with-filename-file">
 <pre><strong>ggsurvlplot_facet関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ggsurvplot_facet関数のexampleに示されている例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ggsurvplot_facet関数のexampleに示されている例</span></span>
 <span><span class="fu">survfit</span><span class="op">(</span> <span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">colon</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">ggsurvplot_facet</span><span class="op">(</span><span class="va">colon</span>, facet.by <span class="op">=</span> <span class="st">"rx"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">ggsurvplot_facet</span><span class="op">(</span><span class="va">colon</span>, facet.by <span class="op">=</span> <span class="st">"rx"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -2025,7 +2032,7 @@ survminerパッケージの便利な関数
 <div class="code-with-filename-file">
 <pre><strong>ハザード一定モデルでのsurvreg関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ハザード一定モデル</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ハザード一定モデル</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">time_s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">rexp</a></span><span class="op">(</span><span class="fl">1000</span>, rate <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span></span>
 <span></span>
@@ -2052,7 +2059,7 @@ survminerパッケージの便利な関数
 <span><span class="co">## [1] 1</span></span>
 <span></span>
 <span><span class="co"># ハザード（=rate）の計算</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="op">(</span><span class="op">-</span><span class="va">ts_survreg</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">100</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="op">(</span><span class="op">-</span><span class="va">ts_survreg</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">100</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -2067,7 +2074,7 @@ survminerパッケージの便利な関数
 <div class="code-with-filename-file">
 <pre><strong>ハザード一定モデルのデータをワイブル分布として計算</strong></pre>
 </div>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ハザード一定モデル（Weibullとしてsurvregで計算）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ハザード一定モデル（Weibullとしてsurvregで計算）</span></span>
 <span><span class="va">ts_survreg</span> <span class="op">&lt;-</span> <span class="fu">survreg</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time_s</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, dist <span class="op">=</span> <span class="st">"weibull"</span><span class="op">)</span></span>
 <span><span class="va">ts_survreg</span></span>
 <span><span class="co">## Call:</span></span>
@@ -2094,7 +2101,7 @@ survminerパッケージの便利な関数
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">hazards</span> <span class="op">&lt;-</span> <span class="fu">hazard_f</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">(</span><span class="op">-</span><span class="va">ts_survreg</span><span class="op">$</span><span class="va">coefficients</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span> <span class="op">/</span> <span class="va">ts_survreg</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">hazards</span>, type <span class="op">=</span> <span class="st">"l"</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.014</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">hazards</span>, type <span class="op">=</span> <span class="st">"l"</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.014</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -2111,7 +2118,7 @@ survminerパッケージの便利な関数
 <div class="code-with-filename-file">
 <pre><strong>ワイブル分布から生成したデータでのsurvregの計算</strong></pre>
 </div>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ワイブル分布での生存時間解析（scaleは1/rateに当たるもの、shapeは形状パラメータ）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ワイブル分布での生存時間解析（scaleは1/rateに当たるもの、shapeは形状パラメータ）</span></span>
 <span><span class="va">sv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">rweibull</a></span><span class="op">(</span><span class="fl">1000</span>, shape <span class="op">=</span> <span class="fl">0.85</span>, scale <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span></span>
 <span></span>
 <span><span class="co"># survregで計算する</span></span>
@@ -2140,7 +2147,7 @@ survminerパッケージの便利な関数
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">hazards</span>, type <span class="op">=</span> <span class="st">"l"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.014</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>new <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">hazards</span> <span class="op">&lt;-</span> <span class="fu">hazard_f</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">100</span>, <span class="fl">0.85</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">hazards</span>, type <span class="op">=</span> <span class="st">"l"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.014</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">hazards</span>, type <span class="op">=</span> <span class="st">"l"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.014</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -2153,7 +2160,7 @@ survminerパッケージの便利な関数
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-survminer_bib" class="csl-entry" role="listitem">
 Kassambara, Alboukadel, Marcin Kosinski, and Przemyslaw Biecek. 2021. <em>Survminer: Drawing Survival Curves Using ’Ggplot2’</em>. <a href="https://CRAN.R-project.org/package=survminer">https://CRAN.R-project.org/package=survminer</a>.
 </div>
@@ -2161,7 +2168,7 @@ Kassambara, Alboukadel, Marcin Kosinski, and Przemyslaw Biecek. 2021. <em>Survmi
 Sjoberg, Daniel D., Mark Baillie, Charlotta Fruechtenicht, Steven Haesendonckx, and Tim Treis. 2023. <em>Ggsurvfit: Flexible Time-to-Event Figures</em>. <a href="https://CRAN.R-project.org/package=ggsurvfit">https://CRAN.R-project.org/package=ggsurvfit</a>.
 </div>
 <div id="ref-survival-book" class="csl-entry" role="listitem">
-Terry M. Therneau, and Patricia M. Grambsch. 2000. <em>Modeling Survival Data: Extending the <span>C</span>ox Model</em>. New York: Springer.
+Terry M. Therneau, and Patricia M. Grambsch. 2000. <em>Modeling Survival Data: Extending the <span>C</span>ox Model</em>. Springer.
 </div>
 <div id="ref-survival-package" class="csl-entry" role="listitem">
 Therneau, Terry M. 2023. <em>A Package for Survival Analysis in r</em>. <a href="https://CRAN.R-project.org/package=survival">https://CRAN.R-project.org/package=survival</a>.
@@ -2234,13 +2241,14 @@ Therneau, Terry M. 2023. <em>A Package for Survival Analysis in r</em>. <a href=
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2643,7 +2651,7 @@ Therneau, Terry M. 2023. <em>A Package for Survival Analysis in r</em>. <a href=
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb36" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 生存時間解析</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 生存時間解析</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -3255,193 +3263,192 @@ Therneau, Terry M. 2023. <em>A Package for Survival Analysis in r</em>. <a href=
 <span id="cb36-618"><a href="#cb36-618" aria-hidden="true" tabindex="-1"></a>以下の例では、<span class="in">`cancer`</span>データセットのCox回帰に関するモデル選択を行っています。モデル選択の結果、<span class="in">`age`</span>がモデルから外されている、つまり年齢は生存時間に大きな影響がないとして説明変数から取り除かれていることがわかります。</span>
 <span id="cb36-619"><a href="#cb36-619" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-620"><a href="#cb36-620" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Cox回帰のモデル選択"}</span></span>
-<span id="cb36-621"><a href="#cb36-621" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-622"><a href="#cb36-622" aria-hidden="true" tabindex="-1"></a>model_All_coxph <span class="ot">&lt;-</span> </span>
-<span id="cb36-623"><a href="#cb36-623" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> ph.ecog <span class="sc">+</span> ph.karno, <span class="at">data =</span> cancer <span class="sc">|&gt;</span> <span class="fu">na.omit</span>())</span>
-<span id="cb36-624"><a href="#cb36-624" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-625"><a href="#cb36-625" aria-hidden="true" tabindex="-1"></a>result_step <span class="ot">&lt;-</span> <span class="fu">step</span>(model_All_coxph, <span class="at">trace =</span> <span class="dv">0</span>)</span>
-<span id="cb36-626"><a href="#cb36-626" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-627"><a href="#cb36-627" aria-hidden="true" tabindex="-1"></a>result_step</span>
-<span id="cb36-628"><a href="#cb36-628" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-629"><a href="#cb36-629" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-630"><a href="#cb36-630" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cox回帰のモデル評価</span></span>
-<span id="cb36-631"><a href="#cb36-631" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-632"><a href="#cb36-632" aria-hidden="true" tabindex="-1"></a>Cox回帰での計算が正しく行われていることを確認する場合には、残差を調べます。Cox回帰でチェックされる残差は主にマルチンゲール残差（Martingale residuals）とシェーンフェルド残差（Schoenfeld residuals）の2つです。</span>
-<span id="cb36-633"><a href="#cb36-633" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-634"><a href="#cb36-634" aria-hidden="true" tabindex="-1"></a>計算は簡単で、<span class="in">`coxph`</span>関数の返り値を<span class="in">`residuals`</span>関数の引数に取るだけです。マルチンゲール残差を計算する場合には引数に<span class="in">`type="martingale"`</span>を、シェーンフェルド残差を計算する場合には<span class="in">`type="schoenfeld"`</span>を設定します。</span>
-<span id="cb36-635"><a href="#cb36-635" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-636"><a href="#cb36-636" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="マルチンゲール残差とシェーンフェルド残差"}</span></span>
-<span id="cb36-637"><a href="#cb36-637" aria-hidden="true" tabindex="-1"></a><span class="co"># マルチンゲール残差</span></span>
-<span id="cb36-638"><a href="#cb36-638" aria-hidden="true" tabindex="-1"></a>result_km2_cox <span class="sc">|&gt;</span> <span class="fu">residuals</span>(<span class="at">type=</span><span class="st">"martingale"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
-<span id="cb36-639"><a href="#cb36-639" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-640"><a href="#cb36-640" aria-hidden="true" tabindex="-1"></a><span class="co"># シェーンフェルド残差</span></span>
-<span id="cb36-641"><a href="#cb36-641" aria-hidden="true" tabindex="-1"></a>result_km2_cox <span class="sc">|&gt;</span> <span class="fu">residuals</span>(<span class="at">type=</span><span class="st">"schoenfeld"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
-<span id="cb36-642"><a href="#cb36-642" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-643"><a href="#cb36-643" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-644"><a href="#cb36-644" aria-hidden="true" tabindex="-1"></a>マルチンゲール残差やシェーンフェルド残差を確認する場合には、<span class="in">`survminer`</span>パッケージの<span class="in">`ggcoxdiagnostics`</span>関数を用いるのが簡単でよいでしょう。<span class="in">`ggcoxdiagnostics`</span>関数は引数に<span class="in">`coxph`</span>関数の返り値と残差の<span class="in">`type`</span>を取ります。計算結果はグラフで表示され、青の線が概ね一定であれば比例ハザード性が成立しているとします。</span>
-<span id="cb36-645"><a href="#cb36-645" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-646"><a href="#cb36-646" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE, filename="ggcoxdiagnostics関数でCox回帰を評価する"}</span></span>
-<span id="cb36-647"><a href="#cb36-647" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(survminer)</span>
-<span id="cb36-648"><a href="#cb36-648" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-649"><a href="#cb36-649" aria-hidden="true" tabindex="-1"></a>result_step <span class="sc">|&gt;</span> <span class="fu">ggcoxdiagnostics</span>(<span class="at">type=</span><span class="st">"martingale"</span>)</span>
-<span id="cb36-650"><a href="#cb36-650" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-651"><a href="#cb36-651" aria-hidden="true" tabindex="-1"></a>result_step <span class="sc">|&gt;</span> <span class="fu">ggcoxdiagnostics</span>(<span class="at">type=</span><span class="st">"schoenfeld"</span>)</span>
-<span id="cb36-652"><a href="#cb36-652" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-653"><a href="#cb36-653" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-654"><a href="#cb36-654" aria-hidden="true" tabindex="-1"></a><span class="fu">## ハザード比</span></span>
-<span id="cb36-655"><a href="#cb36-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-656"><a href="#cb36-656" aria-hidden="true" tabindex="-1"></a>治験などでは、**ハザード比**の計算にCox回帰が用いられています。このハザード比は上の式で示したψで、ある条件におけるハザードh~1~(t)と対照のハザードh~0~(t)の比になります。</span>
-<span id="cb36-657"><a href="#cb36-657" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-658"><a href="#cb36-658" aria-hidden="true" tabindex="-1"></a>$$\psi=\frac{h_{1}(t)}{h_{0}(t)}$$</span>
-<span id="cb36-659"><a href="#cb36-659" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-660"><a href="#cb36-660" aria-hidden="true" tabindex="-1"></a>ハザード比は一般的に**フォレストプロット**と呼ばれる、代表値を点、信頼区間を線で表した図で表記されます。フォレストプロットについては<span class="co">[</span><span class="ot">ggplot2の章</span><span class="co">](chapter26.qmd#エラーバーの描画geom_errorbargeom_linerangegeom_pointrange)</span>で簡単に紹介しています。</span>
-<span id="cb36-661"><a href="#cb36-661" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-662"><a href="#cb36-662" aria-hidden="true" tabindex="-1"></a>ハザード比の計算では、<span class="in">`coxph`</span>関数の返り値（以下の例では<span class="in">`result_step`</span>）を<span class="in">`summary`</span>関数の引数とします。結果が3つのテーブルに表示されますが、真ん中の表に<span class="in">`exp(coef)`</span>と<span class="in">`lower .95`</span>、<span class="in">`upper .95`</span>の3つが表示されています。この3つがそれぞれハザード比、ハザード比の下側95%信頼区間、上側95%信頼区間に当たります。</span>
-<span id="cb36-663"><a href="#cb36-663" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-664"><a href="#cb36-664" aria-hidden="true" tabindex="-1"></a>この<span class="in">`summary`</span>関数の返り値のうち、リストの名前である<span class="in">`$conf.int`</span>で呼び出すことができる表が、上記のハザード比と信頼区間の表になります。この表をもとにハザード比をフォレストプロットにしていきます。</span>
-<span id="cb36-665"><a href="#cb36-665" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-666"><a href="#cb36-666" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ハザード比"}</span></span>
-<span id="cb36-667"><a href="#cb36-667" aria-hidden="true" tabindex="-1"></a><span class="co"># summary関数の引数にするとハザード比と信頼区間が表示される</span></span>
-<span id="cb36-668"><a href="#cb36-668" aria-hidden="true" tabindex="-1"></a>result_step <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span>
-<span id="cb36-669"><a href="#cb36-669" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-670"><a href="#cb36-670" aria-hidden="true" tabindex="-1"></a><span class="co"># summaryの$conf.intの要素を呼び出して変数に代入する</span></span>
-<span id="cb36-671"><a href="#cb36-671" aria-hidden="true" tabindex="-1"></a>df_step <span class="ot">&lt;-</span> result_step <span class="sc">|&gt;</span> <span class="fu">summary</span>() <span class="sc">|&gt;</span> _<span class="sc">$</span>conf.int</span>
-<span id="cb36-672"><a href="#cb36-672" aria-hidden="true" tabindex="-1"></a>df_step</span>
-<span id="cb36-673"><a href="#cb36-673" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-674"><a href="#cb36-674" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-675"><a href="#cb36-675" aria-hidden="true" tabindex="-1"></a>フォレストプロットは点と線のグラフですので、<span class="co">[</span><span class="ot">26章</span><span class="co">](chapter26.qmd#エラーバーの描画geom_errorbargeom_linerangegeom_pointrange)</span>で説明した<span class="in">`geom_pointrange`</span>を使えば簡単に作成できます。</span>
-<span id="cb36-676"><a href="#cb36-676" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-677"><a href="#cb36-677" aria-hidden="true" tabindex="-1"></a>以下のグラフでは、<span class="in">`sex`</span>と<span class="in">`ph.ecog`</span>のハザード比の信頼区間が1に被っていない形になっています。この図から、<span class="in">`sex`</span>、<span class="in">`ph.ecog`</span>のハザード比は1ではなく、いずれも生存時間に統計的に有意な影響を与えていることがわかります。</span>
-<span id="cb36-678"><a href="#cb36-678" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-679"><a href="#cb36-679" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="フォレストプロットの作図"}</span></span>
-<span id="cb36-680"><a href="#cb36-680" aria-hidden="true" tabindex="-1"></a><span class="co"># 列名にカッコがあると演算に使いにくいので列名を変更（HRinvはHRの逆数）</span></span>
-<span id="cb36-681"><a href="#cb36-681" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df_step) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"HR"</span>, <span class="st">"HRinv"</span>, <span class="st">"lower95"</span>, <span class="st">"upper95"</span>)</span>
-<span id="cb36-682"><a href="#cb36-682" aria-hidden="true" tabindex="-1"></a>df_step <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(df_step)</span>
-<span id="cb36-683"><a href="#cb36-683" aria-hidden="true" tabindex="-1"></a>df_step<span class="sc">$</span>val <span class="ot">&lt;-</span> <span class="fu">rownames</span>(df_step)</span>
-<span id="cb36-684"><a href="#cb36-684" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-685"><a href="#cb36-685" aria-hidden="true" tabindex="-1"></a>df_step <span class="sc">|&gt;</span> </span>
-<span id="cb36-686"><a href="#cb36-686" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> HR, <span class="at">xmax =</span> upper95, <span class="at">xmin =</span> lower95, <span class="at">y =</span> val, <span class="at">color =</span> val)) <span class="sc">+</span></span>
-<span id="cb36-687"><a href="#cb36-687" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb36-688"><a href="#cb36-688" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>)</span>
-<span id="cb36-689"><a href="#cb36-689" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-690"><a href="#cb36-690" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-691"><a href="#cb36-691" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
-<span id="cb36-692"><a href="#cb36-692" aria-hidden="true" tabindex="-1"></a><span class="al">###</span><span class="co"> survivalAnalysisはCRANからremoveされたので、書き直し </span><span class="al">###</span></span>
-<span id="cb36-693"><a href="#cb36-693" aria-hidden="true" tabindex="-1"></a><span class="co">Rでのハザード比の計算とフォレストプロットの作成には、[survivalAnalysis](https://cran.r-project.org/web/packages/survivalAnalysis/index.html)パッケージ  [@survivalAnalysis_bib]を用いるのが便利です。`cox_as_data_frame`関数を用いると、各説明変数ごとのハザード比（`HR`、hazard ratio）、95%信頼区間（`Lower_CI`、`Upper_CI`）を含むデータフレームを返してくれます。</span></span>
-<span id="cb36-694"><a href="#cb36-694" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-695"><a href="#cb36-695" aria-hidden="true" tabindex="-1"></a><span class="co">以下のグラフでは、`sex`と`ph.ecog`のハザード比の信頼区間が1に被っていない形になっています。この図から、`sex`、`ph.ecog`のハザード比は1ではなく、いずれも生存時間に統計的に有意な影響を与えていることがわかります。</span></span>
-<span id="cb36-696"><a href="#cb36-696" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-697"><a href="#cb36-697" aria-hidden="true" tabindex="-1"></a><span class="co">```{r, filename="ハザード比", warning=FALSE, message=FALSE, eval=FALSE}</span></span>
-<span id="cb36-698"><a href="#cb36-698" aria-hidden="true" tabindex="-1"></a><span class="co">pacman::p_load(survivalAnalysis)</span></span>
-<span id="cb36-699"><a href="#cb36-699" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-700"><a href="#cb36-700" aria-hidden="true" tabindex="-1"></a><span class="co"># coxph関数の返り値をcox_as_data_frame関数の引数に与える</span></span>
-<span id="cb36-701"><a href="#cb36-701" aria-hidden="true" tabindex="-1"></a><span class="co">df_step &lt;- </span></span>
-<span id="cb36-702"><a href="#cb36-702" aria-hidden="true" tabindex="-1"></a><span class="co">  survivalAnalysis::cox_as_data_frame(result_step)</span></span>
-<span id="cb36-703"><a href="#cb36-703" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-704"><a href="#cb36-704" aria-hidden="true" tabindex="-1"></a><span class="co"># Cox回帰の結果をデータフレームにまとめてくれる</span></span>
-<span id="cb36-705"><a href="#cb36-705" aria-hidden="true" tabindex="-1"></a><span class="co">df_step</span></span>
-<span id="cb36-706"><a href="#cb36-706" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-707"><a href="#cb36-707" aria-hidden="true" tabindex="-1"></a><span class="co"># フォレストプロットの表示</span></span>
-<span id="cb36-708"><a href="#cb36-708" aria-hidden="true" tabindex="-1"></a><span class="co">df_step |&gt; </span></span>
-<span id="cb36-709"><a href="#cb36-709" aria-hidden="true" tabindex="-1"></a><span class="co">  ggplot(aes(x = HR, xmax = Upper_CI, xmin = Lower_CI, y = factor.id, color = factor.id)) +</span></span>
-<span id="cb36-710"><a href="#cb36-710" aria-hidden="true" tabindex="-1"></a><span class="co">  geom_point(size = 3) +</span></span>
-<span id="cb36-711"><a href="#cb36-711" aria-hidden="true" tabindex="-1"></a><span class="co">  geom_linerange(linewidth = 1)+</span></span>
-<span id="cb36-712"><a href="#cb36-712" aria-hidden="true" tabindex="-1"></a><span class="co">  geom_vline(xintercept = 1)</span></span>
-<span id="cb36-713"><a href="#cb36-713" aria-hidden="true" tabindex="-1"></a><span class="co">```</span></span>
-<span id="cb36-714"><a href="#cb36-714" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
-<span id="cb36-715"><a href="#cb36-715" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-716"><a href="#cb36-716" aria-hidden="true" tabindex="-1"></a><span class="fu">### survminerパッケージ：ggforest関数でフォレストプロットを作成する</span></span>
-<span id="cb36-717"><a href="#cb36-717" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-718"><a href="#cb36-718" aria-hidden="true" tabindex="-1"></a><span class="in">`survminer`</span>パッケージが提供している<span class="in">`ggforest`</span>関数を用いても、フォレストプロットを作成することができます。上記のように<span class="in">`ggplot2`</span>を用いるよりも、<span class="in">`ggforest`</span>関数を用いた方がはるかに簡単にフォレストプロットを作成することができます。</span>
-<span id="cb36-719"><a href="#cb36-719" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-720"><a href="#cb36-720" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ggforest関数でフォレストプロットを作成する"}</span></span>
-<span id="cb36-721"><a href="#cb36-721" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(<span class="st">"survminer"</span>)</span>
-<span id="cb36-722"><a href="#cb36-722" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-723"><a href="#cb36-723" aria-hidden="true" tabindex="-1"></a>result_step <span class="sc">|&gt;</span> </span>
-<span id="cb36-724"><a href="#cb36-724" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggforest</span>(<span class="at">data =</span> cancer <span class="sc">|&gt;</span> <span class="fu">na.omit</span>())</span>
-<span id="cb36-725"><a href="#cb36-725" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-726"><a href="#cb36-726" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-727"><a href="#cb36-727" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
-<span id="cb36-728"><a href="#cb36-728" aria-hidden="true" tabindex="-1"></a><span class="fu">## survminerパッケージの便利な関数</span></span>
-<span id="cb36-729"><a href="#cb36-729" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-730"><a href="#cb36-730" aria-hidden="true" tabindex="-1"></a><span class="in">`survminer`</span>パッケージには、上記の<span class="in">`ggforest`</span>関数だけでなく、以下に示すようにカプランマイヤー曲線に<span class="in">`ggplot2`</span>のfacetを用いる関数である、<span class="in">`ggsurvplot_facet`</span>などの便利な関数がたくさん備わっています。<span class="in">`ggsurvfit`</span>と比較してみて、使いやすい方を用いるとよいでしょう。</span>
-<span id="cb36-731"><a href="#cb36-731" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-732"><a href="#cb36-732" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ggsurvlplot_facet関数"}</span></span>
-<span id="cb36-733"><a href="#cb36-733" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsurvplot_facet関数のexampleに示されている例</span></span>
-<span id="cb36-734"><a href="#cb36-734" aria-hidden="true" tabindex="-1"></a><span class="fu">survfit</span>( <span class="fu">Surv</span>(time, status) <span class="sc">~</span> sex, <span class="at">data =</span> colon) <span class="sc">|&gt;</span> </span>
-<span id="cb36-735"><a href="#cb36-735" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsurvplot_facet</span>(colon, <span class="at">facet.by =</span> <span class="st">"rx"</span>)</span>
-<span id="cb36-736"><a href="#cb36-736" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-737"><a href="#cb36-737" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb36-738"><a href="#cb36-738" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-739"><a href="#cb36-739" aria-hidden="true" tabindex="-1"></a><span class="fu">## パラメトリックな手法</span></span>
-<span id="cb36-740"><a href="#cb36-740" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-741"><a href="#cb36-741" aria-hidden="true" tabindex="-1"></a>カプランマイヤー曲線、log-rank検定はノンパラメトリックな手法、Cox回帰はセミパラメトリックな手法であるとされています。これは、いずれも明確な確率分布に基づいて計算する統計手法では無いからです。</span>
-<span id="cb36-742"><a href="#cb36-742" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-743"><a href="#cb36-743" aria-hidden="true" tabindex="-1"></a>一方で、明確な確率分布に基づいたパラメトリックな手法、つまり指数分布やワイブル分布を仮定して生存曲線やハザードを直接計算する方法もあります。</span>
-<span id="cb36-744"><a href="#cb36-744" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-745"><a href="#cb36-745" aria-hidden="true" tabindex="-1"></a>Rでパラメトリックな手法を用いる場合には、<span class="in">`survreg`</span>関数を用います。<span class="in">`survreg`</span>関数はカプランマイヤーの<span class="in">`survfit`</span>、log-rank検定の<span class="in">`survdiff`</span>、Cox回帰の<span class="in">`coxph`</span>関数と同様に、<span class="in">`Surv`</span>関数を含む<span class="in">`formula`</span>と確率分布（<span class="in">`dist`</span>）を引数に取る関数です。確率分布には、ハザード一定であれば<span class="in">`dist="exponential"`</span>を、ハザードが変化する場合には<span class="in">`dist="weibull"`</span>を指定します。</span>
-<span id="cb36-746"><a href="#cb36-746" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-747"><a href="#cb36-747" aria-hidden="true" tabindex="-1"></a>以下の例では、ハザード一定モデルを用いて<span class="in">`survreg`</span>の計算した結果と、ハザードのグラフを示します。</span>
-<span id="cb36-748"><a href="#cb36-748" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-749"><a href="#cb36-749" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ハザード一定モデルでのsurvreg関数"}</span></span>
-<span id="cb36-750"><a href="#cb36-750" aria-hidden="true" tabindex="-1"></a><span class="co"># ハザード一定モデル</span></span>
-<span id="cb36-751"><a href="#cb36-751" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
-<span id="cb36-752"><a href="#cb36-752" aria-hidden="true" tabindex="-1"></a>time_s <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">1000</span>, <span class="at">rate =</span> <span class="fl">0.01</span>) <span class="sc">|&gt;</span> <span class="fu">round</span>() <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb36-753"><a href="#cb36-753" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-754"><a href="#cb36-754" aria-hidden="true" tabindex="-1"></a><span class="co"># survreg関数でハザード一定モデルを計算する</span></span>
-<span id="cb36-755"><a href="#cb36-755" aria-hidden="true" tabindex="-1"></a>ts_survreg <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time_s, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">1000</span>)) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">dist =</span> <span class="st">"exponential"</span>)</span>
-<span id="cb36-756"><a href="#cb36-756" aria-hidden="true" tabindex="-1"></a>ts_survreg</span>
-<span id="cb36-757"><a href="#cb36-757" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-758"><a href="#cb36-758" aria-hidden="true" tabindex="-1"></a><span class="co"># survregから計算したrate</span></span>
-<span id="cb36-759"><a href="#cb36-759" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>() <span class="co"># rate（=1/scale）</span></span>
-<span id="cb36-760"><a href="#cb36-760" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale <span class="co"># shape</span></span>
-<span id="cb36-761"><a href="#cb36-761" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-762"><a href="#cb36-762" aria-hidden="true" tabindex="-1"></a><span class="co"># ハザード（=rate）の計算</span></span>
-<span id="cb36-763"><a href="#cb36-763" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="fu">rep</span>((<span class="sc">-</span>ts_survreg<span class="sc">$</span>coefficients) <span class="sc">|&gt;</span> <span class="fu">exp</span>(), <span class="dv">100</span>), <span class="at">type =</span> <span class="st">"l"</span>)</span>
-<span id="cb36-764"><a href="#cb36-764" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-765"><a href="#cb36-765" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-766"><a href="#cb36-766" aria-hidden="true" tabindex="-1"></a>ハザード一定モデルを<span class="in">`dist="weibull"`</span>で解析した場合の結果は以下の通りです。ハザードが一定とは少し異なる値を示します。</span>
-<span id="cb36-767"><a href="#cb36-767" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-768"><a href="#cb36-768" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ハザード一定モデルのデータをワイブル分布として計算"}</span></span>
-<span id="cb36-769"><a href="#cb36-769" aria-hidden="true" tabindex="-1"></a><span class="co"># ハザード一定モデル（Weibullとしてsurvregで計算）</span></span>
-<span id="cb36-770"><a href="#cb36-770" aria-hidden="true" tabindex="-1"></a>ts_survreg <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time_s, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">1000</span>)) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">dist =</span> <span class="st">"weibull"</span>)</span>
-<span id="cb36-771"><a href="#cb36-771" aria-hidden="true" tabindex="-1"></a>ts_survreg</span>
-<span id="cb36-772"><a href="#cb36-772" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-773"><a href="#cb36-773" aria-hidden="true" tabindex="-1"></a>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>() <span class="co"># scale（=1/rate）</span></span>
-<span id="cb36-774"><a href="#cb36-774" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale <span class="co"># shape</span></span>
-<span id="cb36-775"><a href="#cb36-775" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-776"><a href="#cb36-776" aria-hidden="true" tabindex="-1"></a><span class="co"># ハザードを計算する関数</span></span>
-<span id="cb36-777"><a href="#cb36-777" aria-hidden="true" tabindex="-1"></a>hazard_f <span class="ot">&lt;-</span> <span class="cf">function</span>(time, intercept, slope){</span>
-<span id="cb36-778"><a href="#cb36-778" aria-hidden="true" tabindex="-1"></a>  slope <span class="sc">*</span> intercept <span class="sc">*</span> time <span class="sc">^</span> (slope <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb36-779"><a href="#cb36-779" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb36-780"><a href="#cb36-780" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-781"><a href="#cb36-781" aria-hidden="true" tabindex="-1"></a>hazards <span class="ot">&lt;-</span> <span class="fu">hazard_f</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, (<span class="sc">-</span>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>()), <span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale)</span>
-<span id="cb36-782"><a href="#cb36-782" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, hazards, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.014</span>))</span>
-<span id="cb36-783"><a href="#cb36-783" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-784"><a href="#cb36-784" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-785"><a href="#cb36-785" aria-hidden="true" tabindex="-1"></a><span class="fu">### ワイブル分布でのハザードの計算</span></span>
-<span id="cb36-786"><a href="#cb36-786" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-787"><a href="#cb36-787" aria-hidden="true" tabindex="-1"></a>以下は、ワイブル分布から生成した生存時間を<span class="in">`survreg`</span>関数で解析したものです。<span class="in">`survreg`</span>関数から計算したハザードと、生存時間生成に用いたワイブル分布のパラメータからの計算結果がほぼ一致することがわかります。</span>
-<span id="cb36-788"><a href="#cb36-788" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-789"><a href="#cb36-789" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ワイブル分布から生成したデータでのsurvregの計算"}</span></span>
-<span id="cb36-790"><a href="#cb36-790" aria-hidden="true" tabindex="-1"></a><span class="co"># ワイブル分布での生存時間解析（scaleは1/rateに当たるもの、shapeは形状パラメータ）</span></span>
-<span id="cb36-791"><a href="#cb36-791" aria-hidden="true" tabindex="-1"></a>sv <span class="ot">&lt;-</span> <span class="fu">rweibull</span>(<span class="dv">1000</span>, <span class="at">shape =</span> <span class="fl">0.85</span>, <span class="at">scale =</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> <span class="fu">round</span>() <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb36-792"><a href="#cb36-792" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-793"><a href="#cb36-793" aria-hidden="true" tabindex="-1"></a><span class="co"># survregで計算する</span></span>
-<span id="cb36-794"><a href="#cb36-794" aria-hidden="true" tabindex="-1"></a>ts_survreg <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(sv, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">1000</span>)) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">dist =</span> <span class="st">"weibull"</span>)</span>
-<span id="cb36-795"><a href="#cb36-795" aria-hidden="true" tabindex="-1"></a>ts_survreg</span>
-<span id="cb36-796"><a href="#cb36-796" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-797"><a href="#cb36-797" aria-hidden="true" tabindex="-1"></a><span class="co"># 上がscale、下がshape</span></span>
-<span id="cb36-798"><a href="#cb36-798" aria-hidden="true" tabindex="-1"></a>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>() <span class="co"># scale（105.7でほぼ合っている）</span></span>
-<span id="cb36-799"><a href="#cb36-799" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale <span class="co"># shape （0.870でほぼ合っている）</span></span>
-<span id="cb36-800"><a href="#cb36-800" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-801"><a href="#cb36-801" aria-hidden="true" tabindex="-1"></a>hazards <span class="ot">&lt;-</span> <span class="fu">hazard_f</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, (<span class="sc">-</span>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>()), <span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale)</span>
-<span id="cb36-802"><a href="#cb36-802" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, hazards, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.014</span>))</span>
-<span id="cb36-803"><a href="#cb36-803" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new =</span> T)</span>
-<span id="cb36-804"><a href="#cb36-804" aria-hidden="true" tabindex="-1"></a>hazards <span class="ot">&lt;-</span> <span class="fu">hazard_f</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">100</span>, <span class="fl">0.85</span>)</span>
-<span id="cb36-805"><a href="#cb36-805" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, hazards, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.014</span>), <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb36-806"><a href="#cb36-806" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb36-621"><a href="#cb36-621" aria-hidden="true" tabindex="-1"></a>model_All_coxph <span class="ot">&lt;-</span> </span>
+<span id="cb36-622"><a href="#cb36-622" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> ph.ecog <span class="sc">+</span> ph.karno, <span class="at">data =</span> cancer <span class="sc">|&gt;</span> <span class="fu">na.omit</span>())</span>
+<span id="cb36-623"><a href="#cb36-623" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-624"><a href="#cb36-624" aria-hidden="true" tabindex="-1"></a>result_step <span class="ot">&lt;-</span> <span class="fu">step</span>(model_All_coxph, <span class="at">trace =</span> <span class="dv">0</span>)</span>
+<span id="cb36-625"><a href="#cb36-625" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-626"><a href="#cb36-626" aria-hidden="true" tabindex="-1"></a>result_step</span>
+<span id="cb36-627"><a href="#cb36-627" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-628"><a href="#cb36-628" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-629"><a href="#cb36-629" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cox回帰のモデル評価</span></span>
+<span id="cb36-630"><a href="#cb36-630" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-631"><a href="#cb36-631" aria-hidden="true" tabindex="-1"></a>Cox回帰での計算が正しく行われていることを確認する場合には、残差を調べます。Cox回帰でチェックされる残差は主にマルチンゲール残差（Martingale residuals）とシェーンフェルド残差（Schoenfeld residuals）の2つです。</span>
+<span id="cb36-632"><a href="#cb36-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-633"><a href="#cb36-633" aria-hidden="true" tabindex="-1"></a>計算は簡単で、<span class="in">`coxph`</span>関数の返り値を<span class="in">`residuals`</span>関数の引数に取るだけです。マルチンゲール残差を計算する場合には引数に<span class="in">`type="martingale"`</span>を、シェーンフェルド残差を計算する場合には<span class="in">`type="schoenfeld"`</span>を設定します。</span>
+<span id="cb36-634"><a href="#cb36-634" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-635"><a href="#cb36-635" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="マルチンゲール残差とシェーンフェルド残差"}</span></span>
+<span id="cb36-636"><a href="#cb36-636" aria-hidden="true" tabindex="-1"></a><span class="co"># マルチンゲール残差</span></span>
+<span id="cb36-637"><a href="#cb36-637" aria-hidden="true" tabindex="-1"></a>result_km2_cox <span class="sc">|&gt;</span> <span class="fu">residuals</span>(<span class="at">type=</span><span class="st">"martingale"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
+<span id="cb36-638"><a href="#cb36-638" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-639"><a href="#cb36-639" aria-hidden="true" tabindex="-1"></a><span class="co"># シェーンフェルド残差</span></span>
+<span id="cb36-640"><a href="#cb36-640" aria-hidden="true" tabindex="-1"></a>result_km2_cox <span class="sc">|&gt;</span> <span class="fu">residuals</span>(<span class="at">type=</span><span class="st">"schoenfeld"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
+<span id="cb36-641"><a href="#cb36-641" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-642"><a href="#cb36-642" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-643"><a href="#cb36-643" aria-hidden="true" tabindex="-1"></a>マルチンゲール残差やシェーンフェルド残差を確認する場合には、<span class="in">`survminer`</span>パッケージの<span class="in">`ggcoxdiagnostics`</span>関数を用いるのが簡単でよいでしょう。<span class="in">`ggcoxdiagnostics`</span>関数は引数に<span class="in">`coxph`</span>関数の返り値と残差の<span class="in">`type`</span>を取ります。計算結果はグラフで表示され、青の線が概ね一定であれば比例ハザード性が成立しているとします。</span>
+<span id="cb36-644"><a href="#cb36-644" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-645"><a href="#cb36-645" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE, filename="ggcoxdiagnostics関数でCox回帰を評価する"}</span></span>
+<span id="cb36-646"><a href="#cb36-646" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(survminer)</span>
+<span id="cb36-647"><a href="#cb36-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-648"><a href="#cb36-648" aria-hidden="true" tabindex="-1"></a>result_step <span class="sc">|&gt;</span> <span class="fu">ggcoxdiagnostics</span>(<span class="at">type=</span><span class="st">"martingale"</span>)</span>
+<span id="cb36-649"><a href="#cb36-649" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-650"><a href="#cb36-650" aria-hidden="true" tabindex="-1"></a>result_step <span class="sc">|&gt;</span> <span class="fu">ggcoxdiagnostics</span>(<span class="at">type=</span><span class="st">"schoenfeld"</span>)</span>
+<span id="cb36-651"><a href="#cb36-651" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-652"><a href="#cb36-652" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-653"><a href="#cb36-653" aria-hidden="true" tabindex="-1"></a><span class="fu">## ハザード比</span></span>
+<span id="cb36-654"><a href="#cb36-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-655"><a href="#cb36-655" aria-hidden="true" tabindex="-1"></a>治験などでは、**ハザード比**の計算にCox回帰が用いられています。このハザード比は上の式で示したψで、ある条件におけるハザードh~1~(t)と対照のハザードh~0~(t)の比になります。</span>
+<span id="cb36-656"><a href="#cb36-656" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-657"><a href="#cb36-657" aria-hidden="true" tabindex="-1"></a>$$\psi=\frac{h_{1}(t)}{h_{0}(t)}$$</span>
+<span id="cb36-658"><a href="#cb36-658" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-659"><a href="#cb36-659" aria-hidden="true" tabindex="-1"></a>ハザード比は一般的に**フォレストプロット**と呼ばれる、代表値を点、信頼区間を線で表した図で表記されます。フォレストプロットについては<span class="co">[</span><span class="ot">ggplot2の章</span><span class="co">](chapter26.qmd#エラーバーの描画geom_errorbargeom_linerangegeom_pointrange)</span>で簡単に紹介しています。</span>
+<span id="cb36-660"><a href="#cb36-660" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-661"><a href="#cb36-661" aria-hidden="true" tabindex="-1"></a>ハザード比の計算では、<span class="in">`coxph`</span>関数の返り値（以下の例では<span class="in">`result_step`</span>）を<span class="in">`summary`</span>関数の引数とします。結果が3つのテーブルに表示されますが、真ん中の表に<span class="in">`exp(coef)`</span>と<span class="in">`lower .95`</span>、<span class="in">`upper .95`</span>の3つが表示されています。この3つがそれぞれハザード比、ハザード比の下側95%信頼区間、上側95%信頼区間に当たります。</span>
+<span id="cb36-662"><a href="#cb36-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-663"><a href="#cb36-663" aria-hidden="true" tabindex="-1"></a>この<span class="in">`summary`</span>関数の返り値のうち、リストの名前である<span class="in">`$conf.int`</span>で呼び出すことができる表が、上記のハザード比と信頼区間の表になります。この表をもとにハザード比をフォレストプロットにしていきます。</span>
+<span id="cb36-664"><a href="#cb36-664" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-665"><a href="#cb36-665" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ハザード比"}</span></span>
+<span id="cb36-666"><a href="#cb36-666" aria-hidden="true" tabindex="-1"></a><span class="co"># summary関数の引数にするとハザード比と信頼区間が表示される</span></span>
+<span id="cb36-667"><a href="#cb36-667" aria-hidden="true" tabindex="-1"></a>result_step <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span>
+<span id="cb36-668"><a href="#cb36-668" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-669"><a href="#cb36-669" aria-hidden="true" tabindex="-1"></a><span class="co"># summaryの$conf.intの要素を呼び出して変数に代入する</span></span>
+<span id="cb36-670"><a href="#cb36-670" aria-hidden="true" tabindex="-1"></a>df_step <span class="ot">&lt;-</span> result_step <span class="sc">|&gt;</span> <span class="fu">summary</span>() <span class="sc">|&gt;</span> _<span class="sc">$</span>conf.int</span>
+<span id="cb36-671"><a href="#cb36-671" aria-hidden="true" tabindex="-1"></a>df_step</span>
+<span id="cb36-672"><a href="#cb36-672" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-673"><a href="#cb36-673" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-674"><a href="#cb36-674" aria-hidden="true" tabindex="-1"></a>フォレストプロットは点と線のグラフですので、<span class="co">[</span><span class="ot">26章</span><span class="co">](chapter26.qmd#エラーバーの描画geom_errorbargeom_linerangegeom_pointrange)</span>で説明した<span class="in">`geom_pointrange`</span>を使えば簡単に作成できます。</span>
+<span id="cb36-675"><a href="#cb36-675" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-676"><a href="#cb36-676" aria-hidden="true" tabindex="-1"></a>以下のグラフでは、<span class="in">`sex`</span>と<span class="in">`ph.ecog`</span>のハザード比の信頼区間が1に被っていない形になっています。この図から、<span class="in">`sex`</span>、<span class="in">`ph.ecog`</span>のハザード比は1ではなく、いずれも生存時間に統計的に有意な影響を与えていることがわかります。</span>
+<span id="cb36-677"><a href="#cb36-677" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-678"><a href="#cb36-678" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="フォレストプロットの作図"}</span></span>
+<span id="cb36-679"><a href="#cb36-679" aria-hidden="true" tabindex="-1"></a><span class="co"># 列名にカッコがあると演算に使いにくいので列名を変更（HRinvはHRの逆数）</span></span>
+<span id="cb36-680"><a href="#cb36-680" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df_step) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"HR"</span>, <span class="st">"HRinv"</span>, <span class="st">"lower95"</span>, <span class="st">"upper95"</span>)</span>
+<span id="cb36-681"><a href="#cb36-681" aria-hidden="true" tabindex="-1"></a>df_step <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(df_step)</span>
+<span id="cb36-682"><a href="#cb36-682" aria-hidden="true" tabindex="-1"></a>df_step<span class="sc">$</span>val <span class="ot">&lt;-</span> <span class="fu">rownames</span>(df_step)</span>
+<span id="cb36-683"><a href="#cb36-683" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-684"><a href="#cb36-684" aria-hidden="true" tabindex="-1"></a>df_step <span class="sc">|&gt;</span> </span>
+<span id="cb36-685"><a href="#cb36-685" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> HR, <span class="at">xmax =</span> upper95, <span class="at">xmin =</span> lower95, <span class="at">y =</span> val, <span class="at">color =</span> val)) <span class="sc">+</span></span>
+<span id="cb36-686"><a href="#cb36-686" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb36-687"><a href="#cb36-687" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>)</span>
+<span id="cb36-688"><a href="#cb36-688" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-689"><a href="#cb36-689" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-690"><a href="#cb36-690" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
+<span id="cb36-691"><a href="#cb36-691" aria-hidden="true" tabindex="-1"></a><span class="al">###</span><span class="co"> survivalAnalysisはCRANからremoveされたので、書き直し </span><span class="al">###</span></span>
+<span id="cb36-692"><a href="#cb36-692" aria-hidden="true" tabindex="-1"></a><span class="co">Rでのハザード比の計算とフォレストプロットの作成には、[survivalAnalysis](https://cran.r-project.org/web/packages/survivalAnalysis/index.html)パッケージ  [@survivalAnalysis_bib]を用いるのが便利です。`cox_as_data_frame`関数を用いると、各説明変数ごとのハザード比（`HR`、hazard ratio）、95%信頼区間（`Lower_CI`、`Upper_CI`）を含むデータフレームを返してくれます。</span></span>
+<span id="cb36-693"><a href="#cb36-693" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-694"><a href="#cb36-694" aria-hidden="true" tabindex="-1"></a><span class="co">以下のグラフでは、`sex`と`ph.ecog`のハザード比の信頼区間が1に被っていない形になっています。この図から、`sex`、`ph.ecog`のハザード比は1ではなく、いずれも生存時間に統計的に有意な影響を与えていることがわかります。</span></span>
+<span id="cb36-695"><a href="#cb36-695" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-696"><a href="#cb36-696" aria-hidden="true" tabindex="-1"></a><span class="co">```{r, filename="ハザード比", warning=FALSE, message=FALSE, eval=FALSE}</span></span>
+<span id="cb36-697"><a href="#cb36-697" aria-hidden="true" tabindex="-1"></a><span class="co">pacman::p_load(survivalAnalysis)</span></span>
+<span id="cb36-698"><a href="#cb36-698" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-699"><a href="#cb36-699" aria-hidden="true" tabindex="-1"></a><span class="co"># coxph関数の返り値をcox_as_data_frame関数の引数に与える</span></span>
+<span id="cb36-700"><a href="#cb36-700" aria-hidden="true" tabindex="-1"></a><span class="co">df_step &lt;- </span></span>
+<span id="cb36-701"><a href="#cb36-701" aria-hidden="true" tabindex="-1"></a><span class="co">  survivalAnalysis::cox_as_data_frame(result_step)</span></span>
+<span id="cb36-702"><a href="#cb36-702" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-703"><a href="#cb36-703" aria-hidden="true" tabindex="-1"></a><span class="co"># Cox回帰の結果をデータフレームにまとめてくれる</span></span>
+<span id="cb36-704"><a href="#cb36-704" aria-hidden="true" tabindex="-1"></a><span class="co">df_step</span></span>
+<span id="cb36-705"><a href="#cb36-705" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-706"><a href="#cb36-706" aria-hidden="true" tabindex="-1"></a><span class="co"># フォレストプロットの表示</span></span>
+<span id="cb36-707"><a href="#cb36-707" aria-hidden="true" tabindex="-1"></a><span class="co">df_step |&gt; </span></span>
+<span id="cb36-708"><a href="#cb36-708" aria-hidden="true" tabindex="-1"></a><span class="co">  ggplot(aes(x = HR, xmax = Upper_CI, xmin = Lower_CI, y = factor.id, color = factor.id)) +</span></span>
+<span id="cb36-709"><a href="#cb36-709" aria-hidden="true" tabindex="-1"></a><span class="co">  geom_point(size = 3) +</span></span>
+<span id="cb36-710"><a href="#cb36-710" aria-hidden="true" tabindex="-1"></a><span class="co">  geom_linerange(linewidth = 1)+</span></span>
+<span id="cb36-711"><a href="#cb36-711" aria-hidden="true" tabindex="-1"></a><span class="co">  geom_vline(xintercept = 1)</span></span>
+<span id="cb36-712"><a href="#cb36-712" aria-hidden="true" tabindex="-1"></a><span class="co">```</span></span>
+<span id="cb36-713"><a href="#cb36-713" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
+<span id="cb36-714"><a href="#cb36-714" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-715"><a href="#cb36-715" aria-hidden="true" tabindex="-1"></a><span class="fu">### survminerパッケージ：ggforest関数でフォレストプロットを作成する</span></span>
+<span id="cb36-716"><a href="#cb36-716" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-717"><a href="#cb36-717" aria-hidden="true" tabindex="-1"></a><span class="in">`survminer`</span>パッケージが提供している<span class="in">`ggforest`</span>関数を用いても、フォレストプロットを作成することができます。上記のように<span class="in">`ggplot2`</span>を用いるよりも、<span class="in">`ggforest`</span>関数を用いた方がはるかに簡単にフォレストプロットを作成することができます。</span>
+<span id="cb36-718"><a href="#cb36-718" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-719"><a href="#cb36-719" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ggforest関数でフォレストプロットを作成する"}</span></span>
+<span id="cb36-720"><a href="#cb36-720" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(<span class="st">"survminer"</span>)</span>
+<span id="cb36-721"><a href="#cb36-721" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-722"><a href="#cb36-722" aria-hidden="true" tabindex="-1"></a>result_step <span class="sc">|&gt;</span> </span>
+<span id="cb36-723"><a href="#cb36-723" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggforest</span>(<span class="at">data =</span> cancer <span class="sc">|&gt;</span> <span class="fu">na.omit</span>())</span>
+<span id="cb36-724"><a href="#cb36-724" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-725"><a href="#cb36-725" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-726"><a href="#cb36-726" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb36-727"><a href="#cb36-727" aria-hidden="true" tabindex="-1"></a><span class="fu">## survminerパッケージの便利な関数</span></span>
+<span id="cb36-728"><a href="#cb36-728" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-729"><a href="#cb36-729" aria-hidden="true" tabindex="-1"></a><span class="in">`survminer`</span>パッケージには、上記の<span class="in">`ggforest`</span>関数だけでなく、以下に示すようにカプランマイヤー曲線に<span class="in">`ggplot2`</span>のfacetを用いる関数である、<span class="in">`ggsurvplot_facet`</span>などの便利な関数がたくさん備わっています。<span class="in">`ggsurvfit`</span>と比較してみて、使いやすい方を用いるとよいでしょう。</span>
+<span id="cb36-730"><a href="#cb36-730" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-731"><a href="#cb36-731" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ggsurvlplot_facet関数"}</span></span>
+<span id="cb36-732"><a href="#cb36-732" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsurvplot_facet関数のexampleに示されている例</span></span>
+<span id="cb36-733"><a href="#cb36-733" aria-hidden="true" tabindex="-1"></a><span class="fu">survfit</span>( <span class="fu">Surv</span>(time, status) <span class="sc">~</span> sex, <span class="at">data =</span> colon) <span class="sc">|&gt;</span> </span>
+<span id="cb36-734"><a href="#cb36-734" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsurvplot_facet</span>(colon, <span class="at">facet.by =</span> <span class="st">"rx"</span>)</span>
+<span id="cb36-735"><a href="#cb36-735" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-736"><a href="#cb36-736" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb36-737"><a href="#cb36-737" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-738"><a href="#cb36-738" aria-hidden="true" tabindex="-1"></a><span class="fu">## パラメトリックな手法</span></span>
+<span id="cb36-739"><a href="#cb36-739" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-740"><a href="#cb36-740" aria-hidden="true" tabindex="-1"></a>カプランマイヤー曲線、log-rank検定はノンパラメトリックな手法、Cox回帰はセミパラメトリックな手法であるとされています。これは、いずれも明確な確率分布に基づいて計算する統計手法では無いからです。</span>
+<span id="cb36-741"><a href="#cb36-741" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-742"><a href="#cb36-742" aria-hidden="true" tabindex="-1"></a>一方で、明確な確率分布に基づいたパラメトリックな手法、つまり指数分布やワイブル分布を仮定して生存曲線やハザードを直接計算する方法もあります。</span>
+<span id="cb36-743"><a href="#cb36-743" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-744"><a href="#cb36-744" aria-hidden="true" tabindex="-1"></a>Rでパラメトリックな手法を用いる場合には、<span class="in">`survreg`</span>関数を用います。<span class="in">`survreg`</span>関数はカプランマイヤーの<span class="in">`survfit`</span>、log-rank検定の<span class="in">`survdiff`</span>、Cox回帰の<span class="in">`coxph`</span>関数と同様に、<span class="in">`Surv`</span>関数を含む<span class="in">`formula`</span>と確率分布（<span class="in">`dist`</span>）を引数に取る関数です。確率分布には、ハザード一定であれば<span class="in">`dist="exponential"`</span>を、ハザードが変化する場合には<span class="in">`dist="weibull"`</span>を指定します。</span>
+<span id="cb36-745"><a href="#cb36-745" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-746"><a href="#cb36-746" aria-hidden="true" tabindex="-1"></a>以下の例では、ハザード一定モデルを用いて<span class="in">`survreg`</span>の計算した結果と、ハザードのグラフを示します。</span>
+<span id="cb36-747"><a href="#cb36-747" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-748"><a href="#cb36-748" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ハザード一定モデルでのsurvreg関数"}</span></span>
+<span id="cb36-749"><a href="#cb36-749" aria-hidden="true" tabindex="-1"></a><span class="co"># ハザード一定モデル</span></span>
+<span id="cb36-750"><a href="#cb36-750" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
+<span id="cb36-751"><a href="#cb36-751" aria-hidden="true" tabindex="-1"></a>time_s <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">1000</span>, <span class="at">rate =</span> <span class="fl">0.01</span>) <span class="sc">|&gt;</span> <span class="fu">round</span>() <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb36-752"><a href="#cb36-752" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-753"><a href="#cb36-753" aria-hidden="true" tabindex="-1"></a><span class="co"># survreg関数でハザード一定モデルを計算する</span></span>
+<span id="cb36-754"><a href="#cb36-754" aria-hidden="true" tabindex="-1"></a>ts_survreg <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time_s, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">1000</span>)) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">dist =</span> <span class="st">"exponential"</span>)</span>
+<span id="cb36-755"><a href="#cb36-755" aria-hidden="true" tabindex="-1"></a>ts_survreg</span>
+<span id="cb36-756"><a href="#cb36-756" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-757"><a href="#cb36-757" aria-hidden="true" tabindex="-1"></a><span class="co"># survregから計算したrate</span></span>
+<span id="cb36-758"><a href="#cb36-758" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>() <span class="co"># rate（=1/scale）</span></span>
+<span id="cb36-759"><a href="#cb36-759" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale <span class="co"># shape</span></span>
+<span id="cb36-760"><a href="#cb36-760" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-761"><a href="#cb36-761" aria-hidden="true" tabindex="-1"></a><span class="co"># ハザード（=rate）の計算</span></span>
+<span id="cb36-762"><a href="#cb36-762" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="fu">rep</span>((<span class="sc">-</span>ts_survreg<span class="sc">$</span>coefficients) <span class="sc">|&gt;</span> <span class="fu">exp</span>(), <span class="dv">100</span>), <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb36-763"><a href="#cb36-763" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-764"><a href="#cb36-764" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-765"><a href="#cb36-765" aria-hidden="true" tabindex="-1"></a>ハザード一定モデルを<span class="in">`dist="weibull"`</span>で解析した場合の結果は以下の通りです。ハザードが一定とは少し異なる値を示します。</span>
+<span id="cb36-766"><a href="#cb36-766" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-767"><a href="#cb36-767" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ハザード一定モデルのデータをワイブル分布として計算"}</span></span>
+<span id="cb36-768"><a href="#cb36-768" aria-hidden="true" tabindex="-1"></a><span class="co"># ハザード一定モデル（Weibullとしてsurvregで計算）</span></span>
+<span id="cb36-769"><a href="#cb36-769" aria-hidden="true" tabindex="-1"></a>ts_survreg <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time_s, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">1000</span>)) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">dist =</span> <span class="st">"weibull"</span>)</span>
+<span id="cb36-770"><a href="#cb36-770" aria-hidden="true" tabindex="-1"></a>ts_survreg</span>
+<span id="cb36-771"><a href="#cb36-771" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-772"><a href="#cb36-772" aria-hidden="true" tabindex="-1"></a>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>() <span class="co"># scale（=1/rate）</span></span>
+<span id="cb36-773"><a href="#cb36-773" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale <span class="co"># shape</span></span>
+<span id="cb36-774"><a href="#cb36-774" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-775"><a href="#cb36-775" aria-hidden="true" tabindex="-1"></a><span class="co"># ハザードを計算する関数</span></span>
+<span id="cb36-776"><a href="#cb36-776" aria-hidden="true" tabindex="-1"></a>hazard_f <span class="ot">&lt;-</span> <span class="cf">function</span>(time, intercept, slope){</span>
+<span id="cb36-777"><a href="#cb36-777" aria-hidden="true" tabindex="-1"></a>  slope <span class="sc">*</span> intercept <span class="sc">*</span> time <span class="sc">^</span> (slope <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb36-778"><a href="#cb36-778" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb36-779"><a href="#cb36-779" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-780"><a href="#cb36-780" aria-hidden="true" tabindex="-1"></a>hazards <span class="ot">&lt;-</span> <span class="fu">hazard_f</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, (<span class="sc">-</span>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>()), <span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale)</span>
+<span id="cb36-781"><a href="#cb36-781" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, hazards, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.014</span>))</span>
+<span id="cb36-782"><a href="#cb36-782" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-783"><a href="#cb36-783" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-784"><a href="#cb36-784" aria-hidden="true" tabindex="-1"></a><span class="fu">### ワイブル分布でのハザードの計算</span></span>
+<span id="cb36-785"><a href="#cb36-785" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-786"><a href="#cb36-786" aria-hidden="true" tabindex="-1"></a>以下は、ワイブル分布から生成した生存時間を<span class="in">`survreg`</span>関数で解析したものです。<span class="in">`survreg`</span>関数から計算したハザードと、生存時間生成に用いたワイブル分布のパラメータからの計算結果がほぼ一致することがわかります。</span>
+<span id="cb36-787"><a href="#cb36-787" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-788"><a href="#cb36-788" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ワイブル分布から生成したデータでのsurvregの計算"}</span></span>
+<span id="cb36-789"><a href="#cb36-789" aria-hidden="true" tabindex="-1"></a><span class="co"># ワイブル分布での生存時間解析（scaleは1/rateに当たるもの、shapeは形状パラメータ）</span></span>
+<span id="cb36-790"><a href="#cb36-790" aria-hidden="true" tabindex="-1"></a>sv <span class="ot">&lt;-</span> <span class="fu">rweibull</span>(<span class="dv">1000</span>, <span class="at">shape =</span> <span class="fl">0.85</span>, <span class="at">scale =</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> <span class="fu">round</span>() <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb36-791"><a href="#cb36-791" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-792"><a href="#cb36-792" aria-hidden="true" tabindex="-1"></a><span class="co"># survregで計算する</span></span>
+<span id="cb36-793"><a href="#cb36-793" aria-hidden="true" tabindex="-1"></a>ts_survreg <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(sv, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">1000</span>)) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">dist =</span> <span class="st">"weibull"</span>)</span>
+<span id="cb36-794"><a href="#cb36-794" aria-hidden="true" tabindex="-1"></a>ts_survreg</span>
+<span id="cb36-795"><a href="#cb36-795" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-796"><a href="#cb36-796" aria-hidden="true" tabindex="-1"></a><span class="co"># 上がscale、下がshape</span></span>
+<span id="cb36-797"><a href="#cb36-797" aria-hidden="true" tabindex="-1"></a>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>() <span class="co"># scale（105.7でほぼ合っている）</span></span>
+<span id="cb36-798"><a href="#cb36-798" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale <span class="co"># shape （0.870でほぼ合っている）</span></span>
+<span id="cb36-799"><a href="#cb36-799" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-800"><a href="#cb36-800" aria-hidden="true" tabindex="-1"></a>hazards <span class="ot">&lt;-</span> <span class="fu">hazard_f</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, (<span class="sc">-</span>ts_survreg<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">exp</span>()), <span class="dv">1</span> <span class="sc">/</span> ts_survreg<span class="sc">$</span>scale)</span>
+<span id="cb36-801"><a href="#cb36-801" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, hazards, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.014</span>))</span>
+<span id="cb36-802"><a href="#cb36-802" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new =</span> T)</span>
+<span id="cb36-803"><a href="#cb36-803" aria-hidden="true" tabindex="-1"></a>hazards <span class="ot">&lt;-</span> <span class="fu">hazard_f</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">100</span>, <span class="fl">0.85</span>)</span>
+<span id="cb36-804"><a href="#cb36-804" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, hazards, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.014</span>), <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb36-805"><a href="#cb36-805" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -3456,7 +3463,11 @@ Therneau, Terry M. 2023. <em>A Package for Survival Analysis in r</em>. <a href=
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>10&nbsp; パッケージとライブラリ – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -764,6 +766,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -832,12 +840,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p>Rのパッケージは（基本的には）<a href="https://cran.r-project.org/"><strong>CRAN</strong></a>で管理されており、審査が行われた上で登録されています。パッケージはCRANのリポジトリ（データを格納する場所のこと）に保存されており、RのユーザーはこのCRANのリポジトリから、必要なパッケージを<strong>インストール</strong>して用いることになります。インストールしたパッケージはライブラリ、自分のPCのフォルダに保存されます。</p>
 <p>パッケージは、インストールしただけでは用いることができません。パッケージを<strong>読み込み（ロード、load）</strong>、メモリ上に展開しておくことでパッケージの機能を用いることができるようになります。この読み込みはRを起動するたびに行います。パッケージの機能は関連する関数群として実装されていますので、ロードすることでパッケージに登録されている関数を用いることができるようになります。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-パッケージを毎回読み込む
+<span class="screen-reader-only">Tip</span>パッケージを毎回読み込む
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -858,12 +866,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>パッケージのインストール</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span> <span class="co"># tidyverseというパッケージをインストールする</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span> <span class="co"># tidyverseというパッケージをインストールする</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"pacman"</span><span class="op">)</span><span class="op">)</span> <span class="co"># 複数のパッケージ名をベクターで与えることもできる</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span> <span class="co"># エラーが出る。パッケージ名は文字列でないとダメ</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/libPaths.html">.libPaths</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># パッケージのインストール先（ライブラリ）を表示</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/libPaths.html">.libPaths</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># パッケージのインストール先（ライブラリ）を表示</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="パッケージをロードする" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="パッケージをロードする">
@@ -876,21 +884,21 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>パッケージをロードする</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span> <span class="co"># tidyverseパッケージを読み込む</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span> <span class="co"># tidyverseパッケージを読み込む</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/trinker/pacman">"pacman"</a></span><span class="op">)</span> <span class="co"># pacmanパッケージを読み込む（文字列）</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/trinker/pacman">pacman</a></span><span class="op">)</span> <span class="co"># requireによる読み込み（読み込みができたらTRUEが返ってくる）</span></span>
 <span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ライブラリの一覧を表示する</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ライブラリの一覧を表示する</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-libraryをロードするときのメッセージ
+<span class="screen-reader-only">Tip</span>libraryをロードするときのメッセージ
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -903,7 +911,7 @@ libraryをロードするときのメッセージ
 <div class="code-with-filename-file">
 <pre><strong>メッセージを表示せずにパッケージを読み込む</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -917,19 +925,19 @@ libraryをロードするときのメッセージ
 <div class="code-with-filename-file">
 <pre><strong>パッケージをロードせずに関数を用いる</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages("lubridate") であらかじめパッケージのインストールが必要</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages("lubridate") であらかじめパッケージのインストールが必要</span></span>
 <span></span>
 <span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="st">"2023-10-10"</span><span class="op">)</span> <span class="co"># lubridateパッケージの関数はパッケージをロードしないと使えない</span></span>
 <span><span class="co">## Error in `ymd()`:</span></span>
 <span><span class="co">## ! could not find function "ymd"</span></span>
 <span></span>
 <span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="st">"2023-10-10"</span><span class="op">)</span> <span class="co"># パッケージ名::関数名でロードしなくても関数が使える</span></span>
-<span><span class="co">## [1] "2023-10-10"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "2023-10-10"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="githubからのインストール" class="level3" data-number="10.3.2"><h3 data-number="10.3.2" class="anchored" data-anchor-id="githubからのインストール">
 <span class="header-section-number">10.3.2</span> githubからのインストール</h3>
-<p>最近では、最新のパッケージはCRANだけでなく、<a href="https://github.co.jp/"><strong>GitHub</strong></a>というプログラム開発プラットフォームからインストールすることもあります。ただし、<strong>GitHub上のパッケージはCRANによるチェックを受けていない</strong>ものですので、インストールする際には注意が必要です。GitHubからのパッケージのインストールには、<code>devtools</code> <span class="citation" data-cites="devtools_bib">(<a href="references.html#ref-devtools_bib" role="doc-biblioref">Wickham et al. 2022</a>)</span>パッケージの<code>install_github</code>関数を用います。引数には、パッケージの<strong>リポジトリ</strong>というものを文字列で取ります。</p>
+<p>最近では、最新のパッケージはCRANだけでなく、<a href="https://github.co.jp/"><strong>GitHub</strong></a>というプログラム開発プラットフォームからインストールすることもあります。ただし、<strong>GitHub上のパッケージはCRANによるチェックを受けていない</strong>ものですので、インストールする際には注意が必要です。GitHubからのパッケージのインストールには、<code>pak</code> <span class="citation" data-cites="pak_bib">(<a href="#ref-pak_bib" role="doc-biblioref">Csárdi and Hester 2024</a>)</span>パッケージの<code>pak</code>関数を用います。引数には、パッケージの<strong>リポジトリ</strong>というものを文字列で取ります。</p>
 <p>例えば、<a href="https://www.displayr.com/">Displayr</a>という会社が開発している<code>flipPlots</code>というパッケージをGitHubからインストールする場合には、GitHubの対象のページのアドレス（<a href="https://github.com/Displayr/flipPlots" class="uri">https://github.com/Displayr/flipPlots</a>）のうち、後ろの2つの項目（<code>Displayr/flipPlots</code>）をリポジトリとして取り扱います。GitHubのページにはリポジトリ名が記載されています。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/github_reponame.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="図1：GitHubのリポジトリ名"><img src="./image/github_reponame.png" class="img-fluid figure-img" alt="図1：GitHubのリポジトリ名"></a></p>
@@ -940,17 +948,17 @@ libraryをロードするときのメッセージ
 <div class="code-with-filename-file">
 <pre><strong>GitHubからのパッケージのインストール</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># flipPlotsというパッケージをGitHubからインストールする(インストールは自己責任で)</span></span>
-<span><span class="co"># devtools::install_github("Displayr/flipPlots") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># flipPlotsというパッケージをGitHubからインストールする(インストールは自己責任で)</span></span>
+<span><span class="co"># pak::pak("Displayr/flipPlots") </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-GitとGithub
+<span class="screen-reader-only">Tip</span>GitとGithub
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -963,16 +971,16 @@ GitとGithub
 </section><section id="bioconductorからのインストール" class="level3" data-number="10.3.3"><h3 data-number="10.3.3" class="anchored" data-anchor-id="bioconductorからのインストール">
 <span class="header-section-number">10.3.3</span> Bioconductorからのインストール</h3>
 <p>生物系の統計手法（DNAのアライメントやシーケンサーデータの処理、系統樹の計算等）のパッケージを専門的に取り扱っているのが、<a href="https://www.bioconductor.org/"><strong>Bioconductor</strong></a>です。Bioconductorに設定されているパッケージはCRANやgithubのものとは取り扱いが少し異なります。</p>
-<p>Bioconductorのパッケージを利用するには、<code>BiocManager</code> <span class="citation" data-cites="BiocManager_bib">(<a href="references.html#ref-BiocManager_bib" role="doc-biblioref">Morgan and Ramos 2023</a>)</span>というパッケージをあらかじめインストールする必要があります。Bioconductorのライブラリのインストールにはこの<code>BiocManeger</code>パッケージの<code>install</code>関数を用います。<code>install</code>関数を引数なしで用いると、Bioconductorのコアライブラリをすべてインストールすることができます。特定のパッケージをインストールするときには、引数に文字列のパッケージ名を入力します。</p>
+<p>Bioconductorのパッケージを利用するには、<code>BiocManager</code> <span class="citation" data-cites="BiocManager_bib">(<a href="#ref-BiocManager_bib" role="doc-biblioref">Morgan and Ramos 2023</a>)</span>というパッケージをあらかじめインストールする必要があります。Bioconductorのライブラリのインストールにはこの<code>BiocManeger</code>パッケージの<code>install</code>関数を用います。<code>install</code>関数を引数なしで用いると、Bioconductorのコアライブラリをすべてインストールすることができます。特定のパッケージをインストールするときには、引数に文字列のパッケージ名を入力します。</p>
 <p>インストールしたBioconductorのパッケージのロードは通常のパッケージと同様に<code>library</code>関数で行うことができます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Bioconductorのパッケージをインストール</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span> <span class="co"># BioManagerパッケージのインストール</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span> <span class="co"># BioManagerパッケージのインストール</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html">install</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Bioconductorのコアライブラリをインストールする</span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GenomicFeatures"</span>, <span class="st">"AnnotationDbi"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GenomicFeatures"</span>, <span class="st">"AnnotationDbi"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="パッケージを簡単に取り扱うpacman" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="パッケージを簡単に取り扱うpacman">
@@ -983,35 +991,35 @@ GitとGithub
 <div class="code-with-filename-file">
 <pre><strong>pacman::p_load関数によるパッケージのロード</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># climetricsパッケージ（気候変化に関するパッケージ）は</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># climetricsパッケージ（気候変化に関するパッケージ）は</span></span>
 <span><span class="co"># インストールされていないので、エラーが出る</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-gis.net/">climetrics</a></span><span class="op">)</span> </span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://r-gis.net/">climetrics</a></span><span class="op">)</span> <span class="co"># インストールしないと読み込めないので、FALSEが返ってくる</span></span>
 <span></span>
 <span><span class="co"># require関数でFALSEが返ってきたら、パッケージをインストールする</span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://r-gis.net/">climetrics</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"climetrics"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://r-gis.net/">climetrics</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"climetrics"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>この<code>if</code>文と<code>require</code>関数を用いる書き方は長い間使用されてきましたが、やや複雑で覚えにくいものです。このようなパッケージの取り扱いを簡単にしてくれるのが<code>pacman</code> <span class="citation" data-cites="pacman_bib">(<a href="references.html#ref-pacman_bib" role="doc-biblioref">Rinker and Kurkiewicz 2018</a>)</span>パッケージです。近年では、この<code>pacman</code>パッケージの<code>p_load</code>関数を用いてパッケージをロードすることも増えてきています。<code>p_load</code>関数を用いるには、<code>pacman</code>パッケージをロードする必要があります。パッケージのロードのために別途<code>pacman</code>だけロードするのは面倒ですので、<code><a href="https://rdrr.io/pkg/pacman/man/p_load.html">pacman::p_load</a></code>という形で、パッケージをロードすることなく関数だけ用いるのが一般的です。この他に、<a href="https://pak.r-lib.org/index.html"><code>pak</code></a><span class="citation" data-cites="pak_bib">(<a href="references.html#ref-pak_bib" role="doc-biblioref">Csárdi and Hester 2024</a>)</span>と呼ばれるパッケージ管理のパッケージも最近ではよく用いられています。</p>
+<p>この<code>if</code>文と<code>require</code>関数を用いる書き方は長い間使用されてきましたが、やや複雑で覚えにくいものです。このようなパッケージの取り扱いを簡単にしてくれるのが<code>pacman</code> <span class="citation" data-cites="pacman_bib">(<a href="#ref-pacman_bib" role="doc-biblioref">Rinker and Kurkiewicz 2018</a>)</span>パッケージです。近年では、この<code>pacman</code>パッケージの<code>p_load</code>関数を用いてパッケージをロードすることも増えてきています。<code>p_load</code>関数を用いるには、<code>pacman</code>パッケージをロードする必要があります。パッケージのロードのために別途<code>pacman</code>だけロードするのは面倒ですので、<code><a href="https://rdrr.io/pkg/pacman/man/p_load.html">pacman::p_load</a></code>という形で、パッケージをロードすることなく関数だけ用いるのが一般的です。この他に、<a href="https://pak.r-lib.org/index.html"><code>pak</code></a><span class="citation" data-cites="pak_bib">(<a href="#ref-pak_bib" role="doc-biblioref">Csárdi and Hester 2024</a>)</span>と呼ばれるパッケージ管理のパッケージも最近ではよく用いられています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>pacman::p_load関数を用いたパッケージのロード</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># パッケージをロードする（インストールされてなければインストールしてからロードする）</span></span>
-<span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>, <span class="va">lubridate</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># パッケージをロードする（インストールされてなければインストールしてからロードする）</span></span>
+<span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>, <span class="va">lubridate</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="tidyverse" class="level2" data-number="10.5"><h2 data-number="10.5" class="anchored" data-anchor-id="tidyverse">
 <span class="header-section-number">10.5</span> tidyverse</h2>
-<p>近年のRでは、<a href="https://posit.co/"><strong>Posit</strong></a>（旧Rstudio、IDEであるRstudioの開発元）およびPositのチーフサイエンティストである<strong>Hadley Wickham</strong>が中心となって作成された複数のパッケージのセットである、<a href="https://www.tidyverse.org/"><code>tidyverse</code></a> <span class="citation" data-cites="tidyverse_bib">(<a href="references.html#ref-tidyverse_bib" role="doc-biblioref">Wickham et al. 2019</a>)</span>を用いるのがほぼ常識となっています。<code>tidyverse</code>のパッケージ群を用いなくてもRを使うことはできますが、このパッケージ群を用いることでデータの整理・グラフ作成・文字列の処理等を簡単に行うことができるようになります。<code>tidyverse</code>のパッケージ群は以下のように一度にインストール・ロードすることができます。</p>
+<p>近年のRでは、<a href="https://posit.co/"><strong>Posit</strong></a>（旧Rstudio、IDEであるRstudioの開発元）およびPositのチーフサイエンティストである<strong>Hadley Wickham</strong>が中心となって作成された複数のパッケージのセットである、<a href="https://www.tidyverse.org/"><code>tidyverse</code></a> <span class="citation" data-cites="tidyverse_bib">(<a href="#ref-tidyverse_bib" role="doc-biblioref">Wickham et al. 2019</a>)</span>を用いるのがほぼ常識となっています。<code>tidyverse</code>のパッケージ群を用いなくてもRを使うことはできますが、このパッケージ群を用いることでデータの整理・グラフ作成・文字列の処理等を簡単に行うことができるようになります。<code>tidyverse</code>のパッケージ群は以下のように一度にインストール・ロードすることができます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>tidyverseのインストールと読み込み</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span> <span class="co"># tideverseのインストール・ロード(install.packages・library関数でも可)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span> <span class="co"># tideverseのインストール・ロード(install.packages・library関数でも可)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>tidyverse</code>に含まれているパッケージを以下に示します。個別の、重要なパッケージに関しては別章で説明します。</p>
@@ -1120,7 +1128,7 @@ GitとGithub
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-pak_bib" class="csl-entry" role="listitem">
 Csárdi, Gábor, and Jim Hester. 2024. <em>Pak: Another Approach to Package Installation</em>. <a href="https://CRAN.R-project.org/package=pak">https://CRAN.R-project.org/package=pak</a>.
 </div>
@@ -1131,10 +1139,7 @@ Morgan, Martin, and Marcel Ramos. 2023. <em>BiocManager: Access the Bioconductor
 Rinker, Tyler W., and Dason Kurkiewicz. 2018. <em><span class="nocase">pacman</span>: <span>P</span>ackage Management for <span>R</span></em>. Buffalo, New York. <a href="http://github.com/trinker/pacman">http://github.com/trinker/pacman</a>.
 </div>
 <div id="ref-tidyverse_bib" class="csl-entry" role="listitem">
-Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
-</div>
-<div id="ref-devtools_bib" class="csl-entry" role="listitem">
-Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtools: Tools to Make Developing r Packages Easier</em>. <a href="https://CRAN.R-project.org/package=devtools">https://CRAN.R-project.org/package=devtools</a>.
+Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
 </div>
 </div>
 </section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -1201,13 +1206,14 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1610,7 +1616,7 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># パッケージとライブラリ</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># パッケージとライブラリ</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -1700,7 +1706,7 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
 <span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a><span class="fu">### githubからのインストール</span></span>
 <span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>最近では、最新のパッケージはCRANだけでなく、<span class="co">[</span><span class="ot">**GitHub**</span><span class="co">](https://github.co.jp/)</span>というプログラム開発プラットフォームからインストールすることもあります。ただし、**GitHub上のパッケージはCRANによるチェックを受けていない**ものですので、インストールする際には注意が必要です。GitHubからのパッケージのインストールには、`devtools` [@devtools_bib]パッケージの`install_github`関数を用います。引数には、パッケージの**リポジトリ**というものを文字列で取ります。</span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>最近では、最新のパッケージはCRANだけでなく、<span class="co">[</span><span class="ot">**GitHub**</span><span class="co">](https://github.co.jp/)</span>というプログラム開発プラットフォームからインストールすることもあります。ただし、**GitHub上のパッケージはCRANによるチェックを受けていない**ものですので、インストールする際には注意が必要です。GitHubからのパッケージのインストールには、`pak` [@pak_bib]パッケージの`pak`関数を用います。引数には、パッケージの**リポジトリ**というものを文字列で取ります。</span>
 <span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>例えば、<span class="co">[</span><span class="ot">Displayr</span><span class="co">](https://www.displayr.com/)</span>という会社が開発している<span class="in">`flipPlots`</span>というパッケージをGitHubからインストールする場合には、GitHubの対象のページのアドレス（<span class="ot">&lt;https://github.com/Displayr/flipPlots&gt;</span>）のうち、後ろの2つの項目（<span class="in">`Displayr/flipPlots`</span>）をリポジトリとして取り扱います。GitHubのページにはリポジトリ名が記載されています。</span>
 <span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a></span>
@@ -1709,7 +1715,7 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
 <span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="GitHubからのパッケージのインストール", eval=FALSE}</span></span>
 <span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a><span class="co"># flipPlotsというパッケージをGitHubからインストールする(インストールは自己責任で)</span></span>
-<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github("Displayr/flipPlots") </span></span>
+<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a><span class="co"># pak::pak("Displayr/flipPlots") </span></span>
 <span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
@@ -1788,7 +1794,7 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
 <span id="cb10-176"><a href="#cb10-176" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"パッケージ名"</span>, <span class="st">"パッケージの主な機能"</span>)</span>
 <span id="cb10-178"><a href="#cb10-178" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">caption=</span><span class="st">"表2：Rで用いられている便利なパッケージ"</span>)</span>
-<span id="cb10-179"><a href="#cb10-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb10-179"><a href="#cb10-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -1803,7 +1809,11 @@ Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022. <em>Devtoo
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

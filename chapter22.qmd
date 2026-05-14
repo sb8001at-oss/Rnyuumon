@@ -152,9 +152,8 @@ lme4_obj |> sloop::otype()
 
 ```{r, filename="R6の例"}
 pacman::p_load(cmdstanr)
-mod <- 
-    file.path(cmdstan_path(), "examples", "bernoulli", "bernoulli.stan") |>
-    cmdstan_model()
+file <- file.path(cmdstan_path(), "examples", "bernoulli", "bernoulli.stan")
+mod <- cmdstan_model(file)
 mod |> sloop::otype() # otypeではS3扱い
 mod |> class() # 中身はR6
 ```
@@ -237,3 +236,9 @@ summary(lme4_obj)
 # S4クラス：アクセサ（値を取り出す関数）
 coef(lme4_obj)
 ```
+
+:::{.callout-tip collapse="true"}
+## S4の`@`の利用
+
+S4では`@`で呼び出せる要素のことをSlotと呼びます。Slotを`@`で呼び出すことは推奨されておらず、適切なアクセサ（ゲッター）で値を取得することが推奨されています。とはいえ、`str`関数を用いてS4オブジェクトの構造を知ることは、S4オブジェクトに何が保存されていて、どのような構造をしているのか理解するために有用だと思います。
+:::

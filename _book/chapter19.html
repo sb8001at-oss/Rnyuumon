@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>19&nbsp; apply関数群 – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -764,6 +766,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -825,15 +833,15 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   
 
 
-</header><p>Rを代表する便利な関数やパッケージは何か？、と聞かれた時、2010年ごろまでは<strong><code>apply</code>関数群</strong>を挙げるのが一般的でした。<code>apply</code>関数群を用いれば、他の言語では繰り返し計算で数行プログラムを書かないといけないような状況でも、たった1つの関数で高速に計算ができます。Rでは繰り返し計算をなるべく使わず、<code>apply</code>関数群を使うのが標準的な方法でした。現在では、2010年以降に開発された<code>dplyr</code> <span class="citation" data-cites="dplyr_bib">(<a href="references.html#ref-dplyr_bib" role="doc-biblioref">Wickham et al. 2023</a>)</span>・<code>tidyr</code>パッケージ <span class="citation" data-cites="tidyr_bib">(<a href="references.html#ref-tidyr_bib" role="doc-biblioref">Wickham, Vaughan, and Girlich 2023</a>)</span>を用いて計算を行うのが一般的となり、<code>apply</code>関数群は使われなくなってきてはいますが、うまく用いれば便利な関数群です。</p>
+</header><p>Rを代表する便利な関数やパッケージは何か？、と聞かれた時、2010年ごろまでは<strong><code>apply</code>関数群</strong>を挙げるのが一般的でした。<code>apply</code>関数群を用いれば、他の言語では繰り返し計算で数行プログラムを書かないといけないような状況でも、たった1つの関数で高速に計算ができます。Rでは繰り返し計算をなるべく使わず、<code>apply</code>関数群を使うのが標準的な方法でした。現在では、2010年以降に開発された<code>dplyr</code> <span class="citation" data-cites="dplyr_bib">(<a href="#ref-dplyr_bib" role="doc-biblioref">Wickham, François, et al. 2023</a>)</span>・<code>tidyr</code>パッケージ <span class="citation" data-cites="tidyr_bib">(<a href="#ref-tidyr_bib" role="doc-biblioref">Wickham, Vaughan, et al. 2023</a>)</span>を用いて計算を行うのが一般的となり、<code>apply</code>関数群は使われなくなってきてはいますが、うまく用いれば便利な関数群です。</p>
 <p>この章では、まず以下のcallout内で繰り返し計算によるベクター・データフレームの計算について解説し（飛ばして読んでもらっても問題ありません）、次に繰り返しを用いず計算を行う<code>apply</code>関数群について説明していきます。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-繰り返し計算
+<span class="screen-reader-only">Tip</span>繰り返し計算
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -846,7 +854,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>for文でベクターの演算を行う</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="co"># vは1~10の整数ベクター</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="co"># vは1~10の整数ベクター</span></span>
 <span></span>
 <span><span class="va">v_new</span> <span class="op">&lt;-</span> <span class="cn">NULL</span> <span class="co"># 計算結果を代入するNULLが入った変数</span></span>
 <span></span>
@@ -856,7 +864,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">v_new</span> <span class="co"># 演算結果</span></span>
-<span><span class="co">##  [1]  8 11 14 17 20 23 26 29 32 35</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [1]  8 11 14 17 20 23 26 29 32 35</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Rで<code>for</code>文を用いてベクターの要素に演算を行う場合には、</p>
@@ -879,8 +887,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>上のfor文と同じ計算をベクターで行う</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v</span> <span class="op">*</span> <span class="fl">3</span> <span class="op">+</span> <span class="fl">5</span></span>
-<span><span class="co">##  [1]  8 11 14 17 20 23 26 29 32 35</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v</span> <span class="op">*</span> <span class="fl">3</span> <span class="op">+</span> <span class="fl">5</span></span>
+<span><span class="co">##  [1]  8 11 14 17 20 23 26 29 32 35</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上の<code>for</code>文にはもう一点問題があります。<code>v_new</code>というベクターに対して、数値を付け足すという演算を繰り返しています。このような場合、<code>v_new</code>の長さが伸びていくため、Rの内部では、<strong>要素が付け加えられる度に<code>v_new</code>というベクターを新しく作り直し、古いものは削除する</strong>という演算が行われることになります。この<strong>「作り直して」「削除する」</strong>という演算に時間がかかるため、上記のような書き方では演算速度に問題が生じます。</p>
@@ -891,7 +899,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>numeric関数を用いてインデックスに代入する</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="co"># 0が5つ入ったベクター</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="co"># 0が5つ入ったベクター</span></span>
 <span><span class="co">## [1] 0 0 0 0 0</span></span>
 <span></span>
 <span><span class="va">v_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span><span class="op">)</span> <span class="co"># v_newは0がvと同じ長さだけ並んだベクター</span></span>
@@ -901,19 +909,19 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">v_new</span> <span class="co"># 演算結果</span></span>
-<span><span class="co">##  [1]  8 11 14 17 20 23 26 29 32 35</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [1]  8 11 14 17 20 23 26 29 32 35</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-繰り返し計算とデータフレーム
+<span class="screen-reader-only">Tip</span>繰り返し計算とデータフレーム
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -928,7 +936,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>for文でデータフレームに行を追加する</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="co">##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
 <span><span class="co">## 1          5.1         3.5          1.4         0.2  setosa</span></span>
 <span><span class="co">## 2          4.9         3.0          1.4         0.2  setosa</span></span>
@@ -966,7 +974,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## temp_vec "setosa" "15.04"</span></span>
 <span><span class="co">## temp_vec "setosa" "14.26"</span></span>
 <span><span class="co">## temp_vec "setosa" "18"   </span></span>
-<span><span class="co">## temp_vec "setosa" "21.06"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## temp_vec "setosa" "21.06"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ベクターの繰り返し計算で述べたように、変数に要素を追加して、サイズが変化すると、変数を「作り直して」「削除する」プロセスが繰り返され、計算のコストが大きくなります。計算のコストが大きくなると演算に時間がかかるため、上の例のようにNULLに要素を追加するのは避けた方がよいとされています。ですので、上のような計算では、あらかじめ結果と同じサイズの行列を準備し、その行列の要素に計算結果を追加していくのが良いとされています。</p>
@@ -975,7 +983,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>インデックスへの代入で計算結果を保存する</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="co">##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
 <span><span class="co">## 1          5.1         3.5          1.4         0.2  setosa</span></span>
 <span><span class="co">## 2          4.9         3.0          1.4         0.2  setosa</span></span>
@@ -1007,7 +1015,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [3,] "setosa" "15.04"</span></span>
 <span><span class="co">## [4,] "setosa" "14.26"</span></span>
 <span><span class="co">## [5,] "setosa" "18"   </span></span>
-<span><span class="co">## [6,] "setosa" "21.06"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [6,] "setosa" "21.06"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>上記のように、Rでは繰り返し計算で変数の「作り直し」が起きたり、データ型がころころ変わったりするため、繰り返し計算でベクターやデータフレームの要素を取り扱うのは推奨されません。ただし、繰り返し計算は演算の過程を捉えやすく、後から読んで理解しやすい構造をしています。<code>NULL</code>オブジェクトにデータを追加していくと、結果として得られるオブジェクトのサイズがわかっていなくても演算できるという利点があります。</p>
@@ -1092,7 +1100,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>apply関数の演算</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">1</span>, <span class="va">sum</span><span class="op">)</span> <span class="co"># 行方向に和を求める</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">1</span>, <span class="va">sum</span><span class="op">)</span> <span class="co"># 行方向に和を求める</span></span>
 <span><span class="co">##   [1] 10.2  9.5  9.4  9.4 10.2 11.4  9.7 10.1  8.9  9.6 10.8 10.0  9.3  8.5 11.2</span></span>
 <span><span class="co">##  [16] 12.0 11.0 10.3 11.5 10.7 10.7 10.7  9.4 10.6 10.3  9.8 10.4 10.4 10.2  9.7</span></span>
 <span><span class="co">##  [31]  9.7 10.7 10.9 11.3  9.7  9.6 10.5 10.0  8.9 10.2 10.1  8.4  9.1 10.7 11.2</span></span>
@@ -1117,7 +1125,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">2</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">}</span><span class="op">)</span> <span class="co"># 無名関数も利用できる</span></span>
 <span><span class="co">## Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span></span>
-<span><span class="co">##    17.424140    10.749705     1.990091    -3.598813</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##    17.424140    10.749705     1.990091    -3.598813</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="次元以上のarrayにapplyを適用する" class="level4" data-number="19.1.1.1"><h4 data-number="19.1.1.1" class="anchored" data-anchor-id="次元以上のarrayにapplyを適用する">
@@ -1128,7 +1136,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>apply関数でarrayを演算する</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">UCBAdmissions</span> <span class="co"># 3次元アレイ</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">UCBAdmissions</span> <span class="co"># 3次元アレイ</span></span>
 <span><span class="co">## , , Dept = A</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##           Gender</span></span>
@@ -1210,7 +1218,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">##         Dept</span></span>
 <span><span class="co">## Gender       A     B     C     D     E     F</span></span>
 <span><span class="co">##   Male   412.5 280.0 162.5 208.5  95.5 186.5</span></span>
-<span><span class="co">##   Female  54.0  12.5 296.5 187.5 196.5 170.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##   Female  54.0  12.5 296.5 187.5 196.5 170.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="mapply関数" class="level3" data-number="19.1.2"><h3 data-number="19.1.2" class="anchored" data-anchor-id="mapply関数">
@@ -1225,7 +1233,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>mapply関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 足し算をする関数</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 足し算をする関数</span></span>
 <span><span class="va">sum2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">{</span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># 1:4 + 2:5と同じ計算</span></span>
@@ -1248,7 +1256,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span></span>
 <span><span class="co"># 無名関数も使える</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mapply.html">mapply</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">{</span><span class="va">x</span> <span class="op">/</span> <span class="va">y</span><span class="op">}</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, y <span class="op">=</span> <span class="fl">5</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">## [1] 0.2 0.5 1.0 2.0 5.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 0.2 0.5 1.0 2.0 5.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="lapply関数sapply関数" class="level3" data-number="19.1.3"><h3 data-number="19.1.3" class="anchored" data-anchor-id="lapply関数sapply関数">
@@ -1264,7 +1272,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>lapply関数とsapply関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">lst</span>, <span class="va">sum</span><span class="op">)</span> <span class="co"># リストの各要素に関数を適用する（返り値はリスト）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">lst</span>, <span class="va">sum</span><span class="op">)</span> <span class="co"># リストの各要素に関数を適用する（返り値はリスト）</span></span>
 <span><span class="co">## [[1]]</span></span>
 <span><span class="co">## [1] 4</span></span>
 <span><span class="co">## </span></span>
@@ -1313,7 +1321,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">sum</span><span class="op">)</span></span>
 <span><span class="co">## Sepal.Length  Sepal.Width Petal.Length  Petal.Width </span></span>
-<span><span class="co">##        876.5        458.6        563.7        179.9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##        876.5        458.6        563.7        179.9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="withwithin関数" class="level3" data-number="19.1.4"><h3 data-number="19.1.4" class="anchored" data-anchor-id="withwithin関数">
@@ -1324,7 +1332,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>列の演算：with関数とwithin関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span> <span class="co"># 始めの6行を選択</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span> <span class="co"># 始めの6行を選択</span></span>
 <span></span>
 <span><span class="co"># Sepal.Lengthの列とSepal.Widthの列の値を掛ける</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">iris6</span>, <span class="va">Sepal.Length</span> <span class="op">*</span> <span class="va">Sepal.Width</span><span class="op">)</span> </span>
@@ -1338,7 +1346,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## 3          4.7         3.2          1.3         0.2  setosa          15.04</span></span>
 <span><span class="co">## 4          4.6         3.1          1.5         0.2  setosa          14.26</span></span>
 <span><span class="co">## 5          5.0         3.6          1.4         0.2  setosa          18.00</span></span>
-<span><span class="co">## 6          5.4         3.9          1.7         0.4  setosa          21.06</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 6          5.4         3.9          1.7         0.4  setosa          21.06</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="vapply関数" class="level3" data-number="19.1.5"><h3 data-number="19.1.5" class="anchored" data-anchor-id="vapply関数">
@@ -1353,7 +1361,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>vapply関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/fivenum.html">fivenum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="co"># データを5つに集約する関数（最小値、第一四分位、中央値、第三四分位、最大値）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/fivenum.html">fivenum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="co"># データを5つに集約する関数（最小値、第一四分位、中央値、第三四分位、最大値）</span></span>
 <span><span class="co">## [1]  1.0  3.0  5.5  8.0 10.0</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">fivenum</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Min. <span class="op">=</span> <span class="fl">0</span>, <span class="st">"1st Qu"</span> <span class="op">=</span> <span class="fl">0</span>, Median <span class="op">=</span> <span class="fl">0</span>, <span class="st">"3rd Qu"</span> <span class="op">=</span> <span class="fl">0</span>, Max. <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="co"># 集約値をそれぞれ表示</span></span>
@@ -1362,7 +1370,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## 1st Qu          5.1         2.8         1.60         0.3</span></span>
 <span><span class="co">## Median          5.8         3.0         4.35         1.3</span></span>
 <span><span class="co">## 3rd Qu          6.4         3.3         5.10         1.8</span></span>
-<span><span class="co">## Max.            7.9         4.4         6.90         2.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Max.            7.9         4.4         6.90         2.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="replicate関数" class="level3" data-number="19.1.6"><h3 data-number="19.1.6" class="anchored" data-anchor-id="replicate関数">
@@ -1377,14 +1385,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>replicate関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">10</span>, replace<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="co"># サイコロを10回ふる</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">10</span>, replace<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="co"># サイコロを10回ふる</span></span>
 <span><span class="co">##  [1] 6 1 4 1 2 5 3 6 2 3</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">10</span>, replace<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="co"># サイコロを10回ふり、合計値を求める</span></span>
 <span><span class="co">## [1] 36</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">10</span>, replace<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># 上の試行を20回繰り返す</span></span>
-<span><span class="co">##  [1] 34 36 31 44 36 41 34 30 35 36 41 33 28 26 30 34 37 34 32 49</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  [1] 34 36 31 44 36 41 34 30 35 36 41 33 28 26 30 34 37 34 32 49</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="tapply関数" class="level3" data-number="19.1.7"><h3 data-number="19.1.7" class="anchored" data-anchor-id="tapply関数">
@@ -1399,11 +1407,11 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>tapply関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
 <span><span class="va">cutv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">cutv</span>, <span class="va">sum</span><span class="op">)</span> <span class="co"># ベクターを因子で切り分け、関数を適用する</span></span>
 <span><span class="co">##  1  2  3  4 </span></span>
-<span><span class="co">## 10 18 17 10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 10 18 17 10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="sweep関数" class="level3" data-number="19.1.8"><h3 data-number="19.1.8" class="anchored" data-anchor-id="sweep関数">
@@ -1414,7 +1422,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>sweep関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, nrow<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, nrow<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">##      [,1] [,2] [,3] [,4] [,5]</span></span>
 <span><span class="co">## [1,]    1    4    7   10   13</span></span>
 <span><span class="co">## [2,]    2    5    8   11   14</span></span>
@@ -1430,7 +1438,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">##      [,1] [,2] [,3] [,4] [,5]</span></span>
 <span><span class="co">## [1,]    0    2    4    6    8</span></span>
 <span><span class="co">## [2,]    1    3    5    7    9</span></span>
-<span><span class="co">## [3,]    2    4    6    8   10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [3,]    2    4    6    8   10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="aggregate関数" class="level3" data-number="19.1.9"><h3 data-number="19.1.9" class="anchored" data-anchor-id="aggregate関数">
@@ -1447,7 +1455,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>aggregate関数とby関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span> <span class="co"># byはリスト、Speciesごとの平均値</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span> <span class="co"># byはリスト、Speciesごとの平均値</span></span>
 <span><span class="co">##      Group.1 Sepal.Length Sepal.Width Petal.Length Petal.Width</span></span>
 <span><span class="co">## 1     setosa        5.006       3.428        1.462       0.246</span></span>
 <span><span class="co">## 2 versicolor        5.936       2.770        4.260       1.326</span></span>
@@ -1531,14 +1539,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">##  Median :6.500   Median :3.000   Median :5.550   Median :2.000  </span></span>
 <span><span class="co">##  Mean   :6.588   Mean   :2.974   Mean   :5.552   Mean   :2.026  </span></span>
 <span><span class="co">##  3rd Qu.:6.900   3rd Qu.:3.175   3rd Qu.:5.875   3rd Qu.:2.300  </span></span>
-<span><span class="co">##  Max.   :7.900   Max.   :3.800   Max.   :6.900   Max.   :2.500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##  Max.   :7.900   Max.   :3.800   Max.   :6.900   Max.   :2.500</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-dplyr_bib" class="csl-entry" role="listitem">
 Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. <em>Dplyr: A Grammar of Data Manipulation</em>. <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>.
 </div>
@@ -1610,13 +1618,14 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2019,7 +2028,7 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb16" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># apply関数群</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># apply関数群</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -2357,7 +2366,7 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
 <span id="cb16-336"><a href="#cb16-336" aria-hidden="true" tabindex="-1"></a><span class="fu">by</span>(iris[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="fu">list</span>(iris<span class="sc">$</span>Species), mean) <span class="co"># meanは2列のデータを処理できない</span></span>
 <span id="cb16-337"><a href="#cb16-337" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-338"><a href="#cb16-338" aria-hidden="true" tabindex="-1"></a><span class="fu">by</span>(iris[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="fu">list</span>(iris<span class="sc">$</span>Species), summary) <span class="co"># summaryはデータフレームを引数にできるので、計算できる</span></span>
-<span id="cb16-339"><a href="#cb16-339" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb16-339"><a href="#cb16-339" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -2372,7 +2381,11 @@ Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2023. <em>Tidyr: Tidy Me
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

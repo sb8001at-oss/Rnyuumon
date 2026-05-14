@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>23&nbsp; コーディング規約 – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -764,6 +766,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -829,7 +837,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p>このような、コードの問題、変数や関数の名前の問題をできるだけ抑えるために、企業などでプログラミングを行う場合には、その組織の<strong>コーディング規約（coding style）</strong>、つまりコードの書き方のルールを設けるのが一般的です。</p>
 <p>Rは大学の研究室などで、教官や学生などが小規模なデータの分析に用いる場合も多いため、コーディング規約は必ずしも重要ではありませんが、コードの可読性を高め、解析の再現性（reproducibility）を担保するためにコーディング規約に基づいたプログラミングを心がけた方が良いでしょう。</p>
 <p>Rのコーディング規約では、tidyverseに従ったもの（<a href="https://style.tidyverse.org/index.html">tidyverse style guide</a>）が主流だと思います。</p>
-<p>Rには、<a href="https://styler.r-lib.org/"><code>styler</code></a> <span class="citation" data-cites="styler_bib">(<a href="references.html#ref-styler_bib" role="doc-biblioref">Müller and Walthert 2023</a>)</span>や<a href="https://yihui.org/formatr/"><code>formatR</code></a> <span class="citation" data-cites="formatR_bib">(<a href="references.html#ref-formatR_bib" role="doc-biblioref">Xie 2023</a>)</span>という、coding styleを修正してくれるパッケージや、Rstudioのコーディング規約修正（reformat code）のショートカット（Ctrl+Shift+A）などが備わっており、ある程度自動的にフォーマットの修正を行うことができますので、このような機能を用いるのもよいでしょう。</p>
+<p>Rには、<a href="https://styler.r-lib.org/"><code>styler</code></a> <span class="citation" data-cites="styler_bib">(<a href="#ref-styler_bib" role="doc-biblioref">Müller and Walthert 2023</a>)</span>や<a href="https://yihui.org/formatr/"><code>formatR</code></a> <span class="citation" data-cites="formatR_bib">(<a href="#ref-formatR_bib" role="doc-biblioref">Xie 2023</a>)</span>という、coding styleを修正してくれるパッケージや、Rstudioのコーディング規約修正（reformat code）のショートカット（Ctrl+Shift+A）などが備わっており、ある程度自動的にフォーマットの修正を行うことができますので、このような機能を用いるのもよいでしょう。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/chapter19_reformatting.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="図1：Rstudioでのフォーマットの修正（Reformat Code）"><img src="./image/chapter19_reformatting.png" class="img-fluid figure-img" alt="図1：Rstudioでのフォーマットの修正（Reformat Code）"></a></p>
 <figcaption>図1：Rstudioでのフォーマットの修正（Reformat Code）</figcaption></figure>
@@ -843,7 +851,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ファイル名の付け方</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 良い例</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## 拡張子のRは大文字、アンダースコアで単語を繋ぐ</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fit_models.R  </span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -863,7 +871,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 同じ種類のファイルを違う形で保存しない</span></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>fig lm iris1.PNG </span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>fig_iris.png</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>fig_iris.png</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>また、ファイル名にはその順番が分かるような指標（<code>01-</code>、<code>02-</code>などの番号、日付など）を加えて、ファイルの順序が分かるようにしましょう。</p>
@@ -872,7 +880,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ファイルの順番が分かるようにする</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 良い例</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">01</span><span class="sc">-</span>lm<span class="sc">-</span>analysis.R</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dv">02</span><span class="sc">-</span>glm<span class="sc">-</span>analysis.R</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dv">240401</span>_file1.R</span>
@@ -883,7 +891,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>lm<span class="sc">-</span>analysis01.R</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>glm<span class="sc">-</span>analysis02.R</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>file_text_240401.txt</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>file_image_240501.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>file_image_240501.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>ファイル名に「最終」などを付けないようにしましょう。大体の場合、「最終2」などができます。</p>
@@ -892,10 +900,10 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>最終などのファイル名の使用</strong></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 悪い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 悪い例</span></span>
 <span><span class="va">lm_analysis_final.R</span></span>
 <span><span class="va">lm_analysis_final2.R</span></span>
-<span><span class="va">lm_analysis_final_revisited.R</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">lm_analysis_final_revisited.R</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="シンタックス" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="シンタックス">
@@ -909,14 +917,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>変数名</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
 <span><span class="va">day_1</span></span>
 <span><span class="va">mean_leaf_length</span></span>
 <span></span>
 <span><span class="co"># 悪い例</span></span>
 <span><span class="va">the_first_day_of_1994_May</span></span>
 <span><span class="va">mll</span></span>
-<span><span class="va">pi</span> <span class="op">&lt;-</span> <span class="st">"円周率"</span> <span class="co"># 既存の変数に代入</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">pi</span> <span class="op">&lt;-</span> <span class="st">"円周率"</span> <span class="co"># 既存の変数に代入</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="スペースの使用" class="level3" data-number="23.2.2"><h3 data-number="23.2.2" class="anchored" data-anchor-id="スペースの使用">
@@ -929,7 +937,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>スペースの使用</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">4</span> <span class="op">+</span> <span class="fl">1</span></span>
@@ -943,7 +951,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span></span>
 <span><span class="co">## 個人的にはこちらが良いと思っています</span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="va">z</span> <span class="op">&lt;</span> <span class="fl">10</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> </span>
-<span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>改行の代わりにセミコロン（<code>;</code>）を使うのは避けましょう。また、代入は<code>&lt;-</code>で行い、<code>=</code>は使わないようにしましょう。文字列にシングルクォーテーション（<code>'</code>）を使うのもやめましょう。</p>
@@ -952,14 +960,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>セミコロン、代入、文字列の準備</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
 <span><span class="st">"A dog is walking."</span></span>
 <span></span>
 <span><span class="co"># 悪い例</span></span>
 <span><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span> ; <span class="va">y</span> <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="st">'A dog is walking.'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="st">'A dog is walking.'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="関数" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="関数">
@@ -972,13 +980,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>関数名</strong></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
 <span><span class="fu">bind_row</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">mutate</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 悪い例</span></span>
 <span><span class="fu">binder_of_row</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">mutation</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">mutation</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="無名関数" class="level3" data-number="23.3.2"><h3 data-number="23.3.2" class="anchored" data-anchor-id="無名関数">
@@ -990,7 +998,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>無名関数とバックスラッシュ</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fl">1</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 悪い例</span></span>
@@ -1002,7 +1010,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co">## 通常の関数には使わない（functionを使う）</span></span>
-<span><span class="va">mean_bs</span> <span class="op">&lt;-</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">mean_bs</span> <span class="op">&lt;-</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="return関数" class="level3" data-number="23.3.3"><h3 data-number="23.3.3" class="anchored" data-anchor-id="return関数">
@@ -1013,7 +1021,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>functionの返り値</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
 <span><span class="va">sum_2_value</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span></span>
 <span>  <span class="kw">if</span><span class="op">(</span><span class="va">z</span> <span class="op">&lt;</span> <span class="fl">2</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">}</span></span>
@@ -1025,7 +1033,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span></span>
 <span>  <span class="kw">if</span><span class="op">(</span><span class="va">z</span> <span class="op">&lt;</span> <span class="fl">2</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">}</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section><section id="パイプ演算子" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="パイプ演算子">
@@ -1041,13 +1049,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>パイプ演算子の利用と改行・インデント</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
 <span><span class="va">iris</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">summarise</span><span class="op">(</span>m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 悪い例</span></span>
-<span><span class="va">iris</span><span class="op">|&gt;</span><span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span><span class="op">|&gt;</span><span class="fu">summarise</span><span class="op">(</span>m<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">iris</span><span class="op">|&gt;</span><span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span><span class="op">|&gt;</span><span class="fu">summarise</span><span class="op">(</span>m<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>パイプ演算子の演算内で別のパイプ演算子の演算を行うとわかりにくくなるので避けましょう。また、Rのデフォルトのパイプ演算子（<code>|&gt;</code>）が推奨されており、<code>magrittr</code>のパイプ演算子（<code>%&gt;%</code>）は避けるようにしましょう。</p>
@@ -1056,7 +1064,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>パイプ演算子の入れ子（ネスト）は避ける</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 良い例</span></span>
 <span><span class="va">x_join</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">select</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">w</span><span class="op">)</span></span>
 <span><span class="va">y_join</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">|&gt;</span> <span class="fu">select</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">v</span><span class="op">)</span></span>
 <span><span class="fu">left_join</span><span class="op">(</span><span class="va">x_join</span>, <span class="va">y_join</span>, <span class="fu">join_by</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span></span>
@@ -1064,7 +1072,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co"># あまり良くない例</span></span>
 <span><span class="va">x</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">w</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">y</span> <span class="op">|&gt;</span> <span class="fu">select</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">v</span><span class="op">)</span>, <span class="fu">join_by</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">y</span> <span class="op">|&gt;</span> <span class="fu">select</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">v</span><span class="op">)</span>, <span class="fu">join_by</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="ggplot2" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="ggplot2">
@@ -1075,7 +1083,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>ggplot2：+演算子ごとに改行</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, color <span class="op">=</span> <span class="va">Species</span>, fill <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1084,20 +1092,20 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span>    y <span class="op">=</span> <span class="st">"Sepal Width"</span>,</span>
 <span>    title <span class="op">=</span> <span class="st">"linear regression of Sepal Length &amp; Width"</span>,</span>
 <span>    caption <span class="op">=</span> <span class="st">"ribbon represents 95% CI"</span></span>
-<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="他のコーディング規約参考文献について" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="他のコーディング規約参考文献について">
 <span class="header-section-number">23.6</span> 他のコーディング規約・参考文献について</h2>
 <p>Rのコーディング規約については、他の文献もたくさんあります。例えば、英語であれば<a href="https://google.github.io/styleguide/Rguide.html">Google’s R Style Guide</a>、日本語であれば「<a href="https://www.jaysong.net/RBook/">私たちのR ベストプラクティスの探求」（宋財泫先生、矢内勇生先生）</a>の11章や<a href="https://zenn.dev/5991/articles/b6c4ca9c6f2941">このZennのページ</a>、<a href="https://k-metrics.github.io/cabinet/basics_coding_style.html">こちらのCoding styleのページ</a>などがコーディング規約の参考になります。</p>
-<p>コーディングスタイル全体については、<a href="https://www.amazon.co.jp/%E3%83%AA%E3%83%BC%E3%83%80%E3%83%96%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%89-%E2%80%95%E3%82%88%E3%82%8A%E8%89%AF%E3%81%84%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E6%9B%B8%E3%81%8F%E3%81%9F%E3%82%81%E3%81%AE%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AB%E3%81%A7%E5%AE%9F%E8%B7%B5%E7%9A%84%E3%81%AA%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF-Theory-practice-Boswell/dp/4873115655">リーダブルコード</a> <span class="citation" data-cites="Dustin_Boswell2012-06-23">(<a href="references.html#ref-Dustin_Boswell2012-06-23" role="doc-biblioref">Boswell and Foucher 2012</a>)</span>を読んでみるのが良いでしょう。関数や変数の名前に悩んだ場合には、良い名前を提案してくれるサイト（<a href="https://codic.jp/">codic</a>）も役に立ちます。</p>
+<p>コーディングスタイル全体については、<a href="https://www.amazon.co.jp/%E3%83%AA%E3%83%BC%E3%83%80%E3%83%96%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%89-%E2%80%95%E3%82%88%E3%82%8A%E8%89%AF%E3%81%84%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E6%9B%B8%E3%81%8F%E3%81%9F%E3%82%81%E3%81%AE%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AB%E3%81%A7%E5%AE%9F%E8%B7%B5%E7%9A%84%E3%81%AA%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF-Theory-practice-Boswell/dp/4873115655">リーダブルコード</a> <span class="citation" data-cites="Dustin_Boswell2012-06-23">(<a href="#ref-Dustin_Boswell2012-06-23" role="doc-biblioref">Boswell and Foucher 2012</a>)</span>を読んでみるのが良いでしょう。関数や変数の名前に悩んだ場合には、良い名前を提案してくれるサイト（<a href="https://codic.jp/">codic</a>）も役に立ちます。</p>
 
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-Dustin_Boswell2012-06-23" class="csl-entry" role="listitem">
-Boswell, Dustin, and Trevor Foucher. 2012. <em>リーダブルコード ーより良いコードを書くためのシンプルで実践的なテクニック (Theory in Practice)</em>. Translated by 角征典. 単行本（ソフトカバー）. オライリージャパン. <a href="https://www.amazon.co.jp/dp/4873115655/">https://www.amazon.co.jp/dp/4873115655/</a>.
+Boswell, Dustin, and Trevor Foucher. 2012. <em>リーダブルコード ーより良いコードを書くためのシンプルで実践的なテクニック (Theory in Practice)</em>. 単行本（ソフトカバー）. Translated by 角征典. オライリージャパン. <a href="https://www.amazon.co.jp/dp/4873115655/">https://www.amazon.co.jp/dp/4873115655/</a>.
 </div>
 <div id="ref-styler_bib" class="csl-entry" role="listitem">
 Müller, Kirill, and Lorenz Walthert. 2023. <em>Styler: Non-Invasive Pretty Printing of r Code</em>. <a href="https://CRAN.R-project.org/package=styler">https://CRAN.R-project.org/package=styler</a>.
@@ -1170,13 +1178,14 @@ Xie, Yihui. 2023. <em>formatR: Format r Code Automatically</em>. <a href="https:
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1579,7 +1588,7 @@ Xie, Yihui. 2023. <em>formatR: Format r Code Automatically</em>. <a href="https:
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># コーディング規約</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># コーディング規約</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, include=FALSE, echo=FALSE}</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -1827,7 +1836,7 @@ Xie, Yihui. 2023. <em>formatR: Format r Code Automatically</em>. <a href="https:
 <span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a>Rのコーディング規約については、他の文献もたくさんあります。例えば、英語であれば<span class="co">[</span><span class="ot">Google’s R Style Guide</span><span class="co">](https://google.github.io/styleguide/Rguide.html)</span>、日本語であれば「[私たちのR</span>
 <span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a>ベストプラクティスの探求」（宋財泫先生、矢内勇生先生）](https://www.jaysong.net/RBook/)の11章や<span class="co">[</span><span class="ot">このZennのページ</span><span class="co">](https://zenn.dev/5991/articles/b6c4ca9c6f2941)</span>、<span class="co">[</span><span class="ot">こちらのCoding styleのページ</span><span class="co">](https://k-metrics.github.io/cabinet/basics_coding_style.html)</span>などがコーディング規約の参考になります。</span>
 <span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a>コーディングスタイル全体については、<span class="co">[</span><span class="ot">リーダブルコード</span><span class="co">](https://www.amazon.co.jp/%E3%83%AA%E3%83%BC%E3%83%80%E3%83%96%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%89-%E2%80%95%E3%82%88%E3%82%8A%E8%89%AF%E3%81%84%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E6%9B%B8%E3%81%8F%E3%81%9F%E3%82%81%E3%81%AE%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AB%E3%81%A7%E5%AE%9F%E8%B7%B5%E7%9A%84%E3%81%AA%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF-Theory-practice-Boswell/dp/4873115655)</span> <span class="co">[</span><span class="ot">@Dustin_Boswell2012-06-23</span><span class="co">]</span>を読んでみるのが良いでしょう。関数や変数の名前に悩んだ場合には、良い名前を提案してくれるサイト（<span class="co">[</span><span class="ot">codic</span><span class="co">](https://codic.jp/)</span>）も役に立ちます。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a>コーディングスタイル全体については、<span class="co">[</span><span class="ot">リーダブルコード</span><span class="co">](https://www.amazon.co.jp/%E3%83%AA%E3%83%BC%E3%83%80%E3%83%96%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%89-%E2%80%95%E3%82%88%E3%82%8A%E8%89%AF%E3%81%84%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E6%9B%B8%E3%81%8F%E3%81%9F%E3%82%81%E3%81%AE%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AB%E3%81%A7%E5%AE%9F%E8%B7%B5%E7%9A%84%E3%81%AA%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF-Theory-practice-Boswell/dp/4873115655)</span> <span class="co">[</span><span class="ot">@Dustin_Boswell2012-06-23</span><span class="co">]</span>を読んでみるのが良いでしょう。関数や変数の名前に悩んだ場合には、良い名前を提案してくれるサイト（<span class="co">[</span><span class="ot">codic</span><span class="co">](https://codic.jp/)</span>）も役に立ちます。</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -1842,7 +1851,11 @@ Xie, Yihui. 2023. <em>formatR: Format r Code Automatically</em>. <a href="https:
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

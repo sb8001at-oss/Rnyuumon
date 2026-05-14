@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>50&nbsp; 因果推論：差分の差分法と回帰不連続デザイン – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -132,7 +134,7 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
-</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -143,7 +145,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -789,6 +791,12 @@ window.Quarto = {
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -885,7 +893,7 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>差分の差分法（DID）</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  t <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  treat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="co"># 1が処置群、0が対照群</span></span>
 <span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">16</span>, <span class="fl">9</span>, <span class="fl">12</span><span class="op">)</span></span>
@@ -895,7 +903,7 @@ window.Quarto = {
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">treat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">expand_limits</span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">expand_limits</span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -909,8 +917,8 @@ window.Quarto = {
 <div class="code-with-filename-file">
 <pre><strong>交互作用としてでDIDを評価する</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 交互作用（t:treat）がATTに当たる</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">t</span> <span class="op">*</span> <span class="va">treat</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 交互作用（t:treat）がATTに当たる</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">t</span> <span class="op">*</span> <span class="va">treat</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -930,7 +938,7 @@ Coefficients:
 <details class="code-fold"><summary>Code</summary><div class="code-with-filename-file">
 <pre><strong>DIDのテストデータを作成する</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">treat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">200</span>, <span class="fl">200</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">treat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">200</span>, <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="va">patient</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">patient_error</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
@@ -946,7 +954,7 @@ Coefficients:
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># データの形をkableで表示</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">data_did</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"仮想のDID用のデータ"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">data_did</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"仮想のDID用のデータ"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell-output-display">
@@ -999,7 +1007,7 @@ Coefficients:
 </table>
 </div>
 </div>
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データをグラフで表示</span></span>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データをグラフで表示</span></span>
 <span><span class="va">data_did</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">period</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">treat</span>, group <span class="op">=</span> <span class="va">patient</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span>, alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1014,7 +1022,7 @@ Coefficients:
 <span>  <span class="fu">geom_pointrange</span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"平均値±標準偏差"</span>, x <span class="op">=</span> <span class="st">"時期"</span>, y <span class="op">=</span> <span class="st">"値"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">expand_limits</span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">expand_limits</span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
@@ -1025,15 +1033,15 @@ Coefficients:
 </div>
 </div>
 </div>
-<p>このデータでは、各患者（<code>patient</code>）は時点1と時点2の2度測定していて、関連性があります。したがって、<code>patient</code>をランダム効果（ランダム切片）とした線形混合モデルで処置の効果を評価します。30章に示した通り、線形混合モデルの演算は<code>lmerTest</code>パッケージ<span class="citation" data-cites="lmerTest_bib">(<a href="references.html#ref-lmerTest_bib" role="doc-biblioref">Kuznetsova, Brockhoff, and Christensen 2017</a>)</span>の<code>lmer</code>関数を用いて計算できます。上記のデータが少ない場合の演算と同様に、処置の効果は交互作用（以下の例では<code>treat1:period</code>）として評価できます。また、時点1での差は下記の演算では<code>treat1</code>に吸収されている形になります。</p>
+<p>このデータでは、各患者（<code>patient</code>）は時点1と時点2の2度測定していて、関連性があります。したがって、<code>patient</code>をランダム効果（ランダム切片）とした線形混合モデルで処置の効果を評価します。30章に示した通り、線形混合モデルの演算は<code>lmerTest</code>パッケージ<span class="citation" data-cites="lmerTest_bib">(<a href="#ref-lmerTest_bib" role="doc-biblioref">Kuznetsova et al. 2017</a>)</span>の<code>lmer</code>関数を用いて計算できます。上記のデータが少ない場合の演算と同様に、処置の効果は交互作用（以下の例では<code>treat1:period</code>）として評価できます。また、時点1での差は下記の演算では<code>treat1</code>に吸収されている形になります。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>線形混合モデルでDIDを評価する</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">lmerTest</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">lmerTest</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">lmer</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">treat</span> <span class="op">*</span> <span class="va">period</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">patient</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">data_did</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">lmer</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">treat</span> <span class="op">*</span> <span class="va">period</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">patient</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">data_did</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerModLmerTest']
@@ -1053,14 +1061,14 @@ Fixed Effects:
 </section><section id="doubly-robust-did2重ロバストなdid" class="level3" data-number="50.1.3"><h3 data-number="50.1.3" class="anchored" data-anchor-id="doubly-robust-did2重ロバストなdid">
 <span class="header-section-number">50.1.3</span> Doubly Robust DID（2重ロバストなDID）</h3>
 <p>上記の単純なDIDでは、共変量の偏りについては考慮しておらず、DIDの前提である「対称群を平行移動すれば処置群で処置しなかった場合（<span class="math inline">\(E(r_0|Z=1)\)</span>）に当たる」という仮定が成立していない可能性があります。また、初期値が違えば、割付が完全に無作為化されていない、つまり割付による偏りにより結果にバイアスが生じているはずです。このような場合には、<a href="./chapter49.html">49章</a>で説明した共変量の調整や傾向スコアを用いたIPW、この2つを用いてよりロバスト（頑健）な結果を得ることのできる二重ロバストの手法を利用することを検討したほうが良いでしょう。</p>
-<p>この、IPWを利用したDID、2重ロバストなDID（Doubly Robust DID）に対応したパッケージが<code>DRDID</code>パッケージ<span class="citation" data-cites="DRDID_bib">(<a href="references.html#ref-DRDID_bib" role="doc-biblioref">P. H. C. Sant’Anna and Zhao 2020</a>)</span>です。<code>DRDID</code>パッケージの<a href="https://www.researchgate.net/publication/329792048_Doubly_Robust_Difference-in-Differences_Estimators">参考文献</a><span class="citation" data-cites="sant2020doubly">(<a href="references.html#ref-sant2020doubly" role="doc-biblioref">P. H. Sant’Anna and Zhao 2020</a>)</span>を読んでいただければわかると思いますが、統計的には相当複雑なモデルとなっており、「少し勉強すれば使える」ものではない手法になっています。元論文をよく読み、理解したうえで実際に使用されることをおすすめします。</p>
-<p><code>DRDID</code>パッケージの主な関数は、IPWをDIDに持ち込んだ<code>ipwdid</code>関数と2重ロバストなDIDである<code>drdid</code>関数の2つです。以下に<code>DRDID</code>パッケージのExampleに示されている解析の例を示します。データにはLalondeのNSWのデータ<span class="citation" data-cites="lalonde1986evaluating">(<a href="references.html#ref-lalonde1986evaluating" role="doc-biblioref">LaLonde 1986</a>)</span>を用いています。</p>
+<p>この、IPWを利用したDID、2重ロバストなDID（Doubly Robust DID）に対応したパッケージが<code>DRDID</code>パッケージ<span class="citation" data-cites="DRDID_bib">(<a href="#ref-DRDID_bib" role="doc-biblioref">P. H. C. Sant’Anna and Zhao 2020</a>)</span>です。<code>DRDID</code>パッケージの<a href="https://www.researchgate.net/publication/329792048_Doubly_Robust_Difference-in-Differences_Estimators">参考文献</a><span class="citation" data-cites="sant2020doubly">(<a href="#ref-sant2020doubly" role="doc-biblioref">P. H. Sant’Anna and Zhao 2020</a>)</span>を読んでいただければわかると思いますが、統計的には相当複雑なモデルとなっており、「少し勉強すれば使える」ものではない手法になっています。元論文をよく読み、理解したうえで実際に使用されることをおすすめします。</p>
+<p><code>DRDID</code>パッケージの主な関数は、IPWをDIDに持ち込んだ<code>ipwdid</code>関数と2重ロバストなDIDである<code>drdid</code>関数の2つです。以下に<code>DRDID</code>パッケージのExampleに示されている解析の例を示します。データにはLalondeのNSWのデータ<span class="citation" data-cites="lalonde1986evaluating">(<a href="#ref-lalonde1986evaluating" role="doc-biblioref">LaLonde 1986</a>)</span>を用いています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>DRDID：データの準備</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">DRDID</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">DRDID</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># nswのデータの読み込み</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">nsw_long</span><span class="op">)</span></span>
@@ -1070,7 +1078,7 @@ Fixed Effects:
 <span></span>
 <span><span class="co"># データが多いので（32834行）、5000行だけ取り出す</span></span>
 <span><span class="va">unit_random</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">eval_lalonde_cps</span><span class="op">$</span><span class="va">id</span><span class="op">)</span>, <span class="fl">5000</span><span class="op">)</span></span>
-<span><span class="va">eval_lalonde_cps</span> <span class="op">&lt;-</span> <span class="va">eval_lalonde_cps</span><span class="op">[</span><span class="va">eval_lalonde_cps</span><span class="op">$</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">unit_random</span>,<span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">eval_lalonde_cps</span> <span class="op">&lt;-</span> <span class="va">eval_lalonde_cps</span><span class="op">[</span><span class="va">eval_lalonde_cps</span><span class="op">$</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">unit_random</span>,<span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>DRDID</code>パッケージでは、「IPWを用いたDID」と「2重ロバストのDID」の2つを計算することができます。IPWを用いたDIDでは<code>ipwdid</code>関数、2重ロバストのDIDでは<code>drdid</code>関数を用います。<code>ipwdid</code>関数と<code>drdid</code>関数の引数は全く同じです。</p>
@@ -1081,7 +1089,7 @@ Fixed Effects:
 <div class="code-with-filename-file">
 <pre><strong>DRDID：ipwdid関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ipwdid</span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ipwdid</span><span class="op">(</span></span>
 <span>  yname<span class="op">=</span><span class="st">"re"</span>, <span class="co"># 目的変数 </span></span>
 <span>  tname <span class="op">=</span> <span class="st">"year"</span>, <span class="co"># 時間に関わる変数</span></span>
 <span>  idname <span class="op">=</span> <span class="st">"id"</span>, <span class="co"># 測定した個体のIDに対応する変数</span></span>
@@ -1089,7 +1097,7 @@ Fixed Effects:
 <span>  xformla<span class="op">=</span> <span class="op">~</span> <span class="va">age</span><span class="op">+</span> <span class="va">educ</span><span class="op">+</span> <span class="va">black</span><span class="op">+</span> <span class="va">married</span><span class="op">+</span> <span class="va">nodegree</span><span class="op">+</span> <span class="va">hisp</span><span class="op">+</span> <span class="va">re74</span>, <span class="co"># 調整する共変量</span></span>
 <span>  data <span class="op">=</span> <span class="va">eval_lalonde_cps</span>, </span>
 <span>  panel <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># パネルデータではない場合（時系列間で個体が異なる場合）はFALSEを指定</span></span>
-<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Call:
@@ -1115,7 +1123,7 @@ ipwdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 <div class="code-with-filename-file">
 <pre><strong>DRDID：drdid関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">drdid</span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">drdid</span><span class="op">(</span></span>
 <span>  yname<span class="op">=</span><span class="st">"re"</span>, </span>
 <span>  tname <span class="op">=</span> <span class="st">"year"</span>, </span>
 <span>  idname <span class="op">=</span> <span class="st">"id"</span>, </span>
@@ -1123,7 +1131,7 @@ ipwdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 <span>  xformla<span class="op">=</span> <span class="op">~</span> <span class="va">age</span><span class="op">+</span> <span class="va">educ</span><span class="op">+</span> <span class="va">black</span><span class="op">+</span> <span class="va">married</span><span class="op">+</span> <span class="va">nodegree</span><span class="op">+</span> <span class="va">hisp</span><span class="op">+</span> <span class="va">re74</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">eval_lalonde_cps</span>, </span>
 <span>  panel <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Call:
@@ -1147,7 +1155,7 @@ drdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 </section></section><section id="causalimpact" class="level2" data-number="50.2"><h2 data-number="50.2" class="anchored" data-anchor-id="causalimpact">
 <span class="header-section-number">50.2</span> CausalImpact</h2>
 <p>DIDは時間が関わるデータに当てはめるものですが、通常DIDは2つの時点、時点0（処置前）と時点1（処置後）のみに適用するものとなっています。<a href="./chapter33.html">33章</a>で説明した時系列データには、単純なDIDを当てはめることはできません。</p>
-<p>この時系列データに対してDIDと同じような分析の手法を提供しているのが、<strong><code>CausalImpact</code></strong>パッケージ<span class="citation" data-cites="CausalImpact_bib">(<a href="references.html#ref-CausalImpact_bib" role="doc-biblioref">Kay H. Brodersen et al. 2014</a>)</span>です。<code>CausalImpact</code>では、33章で少しだけ説明した<a href="./chapter33.html#状態空間モデル">状態空間モデル</a>とベイズ統計を用いて、ある時点で処置を行った処置群において、処置前処置後の時系列を比較し、処置の効果の大きさを求めることができます。</p>
+<p>この時系列データに対してDIDと同じような分析の手法を提供しているのが、<strong><code>CausalImpact</code></strong>パッケージ<span class="citation" data-cites="CausalImpact_bib">(<a href="#ref-CausalImpact_bib" role="doc-biblioref">Brodersen et al. 2014</a>)</span>です。<code>CausalImpact</code>では、33章で少しだけ説明した<a href="./chapter33.html#状態空間モデル">状態空間モデル</a>とベイズ統計を用いて、ある時点で処置を行った処置群において、処置前処置後の時系列を比較し、処置の効果の大きさを求めることができます。</p>
 <p>仮に、ある時点（時点50）に漁港Aから稚魚を放流したとします。漁港Aから十分に離れている場所には、放流の影響を受けない漁港Bと漁港Cがあったとします。この3つの漁港A、B、Cの漁獲高が時系列で求まるとしたとき、漁港Aでは稚魚の放流という処置の効果が漁獲高に現れ、漁港BやCには現れないことが期待できます。</p>
 <p>それぞれの漁港A、B、Cにおける漁獲高が以下のようであった場合について考えてみます。</p>
 <div class="cell">
@@ -1155,14 +1163,14 @@ drdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 <div class="code-with-filename-file">
 <pre><strong>時点50で稚魚放流したことによる漁獲高の変化のシミュレーションモデル</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 稚魚の放流の効果</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 稚魚の放流の効果</span></span>
 <span><span class="va">effect_release</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, length<span class="op">=</span><span class="fl">50</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">6</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html">as.ts</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fishportA</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">30</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/arima.sim.html">arima.sim</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, ar <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>  <span class="op">+</span> <span class="va">effect_release</span></span>
 <span><span class="va">fishportB</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">25</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/arima.sim.html">arima.sim</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, ar <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fishportC</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">33</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/arima.sim.html">arima.sim</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, ar <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">0.45</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"処置効果の累積値："</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">effect_release</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># 稚魚放流の累積効果（30ぐらい）</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"処置効果の累積値："</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">effect_release</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># 稚魚放流の累積効果（30ぐらい）</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "処置効果の累積値： 29.4"</code></pre>
@@ -1173,11 +1181,11 @@ drdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 <details class="code-fold"><summary>Code</summary><div class="code-with-filename-file">
 <pre><strong>シミュレーションをグラフで表示する</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">fishportA</span>, <span class="va">fishportB</span>, <span class="va">fishportC</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">fishportA</span>, <span class="va">fishportB</span>, <span class="va">fishportC</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">pivot_longer</span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"time"</span>, y <span class="op">=</span> <span class="st">"amount of catch fishes"</span>, title <span class="op">=</span> <span class="st">"各漁港の漁獲高"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"time"</span>, y <span class="op">=</span> <span class="st">"amount of catch fishes"</span>, title <span class="op">=</span> <span class="st">"各漁港の漁獲高"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell-output-display">
@@ -1188,16 +1196,16 @@ drdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 </div>
 </div>
 <p>上記のように、漁港A（<code>fishportA</code>）の時点51で稚魚を放流した場合、漁港Aの時点50までは処置をしていない対照群、時点51以降は処置群であるとします。漁港BとCは、通常の統計とは少し異なりますが、共変量として取り扱います。</p>
-<p><code>CausalImpact</code>では、まず処置をした群（上の例では漁港A）を1列目、共変量（上の例では漁港BとC）を2列目以降に配置した行列（<code>data</code>）を準備します。データは行列ではなく、<code>zoo</code>パッケージ<span class="citation" data-cites="zoo_bib">(<a href="references.html#ref-zoo_bib" role="doc-biblioref">Zeileis and Grothendieck 2005</a>)</span>で提供されている<code>zoo</code>オブジェクトを用いることもできます。<code>zoo</code>オブジェクトは時系列を時系列のまま取り扱うことができる行列のようなものです。</p>
+<p><code>CausalImpact</code>では、まず処置をした群（上の例では漁港A）を1列目、共変量（上の例では漁港BとC）を2列目以降に配置した行列（<code>data</code>）を準備します。データは行列ではなく、<code>zoo</code>パッケージ<span class="citation" data-cites="zoo_bib">(<a href="#ref-zoo_bib" role="doc-biblioref">Zeileis and Grothendieck 2005</a>)</span>で提供されている<code>zoo</code>オブジェクトを用いることもできます。<code>zoo</code>オブジェクトは時系列を時系列のまま取り扱うことができる行列のようなものです。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>CausalImpact：処置群・対照群のデータの準備</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">CausalImpact</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">CausalImpact</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># fishportAが効果を評価する群（1列目に配置）、fishportB、fishportCは共変量（2列目以降に配置）</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fishportA</span>, <span class="va">fishportB</span>, <span class="va">fishportC</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fishportA</span>, <span class="va">fishportB</span>, <span class="va">fishportC</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>次に、処置を行う前と後の時期を2つの数値のベクターとして準備します。以下の例では、処置前（<code>pre.period</code>）が時点1～50、処置後（<code>post.period</code>）が時点51～100であることを示しています。<code>data</code>を<code>zoo</code>オブジェクトで指定した場合には、<code>pre.period</code>、<code>post.period</code>を日時データとして指定することもできます。</p>
@@ -1206,8 +1214,8 @@ drdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 <div class="code-with-filename-file">
 <pre><strong>CausalImpact：処置前、処置後の時点を指定</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pre.period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span><span class="op">)</span></span>
-<span><span class="va">post.period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">51</span>, <span class="fl">100</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pre.period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="va">post.period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">51</span>, <span class="fl">100</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>この<code>data</code>、<code>pre.period</code>、<code>post.period</code>を<code>CausalImpact</code>関数に与えることで、処置後の処置の効果の評価を行います。<code>CausalImpact</code>関数の返り値を<code>plot</code>関数の引数に取ることで、対照群の時系列推移（original）、処置群における処置の効果（pointwise）、処置群における累積の処置効果（cumulative）をそれぞれ表示できます。</p>
@@ -1216,9 +1224,9 @@ drdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 <div class="code-with-filename-file">
 <pre><strong>CausalImpact：CausalImpact関数と処置の効果の表示</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">impact_release</span> <span class="op">&lt;-</span> <span class="fu">CausalImpact</span><span class="op">(</span><span class="va">data</span>, <span class="va">pre.period</span>, <span class="va">post.period</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">impact_release</span> <span class="op">&lt;-</span> <span class="fu">CausalImpact</span><span class="op">(</span><span class="va">data</span>, <span class="va">pre.period</span>, <span class="va">post.period</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">impact_release</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">impact_release</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1233,9 +1241,9 @@ drdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 <div class="code-with-filename-file">
 <pre><strong>CausalImpact：summary関数で要約を表示する</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 引数にreport=TRUEを取ると英文レポートとして</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 引数にreport=TRUEを取ると英文レポートとして</span></span>
 <span><span class="co"># 結果が表示される</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">impact_release</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">impact_release</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Posterior inference {CausalImpact}
@@ -1263,7 +1271,7 @@ For more details, type: summary(impact, "report")</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>CausalImpact：季節性のあるデータ</strong></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fishportAw</span> <span class="op">&lt;-</span> <span class="va">fishportA</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0.9</span>, <span class="fl">0.7</span><span class="op">)</span>, <span class="fl">14</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fishportAw</span> <span class="op">&lt;-</span> <span class="va">fishportA</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0.9</span>, <span class="fl">0.7</span><span class="op">)</span>, <span class="fl">14</span><span class="op">)</span></span>
 <span><span class="va">fishportBw</span> <span class="op">&lt;-</span> <span class="va">fishportB</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0.9</span>, <span class="fl">0.8</span><span class="op">)</span>, <span class="fl">14</span><span class="op">)</span></span>
 <span><span class="va">fishportCw</span> <span class="op">&lt;-</span> <span class="va">fishportC</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0.95</span>, <span class="fl">0.85</span><span class="op">)</span>, <span class="fl">14</span><span class="op">)</span></span>
 <span></span>
@@ -1272,7 +1280,7 @@ For more details, type: summary(impact, "report")</code></pre>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">expand_limits</span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"time"</span>, y <span class="op">=</span> <span class="st">"amount of catch fishes"</span>, title <span class="op">=</span> <span class="st">"各漁港の漁獲高（季節性あり）"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"time"</span>, y <span class="op">=</span> <span class="st">"amount of catch fishes"</span>, title <span class="op">=</span> <span class="st">"各漁港の漁獲高（季節性あり）"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1288,9 +1296,9 @@ For more details, type: summary(impact, "report")</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>CausalImpact：季節性を指定する</strong></pre>
 </div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fishportAw</span>, <span class="va">fishportBw</span>, <span class="va">fishportCw</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fishportAw</span>, <span class="va">fishportBw</span>, <span class="va">fishportCw</span><span class="op">)</span></span>
 <span><span class="va">impact_release2</span> <span class="op">&lt;-</span> <span class="fu">CausalImpact</span><span class="op">(</span><span class="va">data</span>, <span class="va">pre.period</span>, <span class="va">post.period</span>, model.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>nseasons <span class="op">=</span> <span class="fl">7</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">impact_release2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">impact_release2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1302,18 +1310,18 @@ For more details, type: summary(impact, "report")</code></pre>
 <p>以上の通り、<code>CausalImpact</code>は時系列における介入の効果を評価するのに有用です。ただし、例えば漁港の例では、漁港AとBで漁の仕方や漁の対象となる海産物が全く違い、漁獲量の変動が異なるなど、漁港AとBで異なるトレンドがあると、正確に結果を評価することができなくなります。また、漁港Aでの稚魚の放流が漁港Bの漁獲高に影響を与えてしまうようであれば、やはり漁港Bを共変量として用いることはできなくなります。</p>
 <p><code>CausalImpact</code>では処置前の時系列を対照として使っているのですが、処置前、処置後で処置の効果とは異なる理由（例えば放流直後に台風で漁獲量が減るなど）でトレンドが完全に異なってしまうような場合にも効果をうまく評価することはできません。評価の信頼性を高めるためには、何を共変量とするか、時系列が安定しているのか、トレンドはないか等、データをよく理解しておく必要があります。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-CausalImpactの中身
+<span class="screen-reader-only">Tip</span>CausalImpactの中身
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><code>CausalImpact</code>の統計モデルについては、<a href="https://projecteuclid.org/journalArticle/Download?urlId=10.1214%2F14-AOAS788">文献</a><span class="citation" data-cites="brodersen2015inferring">(<a href="references.html#ref-brodersen2015inferring" role="doc-biblioref">Kay H. Brodersen et al. 2015</a>)</span>を参照して下さい。<code>CausalImpact</code>パッケージ自体はシンプルで使いやすいのですが、背景の統計モデルはかなり複雑で、理解するのは難しいです。正直、文献を読んでも他の記事を読んでもいまいちわからないところがあります。</p>
+<p><code>CausalImpact</code>の統計モデルについては、<a href="https://projecteuclid.org/journalArticle/Download?urlId=10.1214%2F14-AOAS788">文献</a><span class="citation" data-cites="brodersen2015inferring">(<a href="#ref-brodersen2015inferring" role="doc-biblioref">Brodersen et al. 2015</a>)</span>を参照して下さい。<code>CausalImpact</code>パッケージ自体はシンプルで使いやすいのですが、背景の統計モデルはかなり複雑で、理解するのは難しいです。正直、文献を読んでも他の記事を読んでもいまいちわからないところがあります。</p>
 <p>上に述べた通り、<code>CausalImpact</code>では処置前の時系列を対照とし、処置が無かった時の予測時系列と、処置後の実際の時系列を比較することでATTを求める手法となっています。この、処置が無かった時の予測時系列のことを、実際には起こらなかったことを推定していることから、<strong>Counterfactual（反実仮想）</strong>と呼びます。</p>
 <p>ATTとATEの項でも簡単に説明しましたが、我々は処置をした群の処置の結果（<span class="math inline">\(E(r_1)|Z=1\)</span>）と処置をしなかった群の処置しなかった場合の結果（<span class="math inline">\(E(r_0)|Z=0\)</span>）しか測定できません。そこで、DIDや<code>CausalImpact</code>を使うことで、処置をした群で処置をしなかった場合の結果（<span class="math inline">\(E(r_0)|Z=1\)</span>）、つまり反実仮想を推測し、ATT（<span class="math inline">\(E(r_1)-E(r_0)|Z=1\)</span>）に当たるものを計算しています。この反実仮想では、「測定していないものを推測する」ということをしているため、反実仮想の評価は欠測の問題ととらえられる場合もあります。</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1322,7 +1330,7 @@ CausalImpactの中身
 </div>
 <p>共変量として何を選ぶべきかについては<code>CausalImpact</code>のreferenceにも文献にもはっきりとは述べられていませんが、Googleがウェブ広告の効果を評価するために作成したパッケージですので、おそらく広告とは関係のないサイトからのアクセス数などを共変量とするのだと思います。<code>CausalImpact</code>では共変量が無いと演算ができないので、評価したい対象と、少なくとももう一つ時系列のデータが必要です。共変量には「処置の影響を受けないもの」という制約があります。共変量を対照としているのかと思っていたのですがそういうわけでもなさそうで、共変量が何なのか理解するのが難しいです。</p>
 <p><code>CausalImpact</code>ではSpike-and-Slab priorという事前分布を用いています。Spike-and-Slab priorでは、モデルに組み込んだ方がよい対照は弱情報事前分布に影響し、組み込まない方がよい対照は結果に影響しなくなる、つまりモデル選択のような効果を持ちます。共変量にこのSpike-and-Slab priorが適用されているのかはちょっと読み解けませんでした。</p>
-<p>Spike-and-Slab priorの理解には<a href="https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/2018-08.pdf">この文献</a><span class="citation" data-cites="田辺竜ノ介2017spike">(<a href="references.html#ref-%E7%94%B0%E8%BE%BA%E7%AB%9C%E3%83%8E%E4%BB%8B2017spike" role="doc-biblioref">田辺竜ノ介 2017</a>)</span>や、<a href="https://wessel.ai/assets/write-ups/Bruinsma,%20Spike%20and%20Slab%20Priors.pdf">こちらの記事</a><span class="citation" data-cites="Bryubsna_spike">(<a href="references.html#ref-Bryubsna_spike" role="doc-biblioref">Bruinsma, n.d.</a>)</span>、<a href="https://zenn.dev/tatamiya/scraps/9d14f3d1ee5a37">こちらのZennの記事（Spike-and-Slab 事前分布を理解する）</a>などが参考になります。</p>
+<p>Spike-and-Slab priorの理解には<a href="https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/2018-08.pdf">この文献</a><span class="citation" data-cites="田辺竜ノ介2017spike">(<a href="#ref-%E7%94%B0%E8%BE%BA%E7%AB%9C%E3%83%8E%E4%BB%8B2017spike" role="doc-biblioref">田辺竜ノ介 2017</a>)</span>や、<a href="https://wessel.ai/assets/write-ups/Bruinsma,%20Spike%20and%20Slab%20Priors.pdf">こちらの記事</a><span class="citation" data-cites="Bryubsna_spike">(<a href="#ref-Bryubsna_spike" role="doc-biblioref">Bruinsma, n.d.</a>)</span>、<a href="https://zenn.dev/tatamiya/scraps/9d14f3d1ee5a37">こちらのZennの記事（Spike-and-Slab 事前分布を理解する）</a>などが参考になります。</p>
 <p><code>CausalImpact</code>については<a href="https://tjo.hatenablog.com/entry/2019/09/10/080000">この記事（{CausalImpact}を使う上での注意点を簡単にまとめてみた）</a>や<a href="https://ill-identified.hatenablog.com/entry/2019/10/09/120000">こちらの記事（[R] CausalImpact でできること, できないこと）</a>も参考になります。簡単に使えるので簡単に使ってしまいそうですが、よく理解した上で実際のデータに適用したほうがよいでしょう。</p>
 </div>
 </div>
@@ -1336,7 +1344,7 @@ CausalImpactの中身
 <details class="code-fold"><summary>Code</summary><div class="code-with-filename-file">
 <pre><strong>回帰不連続デザインのイメージ</strong></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fl">0.5</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="fl">20</span> <span class="op">*</span> <span class="va">z</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -1361,7 +1369,7 @@ CausalImpactの中身
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="fl">20</span><span class="op">)</span></span>
 <span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
-<span>    <span class="op">}</span><span class="op">}</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>    <span class="op">}</span><span class="op">}</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell-output-display">
@@ -1381,8 +1389,8 @@ CausalImpactの中身
 <div class="code-with-filename-file">
 <pre><strong>回帰不連続デザインを線形回帰で評価する</strong></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># yは目的変数、xは横軸、zは処置の有無（x&lt;107でz=0、x＞=107でz=1）</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">z</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># yは目的変数、xは横軸、zは処置の有無（x&lt;107でz=0、x＞=107でz=1）</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">z</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1400,7 +1408,7 @@ Coefficients:
 <details class="code-fold"><summary>Code</summary><div class="code-with-filename-file">
 <pre><strong>回帰不連続デザインのイメージ</strong></pre>
 </div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fl">0.5</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="fl">20</span> <span class="op">*</span> <span class="va">z</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">107</span><span class="op">)</span> <span class="op">*</span> <span class="va">z</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -1425,7 +1433,7 @@ Coefficients:
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">107</span><span class="op">)</span> <span class="op">+</span> <span class="fl">20</span><span class="op">)</span></span>
 <span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
-<span>    <span class="op">}</span><span class="op">}</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>    <span class="op">}</span><span class="op">}</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell-output-display">
@@ -1441,8 +1449,8 @@ Coefficients:
 <div class="code-with-filename-file">
 <pre><strong>回帰不連続デザイン：不連続点で傾きが異なる場合</strong></pre>
 </div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">$</span><span class="va">xz</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span> <span class="op">-</span> <span class="fl">107</span> <span class="co"># x &gt; 107の時の傾きの変化に対応する変数</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">z</span> <span class="op">+</span> <span class="va">xz</span> <span class="op">*</span> <span class="va">z</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">$</span><span class="va">xz</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span> <span class="op">-</span> <span class="fl">107</span> <span class="co"># x &gt; 107の時の傾きの変化に対応する変数</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">z</span> <span class="op">+</span> <span class="va">xz</span> <span class="op">*</span> <span class="va">z</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1471,7 +1479,7 @@ Coefficients:
 </div>
 </section><section id="rdrobustパッケージ" class="level3" data-number="50.3.2"><h3 data-number="50.3.2" class="anchored" data-anchor-id="rdrobustパッケージ">
 <span class="header-section-number">50.3.2</span> rdrobustパッケージ</h3>
-<p>Rでカットオフ値付近で変動があったり、ファジーなカットオフ値を取るような複雑な回帰不連続デザインの演算を行う場合には、<strong><code>rdrobust</code>パッケージ</strong><span class="citation" data-cites="rdrobust_bib">(<a href="references.html#ref-rdrobust_bib" role="doc-biblioref">Calonico, Cattaneo, and Farrell 2025</a>)</span>を用います。<code>rdrobust</code>パッケージでは、局所多項式回帰（30章で説明した<a href="./chapter30.html#loesslowess平滑化">LOESS</a>）を用い、ファジーではない（Sharpな）カットオフ値、ファジーなカットオフ値の両方で処置の効果を評価できます。</p>
+<p>Rでカットオフ値付近で変動があったり、ファジーなカットオフ値を取るような複雑な回帰不連続デザインの演算を行う場合には、<strong><code>rdrobust</code>パッケージ</strong><span class="citation" data-cites="rdrobust_bib">(<a href="#ref-rdrobust_bib" role="doc-biblioref">Calonico et al. 2025</a>)</span>を用います。<code>rdrobust</code>パッケージでは、局所多項式回帰（30章で説明した<a href="./chapter30.html#loesslowess平滑化">LOESS</a>）を用い、ファジーではない（Sharpな）カットオフ値、ファジーなカットオフ値の両方で処置の効果を評価できます。</p>
 <p><code>rdrobust</code>の主な関数は<code>rdbwselect</code>、<code>rdplot</code>、<code>rdrobust</code>関数の3つです。</p>
 <p>以下の例では、下のグラフで示したデータを用いて回帰不連続デザインの処置効果を<code>rdrobust</code>パッケージで評価していきます。</p>
 <div class="cell">
@@ -1479,7 +1487,7 @@ Coefficients:
 <details class="code-fold"><summary>Code</summary><div class="code-with-filename-file">
 <pre><strong>回帰不連続デザイン：カットオフ値の前後で曲率が変わる場合</strong></pre>
 </div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fl">0.025</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fl">90</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">20</span> <span class="op">*</span> <span class="va">z</span> <span class="op">-</span> <span class="fl">0.05</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">107</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">*</span> <span class="va">z</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -1504,7 +1512,7 @@ Coefficients:
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.025</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fl">90</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">20</span> <span class="op">-</span> <span class="fl">0.05</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">107</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
 <span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
-<span>    <span class="op">}</span><span class="op">}</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>    <span class="op">}</span><span class="op">}</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell-output-display">
@@ -1523,9 +1531,9 @@ Coefficients:
 <div class="code-with-filename-file">
 <pre><strong>rdrobust：rdbwselect関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">rdrobust</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">rdrobust</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">rdbwselect</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">rdbwselect</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call: rdbwselect
@@ -1556,7 +1564,7 @@ Unique Obs.                     376          185
 <div class="code-with-filename-file">
 <pre><strong>rdrobust：rdplot関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rdplot</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rdplot</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1575,7 +1583,7 @@ Unique Obs.                     376          185
 <div class="code-with-filename-file">
 <pre><strong>rdrobust：rdrobust関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rdrobust</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rdrobust</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sharp RD estimates using local polynomial regression.
@@ -1608,7 +1616,7 @@ Unique Obs.                     376          185
 <div class="code-with-filename-file">
 <pre><strong>rdrobust：rdrobust関数</strong></pre>
 </div>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rdrobust</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rdrobust</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sharp RD estimates using local polynomial regression.
@@ -1644,7 +1652,7 @@ Bias-Corrected    14.861     3.612     4.114     0.000     [7.781 , 21.941]
 <details class="code-fold"><summary>Code</summary><div class="code-with-filename-file">
 <pre><strong>回帰不連続デザイン：Fuzzy Discontinuation Design</strong></pre>
 </div>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span><span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fl">0.025</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fl">90</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">20</span> <span class="op">*</span> <span class="va">z</span> <span class="op">-</span> <span class="fl">0.05</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">107</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">*</span> <span class="va">z</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -1677,7 +1685,7 @@ Bias-Corrected    14.861     3.612     4.114     0.000     [7.781 , 21.941]
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fl">0.025</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fl">90</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">20</span> <span class="op">-</span> <span class="fl">0.05</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">107</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
 <span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
-<span>    <span class="op">}</span><span class="op">}</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>    <span class="op">}</span><span class="op">}</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell-output-display">
@@ -1694,8 +1702,8 @@ Bias-Corrected    14.861     3.612     4.114     0.000     [7.781 , 21.941]
 <div class="code-with-filename-file">
 <pre><strong>rdrobust関数：fuzzy discontinuation design</strong></pre>
 </div>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># warningは同じxに対して重複するデータがあることを示している</span></span>
-<span><span class="fu">rdrobust</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span>, fuzzy <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">z</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># warningは同じxに対して重複するデータがあることを示している</span></span>
+<span><span class="fu">rdrobust</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">y</span>, x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">x</span>, c <span class="op">=</span> <span class="fl">107</span>, fuzzy <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">z</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in rdrobust(y = d$y, x = d$x, c = 107, fuzzy = d$z, all = TRUE): Mass
@@ -1740,19 +1748,19 @@ Bias-Corrected    28.446    14.884     1.911     0.056    [-0.727 , 57.618]
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-rdrobustの統計モデル
+<span class="screen-reader-only">Tip</span>rdrobustの統計モデル
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><code>rdrobust</code>の詳細については、<a href="https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2014_Stata.pdf">元論文</a><span class="citation" data-cites="calonico2014robust">(<a href="references.html#ref-calonico2014robust" role="doc-biblioref">Calonico, Cattaneo, and Titiunik 2014</a>)</span>や<a href="https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2015_R.pdf">Rパッケージの解説論文</a><span class="citation" data-cites="calonico2015rdrobust">(<a href="references.html#ref-calonico2015rdrobust" role="doc-biblioref">Calonico, Cattaneo, and Titiunik 2015</a>)</span>に記載されていますが、相応に複雑で、正直数学の素人である私にはよくわかりませんでした。Rパッケージのヘルプや上記の解説論文を読んでもいまいち使いかたが分かりません。よくわからないなら論文などに利用するのは避けた方がよいでしょう。</p>
-<p>どうしてもこのパッケージを用いたい方は、日本語の教科書に<code>rdrobust</code>の解説がありますので（例えば、<a href="https://www.amazon.co.jp/dp/4320112458">統計的因果推論の理論と実装 (Wonderful R)</a><span class="citation" data-cites="takahashi2022">(<a href="references.html#ref-takahashi2022" role="doc-biblioref">高橋将宜 2022</a>)</span>）や<a href="https://www.amazon.co.jp/dp/B0DFXY2TCS">因果推論の計量経済学</a><span class="citation" data-cites="Kawaguchi_Sawada_2024">(<a href="references.html#ref-Kawaguchi_Sawada_2024" role="doc-biblioref">川口康平 and 真行 2024</a>)</span>、目を通した後で元論文に挑戦してみるのがよいでしょう。</p>
+<p><code>rdrobust</code>の詳細については、<a href="https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2014_Stata.pdf">元論文</a><span class="citation" data-cites="calonico2014robust">(<a href="#ref-calonico2014robust" role="doc-biblioref">Calonico et al. 2014</a>)</span>や<a href="https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2015_R.pdf">Rパッケージの解説論文</a><span class="citation" data-cites="calonico2015rdrobust">(<a href="#ref-calonico2015rdrobust" role="doc-biblioref">Calonico et al. 2015</a>)</span>に記載されていますが、相応に複雑で、正直数学の素人である私にはよくわかりませんでした。Rパッケージのヘルプや上記の解説論文を読んでもいまいち使いかたが分かりません。よくわからないなら論文などに利用するのは避けた方がよいでしょう。</p>
+<p>どうしてもこのパッケージを用いたい方は、日本語の教科書に<code>rdrobust</code>の解説がありますので（例えば、<a href="https://www.amazon.co.jp/dp/4320112458">統計的因果推論の理論と実装 (Wonderful R)</a><span class="citation" data-cites="takahashi2022">(<a href="#ref-takahashi2022" role="doc-biblioref">高橋将宜 2022</a>)</span>）や<a href="https://www.amazon.co.jp/dp/B0DFXY2TCS">因果推論の計量経済学</a><span class="citation" data-cites="Kawaguchi_Sawada_2024">(<a href="#ref-Kawaguchi_Sawada_2024" role="doc-biblioref">川口康平 and 真行 2024</a>)</span>、目を通した後で元論文に挑戦してみるのがよいでしょう。</p>
 </div>
 </div>
 </div>
@@ -1760,15 +1768,15 @@ rdrobustの統計モデル
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-CausalImpact_bib" class="csl-entry" role="listitem">
 Brodersen, Kay H., Fabian Gallusser, Jim Koehler, Nicolas Remy, and Steven L. Scott. 2014. <span>“Inferring Causal Impact Using <span>B</span>ayesian Structural Time-Series Models.”</span> <em>Annals of Applied Statistics</em> 9: 247–74. <a href="https://research.google/pubs/inferring-causal-impact-using-bayesian-structural-time-series-models/">https://research.google/pubs/inferring-causal-impact-using-bayesian-structural-time-series-models/</a>.
 </div>
 <div id="ref-brodersen2015inferring" class="csl-entry" role="listitem">
-Brodersen, Kay H, Fabian Gallusser, Jim Koehler, Nicolas Remy, and Steven L Scott. 2015. <span>“Inferring Causal Impact Using Bayesian Structural Time-Series Models.”</span>
+Brodersen, Kay H, Fabian Gallusser, Jim Koehler, Nicolas Remy, and Steven L Scott. 2015. <em>Inferring Causal Impact Using Bayesian Structural Time-Series Models</em>.
 </div>
 <div id="ref-Bryubsna_spike" class="csl-entry" role="listitem">
-Bruinsma, Wessel. n.d. <span>“Spike and Slab Prior.”</span> <a href="https://wessel.ai/assets/write-ups/Bruinsma,%20Spike%20and%20Slab%20Priors.pdf">https://wessel.ai/assets/write-ups/Bruinsma,%20Spike%20and%20Slab%20Priors.pdf</a>.
+Bruinsma, Wessel. n.d. <em>Spike and Slab Prior</em>. <a href="https://wessel.ai/assets/write-ups/Bruinsma,%20Spike%20and%20Slab%20Priors.pdf">https://wessel.ai/assets/write-ups/Bruinsma,%20Spike%20and%20Slab%20Priors.pdf</a>.
 </div>
 <div id="ref-rdrobust_bib" class="csl-entry" role="listitem">
 Calonico, Sebastian, Matias D. Cattaneo, and Max H. Farrell. 2025. <em>Rdrobust: Robust Data-Driven Statistical Inference in Regression-Discontinuity Designs</em>. <a href="https://doi.org/10.32614/CRAN.package.rdrobust">https://doi.org/10.32614/CRAN.package.rdrobust</a>.
@@ -1777,7 +1785,7 @@ Calonico, Sebastian, Matias D. Cattaneo, and Max H. Farrell. 2025. <em>Rdrobust:
 Calonico, Sebastian, Matias D Cattaneo, and Rocio Titiunik. 2014. <span>“Robust Data-Driven Inference in the Regression-Discontinuity Design.”</span> <em>The Stata Journal</em> 14 (4): 909–46.
 </div>
 <div id="ref-calonico2015rdrobust" class="csl-entry" role="listitem">
-———. 2015. <span>“Rdrobust: An r Package for Robust Nonparametric Inference in Regression-Discontinuity Designs.”</span>
+Calonico, Sebastian, Matias D Cattaneo, and Rocio Titiunik. 2015. <em>Rdrobust: An r Package for Robust Nonparametric Inference in Regression-Discontinuity Designs</em>.
 </div>
 <div id="ref-lmerTest_bib" class="csl-entry" role="listitem">
 Kuznetsova, Alexandra, Per B. Brockhoff, and Rune H. B. Christensen. 2017. <span>“<span class="nocase">lmerTest</span> Package: Tests in Linear Mixed Effects Models.”</span> <em>Journal of Statistical Software</em> 82 (13): 1–26. <a href="https://doi.org/10.18637/jss.v082.i13">https://doi.org/10.18637/jss.v082.i13</a>.
@@ -1795,7 +1803,7 @@ Sant’Anna, Pedro HC, and Jun Zhao. 2020. <span>“Doubly Robust Difference-in-
 Zeileis, Achim, and Gabor Grothendieck. 2005. <span>“Zoo: S3 Infrastructure for Regular and Irregular Time Series.”</span> <em>Journal of Statistical Software</em> 14 (6): 1–27. <a href="https://doi.org/10.18637/jss.v014.i06">https://doi.org/10.18637/jss.v014.i06</a>.
 </div>
 <div id="ref-Kawaguchi_Sawada_2024" class="csl-entry" role="listitem">
-川口康平, and 真行. 2024. <span>“因果推論の計量経済学.”</span> <a href="https://www.amazon.co.jp/dp/B0DFXY2TCS">https://www.amazon.co.jp/dp/B0DFXY2TCS</a>.
+川口康平, and 真行. 2024. <em>因果推論の計量経済学</em>. <a href="https://www.amazon.co.jp/dp/B0DFXY2TCS">https://www.amazon.co.jp/dp/B0DFXY2TCS</a>.
 </div>
 <div id="ref-田辺竜ノ介2017spike" class="csl-entry" role="listitem">
 田辺竜ノ介. 2017. <span>“Spike and Slab 事前分布を用いたスパース推定 (量子統計モデリングのための基盤構築).”</span> <em>数理解析研究所講究録</em> 2018: 114–15.
@@ -1868,13 +1876,14 @@ Zeileis, Achim, and Gabor Grothendieck. 2005. <span>“Zoo: S3 Infrastructure fo
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2277,7 +2286,7 @@ Zeileis, Achim, and Gabor Grothendieck. 2005. <span>“Zoo: S3 Infrastructure fo
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb41" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 因果推論：差分の差分法と回帰不連続デザイン</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 因果推論：差分の差分法と回帰不連続デザイン</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, message=FALSE, warnings=FALSE}</span></span>
 <span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -2798,7 +2807,7 @@ Zeileis, Achim, and Gabor Grothendieck. 2005. <span>“Zoo: S3 Infrastructure fo
 <span id="cb41-519"><a href="#cb41-519" aria-hidden="true" tabindex="-1"></a><span class="in">`rdrobust`</span>の詳細については、<span class="co">[</span><span class="ot">元論文</span><span class="co">](https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2014_Stata.pdf)[</span><span class="ot">@calonico2014robust</span><span class="co">]</span>や<span class="co">[</span><span class="ot">Rパッケージの解説論文</span><span class="co">](https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2015_R.pdf)[</span><span class="ot">@calonico2015rdrobust</span><span class="co">]</span>に記載されていますが、相応に複雑で、正直数学の素人である私にはよくわかりませんでした。Rパッケージのヘルプや上記の解説論文を読んでもいまいち使いかたが分かりません。よくわからないなら論文などに利用するのは避けた方がよいでしょう。</span>
 <span id="cb41-520"><a href="#cb41-520" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-521"><a href="#cb41-521" aria-hidden="true" tabindex="-1"></a>どうしてもこのパッケージを用いたい方は、日本語の教科書に<span class="in">`rdrobust`</span>の解説がありますので（例えば、<span class="co">[</span><span class="ot">統計的因果推論の理論と実装 (Wonderful R)</span><span class="co">](https://www.amazon.co.jp/dp/4320112458)[</span><span class="ot">@takahashi2022</span><span class="co">]</span>）や<span class="co">[</span><span class="ot">因果推論の計量経済学</span><span class="co">](https://www.amazon.co.jp/dp/B0DFXY2TCS)[</span><span class="ot">@Kawaguchi_Sawada_2024</span><span class="co">]</span>、目を通した後で元論文に挑戦してみるのがよいでしょう。</span>
-<span id="cb41-522"><a href="#cb41-522" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb41-522"><a href="#cb41-522" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -2813,7 +2822,11 @@ Zeileis, Achim, and Gabor Grothendieck. 2005. <span>“Zoo: S3 Infrastructure fo
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

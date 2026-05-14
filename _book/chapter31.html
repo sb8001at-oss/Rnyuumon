@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>31&nbsp; 分類 – R入門</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -56,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,14 +92,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-2d1749205343831daa66e8b3dec511e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e431f8288efaea697b3f9728d25ee4e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
@@ -764,6 +766,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
  <span class="menu-text">S3クラス</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item">
@@ -834,13 +842,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <figure class="figure"><p><a href="./image/image_svm.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="図2：SVMのイメージ（左：点と接する平行線（赤線）、右：平行線の幅（青線））"><img src="./image/image_svm.png" class="img-fluid figure-img" alt="図2：SVMのイメージ（左：点と接する平行線（赤線）、右：平行線の幅（青線））"></a></p>
 <figcaption>図2：SVMのイメージ（左：点と接する平行線（赤線）、右：平行線の幅（青線））</figcaption></figure>
 </div>
-<p>Rでは、サポートベクターマシンを含めた色々な機械学習の手法が<a href="https://cran.r-project.org/web/packages/e1071/index.html">e1071</a>パッケージ <span class="citation" data-cites="e1071_bib">(<a href="references.html#ref-e1071_bib" role="doc-biblioref">Meyer et al. 2023</a>)</span>により提供されています。</p>
+<p>Rでは、サポートベクターマシンを含めた色々な機械学習の手法が<a href="https://cran.r-project.org/web/packages/e1071/index.html">e1071</a>パッケージ <span class="citation" data-cites="e1071_bib">(<a href="#ref-e1071_bib" role="doc-biblioref">Meyer et al. 2023</a>)</span>により提供されています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>SVM：e1071パッケージの読み込み</strong></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="訓練データとテストデータ" class="level3" data-number="31.1.1"><h3 data-number="31.1.1" class="anchored" data-anchor-id="訓練データとテストデータ">
@@ -852,7 +860,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-with-filename-file">
 <pre><strong>訓練データとテストデータに分ける</strong></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">test_v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>, <span class="fl">25</span>, replace<span class="op">=</span><span class="cn">F</span><span class="op">)</span> <span class="co"># ランダムに行を選ぶ </span></span>
 <span><span class="va">test_v</span> <span class="op">&lt;-</span> <span class="va">test_v</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">test_v</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">test_v</span> <span class="co"># テストデータにする行</span></span>
@@ -860,24 +868,24 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="co">## [20] 110 126 129 141 142 150</span></span>
 <span></span>
 <span><span class="va">train.iris</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="op">-</span><span class="va">test_v</span>, <span class="op">-</span><span class="fl">3</span><span class="op">:</span><span class="op">-</span><span class="fl">4</span><span class="op">]</span> <span class="co"># 訓練データ（125行）</span></span>
-<span><span class="va">test.iris</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="va">test_v</span>, <span class="op">-</span><span class="fl">3</span><span class="op">:</span><span class="op">-</span><span class="fl">4</span><span class="op">]</span> <span class="co"># テストデータ（25行）</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">test.iris</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="va">test_v</span>, <span class="op">-</span><span class="fl">3</span><span class="op">:</span><span class="op">-</span><span class="fl">4</span><span class="op">]</span> <span class="co"># テストデータ（25行）</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-tidymodelsパッケージでのデータ準備
+<span class="screen-reader-only">Tip</span>tidymodelsパッケージでのデータ準備
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>機械学習のデータを取り扱いやすくするためのパッケージである<a href="https://www.tidymodels.org/">tidymodels</a> <span class="citation" data-cites="tidymodels_bib">(<a href="references.html#ref-tidymodels_bib" role="doc-biblioref">Kuhn and Wickham 2020</a>)</span>には、データを訓練データとテストデータに分ける専用の関数が準備されています。<code>tidymodels</code>の使い方にはやや癖があり、学習コストが高めですが、覚えれば様々な機械学習をより簡単に実装できるようになります。</p>
+<p>機械学習のデータを取り扱いやすくするためのパッケージである<a href="https://www.tidymodels.org/">tidymodels</a> <span class="citation" data-cites="tidymodels_bib">(<a href="#ref-tidymodels_bib" role="doc-biblioref">Kuhn and Wickham 2020</a>)</span>には、データを訓練データとテストデータに分ける専用の関数が準備されています。<code>tidymodels</code>の使い方にはやや癖があり、学習コストが高めですが、覚えれば様々な機械学習をより簡単に実装できるようになります。</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidymodels</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidymodels</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">iris_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">iris</span>, prop <span class="op">=</span> <span class="fl">125</span><span class="op">/</span><span class="fl">150</span><span class="op">)</span> <span class="co"># 分け方を指定</span></span>
 <span><span class="va">train.iris2</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">iris_split</span><span class="op">)</span> <span class="co"># 訓練データ（125行）</span></span>
@@ -887,7 +895,7 @@ tidymodelsパッケージでのデータ準備
 <span><span class="co">## [1] 125   5</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">test.iris2</span><span class="op">)</span> <span class="co"># 25行のデータフレーム</span></span>
-<span><span class="co">## [1] 25  5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 25  5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -898,8 +906,8 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>svm関数で分類器を準備する</strong></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 訓練データでサポートベクターマシンを計算（.は目的変数以外の変数すべてを指す）</span></span>
-<span><span class="va">model.g</span> <span class="op">&lt;-</span> <span class="fu">svm</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train.iris</span><span class="op">)</span> <span class="co"># デフォルトはガウスカーネル</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 訓練データでサポートベクターマシンを計算（.は目的変数以外の変数すべてを指す）</span></span>
+<span><span class="va">model.g</span> <span class="op">&lt;-</span> <span class="fu">svm</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train.iris</span><span class="op">)</span> <span class="co"># デフォルトはガウスカーネル</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>サポートベクターマシンは予測を行うための分類器ですので、計算結果をそのまま用いてもあまり意味がありません。<code>svm</code>関数の返り値を用いて、テストデータの分類を予測する場合には、<code>predict</code>関数を用います。</p>
@@ -909,7 +917,7 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>SVMでテストデータを用いて予測する</strong></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># predict関数で予測結果を求める</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># predict関数で予測結果を求める</span></span>
 <span><span class="va">pred_svm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model.g</span>, <span class="va">test.iris</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 実際の種と予測した種を比較する（上が実際のデータ、下が予測）</span></span>
@@ -928,7 +936,7 @@ tidymodelsパッケージでのデータ準備
 <span><span class="co">## pred_svm          "versicolor" "versicolor" "virginica" "virginica" "virginica"</span></span>
 <span><span class="co">##                   126         129         141         142         150         </span></span>
 <span><span class="co">## test.iris.Species "virginica" "virginica" "virginica" "virginica" "virginica" </span></span>
-<span><span class="co">## pred_svm          "virginica" "virginica" "virginica" "virginica" "versicolor"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## pred_svm          "virginica" "virginica" "virginica" "virginica" "versicolor"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="カーネル変換サポートベクターマシン" class="level3" data-number="31.1.2"><h3 data-number="31.1.2" class="anchored" data-anchor-id="カーネル変換サポートベクターマシン">
@@ -941,7 +949,7 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>カーネル変換SVM</strong></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># カーネルごとの違いを調べる</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># カーネルごとの違いを調べる</span></span>
 <span><span class="va">model.l</span> <span class="op">&lt;-</span> <span class="fu">svm</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train.iris</span>, kernel <span class="op">=</span> <span class="st">"linear"</span><span class="op">)</span> <span class="co"># 直線</span></span>
 <span><span class="va">model.p</span> <span class="op">&lt;-</span> <span class="fu">svm</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train.iris</span>, kernel <span class="op">=</span> <span class="st">"polynomial"</span><span class="op">)</span> <span class="co"># 多項式</span></span>
 <span><span class="va">model.s</span> <span class="op">&lt;-</span> <span class="fu">svm</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train.iris</span>, kernel <span class="op">=</span> <span class="st">"sigmoid"</span><span class="op">)</span> <span class="co"># シグモイド</span></span>
@@ -957,7 +965,7 @@ tidymodelsパッケージでのデータ準備
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d.test</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d.test</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -988,19 +996,19 @@ tidymodelsパッケージでのデータ準備
 </div>
 <p>各カーネルでの分類の境界線を示したものが、以下のグラフとなります。直線カーネルのみ分類の境界が直線で、その他のカーネル（ガウス、多項式、シグモイド）では分類の境界が曲線となっていることがわかります。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-作図のスクリプト
+<span class="screen-reader-only">Tip</span>作図のスクリプト
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 分類の境界線を表示</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 分類の境界線を表示</span></span>
 <span><span class="va">d.mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span></span>
 <span>  Sepal.Length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, </span>
 <span>  Sepal.Width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
@@ -1043,7 +1051,7 @@ tidymodelsパッケージでのデータ準備
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"シグモイドカーネル"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">pg</span>, <span class="va">pl</span>, <span class="va">pp</span>, <span class="va">ps</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">pg</span>, <span class="va">pl</span>, <span class="va">pp</span>, <span class="va">ps</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1057,12 +1065,12 @@ tidymodelsパッケージでのデータ準備
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-カーネル変換
+<span class="screen-reader-only">Tip</span>カーネル変換
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1079,12 +1087,12 @@ tidymodelsパッケージでのデータ準備
 <p>Rでナイーブベイズを用いる場合には、<code>e1071</code>パッケージの<code>naiveBayes</code>関数を用います。</p>
 <p>以下にRでSpamとHamを見分ける場合のナイーブベイズのスクリプトを記載します。メールのデータには、<a href="https://github.com/stedy/Machine-Learning-with-R-datasets/blob/master/sms_spam.csv">Githubで提供されているHam/Spamメールのデータセット</a>を用いています。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-文字列を処理する
+<span class="screen-reader-only">Tip</span>文字列を処理する
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1092,7 +1100,7 @@ tidymodelsパッケージでのデータ準備
 <div class="callout-body-container callout-body">
 <p>ナイーブベイズに限らず、文字列を訓練データとした機械学習は増えています。ChatGPTなどのAIも、入力した文書を分類器などのアルゴリズムに代入し、予測値として回答を返す形となっていると思われます。ただし、文字列には余計な文字（例えばスペースや記号、日本語のような粘着語では助詞など）がたくさん含まれており、そのまま分類器に与えることはできません。</p>
 <p>ですので、文字列を用いた機械学習を行う際には、文字列を取り扱うための専用のパッケージやソフトウェアを用いて文字列の前処理を行う必要があります。</p>
-<p>今回の例のように英語であれば、Rのパッケージ（以下に示す<a href="https://cran.r-project.org/web/packages/tm/index.html">tm</a> <span class="citation" data-cites="tm_bib">(<a href="references.html#ref-tm_bib" role="doc-biblioref">Feinerer, Hornik, and Meyer 2008</a>)</span>や<a href="https://cran.r-project.org/web/packages/SnowballC/index.html">SnowballC</a> <span class="citation" data-cites="SnowballC_bib">(<a href="references.html#ref-SnowballC_bib" role="doc-biblioref">Bouchet-Valat 2023</a>)</span>など）を用いて文字列をコーパス（単語のまとまり）にまとめたり、そのコーパスの数を数えたりすることができます。日本語であれば、<a href="https://taku910.github.io/mecab/">MeCab</a>（形態素分析という、単語で区切って品詞のラベルをつけるためのツール、Rからは<a href="http://rmecab.jp/wiki/index.php?RMeCab">RMeCab</a>パッケージ<span class="citation" data-cites="RMeCab_bib">(<a href="references.html#ref-RMeCab_bib" role="doc-biblioref">Ishida and Kudo 2023</a>)</span>を用いて使用できる）などを用いた前処理を必要とします。</p>
+<p>今回の例のように英語であれば、Rのパッケージ（以下に示す<a href="https://cran.r-project.org/web/packages/tm/index.html">tm</a> <span class="citation" data-cites="tm_bib">(<a href="#ref-tm_bib" role="doc-biblioref">Feinerer et al. 2008</a>)</span>や<a href="https://cran.r-project.org/web/packages/SnowballC/index.html">SnowballC</a> <span class="citation" data-cites="SnowballC_bib">(<a href="#ref-SnowballC_bib" role="doc-biblioref">Bouchet-Valat 2023</a>)</span>など）を用いて文字列をコーパス（単語のまとまり）にまとめたり、そのコーパスの数を数えたりすることができます。日本語であれば、<a href="https://taku910.github.io/mecab/">MeCab</a>（形態素分析という、単語で区切って品詞のラベルをつけるためのツール、Rからは<a href="http://rmecab.jp/wiki/index.php?RMeCab">RMeCab</a>パッケージ<span class="citation" data-cites="RMeCab_bib">(<a href="#ref-RMeCab_bib" role="doc-biblioref">Ishida and Kudo 2023</a>)</span>を用いて使用できる）などを用いた前処理を必要とします。</p>
 <p>前処理を行った文字列のデータと、Ham/Spamのラベルを組み合わせて分類器の学習を行います。新規のメールの分類では、やはり文字列を同様に前処理した上で分類器に与え、Ham/Spamの判定を行うことになります。</p>
 <p>以下に、前処理のコードを示します。かなり複雑ですが、この流れでナイーブベイズの訓練データ・テストデータを作成することができます。</p>
 <div class="cell">
@@ -1100,7 +1108,7 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>ナイーブベイズ：文字列の前処理</strong></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 文字列の操作を行うためのパッケージ</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 文字列の操作を行うためのパッケージ</span></span>
 <span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tm</span>, <span class="va">SnowballC</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># SMS Spam Collection Datasetをロード（kaggleから拾ってくる）</span></span>
@@ -1168,7 +1176,7 @@ tidymodelsパッケージでのデータ準備
 <span></span>
 <span><span class="co"># 数値データをYes/Noのデータに変換</span></span>
 <span><span class="va">sms_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">sms_dtm_freq_train</span>, MARGIN <span class="op">=</span> <span class="fl">2</span>, <span class="va">convert_counts</span><span class="op">)</span></span>
-<span><span class="va">sms_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">sms_dtm_freq_test</span>, MARGIN <span class="op">=</span> <span class="fl">2</span>, <span class="va">convert_counts</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">sms_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">sms_dtm_freq_test</span>, MARGIN <span class="op">=</span> <span class="fl">2</span>, <span class="va">convert_counts</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1180,7 +1188,7 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>ナイーブベイズでの学習と予測</strong></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ナイーブベイズで学習</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ナイーブベイズで学習</span></span>
 <span><span class="va">nb_classifier</span> <span class="op">&lt;-</span> <span class="fu">naiveBayes</span><span class="op">(</span><span class="va">sms_train</span>, <span class="va">data_train_labels</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># テストデータで予測</span></span>
@@ -1194,7 +1202,7 @@ tidymodelsパッケージでのデータ準備
 <span></span>
 <span><span class="co"># 正答率は97.8%ぐらい</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">sms_test_pred</span> <span class="op">==</span> <span class="va">data_test_labels</span><span class="op">)</span><span class="op">/</span><span class="fl">1390</span></span>
-<span><span class="co">## [1] 0.9776978</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 0.9776978</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section><section id="決定木" class="level2" data-number="31.3"><h2 data-number="31.3" class="anchored" data-anchor-id="決定木">
@@ -1207,14 +1215,14 @@ tidymodelsパッケージでのデータ準備
 <p>決定木は、弱分類器の組み合わせの選び方のアルゴリズムによって、<strong>バギング</strong>と<strong>ブースティング</strong>と呼ばれる2つの手法に大別されています。これらのうち、バギングと呼ばれるものの一種が<strong>ランダムフォレスト（Random Forest）</strong>と呼ばれる手法です。ランダムフォレストは21世紀初頭から用いられており、優秀な分類器として長く使われています。もう一つのブースティングについては2015年頃から良いアルゴリズムがいくつか開発されており、分類性能の非常に高い分類器として用いられています。</p>
 <section id="ランダムフォレスト" class="level3" data-number="31.3.1"><h3 data-number="31.3.1" class="anchored" data-anchor-id="ランダムフォレスト">
 <span class="header-section-number">31.3.1</span> ランダムフォレスト</h3>
-<p><strong>ランダムフォレスト</strong>は、ランダムに決定木による分類器をたくさん生成し、その平均や多数決の結果を最終的な分類器とする方法です。Rでランダムフォレストを利用する場合には、<a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a>パッケージ<span class="citation" data-cites="randomForest_bib">(<a href="references.html#ref-randomForest_bib" role="doc-biblioref">Liaw and Wiener 2002</a>)</span>の<code>randomForest</code>関数を用います。<code>randomForest</code>関数の使い方は<code>lm</code>関数や<code>svm</code>関数とほぼ同じで、第一引数に<code>formula</code>を取ります。予測に<code>predict</code>関数を用いるところも<code>svm</code>と同じです。</p>
+<p><strong>ランダムフォレスト</strong>は、ランダムに決定木による分類器をたくさん生成し、その平均や多数決の結果を最終的な分類器とする方法です。Rでランダムフォレストを利用する場合には、<a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a>パッケージ<span class="citation" data-cites="randomForest_bib">(<a href="#ref-randomForest_bib" role="doc-biblioref">Liaw and Wiener 2002</a>)</span>の<code>randomForest</code>関数を用います。<code>randomForest</code>関数の使い方は<code>lm</code>関数や<code>svm</code>関数とほぼ同じで、第一引数に<code>formula</code>を取ります。予測に<code>predict</code>関数を用いるところも<code>svm</code>と同じです。</p>
 <p>ランダムフォレストによる分類では、分類の境界は基本的に縦横に配置されます。これは、上記のようにランダムフォレストが決定木の組み合わせからなる分類器であるためです。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>ランダムフォレストによる分類</strong></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## ランダムフォレスト</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## ランダムフォレスト</span></span>
 <span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">randomForest</span><span class="op">)</span></span>
 <span><span class="va">rf.iris</span> <span class="op">&lt;-</span> <span class="fu">randomForest</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train.iris</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf.iris</span>, <span class="va">test.iris</span><span class="op">)</span></span>
@@ -1237,7 +1245,7 @@ tidymodelsパッケージでのデータ準備
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>data <span class="op">=</span> <span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_raster</span><span class="op">(</span>data <span class="op">=</span> <span class="va">d.mat.rf</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, fill <span class="op">=</span> <span class="va">Species</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1250,14 +1258,14 @@ tidymodelsパッケージでのデータ準備
 <span class="header-section-number">31.3.2</span> ブースティング</h3>
 <p><strong>ブースティング</strong>も決定木の一種ですが、分類器をランダムに生成するのではなく、決定木を少しずつ変化させ最適化するような手法です。ブースティングは以前はそれほど用いられてはいませんでしたが、勾配ブースティングと呼ばれる改良化されたアルゴリズムが開発されてから非常に分類精度の高い手法としてよく用いられています。</p>
 <p>ブースティングのアルゴリズムには、昔からある<a href="https://www.sciencedirect.com/science/article/pii/S002200009791504X">Adaboost</a>や、2015年以降に開発された<a href="https://xgboost.readthedocs.io/en/stable/#">XGBoost</a>、<a href="https://lightgbm.readthedocs.io/en/stable/">LightGBM</a>、<a href="https://catboost.ai/">CatBoost</a>等があります。特に2015年以降に開発された後者の分類性能は高いとされています。</p>
-<p>RではAdaboostは<a href="https://cran.r-project.org/web/packages/JOUSBoost/index.html">JOUSBoost</a>パッケージ <span class="citation" data-cites="JOUSBoost_bib">(<a href="references.html#ref-JOUSBoost_bib" role="doc-biblioref">Olson 2017</a>)</span>、XGBoostは<a href="https://cran.r-project.org/web/packages/xgboost/index.html">xgboost</a>パッケージ <span class="citation" data-cites="xgboost_bib">(<a href="references.html#ref-xgboost_bib" role="doc-biblioref">Chen et al. 2023</a>)</span>、LightGBMは<a href="https://cran.r-project.org/web/packages/lightgbm/index.html">lightgbm</a>パッケージ <span class="citation" data-cites="lightgbm_bib">(<a href="references.html#ref-lightgbm_bib" role="doc-biblioref">Shi et al. 2024</a>)</span>、CatBoostは<a href="https://catboost.ai/en/docs/installation/r-installation-github-installation">catboost</a>パッケージ <span class="citation" data-cites="catboost_bib">(<a href="references.html#ref-catboost_bib" role="doc-biblioref">Prokhorenkova et al. 2017</a>)</span>を用いることで利用できます。ただし、<code>catboost</code>にはPythonのライブラリが必要となるので、Rでは利用の難易度が高めです。</p>
+<p>RではAdaboostは<a href="https://cran.r-project.org/web/packages/JOUSBoost/index.html">JOUSBoost</a>パッケージ <span class="citation" data-cites="JOUSBoost_bib">(<a href="#ref-JOUSBoost_bib" role="doc-biblioref">Olson 2017</a>)</span>、XGBoostは<a href="https://cran.r-project.org/web/packages/xgboost/index.html">xgboost</a>パッケージ <span class="citation" data-cites="xgboost_bib">(<a href="#ref-xgboost_bib" role="doc-biblioref">Chen et al. 2023</a>)</span>、LightGBMは<a href="https://cran.r-project.org/web/packages/lightgbm/index.html">lightgbm</a>パッケージ <span class="citation" data-cites="lightgbm_bib">(<a href="#ref-lightgbm_bib" role="doc-biblioref">Shi et al. 2024</a>)</span>、CatBoostは<a href="https://catboost.ai/en/docs/installation/r-installation-github-installation">catboost</a>パッケージ <span class="citation" data-cites="catboost_bib">(<a href="#ref-catboost_bib" role="doc-biblioref">Prokhorenkova et al. 2017</a>)</span>を用いることで利用できます。ただし、<code>catboost</code>にはPythonのライブラリが必要となるので、Rでは利用の難易度が高めです。</p>
 <p>以下に、XGBoostを利用した分類の例を示します。説明変数となるデータが少なく、モデルの最適化も行っていないため、上記のランダムフォレストと同程度の精度（0.64）となっています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>XGBoostでの分類器の生成</strong></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## ブースティング（XGboost）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## ブースティング（XGboost）</span></span>
 <span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">xgboost</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># xgboostパッケージでは、テストデータをdgCMatrixというクラスに変換する必要がある</span></span>
@@ -1273,7 +1281,7 @@ tidymodelsパッケージでのデータ準備
 <span>  y <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  nthreads <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  nround <span class="op">=</span> <span class="fl">5</span> <span class="co"># 計算の繰り返し回数</span></span>
-<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1281,10 +1289,10 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>XGBoostで生成した分類器での予測</strong></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 予測結果と正答率</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 予測結果と正答率</span></span>
 <span><span class="va">sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"setosa"</span>, <span class="st">"versicolor"</span>, <span class="st">"virginica"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">sp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">xg.iris</span>, <span class="va">xg.test.iris</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">==</span> <span class="va">test.iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span><span class="op">/</span><span class="fl">25</span></span>
-<span><span class="co">## [1] 0.64</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 0.64</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1292,13 +1300,13 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>XGBoostでの予測の境界線</strong></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 分類の境界線を記述</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 分類の境界線を記述</span></span>
 <span><span class="va">xg.d.mat</span> <span class="op">&lt;-</span> <span class="fu">Matrix</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/sparse.model.matrix.html">sparse.model.matrix</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="fl">0</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>Species <span class="op">=</span> <span class="fl">0</span>, <span class="va">d.mat</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">d.mat.xg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">d.mat</span>, Species <span class="op">=</span> <span class="va">sp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">xg.iris</span>, <span class="va">xg.d.mat</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>data <span class="op">=</span> <span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_raster</span><span class="op">(</span>data <span class="op">=</span> <span class="va">d.mat.xg</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, fill <span class="op">=</span> <span class="va">Species</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1316,12 +1324,12 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>neuralnet：分類を行う際のformulaの設定</strong></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">formula_iris</span> <span class="op">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">formula_iris</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span><span class="op">(</span></span>
 <span>    <span class="co"># 上の行がラベル、下の行が説明変数</span></span>
 <span>    <span class="st">"(Species == 'setosa') + (Species == 'versicolor') +  (Species == 'virginica') ~ </span></span>
 <span><span class="st">      Sepal.Length + Sepal.Width"</span></span>
-<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>neuralnet</code>関数の使い方は回帰の際と同じです。引数として、<code>formula</code>、<code>data</code>、<code>hidden</code>（隠れ層、中間層）、<code>act.fct</code>（活性化関数）を指定します。</p>
@@ -1332,7 +1340,7 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>neuralnet：分類を行う際のformulaの設定</strong></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">neuralnet</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">neuralnet</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
 <span></span>
@@ -1342,7 +1350,7 @@ tidymodelsパッケージでのデータ準備
 <span>  hidden <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  act.fct <span class="op">=</span> <span class="st">"logistic"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">nn.iris</span>, rep <span class="op">=</span> <span class="st">"best"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">nn.iris</span>, rep <span class="op">=</span> <span class="st">"best"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1357,7 +1365,7 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>neuralnet：予測</strong></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 予測は確率で出てくる</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 予測は確率で出てくる</span></span>
 <span><span class="va">pred.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">nn.iris</span>, <span class="va">test.iris</span><span class="op">)</span></span>
 <span><span class="va">pred.test</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">##         [,1]          [,2]          [,3]</span></span>
@@ -1366,7 +1374,7 @@ tidymodelsパッケージでのデータ準備
 <span><span class="co">## 21 0.9880775 -0.0067728564  0.0187861514</span></span>
 <span><span class="co">## 33 1.0007861 -0.0001940386 -0.0005022254</span></span>
 <span><span class="co">## 34 1.0007861 -0.0001940386 -0.0005022254</span></span>
-<span><span class="co">## 35 1.0007861 -0.0001940386 -0.0005022254</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 35 1.0007861 -0.0001940386 -0.0005022254</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>結果を種名に変更し、正答率を計算したのが以下のスクリプトです。88%とそこそこの正答率となっています。また、分類の境界線はやや不自然ですが、基本的に直線的な部分が多い曲線で構成されています。ただしニューラルネットワークの境界部分での確率はなだらかに変化しています。例えば、青と緑の境界では、青の確率50％ぐらい、緑の確率50％ぐらいとなっています。</p>
@@ -1375,12 +1383,12 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>neuralnet：確率を種に変換</strong></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pred.sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">pred.test</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pred.sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">pred.test</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">pred.test</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">pred.sp</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">pred.test</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span> <span class="op">%&gt;%</span> <span class="va">max</span> <span class="op">==</span> <span class="va">pred.test</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">sp</span><span class="op">[</span><span class="va">.</span><span class="op">]</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">pred.sp</span> <span class="op">==</span> <span class="va">test.iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span><span class="op">/</span><span class="fl">25</span></span>
-<span><span class="co">## [1] 0.88</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 0.88</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="cell">
@@ -1388,7 +1396,7 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>neuralnet：分類の境界線</strong></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pred.mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">nn.iris</span>, <span class="va">d.mat</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pred.mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">nn.iris</span>, <span class="va">d.mat</span><span class="op">)</span></span>
 <span><span class="va">pred.mat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">pred.mat</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">pred.mat</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">pred.mat2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">pred.mat</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span> <span class="op">%&gt;%</span> <span class="va">max</span> <span class="op">==</span> <span class="va">pred.mat</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">sp</span><span class="op">[</span><span class="va">.</span><span class="op">]</span></span>
@@ -1398,7 +1406,7 @@ tidymodelsパッケージでのデータ準備
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>data <span class="op">=</span> <span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_raster</span><span class="op">(</span>data <span class="op">=</span> <span class="va">d.mat.nn</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, fill <span class="op">=</span> <span class="va">Species</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1412,7 +1420,7 @@ tidymodelsパッケージでのデータ準備
 <div class="code-with-filename-file">
 <pre><strong>neuralnet：分類の境界線/計算結果をそのまま表示</strong></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pred.mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">nn.iris</span>, <span class="va">d.mat</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pred.mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">nn.iris</span>, <span class="va">d.mat</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">pred.mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"setosa"</span>, <span class="st">"versicolor"</span>, <span class="st">"virginica"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">d.mat.nn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">d.mat</span>, <span class="va">pred.mat</span><span class="op">)</span></span>
@@ -1439,7 +1447,7 @@ tidymodelsパッケージでのデータ準備
 <span>  <span class="fu">geom_point</span><span class="op">(</span>data <span class="op">=</span> <span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">theme_light</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"virginica"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> <span class="op">+</span> <span class="va">p3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> <span class="op">+</span> <span class="va">p3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1452,12 +1460,12 @@ tidymodelsパッケージでのデータ準備
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-SnowballC_bib" class="csl-entry" role="listitem">
 Bouchet-Valat, Milan. 2023. <em>SnowballC: Snowball Stemmers Based on the c ’Libstemmer’ UTF-8 Library</em>. <a href="https://CRAN.R-project.org/package=SnowballC">https://CRAN.R-project.org/package=SnowballC</a>.
 </div>
 <div id="ref-xgboost_bib" class="csl-entry" role="listitem">
-Chen, Tianqi, Tong He, Michael Benesty, Vadim Khotilovich, Yuan Tang, Hyunsu Cho, Kailong Chen, et al. 2023. <em>Xgboost: Extreme Gradient Boosting</em>. <a href="https://CRAN.R-project.org/package=xgboost">https://CRAN.R-project.org/package=xgboost</a>.
+Chen, Tianqi, Tong He, Michael Benesty, et al. 2023. <em>Xgboost: Extreme Gradient Boosting</em>. <a href="https://CRAN.R-project.org/package=xgboost">https://CRAN.R-project.org/package=xgboost</a>.
 </div>
 <div id="ref-tm_bib" class="csl-entry" role="listitem">
 Feinerer, Ingo, Kurt Hornik, and David Meyer. 2008. <span>“Text Mining Infrastructure in r.”</span> <em>Journal of Statistical Software</em> 25 (5): 1–54. <a href="https://doi.org/10.18637/jss.v025.i05">https://doi.org/10.18637/jss.v025.i05</a>.
@@ -1478,10 +1486,10 @@ Meyer, David, Evgenia Dimitriadou, Kurt Hornik, Andreas Weingessel, and Friedric
 Olson, Matthew. 2017. <em>JOUSBoost: Implements Under/Oversampling for Probability Estimation</em>. <a href="https://CRAN.R-project.org/package=JOUSBoost">https://CRAN.R-project.org/package=JOUSBoost</a>.
 </div>
 <div id="ref-catboost_bib" class="csl-entry" role="listitem">
-Prokhorenkova, Liudmila, Gleb Gusev, Aleksandr Vorobev, Anna Veronika Dorogush, and Andrey Gulin. 2017. <span>“CatBoost: Unbiased Boosting with Categorical Features.”</span> <a href="https://arxiv.org/abs/1706.09516">https://arxiv.org/abs/1706.09516</a>.
+Prokhorenkova, Liudmila, Gleb Gusev, Aleksandr Vorobev, Anna Veronika Dorogush, and Andrey Gulin. 2017. <em>CatBoost: Unbiased Boosting with Categorical Features</em>. <a href="https://arxiv.org/abs/1706.09516">https://arxiv.org/abs/1706.09516</a>.
 </div>
 <div id="ref-lightgbm_bib" class="csl-entry" role="listitem">
-Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taifeng Wang, et al. 2024. <em>Lightgbm: Light Gradient Boosting Machine</em>. <a href="https://CRAN.R-project.org/package=lightgbm">https://CRAN.R-project.org/package=lightgbm</a>.
+Shi, Yu, Guolin Ke, Damien Soukhavong, et al. 2024. <em>Lightgbm: Light Gradient Boosting Machine</em>. <a href="https://CRAN.R-project.org/package=lightgbm">https://CRAN.R-project.org/package=lightgbm</a>.
 </div>
 </div>
 </section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -1548,13 +1556,14 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1957,7 +1966,7 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb20" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 分類</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 分類</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>データがどのような群に分類されるのか評価・予測する**分類**は、検定・回帰と並ぶ統計・機械学習の重要な手法の一つです。分類は**教師あり学習**、**教師なし学習**に大きく二分することができます。</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -2438,7 +2447,7 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
 <span id="cb20-481"><a href="#cb20-481" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-482"><a href="#cb20-482" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2 <span class="sc">+</span> p3</span>
 <span id="cb20-483"><a href="#cb20-483" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -2453,7 +2462,11 @@ Shi, Yu, Guolin Ke, Damien Soukhavong, James Lamb, Qi Meng, Thomas Finley, Taife
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p><a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました</p>
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
 </div>
   </div>
 </footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});

@@ -312,10 +312,10 @@ stopCluster(cl)
 
 ### Forkの演算：doMCパッケージ（unavailable）
 
-`foreach`でForkを用いた並列演算を行う場合には[`doMC`パッケージ](https://cran.r-project.org/web/packages/doMC/index.html)を用いる、はずなんですが、`doMC`パッケージの機能を支えていた[`multicore`パッケージ](https://cran.r-project.org/web/packages/multicore/index.html)がCRANから削除されており、`doMC`もインストールできなくなっています。現状`foreach`を用いた場合のForkは次に説明する`future`パッケージ（`doFuture`）でのみ利用可能なようです。
+`foreach`でForkを用いた並列演算を行う場合には[`doMC`パッケージ](https://cran.r-project.org/web/packages/doMC/index.html)を用います。この`doMC`はUNIX用のファイルしか準備されておらず、Windowsではインストールすることはできません。`doMC`の使い方は`doParallel`とほぼ同様です。
 
 ```{r, eval=FALSE, filename="doMCによる並列演算"}
-pacman::p_load(doMC) # インストール・演算できない
+pacman::p_load(doMC) # Windowsではインストール・演算できない
 resisterDoMC(4)
 foreach(i = 1:3) %dopar% {f(i)}
 ```
@@ -458,6 +458,61 @@ future_map(1:5, sqrt)
 ```{r, filename="doFuture"}
 foreach(i = 1:3) %dofuture% {f(1)}
 ```
+
+:::{.callout-tip collapse="true"}
+### プログレスバーを表示：progressrパッケージ
+
+`futureverse`では、プログレスバーを表示するために`progressr`パッケージ[@progressr_bib]を用いています。
+
+```{r, filename="progressrのロード"}
+pacman::p_load(progressr)
+```
+
+`progressr`でプログレスバーを表示する場合には、演算の途中で`progressor`関数を変数`p`に代入し、この`p`を繰り返し演算の内で関数として実行する必要があります。
+
+以下の例では、[`progressor`の例](https://progressr.futureverse.org/)に記載されている通り、0.5秒ごとに足し算を行う関数である`slow_sum`関数を定義しています。
+
+`progressor`関数では、イテレータで評価する値を`along`引数に指定します。イテレータ内では`p`関数を実行します。準備はこれだけです。
+
+```{r, filename="progressrを使うための関数を準備する"}
+slow_sum <- function(x){
+  # プログレスバーの進み具合を評価するため、progressor関数を準備
+  p <- progressor(along = x)
+  v <- 0
+  for(i in 1:length(x)){
+    Sys.sleep(0.5)
+    v <- v + x[i]
+    # この関数を評価してプログレスバーが進む
+    p()
+  }
+  v
+}
+```
+
+次に、プログレスバーを表示させる必要があります。しかし、単に`slow_sum`関数を実行してもプログレスバーは表示されません。
+
+```{r, filename="slow_sum関数を実行"}
+slow_sum(1:10)
+```
+
+プログレスバーを表示させるには、`handlers`関数に`global=TRUE`を指定して実行しておく必要があります。また、プログレスバーの表示を終える場合には`global=FALSE`を指定します。
+
+ただし、この`handlers(global = TRUE)`をQuartoで実行するとエラーが出ます。理由は分からないのですが、qmdの実行時に`handlers`がすでに呼び出されているようです。
+
+```{r, eval=FALSE, filename="handlers関数でプログレスバーを表示する"}
+handlers(global = TRUE)
+slow_sum(1:10)
+handlers(global = FALSE)
+```
+
+`with_progress`関数を用いるとQuartoを用いている場合でもプログレスバーを表示させることができます。
+
+```{r, filename="with_progress関数を用いる"}
+slow_sum(1:10) |> with_progress()
+```
+この他にも、プログレスバーの表示方法や完了時の音の設定など、プログレスバーの細かな調整を行うことができます。
+:::
+
 
 ## futurizeパッケージ
 
