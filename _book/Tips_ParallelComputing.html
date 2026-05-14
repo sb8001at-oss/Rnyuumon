@@ -866,7 +866,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </ul>
 <p>あまり変わらないように見えますが、Socketでは現在のセッションの情報を別のセッションでは持ち越せない、つまりパッケージの読み込みの状態や変数は別のセッションには持ち込まれないのに対し、Forkではパッケージの読み込みの状態や変数も（メモリを共有する形で）持ち込めます。</p>
 <p>Socketでは各セッションでパッケージの読み込みや変数の設定を行う必要があり、時間が取られます。一方でForkはパッケージの読み込みや変数の設定を行うことなく演算ができます。</p>
-<p>何より違うのは、<strong>Windowsでは基本的にForkを使えない</strong>、ということです。ですので、LinuxやMacOSではSocketもForkも使えるのに対し、WindowsではSocketしか使えません。また、RStudioはForkと相性があまりよくありません。自分のPCでForkが利用可能かどうかは、以下の<code><a href="https://parallelly.futureverse.org/reference/supportsMulticore.html">parallelly::supportsMulticore</a></code>関数で確認することができます<span class="citation" data-cites="parallelly_bib">(<a href="#ref-parallelly_bib" role="doc-biblioref">Bengtsson 2026b</a>)</span>。Forkが利用可能であれば<code>TRUE</code>が、利用できなければ<code>FALSE</code>が返ってきます。</p>
+<p>何より違うのは、<strong>Windowsでは基本的にForkを使えない</strong>、ということです。ですので、LinuxやMacOSではSocketもForkも使えるのに対し、WindowsではSocketしか使えません。また、RStudioはForkと相性があまりよくありません。自分のPCでForkが利用可能かどうかは、以下の<code><a href="https://parallelly.futureverse.org/reference/supportsMulticore.html">parallelly::supportsMulticore</a></code>関数で確認することができます<span class="citation" data-cites="parallelly_bib">(<a href="references.html#ref-parallelly_bib" role="doc-biblioref">Bengtsson 2026b</a>)</span>。Forkが利用可能であれば<code>TRUE</code>が、利用できなければ<code>FALSE</code>が返ってきます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -880,24 +880,24 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </div>
 </section><section id="並列演算のパッケージ" class="level2"><h2 class="anchored" data-anchor-id="並列演算のパッケージ">並列演算のパッケージ</h2>
-<p><a href="https://CRAN.R-project.org/view=HighPerformanceComputing">CRAN: Task Views</a>には<code>Rmpi</code><span class="citation" data-cites="rmpi_bib">(<a href="#ref-rmpi_bib" role="doc-biblioref">Yu 2002</a>)</span>と<code>snow</code><span class="citation" data-cites="snow_bib">(<a href="#ref-snow_bib" role="doc-biblioref">Tierney et al. 2021</a>)</span>がRの並列演算のコアパッケージであるとされています。これらは基本のパッケージで、他のパッケージの開発などに用いることが想定されており、Rのユーザーが自分のスクリプトで利用するのは難しいです。</p>
+<p><a href="https://CRAN.R-project.org/view=HighPerformanceComputing">CRAN: Task Views</a>には<code>Rmpi</code><span class="citation" data-cites="rmpi_bib">(<a href="references.html#ref-rmpi_bib" role="doc-biblioref">Yu 2002</a>)</span>と<code>snow</code><span class="citation" data-cites="snow_bib">(<a href="references.html#ref-snow_bib" role="doc-biblioref">Tierney et al. 2021</a>)</span>がRの並列演算のコアパッケージであるとされています。これらは基本のパッケージで、他のパッケージの開発などに用いることが想定されており、Rのユーザーが自分のスクリプトで利用するのは難しいです。</p>
 <p>ユーザー向けの並列演算のパッケージとして、現在では主に以下の3つが利用されています。</p>
 <ul>
 <li>
-<code>parallel</code>パッケージ<span class="citation" data-cites="parallel_bib">(<a href="#ref-parallel_bib" role="doc-biblioref">R Core Team 2025</a>)</span>
+<code>parallel</code>パッケージ<span class="citation" data-cites="parallel_bib">(<a href="references.html#ref-parallel_bib" role="doc-biblioref">R Core Team 2025</a>)</span>
 </li>
 <li>
-<code>foreach</code> + <code>doParallel</code>パッケージ<span class="citation" data-cites="foreach_bib doParallel_bib">(<a href="#ref-foreach_bib" role="doc-biblioref">Microsoft and Weston 2022</a>; <a href="#ref-doParallel_bib" role="doc-biblioref">Corporation and Weston 2022</a>)</span>
+<code>foreach</code> + <code>doParallel</code>パッケージ<span class="citation" data-cites="foreach_bib doParallel_bib">(<a href="references.html#ref-foreach_bib" role="doc-biblioref">Microsoft and Weston 2022</a>; <a href="references.html#ref-doParallel_bib" role="doc-biblioref">Corporation and Weston 2022</a>)</span>
 </li>
 <li>
-<code>future</code>パッケージ<span class="citation" data-cites="RJ-2021-048">(<a href="#ref-RJ-2021-048" role="doc-biblioref">Bengtsson 2021</a>)</span>
+<code>future</code>パッケージ<span class="citation" data-cites="RJ-2021-048">(<a href="references.html#ref-RJ-2021-048" role="doc-biblioref">Bengtsson 2021</a>)</span>
 </li>
 </ul>
-<p><code>parallel</code>が最も昔から用いられているパッケージで、長年よく利用されていたのが<code>foreach</code>と<code>doParallel</code>パッケージです。<code>future</code>は2017年頃から開発が始まり、2021年にver.1.0となった新しいパッケージです。<code>future</code>には<a href="https://www.futureverse.org/">futureverse</a>というパッケージ群があり、<code>parallel</code>・<code>foreach</code>よりも簡単で安全に並列演算ができるパッケージとなっています。また、2026年には<code>futurize</code><span class="citation" data-cites="futurize_bib">(<a href="#ref-futurize_bib" role="doc-biblioref">Bengtsson 2026a</a>)</span>という<code>future</code>をより簡単に利用できるパッケージが発表されています。</p>
+<p><code>parallel</code>が最も昔から用いられているパッケージで、長年よく利用されていたのが<code>foreach</code>と<code>doParallel</code>パッケージです。<code>future</code>は2017年頃から開発が始まり、2021年にver.1.0となった新しいパッケージです。<code>future</code>には<a href="https://www.futureverse.org/">futureverse</a>というパッケージ群があり、<code>parallel</code>・<code>foreach</code>よりも簡単で安全に並列演算ができるパッケージとなっています。また、2026年には<code>futurize</code><span class="citation" data-cites="futurize_bib">(<a href="references.html#ref-futurize_bib" role="doc-biblioref">Bengtsson 2026a</a>)</span>という<code>future</code>をより簡単に利用できるパッケージが発表されています。</p>
 <p>ここではまず<code>parallel</code>、<code>foreach</code>から説明しますが、とりあえず並列演算を試してみたい、という場合には右のメニューから<code>future</code>パッケージの記事を選んで読んでいただければと思います。</p>
 </section><section id="parallelパッケージ" class="level2"><h2 class="anchored" data-anchor-id="parallelパッケージ">parallelパッケージ</h2>
 <p>まずは<code>parallel</code>パッケージから説明します。<code>parallel</code>はSocket・Forkの両方に対応し、<a href="./chapter19.html">19章</a>で説明した<code>apply</code>関数に相当する演算を並列化することができるパッケージです。</p>
-<p>まずは<code>parallel</code>パッケージをインストールし、読み込みます。<a href="./chapter21.html#演算時間の計測">21章</a>で紹介した演算時間計測のためのパッケージである<code>tictoc</code><span class="citation" data-cites="tictoc_bib">(<a href="#ref-tictoc_bib" role="doc-biblioref">Izrailev 2023</a>)</span>も同時に読み込んでおきます。</p>
+<p>まずは<code>parallel</code>パッケージをインストールし、読み込みます。<a href="./chapter21.html#演算時間の計測">21章</a>で紹介した演算時間計測のためのパッケージである<code>tictoc</code><span class="citation" data-cites="tictoc_bib">(<a href="references.html#ref-tictoc_bib" role="doc-biblioref">Izrailev 2023</a>)</span>も同時に読み込んでおきます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -941,7 +941,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.00    0.00    6.13 </code></pre>
+   0.00    0.00    6.14 </code></pre>
 </div>
 </div>
 <p>次に、<code>parallel</code>パッケージでForkを利用した<code>lapply</code>の計算を行う<code>mclappply</code>関数を使ってみます。<code>mc.cores</code>は利用するコアの数を指定するための引数です。ForkはWindows PCでは利用できないため、エラーが出て演算が行われません。</p>
@@ -1096,13 +1096,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "1, 2026-05-15 05:12:30.705529"
+[1] "1, 2026-05-15 05:53:49.164794"
 
 [[2]]
-[1] "2, 2026-05-15 05:12:30.707201"
+[1] "2, 2026-05-15 05:53:49.166491"
 
 [[3]]
-[1] "3, 2026-05-15 05:12:30.707585"</code></pre>
+[1] "3, 2026-05-15 05:53:49.166882"</code></pre>
 </div>
 </div>
 <p>一方で、Socketの並列演算を行う<code>parLapply</code>関数で<code>f2</code>関数を呼び出すと、エラーが出ます。これは、Socketでは現在のセッションで呼び出したパッケージや定義した変数は別のセッションにはコピーされないため、パッケージで設定されている関数（<code>str_c</code>）が利用できないためです。</p>
@@ -1143,13 +1143,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">parLapply</span><span class="op">(</span><span class="va">cl</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">f2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "1, 2026-05-15 05:12:31.042082"
+[1] "1, 2026-05-15 05:53:49.507563"
 
 [[2]]
-[1] "2, 2026-05-15 05:12:31.041935"
+[1] "2, 2026-05-15 05:53:49.507608"
 
 [[3]]
-[1] "3, 2026-05-15 05:12:31.041983"</code></pre>
+[1] "3, 2026-05-15 05:53:49.507722"</code></pre>
 </div>
 </div>
 <p>同様に、現在のセッションで変数yを定義し、この<code>y</code>を用いた関数を並列演算で使ってみます。</p>
@@ -1327,7 +1327,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>6.16 sec elapsed</code></pre>
+<pre><code>6.14 sec elapsed</code></pre>
 </div>
 </div>
 <p><code>foreach</code>の引数<code>.combine</code>には演算結果を結合する方法を指定することもできます。<code>.combine=c</code>を指定すると返り値はベクター、<code>.combine=cbind</code>を指定すると返り値は行列になります。</p>
@@ -1362,7 +1362,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>6.14 sec elapsed</code></pre>
+<pre><code>6.12 sec elapsed</code></pre>
 </div>
 </div>
 </section><section id="クラスターの設定" class="level3"><h3 class="anchored" data-anchor-id="クラスターの設定">クラスターの設定</h3>
@@ -1390,7 +1390,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>2.09 sec elapsed</code></pre>
+<pre><code>2.1 sec elapsed</code></pre>
 </div>
 </div>
 <p><code>%dopar%</code>を用いた演算はSocketですので、演算にパッケージを用いる場合にはエラーが出ます。</p>
@@ -1557,7 +1557,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>2.09 sec elapsed</code></pre>
+<pre><code>2.08 sec elapsed</code></pre>
 </div>
 </div>
 <p>ただし、<code>plan(multisession)</code>を指定すると利用できる最大数のセッションが準備されてしまいます。<code>plan</code>関数では<code>workers</code>引数を指定することで準備するセッションの数を指定することができます。</p>
@@ -1603,8 +1603,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">d</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "1, 2026-05-15 05:13:20.893587" "2, 2026-05-15 05:13:20.886623"
-[3] "3, 2026-05-15 05:13:20.905144"</code></pre>
+<pre><code>[1] "1, 2026-05-15 05:54:39.499366" "2, 2026-05-15 05:54:39.503568"
+[3] "3, 2026-05-15 05:54:39.51652" </code></pre>
 </div>
 </div>
 <p>ただし、変数を指定する場合にはクラスターで変数を指定してくれない場合もあります。</p>
@@ -1641,16 +1641,16 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p><code>future</code>では<code>parallel</code>や<code>foreach</code> + <code>doParallel</code>のようにクラスターを止める関数はありません。Rが閉じればクラスターも止まりますが、明示的にクラスターを止める場合には<code>plan(sequential)</code>を実行するとよいでしょう。</p>
 </section></section><section id="futureverse" class="level2"><h2 class="anchored" data-anchor-id="futureverse">futureverse</h2>
 <p>上記の通り<code>future</code>では簡単に並列演算を実装することができます。しかし、並列演算するそれぞれのコードはいちいち記述しないといけませんし、<code>apply</code>関数などで利用するにはやや不便です。</p>
-<p>この問題に対応するため、futureverseでは<code>apply</code>関数、<code>purrr</code>の関数（<a href="./chapter44.html">44章</a>参照）<span class="citation" data-cites="purrr_bib">(<a href="#ref-purrr_bib" role="doc-biblioref">Wickham and Henry 2023</a>)</span>、<code>foreach</code>での並列演算を行うための以下の3つのパッケージ群を備えています。</p>
+<p>この問題に対応するため、futureverseでは<code>apply</code>関数、<code>purrr</code>の関数（<a href="./chapter44.html">44章</a>参照）<span class="citation" data-cites="purrr_bib">(<a href="references.html#ref-purrr_bib" role="doc-biblioref">Wickham and Henry 2023</a>)</span>、<code>foreach</code>での並列演算を行うための以下の3つのパッケージ群を備えています。</p>
 <ul>
 <li>
-<code>future.apply</code>：<code>apply</code>関数の並列化<span class="citation" data-cites="RJ-2021-048">(<a href="#ref-RJ-2021-048" role="doc-biblioref">Bengtsson 2021</a>)</span>
+<code>future.apply</code>：<code>apply</code>関数の並列化<span class="citation" data-cites="RJ-2021-048">(<a href="references.html#ref-RJ-2021-048" role="doc-biblioref">Bengtsson 2021</a>)</span>
 </li>
 <li>
-<code>furrr</code>：<code>purrr</code>の並列化<span class="citation" data-cites="furrr_bib">(<a href="#ref-furrr_bib" role="doc-biblioref">Vaughan and Dancho 2022</a>)</span>
+<code>furrr</code>：<code>purrr</code>の並列化<span class="citation" data-cites="furrr_bib">(<a href="references.html#ref-furrr_bib" role="doc-biblioref">Vaughan and Dancho 2022</a>)</span>
 </li>
 <li>
-<code>doFuture</code>：<code>foreach</code>の並列化<span class="citation" data-cites="RJ-2021-048">(<a href="#ref-RJ-2021-048" role="doc-biblioref">Bengtsson 2021</a>)</span>
+<code>doFuture</code>：<code>foreach</code>の並列化<span class="citation" data-cites="RJ-2021-048">(<a href="references.html#ref-RJ-2021-048" role="doc-biblioref">Bengtsson 2021</a>)</span>
 </li>
 </ul>
 <p>3つのパッケージをロードすることで、簡単に<code>future</code>を用いた並列化の演算を行うことができます。<code>future.apply</code>では<code>future_apply</code>などの関数（<code>apply</code>関数の並列化）、<code>furrr</code>では<code>future_map</code>などの関数（<code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map</a></code>の並列化）、<code>doFuture</code>では<code>%dofuture%</code>演算子を使うことでそれぞれ<code>future</code>での並列演算を行うことができます。</p>
@@ -1722,7 +1722,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><code>futureverse</code>では、プログレスバーを表示するために<code>progressr</code>パッケージ<span class="citation" data-cites="progressr_bib">(<a href="#ref-progressr_bib" role="doc-biblioref">Bengtsson 2025</a>)</span>を用いています。</p>
+<p><code>futureverse</code>では、プログレスバーを表示するために<code>progressr</code>パッケージ<span class="citation" data-cites="progressr_bib">(<a href="references.html#ref-progressr_bib" role="doc-biblioref">Bengtsson 2025</a>)</span>を用いています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1851,7 +1851,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-RJ-2021-048" class="csl-entry" role="listitem">
 Bengtsson, Henrik. 2021. <span>“A Unifying Framework for Parallel and Distributed Processing in r Using Futures.”</span> <em>The R Journal</em> 13 (2): 208–27. <a href="https://doi.org/10.32614/RJ-2021-048">https://doi.org/10.32614/RJ-2021-048</a>.
 </div>

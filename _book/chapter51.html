@@ -1122,7 +1122,7 @@ window.Quarto = {
 </section></section><section id="dagdagittyパッケージ" class="level3" data-number="51.1.2"><h3 data-number="51.1.2" class="anchored" data-anchor-id="dagdagittyパッケージ">
 <span class="header-section-number">51.1.2</span> DAG：dagittyパッケージ</h3>
 <p>ここまでDAGの基礎について述べてきましたが、上記の3つ（Chain、Fork、Collider）を複雑なDAGから見つけるのは大変ですし、より複雑な関係が共変量間にある場合、実際にその共変量を調整すべきか、すべきでないかよくわからない場合もあります。</p>
-<p>このDAGの複雑な部分を整理し、どの共変量を調整すべきか明らかにしてくれる機能を持ったRのパッケージが<a href="https://www.dagitty.net/">dagitty</a><span class="citation" data-cites="dagitty_bib">(<a href="#ref-dagitty_bib" role="doc-biblioref"><span class="nocase">Textor et al.</span> 2016</a>)</span>です。<code>dagitty</code>を用いれば、ネットワークを表現する簡単な文字列を準備するだけで簡単にDAGを表示することができ、独立の関係にある共変量や、因果関係を示す際に調整が必要となる共変量をDAGから評価することができます。<code>dagitty</code>はRから利用するだけではなく、<a href="https://www.dagitty.net/dags.html">Webアプリケーション</a>としてGUIで利用することもできます。</p>
+<p>このDAGの複雑な部分を整理し、どの共変量を調整すべきか明らかにしてくれる機能を持ったRのパッケージが<a href="https://www.dagitty.net/">dagitty</a><span class="citation" data-cites="dagitty_bib">(<a href="references.html#ref-dagitty_bib" role="doc-biblioref"><span class="nocase">Textor et al.</span> 2016</a>)</span>です。<code>dagitty</code>を用いれば、ネットワークを表現する簡単な文字列を準備するだけで簡単にDAGを表示することができ、独立の関係にある共変量や、因果関係を示す際に調整が必要となる共変量をDAGから評価することができます。<code>dagitty</code>はRから利用するだけではなく、<a href="https://www.dagitty.net/dags.html">Webアプリケーション</a>としてGUIで利用することもできます。</p>
 <p><code>dagitty</code>でDAGを作成する場合に用いる関数が<code>dagitty</code>関数です。<code>dagitty</code>関数は引数にDAGのネットワーク構造を指定する文字列を取ります。</p>
 <p><code>dagitty</code>関数の引数となる文字列では、<code>dag{}</code>というコマンドの<code><a href="https://rdrr.io/r/base/Paren.html">{}</a></code>の中にnodeとedgeの関係を表記していくことになります。このnodeとedgeの表記では、<code>A -&gt; B</code>という形で表記するとnode Aが原因でnode Bが結果となるedgeを意味することになります。また、forkを表現する場合には、<code>A &lt;- B -&gt; C</code>という形で、両側に矢印が向くような文字列を入力します。DAGは「非巡回」ですので、下流から上流への矢印が生じないように注意してDAGを設定していきます。また、そのnode自身にedgeが向かうような「ループ」もDAGでは設定することはできません。</p>
 <p><code>dagitty</code>関数は<code>dag{}</code>のコマンドを返すだけの関数ですので、この返り値（以下の場合では<code>g1</code>）を用いてDAGを表示したり、共変量の関係を調べたりすることになります。</p>
@@ -1253,7 +1253,7 @@ h200 _||_ tinc</code></pre>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><code>adjustmentSets</code>関数のヘルプ（<code><a href="https://rdrr.io/pkg/dagitty/man/adjustmentSets.html">?adjustmentSets</a></code>）に記載の通り、<code>effect = "direct"</code>では<span class="citation" data-cites="perković2015completegeneralizedadjustmentcriterion">(<a href="#ref-perkovi%C4%872015completegeneralizedadjustmentcriterion" role="doc-biblioref">Perković et al. 2015</a>)</span>、<code>effect = "total"</code>では<span class="citation" data-cites="Pearl2009_Causality_models_jp">(<a href="#ref-Pearl2009_Causality_models_jp" role="doc-biblioref">Pearl 2009b</a>)</span>（英語の原著は<span class="citation" data-cites="Pearl2009_Causality_models">(<a href="#ref-Pearl2009_Causality_models" role="doc-biblioref">Pearl 2009a</a>)</span>）に従い調整すべき共変量を表示します。</p>
+<p><code>adjustmentSets</code>関数のヘルプ（<code><a href="https://rdrr.io/pkg/dagitty/man/adjustmentSets.html">?adjustmentSets</a></code>）に記載の通り、<code>effect = "direct"</code>では<span class="citation" data-cites="perković2015completegeneralizedadjustmentcriterion">(<a href="references.html#ref-perkovi%C4%872015completegeneralizedadjustmentcriterion" role="doc-biblioref">Perković et al. 2015</a>)</span>、<code>effect = "total"</code>では<span class="citation" data-cites="Pearl2009_Causality_models_jp">(<a href="references.html#ref-Pearl2009_Causality_models_jp" role="doc-biblioref">Pearl 2009b</a>)</span>（英語の原著は<span class="citation" data-cites="Pearl2009_Causality_models">(<a href="references.html#ref-Pearl2009_Causality_models" role="doc-biblioref">Pearl 2009a</a>)</span>）に従い調整すべき共変量を表示します。</p>
 </div>
 </div>
 </div>
@@ -1273,7 +1273,7 @@ h200 _||_ tinc</code></pre>
 <figcaption>DAGを条件付き確率で表現する</figcaption></figure>
 </div>
 <p>Aが起こってAに依存したBが起こる場合（<span class="math inline">\(A \rightarrow B\)</span>）、Aが起こる確率は<span class="math inline">\(P(A)\)</span>、Bが起こる確率はAに依存するため<span class="math inline">\(P(B|A)\)</span>と書けます。後者はAという条件の下でのBが起こる確率という意味です。Aが起こってBが起こる場合、確率の掛け算で全体の確率を示すことができるので、全体の確率は<span class="math inline">\(P(A) \cdot P(B|A)\)</span>という掛け算で表すことができます。</p>
-<p>上記の図では<span class="math inline">\(P()\)</span>に当たるものを<code>[ ]</code>で表していますが、これは後ほど説明する<code>bnlearn</code>パッケージ<span class="citation" data-cites="bnlearn_bib bnlearn_bib2 bnlearn_bib3 bnlearn_bib4">(<a href="#ref-bnlearn_bib" role="doc-biblioref">Scutari and Denis 2021</a>; <a href="#ref-bnlearn_bib2" role="doc-biblioref">Nagarajan and Scutari 2013</a>; <a href="#ref-bnlearn_bib3" role="doc-biblioref">Scutari 2017</a>, <a href="#ref-bnlearn_bib4" role="doc-biblioref">2010</a>)</span>で用いる表現方法です。</p>
+<p>上記の図では<span class="math inline">\(P()\)</span>に当たるものを<code>[ ]</code>で表していますが、これは後ほど説明する<code>bnlearn</code>パッケージ<span class="citation" data-cites="bnlearn_bib bnlearn_bib2 bnlearn_bib3 bnlearn_bib4">(<a href="references.html#ref-bnlearn_bib" role="doc-biblioref">Scutari and Denis 2021</a>; <a href="references.html#ref-bnlearn_bib2" role="doc-biblioref">Nagarajan and Scutari 2013</a>; <a href="references.html#ref-bnlearn_bib3" role="doc-biblioref">Scutari 2017</a>, <a href="references.html#ref-bnlearn_bib4" role="doc-biblioref">2010</a>)</span>で用いる表現方法です。</p>
 <p>同様に<span class="math inline">\(A \rightarrow B \rightarrow C\)</span>というChainでは、<span class="math inline">\(P(A) \cdot P(B|A)\)</span>と、Cが起こる確率がBに依存していることを示す<span class="math inline">\(P(C|B)\)</span>を掛け、全体としては<span class="math inline">\(P(A) \cdot P(B|A) \cdot P(C|B)\)</span>という形で表すことになります。</p>
 <p>また、<span class="math inline">\(A \rightarrow B \leftarrow C\)</span>という形のForkでは、Bが起こる確率はAとCに依存するため、<span class="math inline">\(P(B|A, C)\)</span>と表現します。<code>bnlearn</code>パッケージでは<code>[B | A:C]</code>という形で<span class="math inline">\(P(B|A, C)\)</span>を表記します。</p>
 <p>このルールに従うと、より複雑なネットワークでもその構造を条件付き確率の掛け算で表現することができます。この条件付き確率の連鎖を評価するのがベイジアンネットワークです。</p>
@@ -1303,7 +1303,7 @@ h200 _||_ tinc</code></pre>
 <p>もう一つの方法は、DAGに<strong>スコア</strong>をつけ、そのスコアが最も優れているDAGを構造の推定結果として得る方法です。このスコアは<a href="./chapter30.html#aicによるモデル選択">30章</a>で説明したAICでのモデル選択に似たものです。AICによるモデル選択では、AICが最小となるモデルを採用しました。DAGの構造推定でも同様に、AICに当たるようなスコアが最小となる構造をDAGの推定結果とします。</p>
 </section></section><section id="ベイジアンネットワークbnlearnパッケージ" class="level3" data-number="51.2.3"><h3 data-number="51.2.3" class="anchored" data-anchor-id="ベイジアンネットワークbnlearnパッケージ">
 <span class="header-section-number">51.2.3</span> ベイジアンネットワーク：bnlearnパッケージ</h3>
-<p>Rでベイジアンネットワークの演算を行うためのパッケージが、上ですでに紹介した<code>bnlearn</code>パッケージ<span class="citation" data-cites="bnlearn_bib">(<a href="#ref-bnlearn_bib" role="doc-biblioref">Scutari and Denis 2021</a>)</span>です。<code>bnlearn</code>パッケージでは、</p>
+<p>Rでベイジアンネットワークの演算を行うためのパッケージが、上ですでに紹介した<code>bnlearn</code>パッケージ<span class="citation" data-cites="bnlearn_bib">(<a href="references.html#ref-bnlearn_bib" role="doc-biblioref">Scutari and Denis 2021</a>)</span>です。<code>bnlearn</code>パッケージでは、</p>
 <ul>
 <li>DAGの構造を推定する</li>
 <li>DAGの構造を指定する</li>
@@ -1354,7 +1354,7 @@ h200 _||_ tinc</code></pre>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>ベイジアンネットワークでは、<code>learning.test</code>のようなカテゴリカルデータのみのデータ、正規分布する連続変数のみのデータ、カテゴリカルデータと正規分布する連続変数の混じったデータの順に解析が難しくなっていきます。このため、解析例としてまずはカテゴリカルデータのみのデータを用いることが多いようです。教科書などでもカテゴリカルデータのみのデータ、正規分布する連続変数のみのデータ、カテゴリカルデータと正規分布する連続変数の混じったデータの順で解析例が解説されていることがあります。</p>
-<p>このテキストではカテゴリカルデータのみを対象として説明します。正規分布する連続変数、カテゴリカルデータ・連続変数の混じったデータに関する解析については、参考文献（<a href="https://www.amazon.co.jp/R%E3%81%A8%E4%BA%8B%E4%BE%8B%E3%81%A7%E5%AD%A6%E3%81%B6%E3%83%99%E3%82%A4%E3%82%B8%E3%82%A2%E3%83%B3%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%80%94%E5%8E%9F%E8%91%97%E7%AC%AC2%E7%89%88%E3%80%95-Marco-Scutari/dp/4320114655">Rと事例で学ぶベイジアンネットワーク</a><span class="citation" data-cites="1971993809756830770">(<a href="#ref-1971993809756830770" role="doc-biblioref">Scutari et al. 2022</a>)</span>）などを参照ください。</p>
+<p>このテキストではカテゴリカルデータのみを対象として説明します。正規分布する連続変数、カテゴリカルデータ・連続変数の混じったデータに関する解析については、参考文献（<a href="https://www.amazon.co.jp/R%E3%81%A8%E4%BA%8B%E4%BE%8B%E3%81%A7%E5%AD%A6%E3%81%B6%E3%83%99%E3%82%A4%E3%82%B8%E3%82%A2%E3%83%B3%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%80%94%E5%8E%9F%E8%91%97%E7%AC%AC2%E7%89%88%E3%80%95-Marco-Scutari/dp/4320114655">Rと事例で学ぶベイジアンネットワーク</a><span class="citation" data-cites="1971993809756830770">(<a href="references.html#ref-1971993809756830770" role="doc-biblioref">Scutari et al. 2022</a>)</span>）などを参照ください。</p>
 </div>
 </div>
 </div>
@@ -1797,7 +1797,7 @@ D            a          b          c
 </div>
 <section id="演算した条件付き確率の表示" class="level5" data-number="51.2.3.6.1"><h5 data-number="51.2.3.6.1" class="anchored" data-anchor-id="演算した条件付き確率の表示">
 <span class="header-section-number">51.2.3.6.1</span> 演算した条件付き確率の表示</h5>
-<p>上記の通り、条件付き確率は<code>bn.fit</code>関数の返り値として表示させることができます。しかし、数値のみを見てDAGの構造と条件付き確率の関係を捉えるのは難しいです。<code>bnlearn</code>では、グラフ作成パッケージである<code>lattice</code><span class="citation" data-cites="lattice_bib">(<a href="#ref-lattice_bib" role="doc-biblioref">Sarkar 2008</a>)</span>を用いてグラフの構造と条件付き確率を視覚的に捉えやすくするための関数をいくつか備えています。</p>
+<p>上記の通り、条件付き確率は<code>bn.fit</code>関数の返り値として表示させることができます。しかし、数値のみを見てDAGの構造と条件付き確率の関係を捉えるのは難しいです。<code>bnlearn</code>では、グラフ作成パッケージである<code>lattice</code><span class="citation" data-cites="lattice_bib">(<a href="references.html#ref-lattice_bib" role="doc-biblioref">Sarkar 2008</a>)</span>を用いてグラフの構造と条件付き確率を視覚的に捉えやすくするための関数をいくつか備えています。</p>
 <p>まずは<code>bn.fit.barchart</code>関数から紹介します。<code>bn.fit.barchart</code>関数は<code>bn.fit</code>関数で計算した条件付き確率を<code>lattice</code>の棒グラフで示してくれる関数です。棒グラフの上に記載されている変数が条件付き確率の条件、グラフは条件付き確率をそれぞれ示したものとなります。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -2185,14 +2185,14 @@ vote         over50 under49
 </div>
 <p>Colliderのデータでは、<code>iamb</code>関数でDAGの構造を推定すると方向が決まったedgeが表示されます。全体の確率は、上の例と同様に一般化すると、以下のような式で表すことができます。</p>
 <p><span class="math display">\[P(A) \cdot P(B) \cdot P(C|A, B)\]</span></p>
-<p>この式はベイズの定理で変換しても、他の3つと一致させることができず、ChainやForkと同じとは見なすことはできません。ベイジアンネットワークではこのようなColliderを<strong>v-structure</strong>と呼び、<a href="https://ftp.cs.ucla.edu/tech-report/1991-reports/910020.pdf">edgeの方向を決める時に重要である</a>とされています<span class="citation" data-cites="verma2022equivalence">(<a href="#ref-verma2022equivalence" role="doc-biblioref">Verma and Pearl 2022</a>)</span>。</p>
+<p>この式はベイズの定理で変換しても、他の3つと一致させることができず、ChainやForkと同じとは見なすことはできません。ベイジアンネットワークではこのようなColliderを<strong>v-structure</strong>と呼び、<a href="https://ftp.cs.ucla.edu/tech-report/1991-reports/910020.pdf">edgeの方向を決める時に重要である</a>とされています<span class="citation" data-cites="verma2022equivalence">(<a href="references.html#ref-verma2022equivalence" role="doc-biblioref">Verma and Pearl 2022</a>)</span>。</p>
 <p>まとめると、以下の図のように、3変数の関係ではv-structureだけが統計的には異質であり、したがって方向を決めるきっかけとして用いられます。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/v-structure.png" class="lightbox" data-gallery="quarto-lightbox-gallery-31" title="3変数の関係と条件付き確率"><img src="./image/v-structure.png" class="img-fluid figure-img" alt="3変数の関係と条件付き確率"></a></p>
 <figcaption>3変数の関係と条件付き確率</figcaption></figure>
 </div>
 </section></section><section id="v-structure以外のedgeの方向を決める" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="v-structure以外のedgeの方向を決める">v-structure以外のedgeの方向を決める</h3>
-<p>v-sturcture以外のedgeでは基本的に2変量の関係だけでは方向が定まりません。したがって、v-sturctureによって方向が定まったedgeの情報から、方向の決まっていないedgeの方向を決める必要があります。この方法のことを<strong><a href="https://www.cmu.edu/dietrich/philosophy/docs/tech-reports/61_Meek.pdf">Meek’s rule</a></strong>と呼ぶことがあるようです<span class="citation" data-cites="meek1995complete">(<a href="#ref-meek1995complete" role="doc-biblioref">Meek 1995</a>)</span>。このMeek’s ruleという名前は文献に示したレポートの著者から来ていますが、元々は<a href="https://arxiv.org/pdf/1303.5435">こちらの論文</a><span class="citation" data-cites="verma1992algorithm">(<a href="#ref-verma1992algorithm" role="doc-biblioref">Verma and Pearl 1992</a>)</span>に記載されていたルールになります。</p>
+<p>v-sturcture以外のedgeでは基本的に2変量の関係だけでは方向が定まりません。したがって、v-sturctureによって方向が定まったedgeの情報から、方向の決まっていないedgeの方向を決める必要があります。この方法のことを<strong><a href="https://www.cmu.edu/dietrich/philosophy/docs/tech-reports/61_Meek.pdf">Meek’s rule</a></strong>と呼ぶことがあるようです<span class="citation" data-cites="meek1995complete">(<a href="references.html#ref-meek1995complete" role="doc-biblioref">Meek 1995</a>)</span>。このMeek’s ruleという名前は文献に示したレポートの著者から来ていますが、元々は<a href="https://arxiv.org/pdf/1303.5435">こちらの論文</a><span class="citation" data-cites="verma1992algorithm">(<a href="references.html#ref-verma1992algorithm" role="doc-biblioref">Verma and Pearl 1992</a>)</span>に記載されていたルールになります。</p>
 <p>ルールは以下の図に示す4つとなります。図に示した通り、いずれのルールもv-structureまたは巡回となることを避けると一意に方向が決まる形となっています。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="./image/meeksrule.png" class="lightbox" data-gallery="quarto-lightbox-gallery-32" title="Meek’s rule"><img src="./image/meeksrule.png" class="img-fluid figure-img" alt="Meek’s rule"></a></p>
@@ -2274,7 +2274,7 @@ vote            female      male
 <span class="header-section-number">51.3</span> 構造方程式モデリング（Structural equation modeling）</h2>
 <p><strong>構造方程式モデリング</strong>（Structural Equation Modeling、SEM、共分散構造分析とも呼ばれる）はベイジアンネットワークと同様にネットワークを用いて変数同士の因果関係を評価する手法の一つです。</p>
 <p>構造方程式モデリングでは変数同士の関係を取り扱い、データとして取得できる変数だけでなく、データとしては取得できない変数である、<strong>潜在変数（latent variables）</strong>をネットワークに組み込み、評価します。</p>
-<p>潜在変数（latent variables）とは、我々が評価したいと思うことがあるけれども、実際に数値として評価することは難しいもののことを指します。例えば、やる気や元気、町の住みやすさや清潔度、治安などは各個人や各都市によって度合いが異なることは分かりますが、具体的に数値として測定することはできません。学校や会社でやる気がない人がいても、「やる気… たったの5か… ゴミめ…」<span class="citation" data-cites="dragonball_17_bib">(<a href="#ref-dragonball_17_bib" role="doc-biblioref">鳥山明 1989</a>)</span>とは評価できません。</p>
+<p>潜在変数（latent variables）とは、我々が評価したいと思うことがあるけれども、実際に数値として評価することは難しいもののことを指します。例えば、やる気や元気、町の住みやすさや清潔度、治安などは各個人や各都市によって度合いが異なることは分かりますが、具体的に数値として測定することはできません。学校や会社でやる気がない人がいても、「やる気… たったの5か… ゴミめ…」<span class="citation" data-cites="dragonball_17_bib">(<a href="references.html#ref-dragonball_17_bib" role="doc-biblioref">鳥山明 1989</a>)</span>とは評価できません。</p>
 <p>構造方程式モデリングでは、実際に測定できる変数（測定結果）と共に、このやる気や元気などの潜在変数をネットワークに組み込むことで、潜在変数自体を評価するとともに、潜在変数とデータとして取得できる変数の間の関係を評価します。</p>
 <p>潜在変数を評価する別の手法として、<a href="./chapter32.html#因子分析">32章で説明した因子分析</a>があります。因子分析の例では、学校の成績から「理系度」・「文系度」を評価する例を挙げましたが、「理系度」・「文系度」が潜在変数、学校の成績が測定可能な変数に当たります。構造方程式モデリングはこの因子分析に線形回帰を持ち込んだような統計手法となっています。</p>
 <section id="構造方程式モデリングネットワーク" class="level3" data-number="51.3.1"><h3 data-number="51.3.1" class="anchored" data-anchor-id="構造方程式モデリングネットワーク">
@@ -2319,7 +2319,7 @@ Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</code></pre>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>構造方程式モデリングについては、<a href="https://www.amazon.co.jp/dp/4254126581">共分散構造分析: 構造方程式モデリング (入門編)</a><span class="citation" data-cites="kyobunnsannkouzoukaiseki_kiso_bib">(<a href="#ref-kyobunnsannkouzoukaiseki_kiso_bib" role="doc-biblioref">豊田秀樹 1998</a>)</span>、<a href="https://www.amazon.co.jp/dp/4489021801">共分散構造分析: 構造方程式モデリング (R編)</a><span class="citation" data-cites="kyobunnsannkouzoukaiseki_R_bib">(<a href="#ref-kyobunnsannkouzoukaiseki_R_bib" role="doc-biblioref">豊田秀樹 2014</a>)</span>や<a href="https://www2.kobe-u.ac.jp/~bunji/files/lecture/MVA/html/">神戸大学経済学部の分寺先生の講義資料</a>に詳しく記載されています。ここでは計算の初歩だけを説明しますので、より詳しくは上記の資料をご参照ください。</p>
+<p>構造方程式モデリングについては、<a href="https://www.amazon.co.jp/dp/4254126581">共分散構造分析: 構造方程式モデリング (入門編)</a><span class="citation" data-cites="kyobunnsannkouzoukaiseki_kiso_bib">(<a href="references.html#ref-kyobunnsannkouzoukaiseki_kiso_bib" role="doc-biblioref">豊田秀樹 1998</a>)</span>、<a href="https://www.amazon.co.jp/dp/4489021801">共分散構造分析: 構造方程式モデリング (R編)</a><span class="citation" data-cites="kyobunnsannkouzoukaiseki_R_bib">(<a href="references.html#ref-kyobunnsannkouzoukaiseki_R_bib" role="doc-biblioref">豊田秀樹 2014</a>)</span>や<a href="https://www2.kobe-u.ac.jp/~bunji/files/lecture/MVA/html/">神戸大学経済学部の分寺先生の講義資料</a>に詳しく記載されています。ここでは計算の初歩だけを説明しますので、より詳しくは上記の資料をご参照ください。</p>
 <p>構造方程式モデリングの矢印は線形、つまり数式では<span class="math inline">\(y = \beta x + \epsilon\)</span>という形を仮定します。この式では<span class="math inline">\(x\)</span>が原因側（矢印のもと）、<span class="math inline">\(y\)</span>が結果側（矢印の先）になります。<span class="math inline">\(\beta\)</span>と<span class="math inline">\(\epsilon\)</span>はそれぞれ因子負荷量、エラー項を示します。</p>
 <p>まずは簡単な例として、以下のようなモデルを考えてみます。国語、英語、社会のテストの成績（測定可能な変数）が文系科目の能力（潜在変数）による影響を受けている、とするモデルです。</p>
 <div class="quarto-figure quarto-figure-center">
@@ -2497,7 +2497,7 @@ E(x_{jpn} \cdot x_{eng}) \\
 </div>
 </section><section id="lavaanパッケージ" class="level3" data-number="51.3.3"><h3 data-number="51.3.3" class="anchored" data-anchor-id="lavaanパッケージ">
 <span class="header-section-number">51.3.3</span> lavaanパッケージ</h3>
-<p>Rで構造方程式モデリングの計算を行うためのパッケージが<code>lavaan</code>パッケージ<span class="citation" data-cites="lavaan_bib1 lavaan_bib2">(<a href="#ref-lavaan_bib1" role="doc-biblioref">Rosseel et al. 2025</a>; <a href="#ref-lavaan_bib2" role="doc-biblioref">Rosseel 2012</a>)</span>です。<code>lavaan</code>パッケージではパスモデルを簡単なコードで作成することができ、顕在変数のデータと作成したパスモデルから因子負荷量を演算することができます。以下では、まず簡単なパスモデルを用いて因子負荷量の演算を行い、その後もう少し複雑なモデルについても説明します。</p>
+<p>Rで構造方程式モデリングの計算を行うためのパッケージが<code>lavaan</code>パッケージ<span class="citation" data-cites="lavaan_bib1 lavaan_bib2">(<a href="references.html#ref-lavaan_bib1" role="doc-biblioref">Rosseel et al. 2025</a>; <a href="references.html#ref-lavaan_bib2" role="doc-biblioref">Rosseel 2012</a>)</span>です。<code>lavaan</code>パッケージではパスモデルを簡単なコードで作成することができ、顕在変数のデータと作成したパスモデルから因子負荷量を演算することができます。以下では、まず簡単なパスモデルを用いて因子負荷量の演算を行い、その後もう少し複雑なモデルについても説明します。</p>
 <p>用いるデータは上のcalloutで用いた各科目のテストの成績です。国語、英語、社会の点数から文系教科の能力を評価するパスモデルについて評価していきます。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -2696,7 +2696,7 @@ E(x_{jpn} \cdot x_{eng}) \\
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-meek1995complete" class="csl-entry" role="listitem">
 Meek, Chris. 1995. <em>Complete Orientation Rules for Patterns</em>. Carnegie Mellon [Department of Philosophy].
 </div>
