@@ -1039,7 +1039,7 @@ Coefficients:
 </div>
 </div>
 </div>
-<p>このデータでは、各患者（<code>patient</code>）は時点1と時点2の2度測定していて、関連性があります。したがって、<code>patient</code>をランダム効果（ランダム切片）とした線形混合モデルで処置の効果を評価します。30章に示した通り、線形混合モデルの演算は<code>lmerTest</code>パッケージ<span class="citation" data-cites="lmerTest_bib">(<a href="references.html#ref-lmerTest_bib" role="doc-biblioref">Kuznetsova et al. 2017</a>)</span>の<code>lmer</code>関数を用いて計算できます。上記のデータが少ない場合の演算と同様に、処置の効果は交互作用（以下の例では<code>treat1:period</code>）として評価できます。また、時点1での差は下記の演算では<code>treat1</code>に吸収されている形になります。</p>
+<p>このデータでは、各患者（<code>patient</code>）は時点1と時点2の2度測定していて、関連性があります。したがって、<code>patient</code>をランダム効果（ランダム切片）とした線形混合モデルで処置の効果を評価します。30章に示した通り、線形混合モデルの演算は<code>lmerTest</code>パッケージ<span class="citation" data-cites="lmerTest_bib">(<a href="#ref-lmerTest_bib" role="doc-biblioref">Kuznetsova et al. 2017</a>)</span>の<code>lmer</code>関数を用いて計算できます。上記のデータが少ない場合の演算と同様に、処置の効果は交互作用（以下の例では<code>treat1:period</code>）として評価できます。また、時点1での差は下記の演算では<code>treat1</code>に吸収されている形になります。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1067,8 +1067,8 @@ Fixed Effects:
 </section><section id="doubly-robust-did2重ロバストなdid" class="level3" data-number="50.1.3"><h3 data-number="50.1.3" class="anchored" data-anchor-id="doubly-robust-did2重ロバストなdid">
 <span class="header-section-number">50.1.3</span> Doubly Robust DID（2重ロバストなDID）</h3>
 <p>上記の単純なDIDでは、共変量の偏りについては考慮しておらず、DIDの前提である「対称群を平行移動すれば処置群で処置しなかった場合（<span class="math inline">\(E(r_0|Z=1)\)</span>）に当たる」という仮定が成立していない可能性があります。また、初期値が違えば、割付が完全に無作為化されていない、つまり割付による偏りにより結果にバイアスが生じているはずです。このような場合には、<a href="./chapter49.html">49章</a>で説明した共変量の調整や傾向スコアを用いたIPW、この2つを用いてよりロバスト（頑健）な結果を得ることのできる二重ロバストの手法を利用することを検討したほうが良いでしょう。</p>
-<p>この、IPWを利用したDID、2重ロバストなDID（Doubly Robust DID）に対応したパッケージが<code>DRDID</code>パッケージ<span class="citation" data-cites="DRDID_bib">(<a href="references.html#ref-DRDID_bib" role="doc-biblioref">P. H. C. Sant’Anna and Zhao 2020</a>)</span>です。<code>DRDID</code>パッケージの<a href="https://www.researchgate.net/publication/329792048_Doubly_Robust_Difference-in-Differences_Estimators">参考文献</a><span class="citation" data-cites="sant2020doubly">(<a href="references.html#ref-sant2020doubly" role="doc-biblioref">P. H. Sant’Anna and Zhao 2020</a>)</span>を読んでいただければわかると思いますが、統計的には相当複雑なモデルとなっており、「少し勉強すれば使える」ものではない手法になっています。元論文をよく読み、理解したうえで実際に使用されることをおすすめします。</p>
-<p><code>DRDID</code>パッケージの主な関数は、IPWをDIDに持ち込んだ<code>ipwdid</code>関数と2重ロバストなDIDである<code>drdid</code>関数の2つです。以下に<code>DRDID</code>パッケージのExampleに示されている解析の例を示します。データにはLalondeのNSWのデータ<span class="citation" data-cites="lalonde1986evaluating">(<a href="references.html#ref-lalonde1986evaluating" role="doc-biblioref">LaLonde 1986</a>)</span>を用いています。</p>
+<p>この、IPWを利用したDID、2重ロバストなDID（Doubly Robust DID）に対応したパッケージが<code>DRDID</code>パッケージ<span class="citation" data-cites="DRDID_bib">(<a href="#ref-DRDID_bib" role="doc-biblioref">P. H. C. Sant’Anna and Zhao 2020</a>)</span>です。<code>DRDID</code>パッケージの<a href="https://www.researchgate.net/publication/329792048_Doubly_Robust_Difference-in-Differences_Estimators">参考文献</a><span class="citation" data-cites="sant2020doubly">(<a href="#ref-sant2020doubly" role="doc-biblioref">P. H. Sant’Anna and Zhao 2020</a>)</span>を読んでいただければわかると思いますが、統計的には相当複雑なモデルとなっており、「少し勉強すれば使える」ものではない手法になっています。元論文をよく読み、理解したうえで実際に使用されることをおすすめします。</p>
+<p><code>DRDID</code>パッケージの主な関数は、IPWをDIDに持ち込んだ<code>ipwdid</code>関数と2重ロバストなDIDである<code>drdid</code>関数の2つです。以下に<code>DRDID</code>パッケージのExampleに示されている解析の例を示します。データにはLalondeのNSWのデータ<span class="citation" data-cites="lalonde1986evaluating">(<a href="#ref-lalonde1986evaluating" role="doc-biblioref">LaLonde 1986</a>)</span>を用いています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1161,7 +1161,7 @@ drdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 </section></section><section id="causalimpact" class="level2" data-number="50.2"><h2 data-number="50.2" class="anchored" data-anchor-id="causalimpact">
 <span class="header-section-number">50.2</span> CausalImpact</h2>
 <p>DIDは時間が関わるデータに当てはめるものですが、通常DIDは2つの時点、時点0（処置前）と時点1（処置後）のみに適用するものとなっています。<a href="./chapter33.html">33章</a>で説明した時系列データには、単純なDIDを当てはめることはできません。</p>
-<p>この時系列データに対してDIDと同じような分析の手法を提供しているのが、<strong><code>CausalImpact</code></strong>パッケージ<span class="citation" data-cites="CausalImpact_bib">(<a href="references.html#ref-CausalImpact_bib" role="doc-biblioref">Brodersen et al. 2014</a>)</span>です。<code>CausalImpact</code>では、33章で少しだけ説明した<a href="./chapter33.html#状態空間モデル">状態空間モデル</a>とベイズ統計を用いて、ある時点で処置を行った処置群において、処置前処置後の時系列を比較し、処置の効果の大きさを求めることができます。</p>
+<p>この時系列データに対してDIDと同じような分析の手法を提供しているのが、<strong><code>CausalImpact</code></strong>パッケージ<span class="citation" data-cites="CausalImpact_bib">(<a href="#ref-CausalImpact_bib" role="doc-biblioref">Brodersen et al. 2014</a>)</span>です。<code>CausalImpact</code>では、33章で少しだけ説明した<a href="./chapter33.html#状態空間モデル">状態空間モデル</a>とベイズ統計を用いて、ある時点で処置を行った処置群において、処置前処置後の時系列を比較し、処置の効果の大きさを求めることができます。</p>
 <p>仮に、ある時点（時点50）に漁港Aから稚魚を放流したとします。漁港Aから十分に離れている場所には、放流の影響を受けない漁港Bと漁港Cがあったとします。この3つの漁港A、B、Cの漁獲高が時系列で求まるとしたとき、漁港Aでは稚魚の放流という処置の効果が漁獲高に現れ、漁港BやCには現れないことが期待できます。</p>
 <p>それぞれの漁港A、B、Cにおける漁獲高が以下のようであった場合について考えてみます。</p>
 <div class="cell">
@@ -1202,7 +1202,7 @@ drdid(yname = "re", tname = "year", idname = "id", dname = "experimental",
 </div>
 </div>
 <p>上記のように、漁港A（<code>fishportA</code>）の時点51で稚魚を放流した場合、漁港Aの時点50までは処置をしていない対照群、時点51以降は処置群であるとします。漁港BとCは、通常の統計とは少し異なりますが、共変量として取り扱います。</p>
-<p><code>CausalImpact</code>では、まず処置をした群（上の例では漁港A）を1列目、共変量（上の例では漁港BとC）を2列目以降に配置した行列（<code>data</code>）を準備します。データは行列ではなく、<code>zoo</code>パッケージ<span class="citation" data-cites="zoo_bib">(<a href="references.html#ref-zoo_bib" role="doc-biblioref">Zeileis and Grothendieck 2005</a>)</span>で提供されている<code>zoo</code>オブジェクトを用いることもできます。<code>zoo</code>オブジェクトは時系列を時系列のまま取り扱うことができる行列のようなものです。</p>
+<p><code>CausalImpact</code>では、まず処置をした群（上の例では漁港A）を1列目、共変量（上の例では漁港BとC）を2列目以降に配置した行列（<code>data</code>）を準備します。データは行列ではなく、<code>zoo</code>パッケージ<span class="citation" data-cites="zoo_bib">(<a href="#ref-zoo_bib" role="doc-biblioref">Zeileis and Grothendieck 2005</a>)</span>で提供されている<code>zoo</code>オブジェクトを用いることもできます。<code>zoo</code>オブジェクトは時系列を時系列のまま取り扱うことができる行列のようなものです。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1327,7 +1327,7 @@ For more details, type: summary(impact, "report")</code></pre>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><code>CausalImpact</code>の統計モデルについては、<a href="https://projecteuclid.org/journalArticle/Download?urlId=10.1214%2F14-AOAS788">文献</a><span class="citation" data-cites="brodersen2015inferring">(<a href="references.html#ref-brodersen2015inferring" role="doc-biblioref">Brodersen et al. 2015</a>)</span>を参照して下さい。<code>CausalImpact</code>パッケージ自体はシンプルで使いやすいのですが、背景の統計モデルはかなり複雑で、理解するのは難しいです。正直、文献を読んでも他の記事を読んでもいまいちわからないところがあります。</p>
+<p><code>CausalImpact</code>の統計モデルについては、<a href="https://projecteuclid.org/journalArticle/Download?urlId=10.1214%2F14-AOAS788">文献</a><span class="citation" data-cites="brodersen2015inferring">(<a href="#ref-brodersen2015inferring" role="doc-biblioref">Brodersen et al. 2015</a>)</span>を参照して下さい。<code>CausalImpact</code>パッケージ自体はシンプルで使いやすいのですが、背景の統計モデルはかなり複雑で、理解するのは難しいです。正直、文献を読んでも他の記事を読んでもいまいちわからないところがあります。</p>
 <p>上に述べた通り、<code>CausalImpact</code>では処置前の時系列を対照とし、処置が無かった時の予測時系列と、処置後の実際の時系列を比較することでATTを求める手法となっています。この、処置が無かった時の予測時系列のことを、実際には起こらなかったことを推定していることから、<strong>Counterfactual（反実仮想）</strong>と呼びます。</p>
 <p>ATTとATEの項でも簡単に説明しましたが、我々は処置をした群の処置の結果（<span class="math inline">\(E(r_1)|Z=1\)</span>）と処置をしなかった群の処置しなかった場合の結果（<span class="math inline">\(E(r_0)|Z=0\)</span>）しか測定できません。そこで、DIDや<code>CausalImpact</code>を使うことで、処置をした群で処置をしなかった場合の結果（<span class="math inline">\(E(r_0)|Z=1\)</span>）、つまり反実仮想を推測し、ATT（<span class="math inline">\(E(r_1)-E(r_0)|Z=1\)</span>）に当たるものを計算しています。この反実仮想では、「測定していないものを推測する」ということをしているため、反実仮想の評価は欠測の問題ととらえられる場合もあります。</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1336,7 +1336,7 @@ For more details, type: summary(impact, "report")</code></pre>
 </div>
 <p>共変量として何を選ぶべきかについては<code>CausalImpact</code>のreferenceにも文献にもはっきりとは述べられていませんが、Googleがウェブ広告の効果を評価するために作成したパッケージですので、おそらく広告とは関係のないサイトからのアクセス数などを共変量とするのだと思います。<code>CausalImpact</code>では共変量が無いと演算ができないので、評価したい対象と、少なくとももう一つ時系列のデータが必要です。共変量には「処置の影響を受けないもの」という制約があります。共変量を対照としているのかと思っていたのですがそういうわけでもなさそうで、共変量が何なのか理解するのが難しいです。</p>
 <p><code>CausalImpact</code>ではSpike-and-Slab priorという事前分布を用いています。Spike-and-Slab priorでは、モデルに組み込んだ方がよい対照は弱情報事前分布に影響し、組み込まない方がよい対照は結果に影響しなくなる、つまりモデル選択のような効果を持ちます。共変量にこのSpike-and-Slab priorが適用されているのかはちょっと読み解けませんでした。</p>
-<p>Spike-and-Slab priorの理解には<a href="https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/2018-08.pdf">この文献</a><span class="citation" data-cites="田辺竜ノ介2017spike">(<a href="references.html#ref-%E7%94%B0%E8%BE%BA%E7%AB%9C%E3%83%8E%E4%BB%8B2017spike" role="doc-biblioref">田辺竜ノ介 2017</a>)</span>や、<a href="https://wessel.ai/assets/write-ups/Bruinsma,%20Spike%20and%20Slab%20Priors.pdf">こちらの記事</a><span class="citation" data-cites="Bryubsna_spike">(<a href="references.html#ref-Bryubsna_spike" role="doc-biblioref">Bruinsma, n.d.</a>)</span>、<a href="https://zenn.dev/tatamiya/scraps/9d14f3d1ee5a37">こちらのZennの記事（Spike-and-Slab 事前分布を理解する）</a>などが参考になります。</p>
+<p>Spike-and-Slab priorの理解には<a href="https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/2018-08.pdf">この文献</a><span class="citation" data-cites="田辺竜ノ介2017spike">(<a href="#ref-%E7%94%B0%E8%BE%BA%E7%AB%9C%E3%83%8E%E4%BB%8B2017spike" role="doc-biblioref">田辺竜ノ介 2017</a>)</span>や、<a href="https://wessel.ai/assets/write-ups/Bruinsma,%20Spike%20and%20Slab%20Priors.pdf">こちらの記事</a><span class="citation" data-cites="Bryubsna_spike">(<a href="#ref-Bryubsna_spike" role="doc-biblioref">Bruinsma, n.d.</a>)</span>、<a href="https://zenn.dev/tatamiya/scraps/9d14f3d1ee5a37">こちらのZennの記事（Spike-and-Slab 事前分布を理解する）</a>などが参考になります。</p>
 <p><code>CausalImpact</code>については<a href="https://tjo.hatenablog.com/entry/2019/09/10/080000">この記事（{CausalImpact}を使う上での注意点を簡単にまとめてみた）</a>や<a href="https://ill-identified.hatenablog.com/entry/2019/10/09/120000">こちらの記事（[R] CausalImpact でできること, できないこと）</a>も参考になります。簡単に使えるので簡単に使ってしまいそうですが、よく理解した上で実際のデータに適用したほうがよいでしょう。</p>
 </div>
 </div>
@@ -1485,7 +1485,7 @@ Coefficients:
 </div>
 </section><section id="rdrobustパッケージ" class="level3" data-number="50.3.2"><h3 data-number="50.3.2" class="anchored" data-anchor-id="rdrobustパッケージ">
 <span class="header-section-number">50.3.2</span> rdrobustパッケージ</h3>
-<p>Rでカットオフ値付近で変動があったり、ファジーなカットオフ値を取るような複雑な回帰不連続デザインの演算を行う場合には、<strong><code>rdrobust</code>パッケージ</strong><span class="citation" data-cites="rdrobust_bib">(<a href="references.html#ref-rdrobust_bib" role="doc-biblioref">Calonico et al. 2025</a>)</span>を用います。<code>rdrobust</code>パッケージでは、局所多項式回帰（30章で説明した<a href="./chapter30.html#loesslowess平滑化">LOESS</a>）を用い、ファジーではない（Sharpな）カットオフ値、ファジーなカットオフ値の両方で処置の効果を評価できます。</p>
+<p>Rでカットオフ値付近で変動があったり、ファジーなカットオフ値を取るような複雑な回帰不連続デザインの演算を行う場合には、<strong><code>rdrobust</code>パッケージ</strong><span class="citation" data-cites="rdrobust_bib">(<a href="#ref-rdrobust_bib" role="doc-biblioref">Calonico et al. 2025</a>)</span>を用います。<code>rdrobust</code>パッケージでは、局所多項式回帰（30章で説明した<a href="./chapter30.html#loesslowess平滑化">LOESS</a>）を用い、ファジーではない（Sharpな）カットオフ値、ファジーなカットオフ値の両方で処置の効果を評価できます。</p>
 <p><code>rdrobust</code>の主な関数は<code>rdbwselect</code>、<code>rdplot</code>、<code>rdrobust</code>関数の3つです。</p>
 <p>以下の例では、下のグラフで示したデータを用いて回帰不連続デザインの処置効果を<code>rdrobust</code>パッケージで評価していきます。</p>
 <div class="cell">
@@ -1765,8 +1765,8 @@ Bias-Corrected    28.446    14.884     1.911     0.056    [-0.727 , 57.618]
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><code>rdrobust</code>の詳細については、<a href="https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2014_Stata.pdf">元論文</a><span class="citation" data-cites="calonico2014robust">(<a href="references.html#ref-calonico2014robust" role="doc-biblioref">Calonico et al. 2014</a>)</span>や<a href="https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2015_R.pdf">Rパッケージの解説論文</a><span class="citation" data-cites="calonico2015rdrobust">(<a href="references.html#ref-calonico2015rdrobust" role="doc-biblioref">Calonico et al. 2015</a>)</span>に記載されていますが、相応に複雑で、正直数学の素人である私にはよくわかりませんでした。Rパッケージのヘルプや上記の解説論文を読んでもいまいち使いかたが分かりません。よくわからないなら論文などに利用するのは避けた方がよいでしょう。</p>
-<p>どうしてもこのパッケージを用いたい方は、日本語の教科書に<code>rdrobust</code>の解説がありますので（例えば、<a href="https://www.amazon.co.jp/dp/4320112458">統計的因果推論の理論と実装 (Wonderful R)</a><span class="citation" data-cites="takahashi2022">(<a href="references.html#ref-takahashi2022" role="doc-biblioref">高橋将宜 2022</a>)</span>）や<a href="https://www.amazon.co.jp/dp/B0DFXY2TCS">因果推論の計量経済学</a><span class="citation" data-cites="Kawaguchi_Sawada_2024">(<a href="references.html#ref-Kawaguchi_Sawada_2024" role="doc-biblioref">川口康平 and 真行 2024</a>)</span>、目を通した後で元論文に挑戦してみるのがよいでしょう。</p>
+<p><code>rdrobust</code>の詳細については、<a href="https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2014_Stata.pdf">元論文</a><span class="citation" data-cites="calonico2014robust">(<a href="#ref-calonico2014robust" role="doc-biblioref">Calonico et al. 2014</a>)</span>や<a href="https://rdpackages.github.io/references/Calonico-Cattaneo-Titiunik_2015_R.pdf">Rパッケージの解説論文</a><span class="citation" data-cites="calonico2015rdrobust">(<a href="#ref-calonico2015rdrobust" role="doc-biblioref">Calonico et al. 2015</a>)</span>に記載されていますが、相応に複雑で、正直数学の素人である私にはよくわかりませんでした。Rパッケージのヘルプや上記の解説論文を読んでもいまいち使いかたが分かりません。よくわからないなら論文などに利用するのは避けた方がよいでしょう。</p>
+<p>どうしてもこのパッケージを用いたい方は、日本語の教科書に<code>rdrobust</code>の解説がありますので（例えば、<a href="https://www.amazon.co.jp/dp/4320112458">統計的因果推論の理論と実装 (Wonderful R)</a><span class="citation" data-cites="takahashi2022">(<a href="#ref-takahashi2022" role="doc-biblioref">高橋将宜 2022</a>)</span>）や<a href="https://www.amazon.co.jp/dp/B0DFXY2TCS">因果推論の計量経済学</a><span class="citation" data-cites="Kawaguchi_Sawada_2024">(<a href="#ref-Kawaguchi_Sawada_2024" role="doc-biblioref">川口康平 and 真行 2024</a>)</span>、目を通した後で元論文に挑戦してみるのがよいでしょう。</p>
 </div>
 </div>
 </div>
@@ -1774,7 +1774,7 @@ Bias-Corrected    28.446    14.884     1.911     0.056    [-0.727 , 57.618]
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-CausalImpact_bib" class="csl-entry" role="listitem">
 Brodersen, Kay H., Fabian Gallusser, Jim Koehler, Nicolas Remy, and Steven L. Scott. 2014. <span>“Inferring Causal Impact Using <span>B</span>ayesian Structural Time-Series Models.”</span> <em>Annals of Applied Statistics</em> 9: 247–74. <a href="https://research.google/pubs/inferring-causal-impact-using-bayesian-structural-time-series-models/">https://research.google/pubs/inferring-causal-impact-using-bayesian-structural-time-series-models/</a>.
 </div>
