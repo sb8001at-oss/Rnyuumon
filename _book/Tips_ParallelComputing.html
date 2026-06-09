@@ -774,6 +774,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./Tips_R6class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R6クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./Tips_shinylive.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">webRとshinylive</span></a>
   </div>
@@ -947,7 +953,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.00    0.00    6.13 </code></pre>
+   0.00    0.00    6.15 </code></pre>
 </div>
 </div>
 <p>次に、<code>parallel</code>パッケージでForkを利用した<code>lapply</code>の計算を行う<code>mclappply</code>関数を使ってみます。<code>mc.cores</code>は利用するコアの数を指定するための引数です。ForkはWindows PCでは利用できないため、エラーが出て演算が行われません。</p>
@@ -963,7 +969,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 ! 'mc.cores' &gt; 1 is not supported on Windows</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Timing stopped at: 0 0 0.02</code></pre>
+<pre><code>Timing stopped at: 0 0 0</code></pre>
 </div>
 </div>
 <p><code>mclapply</code>をDockerの<a href="https://hub.docker.com/r/rocker/rstudio">rocker/rstudio</a>（Linuxの環境）で実行すると2秒で計算が終わります。2秒かかる<code>f</code>関数を3回行う演算が<code>f</code>関数1回分で終わっていることになります。ですので、LinuxやMacOSでは<code>mclapply</code>を用いることでForkでの並列演算を行うことができています。</p>
@@ -1102,13 +1108,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "1, 2026-05-29 21:20:47.456433"
+[1] "1, 2026-06-09 19:50:52.627479"
 
 [[2]]
-[1] "2, 2026-05-29 21:20:47.458409"
+[1] "2, 2026-06-09 19:50:52.629435"
 
 [[3]]
-[1] "3, 2026-05-29 21:20:47.45896"</code></pre>
+[1] "3, 2026-06-09 19:50:52.6299"</code></pre>
 </div>
 </div>
 <p>一方で、Socketの並列演算を行う<code>parLapply</code>関数で<code>f2</code>関数を呼び出すと、エラーが出ます。これは、Socketでは現在のセッションで呼び出したパッケージや定義した変数は別のセッションにはコピーされないため、パッケージで設定されている関数（<code>str_c</code>）が利用できないためです。</p>
@@ -1149,13 +1155,13 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">parLapply</span><span class="op">(</span><span class="va">cl</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">f2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "1, 2026-05-29 21:20:47.790592"
+[1] "1, 2026-06-09 19:50:52.97422"
 
 [[2]]
-[1] "2, 2026-05-29 21:20:47.790768"
+[1] "2, 2026-06-09 19:50:52.974238"
 
 [[3]]
-[1] "3, 2026-05-29 21:20:47.790775"</code></pre>
+[1] "3, 2026-06-09 19:50:52.974306"</code></pre>
 </div>
 </div>
 <p>同様に、現在のセッションで変数yを定義し、この<code>y</code>を用いた関数を並列演算で使ってみます。</p>
@@ -1333,7 +1339,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>6.12 sec elapsed</code></pre>
+<pre><code>6.14 sec elapsed</code></pre>
 </div>
 </div>
 <p><code>foreach</code>の引数<code>.combine</code>には演算結果を結合する方法を指定することもできます。<code>.combine=c</code>を指定すると返り値はベクター、<code>.combine=cbind</code>を指定すると返り値は行列になります。</p>
@@ -1368,7 +1374,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>6.11 sec elapsed</code></pre>
+<pre><code>6.14 sec elapsed</code></pre>
 </div>
 </div>
 </section><section id="クラスターの設定" class="level3"><h3 class="anchored" data-anchor-id="クラスターの設定">クラスターの設定</h3>
@@ -1396,7 +1402,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>2.08 sec elapsed</code></pre>
+<pre><code>2.09 sec elapsed</code></pre>
 </div>
 </div>
 <p><code>%dopar%</code>を用いた演算はSocketですので、演算にパッケージを用いる場合にはエラーが出ます。</p>
@@ -1563,7 +1569,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>2.1 sec elapsed</code></pre>
+<pre><code>2.13 sec elapsed</code></pre>
 </div>
 </div>
 <p>ただし、<code>plan(multisession)</code>を指定すると利用できる最大数のセッションが準備されてしまいます。<code>plan</code>関数では<code>workers</code>引数を指定することで準備するセッションの数を指定することができます。</p>
@@ -1609,8 +1615,8 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">d</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "1, 2026-05-29 21:21:37.638486" "2, 2026-05-29 21:21:37.641363"
-[3] "3, 2026-05-29 21:21:37.652724"</code></pre>
+<pre><code>[1] "1, 2026-06-09 19:51:43.563698" "2, 2026-06-09 19:51:43.574829"
+[3] "3, 2026-06-09 19:51:43.582879"</code></pre>
 </div>
 </div>
 <p>ただし、変数を指定する場合にはクラスターで変数を指定してくれない場合もあります。</p>

@@ -1,0 +1,810 @@
+# R6クラス {.unnumbered}
+
+`R6`[@R6_bib]はRのオブジェクト指向プログラミングのためのクラスの一つで、RではS3、S4についでよく利用されているクラスの一つです。
+
+S3がジェネリック関数を使うためだけのクラスなのに対し、S4は比較的まともなオブジェクト指向プログラミングのクラスですが、取り扱いが非常に複雑です。S4はパッケージの開発ぐらいにしか利用されません。
+
+この2つと比べると、`R6`は最もまともなオブジェクト指向プログラミングのためのクラスと言えます。`R6`はS3ほどに極端に単純ではなく、S4ほどに複雑な使い方も必要とされません。RubyやPythonを使ったことのある方であれば、S3やS4は受け入れることができなくても、`R6`は比較的簡単に使いこなすことができるでしょう。
+
+ただし、Rでは`R6`はあまり使われていません。Rではクラスを定義してクラスオブジェクト（インスタンス）を作成するところからプログラミングが始まることはほぼなく、クラスメソッドを利用する習慣もありません。
+
+Rではそもそも自分で大きなプログラムを作り上げるということをあまりしないので、[クラスの定義をせず、関数があればよい](https://www.reddit.com/r/rstats/comments/dajj9z/why_oop/?solution=ad97127c75f1152dad97127c75f1152d&js_challenge=1&token=7afd7253fec22262ff1c52b1703fe9ecec28d8d604162af1c9ffbbb1b98b2d8d&jsc_orig_r=)場合が多いです。Pythonで作成したクラスをRに持ち込む場合には`R6`は最適な手法の一つですが、他のオブジェクト指向プログラミング言語のようにRで`R6`を駆使してプログラムを組むことはあまりないでしょう。
+
+また、R6では、Rでの一般的なオブジェクトの変更（値渡し、**copy on modify**）ではなく、参照渡し（**modified in-place**）を行う特徴があります。参照渡しを用いることで演算速度は速くなるのですが、オブジェクトがRっぽい挙動をしなくなってしまいます。
+
+とは言え、最近ではRを使って作り上げるプログラム（例えばShinyやplumberなど）もあります。PythonとRで同じようなパッケージを同時に開発するような場合も増えています。そのような場面ではRでもクラスの設計を行うことで効率的なプログラミングができます。
+
+この章では、[R6のドキュメント](https://r6.r-lib.org/)と[Advanced RのR6の章](https://adv-r.hadley.nz/r6.html)[@Wickham_Hadley2019-05-24]を参考に、`R6`と、`R6`を用いてShinyのコードをシンプルに記述する方法について簡単に説明します。
+
+## R6のインストールとロード
+
+`R6`はRに組み込まれたクラス（S3、S4）とは異なり、パッケージとして提供されています。`R6`を用いる場合には、まず`R6`パッケージをインストールします。
+
+```{r, filename="R6パッケージのインストールと読み込み"}
+pacman::p_load(R6)
+```
+
+:::{.callout-tip collapse="true"}
+## Reference Class
+
+Reference Classは`methods`パッケージで提供されているクラスの一つです。`methods`パッケージはS4を提供しているパッケージですが、Reference ClassはS4を用いて実装した、S4よりまともなクラスとして、2010年頃に提供されるようになりました。
+
+`R6`（2016年頃）はReference Classによく似ているのですが、S4を使っておらず、クラスというよりはenvironmentを作成するようなものになっています。`R6`はReference Classよりもデータが小さくて速度も速いため、Reference Classは使われず、`R6`ばかり使われるようになりました。
+
+このReference ClassがR5（S5?）だとすると、次のオブジェクト指向プログラミングのクラスは`R6`である、ということで`R6`という名前がこのクラスに付けられています。
+
+同様に`R6`の次（であり、S3とS4の間の子）、ということで`S7`[@S7_bib]も開発されていますが、まだver.0.2.2（2026年6月現在）で、なかなかver.1.0にはたどり着きそうにありません。しばらくはS3、S4、`R6`がRの主流なクラスとして用いられることになりそうです。
+:::
+
+## クラスを定義する
+
+`R6`では、クラスの定義には`R6Class`関数を用います。`R6`で用いる関数はほぼこの`R6Class`のみです。`R6Class`は色々な引数を取ることができますが、最低限必要な引数はクラス名（`classname`）と`public`です。
+
+クラス名は文字列で、S4と同じくアッパーキャメルケースで指定します。また、`R6Class`関数はこのクラス名と同名の変数に代入して用います。以下の例では、R6クラスであるMyDogを`MyDog`変数に代入しています。
+
+`public`はS4のSlotsと同じく、そのクラスの要素を指定する引数です。`public`はリストで指定し、要素（R6では**メンバー**と呼びます）と、そのクラスの**メソッド**をリストに含めます。メンバーには値を指定し、メソッドは関数として設定します。
+
+以下の例では、MyDogクラスのメンバーは`name`、`age`、`trick`で、メソッドは`show_age`となります。
+
+`R6Class`関数内でそのクラスのオブジェクト自身を評価する場合、`self`を用います。例えば、`self$age`とすると、そのオブジェクトのメンバーを呼び出すことになります。
+
+```{r, filename="R6クラスの定義"}
+MyDog <- 
+  R6Class(
+    "MyDog", # 第一引数にクラス名を取る
+    public = 
+      list(
+        # これがメンバー（指定した値はデフォルト値になる）
+        name = NULL,
+        age = NULL,
+        trick = NULL,
+        
+        # これがメソッド
+        show_age = function(){
+          self$age # 上のメンバーのageを呼び出す
+        }
+        
+      )
+  )
+```
+
+### クラスオブジェクト（インスタンス）の作成
+
+R6のクラスオブジェクト（インスタンス）は、`クラス名$new()`という形で`new`メソッドを用いて作成します。`new`メソッドがコンストラクタ（S4での`new`関数）に相当します。
+
+RubyやPythonではメソッドを用いる際には`$`の代わりにピリオド（`.`）を用いますが、Rではピリオドを変数名に使えてしまうため、代用として`$`を用いています。
+
+```{r, filename="クラスオブジェクトの作成"}
+Pochi <- MyDog$new()
+```
+
+### メンバーの呼び出し・代入
+
+R6クラスのメンバーは`$`でリストのように呼び出すことができます。また、メンバーに値を代入することもできます。
+
+また、メソッドは`new`と同様に、`オブジェクト名$メソッド名()`という形で、クラスオブジェクトに`$`を繋いで呼び出します。Rの通常の関数とは利用方法が異なりますが、Pythonなどのメソッドを利用している方には自然な表現だと思います。
+
+```{r, filename="メンバーとメソッドの呼び出し"}
+# ageに10を代入
+Pochi$age <- 10
+
+# ageを呼び出し
+Pochi$age
+
+# show_ageメソッドを呼び出し
+Pochi$show_age()
+```
+
+### initializerの設定
+
+[S4](Tips_S4class.qmd#initializer)と同様に、`R6`でもオブジェクト作成時に実行されるメソッドである、initializerを設定することができます。
+
+initializerはクラスメソッドと同様に`public`のリスト内で定義し、メソッド名を`initialize`とします。この`initialize`は`new`を実行した際に実行されます。
+
+```{r, filename="initializerを設定する"}
+MyDog <- 
+  R6Class(
+    "MyDog",
+    public = 
+      list(
+        name = NULL,
+        age = NULL,
+        trick = NULL,
+        
+        initialize = function(name, age, trick){
+          self$name = name
+          self$age = age
+          self$trick = trick
+        }
+      )
+  )
+```
+
+`initialize`の引数は`new`の引数になります。
+
+```{r, filename="initializerに従いnewに引数を設定する"}
+Pochi <- MyDog$new("Pochi", 10, "sit")
+
+Pochi
+```
+
+initializerの設定に従い、メンバーの値が設定されているのが分かります。
+
+```{r, filename="メンバーの呼び出し"}
+Pochi$name
+Pochi$age
+```
+
+また、initializerで設定を行っていても、メンバーの値は変更可能です。クラスの定義で特にバリデータの指定がない場合には、現実的ではない値、例えば名前に数値を代入したり、年齢に文字列を代入することもできます。
+
+```{r, filename="nameに数値を代入する"}
+Pochi$name <- 10
+
+Pochi$name
+```
+
+### クラスメソッドの設定
+
+クラスメソッドは上記の通り、`public`引数のリストの要素として設定します。
+
+クラスメソッドでは、initializeの他に、`print`も特別なメソッドとなります。`print`はR6クラスを表示する方法を指定するための標準のメソッドで、単にクラスオブジェクトを宣言した場合には`print`メソッドで指定した方法で表示されます。
+
+また、クラスのメンバーを変更するようなメソッドでは、`invisible(self)`を返すように設定するのがよいとされています。
+
+```{r, filename="クラスメソッドを設定する"}
+MyDog <-
+  R6Class(
+    "MyDog",
+    public = 
+      list(
+        name = NULL,
+        age = NULL,
+        trick = NULL,
+        
+        add_age = function(){
+          self$age <- self$age + 1
+          # メンバーを変更する関数ではinvisible(self)を返すようにする
+          invisible(self)
+        },
+        
+        # オブジェクトを表示するときの方法
+        print = function(){
+          cat("name:", self$name, "\n")
+          cat("age:", self$age, "\n")
+          cat("trick:", self$trick, "\n")
+        },
+        
+        initialize = function(name, age, trick){
+          self$name <- name
+          self$age <- age
+          self$trick <- trick
+        }
+      )
+  )
+```
+
+#### クラスメソッドを用いる
+
+クラスメソッドの多くは`new`と同様に用いますが、`print`はオブジェクトを宣言することで実行されます。
+
+```{r, filename="printメソッドの実行"}
+Pochi <- MyDog$new("Pochi", 10, "sit")
+Pochi # Pochi$print()を呼び出す
+```
+
+また、メンバーの値を変更するメソッドを実行すると、そのオブジェクトのメンバーの値自体が変更されます。Rの通常の関数が引数のオブジェクトを直接変更することはありませんので、Rっぽくない挙動となります。
+
+```{r, filename="オブジェクトのメンバーを変更するメソッド"}
+# メソッドを用いるとメンバーの値が変更される
+# （Rubyで破壊的メソッドと呼ばれるものに近い）
+Pochi$add_age()
+Pochi$age
+```
+
+#### メソッドチェーン
+
+メンバーの値を変更するメソッドで`invisible(self)`を返すように設定していると、メソッドを`$`で連続して繋ぐことで演算を繰り返すことができます。これは[20章](chapter20.qmd#メソッドチェーン)で説明したメソッドチェーンです。
+
+以下の例ではクラスオブジェクトに`add_age`を3回実行することで、`age`を3増やしています。
+
+```{r, filename="メソッドチェーン"}
+Pochi$add_age()$add_age()$add_age()
+Pochi$age
+```
+
+同様に、ベクターに引数の要素を追加したり、ベクターの最後の値を取り出す`push`や`pop`といったメソッドも比較的簡単に実装できます。
+
+```{r, filename="pushとpopを定義する"}
+MyDog <-
+  R6Class(
+    "MyDog",
+    public = 
+      list(
+        name = NULL,
+        age = NULL,
+        trick = NULL,
+        
+        # ベクターに引数を追加する（push）
+        push_trick = function(trick){
+          self$trick <- c(self$trick, trick)
+          invisible(self)
+        },
+        
+        # ベクターの最後の値を取り出し、残りをtrickに設定する（pop）
+        pop_trick = function(){
+          self$trick <- self$trick[-length(self$trick)]
+          return(self$trick[length(self$trick)])
+        },
+        
+        initialize = function(name, age, trick){
+          self$name <- name
+          self$age <- age
+          self$trick <- trick
+        }
+      )
+  )
+
+# pushとpopを利用する
+Pochi <- MyDog$new("Pochi", 10, "sit")
+Pochi$push_trick("hand")
+Pochi$push_trick("lefthand")
+Pochi$push_trick("stand")
+Pochi$trick
+Pochi$pop_trick()
+Pochi$pop_trick()
+Pochi$trick
+```
+
+### バリデータを設定する
+
+[S3](Tips_S3class.qmd#バリデータvalidator)や[S4](Tips_S4class.qmd#バリデータ)の章で説明した通り、クラスのメンバーに設定できるデータ型を指定する場合には、**バリデータ**を作成します。R6では、バリデータをinitializerに加えてもよいですが、厳密に型をコントロールしたい場合には別途`validate`のメソッドを作成してもよいでしょう。
+
+以下の例では`validate`メソッドを定義し、initializerでは`self$validate()`という形で設定したメンバーの値を評価しています。
+
+```{r, filename="バリデータのメソッドを定義する"}
+MyDog <- 
+  R6Class(
+    "MyDog",
+    public = 
+      list(
+        name = NULL,
+        age = NULL,
+        trick = NULL,
+        
+        validate = function(){
+          stopifnot(is.character(self$name))
+          stopifnot(length(self$name) == 1)
+          stopifnot(is.numeric(self$age))
+          stopifnot(length(self$age) == 1)
+          stopifnot(is.character(self$trick))
+        },
+        
+        initialize = function(name, age, trick){
+          self$name = name
+          self$age = age
+          self$trick = trick
+          self$validate()
+        }
+      )
+  )
+```
+
+このようなバリデータを設定しておけば、オブジェクト作成時にメンバーの値が指定したデータ型が異なるとエラーが出るようになります。
+
+```{r, error=TRUE, filename="バリデータに従いエラーが出る"}
+MyDog$new("Pochi", "10", "sit")
+```
+
+### private
+
+S3やS4にない、R6の設定の一つが`private`です。上記の通り、R6クラスのメンバーは`public`引数にリストとして指定しますが、同様に`private`引数にリストとして指定することもできます。
+
+また、クラスの定義の中で`private`のメンバーを呼び出す場合には、`self`を用いるのではなく、`private$メンバー名`という形で呼び出します。
+
+```{r, filename="private"}
+MyDog <-
+  R6Class(
+    "MyDog",
+    
+    # これがpublicのメンバー
+    public = 
+      list(
+        name = NULL,
+        
+        add_age = function(){
+
+         # privateのメンバーはprivate$で呼び出す
+          private$age <- private$age + 1
+          invisible(self)
+        },
+        
+        initialize = function(name, age, trick){
+          self$name <- name
+          private$age <- age
+          private$trick <- trick
+        },
+        
+        show_age = function(){
+          private$age
+        }
+      ),
+    
+    # こちらがprivateのメンバー
+    private =
+      list(
+        age = NULL,
+        trick = NULL
+      )
+  )
+```
+
+`private`の特徴は、クラスのメソッドを用いなければそのメンバーにアクセスできないところにあります。`public`のメンバーであれば、`$`を用いて呼び出したり、代入によって値を変更できますが、`private`のメンバーでは`$`を用いて呼び出すことはできず、値を呼び出したり変更したりしたい場合には、あらかじめ設定したクラスメソッドを用いる必要があります。
+
+したがって、クラスのユーザーがメンバーを直接取り扱うことができないようにしたい場合には、`private`にメンバーを設定するとよいでしょう。
+
+```{r, error=TRUE, filename="privateのメンバーの取り扱い"}
+Pochi <- MyDog$new("Pochi", 10, "sit")
+
+# $ を用いた呼び出しや代入はできない
+Pochi$age
+Pochi$age <- 15
+
+# クラスのメソッドを用いれば、メンバーにアクセスできる
+Pochi$show_age()
+Pochi$add_age()
+Pochi$show_age()
+```
+
+### active
+
+Rでは、`names(obj)<-"name"`のように、関数に代入することで値を設定できる場合があります。このような代入による値の変更の機能をクラスに与える場合には、`active`を用います。
+
+`active`は`public`や`private`と同様にリストを取る引数で、リストのメンバーは関数のみです。この関数には引数を1つ設定する必要があり、`invisible(self)`を返すような関数を設定します。
+
+```{r, filename="active"}
+MyDog <-
+  R6Class(
+    "MyDog",
+    public = 
+      list(
+        name = NULL,
+        age = NULL,
+        trick = NULL,
+        
+        initialize = function(name, age, trick){
+          self$name <- name
+          self$age <- age
+          self$trick <- trick
+        }
+      ),
+    
+    active =
+      list(
+        push_trick = function(trick){
+          if(missing(trick)){return(self$trick)}
+          self$trick <- c(self$trick, trick)
+          invisible(self)
+        }
+      )
+  )
+```
+
+`active`に設定したメソッドは、通常のメソッドと同様にカッコをつけて呼び出すことはできず、カッコなしで呼び出します。また、代入することで代入した値を引数として処理し、メンバーを変更することができます。
+
+```{r, error=TRUE, filename="activeのメソッドの取り扱い"}
+Pochi <- MyDog$new("Pochi", 10, "sit")
+Pochi$push_trick("hand") # エラー
+
+# missing(trick)がTRUEの場合
+Pochi$push_trick
+
+# missing(trick)がFALSEの場合（代入した値が引数として取り扱われる）
+Pochi$push_trick <- "lefthand"
+
+Pochi$trick
+```
+
+### 継承
+
+S4と同様に、R6でもクラスを継承することができます。クラスの継承では、親クラス（スーパークラス）を`inherit`引数に指定します。
+
+また、親クラスのメンバーをクラスの定義内で呼び出す場合には、`super$`メンバー名という形で、`super`を用います。
+
+```{r, filename="継承"}
+BDMyDog <-
+  R6Class(
+    "BDMyDog",
+    inherit = MyDog,
+    
+    public =
+      list(
+        birthday = NULL,
+        
+        initialize = function(name, age, trick, birthday){
+          self$name <- name
+          self$age <- age
+          self$trick <- trick
+          self$birthday <- birthday
+        },
+        
+        cgbd_trick = function(birthday, trick){
+          # 親クラスのメンバーはsuperで呼び出す
+          self$birthday <- birthday
+          super$push_trick <- trick
+        }
+      )
+  )
+```
+
+子クラス（サブクラス）では、親クラスのメンバーやメソッドを利用することができます。
+
+```{r, filename="サブクラスのオブジェクト"}
+Pochi <- BDMyDog$new("Pochi", 10, "sit", "2016/6/3")
+Pochi
+
+# 親クラスのメソッドを利用
+Pochi$push_trick <- "hand"
+Pochi$trick
+
+Pochi$cgbd_trick("2020/6/3", "lefthand")
+Pochi
+```
+
+### 参照渡し（modified in-place）
+
+プログラミングでオブジェクトをコピーする場合、オブジェクトは主に2つの方法でコピーされます。
+
+- 値渡し（pass by value）
+- 参照渡し（pass by reference）
+
+値渡しでは、新規のオブジェクトを作成し、そのオブジェクトに元のオブジェクトの値が代入されます。元のオブジェクトとコピーしたオブジェクトは独立で、片方を変更してももう片方のオブジェクトは変更されません。
+
+参考渡しではコピーする際に、値ではなく、値が格納されたメモリのアドレスのみを渡します。参照渡しではメモリのアドレスを共有するだけなので、新しくメモリ上にデータを作成する必要がなくなります。ですので、値渡しより速く、メモリのサイズを小さくできます。
+
+Rでのオブジェクトのコピーはほぼ値渡しで、**copy on modify**と呼ばれます。
+
+一方で、R6ではオブジェクトのコピーは参照渡し（**modified in-place**）で行われます。参照渡しでは、コピーしたオブジェクトを変更すると、以下のようにコピー元のオブジェクトも変更されます。
+
+```{r, filename="R6での参照渡し"}
+# Pochi$ageは10
+Pochi$age
+
+# PochiをコピーしてKuroに代入
+Kuro <- Pochi
+
+# Kuroのageを15に変更
+Kuro$age <- 15
+
+# Pochiのageも15になる
+Kuro$age
+Pochi$age
+```
+
+#### cloneを用いる
+
+R6で値渡しを行う場合には、`clone`メソッドを用います。以下の例では、`Kuro$age`を変更しても、`Pochi$age`には影響がなく、値渡しとなっていることがわかります。
+
+```{r, filename="cloneメソッドで値渡しを行う"}
+# Pochi$ageは10
+Pochi$age
+
+# cloneメソッドを用いる
+Kuro <- Pochi$clone()
+
+# Kuroのageを15に変更
+Kuro$age <- 15
+
+# Pochi$ageは10のまま
+Kuro$age
+Pochi$age
+```
+
+ただし、単に`clone`メソッドを用いると、コピー元とコピー先でオブジェクトの一部を共有したままになるため、完全に値渡しとしたい場合には`deep=TRUE`を指定するとよいでしょう。
+
+```{r, filename="Deep cloning"}
+Shiro <- Pochi$clone(deep = TRUE)
+```
+
+### finalize
+
+`finalize`はオブジェクトを削除する際に実行されるメソッドです。`finalize`は`private`のメンバーとして設定します。オブジェクトを`rm`関数で削除する時やRを終了するときにこのメソッドが呼び出されます。
+
+```{r, filename="finalize"}
+A <- 
+  R6Class(
+    "A",
+    public =
+      list(
+        a = NULL,
+        initialize = function(a){
+          self$a <- a
+        }
+      ),
+    private =
+      list(
+        # このメソッドがオブジェクト削除時に実行される
+        finalize = function(){
+          print("オブジェクトを削除しました。")
+        }
+      )
+  )
+```
+
+クラスオブジェクトを作成し、`rm`関数で削除しても、特に何も返ってきません。しかし、ガベージコレクションを確認する`gc`関数を実行すると、`finalize`で実行した`print`関数の結果が表示されます。
+
+```{r, filename="finalizeの実行"}
+temp <- A$new("test")
+rm(temp)
+gc()
+```
+
+上記のような使い方ではfinalizeは役に立ちませんが、データベースやwebへの接続をオブジェクトの削除時に切断したいときには有用です。
+
+:::{.callout-tip collapse=TRUE}
+## setでメンバーを追加する
+
+R6ではデフォルトで`set`というメソッドが設定されています。この`set`を使えばクラスにメンバーを追加することができます。`set`はメンバーを追加する場所`（public`か`private`か）、メンバー名、メンバーのデフォルト値を引数に取ります。また、メンバーのデフォルト値に関数を指定すると、メソッドを追加することができます。
+
+```{r, filename="setメソッドでメンバーを追加する"}
+A$set("public", "b", NULL)
+```
+
+:::
+
+## R6とShiny
+
+R6もS4のように、主にパッケージの開発で用いられるクラスです。ただし、R6はShinyの開発のような、Rのユーザーに近い部分でも利用することができます。
+
+Shinyでは、UIとServerの両方に同じ名前の`inputId`と`outputId`を用いる必要があります。UI側で設定した`inputId`をServer側で、Server側で設定した`outputId`をUI側で利用します。Shinyで表示するものが増えていくと、この組み合わせがどんどん増えていって、どこで何のIDを用いているのか分からなくなっていきます。
+
+ですので、複雑なShinyアプリを作りたいときには、Shinyのコードをうまく整理する必要があります。このコードの整理には、Shiny ModulesとR6を利用するのがよいとされています。
+
+ココからは、[このブログポスト（Modularize your shiny app using shiny module and R6 class）](https://zhuchcn.github.io/projects/posts/en/2019-03-25/)を参考に、Shiny ModulesとR6を使って整理する方法について簡単に説明します。
+
+以下のShinyのテンプレートとして表示されるコードをShiny ModulesとR6でそれぞれ整理していきます。
+
+```{r, eval=FALSE, filename="Shinyのテンプレート"}
+pacman::p_load(shiny)
+
+ui <- fluidPage(
+  fluidPage(
+      sliderInput("bins","Number of bins:", min = 2, max = 50, value = 30),
+      plotOutput("distPlot")
+  )
+)
+
+server <- function(input, output){
+  output$distPlot <- renderPlot({
+    x    <- faithful[, 2]
+    hist(x, breaks = input$bins)
+  })
+}
+```
+
+### Shiny ModulesでShinyのコードを整理する
+
+Shinyでコードを書くときに困るものは、ネストの深さと名前の問題です。特に、上記の`inputId`と`outputId`の名前の問題はShinyの開発には常に付きまといます。この名前の問題を解決するため、Shinyでは**Shiny Modules**という機能を提供しています。
+
+Shiny Modulesはただの関数です。UI側とServer側のコードをひとまとめの関数としておき、`inputId`と`outputId`を決める`id`という引数を取る形をしたものを準備するだけです。この関数を用いると、定型のShinyを`id`の名前一つだけで管理できるようになり、Shinyのコードをシンプルにすることができます。
+
+#### UI側のShiny Modulesの設定
+
+UI側のModulesは`xxxUI`という名前の関数として作成します。関数の引数は`id`とし、文字列の`id`を指定できるようにします。
+
+関数の中身は`tagList`関数の中に書いていきます。この`tagList`は`htmltools`パッケージ[@htmltools_bib]の関数で、htmlのタグ付きテキストを返します。Shiny Modulesで用いる場合にはこの関数の機能を理解する必要は特にありません。
+
+```{r, filename="tagList関数"}
+library(htmltools)
+tagList(h6("タグ付きHTML"))
+```
+
+<hr>
+
+次に、`inputId`と`outputId`の部分を`NS`関数を使って書き換えます。`NS`関数は引数が2つの文字列の場合には文字列をハイフンでつなぎ、引数が一つの時には文字列をハイフンでつなぐ関数を返す関数です。どちらにしても、idをうまく処理するために用います。
+
+```{r, filename="NS関数"}
+shiny::NS("hist", "bins")
+
+ns <- shiny::NS("hist")
+ns("bins")
+```
+
+この`tagList`関数と`NS`関数を利用してModulesにしたものが以下の`histgramUI`です。
+
+:::{.panel-tabset}
+## Shiny ModulesのUI
+
+```{r, eval=FALSE}
+histogramUI <- function(id){
+  tagList(
+    sliderInput(NS(id, "bins"),"Number of bins:", min = 2, max = 50, value = 30),
+    plotOutput(NS(id, "hist"))
+  )
+}
+```
+
+## 元のUI
+
+```{r, eval=FALSE}
+ui <- fluidPage(
+  fluidPage(
+      sliderInput("bins","Number of bins:", min = 2, max = 50, value = 30),
+      plotOutput("distPlot")
+  )
+)
+```
+:::
+
+#### Server側のShiny Modules
+
+次にServer側のModulesを作成します。Server側も関数として作成し、`xxxServer`という名前とします。引数には`id`とその他の引数を設定しておきます。
+
+Server側では、`moduleServer`という関数を用います。この`moduleServer`もいまいちよくわからない関数ですが、引数に`id`とserverの中身を取ります。
+
+また、`moduleServer`が実装される前には、`callModule`という関数が使われていました。現在では基本的に`moduleServer`の利用が推奨されており、`callModule`は使わない方がよいとされていますが、後ほどR6でShinyを整理する際には`callModule`を用います。
+
+:::{.panel-tabset}
+## Server側のModules
+
+```{r, eval=FALSE}
+histogramServer <- function(id, x){
+  moduleServer(
+    id, 
+    function(input, output, session){
+      output$hist <- 
+        renderPlot({
+          hist(x, breaks = input$bins)
+        })
+    }
+  )
+}
+```
+
+## callModuleを使った場合
+
+```{r, eval=FALSE}
+hist_server <- function(input, output, session, x){
+  output$distPlot <- renderPlot({
+    hist(x, breaks = input$bins)
+  })
+}
+
+server <- function(input, output, session, id, x){
+  callModule(hist_server, id. x)
+}
+```
+
+## 元のServer
+
+```{r, eval=FALSE}
+server <- function(input, output){
+  output$distPlot <- renderPlot({
+    x    <- faithful[, 2]
+    hist(x, breaks = input$bins)
+  })
+}
+```
+
+:::
+
+上記のModulesの関数は、global.R内で定義するか、Shiny実行時に読み込まれる`"/R"`ディレクトリにスクリプトを保存して用いるのがよいでしょう。
+
+### アプリの構成
+
+では、上記のUI・ServerのModulesを用いたアプリを実行できる形にしてみましょう。以下のように、uiとserverとして、上記で設定したModulesの関数を呼び出します。ただし、UIのModulesにはレイアウトに関する関数は含まれていないので、uiの設定時にレイアウトの関数でModulesの関数を囲う必要があります。
+
+ModulesにUI、Serverの要素を含めることで、アプリはかなりシンプルになります。また、同じような構成のアプリを作成する場合にはModulesを転用することもできます。
+
+```{r, eval=FALSE, filename="Shiny Modulesを用いたアプリの構成"}
+histogramApp <- function(){
+  x <- faithful[, 2]
+  
+  ui <- fluidPage(
+    histogramUI("hist1")
+  )
+
+  server <- function(input, output, session){
+    histogramServer("hist1", x)
+  }
+
+  shinyApp(ui, server)  
+}
+
+histogramApp()
+```
+
+### R6クラスを用いて整理する
+
+上記の通り、Shiny Modulesを使えばShinyのコードを整理することができ、Modulesを別のアプリで利用することもできます。ただし、UIとServerのModulesはそれぞれ独立の関数で、セットで利用する必要があるのに関数としては2つに分離しています。
+
+この2つのUIとServerのModulesの関係を結合し、クラスオブジェクトとして取り扱いできるようにするのがR6クラスです。
+
+R6クラスでShinyを整理する場合、R6クラスのメンバーは`id`とし、`initialize`で`id`を設定できるようにします。
+
+また、メソッドとして`ui`と`server`を設定します。`ui`はShiny Modulesとほぼ同じ形で設定します。serverはシンプルなShinyの記述で設定しておきます。`ui`ではレイアウトの自由度を確保するため、input側とoutput側で独立のメソッドとしても良いかもしれません。
+
+さらにもう一つ、`call`というメソッドを作成します。この`call`メソッドでは、`callModule`を実行する形とし、`self$server`と`self$id`を引数に取っておきます。
+
+このR6クラスもglobal.Rや`"/R"`ディレクトリに保存しておくとよいでしょう。
+
+```{r, eval=FALSE, filename="ShinyをR6で整理する：uiとserverの定義"}
+library(R6)
+library(shiny)
+
+SliderHistogramModule <- 
+  R6Class(
+    "SliderHistogramModule",
+    public =
+      list(
+        id = NULL,
+        
+        initialize = function(id){
+          self$id = id
+        },
+        
+        ui = function(){
+          ns <- NS(self$id)
+          
+          tagList(
+            sliderInput(ns("bins"),"Number of bins:", min = 1, max = 50, value = 30),
+            plotOutput(ns("hist"))
+          )
+        },
+        
+        server = function(input, output, session, x){
+          output$hist <- 
+            renderPlot({
+              hist(x, breaks = input$bins)
+            })
+        },
+        
+        call = function(input, ouput, session, id = self$id, x){
+          callModule(self$server, self$id, x)
+        }
+      )
+  )
+```
+
+#### アプリの実行のためのR6クラス
+
+アプリを実行するためのR6クラスは別途定義します。このR6クラスでは、`id`の個数分だけメンバーを設定し、initializerでこのメンバーに上で定義したR6クラスのオブジェクト（`SliderHistogramModule`）を登録します。
+
+`ui`と`server`もメソッドとして登録します。`ui`にはレイアウトを含めたものとし、R6クラスの`ui`メソッドを呼び出すようにします。`server`ではR6クラスで定義した`call`メソッドを呼びだします。
+
+```{r, eval=FALSE}
+App <- 
+  R6Class(
+    "App",
+    public = 
+      list(
+        hist1 = NULL,
+        hist2 = NULL,
+        
+        initialize = function(){
+          self$hist1 = SliderHistogramModule$new("hist1")
+          self$hist2 = SliderHistogramModule$new("hist2")
+        },
+        
+        ui = function(){
+          fluidPage(
+            self$hist1$ui(),
+            tags$hr(),
+            self$hist2$ui()
+          )
+        },
+        
+        server = function(input, output, session){
+          self$hist1$call(x = faithful[, 2])
+          self$hist2$call(x = cars[, 2])
+        }
+      )
+  )
+```
+
+上記のアプリを実行するためのR6クラスのインスタンスを作成し、`shinyApp`関数で実行するとアプリを起動できます。
+
+```{r, eval=FALSE, filename="アプリの実行"}
+app = App$new()
+
+shinyApp(app$ui(), app$server)
+```

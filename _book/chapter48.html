@@ -799,6 +799,12 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./Tips_R6class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R6クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./Tips_shinylive.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">webRとshinylive</span></a>
   </div>
@@ -1830,7 +1836,7 @@ F-statistic: 2.102 on 3 and 4 DF,  p-value: 0.2427</code></pre>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>上の一般線形モデルの計算に関するcallout（<a href="#tip-lm" class="quarto-xref">Tip&nbsp;<span class="quarto-unresolved-ref">tip-lm</span></a>）で説明した通り、一般線形モデルの分散の推定値を示す<span class="math inline">\(\hat{\sigma}^2\)</span>は以下の式で求まります。<span class="math inline">\(n\)</span>はデータ数、<span class="math inline">\(k\)</span>はパラメータの数です。</p>
+<p>上の一般線形モデルの計算に関するcallout（<a href="#tip-lm" class="quarto-xref">Tip&nbsp;<span>48.1</span></a>）で説明した通り、一般線形モデルの分散の推定値を示す<span class="math inline">\(\hat{\sigma}^2\)</span>は以下の式で求まります。<span class="math inline">\(n\)</span>はデータ数、<span class="math inline">\(k\)</span>はパラメータの数です。</p>
 <p><span class="math display">\[
 \hat{\sigma}^2 = \frac{1}{n-k}S_e
 \]</span></p>
@@ -1907,7 +1913,7 @@ F-statistic: 2.102 on 3 and 4 DF,  p-value: 0.2427</code></pre>
 <span class="header-section-number">48.4</span> 一部要因配置計画（fractional factorial design）</h2>
 <p>上記の通り、交互作用を含めたすべてのパラメータを計算する場合には、要因配置計画の実験が必要となります。ただし、交互作用を評価せず、説明変数の主効果だけを評価する場合には、実験を減らすことができます。とは言え、データを減らす場合には、要因配置計画からどの実験を削ることができるのかわからないと、実験を削ることはできません。</p>
 <p>実験数を減らす方法の一つが<strong>一部要因配置計画（fractional factorial design）</strong>です。一部要因配置計画は要因配置計画（総当たり）から実験を適切に減らすことで、少ない実験回数で分散分析で評価できるようにすることができる実験計画の手法です。一部要因配置計画は、基本的にはスクリーニングのような1説明変数に2条件の実験に適用します。</p>
-<p>Rでは、<a href="https://cran.r-project.org/web/packages/FrF2/index.html"><code>FrF2</code></a>パッケージ<span class="citation" data-cites="FrF2_bib1 FrF2_bib2">(<a href="#ref-FrF2_bib1" role="doc-biblioref">Groemping 2025</a>, <a href="#ref-FrF2_bib2" role="doc-biblioref">2014</a>)</span>の<code>FrF2</code>関数を用いることで、一部要因配置計画の実験デザインを作成することができます。以下の例では、3つの説明変数（<code>nutrient</code>、<code>water</code>、<code>light</code>）を用いて、4実験の一部要因配置計画を<code>FrF2</code>関数で作成しています。<code>FrF2</code>関数の第1引数は実験数（<code>nruns</code>）、第2引数は説明変数の数（<code>nfactors</code>）、第3引数は説明変数の名前（<code>factor.names</code>）です。</p>
+<p>Rでは、<a href="https://cran.r-project.org/web/packages/FrF2/index.html"><code>FrF2</code></a>パッケージ<span class="citation" data-cites="FrF2_bib1 FrF2_bib2">(<a href="references.html#ref-FrF2_bib1" role="doc-biblioref">Groemping 2025</a>, <a href="references.html#ref-FrF2_bib2" role="doc-biblioref">2014</a>)</span>の<code>FrF2</code>関数を用いることで、一部要因配置計画の実験デザインを作成することができます。以下の例では、3つの説明変数（<code>nutrient</code>、<code>water</code>、<code>light</code>）を用いて、4実験の一部要因配置計画を<code>FrF2</code>関数で作成しています。<code>FrF2</code>関数の第1引数は実験数（<code>nruns</code>）、第2引数は説明変数の数（<code>nfactors</code>）、第3引数は説明変数の名前（<code>factor.names</code>）です。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -2773,7 +2779,7 @@ character(0)</code></pre>
 </div>
 </div>
 </div>
-<p><code>DanielPlot</code>関数は、論文<span class="citation" data-cites="Daniel01111959">(<a href="#ref-Daniel01111959" role="doc-biblioref">Daniel 1959</a>)</span>で説明されている、正規分布とパラメータを大きさ順にならべてプロットしたqqplotの一種です。説明変数に何の効果も無ければ、直線上に点が並びます。正規分布の代わりに半正規分布を用いたプロットにすることもでき（<code>half = TRUE</code>）、こちらの方が直線に点が乗っているかわかりやすくなります。説明変数に効果がある場合には、直線より右側に点が外れることになります。</p>
+<p><code>DanielPlot</code>関数は、論文<span class="citation" data-cites="Daniel01111959">(<a href="references.html#ref-Daniel01111959" role="doc-biblioref">Daniel 1959</a>)</span>で説明されている、正規分布とパラメータを大きさ順にならべてプロットしたqqplotの一種です。説明変数に何の効果も無ければ、直線上に点が並びます。正規分布の代わりに半正規分布を用いたプロットにすることもでき（<code>half = TRUE</code>）、こちらの方が直線に点が乗っているかわかりやすくなります。説明変数に効果がある場合には、直線より右側に点が外れることになります。</p>
 <p>回帰のコードに示した通り、目的変数<code>y</code>はただの正規乱数ですので、どの説明変数にも明確な効果がなく、すべての点が直線上に乗ります。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -2838,10 +2844,10 @@ character(0)</code></pre>
 <li>各説明変数の和は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量を変える場合）を想定したもの</li>
 <li>実験を追加で行うことを想定したもの</li>
 </ul>
-<p>すべてを説明するとページがいくらあっても足りないため、このテキストでは<strong>D-Optimal Design</strong>と<strong>I-Optimal Design</strong>のみを簡単に説明します。Optimal Designについて詳しく知りたい方は文献<span class="citation" data-cites="Goos_Peter2011-06-28">(<a href="#ref-Goos_Peter2011-06-28" role="doc-biblioref">Goos and Jones 2011</a>)</span>を参照下さい。また、Optimal Designを含めた実験計画については<a href="https://www.jmp.com/ja/home">JMP</a>の機能が充実しています。以下に説明する通りRでもOptimal Designを計画することはできますが、JMPではGUIを用いて実験計画を組むことができます。JMPは<a href="https://www.sas.com/ja_jp/home.html">SAS Institute.inc</a>の製品ですので、利用にはお金はかかりますが、お金に余裕があれば試してみるのもよいでしょう。</p>
+<p>すべてを説明するとページがいくらあっても足りないため、このテキストでは<strong>D-Optimal Design</strong>と<strong>I-Optimal Design</strong>のみを簡単に説明します。Optimal Designについて詳しく知りたい方は文献<span class="citation" data-cites="Goos_Peter2011-06-28">(<a href="references.html#ref-Goos_Peter2011-06-28" role="doc-biblioref">Goos and Jones 2011</a>)</span>を参照下さい。また、Optimal Designを含めた実験計画については<a href="https://www.jmp.com/ja/home">JMP</a>の機能が充実しています。以下に説明する通りRでもOptimal Designを計画することはできますが、JMPではGUIを用いて実験計画を組むことができます。JMPは<a href="https://www.sas.com/ja_jp/home.html">SAS Institute.inc</a>の製品ですので、利用にはお金はかかりますが、お金に余裕があれば試してみるのもよいでしょう。</p>
 <section id="d-optimal-design" class="level3" data-number="48.5.1"><h3 data-number="48.5.1" class="anchored" data-anchor-id="d-optimal-design">
 <span class="header-section-number">48.5.1</span> D-optimal Design</h3>
-<p>D-optimal Designは、一般線形モデルの演算（<a href="#tip-lm" class="quarto-xref">Tip&nbsp;<span class="quarto-unresolved-ref">tip-lm</span></a>）で説明したデザイン行列の積（<span class="math inline">\(X^TX\)</span>）の行列式（<span class="math inline">\(|X^TX|\)</span>）を最大とするデザインを選択するOpitimal Designの方法の一つです。</p>
+<p>D-optimal Designは、一般線形モデルの演算（<a href="#tip-lm" class="quarto-xref">Tip&nbsp;<span>48.1</span></a>）で説明したデザイン行列の積（<span class="math inline">\(X^TX\)</span>）の行列式（<span class="math inline">\(|X^TX|\)</span>）を最大とするデザインを選択するOpitimal Designの方法の一つです。</p>
 <p>各説明変数のパラメータ（傾き）のばらつき（分散・共分散行列、<span class="math inline">\(Cov(\hat{\beta})\)</span>）はデザイン行列を用いて以下の式で表されます。</p>
 <p><span class="math display">\[Cov(\hat{\beta}) = \hat{\sigma}^2(X^TX)^{-1}\]</span></p>
 <p>このばらつきのうち、実験デザインで小さくできるのは<span class="math inline">\((X^TX)^{-1}\)</span>、<span class="math inline">\(X^TX\)</span>の逆行列の部分になります。逆行列は行列式の逆数を行列にかけた形で表されるため（<span class="math inline">\(A^{-1}=\frac{1}{|A|}\cdot \tilde{A}\)</span>）、<span class="math inline">\(X^TX\)</span>の行列式（<span class="math inline">\(|X^TX|\)</span>）が大きくなれば<span class="math inline">\((X^TX)^{-1}\)</span>を小さく、つまりばらつきを小さくすることができます。ですので、<span class="math inline">\(|X^TX|\)</span>を最大化するデザイン行列<span class="math inline">\(X\)</span>を選択するのがD-Optimal Designです。Dはdeterminant（行列式）のDです。</p>
@@ -2861,7 +2867,7 @@ character(0)</code></pre>
 <p>D-Optimal Design、I-Optimal Design共に最適なデザイン行列は乱数を使った繰り返し計算（Monte Carloアルゴリズム）で計算・作成されます。一部要因配置計画についてはコンピュータが発達する前から直交表を用いて作成されてきましたが、Opitimal Designではデザイン行列の作成に繰り返し計算を用いるため、デザインの作成にはコンピュータが必要です。</p>
 </section></section><section id="rでoptimal-designskpr" class="level2" data-number="48.6"><h2 data-number="48.6" class="anchored" data-anchor-id="rでoptimal-designskpr">
 <span class="header-section-number">48.6</span> RでOptimal Design：skpr</h2>
-<p>RでOptimal Designを作成する場合には、様々なパッケージを利用可能ですが、比較的簡単にOptimal Designを作成・評価できるパッケージとして、以下では<strong><a href="https://tylermorganwall.github.io/skpr/"><code>skpr</code></a>パッケージ</strong><span class="citation" data-cites="skpr_bib">(<a href="#ref-skpr_bib" role="doc-biblioref">Morgan-Wall and Khoury 2021</a>)</span>を紹介します。</p>
+<p>RでOptimal Designを作成する場合には、様々なパッケージを利用可能ですが、比較的簡単にOptimal Designを作成・評価できるパッケージとして、以下では<strong><a href="https://tylermorganwall.github.io/skpr/"><code>skpr</code></a>パッケージ</strong><span class="citation" data-cites="skpr_bib">(<a href="references.html#ref-skpr_bib" role="doc-biblioref">Morgan-Wall and Khoury 2021</a>)</span>を紹介します。</p>
 <section id="実験計画を作成する" class="level3" data-number="48.6.1"><h3 data-number="48.6.1" class="anchored" data-anchor-id="実験計画を作成する">
 <span class="header-section-number">48.6.1</span> 実験計画を作成する</h3>
 <p><code>skpr</code>パッケージで実験計画を作成する場合、まずは<code>expand.grid</code>関数を用いて要因配置計画を作成します。<code>FrF2</code>のように各説明変数の条件を2条件とする必要はなく、3条件以上であってもOptimal Designを作成することができます。</p>
@@ -2956,7 +2962,7 @@ character(0)</code></pre>
 </div>
 <section id="optimalityの設定" class="level4" data-number="48.6.1.1"><h4 data-number="48.6.1.1" class="anchored" data-anchor-id="optimalityの設定">
 <span class="header-section-number">48.6.1.1</span> Optimalityの設定</h4>
-<p>Optimalityは<code>optimality</code>引数で設定することができます。<code>optimality</code>は文字列で設定し、<code>"D"</code>, <code>"I"</code>, <code>"A"</code>, <code>"ALIAS"</code>, <code>"G"</code>, <code>"T"</code>, <code>"E"</code>, <code>"CUSTOM"</code>のいずれかを選択します。これらのうち、<code>"ALIAS"</code>は近年の論文<span class="citation" data-cites="Jones2011">(<a href="#ref-Jones2011" role="doc-biblioref">Jones and Nachtsheim 2011</a>)</span>に記載された最適化の手法で、<code>"CUSTOM"</code>は自分で設定した最適化アルゴリズムを利用する方法です。以下では、I-Optimal Designの計画を作成しています。</p>
+<p>Optimalityは<code>optimality</code>引数で設定することができます。<code>optimality</code>は文字列で設定し、<code>"D"</code>, <code>"I"</code>, <code>"A"</code>, <code>"ALIAS"</code>, <code>"G"</code>, <code>"T"</code>, <code>"E"</code>, <code>"CUSTOM"</code>のいずれかを選択します。これらのうち、<code>"ALIAS"</code>は近年の論文<span class="citation" data-cites="Jones2011">(<a href="references.html#ref-Jones2011" role="doc-biblioref">Jones and Nachtsheim 2011</a>)</span>に記載された最適化の手法で、<code>"CUSTOM"</code>は自分で設定した最適化アルゴリズムを利用する方法です。以下では、I-Optimal Designの計画を作成しています。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -3342,7 +3348,7 @@ No errors or warnings encountered during power curve generation!</code></pre>
 </section></section></section><section id="mixture-experiment" class="level2" data-number="48.7"><h2 data-number="48.7" class="anchored" data-anchor-id="mixture-experiment">
 <span class="header-section-number">48.7</span> mixture experiment</h2>
 <p>説明変数全体の量は決まっていて、説明変数の割合を変える場合（例えばホットケーキミックス500g中の小麦粉やベーキングパウダーなどの原材料の量の割合を変える場合）の実験のことを<strong>mixture experiment</strong>と呼びます。mixture experimentでは、各説明変数の和が常に1となるよう実験計画が作成されます。</p>
-<p>mixture experimentの実験計画には<code>skpr</code>は対応していないので、別のパッケージ（<a href="https://cran.r-project.org/web/packages/mixexp/index.html"><code>mixexp</code></a><span class="citation" data-cites="mixexp_bib">(<a href="#ref-mixexp_bib" role="doc-biblioref">Lawson and Willden 2016</a>)</span>、<a href="https://cran.r-project.org/web/packages/AlgDesign/index.html"><code>AlgDesign</code></a><span class="citation" data-cites="AlgDesign_bib">(<a href="#ref-AlgDesign_bib" role="doc-biblioref">Wheeler 2025</a>)</span>）を用います。</p>
+<p>mixture experimentの実験計画には<code>skpr</code>は対応していないので、別のパッケージ（<a href="https://cran.r-project.org/web/packages/mixexp/index.html"><code>mixexp</code></a><span class="citation" data-cites="mixexp_bib">(<a href="references.html#ref-mixexp_bib" role="doc-biblioref">Lawson and Willden 2016</a>)</span>、<a href="https://cran.r-project.org/web/packages/AlgDesign/index.html"><code>AlgDesign</code></a><span class="citation" data-cites="AlgDesign_bib">(<a href="references.html#ref-AlgDesign_bib" role="doc-biblioref">Wheeler 2025</a>)</span>）を用います。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -3361,7 +3367,7 @@ No errors or warnings encountered during power curve generation!</code></pre>
 </div>
 <section id="mixexpパッケージ" class="level3" data-number="48.7.1"><h3 data-number="48.7.1" class="anchored" data-anchor-id="mixexpパッケージ">
 <span class="header-section-number">48.7.1</span> mixexpパッケージ</h3>
-<p><code>mixexp</code>はmixture experimentの実験計画作成のためのパッケージです。このパッケージではOptimal Designではなく、Simplex-Lattice Design <span class="citation" data-cites="Scheffé1958">(<a href="#ref-Scheff%C3%A91958" role="doc-biblioref">Scheffé 1958</a>)</span>に従い計画を作成します。</p>
+<p><code>mixexp</code>はmixture experimentの実験計画作成のためのパッケージです。このパッケージではOptimal Designではなく、Simplex-Lattice Design <span class="citation" data-cites="Scheffé1958">(<a href="references.html#ref-Scheff%C3%A91958" role="doc-biblioref">Scheffé 1958</a>)</span>に従い計画を作成します。</p>
 <p><code>mixexp</code>での実験計画の作成はシンプルで、2つの関数を用います。一つは説明変数の数だけ設定する<code>SCD</code>関数、もう一つは説明変数の数と各説明変数の条件の数を指定する<code>SLD</code>関数です。<code>SCD</code>関数では各説明変数の条件の数を6とすることになります。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -3500,7 +3506,7 @@ No errors or warnings encountered during power curve generation!</code></pre>
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-Daniel01111959" class="csl-entry" role="listitem">
 Daniel, Cuthbert. 1959. <span>“Use of Half-Normal Plots in Interpreting Factorial Two-Level Experiments.”</span> <em>Technometrics</em> 1 (4): 311–41. <a href="https://doi.org/10.1080/00401706.1959.10489866">https://doi.org/10.1080/00401706.1959.10489866</a>.
 </div>

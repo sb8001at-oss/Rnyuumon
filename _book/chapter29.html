@@ -799,6 +799,12 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./Tips_R6class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R6クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./Tips_shinylive.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">webRとshinylive</span></a>
   </div>
@@ -1009,7 +1015,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>昔から論文などでは、取得したデータに対して検定を行い、p値を示すことが一般的です。ただし、このp値はデータとの関係がいまいちよくわからないパラメータですし、何よりデータ数が増えると値が小さくなるため、差があるという結論が出やすくなります。データ数が大きければ、ほんの少ししか差が無くても、検定では帰無仮説を棄却することになります。</p>
 <p>p値がよく用いられるのは、結果として「差がある」かどうか、つまり0か1かという結論が出せるからです。通常意思決定は0か1かで行うため、0か1かの結論を付けられる検定は人に説明しやすい性質を持ちます。ただし、「差がある」からといって「差に意味がある」かどうかは明確ではありません。</p>
-<p>いろいろなところに記載されている通り（例えば、<a href="https://www.nature.com/articles/s41562-017-0189-z">Nature human behaviourの論文</a> <span class="citation" data-cites="benjamin2018redefine">(<a href="#ref-benjamin2018redefine" role="doc-biblioref"><span class="nocase">Benjamin et al.</span> 2018</a>)</span>や<a href="https://www.nature.com/articles/nmeth.4120">Nature methodsの論文</a> <span class="citation" data-cites="e6a4d0acbb644e5b84bf4e80a435599e">(<a href="#ref-e6a4d0acbb644e5b84bf4e80a435599e" role="doc-biblioref">Altman and Krzywinski 2016</a>)</span>など）、検定とp値のみで結論付けるのはあまりいい方法ではありません。結果の表示や有意性については、信頼区間を用いて示した方が良いとされています。</p>
+<p>いろいろなところに記載されている通り（例えば、<a href="https://www.nature.com/articles/s41562-017-0189-z">Nature human behaviourの論文</a> <span class="citation" data-cites="benjamin2018redefine">(<a href="references.html#ref-benjamin2018redefine" role="doc-biblioref"><span class="nocase">Benjamin et al.</span> 2018</a>)</span>や<a href="https://www.nature.com/articles/nmeth.4120">Nature methodsの論文</a> <span class="citation" data-cites="e6a4d0acbb644e5b84bf4e80a435599e">(<a href="references.html#ref-e6a4d0acbb644e5b84bf4e80a435599e" role="doc-biblioref">Altman and Krzywinski 2016</a>)</span>など）、検定とp値のみで結論付けるのはあまりいい方法ではありません。結果の表示や有意性については、信頼区間を用いて示した方が良いとされています。</p>
 <p>検定では、通常p値が0.05未満（p &lt; 0.05）であれば有意な差がある、0.01や0.001未満（p &lt; 0.01、p &lt; 0.001）ならよりはっきりとした有意差があるとします。この0.05、0.01、0.001という値には特に意味はありませんが、習慣上この3つの値を用いることが多いです。</p>
 </div>
 </div>
@@ -1492,8 +1498,8 @@ window.Quarto = {
 <p>上の式の<span class="math inline">\(\bar{x_1}\)</span>、<span class="math inline">\(\bar{x_2}\)</span>はそれぞれ2群の平均値で、分子の<span class="math inline">\(\bar{x_1}-\bar{x_2}\)</span>は2群の平均値の差です。また、<span class="math inline">\(s\)</span>は2群の標準偏差をプールしたもので、以下の式で表されます。</p>
 <p><span class="math display">\[s=\sqrt{\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}}\]</span></p>
 <p>この式の<span class="math inline">\(n_1\)</span>、<span class="math inline">\(n_2\)</span>はそれぞれ2群のデータ数、<span class="math inline">\(s_1\)</span>、<span class="math inline">\(s_2\)</span>は2群の標準偏差です。したがって、Cohen’s dは平均値の差を標準偏差で割ったような値となっています。</p>
-<p>これだけだと意味が分かりにくいのですが、このCohen’s dにはおおよその差の大きさの指標が決められていて、dが0.2未満なら差がとても小さく、0.2～0.5なら小さく、0.5～0.8なら中程度、0.8以上だと大きいとされています<span class="citation" data-cites="cohen2013statistical">(<a href="#ref-cohen2013statistical" role="doc-biblioref">Cohen 2013</a>)</span>。</p>
-<p>この効果量の計算に用いるパッケージが<a href="https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html"><code>effectsize</code></a><span class="citation" data-cites="effectsize_bib">(<a href="#ref-effectsize_bib" role="doc-biblioref">Ben-Shachar et al. 2020</a>)</span>です。<code>effectsize</code>の<code>cohens_d</code>関数はformulaを引数に取り、2群間の効果量であるCohen’s dを返す関数です。引数は<code>t.test</code>関数と同じように指定します。<code>cohens_d</code>関数を実行すると、以下のようにCohen’s dと差の95%信頼区間が表示されます。</p>
+<p>これだけだと意味が分かりにくいのですが、このCohen’s dにはおおよその差の大きさの指標が決められていて、dが0.2未満なら差がとても小さく、0.2～0.5なら小さく、0.5～0.8なら中程度、0.8以上だと大きいとされています<span class="citation" data-cites="cohen2013statistical">(<a href="references.html#ref-cohen2013statistical" role="doc-biblioref">Cohen 2013</a>)</span>。</p>
+<p>この効果量の計算に用いるパッケージが<a href="https://cran.r-project.org/web/packages/effectsize/vignettes/effectsize.html"><code>effectsize</code></a><span class="citation" data-cites="effectsize_bib">(<a href="references.html#ref-effectsize_bib" role="doc-biblioref">Ben-Shachar et al. 2020</a>)</span>です。<code>effectsize</code>の<code>cohens_d</code>関数はformulaを引数に取り、2群間の効果量であるCohen’s dを返す関数です。引数は<code>t.test</code>関数と同じように指定します。<code>cohens_d</code>関数を実行すると、以下のようにCohen’s dと差の95%信頼区間が表示されます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1860,7 +1866,7 @@ window.Quarto = {
 </div>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>分散分析の結果は分散分析表として示すことが多いですが、Rの出力はデータフレームではなく、Consoleに表示されます。データフレームとして分散分析結果を取得するには、<code>broom</code>パッケージ<span class="citation" data-cites="broom_bib">(<a href="#ref-broom_bib" role="doc-biblioref">Robinson et al. 2025</a>)</span>の<code>tidy</code>関数を用います。<code>tidy</code>関数は分散分析だけでなく、様々な統計解析の結果をデータフレームに変換してくれます。</p>
+<p>分散分析の結果は分散分析表として示すことが多いですが、Rの出力はデータフレームではなく、Consoleに表示されます。データフレームとして分散分析結果を取得するには、<code>broom</code>パッケージ<span class="citation" data-cites="broom_bib">(<a href="references.html#ref-broom_bib" role="doc-biblioref">Robinson et al. 2025</a>)</span>の<code>tidy</code>関数を用います。<code>tidy</code>関数は分散分析だけでなく、様々な統計解析の結果をデータフレームに変換してくれます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1990,11 +1996,11 @@ window.Quarto = {
 </section></section><section id="多重比較" class="level2" data-number="29.6"><h2 data-number="29.6" class="anchored" data-anchor-id="多重比較">
 <span class="header-section-number">29.6</span> 多重比較</h2>
 <p>分散分析では、3群以上の平均値の差の検定を行います。ただし、分散分析でわかるのは、3群に差があるのかどうかであって、どの群の間に差があるのかはよくわかりません。</p>
-<p>どの群とどの群の間に差があるかを知りたい場合、もっとも単純に考えると2群ずつのt検定を繰り返せばよいように思います。しかし、 検出力と例数（ <a href="#sec-power" class="quarto-xref"><span class="quarto-unresolved-ref">sec-power</span></a> ）で説明した通り、検定には第一の過誤という、「差があると結論しても実際には差がなかった」ということが起こります。この第一の過誤の確率はp値となります。ですので、例えばp=0.05のt検定を2回行えば、どちらか一方の検定が間違いである確率は、<span class="math inline">\(1-(1-0.05)^2=0.0975\)</span>となり、0.05より大きい確率で間違いを含んでしまいます。</p>
+<p>どの群とどの群の間に差があるかを知りたい場合、もっとも単純に考えると2群ずつのt検定を繰り返せばよいように思います。しかし、 検出力と例数（ <a href="#sec-power" class="quarto-xref"><span>Section 29.3.6</span></a> ）で説明した通り、検定には第一の過誤という、「差があると結論しても実際には差がなかった」ということが起こります。この第一の過誤の確率はp値となります。ですので、例えばp=0.05のt検定を2回行えば、どちらか一方の検定が間違いである確率は、<span class="math inline">\(1-(1-0.05)^2=0.0975\)</span>となり、0.05より大きい確率で間違いを含んでしまいます。</p>
 <p>この検定を繰り返すと検定に間違いが含まれる確率が0.05より大きくなる問題のことを<strong>多重性の問題</strong>と呼びます。この多重性の問題を解決するために、第一の過誤の確率を調整するのが<strong>多重比較の方法</strong>です。多重比較の方法には様々なものがあります。Rで利用可能な多重比較の方法を以下に示していきます。</p>
 <section id="scheffeの方法" class="level3" data-number="29.6.1"><h3 data-number="29.6.1" class="anchored" data-anchor-id="scheffeの方法">
 <span class="header-section-number">29.6.1</span> Scheffeの方法</h3>
-<p>Scheffeの方法は、昔は教科書等にも書かれていた多重比較の方法なのですが、最近はあまり紹介されているところを見ないものです。RでScheffeの方法を用いるためには、<a href="https://cran.r-project.org/web/packages/DescTools/index.html">DescTools</a>パッケージ <span class="citation" data-cites="DescTools_bib">(<a href="#ref-DescTools_bib" role="doc-biblioref">Signorell 2023</a>)</span>の<code>ScheffeTest</code>関数を利用する必要があります。<code>ScheffeTest</code>関数は<code>aov</code>関数の返り値を引数に取り、多重比較による各群の総当たりの調整済みp値を計算してくれます。</p>
+<p>Scheffeの方法は、昔は教科書等にも書かれていた多重比較の方法なのですが、最近はあまり紹介されているところを見ないものです。RでScheffeの方法を用いるためには、<a href="https://cran.r-project.org/web/packages/DescTools/index.html">DescTools</a>パッケージ <span class="citation" data-cites="DescTools_bib">(<a href="references.html#ref-DescTools_bib" role="doc-biblioref">Signorell 2023</a>)</span>の<code>ScheffeTest</code>関数を利用する必要があります。<code>ScheffeTest</code>関数は<code>aov</code>関数の返り値を引数に取り、多重比較による各群の総当たりの調整済みp値を計算してくれます。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -2137,7 +2143,7 @@ window.Quarto = {
 </div>
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>多重比較の方法には、この他にGatekeeping法と呼ばれるものもあります。Gatekeeping法は研究デザインとの関連性が高い手法で、基礎研究ではまずお目にかからないものです。近年の第III相治験のような、ガチガチに研究デザインを固めてから行う大規模研究以外ではまず使うことはないでしょう。RにはこのGatekeeping法の計算に関連したパッケージとして<a href="https://gpaux.github.io/Mediana/">Mediana</a>パッケージ <span class="citation" data-cites="Mediana_bib">(<a href="#ref-Mediana_bib" role="doc-biblioref">Paux and Dmitrienko. 2019</a>)</span>や <a href="https://gsrmtp.r-forge.r-project.org/">gMCP</a>パッケージ <span class="citation" data-cites="gMCP_bib">(<a href="#ref-gMCP_bib" role="doc-biblioref">Bretz et al. 2011</a>)</span>があります。</p>
+<p>多重比較の方法には、この他にGatekeeping法と呼ばれるものもあります。Gatekeeping法は研究デザインとの関連性が高い手法で、基礎研究ではまずお目にかからないものです。近年の第III相治験のような、ガチガチに研究デザインを固めてから行う大規模研究以外ではまず使うことはないでしょう。RにはこのGatekeeping法の計算に関連したパッケージとして<a href="https://gpaux.github.io/Mediana/">Mediana</a>パッケージ <span class="citation" data-cites="Mediana_bib">(<a href="references.html#ref-Mediana_bib" role="doc-biblioref">Paux and Dmitrienko. 2019</a>)</span>や <a href="https://gsrmtp.r-forge.r-project.org/">gMCP</a>パッケージ <span class="citation" data-cites="gMCP_bib">(<a href="references.html#ref-gMCP_bib" role="doc-biblioref">Bretz et al. 2011</a>)</span>があります。</p>
 </div>
 </div>
 </div>
@@ -2277,7 +2283,7 @@ window.Quarto = {
 </section><section id="正規性の検定shapiro-wilk検定" class="level3" data-number="29.7.4"><h3 data-number="29.7.4" class="anchored" data-anchor-id="正規性の検定shapiro-wilk検定">
 <span class="header-section-number">29.7.4</span> 正規性の検定：Shapiro-Wilk検定</h3>
 <p>正規性の検定（Shapiro-Wilk検定）は、データが正規分布しているかどうかを検定で判別するための検定手法です。「データが正規分布している」が帰無仮説ですので、正規分布していないデータが与えられたときにp値が小さくなり、帰無仮説が棄却されます。Shapiro-Wilk検定は<code>shapiro.test</code>関数を用いて計算することができます。</p>
-<p>また、<code>DescTools</code>パッケージ<span class="citation" data-cites="DescTools_bib">(<a href="#ref-DescTools_bib" role="doc-biblioref">Signorell 2023</a>)</span>の<code>LillieTest</code>関数も正規性の検定の手法（Kolmogorov-Smirnov検定）を提供しています。Kolmogorov-Smirnov検定もShapiro-Wilk検定と同じく、帰無仮説は「データが正規分布している」です。</p>
+<p>また、<code>DescTools</code>パッケージ<span class="citation" data-cites="DescTools_bib">(<a href="references.html#ref-DescTools_bib" role="doc-biblioref">Signorell 2023</a>)</span>の<code>LillieTest</code>関数も正規性の検定の手法（Kolmogorov-Smirnov検定）を提供しています。Kolmogorov-Smirnov検定もShapiro-Wilk検定と同じく、帰無仮説は「データが正規分布している」です。</p>
 <p>ただし、この検定よりは、qqプロットのような正規性を図から調べるような方法や、ヒストグラムでの左右対称性の確認、データが連続的であるかどうかなどを指標にして判別する方がよいように思います。</p>
 <div class="cell">
 <div class="code-with-filename">
@@ -2352,7 +2358,7 @@ window.Quarto = {
 </div>
 </section><section id="外れ値の検定" class="level3" data-number="29.7.6"><h3 data-number="29.7.6" class="anchored" data-anchor-id="外れ値の検定">
 <span class="header-section-number">29.7.6</span> 外れ値の検定</h3>
-<p>データが外れ値（outlier）かどうかを判別する場合には、外れ値の検定というものを用いる場合もあります。この検定では、代表値（平均など）から一番外れたデータが外れ値かどうかを検定し、外れ値であれば帰無仮説を棄却するものとなっています。Rでは<a href="https://cran.r-project.org/web/packages/outliers/outliers.pdf">outlier</a>パッケージ <span class="citation" data-cites="outliers_bib">(<a href="#ref-outliers_bib" role="doc-biblioref">Komsta 2022</a>)</span>の関数である<code>chisq.out.test</code>、<code>grubbs.test</code>、<code>dixon.test</code>で検定を行うことができます。</p>
+<p>データが外れ値（outlier）かどうかを判別する場合には、外れ値の検定というものを用いる場合もあります。この検定では、代表値（平均など）から一番外れたデータが外れ値かどうかを検定し、外れ値であれば帰無仮説を棄却するものとなっています。Rでは<a href="https://cran.r-project.org/web/packages/outliers/outliers.pdf">outlier</a>パッケージ <span class="citation" data-cites="outliers_bib">(<a href="references.html#ref-outliers_bib" role="doc-biblioref">Komsta 2022</a>)</span>の関数である<code>chisq.out.test</code>、<code>grubbs.test</code>、<code>dixon.test</code>で検定を行うことができます。</p>
 <p>ただし、この検定で<strong>外れ値であると判断されても、データは取り除いてはいけません</strong>。これらの検定はデータが正規分布していることを仮定しており、正規分布していないデータでは外れ値とはならない場合があります。検定は外れ値を取り除くためのものではなく、外れ値である可能性を把握し、データの取得に問題がなかったか検討したり、分布が正規性を持つかどうかを評価しなおしたりするためのものです。</p>
 <p>基礎研究などで極端な外れ値が取れた場合には何か理由を付けてデータを取り除きたくなるものですが、この検定を用いてもデータを取り除くことはできません。このような検定を用いずに、データと向き合う方が良いように思います。</p>
 <div class="cell">
@@ -2546,7 +2552,7 @@ window.Quarto = {
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-e6a4d0acbb644e5b84bf4e80a435599e" class="csl-entry" role="listitem">
 Altman, Naomi, and Martin Krzywinski. 2016. <span>“Points of Significance: P Values and the Search for Significance.”</span> <em>Nature Methods</em> 14 (1): 3–4. <a href="https://doi.org/10.1038/nmeth.4120">https://doi.org/10.1038/nmeth.4120</a>.
 </div>
