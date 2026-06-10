@@ -232,8 +232,9 @@ MyDog <-
         
         # ベクターの最後の値を取り出し、残りをtrickに設定する（pop）
         pop_trick = function(){
+          pop_item <- self$trick[length(self$trick)]
           self$trick <- self$trick[-length(self$trick)]
-          return(self$trick[length(self$trick)])
+          pop_item
         },
         
         initialize = function(name, age, trick){
@@ -289,7 +290,7 @@ MyDog <-
   )
 ```
 
-このようなバリデータを設定しておけば、オブジェクト作成時にメンバーの値が指定したデータ型が異なるとエラーが出るようになります。
+このようなバリデータを設定しておけば、コンストラクタを実行した時、メンバーの値が指定したデータ型と異なるとエラーが出るようになります。
 
 ```{r, error=TRUE, filename="バリデータに従いエラーが出る"}
 MyDog$new("Pochi", "10", "sit")
@@ -408,7 +409,7 @@ Pochi$trick
 
 S4と同様に、R6でもクラスを継承することができます。クラスの継承では、親クラス（スーパークラス）を`inherit`引数に指定します。
 
-また、親クラスのメンバーをクラスの定義内で呼び出す場合には、`super$`メンバー名という形で、`super`を用います。
+また、親クラスのメンバーをクラスの定義内で呼び出す場合には、`super$メンバー名`という形で、`super`を用います。
 
 ```{r, filename="継承"}
 BDMyDog <-
@@ -486,7 +487,7 @@ R6で値渡しを行う場合には、`clone`メソッドを用います。以�
 
 ```{r, filename="cloneメソッドで値渡しを行う"}
 # Pochi$ageは10
-Pochi$age
+Pochi$age <- 10
 
 # cloneメソッドを用いる
 Kuro <- Pochi$clone()
