@@ -1,0 +1,302 @@
+# S7クラス {.unnumbered}
+
+[`S7`クラス](https://rconsortium.github.io/S7/)[@S7_bib]はRのほぼ最後発のオブジェクト指向プログラミングのためのクラスで、S3とS4をまとめて整理し、いずれは置き換えることを目標として開発されています。`S7`は2022年から開発されていて、今のところ`S7`はライブラリとして提供されています。ライブラリとして提供されているため、利用するためにはライブラリをインストールする必要があります。
+
+```{r, filename="ライブラリのインストール・ロード"}
+# ggplot2で使われているので、ggplot2をロードすると自動的にロードされる
+pacman::p_load(S7)
+```
+
+`S7`は使い勝手としてはS4によく似ており、S4の過剰に複雑な部分を排除し、しっかりとしたバリデーションの方法を追加したものとなっています。
+
+`S7`はR6とは異なり、R的な使い方を想定しており、メソッドは提供されず、ジェネリック関数をクラスの定義とは別に定義します。ですので、RubyやPythonのようなオブジェクト指向プログラミングの言語を用いている人からするとやや不自然に感じるかもしれません。
+
+ココでは、簡単に`S7`の使い方について説明してみます。ただし、`S7`は開発中のクラスであり、仕様が変更となる可能性があります。仕様の変更はなるべくフォローするようにしますが、正確な使い方については[`S7`のドキュメント](https://rconsortium.github.io/S7/)を参照してください。
+
+## クラスの定義
+
+S7では、クラスの定義に`new_class`関数を用います。この`new_class`関数は第一引数にクラス名、第二引数に`properties`（S4のSlot、R6のメンバーと同じくクラスの要素）、そして`validator`を引数に取ります。基本的に`validator`を設定して使うことが想定されており、`properties`が変更を受ける場合には`validator`に指定した条件が常にチェックされます。したがって、S7では`properties`の型安全性が高いことが大きな特徴となっています。
+
+```{r, filename="S7：クラスの定義"}
+# クラス名と同名の変数に代入して用いる
+MyDog <-
+  new_class(
+    "MyDog",
+    properties = 
+      list(
+        name = class_character,
+        age = class_numeric,
+        trick = class_character
+      ),
+    
+    validator = function(self){
+      # NULLが返ってくるとエラーなし，返り値があるとエラーが出る
+      if(length(self@name) != 1){
+        "2つ以上の名前を付けることはできません"
+      } else if (length(self@age) != 1){
+        "2つ以上の年齢を付けることはできません"
+      } else if (self@age < 0 | self@age > 20){
+        "年齢は0歳以上20歳未満として下さい"
+      }
+    }
+  )
+
+```
+
+S7のクラス名はアッパーキャメルケースとし、同名の変数に代入して用います。以下の例では、`"MyDog"`クラスを`MyDog`という変数に代入しています。
+
+`properties`はリストで指定します。リストでは、名前側がpropertiesの名前、リストの値側はそのpropertiesのデータ型を指定するようにします。このデータ型の指定には、`class_character`や`class_numeric`、`class_logical`のようなデータ型を固定するためのS7のクラスを指定します。
+
+```{r, filename="型固定用のS7クラス"}
+# S7でbaseやS3のクラスを囲っている（ラッパー）
+class_character
+class_Date
+```
+
+この指定したクラス以外の値をpropertiesは取ることができません。したがって、S3やS4、R6よりも型安全性が高いpropertiesを設定することができます。
+
+### クラスの代入の演算子：`:=`
+
+クラスの作成時には、クラス名と同じ名前の変数に代入します。この代入は`:=`という演算子で置き換えることができます。
+
+```{r, filename=":=演算子", eval=FALSE}
+# 最新のdevelopmental versionで登録されたため、:=を使えるようにするとggplot2が使えなくなる
+A := new_class()
+```
+
+後ほどcalloutで説明するように、S7ではクラス名と変数名が異なっていてもクラスを作れてしまいますし、ジェネリック関数を作成するときには関数名と関数を代入する変数名が違っても関数を作れてしまいます。S7を使う場合には基本的にこの`:=`演算子を使った方がよいでしょう。
+
+### バリデータ
+
+`validator`は`self`を引数とした関数として設定します。関数内ではpropertiesに問題が無ければ`NULL`が返り、問題があればエラーメッセージが返るような`if`文を指定します。
+
+上に示した`MyDog`クラスでは、以下のように設定することで名前や年齢のベクターの長さが1で、年齢が0歳以上20歳未満でないとメッセージが返るように指定しています。
+
+```{r, eval=FALSE, filename="バリデータの設定"}
+validator = function(self){
+  # NULLが返ってくるとエラーなし，返り値があるとエラーが出る
+  if(length(self@name) != 1){
+    "2つ以上の名前を付けることはできません"
+  } else if (length(self@age) != 1){
+    "2つ以上の年齢を付けることはできません"
+  } else if (self@age < 0 | self@age > 20){
+    "年齢は0歳以上20歳未満として下さい"
+  }
+}
+```
+
+### クラスの表示
+
+作成したクラスを表示すると、以下のようになります。
+
+```{r, filename="クラスの内容を表示する"}
+MyDog
+```
+
+クラスの個々の要素は`@`と`$`で確認できます。
+
+```{r, filename="クラスの要素を表示する"}
+MyDog@constructor
+MyDog@validator
+MyDog@properties$name
+```
+
+## クラスオブジェクト（インスタンス）の作成
+
+クラスのオブジェクトは、クラスの定義を代入した変数（上の`MyDog`クラスでは`MyDog`）を関数とし、propertiesを引数として作成します。propertiesのクラス設定と異なるデータ型や、バリデーションで`NULL`以外が返ってくるような値をpropertiesに指定すると、エラーが出ます。
+
+```{r, error=TRUE, filename="オブジェクトの作成"}
+MyDog("Pochi", 10, "sit")
+MyDog("Pochi", 100, "sit") # バリデーションに適合しないのでエラー
+```
+
+## propertiesの呼び出し・変更
+
+propertiesは`@`を用いて呼び出すことができます。また、propertiesに代入する形でpropertiesの値を変更することもできます。この際にもpropertiesはバリデーションの設定と合っているかどうかを評価されます。
+
+```{r, filename="propertiesの呼び出しと変更"}
+Pochi <- MyDog("Pochi", 10, "sit")
+
+Pochi@age
+
+Pochi@age <- 15
+Pochi
+```
+
+実際にバリデーションの設定に合っていない値をpropertiesに代入すると、エラーが出ます。
+
+```{r, error=TRUE, filename="propertiesに対するバリデーション"}
+Pochi@age <- 25
+Pochi@name <- c("Pochi", "Kuro")
+Pochi@age <- "10"
+```
+
+### propertiesのデフォルト値の設定
+
+propertiesにデフォルト値を設定する際には、`new_property`関数で設定します。`new_property`関数は`properties`引数のリスト内で呼び出し、第一引数にデータ型を指定するS7クラス、`default`引数にデフォルト値を指定します。
+
+```{r, filename="new_property関数でデフォルト値を設定する", eval=FALSE}
+A := new_class(
+  properties = 
+    list(
+      a = 
+        # リスト内で呼び出してpropertiesの設定を追加する
+        new_property(
+          class_character,
+          default = "default character"
+        )
+    )
+)
+```
+
+`new_property`関数には`setter`、`getter`、`validator`という引数も設定可能です。いずれも関数を指定して用いる引数で、それぞれセッター、ゲッター、バリデータを個別のpropertiesに対して設定することができます。
+
+## 関数の設定
+
+S7クラスを引数に取る関数は`method`関数で作成します。ただし、この`method`関数をいきなり使おうとするとエラーが出ます。これは[S4クラスのsetGeneric、setMethod関数](Tips_S4class.qmd#setgeneric関数)と同じく、先にジェネリック関数の名前を設定しておかないと関数を設定できないためです。
+
+```{r, filename="関数名がジェネリックとして登録されていないとエラー", error=TRUE}
+method(add_trick, MyDog) <- function(x, trick){
+  x@trick <- c(x@trick, trick)
+  x
+}
+```
+
+ジェネリック関数の名前を設定するための関数は`new_generic`関数です。`new_generic`関数は関数名とクラスを指定する引数を取り、関数名と同じ名前の変数に代入して用います。このように指定すると、`add_trick`はmethodの登録がない（with 0 methods）S7のジェネリック関数として設定されます。
+
+```{r, filename="ジェネリック関数名の登録：new_generic関数"}
+# UseMethodと同じようなものが必要
+add_trick <- new_generic("add_trick", "x")
+
+add_trick
+```
+
+また、`new_generic`関数の設定でも`:=`を用いることができます。S7では関数名と変数名が一致しなくてもジェネリック関数を設定できてしまいますので、できれば`:=`を用いて`new_generic`関数を用いた方がよいでしょう。
+
+```{r, filename=":=演算子でnew_generic関数を用いる", eval=FALSE}
+add_trick := new_generic("x")
+```
+
+ジェネリック関数として登録出来たら、`method`関数で関数を作成することができます。`method`関数は引数に関数名とS7のクラス名を取り、`method`関数に関数（`function`）を代入して用います。この代入する関数の引数では`new_generic`関数で指定した引数（`add_trick`の場合は`x`）を引数に取る必要があります。
+
+```{r, filename="method関数でS7クラスを引数とする関数を作成する"}
+method(add_trick, MyDog) <- function(x, trick){
+  x@trick <- c(x@trick, trick)
+  x
+}
+```
+
+上記の`method`関数で作成した`add_trick`関数を用いると、`MyDog`クラスのオブジェクトに`trick`を追加できます。S7は値渡し（copy on modify）でオブジェクトを取り扱うため、R6のように元のオブジェクト（`Pochi`）が関数によって変更されることはありません。
+
+```{r, filename="作成した関数を用いる"}
+add_trick(Pochi, "hand")
+```
+
+関数を確認すると、`add_trick`関数に`method`が1つ追加されていることがわかります。`add_trick`関数の詳細を調べたい場合には、`method(add_trick, MyDog)`を実行します。
+
+```{r, filename="関数の内容を確認する"}
+add_trick
+
+method(add_trick, MyDog)
+```
+
+:::{.callout-tip collapse="true"}
+## ジェネリック関数を別名の変数に代入する
+
+`new_generic`関数では、第一引数の関数名と代入する変数名を一致させるよう、`new_generic`関数のヘルプには記載されています。しかし、別の変数名に代入してもなぜか成立します。
+
+```{r, filename="new_generic関数を間違った変数名に代入する"}
+add_tric <- new_generic("add_trick", "x")
+add_tric
+
+method(add_tric, MyDog) <- function(x, trick){
+  x@trick <- c(x@trick, trick)
+  x
+}
+
+add_tric(Pochi, "hand")
+```
+
+別の変数名に入れてしまうと、S7_genericとしては`add_trick`という関数名で設定されていても、`add_tric`で関数を作れてしまいます。ややっこしいのでこういうことはしない方がよいです。
+
+同様にクラスも別名の変数に代入できてしまいます。
+
+```{r, filename="クラス名と変数が異なる場合"}
+B <- new_class("A")
+B()
+```
+
+このような複雑な事態を避けるために、上で説明した`:=`演算子を用いるのがよいでしょう。
+
+```{r, filename=":=演算子でジェネリック関数を指定する", eval=FALSE}
+B := new_class()
+B
+
+add_tric := new_generic("x")
+add_tric
+```
+
+:::
+
+### 2つ以上のpropertiesを変更する関数の場合
+
+2つ以上のpropertiesを一つの関数で変更したい場合には、[バリデーションの問題でpropertiesがうまく変更できなくなる場合](https://rconsortium.github.io/S7/articles/classes-objects.html#avoiding-validation)があります。propertiesを変更する関数を作成する場合には、propertiesを設定するための関数である`props`関数を用いた方がよいでしょう。
+
+```{r, filename="props関数を用いてpropertiesを変更する", eval=FALSE}
+change_all_properties := new_generic("x")
+
+method(change_all_properties, MyDog) <- function(x, name, age, trick){
+  # propertiesを変更する際にはpropsを用いた方がよい場合もある
+  props(x) <- 
+    list(
+      name = name,
+      age = age,
+      trick = trick
+    )
+  x
+}
+```
+
+## 継承
+
+S7でもS4と同様に親クラス（スーパークラス）の継承を行うことができます。継承する場合には、`parent`引数に親クラスを指定します。
+
+```{r, filename="継承"}
+BDMyDog <- 
+  new_class(
+    "BDMyDog",
+    parent = MyDog,
+    properties = list(birthday = class_Date)
+  )
+```
+
+継承したクラス（子クラス）では、親クラスのpropertiesとそのクラスのpropertiesをそれぞれ設定します。また、親クラスの関数を用いることもできます。
+
+```{r, filename="子クラス / 親クラスの関数の適用"}
+Pochi <- BDMyDog("Pochi", 10, "sit", as.Date("2016/6/10"))
+Pochi
+add_trick(Pochi, "lefthand")
+```
+
+ただし、S4とは違い、[多重継承（multiple inheritance）](Tips_S4class.qmd#多重継承)はできなくなっています。一方で多重ディスパッチ（[multiple dispatch](https://adv-r.hadley.nz/s4.html#multiple-dispatch)）は利用できるため、関数には多重ディスパッチを用いた仕組みを取り入れることができます。
+
+### super
+
+親クラスと子クラスで共に同名のジェネリック関数を設定していて、小クラスを取り扱うときに親クラスの関数を用いたい場合には`super`を用います。[S7のドキュメントに記載されている以下の例](https://rconsortium.github.io/S7/articles/generics-methods.html)のように、Dateの平均を求める場合、`date(mean(super(x, to = class_double)))`のように`super`を用いることで、Dateを数値として平均の計算を行い、その後Dateに戻すような処理を行うことができます。
+
+```{r, eval=FALSE, filename="superで親クラスの関数を呼び出す"}
+mean := new_generic("x")
+
+method(mean, date) <- function(x) {
+  date(mean(super(x, to = class_double)))
+}
+```
+
+## Union
+
+[S4のClass Union](Tips_S4class.qmd#class-union)に当たるものが`new_union`関数で作成できるUnionです。ほぼS4のClass Unionと同じような機能を持ち、以下の例では文字列か論理型を取ることができるS7クラスである`char_logi`を作成しています。
+
+```{r, filename="Unionの設定"}
+char_logi <- new_union(class_character, class_logical)
+char_logi
+```

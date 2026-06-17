@@ -83,7 +83,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./Tips_shinylive.html" rel="next">
+<link href="./Tips_S7class.html" rel="next">
 <link href="./Tips_S4class.html" rel="prev">
 <link href="./favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -105,13 +105,12 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 50,
+  "limit": 100,
   "keyboard-shortcut": [
     "f",
     "/",
     "s"
   ],
-  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -777,6 +776,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./Tips_S7class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S7クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./Tips_shinylive.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">webRとshinylive</span></a>
   </div>
@@ -867,14 +872,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
   
 
 
-</header><p><code>R6</code><span class="citation" data-cites="R6_bib">(<a href="references.html#ref-R6_bib" role="doc-biblioref">Chang 2021</a>)</span>はRのオブジェクト指向プログラミングのためのクラスの一つで、RではS3、S4についでよく利用されているクラスの一つです。</p>
+</header><p><code>R6</code><span class="citation" data-cites="R6_bib">(<a href="#ref-R6_bib" role="doc-biblioref">Chang 2021</a>)</span>はRのオブジェクト指向プログラミングのためのクラスの一つで、RではS3、S4についでよく利用されているクラスの一つです。</p>
 <p>S3がジェネリック関数を使うためだけのクラスなのに対し、S4は比較的まともなオブジェクト指向プログラミングのクラスですが、取り扱いが非常に複雑です。S4はパッケージの開発ぐらいにしか利用されません。</p>
 <p>この2つと比べると、<code>R6</code>は最もまともなオブジェクト指向プログラミングのためのクラスと言えます。<code>R6</code>はS3ほどに極端に単純ではなく、S4ほどに複雑な使い方も必要とされません。RubyやPythonを使ったことのある方であれば、S3やS4は受け入れることができなくても、<code>R6</code>は比較的簡単に使いこなすことができるでしょう。</p>
 <p>ただし、Rでは<code>R6</code>はあまり使われていません。Rではクラスを定義してクラスオブジェクト（インスタンス）を作成するところからプログラミングが始まることはほぼなく、クラスメソッドを利用する習慣もありません。</p>
 <p>Rではそもそも自分で大きなプログラムを作り上げるということをあまりしないので、<a href="https://www.reddit.com/r/rstats/comments/dajj9z/why_oop/?solution=ad97127c75f1152dad97127c75f1152d&amp;js_challenge=1&amp;token=7afd7253fec22262ff1c52b1703fe9ecec28d8d604162af1c9ffbbb1b98b2d8d&amp;jsc_orig_r=">クラスの定義をせず、関数があればよい</a>場合が多いです。Pythonで作成したクラスをRに持ち込む場合には<code>R6</code>は最適な手法の一つですが、他のオブジェクト指向プログラミング言語のようにRで<code>R6</code>を駆使してプログラムを組むことはあまりないでしょう。</p>
 <p>また、R6では、Rでの一般的なオブジェクトの変更（値渡し、<strong>copy on modify</strong>）ではなく、参照渡し（<strong>modified in-place</strong>）を行う特徴があります。参照渡しを用いることで演算速度は速くなるのですが、オブジェクトがRっぽい挙動をしなくなってしまいます。</p>
 <p>とは言え、最近ではRを使って作り上げるプログラム（例えばShinyやplumberなど）もあります。PythonとRで同じようなパッケージを同時に開発するような場合も増えています。そのような場面ではRでもクラスの設計を行うことで効率的なプログラミングができます。</p>
-<p>この章では、<a href="https://r6.r-lib.org/">R6のドキュメント</a>と<a href="https://adv-r.hadley.nz/r6.html">Advanced RのR6の章</a><span class="citation" data-cites="Wickham_Hadley2019-05-24">(<a href="references.html#ref-Wickham_Hadley2019-05-24" role="doc-biblioref">Wickham 2019</a>)</span>を参考に、<code>R6</code>と、<code>R6</code>を用いてShinyのコードをシンプルに記述する方法について簡単に説明します。</p>
+<p>この章では、<a href="https://r6.r-lib.org/">R6のドキュメント</a>と<a href="https://adv-r.hadley.nz/r6.html">Advanced RのR6の章</a><span class="citation" data-cites="Wickham_Hadley2019-05-24">(<a href="#ref-Wickham_Hadley2019-05-24" role="doc-biblioref">Wickham 2019</a>)</span>を参考に、<code>R6</code>と、<code>R6</code>を用いてShinyのコードをシンプルに記述する方法について簡単に説明します。</p>
 <section id="r6のインストールとロード" class="level2"><h2 class="anchored" data-anchor-id="r6のインストールとロード">R6のインストールとロード</h2>
 <p><code>R6</code>はRに組み込まれたクラス（S3、S4）とは異なり、パッケージとして提供されています。<code>R6</code>を用いる場合には、まず<code>R6</code>パッケージをインストールします。</p>
 <div class="cell">
@@ -900,7 +905,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p>Reference Classは<code>methods</code>パッケージで提供されているクラスの一つです。<code>methods</code>パッケージはS4を提供しているパッケージですが、Reference ClassはS4を用いて実装した、S4よりまともなクラスとして、2010年頃に提供されるようになりました。</p>
 <p><code>R6</code>（2016年頃）はReference Classによく似ているのですが、S4を使っておらず、クラスというよりはenvironmentを作成するようなものになっています。<code>R6</code>はReference Classよりもデータが小さくて速度も速いため、Reference Classは使われず、<code>R6</code>ばかり使われるようになりました。</p>
 <p>このReference ClassがR5（S5?）だとすると、次のオブジェクト指向プログラミングのクラスは<code>R6</code>である、ということで<code>R6</code>という名前がこのクラスに付けられています。</p>
-<p>同様に<code>R6</code>の次（であり、S3とS4の間の子）、ということで<code>S7</code><span class="citation" data-cites="S7_bib">(<a href="references.html#ref-S7_bib" role="doc-biblioref">Vaughan et al. 2023</a>)</span>も開発されていますが、まだver.0.2.2（2026年6月現在）で、なかなかver.1.0にはたどり着きそうにありません。しばらくはS3、S4、<code>R6</code>がRの主流なクラスとして用いられることになりそうです。</p>
+<p>同様に<code>R6</code>の次（であり、S3とS4の間の子）、ということで<code>S7</code><span class="citation" data-cites="S7_bib">(<a href="#ref-S7_bib" role="doc-biblioref">Vaughan et al. 2026</a>)</span>も開発されていますが、まだver.0.2.2（2026年6月現在）で、なかなかver.1.0にはたどり着きそうにありません。しばらくはS3、S4、<code>R6</code>がRの主流なクラスとして用いられることになりそうです。</p>
 </div>
 </div>
 </div>
@@ -1565,8 +1570,8 @@ trick: sit </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          used (Mb) gc trigger (Mb) max used (Mb)
-Ncells  738453 39.5    1432955 76.6  1432955 76.6
-Vcells 1363326 10.5    8388608 64.0  2537125 19.4</code></pre>
+Ncells  730363 39.1    1417907 75.8  1417907 75.8
+Vcells 1347303 10.3    8388608 64.0  2286265 17.5</code></pre>
 </div>
 </div>
 <p>上記のような使い方ではfinalizeは役に立ちませんが、データベースやwebへの接続をオブジェクトの削除時に切断したいときには有用です。</p>
@@ -1627,7 +1632,7 @@ Vcells 1363326 10.5    8388608 64.0  2537125 19.4</code></pre>
 <p>Shiny Modulesはただの関数です。UI側とServer側のコードをひとまとめの関数としておき、<code>inputId</code>と<code>outputId</code>を決める<code>id</code>という引数を取る形をしたものを準備するだけです。この関数を用いると、定型のShinyを<code>id</code>の名前一つだけで管理できるようになり、Shinyのコードをシンプルにすることができます。</p>
 <section id="ui側のshiny-modulesの設定" class="level4"><h4 class="anchored" data-anchor-id="ui側のshiny-modulesの設定">UI側のShiny Modulesの設定</h4>
 <p>UI側のModulesは<code>xxxUI</code>という名前の関数として作成します。関数の引数は<code>id</code>とし、文字列の<code>id</code>を指定できるようにします。</p>
-<p>関数の中身は<code>tagList</code>関数の中に書いていきます。この<code>tagList</code>は<code>htmltools</code>パッケージ<span class="citation" data-cites="htmltools_bib">(<a href="references.html#ref-htmltools_bib" role="doc-biblioref">Cheng et al. 2025</a>)</span>の関数で、htmlのタグ付きテキストを返します。Shiny Modulesで用いる場合にはこの関数の機能を理解する必要は特にありません。</p>
+<p>関数の中身は<code>tagList</code>関数の中に書いていきます。この<code>tagList</code>は<code>htmltools</code>パッケージ<span class="citation" data-cites="htmltools_bib">(<a href="#ref-htmltools_bib" role="doc-biblioref">Cheng et al. 2025</a>)</span>の関数で、htmlのタグ付きテキストを返します。Shiny Modulesで用いる場合にはこの関数の機能を理解する必要は特にありません。</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1860,7 +1865,7 @@ Vcells 1363326 10.5    8388608 64.0  2537125 19.4</code></pre>
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-R6_bib" class="csl-entry" role="listitem">
 Chang, Winston. 2021. <em>R6: Encapsulated Classes with Reference Semantics</em>. <a href="https://CRAN.R-project.org/package=R6">https://CRAN.R-project.org/package=R6</a>.
 </div>
@@ -1868,7 +1873,7 @@ Chang, Winston. 2021. <em>R6: Encapsulated Classes with Reference Semantics</em>
 Cheng, Joe, Carson Sievert, Barret Schloerke, Winston Chang, Yihui Xie, and Jeff Allen. 2025. <em>Htmltools: Tools for HTML</em>. <a href="https://doi.org/10.32614/CRAN.package.htmltools">https://doi.org/10.32614/CRAN.package.htmltools</a>.
 </div>
 <div id="ref-S7_bib" class="csl-entry" role="listitem">
-Vaughan, Davis, Jim Hester, Tomasz Kalinowski, et al. 2023. <em>S7: An Object Oriented System Meant to Become a Successor to S3 and S4</em>. <a href="https://CRAN.R-project.org/package=S7">https://CRAN.R-project.org/package=S7</a>.
+Vaughan, Davis, Jim Hester, Tomasz Kalinowski, et al. 2026. <em>S7: An Object Oriented System Meant to Become a Successor to S3 and S4</em>. <a href="https://doi.org/10.32614/CRAN.package.S7">https://doi.org/10.32614/CRAN.package.S7</a>.
 </div>
 <div id="ref-Wickham_Hadley2019-05-24" class="csl-entry" role="listitem">
 Wickham, Hadley. 2019. <em>Advanced r, Second Edition (Chapman &amp; Hall/CRC the r Series) (English Edition)</em>. Kindle版. Chapman; Hall/CRC.
@@ -2343,8 +2348,8 @@ Wickham, Hadley. 2019. <em>Advanced r, Second Edition (Chapman &amp; Hall/CRC th
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Tips_shinylive.html" class="pagination-link" aria-label="webRとshinylive">
-        <span class="nav-page-text">webRとshinylive</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./Tips_S7class.html" class="pagination-link" aria-label="S7クラス">
+        <span class="nav-page-text">S7クラス</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
