@@ -1,0 +1,181 @@
+## LLMとmallパッケージ
+
+RからLLM（大規模言語モデル、Large Language Model）を利用する場合、リモート（Web上で提供されているLLMのAPIに接続して利用する）と、ローカル（自分のPCでLLMの演算を行う）の2つを利用することができます。RでのLLMの利用についてはQiitaに詳しい記事（[「R言語とLLMの連携」](https://qiita.com/bob3bob3/items/b5b242c3f9466d140a64)がありますが、ココでも簡単に紹介しようと思います。
+
+リモートのLLMを利用する場合、Rでは`ellmer`パッケージを利用します。`ellmer`パッケージではいろいろなLLMモデルのAPI（Anthropic、OpenAI、Geminiなど）を用いてLLMによる推論を行います。
+
+リモートLLMの利点はそのスピードと性能です。リモートLLMはその提供元のサーバーで演算を行うため、サーバーの演算能力に従いその演算速度が決まります。AIの提供元で利用しているサーバーは大抵超高性能で、お金を払わないプランを用いても回答がすぐに返ってきます。一方で、リモートLLMの利用には大抵お金がかかり、チャットを投げる回数（トークン）も制限される場合があります。
+
+ローカルのLLMを利用する場合には、`ollamar`パッケージを用います。`ollamar`はLLMを動かすためのローカルサーバーを簡単に管理できるソフトウェアである、ollamaを利用したパッケージです。`ollamar`パッケージを用いることで、Rから自分のPCにLLMのモデルをダウンロードし、チャットを投げて回答を得ることができます。
+
+ローカルLLMを用いるとお金を使わず、トークンの制限もありません。一方で演算速度は自分のPCのスペック（特にGPU）に依存し、高性能なGPUを備えていないPCでは演算にとてつもなく時間がかかります。
+
+
+
+
+```{r}
+pacman::p_load(tidyverse, tictoc, ollamar, mall)
+# pacman::p_load(ellmer) リモートLLMを用いる時はellmerを使う
+```
+
+
+```{r}
+# OllamarはローカルLLMをダウンロード・利用するためのライブラリ
+# まずはOllamaのアプリをダウンロードする
+# https://ollama.com/
+
+# Ollama appが起動しているとローカルサーバーが立ち上がっていることが確認できる
+ollamar::test_connection()
+```
+
+
+```{r, eval=FALSE}
+# Ollamaのpullを走らせるためのコード。
+# ollama run qwen3.6 と同じものを走らせている。ダウンロードが激重（27GBぐらい）なので時間がかかる
+# qwen3は日本語に強いローカルLLM。もっと小さいモデルもある
+ollamar::pull("qwen3.6")
+ollamar::pull("translategemma:12b")
+```
+
+
+```{r}
+# 使えるモデルのリスト
+ollamar::list_models()
+
+# モデルにレスポンスを求める（時間がかかる）
+resp <- ollamar::generate("qwen3.6", "tell me a 5-word story")
+resp
+
+# 出力を確認
+ollamar::resp_process(resp, "text")
+
+# データフレームで出力
+ollamar::resp_process(resp, "df")
+
+# モデルを削除する
+# ollamar::delete("qwen3.5:4b")
+# ollamar::delete("translategemma:4b")
+```
+
+```{r, eval=FALSE, cache=TRUE}
+# GPTのAPIキーを取得し、環境変数OPENAI_API_KEYにAPIキーを指定しないと動かない
+chat <- chat_openai()
+
+# APIキーが通っていれば、以下で返事が返ってくる
+. <- chat$chat("Who created R?", echo = FALSE)
+chat
+
+# mallで使う場合にはllm_useで上のchat_openaiを代入した変数を用いる
+llm_use(chat)
+```
+
+```{r}
+# LLMに使う文を準備
+d <- read.csv("./data/PVBLILIVS_SYRVS_SENTENTIAE.csv", header=F) |> _[-1, 2]
+head(d)
+
+# tibbleを準備
+d_d <- as_tibble(d)
+d_3 <- d_d[1:3, ]
+```
+
+```{r}
+# https://www.reddit.com/r/ollama/comments/1dh54cz/how_do_i_enable_my_gpu_for_ollama_llms_on_windows/?tl=ja
+# CUDAをインストールして、Nivdiaのドライバをインストール、
+# nvidia-smi -L でUUIDを調べて、
+# CUDA_VISIBLE_DEVICES=GPU-91cd941f-14d5-1c42-2c88-87753f537d27 後ろはUUID
+# という感じで環境変数を通すとGPUを使ってくれるようになって、速くなる
+
+
+llm_use("ollama", "qwen3.6", seed = 100, temperature = 0, .cache = "./cache_llm/PVBLILIVS_SYRVS_qwen_cache")
+```
+
+
+```{r}
+# 906.23秒で完了
+
+# positive, negative, neutralを評価する
+d_3 <- llm_sentiment(d_3, value) # データフレームと列名を指定
+
+# 翻訳する
+d_3 <- llm_translate(d_3, value, language = "Japanese", pred_name="translation_jp")
+
+# 要約する
+d_3 <- llm_summarize(d_3, translation_jp, max_words = 10, pred_name="summary")
+
+# 分類する
+d_3 <- llm_classify(d_3, translation_jp, c("positive", "negative"), pred_name="classify")
+
+# 文中から抽出する
+d_3 <- llm_extract(d_3, value, "verb", pred_name="extract")
+
+# 文への適合性を評価する（1ならTRUE、0ならFALSE）
+d_3 <- llm_verify(d_3, value, "Is this a famous Latin quotation?", pred_name="verify")
+
+d_3
+```
+
+```{r}
+# 400.7秒
+qwen_translate <- llm_vec_translate(d[11:15], language = "Japanese")
+```
+
+```{r}
+comp_sentences <- read.csv("./data/llm_comparison_sentences.csv")
+
+# 538.36秒
+qwen_Eng <- llm_vec_translate(comp_sentences[, 1], language = "Japanese")
+```
+
+
+```{r}
+llm_use("ollama", "translategemma:12b", seed = 100, temperature = 0, .cache = "./cache_llm/PVBLILIVS_SYRVS_gemma_cache")
+
+# 42.63秒で完了（4bで16.52秒）
+# positive, negative, neutralを評価する
+d_3 <- llm_sentiment(d_3, value) # データフレームと列名を指定
+# 翻訳する
+d_3 <- llm_translate(d_3, value, language = "Japanese", pred_name="translation_jp")
+# 要約する
+d_3 <- llm_summarize(d_3, translation_jp, max_words = 10, pred_name="summary")
+# 分類する
+d_3 <- llm_classify(d_3, translation_jp, c("positive", "negative"), pred_name="classify")
+# 文中から抽出する
+d_3 <- llm_extract(d_3, value, "verb", pred_name="extract")
+# 文への適合性を評価する（1ならTRUE、0ならFALSE）
+d_3 <- llm_verify(d_3, value, "Is this a famous Latin quotation?", pred_name="verify")
+
+d_3
+```
+
+
+```{r}
+# 11.57秒
+gemma_translate <- llm_vec_translate(d[11:15], language = "Japanese")
+
+# 46.61秒
+tic()
+gemma_Eng <- llm_vec_translate(comp_sentences[, 1], language = "Japanese")
+toc()
+```
+
+```{r, echo=FALSE}
+tibble(
+  latin = d[11:15],
+  qwen =qwen_translate,
+  gemma =gemma_translate
+) |> 
+  knitr::kable()
+```
+
+
+```{r, echo=FALSE}
+tibble(
+  English = comp_sentences[, 1],
+  Japanese =comp_sentences[, 2],
+  qwen = qwen_Eng,
+  gemma = gemma_Eng
+) |> 
+  knitr::kable()
+```
+
