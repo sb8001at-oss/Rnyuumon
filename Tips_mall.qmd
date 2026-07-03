@@ -1,22 +1,22 @@
-# LLMとmallパッケージ
+# LLMとmallパッケージ {.unnumbered}
 
-RからLLM（大規模言語モデル、Large Language Model）を利用する場合、リモートLLM（Web上で提供されているLLMのAPIに接続して利用する）と、ローカルLLM（自分のPCでLLMの演算を行う）の2つを利用することができます。RでのLLMの利用についてはQiitaに詳しい記事（[「R言語とLLMの連携」](https://qiita.com/bob3bob3/items/b5b242c3f9466d140a64)がありますが、ココでも簡単に紹介しようと思います。
+RからLLM（大規模言語モデル、Large Language Model）を利用する場合、リモートLLM（Web上で提供されているLLMのAPIに接続して利用する）と、ローカルLLM（自分のPCでLLMの演算を行う）の2つを利用することができます。RでのLLMの利用についてはQiitaに詳しい記事（[「R言語とLLMの連携」](https://qiita.com/bob3bob3/items/b5b242c3f9466d140a64)）がありますが、ココでも簡単に紹介しようと思います。
 
 ### リモートLLMとローカルLLM
 
-リモートLLMを利用する場合、Rでは`ellmer`パッケージを利用します。`ellmer`パッケージではいろいろなLLMモデルのAPI（Anthropic、OpenAI、Geminiなど）を用いてLLMによる推論を行います。
+リモートLLMを利用する場合、Rでは`ellmer`パッケージ[@ellmer_bib]を利用します。`ellmer`パッケージではいろいろなLLMモデルのAPI（Anthropic、OpenAI、Geminiなど）を用いてLLMによる推論を行います。
 
-リモートLLMの利点はそのスピードと性能です。リモートLLMはその提供元のサーバーで演算を行うため、サーバーの演算能力に従いその演算速度が決まります。AIの提供元で利用しているサーバーは大抵超高性能で、お金を払わないプランを用いても回答がすぐに返ってきます。一方で、リモートLLMの利用には大抵お金がかかり、チャットを投げる量（トークン）も制限される場合があります。
+リモートLLMの利点はそのスピードと性能です。リモートLLMはその提供元のサーバーで演算を行うため、サーバーの演算能力に従いその演算速度が決まります。AIの提供元で利用しているサーバーは大抵超高性能で、お金を払わないプランを用いても回答がすぐに返ってきます。一方で、リモートLLMの利用にはお金がかかり、チャットを投げる量（トークン）も制限される場合があります。
 
-ローカルLLMを利用する場合には、`ollamar`パッケージを用います。`ollamar`はLLMを動かすためのローカルサーバーを簡単に管理できるソフトウェアである、Ollamaを利用したパッケージです。`ollamar`パッケージを用いることで、自分のPCにLLMのモデルをダウンロードし、チャットを投げて回答を得ることができます。
+RでローカルLLMを利用する場合には、`ollamar`パッケージ[@ollamar_bib]を用います。`ollamar`はLLMを動かすためのローカルサーバーを簡単に管理できるソフトウェアである、[Ollama](https://ollama.com/)を利用したパッケージです。`ollamar`パッケージを用いることで、自分のPCにLLMのモデルをダウンロードし、チャットを投げて回答を得ることができます。
 
-ローカルLLMを用いるとお金を使わず、トークンの制限もありません。一方で演算速度は自分のPCのスペック（特にGPU）に依存し、高性能なGPUを備えていないPCでは演算にとてつもなく時間がかかります。
+ローカルLLMを用いればお金を支払う必要はなく、トークンの制限もありません。一方で演算速度は自分のPCのスペック（特にGPU）に依存し、高性能なGPUを備えていないPCでは演算にとてつもなく時間がかかります。
 
 ## RでのLLM利用：mall
 
 この2つのパッケージ（`ellmer`と`ollamar`）を用いれはLLMを利用することはできますが、いずれも常にチャットの内容を即時にLLMに投げて、返答を返す形で機能します。また、同じ質問をする場合には、いずれもLLMにすぐにチャットを投げてしまうため、同じ回答を得るのにもう一度演算を行う場合があります。これではトークンや時間を無駄遣いしてしまいます。
 
-そこで、`ellmer`と`ollamar`の機能を補いつつ、問い合わせの内容を絞り、データフレームの列をチャットに投げ、一度問い合わせた内容をキャッシュ（cache）に残すことでLLMへの問い合わせ回数を減らすことができるように設計されたライブラリが`mall`です。`mall`を用いれば、LLMにかかるコストを調節し、一度回答を得たチャットに対してはキャッシュを利用して速やかに返り値を得ることができます。
+そこで、`ellmer`と`ollamar`の機能を補いつつ、問い合わせの内容を絞り、データフレームの列をチャットに投げ、一度問い合わせた内容をキャッシュ（cache）に残すことでLLMへの問い合わせ回数を減らすことができるように設計されたライブラリが`mall`[@mall_bib]です。`mall`を用いれば、LLMにかかるコストを調節し、一度回答を得たチャットに対してはキャッシュを利用して速やかに答えを得ることができます。
 
 この章では、まず`ellmer`、`ollamar`の簡単な使い方を説明し、その後`mall`を使ってデータフレームに記載した文字列をLLMに投げて回答を得るところまで説明します。
 
@@ -32,7 +32,7 @@ pacman::p_load(tidyverse, ellmer, ollamar, mall)
 
 AIモデルを選択したら、次にそのLLMのAPIキーを取得する必要があります。[GPT](https://help.openai.com/ja-jp/articles/4936850-where-do-i-find-my-openai-api-key)、[Claude](https://platform.claude.com/docs/ja/get-started)、[Gemini](https://ai.google.dev/gemini-api/docs/api-key?hl=ja)のAPIキーの取得方法についてはそれぞれのページで確認してください。
 
-APIキーを取得したら、APIキーを環境変数に設定します。GPTではOPENAI_API_KEY、ClaudeではANTHROPIC_API_KEY、GeminiではGEMINI_API_KEYをそれぞれ設定します。環境変数の設定にはRでは`Sys.setenv`関数を用います。WindowsではGUIやコマンドプロンプトを用いて設定することもできます。
+APIキーを取得したら、APIキーを環境変数に設定します。GPTでは`OPENAI_API_KEY`、Claudeでは`ANTHROPIC_API_KEY`、Geminiでは`GEMINI_API_KEY`をそれぞれ設定します。環境変数の設定にはRでは`Sys.setenv`関数を用います。WindowsではGUIやコマンドプロンプトを用いて環境変数を設定することもできます。
 
 ```{r, eval=FALSE, filename="環境変数を設定する"}
 Sys.setenv(OPENAI_API_KEY = "XXXXXXXXXXXXXXXXXX")
@@ -95,7 +95,7 @@ token_usage()
 nvidia-smi -L
 ```
 
-で表示されるUUIDを調べて、`CUDA_VISIBLE_DEVICES="UUID"`という環境変数を設定しておくとGPUを使ってくれるようになる場合もあるようです。
+で表示されるUUIDを調べて、`CUDA_VISIBLE_DEVICES="UUID"`という環境変数を設定することでGPUを使ってくれるようになる場合もあるようです。
 
 ### ollamarでRからOllamaを用いる
 
@@ -112,7 +112,7 @@ Ollamaでも`ollamar`でも、まずはLLMのモデルをダウンロードす�
 ollama pull qwen3.6
 ```
 
-ダウンロードするモデルは[OllamaのModelに関するページ](https://ollama.com/search)から選択することができます。LLMのモデルはパラメータ数（4bとか、8bといった数値で示されているもの）と、モデルの最適化の程度（コーディング用、論理思考用、翻訳用など）で選択します。普通は新しいものほど最適化されていて、少なめのパラメータ数でもそれなりの答えを返してくれるようになっています。
+ダウンロードするモデルは[OllamaのModelに関するページ](https://ollama.com/search)から選択することができます。LLMのモデルはパラメータ数（4bとか、8bといった数値で示されているもの）と、モデルの最適化の程度（コーディング用、論理思考用、翻訳用など）で選択します。新しいものほど最適化されていて、少なめのパラメータ数でもそれなりの答えを返してくれるようになっています。
 
 `ollamar`では、`pull`関数でLLMのモデルをダウンロードすることができます。この関数は上の`ollama pull`を実行するだけの関数です。
 
@@ -124,7 +124,7 @@ pull("qwen3.6")
 pull("translategemma:12b")
 ```
 
-上の`pull`では、Alibabaの高性能LLMである[qwen3.6](https://ollama.com/library/qwen3.6)とGoogle Deepmindの[translategemma](https://ollama.com/library/translategemma)をダウンロードしています。qwen3.6は汎用のLLMで、パラメータ数は27b（270億）です。translategemmaは翻訳を専門とするLLMで、パラメータ数は12bのものをダウンロードしています。正直、qwen3.6は私のPC（GeForce RTX3070、VRAMが8GB）には重すぎるので、演算にとてつもなく時間がかかります。実用的ではありませんが、モデルの比較のためにダウンロードしています。
+上の`pull`では、Alibabaの高性能LLMである[qwen3.6](https://ollama.com/library/qwen3.6)とGoogle Deepmindの[translategemma](https://ollama.com/library/translategemma)をダウンロードしています。qwen3.6は汎用のLLMで日本語に強く、パラメータ数は27b（270億）です。translategemmaは翻訳を専門とするLLMで、パラメータ数は12bのものをダウンロードしています。qwen3.6は私のPC（GeForce RTX3070、VRAMが8GB）には重すぎるので、演算にとてつもなく時間がかかります。実用的ではありませんが、モデルの比較のためにダウンロードしています。
 
 ### ollamarでLLMを用いる
 
@@ -156,9 +156,9 @@ ollamar::resp_process(resp, output = "df")
 ココまでが`ollamar`の基本的な利用方法です。不要なモデルは`delete`関数で削除することもできます。
 
 ```{r, eval=FALSE, filename="OllamaのLLMモデルを削除する"}
-# モデルを削除する
-ollamar::delete("qwen3.5:4b")
-ollamar::delete("translategemma:4b")
+# モデルを削除する（実行はしない）
+ollamar::delete("qwen3.6")
+ollamar::delete("translategemma:12b")
 ```
 
 ## mall
@@ -167,16 +167,16 @@ ollamar::delete("translategemma:4b")
 
 ### 用いるデータの準備
 
-`mall`は、データフレームの列に記録した文（文字列）をLLMに投げることで、その文の感情の評価（sentiment）、翻訳（translate）、要約（summarize）、分類（classify）、抽出（extract）、適合性（verify）の6つのタスクを実行し、データフレームの列として結果を返してくれます。
+`mall`は、データフレームの列に記録した文（文字列）をLLMに投げることで、その文の感情の評価（sentiment）、翻訳（translate）、要約（summarize）、分類（classify）、抽出（extract）、適合性（verify）の6つのタスクを実行し、データフレームの列として結果を返してくれるパッケージです。
 
-`mall`に文字列のデータフレームを投げるためのサンプルとして、[Publilius Syrus](https://en.wikipedia.org/wiki/Publilius_Syrus)の[名言集](https://www.thelatinlibrary.com/syrus.html)を`rvest`で入手し、データフレームとして利用することにします。
+`mall`に文字列のデータフレームを投げるためのサンプルとして、[Publilius Syrus](https://en.wikipedia.org/wiki/Publilius_Syrus)の[格言集](https://www.thelatinlibrary.com/syrus.html)を`rvest`で入手し、データフレームとして利用することにします。
 
 :::{.callout-tip collapse="true"}
 ## ラテン語のソース
 
 [このthelatinlibraryのページ](https://www.thelatinlibrary.com/)にはラテン語の名文がたくさん収集されています。興味があれば覗いてみて下さい。
 
-ご存知の通り、ラテン語はヨーロッパでは19世紀ぐらいまで学術語として用いられていましたが（ヨーロッパでは最近までラテン語を博士論文に使う人もいたようです）、話者は（趣味で使う人以外には）おらず、学術語としても英語やドイツ語にとって変わられています。LLMの学習に用いることのできるウェブ上のラテン語の情報は限られているため、LLMには難しめのタスクかもしれません。
+ご存知の通り、ラテン語はヨーロッパでは19世紀ぐらいまで学術語として用いられていましたが（ヨーロッパでは最近までラテン語を博士論文に使う人もいたようです）、話者は（趣味で使う人以外には）おらず、学術語としても英語やドイツ語に取って代わられています。LLMの学習に用いることのできるウェブ上のラテン語の情報は限られているため、LLMには難しめのタスクかもしれません。
 :::
 
 利用するPublilius Syrusの名言のデータフレームを以下に示します。一度にたくさんの行をLLMに投げたいところですが、上記の通り、私のPCではローカルLLMに大きなタスクは投げられません。ですので、はじめの3行だけ利用することにします。
@@ -188,12 +188,12 @@ head(d)
 
 # tibbleを準備
 d_d <- as_tibble(d)
-d_3 <- d_d[1:3, ]
+d_3 <- d_d[1:3, ] # 3行だけ用いる
 ```
 
 ### mallでリモートLLMを用いる
 
-ではまずは、`ellmer`の機能を用いてリモートLLMを用いる方法について説明します。リモートLLMを用いる場合には、`ellmer::chat`関数（chatGPTなら`chat_openai`関数）を`llm_use`関数の引数に取ります。
+ではまずは、`ellmer`の機能を用いてリモートLLMを用いる方法について説明します。リモートLLMを用いる場合には、`ellmer::chat_`関数（chatGPTなら`chat_openai`関数）を`llm_use`関数の引数に取ります。
 
 ```{r, eval=FALSE, filename="ellmerの機能を用いてリモートLLMを利用する"}
 chat <- chat_openai()
@@ -202,11 +202,11 @@ llm_use(chat)
 
 ### mallでローカルLLMを用いる
 
-リモートとローカルLLMの違いは、この`llm_use`関数の引数だけです。`ollamar`の機能を用いてローカルLLMを用いる場合には、`llm_use`関数に`"ollama"`とLLMのモデル名を指定します。
+リモートLLMとローカルLLMを用いる時の違いは、`llm_use`関数の引数だけです。`ollamar`の機能を用いてローカルLLMを用いる場合には、`llm_use`関数に`"ollama"`と、LLMのモデル名を指定します。
 
 ただし、LLMは同じ質問に対して、ほんの少しずつ異なる回答を返すようにできています。Rではできれば同じ回答を得られる方がよい場合もありますので、乱数を用いる場合に`set.seed`を用いるのと同様に、`llm_use`関数では`seed`と`temperature`を引数として設定することができます。この`seed`と`temperature`はいずれもLLMの回答のランダム性を調整するための引数で、`seed`は固定、`temperature`は`0`に設定することで、LLMからの回答を固定することができます。
 
-また、LLMの回答が同じとなるようにしておくのであれば、以前LLMから得た回答と同じものを何度もLLMに演算させる必要はありません。ですので、`mall`では`.cache`変数に回答を保持しておくキャッシュファイルを設定することができます。
+また、LLMの回答が同じとなるようにしておくのであれば、以前LLMから得た回答と同じものを何度もLLMに演算させる必要はありません。ですので、`mall`では回答を保持しておくキャッシュファイルを`.cache`変数に設定することができます。
 
 以下の例では、qwen3.6を用いて、回答は固定し、キャッシュとして`PVBLILIVS_SYRVS_qwen_cache`というファイルを準備するように指定しています。
 
@@ -229,9 +229,9 @@ llm_use("ollama", "qwen3.6", seed = 100, temperature = 0, .cache = "./cache_llm/
 
 #### 感情の評価（sentiment）
 
-感情の評価（sentiment）は分類問題として昔から取り組まれてきたものです。文面を評価し、ポジティブな文であるか、ネガティブな文であるか、どちらでもないかを評価します。mallでは`llm_sentiment`か`llm_vec_sentiment`で文字列のsentimentを評価することができます。
+感情の評価（sentiment）は分類問題として昔から取り組まれてきたものです。文面を評価し、ポジティブな文であるか、ネガティブな文であるか、どちらでもないかを評価します。`mall`では`llm_sentiment`か`llm_vec_sentiment`で文字列のsentimentを評価することができます。
 
-`llm_sentiment`の引数はデータフレームと評価する文字列の列名です。返り値は`"positive"`、`"negative"`、`"neutral"`の3つで、結果は.sentimentという名前の列に追加されます。`pred_name`引数に文字列を指定すると、結果の列名を指定することもできます。
+`llm_sentiment`の引数はデータフレームと評価する文字列の列名です。返り値は`"positive"`、`"negative"`、`"neutral"`の3つで、結果は`.sentiment`という名前の列に追加されます。`pred_name`引数に文字列を指定すると、結果の列名を指定することもできます。
 
 ```{r, filename="sentimentの評価"}
 # positive, negative, neutralを評価する
@@ -276,21 +276,25 @@ d_3 <- llm_extract(d_3, value, labels = "verb", pred_name="extract")
 
 #### 適合性の評価（verify）
 
-適合性の評価は、その文が指定した条件に適合するかどうかを評価するものです。`llm_verify`はwhat引数に指定した条件に文が適合するかどうかを評価します。返り値は適合していたら1、そうでなければ0が返ってきます。返り値は`yes_no`引数に要素が2個のfactorで指定することもできます。
+適合性の評価は、その文が指定した条件に適合するかどうかを評価するものです。`llm_verify`は`what`引数に指定した条件に文が適合するかどうかを評価します。返り値は適合していたら1、そうでなければ0が返ってきます。返り値は`yes_no`引数に要素2個のfactorとして指定することもできます。
 
 ```{r, filename="適合性の評価"}
 # 文への適合性を評価する（1ならTRUE、0ならFALSE）
 d_3 <- llm_verify(d_3, value, what = "Is this a famous Latin quotation?", pred_name="verify")
 ```
 
-ここまで`mall`の関数でqwan3.6を用いてきましたが、この5つの演算に900秒以上かかっています。qwan3.6ではラテン語であってもそこそこ正確な訳文や分類が返ってきているのが分かります。1度目の演算はとても時間がかかりますが、mallは結果をキャッシュしてくれるため、2回目以降に同じ文を与えると瞬時に結果が返ってきます。
+ここまで`mall`の関数でqwan3.6を用いてきましたが、初回の演算ではこの6つの演算に900秒以上かかっています。qwan3.6ではラテン語であってもそこそこ正確な訳文や分類が返ってきているのが分かります。1度目の演算はとても時間がかかりますが、mallは結果をキャッシュしてくれるため、2回目以降に同じ文を与えると瞬時に結果が返ってきます。
 
 ```{r, filename="演算結果"}
 # 906.23秒で完了（2回目以降はキャッシュから返すため、瞬時に結果が返ってくる）
 d_3 |> knitr::kable()
 ```
 
-では、次にtranslategemma:12bで同じ演算をしてみます。こちらは40秒ぐらいで演算が終わります。ただし、見ての通り翻訳以外のタスクでは`NA`が返ってきています。
+### mallでtranslategemmaを用いる
+
+では、次にtranslategemma:12bで同じ演算をしてみます。利用するモデルを変更するときには、`llm_use`のLLMモデルの指定を変更するだけです。
+
+translategemma:12bでの演算は40秒ぐらいで終わります。ただし、見ての通り翻訳以外のタスクでは`NA`が返ってきています。
 
 ```{r, filename="translategemma:12bを用いる"}
 llm_use("ollama", "translategemma:12b", seed = 100, temperature = 0, .cache = "./cache_llm/PVBLILIVS_SYRVS_gemma_cache", .silent = TRUE)
@@ -309,14 +313,16 @@ d_3 <- llm_extract(d_3, value, "verb", pred_name="extract")
 d_3 <- llm_verify(d_3, value, "Is this a famous Latin quotation?", pred_name="verify")
 ```
 
-実際に結果を見てみると、文体がqwen3.6とは少し異なります。qwen3.6は箴言っぽい文調で返ってきて、translategemmaは現代文っぽいものが返ってきます。どちらかというとqwen3.6の方が正確な訳に近いように思います。また、英文も随分異なります。分類などはtranslategemmaではできません。
+実際に結果を見てみると、文体がqwen3.6とは少し異なります。qwen3.6は箴言っぽい文調で返ってきて、translategemmaは現代文っぽいものが返ってきます。どちらかというとqwen3.6の方が正確な訳に近いように思います。また、英文も随分異なります。分類などはtranslategemmaではうまく回答を得ることができません。
 
-やはり高性能かつ新しいqwen3.6の方が回答も優れているように見えます。ただし、演算コストが桁違いなので、簡単な問題であれば小さいモデルであるtranslategemma:12bを選ぶことにも利点はあるでしょう（translategemmaには27bのモデルもあるので、こちらを使えばもう少し翻訳はうまくなるかもしれません）。
+やはり高性能かつ新しいqwen3.6の方が全体的に回答が優れているように見えます。ただし、演算コストが桁違いなので、簡単な問題であれば小さいモデルであるtranslategemma:12bを選ぶことにも利点はあるでしょう（translategemmaには27bのモデルもあるので、こちらを使えばもう少し翻訳はうまくなるかもしれません）。
 
 ```{r, filename="translategemma:12bの演算結果"}
 # 42.63秒で完了
 d_3 |> knitr::kable()
 ```
+
+### ベクターを引数に取る
 
 では、最後にラテン語と英語をqwen3.6とtranslategemmaで演算し、回答を比較してみます。以下では、`llm_vec_`の関数でベクターを用いて演算を行っています。ベクターを引数に取ると、返り値もベクターで返ってきます。文を比較すれば、どの程度正確に回答が返ってきているか、イメージしやすいのではないでしょうか。
 

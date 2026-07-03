@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>LLMとmallパッケージ – R入門</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./summary.html" rel="next">
+<link href="./Tips_shinylive.html" rel="prev">
+<link href="./favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 100,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-M8N5QERSYQ"></script><script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
+</script>
+</head>
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tips_ParallelComputing.html">Tips</a></li><li class="breadcrumb-item"><a href="./Tips_mall.html">LLMとmallパッケージ</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R入門</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/sb8001at-oss/Rnyuumon">
+            ソースコード
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/sb8001at-oss/Rnyuumon.io/discussions">
+            修正・ご意見はこちらへ
+            </a>
+          </li>
+      </ul>
+</div>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">はじめに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Rプログラミングの基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Rのインストール</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Rを使ってみよう</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">オブジェクト</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">変数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">複数の要素を含むオブジェクト・クラス</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">関数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">型・クラスの確認と変換</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">条件判断（Control structures）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">繰り返し文（Looping）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">エラー処理（error handler）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数値</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文字列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">因子（factor）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">ベクター</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">リスト・データフレーム・行列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">データの読み込みと書き出し（I/O）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">データセット</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Rでのデータの取り扱い</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter19.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">apply関数群</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">tidyr・dplyr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">日時データの取り扱い</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter22.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">オブジェクト指向とクラス</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter23.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">コーディング規約</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Rでのグラフ作成</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter24.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">グラフ作成：高レベルグラフィック関数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter25.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">グラフ作成：低レベルグラフィック関数とグラフィックパラメータ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter26.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">ggplot2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter27.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">plotly</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">統計解析の基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter28.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">確率分布と乱数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter29.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">検定</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter30.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">相関と回帰</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter31.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">分類</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter32.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">教師なし学習</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter33.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">時系列分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter34.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">生存時間解析</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">R markdownとQuarto</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter35.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">R markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter36.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Quarto：Quartoの始め方</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter37.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Quarto：Markdownとレイアウト</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter38.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Quarto：chunkとchunk option</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter39.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Quarto：YAMLの基礎</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter40.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Quarto：プレゼンテーション</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter41.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Quarto：ダッシュボード</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter42.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Quarto：WebsiteとBook</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter43.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Quarto：デプロイ</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">アドバンスドな手法</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter44.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">purrr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter45.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">地理空間情報</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter46.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">ネットワーク解析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter47.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter48.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">実験計画法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter49.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">因果推論：因果推論の基礎と傾向スコア</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter50.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">因果推論：差分の差分法と回帰不連続デザイン</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter51.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">因果推論：因果のネットワーク</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tips</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_ParallelComputing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">並列演算（Parallel Computing）</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System関連の関数</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S3class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S3クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_R6class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R6クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S7class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S7クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_shinylive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">webRとshinylive</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_mall.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">LLMとmallパッケージ</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">おわりに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">参考文献</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88llm%E3%81%A8%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%ABllm" id="toc-リモートllmとローカルllm" class="nav-link active" data-scroll-target="#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88llm%E3%81%A8%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%ABllm">リモートLLMとローカルLLM</a></li>
+  <li><a href="#r%E3%81%A7%E3%81%AEllm%E5%88%A9%E7%94%A8mall" id="toc-rでのllm利用mall" class="nav-link" data-scroll-target="#r%E3%81%A7%E3%81%AEllm%E5%88%A9%E7%94%A8mall">RでのLLM利用：mall</a></li>
+  <li><a href="#ellmer%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8" id="toc-ellmerパッケージ" class="nav-link" data-scroll-target="#ellmer%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8">ellmerパッケージ</a></li>
+  <li>
+<a href="#ollamar%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8" id="toc-ollamarパッケージ" class="nav-link" data-scroll-target="#ollamar%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8">ollamarパッケージ</a>
+  <ul>
+<li><a href="#ollamar%E3%81%A7r%E3%81%8B%E3%82%89ollama%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B" id="toc-ollamarでrからollamaを用いる" class="nav-link" data-scroll-target="#ollamar%E3%81%A7r%E3%81%8B%E3%82%89ollama%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B">ollamarでRからOllamaを用いる</a></li>
+  <li><a href="#ollamar%E3%81%A7llm%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B" id="toc-ollamarでllmを用いる" class="nav-link" data-scroll-target="#ollamar%E3%81%A7llm%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B">ollamarでLLMを用いる</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#mall" id="toc-mall" class="nav-link" data-scroll-target="#mall">mall</a>
+  <ul>
+<li><a href="#%E7%94%A8%E3%81%84%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E6%BA%96%E5%82%99" id="toc-用いるデータの準備" class="nav-link" data-scroll-target="#%E7%94%A8%E3%81%84%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E6%BA%96%E5%82%99">用いるデータの準備</a></li>
+  <li><a href="#mall%E3%81%A7%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88llm%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B" id="toc-mallでリモートllmを用いる" class="nav-link" data-scroll-target="#mall%E3%81%A7%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88llm%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B">mallでリモートLLMを用いる</a></li>
+  <li><a href="#mall%E3%81%A7%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%ABllm%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B" id="toc-mallでローカルllmを用いる" class="nav-link" data-scroll-target="#mall%E3%81%A7%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%ABllm%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B">mallでローカルLLMを用いる</a></li>
+  <li>
+<a href="#%E3%83%87%E3%83%BC%E3%82%BF%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%82%92%E7%94%A8%E3%81%84%E3%81%A6llm%E3%81%AE%E6%BC%94%E7%AE%97%E3%82%92%E8%A1%8C%E3%81%86" id="toc-データフレームを用いてllmの演算を行う" class="nav-link" data-scroll-target="#%E3%83%87%E3%83%BC%E3%82%BF%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%82%92%E7%94%A8%E3%81%84%E3%81%A6llm%E3%81%AE%E6%BC%94%E7%AE%97%E3%82%92%E8%A1%8C%E3%81%86">データフレームを用いてLLMの演算を行う</a>
+  <ul class="collapse">
+<li><a href="#%E6%84%9F%E6%83%85%E3%81%AE%E8%A9%95%E4%BE%A1sentiment" id="toc-感情の評価sentiment" class="nav-link" data-scroll-target="#%E6%84%9F%E6%83%85%E3%81%AE%E8%A9%95%E4%BE%A1sentiment">感情の評価（sentiment）</a></li>
+  <li><a href="#%E7%BF%BB%E8%A8%B3translate" id="toc-翻訳translate" class="nav-link" data-scroll-target="#%E7%BF%BB%E8%A8%B3translate">翻訳（translate）</a></li>
+  <li><a href="#%E8%A6%81%E7%B4%84summarize" id="toc-要約summarize" class="nav-link" data-scroll-target="#%E8%A6%81%E7%B4%84summarize">要約（summarize）</a></li>
+  <li><a href="#%E5%88%86%E9%A1%9Eclassify" id="toc-分類classify" class="nav-link" data-scroll-target="#%E5%88%86%E9%A1%9Eclassify">分類（classify）</a></li>
+  <li><a href="#%E6%8A%BD%E5%87%BAextract" id="toc-抽出extract" class="nav-link" data-scroll-target="#%E6%8A%BD%E5%87%BAextract">抽出（extract）</a></li>
+  <li><a href="#%E9%81%A9%E5%90%88%E6%80%A7%E3%81%AE%E8%A9%95%E4%BE%A1verify" id="toc-適合性の評価verify" class="nav-link" data-scroll-target="#%E9%81%A9%E5%90%88%E6%80%A7%E3%81%AE%E8%A9%95%E4%BE%A1verify">適合性の評価（verify）</a></li>
+  </ul>
+</li>
+  <li><a href="#mall%E3%81%A7translategemma%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B" id="toc-mallでtranslategemmaを用いる" class="nav-link" data-scroll-target="#mall%E3%81%A7translategemma%E3%82%92%E7%94%A8%E3%81%84%E3%82%8B">mallでtranslategemmaを用いる</a></li>
+  <li><a href="#%E3%83%99%E3%82%AF%E3%82%BF%E3%83%BC%E3%82%92%E5%BC%95%E6%95%B0%E3%81%AB%E5%8F%96%E3%82%8B" id="toc-ベクターを引数に取る" class="nav-link" data-scroll-target="#%E3%83%99%E3%82%AF%E3%82%BF%E3%83%BC%E3%82%92%E5%BC%95%E6%95%B0%E3%81%AB%E5%8F%96%E3%82%8B">ベクターを引数に取る</a></li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tips_ParallelComputing.html">Tips</a></li><li class="breadcrumb-item"><a href="./Tips_mall.html">LLMとmallパッケージ</a></li></ol></nav><div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">LLMとmallパッケージ</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><p>RからLLM（大規模言語モデル、Large Language Model）を利用する場合、リモートLLM（Web上で提供されているLLMのAPIに接続して利用する）と、ローカルLLM（自分のPCでLLMの演算を行う）の2つを利用することができます。RでのLLMの利用についてはQiitaに詳しい記事（<a href="https://qiita.com/bob3bob3/items/b5b242c3f9466d140a64">「R言語とLLMの連携」</a>）がありますが、ココでも簡単に紹介しようと思います。</p>
+<section id="リモートllmとローカルllm" class="level3"><h3 class="anchored" data-anchor-id="リモートllmとローカルllm">リモートLLMとローカルLLM</h3>
+<p>リモートLLMを利用する場合、Rでは<code>ellmer</code>パッケージ<span class="citation" data-cites="ellmer_bib">(<a href="references.html#ref-ellmer_bib" role="doc-biblioref">Wickham et al. 2026</a>)</span>を利用します。<code>ellmer</code>パッケージではいろいろなLLMモデルのAPI（Anthropic、OpenAI、Geminiなど）を用いてLLMによる推論を行います。</p>
+<p>リモートLLMの利点はそのスピードと性能です。リモートLLMはその提供元のサーバーで演算を行うため、サーバーの演算能力に従いその演算速度が決まります。AIの提供元で利用しているサーバーは大抵超高性能で、お金を払わないプランを用いても回答がすぐに返ってきます。一方で、リモートLLMの利用にはお金がかかり、チャットを投げる量（トークン）も制限される場合があります。</p>
+<p>RでローカルLLMを利用する場合には、<code>ollamar</code>パッケージ<span class="citation" data-cites="ollamar_bib">(<a href="references.html#ref-ollamar_bib" role="doc-biblioref">Lin and Safi 2024</a>)</span>を用います。<code>ollamar</code>はLLMを動かすためのローカルサーバーを簡単に管理できるソフトウェアである、<a href="https://ollama.com/">Ollama</a>を利用したパッケージです。<code>ollamar</code>パッケージを用いることで、自分のPCにLLMのモデルをダウンロードし、チャットを投げて回答を得ることができます。</p>
+<p>ローカルLLMを用いればお金を支払う必要はなく、トークンの制限もありません。一方で演算速度は自分のPCのスペック（特にGPU）に依存し、高性能なGPUを備えていないPCでは演算にとてつもなく時間がかかります。</p>
+</section><section id="rでのllm利用mall" class="level2"><h2 class="anchored" data-anchor-id="rでのllm利用mall">RでのLLM利用：mall</h2>
+<p>この2つのパッケージ（<code>ellmer</code>と<code>ollamar</code>）を用いれはLLMを利用することはできますが、いずれも常にチャットの内容を即時にLLMに投げて、返答を返す形で機能します。また、同じ質問をする場合には、いずれもLLMにすぐにチャットを投げてしまうため、同じ回答を得るのにもう一度演算を行う場合があります。これではトークンや時間を無駄遣いしてしまいます。</p>
+<p>そこで、<code>ellmer</code>と<code>ollamar</code>の機能を補いつつ、問い合わせの内容を絞り、データフレームの列をチャットに投げ、一度問い合わせた内容をキャッシュ（cache）に残すことでLLMへの問い合わせ回数を減らすことができるように設計されたライブラリが<code>mall</code><span class="citation" data-cites="mall_bib">(<a href="references.html#ref-mall_bib" role="doc-biblioref">Ruiz 2025</a>)</span>です。<code>mall</code>を用いれば、LLMにかかるコストを調節し、一度回答を得たチャットに対してはキャッシュを利用して速やかに答えを得ることができます。</p>
+<p>この章では、まず<code>ellmer</code>、<code>ollamar</code>の簡単な使い方を説明し、その後<code>mall</code>を使ってデータフレームに記載した文字列をLLMに投げて回答を得るところまで説明します。</p>
+<p>まずは<code>ellmer</code>、<code>ollamar</code>、<code>mall</code>をそれぞれインストールします。またデータフレームの取り扱いのために<code>tidyverse</code>をロードします。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パッケージのインストール・ロード</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>, <span class="va">ellmer</span>, <span class="va">ollamar</span>, <span class="va">mall</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section><section id="ellmerパッケージ" class="level2"><h2 class="anchored" data-anchor-id="ellmerパッケージ">ellmerパッケージ</h2>
+<p><code>ellmer</code>では、まずはどのリモートLLM、AIモデルを用いるのかをまず選択します。例えばOpenAIのLLMであるGPTを用いるのか、AnthropicのClaudeを用いるのか、GoogleのGeminiを使うのかでそれぞれ利用する関数が異なります。</p>
+<p>AIモデルを選択したら、次にそのLLMのAPIキーを取得する必要があります。<a href="https://help.openai.com/ja-jp/articles/4936850-where-do-i-find-my-openai-api-key">GPT</a>、<a href="https://platform.claude.com/docs/ja/get-started">Claude</a>、<a href="https://ai.google.dev/gemini-api/docs/api-key?hl=ja">Gemini</a>のAPIキーの取得方法についてはそれぞれのページで確認してください。</p>
+<p>APIキーを取得したら、APIキーを環境変数に設定します。GPTでは<code>OPENAI_API_KEY</code>、Claudeでは<code>ANTHROPIC_API_KEY</code>、Geminiでは<code>GEMINI_API_KEY</code>をそれぞれ設定します。環境変数の設定にはRでは<code>Sys.setenv</code>関数を用います。WindowsではGUIやコマンドプロンプトを用いて環境変数を設定することもできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>環境変数を設定する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>OPENAI_API_KEY <span class="op">=</span> <span class="st">"XXXXXXXXXXXXXXXXXX"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>もう一つの方法は、Rの環境（<code>.Renviron</code>）にAPIキーをセットする方法です。<code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ</a></code>関数を用いることで、環境変数をRで設定することができます。<code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ</a></code>を実行すると環境のファイルの中身が表示されるので、その中身に環境変数を追記し、保存します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.Renvironを編集する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>APIキーを設定すると、<code>ellmer</code>からそれぞれのLLMに直接アクセスできるようになります。LLMにアクセスする場合には、まず接続用のオブジェクトを作成します。このオブジェクト作成の関数は利用するLLMによって異なり、GPTでは<code>chat_openai</code>関数、Claudeでは<code>chat_anthropic</code>関数、Geminiでは<code>chat_google_gemini</code>関数を引数なしで用います。これらの関数は<a href="./Tips_R6class.html">R6オブジェクト</a>を作成するための関数で、この関数の返り値を<code>chat</code>などの名前の変数に代入します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLM接続のためのR6オブジェクトを作成する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 引数にモデル名（例えば"gpt-4.1"）を指定すると、用いるモデルを指定できる</span></span>
+<span><span class="co"># 利用できるモデルはmodels_openai()で確認できる（"gpt-4.1"はデフォルト）</span></span>
+<span><span class="va">chat</span> <span class="op">&lt;-</span> <span class="fu">chat_openai</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>LLMにチャットを投げる場合には、<code>chat$chat</code>メソッドを用います。<code>chat$chat</code>メソッドの引数として、チャットの内容（文字列）を取ることで、Markdown形式でLLMから返答を受け取ることができます。また、<code>chat$chat</code>メソッドを実行すると、<code>chat</code>オブジェクト内に会話の内容が記録され、次のチャットの問い合わせ時にはこの記録が文脈として利用されます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMへのチャットを送信し、返答を受信する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chat</span><span class="op">$</span><span class="fu">chat</span><span class="op">(</span><span class="st">"Who created R?"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>リモートのLLMを利用すると、トークンを消費します。トークンはLLMに投げるチャットのワード数（文字数）を反映するもので、利用したトークンが増えるほど支払いが増えていきます。<code>chat</code>オブジェクトを用いたチャットでどの程度トークンを利用したのかを確認するには、<code>token_usage</code>関数を用います。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>トークンの利用を表示する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">token_usage</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section><section id="ollamarパッケージ" class="level2"><h2 class="anchored" data-anchor-id="ollamarパッケージ">ollamarパッケージ</h2>
+<p>ココまではリモートLLMを利用する方法を説明しましたが、ココからは<code>ollamar</code>パッケージを用いて、自分のPCでLLMを動かす方法について説明します。</p>
+<p><code>ollamar</code>パッケージは、<a href="https://ollama.com/">Ollama</a>というローカル環境でLLMを動かすためのツールを利用して、RでLLMを用いる仕組みになっています。</p>
+<p><code>ollamar</code>を使う場合、まずは<a href="https://ollama.com/download/windows">Ollamaのアプリケーションをダウンロード</a>し、インストールする必要があります。Ollamaをインストールすると、OllamaのローカルサーバーでLLMが動くようになります。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="./image/ollama_window.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Ollamaのウインドウ"><img src="./image/ollama_window.png" class="img-fluid figure-img" alt="Ollamaのウインドウ"></a></p>
+<figcaption>Ollamaのウインドウ</figcaption></figure>
+</div>
+<p>このOllamaのアプリケーションを用いることで、LLMを利用することができます。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="./image/ollama_chat_window.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="間違った日本語にも真面目に答えてくれる"><img src="./image/ollama_chat_window.png" class="img-fluid figure-img" alt="間違った日本語にも真面目に答えてくれる"></a></p>
+<figcaption>間違った日本語にも真面目に答えてくれる</figcaption></figure>
+</div>
+<p>ただし、Ollamaをインストールするだけでは、LLMをGPUで演算してくれない場合があります。Qiitaに<a href="https://qiita.com/buson0903/items/6b4160c869ab8f3ac871">OllamaにGPUを利用させる方法</a>についての記事がありますので、参考にして設定するとよいでしょう。</p>
+<p>簡単に説明すると、NIVDIAのGPUであれば</p>
+<ul>
+<li><a href="https://developer.nvidia.com/cudnn">cuDNN（CUDA Deep Neural Network library）</a></li>
+<li><a href="https://developer.nvidia.com/cuda/toolkit">CUDA Toolkit</a></li>
+<li><a href="https://www.nvidia.com/ja-jp/drivers/">NVIDIA Studio ドライバ</a></li>
+</ul>
+<p>をあらかじめインストールしておくとよいようです。</p>
+<p>また、<a href="https://www.reddit.com/r/ollama/comments/1dh54cz/how_do_i_enable_my_gpu_for_ollama_llms_on_windows/?tl=ja">Redditの記事</a>に記載されている通り、</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nvidia-smi</span> <span class="at">-L</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>で表示されるUUIDを調べて、<code>CUDA_VISIBLE_DEVICES="UUID"</code>という環境変数を設定することでGPUを使ってくれるようになる場合もあるようです。</p>
+<section id="ollamarでrからollamaを用いる" class="level3"><h3 class="anchored" data-anchor-id="ollamarでrからollamaを用いる">ollamarでRからOllamaを用いる</h3>
+<p>OllamaをRから動かすためのパッケージが<code>ollamar</code>です。Ollamaが起動している状態で、<code>test_connection</code>を実行すると、Ollamaのローカルサーバーが利用できる状態であるかを確認することができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ollamar：Ollamaの起動の確認</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ollama appが起動していると、ローカルサーバーが立ち上がっていることが確認できる</span></span>
+<span><span class="fu">test_connection</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Ollama local server running</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;httr2_response&gt;
+GET http://localhost:11434/
+Status: 200 OK
+Content-Type: text/plain
+Body: In memory (17 bytes)</code></pre>
+</div>
+</div>
+<p>Ollamaでも<code>ollamar</code>でも、まずはLLMのモデルをダウンロードする必要があります。Ollamaではターミナルで<code>ollama pull モデル名</code>を実行することでLLMのモデルをダウンロードすることができます。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen3.6</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>ダウンロードするモデルは<a href="https://ollama.com/search">OllamaのModelに関するページ</a>から選択することができます。LLMのモデルはパラメータ数（4bとか、8bといった数値で示されているもの）と、モデルの最適化の程度（コーディング用、論理思考用、翻訳用など）で選択します。新しいものほど最適化されていて、少なめのパラメータ数でもそれなりの答えを返してくれるようになっています。</p>
+<p><code>ollamar</code>では、<code>pull</code>関数でLLMのモデルをダウンロードすることができます。この関数は上の<code>ollama pull</code>を実行するだけの関数です。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMモデルのダウンロード</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 汎用のモデル、日本語に強い</span></span>
+<span><span class="fu">pull</span><span class="op">(</span><span class="st">"qwen3.6"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 翻訳専用のモデル（Google Deepmind）</span></span>
+<span><span class="fu">pull</span><span class="op">(</span><span class="st">"translategemma:12b"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>上の<code>pull</code>では、Alibabaの高性能LLMである<a href="https://ollama.com/library/qwen3.6">qwen3.6</a>とGoogle Deepmindの<a href="https://ollama.com/library/translategemma">translategemma</a>をダウンロードしています。qwen3.6は汎用のLLMで日本語に強く、パラメータ数は27b（270億）です。translategemmaは翻訳を専門とするLLMで、パラメータ数は12bのものをダウンロードしています。qwen3.6は私のPC（GeForce RTX3070、VRAMが8GB）には重すぎるので、演算にとてつもなく時間がかかります。実用的ではありませんが、モデルの比較のためにダウンロードしています。</p>
+</section><section id="ollamarでllmを用いる" class="level3"><h3 class="anchored" data-anchor-id="ollamarでllmを用いる">ollamarでLLMを用いる</h3>
+<p><code>ollamar</code>でLLMを利用する場合には、<code>generate</code>関数を用います。この<code>generate</code>関数は第一引数にLLMのモデル名、第ニ引数にLLMに投げるチャットを引数に取ります。LLMのモデル名はダウンロード済みのモデル（<code>list_models</code>で確認できます）から選択します。この<code>generate</code>の返り値をそのまま呼び出すとOllamaのローカルサーバーのレスポンスとBodyというものを含むものが返ってきます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMにチャットを投げる</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 使えるモデルのリスト</span></span>
+<span><span class="fu">list_models</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                name    size parameter_size quantization_level
+1     qwen3.6:latest 23.9 GB          36.0B             Q4_K_M
+2 translategemma:12b  8.1 GB          12.2B             Q4_K_M
+             modified
+1 2026-06-27T10:38:09
+2 2026-06-27T10:38:10</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># モデルにレスポンスを求める（時間がかかる）</span></span>
+<span><span class="va">resp</span> <span class="op">&lt;-</span> <span class="fu">generate</span><span class="op">(</span><span class="st">"qwen3.6"</span>, <span class="st">"tell me a 5-word story"</span><span class="op">)</span></span>
+<span><span class="va">resp</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;httr2_response&gt;
+POST http://127.0.0.1:11434/api/generate
+Status: 200 OK
+Content-Type: application/json
+Body: In memory (30785 bytes)</code></pre>
+</div>
+</div>
+<p>LLMの出力を確認するには、<code>resp_process</code>関数を用います。第二引数（<code>output</code>）には返り値のデータ型を文字列で指定します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMの出力を確認する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 出力を確認</span></span>
+<span><span class="fu">ollamar</span><span class="fu">::</span><span class="fu"><a href="https://hauselin.github.io/ollama-r/reference/resp_process.html">resp_process</a></span><span class="op">(</span><span class="va">resp</span>, <span class="st">"text"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] ""</code></pre>
+</div>
+</div>
+<p>出力をデータフレームの形とするには、<code>output</code>引数に<code>"df"</code>を指定します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMの出力をデータフレームで返す</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># データフレームで出力</span></span>
+<span><span class="fu">ollamar</span><span class="fu">::</span><span class="fu"><a href="https://hauselin.github.io/ollama-r/reference/resp_process.html">resp_process</a></span><span class="op">(</span><span class="va">resp</span>, output <span class="op">=</span> <span class="st">"df"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  model   response created_at                 
+  &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;                      
+1 qwen3.6 ""       2026-07-03T21:28:05.145731Z</code></pre>
+</div>
+</div>
+<p>ココまでが<code>ollamar</code>の基本的な利用方法です。不要なモデルは<code>delete</code>関数で削除することもできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>OllamaのLLMモデルを削除する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># モデルを削除する（実行はしない）</span></span>
+<span><span class="fu">ollamar</span><span class="fu">::</span><span class="fu"><a href="https://hauselin.github.io/ollama-r/reference/delete.html">delete</a></span><span class="op">(</span><span class="st">"qwen3.6"</span><span class="op">)</span></span>
+<span><span class="fu">ollamar</span><span class="fu">::</span><span class="fu"><a href="https://hauselin.github.io/ollama-r/reference/delete.html">delete</a></span><span class="op">(</span><span class="st">"translategemma:12b"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section></section><section id="mall" class="level2"><h2 class="anchored" data-anchor-id="mall">mall</h2>
+<p>ではココからは、上記の<code>ellmer</code>と<code>ollamar</code>を利用し、決められたタスクをこなすためのパッケージである、<code>mall</code>について説明していきます。</p>
+<section id="用いるデータの準備" class="level3"><h3 class="anchored" data-anchor-id="用いるデータの準備">用いるデータの準備</h3>
+<p><code>mall</code>は、データフレームの列に記録した文（文字列）をLLMに投げることで、その文の感情の評価（sentiment）、翻訳（translate）、要約（summarize）、分類（classify）、抽出（extract）、適合性（verify）の6つのタスクを実行し、データフレームの列として結果を返してくれるパッケージです。</p>
+<p><code>mall</code>に文字列のデータフレームを投げるためのサンプルとして、<a href="https://en.wikipedia.org/wiki/Publilius_Syrus">Publilius Syrus</a>の<a href="https://www.thelatinlibrary.com/syrus.html">格言集</a>を<code>rvest</code>で入手し、データフレームとして利用することにします。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>ラテン語のソース
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://www.thelatinlibrary.com/">このthelatinlibraryのページ</a>にはラテン語の名文がたくさん収集されています。興味があれば覗いてみて下さい。</p>
+<p>ご存知の通り、ラテン語はヨーロッパでは19世紀ぐらいまで学術語として用いられていましたが（ヨーロッパでは最近までラテン語を博士論文に使う人もいたようです）、話者は（趣味で使う人以外には）おらず、学術語としても英語やドイツ語に取って代わられています。LLMの学習に用いることのできるウェブ上のラテン語の情報は限られているため、LLMには難しめのタスクかもしれません。</p>
+</div>
+</div>
+</div>
+<p>利用するPublilius Syrusの名言のデータフレームを以下に示します。一度にたくさんの行をLLMに投げたいところですが、上記の通り、私のPCではローカルLLMに大きなタスクは投げられません。ですので、はじめの3行だけ利用することにします。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMに演算させるためのデータフレーム</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># LLMに使う文を準備</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./data/PVBLILIVS_SYRVS_SENTENTIAE.csv"</span>, header<span class="op">=</span><span class="cn">F</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Alienum est omne, quicquid optando evenit."
+[2] "Ab alio expectes, alteri quod feceris."    
+[3] "Animus vereri qui scit, scit tuta ingredi."
+[4] "Auxilia humilia firma consensus facit."    
+[5] "Amor animi arbitrio sumitur, non ponitur." 
+[6] "Aut amat aut odit mulier, nil est tertium."</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># tibbleを準備</span></span>
+<span><span class="va">d_d</span> <span class="op">&lt;-</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="va">d_d</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span> <span class="co"># 3行だけ用いる</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="mallでリモートllmを用いる" class="level3"><h3 class="anchored" data-anchor-id="mallでリモートllmを用いる">mallでリモートLLMを用いる</h3>
+<p>ではまずは、<code>ellmer</code>の機能を用いてリモートLLMを用いる方法について説明します。リモートLLMを用いる場合には、<code>ellmer::chat_</code>関数（chatGPTなら<code>chat_openai</code>関数）を<code>llm_use</code>関数の引数に取ります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ellmerの機能を用いてリモートLLMを利用する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chat</span> <span class="op">&lt;-</span> <span class="fu">chat_openai</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">llm_use</span><span class="op">(</span><span class="va">chat</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section><section id="mallでローカルllmを用いる" class="level3"><h3 class="anchored" data-anchor-id="mallでローカルllmを用いる">mallでローカルLLMを用いる</h3>
+<p>リモートLLMとローカルLLMを用いる時の違いは、<code>llm_use</code>関数の引数だけです。<code>ollamar</code>の機能を用いてローカルLLMを用いる場合には、<code>llm_use</code>関数に<code>"ollama"</code>と、LLMのモデル名を指定します。</p>
+<p>ただし、LLMは同じ質問に対して、ほんの少しずつ異なる回答を返すようにできています。Rではできれば同じ回答を得られる方がよい場合もありますので、乱数を用いる場合に<code>set.seed</code>を用いるのと同様に、<code>llm_use</code>関数では<code>seed</code>と<code>temperature</code>を引数として設定することができます。この<code>seed</code>と<code>temperature</code>はいずれもLLMの回答のランダム性を調整するための引数で、<code>seed</code>は固定、<code>temperature</code>は<code>0</code>に設定することで、LLMからの回答を固定することができます。</p>
+<p>また、LLMの回答が同じとなるようにしておくのであれば、以前LLMから得た回答と同じものを何度もLLMに演算させる必要はありません。ですので、<code>mall</code>では回答を保持しておくキャッシュファイルを<code>.cache</code>変数に設定することができます。</p>
+<p>以下の例では、qwen3.6を用いて、回答は固定し、キャッシュとして<code>PVBLILIVS_SYRVS_qwen_cache</code>というファイルを準備するように指定しています。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ollamarの機能を用いてローカルLLMを利用する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="st">"ollama"</span>, <span class="st">"qwen3.6"</span>, seed <span class="op">=</span> <span class="fl">100</span>, temperature <span class="op">=</span> <span class="fl">0</span>, .cache <span class="op">=</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_qwen_cache"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── mall session object </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Backend: ollama
+LLM session:
+  model:qwen3.6
+
+  seed:100
+
+  temperature:0
+
+R session: cache_folder:./cache_llm/PVBLILIVS_SYRVS_qwen_cache</code></pre>
+</div>
+</div>
+</section><section id="データフレームを用いてllmの演算を行う" class="level3"><h3 class="anchored" data-anchor-id="データフレームを用いてllmの演算を行う">データフレームを用いてLLMの演算を行う</h3>
+<p>上で述べた通り、<code>mall</code>で実行可能なタスクは以下の6つです。それぞれに対応する関数が<code>mall</code>には備わっています。</p>
+<ul>
+<li>感情の評価（sentiment）：<code>llm_sentiment</code>、<code>llm_vec_sentiment</code>
+</li>
+<li>翻訳（translate）：<code>llm_translate</code>、<code>llm_vec_translate</code>
+</li>
+<li>要約（summarize）：<code>llm_summarize</code>、<code>llm_vec_summarize</code>
+</li>
+<li>分類（classify）：<code>llm_classify</code>、<code>llm_vec_classify</code>
+</li>
+<li>抽出（extract）：<code>llm_extract</code>、<code>llm_vec_extract</code>
+</li>
+<li>適合性（verify）：<code>llm_verify</code>、<code>llm_vec_verify</code>
+</li>
+</ul>
+<p>それぞれのタスクに対応した2種類の関数があり、左がデータフレーム、右がベクターを引数に取る関数です。</p>
+<section id="感情の評価sentiment" class="level4"><h4 class="anchored" data-anchor-id="感情の評価sentiment">感情の評価（sentiment）</h4>
+<p>感情の評価（sentiment）は分類問題として昔から取り組まれてきたものです。文面を評価し、ポジティブな文であるか、ネガティブな文であるか、どちらでもないかを評価します。<code>mall</code>では<code>llm_sentiment</code>か<code>llm_vec_sentiment</code>で文字列のsentimentを評価することができます。</p>
+<p><code>llm_sentiment</code>の引数はデータフレームと評価する文字列の列名です。返り値は<code>"positive"</code>、<code>"negative"</code>、<code>"neutral"</code>の3つで、結果は<code>.sentiment</code>という名前の列に追加されます。<code>pred_name</code>引数に文字列を指定すると、結果の列名を指定することもできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>sentimentの評価</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># positive, negative, neutralを評価する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_sentiment</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">value</span><span class="op">)</span> <span class="co"># データフレームと列名を指定</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section><section id="翻訳translate" class="level4"><h4 class="anchored" data-anchor-id="翻訳translate">翻訳（translate）</h4>
+<p>翻訳はそのままで、文字列を翻訳するためのものです。翻訳は<code>llm_translate</code>、<code>llm_vec_translate</code>で評価することができます。<code>llm_translate</code>には、データフレームと列名の他に、翻訳先の言語を指定する<code>language</code>を引数に指定します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>翻訳</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 翻訳する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_translate</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">value</span>, language <span class="op">=</span> <span class="st">"Japanese"</span>, pred_name<span class="op">=</span><span class="st">"translation_jp"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section><section id="要約summarize" class="level4"><h4 class="anchored" data-anchor-id="要約summarize">要約（summarize）</h4>
+<p>AIに文の要約を任せたことがある方は多いでしょう。<code>llm_summarize</code>、<code>llm_vec_summarize</code>を用いることで、文字列を要約することができます。<code>llm_summarize</code>はデータフレームと列名に加えて、要約文の最大の文字数（<code>max_words</code>）を引数に指定します。LLMに与えているのは日本語ですが、要約文はなぜか英語になります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>要約</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 要約する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_summarize</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">translation_jp</span>, max_words <span class="op">=</span> <span class="fl">10</span>, pred_name<span class="op">=</span><span class="st">"summary"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section><section id="分類classify" class="level4"><h4 class="anchored" data-anchor-id="分類classify">分類（classify）</h4>
+<p>分類は<a href="./chapter31.html">31章</a>で説明した分類の手法を、LLMを分類器として用いて行うものです。<code>llm_classify</code>は<code>labels</code>引数に分類したいカテゴリをベクターで指定し、文章にその<code>labels</code>を付与して、分類します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>分類</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 分類する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_classify</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">translation_jp</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"positive"</span>, <span class="st">"negative"</span><span class="op">)</span>, pred_name<span class="op">=</span><span class="st">"classify"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section><section id="抽出extract" class="level4"><h4 class="anchored" data-anchor-id="抽出extract">抽出（extract）</h4>
+<p>抽出は、文章から指定した要素を取り出すものです。<code>llm_extract</code>は<code>labels</code>引数に指定したものに適合する要素を文章から抽出します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>抽出</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 文中から抽出する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_extract</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">value</span>, labels <span class="op">=</span> <span class="st">"verb"</span>, pred_name<span class="op">=</span><span class="st">"extract"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section><section id="適合性の評価verify" class="level4"><h4 class="anchored" data-anchor-id="適合性の評価verify">適合性の評価（verify）</h4>
+<p>適合性の評価は、その文が指定した条件に適合するかどうかを評価するものです。<code>llm_verify</code>は<code>what</code>引数に指定した条件に文が適合するかどうかを評価します。返り値は適合していたら1、そうでなければ0が返ってきます。返り値は<code>yes_no</code>引数に要素2個のfactorとして指定することもできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>適合性の評価</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 文への適合性を評価する（1ならTRUE、0ならFALSE）</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_verify</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">value</span>, what <span class="op">=</span> <span class="st">"Is this a famous Latin quotation?"</span>, pred_name<span class="op">=</span><span class="st">"verify"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>ここまで<code>mall</code>の関数でqwan3.6を用いてきましたが、初回の演算ではこの6つの演算に900秒以上かかっています。qwan3.6ではラテン語であってもそこそこ正確な訳文や分類が返ってきているのが分かります。1度目の演算はとても時間がかかりますが、mallは結果をキャッシュしてくれるため、2回目以降に同じ文を与えると瞬時に結果が返ってきます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>演算結果</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 906.23秒で完了（2回目以降はキャッシュから返すため、瞬時に結果が返ってくる）</span></span>
+<span><span class="va">d_3</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 6%">
+<col style="width: 28%">
+<col style="width: 24%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 4%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">value</th>
+<th style="text-align: left;">.sentiment</th>
+<th style="text-align: left;">translation_jp</th>
+<th style="text-align: left;">summary</th>
+<th style="text-align: left;">classify</th>
+<th style="text-align: left;">extract</th>
+<th style="text-align: left;">verify</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alienum est omne, quicquid optando evenit.</td>
+<td style="text-align: left;">negative</td>
+<td style="text-align: left;">願って得るものはみな他事なり。</td>
+<td style="text-align: left;">wishes always bring unexpected outcomes</td>
+<td style="text-align: left;">negative</td>
+<td style="text-align: left;">evenit</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ab alio expectes, alteri quod feceris.</td>
+<td style="text-align: left;">neutral</td>
+<td style="text-align: left;">自分がされて嬉しいことは、他人にもしてやれ。</td>
+<td style="text-align: left;">treat others as you wish to be treated</td>
+<td style="text-align: left;">positive</td>
+<td style="text-align: left;">expectes</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Animus vereri qui scit, scit tuta ingredi.</td>
+<td style="text-align: left;">neutral</td>
+<td style="text-align: left;">畏れることを知る者は、安全な道を歩くことを知る。</td>
+<td style="text-align: left;">knowing what to fear means walking safely</td>
+<td style="text-align: left;">positive</td>
+<td style="text-align: left;">scit</td>
+<td style="text-align: left;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section></section><section id="mallでtranslategemmaを用いる" class="level3"><h3 class="anchored" data-anchor-id="mallでtranslategemmaを用いる">mallでtranslategemmaを用いる</h3>
+<p>では、次にtranslategemma:12bで同じ演算をしてみます。利用するモデルを変更するときには、<code>llm_use</code>のLLMモデルの指定を変更するだけです。</p>
+<p>translategemma:12bでの演算は40秒ぐらいで終わります。ただし、見ての通り翻訳以外のタスクでは<code>NA</code>が返ってきています。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>translategemma:12bを用いる</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="st">"ollama"</span>, <span class="st">"translategemma:12b"</span>, seed <span class="op">=</span> <span class="fl">100</span>, temperature <span class="op">=</span> <span class="fl">0</span>, .cache <span class="op">=</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_gemma_cache"</span>, .silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># positive, negative, neutralを評価する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_sentiment</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">value</span><span class="op">)</span> <span class="co"># データフレームと列名を指定</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>! There were 3 predictions with invalid output, they were coerced to NA</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 翻訳する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_translate</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">value</span>, language <span class="op">=</span> <span class="st">"Japanese"</span>, pred_name<span class="op">=</span><span class="st">"translation_jp"</span><span class="op">)</span></span>
+<span><span class="co"># 要約する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_summarize</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">translation_jp</span>, max_words <span class="op">=</span> <span class="fl">10</span>, pred_name<span class="op">=</span><span class="st">"summary"</span><span class="op">)</span></span>
+<span><span class="co"># 分類する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_classify</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">translation_jp</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"positive"</span>, <span class="st">"negative"</span><span class="op">)</span>, pred_name<span class="op">=</span><span class="st">"classify"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>! There were 1 predictions with invalid output, they were coerced to NA</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 文中から抽出する</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_extract</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">value</span>, <span class="st">"verb"</span>, pred_name<span class="op">=</span><span class="st">"extract"</span><span class="op">)</span></span>
+<span><span class="co"># 文への適合性を評価する（1ならTRUE、0ならFALSE）</span></span>
+<span><span class="va">d_3</span> <span class="op">&lt;-</span> <span class="fu">llm_verify</span><span class="op">(</span><span class="va">d_3</span>, <span class="va">value</span>, <span class="st">"Is this a famous Latin quotation?"</span>, pred_name<span class="op">=</span><span class="st">"verify"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>! There were 3 predictions with invalid output, they were coerced to NA</code></pre>
+</div>
+</div>
+<p>実際に結果を見てみると、文体がqwen3.6とは少し異なります。qwen3.6は箴言っぽい文調で返ってきて、translategemmaは現代文っぽいものが返ってきます。どちらかというとqwen3.6の方が正確な訳に近いように思います。また、英文も随分異なります。分類などはtranslategemmaではうまく回答を得ることができません。</p>
+<p>やはり高性能かつ新しいqwen3.6の方が全体的に回答が優れているように見えます。ただし、演算コストが桁違いなので、簡単な問題であれば小さいモデルであるtranslategemma:12bを選ぶことにも利点はあるでしょう（translategemmaには27bのモデルもあるので、こちらを使えばもう少し翻訳はうまくなるかもしれません）。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>translategemma:12bの演算結果</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 42.63秒で完了</span></span>
+<span><span class="va">d_3</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 5%">
+<col style="width: 32%">
+<col style="width: 29%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 3%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">value</th>
+<th style="text-align: left;">.sentiment</th>
+<th style="text-align: left;">translation_jp</th>
+<th style="text-align: left;">summary</th>
+<th style="text-align: left;">classify</th>
+<th style="text-align: left;">extract</th>
+<th style="text-align: left;">verify</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alienum est omne, quicquid optando evenit.</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">何でもかんでも、望んだ結果になるわけではない。</td>
+<td style="text-align: left;">not everything leads to desired outcomes.</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">evenit</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ab alio expectes, alteri quod feceris.</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">他人に何を期待するかは、自分自身が相手にどうしたかによって決まる。</td>
+<td style="text-align: left;">expectations depend on how you treat others.</td>
+<td style="text-align: left;">positive</td>
+<td style="text-align: left;">expectes</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Animus vereri qui scit, scit tuta ingredi.</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">心に恐れを持つ者は、安全な道を進むことを知っている。</td>
+<td style="text-align: left;">fearful people choose safe paths, understanding their value.</td>
+<td style="text-align: left;">positive</td>
+<td style="text-align: left;">scit</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="ベクターを引数に取る" class="level3"><h3 class="anchored" data-anchor-id="ベクターを引数に取る">ベクターを引数に取る</h3>
+<p>では、最後にラテン語と英語をqwen3.6とtranslategemmaで演算し、回答を比較してみます。以下では、<code>llm_vec_</code>の関数でベクターを用いて演算を行っています。ベクターを引数に取ると、返り値もベクターで返ってきます。文を比較すれば、どの程度正確に回答が返ってきているか、イメージしやすいのではないでしょうか。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ベクターを返す関数</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 英文はGeminiに作成してもらったもの（日本語もGeminiが生成）</span></span>
+<span><span class="va">comp_sentences</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./data/llm_comparison_sentences.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">llm_use</span><span class="op">(</span><span class="st">"ollama"</span>, <span class="st">"qwen3.6"</span>, seed <span class="op">=</span> <span class="fl">100</span>, temperature <span class="op">=</span> <span class="fl">0</span>, .cache <span class="op">=</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_qwen_cache"</span>, .silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 400.7秒</span></span>
+<span><span class="va">qwen_translate</span> <span class="op">&lt;-</span> <span class="fu">llm_vec_translate</span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="fl">11</span><span class="op">:</span><span class="fl">15</span><span class="op">]</span>, language <span class="op">=</span> <span class="st">"Japanese"</span><span class="op">)</span> <span class="co"># Latin</span></span>
+<span></span>
+<span><span class="co"># 538.36秒</span></span>
+<span><span class="va">qwen_Eng</span> <span class="op">&lt;-</span> <span class="fu">llm_vec_translate</span><span class="op">(</span><span class="va">comp_sentences</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, language <span class="op">=</span> <span class="st">"Japanese"</span><span class="op">)</span> <span class="co"># English</span></span>
+<span></span>
+<span><span class="fu">llm_use</span><span class="op">(</span><span class="st">"ollama"</span>, <span class="st">"translategemma:12b"</span>, seed <span class="op">=</span> <span class="fl">100</span>, temperature <span class="op">=</span> <span class="fl">0</span>, .cache <span class="op">=</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_gemma_cache"</span>, .silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 11.57秒</span></span>
+<span><span class="va">gemma_translate</span> <span class="op">&lt;-</span> <span class="fu">llm_vec_translate</span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="fl">11</span><span class="op">:</span><span class="fl">15</span><span class="op">]</span>, language <span class="op">=</span> <span class="st">"Japanese"</span><span class="op">)</span> <span class="co"># Latin</span></span>
+<span></span>
+<span><span class="co"># 46.61秒</span></span>
+<span><span class="va">gemma_Eng</span> <span class="op">&lt;-</span> <span class="fu">llm_vec_translate</span><span class="op">(</span><span class="va">comp_sentences</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, language <span class="op">=</span> <span class="st">"Japanese"</span><span class="op">)</span> <span class="co"># English</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>ラテン語の翻訳</caption>
+<colgroup>
+<col style="width: 26%">
+<col style="width: 37%">
+<col style="width: 35%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">latin</th>
+<th style="text-align: left;">qwen</th>
+<th style="text-align: left;">gemma</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alienum aes homini ingenuo acerba est servitus.</td>
+<td style="text-align: left;">他人への借金は自由人にとって苦しい奴隷状態である。</td>
+<td style="text-align: left;">自由を奪われることは、生まれつき自由な人間にとって苦痛である。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Absentem laedit, cum ebrio qui litigat.</td>
+<td style="text-align: left;">酔夫と争う者は、不在の者を害す。</td>
+<td style="text-align: left;">酔っ払って喧嘩する人は、弱者を傷つける。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Amans iratus muta mentitur sibi.</td>
+<td style="text-align: left;">怒った恋人は沈黙し、己に嘘をつく。</td>
+<td style="text-align: left;">怒っている人は、自分自身に嘘をついている。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Avarus ipse miseriae causa est suae.</td>
+<td style="text-align: left;">貪欲な者自身こそが、自らの不幸の原因である。</td>
+<td style="text-align: left;">彼自身が、自分の不幸の原因である。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Amans quid cupiat scit, quid sapiat non vidit.</td>
+<td style="text-align: left;">恋する者は自分が何を望むかは知っているが、何が賢明かまでは見えない。</td>
+<td style="text-align: left;">彼は何を欲しているかを知っているが、何が賢明であるかは知らない。</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>英語の翻訳</caption>
+<colgroup>
+<col style="width: 22%">
+<col style="width: 24%">
+<col style="width: 26%">
+<col style="width: 26%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">English</th>
+<th style="text-align: left;">Japanese</th>
+<th style="text-align: left;">qwen</th>
+<th style="text-align: left;">gemma</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">The quick brown fox jumps over the lazy dog.</td>
+<td style="text-align: left;">短い茶色の狐が怠け者の犬を飛び越える。</td>
+<td style="text-align: left;">素早い茶色の狐がのろまな犬を飛び越える。</td>
+<td style="text-align: left;">すばやい茶色の狐が、怠惰な犬を飛び越える。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Artificial intelligence is transforming the way we work and communicate daily.</td>
+<td style="text-align: left;">人工知能は、私たちの毎日の働き方やコミュニケーションの方法を変えています。</td>
+<td style="text-align: left;">人工知能は、私たちが日常的に仕事し、コミュニケーションを行う方法を変えつつあります。</td>
+<td style="text-align: left;">人工知能は、私たちが日々の仕事やコミュニケーションを行う方法を大きく変えています。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Could you please book a flight to Tokyo for next Monday morning?</td>
+<td style="text-align: left;">来週の月曜日の朝に東京行きの飛行機を予約していただけますか？</td>
+<td style="text-align: left;">来週月曜日の朝、東京行きの飛行機を予約していただけませんか。</td>
+<td style="text-align: left;">来週の月曜日の朝に東京行きの航空券を予約していただけますか？</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Despite the heavy rain, the football match continued until the final whistle.</td>
+<td style="text-align: left;">激しい雨にもかかわらず、サッカーの試合は終了のホイッスルが鳴るまで続いた。</td>
+<td style="text-align: left;">大雨にもかかわらず、サッカーの試合は終了の笛が鳴るまで続いた。</td>
+<td style="text-align: left;">大雨にもかかわらず、サッカーの試合は最終ホイッスルが鳴るまで続行されました。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">I am extremely frustrated with the poor customer service I received today.</td>
+<td style="text-align: left;">今日受けたひどいカスタマーサービスに、私はものすごくイライラしています。</td>
+<td style="text-align: left;">今日受けたカスタマーサービスの対応の悪さに、非常にイライラしています。</td>
+<td style="text-align: left;">本日、私はひどいカスタマーサービスを受けてしまい、非常に不満を感じています。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">She accidentally left her umbrella on the train, but someone returned it.</td>
+<td style="text-align: left;">彼女はうっかり電車に傘を置き忘れたが、誰かが届けてくれた。</td>
+<td style="text-align: left;">彼女はうっかり電車に傘を置き忘れてしまったが、誰かが返してくれた。</td>
+<td style="text-align: left;">彼女はうっかり傘を電車の中に置き忘れてしまったが、誰かがそれを返してくれた。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The local bakery sells fresh bread, delicious croissants, and sweet pastries.</td>
+<td style="text-align: left;">地元のパン屋では、焼き立てのパン、美味しいクロワッサン、甘い菓子パンを販売している。</td>
+<td style="text-align: left;">地元のパン屋は、焼きたてのパン、美味しいクロワッサン、そして甘いペストリーを販売しています。</td>
+<td style="text-align: left;">地元のパン屋では、新鮮なパン、美味しいクロワッサン、そして甘いお菓子が販売されています。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">If water reaches one hundred degrees Celsius, it begins to boil rapidly.</td>
+<td style="text-align: left;">水は摂氏100度に達すると、急速に沸騰し始める。</td>
+<td style="text-align: left;">水が100℃に達すると、激しく沸騰し始めます。</td>
+<td style="text-align: left;">水が100℃に達すると、沸騰し始めます。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">To achieve success, one must practice consistently and never give up hope.</td>
+<td style="text-align: left;">成功を収めるためには、継続的に練習し、決して希望を捨ててはならない。</td>
+<td style="text-align: left;">成功するためには、継続的に練習し続け、決して希望を捨ててはいけません。</td>
+<td style="text-align: left;">成功を収めるためには、一貫して努力し、決して希望を捨ててはいけません。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">The new museum downtown has attracted thousands of visitors since last month.</td>
+<td style="text-align: left;">中心街にある新しい博物館は、先月から何千人もの訪問者を惹きつけている。</td>
+<td style="text-align: left;">市中心部の新しい博物館は、先月から数千人の来館者を集めています。</td>
+<td style="text-align: left;">市内中心部にできた新しい博物館は、先月からオープンして以来、数千人の訪問者を集めています。</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-ollamar_bib" class="csl-entry" role="listitem">
+Lin, Hause, and Tawab Safi. 2024. <span>“Ollamar: An r Package for Running Large Language Models.”</span> <em>PsyArXiv</em>, ahead of print, August. <a href="https://doi.org/10.31234/osf.io/zsrg5">https://doi.org/10.31234/osf.io/zsrg5</a>.
+</div>
+<div id="ref-mall_bib" class="csl-entry" role="listitem">
+Ruiz, Edgar. 2025. <em>Mall: Run Multiple Large Language Model Predictions Against a Table, or Vectors</em>. <a href="https://doi.org/10.32614/CRAN.package.mall">https://doi.org/10.32614/CRAN.package.mall</a>.
+</div>
+<div id="ref-ellmer_bib" class="csl-entry" role="listitem">
+Wickham, Hadley, Joe Cheng, Aaron Jacobs, Garrick Aden-Buie, and Barret Schloerke. 2026. <em>Ellmer: Chat with Large Language Models</em>. <a href="https://doi.org/10.32614/CRAN.package.ellmer">https://doi.org/10.32614/CRAN.package.ellmer</a>.
+</div>
+</div>
+</section></section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/sb8001at-oss\.github\.io\/Rnyuumon\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./Tips_shinylive.html" class="pagination-link" aria-label="webRとshinylive">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">webRとshinylive</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./summary.html" class="pagination-link" aria-label="おわりに">
+        <span class="nav-page-text">おわりに</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># LLMとmallパッケージ {.unnumbered}</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>RからLLM（大規模言語モデル、Large Language Model）を利用する場合、リモートLLM（Web上で提供されているLLMのAPIに接続して利用する）と、ローカルLLM（自分のPCでLLMの演算を行う）の2つを利用することができます。RでのLLMの利用についてはQiitaに詳しい記事（<span class="co">[</span><span class="ot">「R言語とLLMの連携」</span><span class="co">](https://qiita.com/bob3bob3/items/b5b242c3f9466d140a64)</span>）がありますが、ココでも簡単に紹介しようと思います。</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">### リモートLLMとローカルLLM</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>リモートLLMを利用する場合、Rでは<span class="in">`ellmer`</span>パッケージ<span class="co">[</span><span class="ot">@ellmer_bib</span><span class="co">]</span>を利用します。<span class="in">`ellmer`</span>パッケージではいろいろなLLMモデルのAPI（Anthropic、OpenAI、Geminiなど）を用いてLLMによる推論を行います。</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>リモートLLMの利点はそのスピードと性能です。リモートLLMはその提供元のサーバーで演算を行うため、サーバーの演算能力に従いその演算速度が決まります。AIの提供元で利用しているサーバーは大抵超高性能で、お金を払わないプランを用いても回答がすぐに返ってきます。一方で、リモートLLMの利用にはお金がかかり、チャットを投げる量（トークン）も制限される場合があります。</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>RでローカルLLMを利用する場合には、<span class="in">`ollamar`</span>パッケージ<span class="co">[</span><span class="ot">@ollamar_bib</span><span class="co">]</span>を用います。<span class="in">`ollamar`</span>はLLMを動かすためのローカルサーバーを簡単に管理できるソフトウェアである、<span class="co">[</span><span class="ot">Ollama</span><span class="co">](https://ollama.com/)</span>を利用したパッケージです。<span class="in">`ollamar`</span>パッケージを用いることで、自分のPCにLLMのモデルをダウンロードし、チャットを投げて回答を得ることができます。</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>ローカルLLMを用いればお金を支払う必要はなく、トークンの制限もありません。一方で演算速度は自分のPCのスペック（特にGPU）に依存し、高性能なGPUを備えていないPCでは演算にとてつもなく時間がかかります。</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## RでのLLM利用：mall</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>この2つのパッケージ（<span class="in">`ellmer`</span>と<span class="in">`ollamar`</span>）を用いれはLLMを利用することはできますが、いずれも常にチャットの内容を即時にLLMに投げて、返答を返す形で機能します。また、同じ質問をする場合には、いずれもLLMにすぐにチャットを投げてしまうため、同じ回答を得るのにもう一度演算を行う場合があります。これではトークンや時間を無駄遣いしてしまいます。</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>そこで、<span class="in">`ellmer`</span>と<span class="in">`ollamar`</span>の機能を補いつつ、問い合わせの内容を絞り、データフレームの列をチャットに投げ、一度問い合わせた内容をキャッシュ（cache）に残すことでLLMへの問い合わせ回数を減らすことができるように設計されたライブラリが<span class="in">`mall`</span><span class="co">[</span><span class="ot">@mall_bib</span><span class="co">]</span>です。<span class="in">`mall`</span>を用いれば、LLMにかかるコストを調節し、一度回答を得たチャットに対してはキャッシュを利用して速やかに答えを得ることができます。</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>この章では、まず<span class="in">`ellmer`</span>、<span class="in">`ollamar`</span>の簡単な使い方を説明し、その後<span class="in">`mall`</span>を使ってデータフレームに記載した文字列をLLMに投げて回答を得るところまで説明します。</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>まずは<span class="in">`ellmer`</span>、<span class="in">`ollamar`</span>、<span class="in">`mall`</span>をそれぞれインストールします。またデータフレームの取り扱いのために<span class="in">`tidyverse`</span>をロードします。</span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パッケージのインストール・ロード"}</span></span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, ellmer, ollamar, mall)</span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## ellmerパッケージ</span></span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a><span class="in">`ellmer`</span>では、まずはどのリモートLLM、AIモデルを用いるのかをまず選択します。例えばOpenAIのLLMであるGPTを用いるのか、AnthropicのClaudeを用いるのか、GoogleのGeminiを使うのかでそれぞれ利用する関数が異なります。</span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a>AIモデルを選択したら、次にそのLLMのAPIキーを取得する必要があります。<span class="co">[</span><span class="ot">GPT</span><span class="co">](https://help.openai.com/ja-jp/articles/4936850-where-do-i-find-my-openai-api-key)</span>、<span class="co">[</span><span class="ot">Claude</span><span class="co">](https://platform.claude.com/docs/ja/get-started)</span>、<span class="co">[</span><span class="ot">Gemini</span><span class="co">](https://ai.google.dev/gemini-api/docs/api-key?hl=ja)</span>のAPIキーの取得方法についてはそれぞれのページで確認してください。</span>
+<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a>APIキーを取得したら、APIキーを環境変数に設定します。GPTでは<span class="in">`OPENAI_API_KEY`</span>、Claudeでは<span class="in">`ANTHROPIC_API_KEY`</span>、Geminiでは<span class="in">`GEMINI_API_KEY`</span>をそれぞれ設定します。環境変数の設定にはRでは<span class="in">`Sys.setenv`</span>関数を用います。WindowsではGUIやコマンドプロンプトを用いて環境変数を設定することもできます。</span>
+<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="環境変数を設定する"}</span></span>
+<span id="cb45-38"><a href="#cb45-38" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">OPENAI_API_KEY =</span> <span class="st">"XXXXXXXXXXXXXXXXXX"</span>)</span>
+<span id="cb45-39"><a href="#cb45-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-40"><a href="#cb45-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-41"><a href="#cb45-41" aria-hidden="true" tabindex="-1"></a>もう一つの方法は、Rの環境（<span class="in">`.Renviron`</span>）にAPIキーをセットする方法です。<span class="in">`usethis::edit_r_environ`</span>関数を用いることで、環境変数をRで設定することができます。<span class="in">`usethis::edit_r_environ`</span>を実行すると環境のファイルの中身が表示されるので、その中身に環境変数を追記し、保存します。</span>
+<span id="cb45-42"><a href="#cb45-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-43"><a href="#cb45-43" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename=".Renvironを編集する"}</span></span>
+<span id="cb45-44"><a href="#cb45-44" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span>
+<span id="cb45-45"><a href="#cb45-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-46"><a href="#cb45-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-47"><a href="#cb45-47" aria-hidden="true" tabindex="-1"></a>APIキーを設定すると、<span class="in">`ellmer`</span>からそれぞれのLLMに直接アクセスできるようになります。LLMにアクセスする場合には、まず接続用のオブジェクトを作成します。このオブジェクト作成の関数は利用するLLMによって異なり、GPTでは<span class="in">`chat_openai`</span>関数、Claudeでは<span class="in">`chat_anthropic`</span>関数、Geminiでは<span class="in">`chat_google_gemini`</span>関数を引数なしで用います。これらの関数は<span class="co">[</span><span class="ot">R6オブジェクト</span><span class="co">](Tips_R6class.qmd)</span>を作成するための関数で、この関数の返り値を<span class="in">`chat`</span>などの名前の変数に代入します。</span>
+<span id="cb45-48"><a href="#cb45-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-49"><a href="#cb45-49" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="LLM接続のためのR6オブジェクトを作成する"}</span></span>
+<span id="cb45-50"><a href="#cb45-50" aria-hidden="true" tabindex="-1"></a><span class="co"># 引数にモデル名（例えば"gpt-4.1"）を指定すると、用いるモデルを指定できる</span></span>
+<span id="cb45-51"><a href="#cb45-51" aria-hidden="true" tabindex="-1"></a><span class="co"># 利用できるモデルはmodels_openai()で確認できる（"gpt-4.1"はデフォルト）</span></span>
+<span id="cb45-52"><a href="#cb45-52" aria-hidden="true" tabindex="-1"></a>chat <span class="ot">&lt;-</span> <span class="fu">chat_openai</span>()</span>
+<span id="cb45-53"><a href="#cb45-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-54"><a href="#cb45-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-55"><a href="#cb45-55" aria-hidden="true" tabindex="-1"></a>LLMにチャットを投げる場合には、<span class="in">`chat$chat`</span>メソッドを用います。<span class="in">`chat$chat`</span>メソッドの引数として、チャットの内容（文字列）を取ることで、Markdown形式でLLMから返答を受け取ることができます。また、<span class="in">`chat$chat`</span>メソッドを実行すると、<span class="in">`chat`</span>オブジェクト内に会話の内容が記録され、次のチャットの問い合わせ時にはこの記録が文脈として利用されます。</span>
+<span id="cb45-56"><a href="#cb45-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-57"><a href="#cb45-57" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="LLMへのチャットを送信し、返答を受信する"}</span></span>
+<span id="cb45-58"><a href="#cb45-58" aria-hidden="true" tabindex="-1"></a>chat<span class="sc">$</span><span class="fu">chat</span>(<span class="st">"Who created R?"</span>)</span>
+<span id="cb45-59"><a href="#cb45-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-60"><a href="#cb45-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-61"><a href="#cb45-61" aria-hidden="true" tabindex="-1"></a>リモートのLLMを利用すると、トークンを消費します。トークンはLLMに投げるチャットのワード数（文字数）を反映するもので、利用したトークンが増えるほど支払いが増えていきます。<span class="in">`chat`</span>オブジェクトを用いたチャットでどの程度トークンを利用したのかを確認するには、<span class="in">`token_usage`</span>関数を用います。</span>
+<span id="cb45-62"><a href="#cb45-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-63"><a href="#cb45-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="トークンの利用を表示する"}</span></span>
+<span id="cb45-64"><a href="#cb45-64" aria-hidden="true" tabindex="-1"></a><span class="fu">token_usage</span>()</span>
+<span id="cb45-65"><a href="#cb45-65" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-66"><a href="#cb45-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-67"><a href="#cb45-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## ollamarパッケージ</span></span>
+<span id="cb45-68"><a href="#cb45-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-69"><a href="#cb45-69" aria-hidden="true" tabindex="-1"></a>ココまではリモートLLMを利用する方法を説明しましたが、ココからは<span class="in">`ollamar`</span>パッケージを用いて、自分のPCでLLMを動かす方法について説明します。</span>
+<span id="cb45-70"><a href="#cb45-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-71"><a href="#cb45-71" aria-hidden="true" tabindex="-1"></a><span class="in">`ollamar`</span>パッケージは、<span class="co">[</span><span class="ot">Ollama</span><span class="co">](https://ollama.com/)</span>というローカル環境でLLMを動かすためのツールを利用して、RでLLMを用いる仕組みになっています。</span>
+<span id="cb45-72"><a href="#cb45-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-73"><a href="#cb45-73" aria-hidden="true" tabindex="-1"></a><span class="in">`ollamar`</span>を使う場合、まずは<span class="co">[</span><span class="ot">Ollamaのアプリケーションをダウンロード</span><span class="co">](https://ollama.com/download/windows)</span>し、インストールする必要があります。Ollamaをインストールすると、OllamaのローカルサーバーでLLMが動くようになります。</span>
+<span id="cb45-74"><a href="#cb45-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-75"><a href="#cb45-75" aria-hidden="true" tabindex="-1"></a><span class="al">![Ollamaのウインドウ](./image/ollama_window.png)</span></span>
+<span id="cb45-76"><a href="#cb45-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-77"><a href="#cb45-77" aria-hidden="true" tabindex="-1"></a>このOllamaのアプリケーションを用いることで、LLMを利用することができます。</span>
+<span id="cb45-78"><a href="#cb45-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-79"><a href="#cb45-79" aria-hidden="true" tabindex="-1"></a><span class="al">![間違った日本語にも真面目に答えてくれる](./image/ollama_chat_window.png)</span></span>
+<span id="cb45-80"><a href="#cb45-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-81"><a href="#cb45-81" aria-hidden="true" tabindex="-1"></a>ただし、Ollamaをインストールするだけでは、LLMをGPUで演算してくれない場合があります。Qiitaに<span class="co">[</span><span class="ot">OllamaにGPUを利用させる方法</span><span class="co">](https://qiita.com/buson0903/items/6b4160c869ab8f3ac871)</span>についての記事がありますので、参考にして設定するとよいでしょう。</span>
+<span id="cb45-82"><a href="#cb45-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-83"><a href="#cb45-83" aria-hidden="true" tabindex="-1"></a>簡単に説明すると、NIVDIAのGPUであれば</span>
+<span id="cb45-84"><a href="#cb45-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-85"><a href="#cb45-85" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">cuDNN（CUDA Deep Neural Network library）</span><span class="co">](https://developer.nvidia.com/cudnn)</span></span>
+<span id="cb45-86"><a href="#cb45-86" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">CUDA Toolkit</span><span class="co">](https://developer.nvidia.com/cuda/toolkit)</span></span>
+<span id="cb45-87"><a href="#cb45-87" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">NVIDIA Studio ドライバ</span><span class="co">](https://www.nvidia.com/ja-jp/drivers/)</span></span>
+<span id="cb45-88"><a href="#cb45-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-89"><a href="#cb45-89" aria-hidden="true" tabindex="-1"></a>をあらかじめインストールしておくとよいようです。</span>
+<span id="cb45-90"><a href="#cb45-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-91"><a href="#cb45-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-92"><a href="#cb45-92" aria-hidden="true" tabindex="-1"></a>また、<span class="co">[</span><span class="ot">Redditの記事</span><span class="co">](https://www.reddit.com/r/ollama/comments/1dh54cz/how_do_i_enable_my_gpu_for_ollama_llms_on_windows/?tl=ja)</span>に記載されている通り、</span>
+<span id="cb45-93"><a href="#cb45-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-94"><a href="#cb45-94" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb45-95"><a href="#cb45-95" aria-hidden="true" tabindex="-1"></a><span class="ex">nvidia-smi</span> <span class="at">-L</span></span>
+<span id="cb45-96"><a href="#cb45-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-97"><a href="#cb45-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-98"><a href="#cb45-98" aria-hidden="true" tabindex="-1"></a>で表示されるUUIDを調べて、<span class="in">`CUDA_VISIBLE_DEVICES="UUID"`</span>という環境変数を設定することでGPUを使ってくれるようになる場合もあるようです。</span>
+<span id="cb45-99"><a href="#cb45-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-100"><a href="#cb45-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### ollamarでRからOllamaを用いる</span></span>
+<span id="cb45-101"><a href="#cb45-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-102"><a href="#cb45-102" aria-hidden="true" tabindex="-1"></a>OllamaをRから動かすためのパッケージが<span class="in">`ollamar`</span>です。Ollamaが起動している状態で、<span class="in">`test_connection`</span>を実行すると、Ollamaのローカルサーバーが利用できる状態であるかを確認することができます。</span>
+<span id="cb45-103"><a href="#cb45-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-104"><a href="#cb45-104" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ollamar：Ollamaの起動の確認"}</span></span>
+<span id="cb45-105"><a href="#cb45-105" aria-hidden="true" tabindex="-1"></a><span class="co"># Ollama appが起動していると、ローカルサーバーが立ち上がっていることが確認できる</span></span>
+<span id="cb45-106"><a href="#cb45-106" aria-hidden="true" tabindex="-1"></a><span class="fu">test_connection</span>()</span>
+<span id="cb45-107"><a href="#cb45-107" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-108"><a href="#cb45-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-109"><a href="#cb45-109" aria-hidden="true" tabindex="-1"></a>Ollamaでも<span class="in">`ollamar`</span>でも、まずはLLMのモデルをダウンロードする必要があります。Ollamaではターミナルで<span class="in">`ollama pull モデル名`</span>を実行することでLLMのモデルをダウンロードすることができます。</span>
+<span id="cb45-110"><a href="#cb45-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-111"><a href="#cb45-111" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb45-112"><a href="#cb45-112" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen3.6</span>
+<span id="cb45-113"><a href="#cb45-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-114"><a href="#cb45-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-115"><a href="#cb45-115" aria-hidden="true" tabindex="-1"></a>ダウンロードするモデルは<span class="co">[</span><span class="ot">OllamaのModelに関するページ</span><span class="co">](https://ollama.com/search)</span>から選択することができます。LLMのモデルはパラメータ数（4bとか、8bといった数値で示されているもの）と、モデルの最適化の程度（コーディング用、論理思考用、翻訳用など）で選択します。新しいものほど最適化されていて、少なめのパラメータ数でもそれなりの答えを返してくれるようになっています。</span>
+<span id="cb45-116"><a href="#cb45-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-117"><a href="#cb45-117" aria-hidden="true" tabindex="-1"></a><span class="in">`ollamar`</span>では、<span class="in">`pull`</span>関数でLLMのモデルをダウンロードすることができます。この関数は上の<span class="in">`ollama pull`</span>を実行するだけの関数です。</span>
+<span id="cb45-118"><a href="#cb45-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-119"><a href="#cb45-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="LLMモデルのダウンロード"}</span></span>
+<span id="cb45-120"><a href="#cb45-120" aria-hidden="true" tabindex="-1"></a><span class="co"># 汎用のモデル、日本語に強い</span></span>
+<span id="cb45-121"><a href="#cb45-121" aria-hidden="true" tabindex="-1"></a><span class="fu">pull</span>(<span class="st">"qwen3.6"</span>)</span>
+<span id="cb45-122"><a href="#cb45-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-123"><a href="#cb45-123" aria-hidden="true" tabindex="-1"></a><span class="co"># 翻訳専用のモデル（Google Deepmind）</span></span>
+<span id="cb45-124"><a href="#cb45-124" aria-hidden="true" tabindex="-1"></a><span class="fu">pull</span>(<span class="st">"translategemma:12b"</span>)</span>
+<span id="cb45-125"><a href="#cb45-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-126"><a href="#cb45-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-127"><a href="#cb45-127" aria-hidden="true" tabindex="-1"></a>上の<span class="in">`pull`</span>では、Alibabaの高性能LLMである<span class="co">[</span><span class="ot">qwen3.6</span><span class="co">](https://ollama.com/library/qwen3.6)</span>とGoogle Deepmindの<span class="co">[</span><span class="ot">translategemma</span><span class="co">](https://ollama.com/library/translategemma)</span>をダウンロードしています。qwen3.6は汎用のLLMで日本語に強く、パラメータ数は27b（270億）です。translategemmaは翻訳を専門とするLLMで、パラメータ数は12bのものをダウンロードしています。qwen3.6は私のPC（GeForce RTX3070、VRAMが8GB）には重すぎるので、演算にとてつもなく時間がかかります。実用的ではありませんが、モデルの比較のためにダウンロードしています。</span>
+<span id="cb45-128"><a href="#cb45-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-129"><a href="#cb45-129" aria-hidden="true" tabindex="-1"></a><span class="fu">### ollamarでLLMを用いる</span></span>
+<span id="cb45-130"><a href="#cb45-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-131"><a href="#cb45-131" aria-hidden="true" tabindex="-1"></a><span class="in">`ollamar`</span>でLLMを利用する場合には、<span class="in">`generate`</span>関数を用います。この<span class="in">`generate`</span>関数は第一引数にLLMのモデル名、第ニ引数にLLMに投げるチャットを引数に取ります。LLMのモデル名はダウンロード済みのモデル（<span class="in">`list_models`</span>で確認できます）から選択します。この<span class="in">`generate`</span>の返り値をそのまま呼び出すとOllamaのローカルサーバーのレスポンスとBodyというものを含むものが返ってきます。</span>
+<span id="cb45-132"><a href="#cb45-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-133"><a href="#cb45-133" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="LLMにチャットを投げる"}</span></span>
+<span id="cb45-134"><a href="#cb45-134" aria-hidden="true" tabindex="-1"></a><span class="co"># 使えるモデルのリスト</span></span>
+<span id="cb45-135"><a href="#cb45-135" aria-hidden="true" tabindex="-1"></a><span class="fu">list_models</span>()</span>
+<span id="cb45-136"><a href="#cb45-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-137"><a href="#cb45-137" aria-hidden="true" tabindex="-1"></a><span class="co"># モデルにレスポンスを求める（時間がかかる）</span></span>
+<span id="cb45-138"><a href="#cb45-138" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">&lt;-</span> <span class="fu">generate</span>(<span class="st">"qwen3.6"</span>, <span class="st">"tell me a 5-word story"</span>)</span>
+<span id="cb45-139"><a href="#cb45-139" aria-hidden="true" tabindex="-1"></a>resp</span>
+<span id="cb45-140"><a href="#cb45-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-141"><a href="#cb45-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-142"><a href="#cb45-142" aria-hidden="true" tabindex="-1"></a>LLMの出力を確認するには、<span class="in">`resp_process`</span>関数を用います。第二引数（<span class="in">`output`</span>）には返り値のデータ型を文字列で指定します。</span>
+<span id="cb45-143"><a href="#cb45-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-144"><a href="#cb45-144" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="LLMの出力を確認する"}</span></span>
+<span id="cb45-145"><a href="#cb45-145" aria-hidden="true" tabindex="-1"></a><span class="co"># 出力を確認</span></span>
+<span id="cb45-146"><a href="#cb45-146" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">resp_process</span>(resp, <span class="st">"text"</span>)</span>
+<span id="cb45-147"><a href="#cb45-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-148"><a href="#cb45-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-149"><a href="#cb45-149" aria-hidden="true" tabindex="-1"></a>出力をデータフレームの形とするには、<span class="in">`output`</span>引数に<span class="in">`"df"`</span>を指定します。</span>
+<span id="cb45-150"><a href="#cb45-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-151"><a href="#cb45-151" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="LLMの出力をデータフレームで返す"}</span></span>
+<span id="cb45-152"><a href="#cb45-152" aria-hidden="true" tabindex="-1"></a><span class="co"># データフレームで出力</span></span>
+<span id="cb45-153"><a href="#cb45-153" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">resp_process</span>(resp, <span class="at">output =</span> <span class="st">"df"</span>)</span>
+<span id="cb45-154"><a href="#cb45-154" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-155"><a href="#cb45-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-156"><a href="#cb45-156" aria-hidden="true" tabindex="-1"></a>ココまでが<span class="in">`ollamar`</span>の基本的な利用方法です。不要なモデルは<span class="in">`delete`</span>関数で削除することもできます。</span>
+<span id="cb45-157"><a href="#cb45-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-158"><a href="#cb45-158" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="OllamaのLLMモデルを削除する"}</span></span>
+<span id="cb45-159"><a href="#cb45-159" aria-hidden="true" tabindex="-1"></a><span class="co"># モデルを削除する（実行はしない）</span></span>
+<span id="cb45-160"><a href="#cb45-160" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">delete</span>(<span class="st">"qwen3.6"</span>)</span>
+<span id="cb45-161"><a href="#cb45-161" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">delete</span>(<span class="st">"translategemma:12b"</span>)</span>
+<span id="cb45-162"><a href="#cb45-162" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-163"><a href="#cb45-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-164"><a href="#cb45-164" aria-hidden="true" tabindex="-1"></a><span class="fu">## mall</span></span>
+<span id="cb45-165"><a href="#cb45-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-166"><a href="#cb45-166" aria-hidden="true" tabindex="-1"></a>ではココからは、上記の<span class="in">`ellmer`</span>と<span class="in">`ollamar`</span>を利用し、決められたタスクをこなすためのパッケージである、<span class="in">`mall`</span>について説明していきます。</span>
+<span id="cb45-167"><a href="#cb45-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-168"><a href="#cb45-168" aria-hidden="true" tabindex="-1"></a><span class="fu">### 用いるデータの準備</span></span>
+<span id="cb45-169"><a href="#cb45-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-170"><a href="#cb45-170" aria-hidden="true" tabindex="-1"></a><span class="in">`mall`</span>は、データフレームの列に記録した文（文字列）をLLMに投げることで、その文の感情の評価（sentiment）、翻訳（translate）、要約（summarize）、分類（classify）、抽出（extract）、適合性（verify）の6つのタスクを実行し、データフレームの列として結果を返してくれるパッケージです。</span>
+<span id="cb45-171"><a href="#cb45-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-172"><a href="#cb45-172" aria-hidden="true" tabindex="-1"></a><span class="in">`mall`</span>に文字列のデータフレームを投げるためのサンプルとして、<span class="co">[</span><span class="ot">Publilius Syrus</span><span class="co">](https://en.wikipedia.org/wiki/Publilius_Syrus)</span>の<span class="co">[</span><span class="ot">格言集</span><span class="co">](https://www.thelatinlibrary.com/syrus.html)</span>を<span class="in">`rvest`</span>で入手し、データフレームとして利用することにします。</span>
+<span id="cb45-173"><a href="#cb45-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-174"><a href="#cb45-174" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb45-175"><a href="#cb45-175" aria-hidden="true" tabindex="-1"></a><span class="fu">## ラテン語のソース</span></span>
+<span id="cb45-176"><a href="#cb45-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-177"><a href="#cb45-177" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">このthelatinlibraryのページ</span><span class="co">](https://www.thelatinlibrary.com/)</span>にはラテン語の名文がたくさん収集されています。興味があれば覗いてみて下さい。</span>
+<span id="cb45-178"><a href="#cb45-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-179"><a href="#cb45-179" aria-hidden="true" tabindex="-1"></a>ご存知の通り、ラテン語はヨーロッパでは19世紀ぐらいまで学術語として用いられていましたが（ヨーロッパでは最近までラテン語を博士論文に使う人もいたようです）、話者は（趣味で使う人以外には）おらず、学術語としても英語やドイツ語に取って代わられています。LLMの学習に用いることのできるウェブ上のラテン語の情報は限られているため、LLMには難しめのタスクかもしれません。</span>
+<span id="cb45-180"><a href="#cb45-180" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb45-181"><a href="#cb45-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-182"><a href="#cb45-182" aria-hidden="true" tabindex="-1"></a>利用するPublilius Syrusの名言のデータフレームを以下に示します。一度にたくさんの行をLLMに投げたいところですが、上記の通り、私のPCではローカルLLMに大きなタスクは投げられません。ですので、はじめの3行だけ利用することにします。</span>
+<span id="cb45-183"><a href="#cb45-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-184"><a href="#cb45-184" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="LLMに演算させるためのデータフレーム"}</span></span>
+<span id="cb45-185"><a href="#cb45-185" aria-hidden="true" tabindex="-1"></a><span class="co"># LLMに使う文を準備</span></span>
+<span id="cb45-186"><a href="#cb45-186" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/PVBLILIVS_SYRVS_SENTENTIAE.csv"</span>, <span class="at">header=</span>F) <span class="sc">|&gt;</span> _[<span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb45-187"><a href="#cb45-187" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d)</span>
+<span id="cb45-188"><a href="#cb45-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-189"><a href="#cb45-189" aria-hidden="true" tabindex="-1"></a><span class="co"># tibbleを準備</span></span>
+<span id="cb45-190"><a href="#cb45-190" aria-hidden="true" tabindex="-1"></a>d_d <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(d)</span>
+<span id="cb45-191"><a href="#cb45-191" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> d_d[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ] <span class="co"># 3行だけ用いる</span></span>
+<span id="cb45-192"><a href="#cb45-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-193"><a href="#cb45-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-194"><a href="#cb45-194" aria-hidden="true" tabindex="-1"></a><span class="fu">### mallでリモートLLMを用いる</span></span>
+<span id="cb45-195"><a href="#cb45-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-196"><a href="#cb45-196" aria-hidden="true" tabindex="-1"></a>ではまずは、<span class="in">`ellmer`</span>の機能を用いてリモートLLMを用いる方法について説明します。リモートLLMを用いる場合には、<span class="in">`ellmer::chat_`</span>関数（chatGPTなら<span class="in">`chat_openai`</span>関数）を<span class="in">`llm_use`</span>関数の引数に取ります。</span>
+<span id="cb45-197"><a href="#cb45-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-198"><a href="#cb45-198" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE, filename="ellmerの機能を用いてリモートLLMを利用する"}</span></span>
+<span id="cb45-199"><a href="#cb45-199" aria-hidden="true" tabindex="-1"></a>chat <span class="ot">&lt;-</span> <span class="fu">chat_openai</span>()</span>
+<span id="cb45-200"><a href="#cb45-200" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(chat)</span>
+<span id="cb45-201"><a href="#cb45-201" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-202"><a href="#cb45-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-203"><a href="#cb45-203" aria-hidden="true" tabindex="-1"></a><span class="fu">### mallでローカルLLMを用いる</span></span>
+<span id="cb45-204"><a href="#cb45-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-205"><a href="#cb45-205" aria-hidden="true" tabindex="-1"></a>リモートLLMとローカルLLMを用いる時の違いは、<span class="in">`llm_use`</span>関数の引数だけです。<span class="in">`ollamar`</span>の機能を用いてローカルLLMを用いる場合には、<span class="in">`llm_use`</span>関数に<span class="in">`"ollama"`</span>と、LLMのモデル名を指定します。</span>
+<span id="cb45-206"><a href="#cb45-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-207"><a href="#cb45-207" aria-hidden="true" tabindex="-1"></a>ただし、LLMは同じ質問に対して、ほんの少しずつ異なる回答を返すようにできています。Rではできれば同じ回答を得られる方がよい場合もありますので、乱数を用いる場合に<span class="in">`set.seed`</span>を用いるのと同様に、<span class="in">`llm_use`</span>関数では<span class="in">`seed`</span>と<span class="in">`temperature`</span>を引数として設定することができます。この<span class="in">`seed`</span>と<span class="in">`temperature`</span>はいずれもLLMの回答のランダム性を調整するための引数で、<span class="in">`seed`</span>は固定、<span class="in">`temperature`</span>は<span class="in">`0`</span>に設定することで、LLMからの回答を固定することができます。</span>
+<span id="cb45-208"><a href="#cb45-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-209"><a href="#cb45-209" aria-hidden="true" tabindex="-1"></a>また、LLMの回答が同じとなるようにしておくのであれば、以前LLMから得た回答と同じものを何度もLLMに演算させる必要はありません。ですので、<span class="in">`mall`</span>では回答を保持しておくキャッシュファイルを<span class="in">`.cache`</span>変数に設定することができます。</span>
+<span id="cb45-210"><a href="#cb45-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-211"><a href="#cb45-211" aria-hidden="true" tabindex="-1"></a>以下の例では、qwen3.6を用いて、回答は固定し、キャッシュとして<span class="in">`PVBLILIVS_SYRVS_qwen_cache`</span>というファイルを準備するように指定しています。</span>
+<span id="cb45-212"><a href="#cb45-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-213"><a href="#cb45-213" aria-hidden="true" tabindex="-1"></a><span class="in">```{r,  filename="ollamarの機能を用いてローカルLLMを利用する"}</span></span>
+<span id="cb45-214"><a href="#cb45-214" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"qwen3.6"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_qwen_cache"</span>)</span>
+<span id="cb45-215"><a href="#cb45-215" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-216"><a href="#cb45-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-217"><a href="#cb45-217" aria-hidden="true" tabindex="-1"></a><span class="fu">### データフレームを用いてLLMの演算を行う</span></span>
+<span id="cb45-218"><a href="#cb45-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-219"><a href="#cb45-219" aria-hidden="true" tabindex="-1"></a>上で述べた通り、<span class="in">`mall`</span>で実行可能なタスクは以下の6つです。それぞれに対応する関数が<span class="in">`mall`</span>には備わっています。</span>
+<span id="cb45-220"><a href="#cb45-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-221"><a href="#cb45-221" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>感情の評価（sentiment）：<span class="in">`llm_sentiment`</span>、<span class="in">`llm_vec_sentiment`</span></span>
+<span id="cb45-222"><a href="#cb45-222" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>翻訳（translate）：<span class="in">`llm_translate`</span>、<span class="in">`llm_vec_translate`</span></span>
+<span id="cb45-223"><a href="#cb45-223" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>要約（summarize）：<span class="in">`llm_summarize`</span>、<span class="in">`llm_vec_summarize`</span></span>
+<span id="cb45-224"><a href="#cb45-224" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>分類（classify）：<span class="in">`llm_classify`</span>、<span class="in">`llm_vec_classify`</span></span>
+<span id="cb45-225"><a href="#cb45-225" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>抽出（extract）：<span class="in">`llm_extract`</span>、<span class="in">`llm_vec_extract`</span></span>
+<span id="cb45-226"><a href="#cb45-226" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>適合性（verify）：<span class="in">`llm_verify`</span>、<span class="in">`llm_vec_verify`</span></span>
+<span id="cb45-227"><a href="#cb45-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-228"><a href="#cb45-228" aria-hidden="true" tabindex="-1"></a>それぞれのタスクに対応した2種類の関数があり、左がデータフレーム、右がベクターを引数に取る関数です。</span>
+<span id="cb45-229"><a href="#cb45-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-230"><a href="#cb45-230" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 感情の評価（sentiment）</span></span>
+<span id="cb45-231"><a href="#cb45-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-232"><a href="#cb45-232" aria-hidden="true" tabindex="-1"></a>感情の評価（sentiment）は分類問題として昔から取り組まれてきたものです。文面を評価し、ポジティブな文であるか、ネガティブな文であるか、どちらでもないかを評価します。<span class="in">`mall`</span>では<span class="in">`llm_sentiment`</span>か<span class="in">`llm_vec_sentiment`</span>で文字列のsentimentを評価することができます。</span>
+<span id="cb45-233"><a href="#cb45-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-234"><a href="#cb45-234" aria-hidden="true" tabindex="-1"></a><span class="in">`llm_sentiment`</span>の引数はデータフレームと評価する文字列の列名です。返り値は<span class="in">`"positive"`</span>、<span class="in">`"negative"`</span>、<span class="in">`"neutral"`</span>の3つで、結果は<span class="in">`.sentiment`</span>という名前の列に追加されます。<span class="in">`pred_name`</span>引数に文字列を指定すると、結果の列名を指定することもできます。</span>
+<span id="cb45-235"><a href="#cb45-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-236"><a href="#cb45-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="sentimentの評価"}</span></span>
+<span id="cb45-237"><a href="#cb45-237" aria-hidden="true" tabindex="-1"></a><span class="co"># positive, negative, neutralを評価する</span></span>
+<span id="cb45-238"><a href="#cb45-238" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_sentiment</span>(d_3, value) <span class="co"># データフレームと列名を指定</span></span>
+<span id="cb45-239"><a href="#cb45-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-240"><a href="#cb45-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-241"><a href="#cb45-241" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 翻訳（translate）</span></span>
+<span id="cb45-242"><a href="#cb45-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-243"><a href="#cb45-243" aria-hidden="true" tabindex="-1"></a>翻訳はそのままで、文字列を翻訳するためのものです。翻訳は<span class="in">`llm_translate`</span>、<span class="in">`llm_vec_translate`</span>で評価することができます。<span class="in">`llm_translate`</span>には、データフレームと列名の他に、翻訳先の言語を指定する<span class="in">`language`</span>を引数に指定します。</span>
+<span id="cb45-244"><a href="#cb45-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-245"><a href="#cb45-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="翻訳"}</span></span>
+<span id="cb45-246"><a href="#cb45-246" aria-hidden="true" tabindex="-1"></a><span class="co"># 翻訳する</span></span>
+<span id="cb45-247"><a href="#cb45-247" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_translate</span>(d_3, value, <span class="at">language =</span> <span class="st">"Japanese"</span>, <span class="at">pred_name=</span><span class="st">"translation_jp"</span>)</span>
+<span id="cb45-248"><a href="#cb45-248" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-249"><a href="#cb45-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-250"><a href="#cb45-250" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 要約（summarize）</span></span>
+<span id="cb45-251"><a href="#cb45-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-252"><a href="#cb45-252" aria-hidden="true" tabindex="-1"></a>AIに文の要約を任せたことがある方は多いでしょう。<span class="in">`llm_summarize`</span>、<span class="in">`llm_vec_summarize`</span>を用いることで、文字列を要約することができます。<span class="in">`llm_summarize`</span>はデータフレームと列名に加えて、要約文の最大の文字数（<span class="in">`max_words`</span>）を引数に指定します。LLMに与えているのは日本語ですが、要約文はなぜか英語になります。</span>
+<span id="cb45-253"><a href="#cb45-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-254"><a href="#cb45-254" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="要約"}</span></span>
+<span id="cb45-255"><a href="#cb45-255" aria-hidden="true" tabindex="-1"></a><span class="co"># 要約する</span></span>
+<span id="cb45-256"><a href="#cb45-256" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_summarize</span>(d_3, translation_jp, <span class="at">max_words =</span> <span class="dv">10</span>, <span class="at">pred_name=</span><span class="st">"summary"</span>)</span>
+<span id="cb45-257"><a href="#cb45-257" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-258"><a href="#cb45-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-259"><a href="#cb45-259" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 分類（classify）</span></span>
+<span id="cb45-260"><a href="#cb45-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-261"><a href="#cb45-261" aria-hidden="true" tabindex="-1"></a>分類は<span class="co">[</span><span class="ot">31章</span><span class="co">](chapter31.qmd)</span>で説明した分類の手法を、LLMを分類器として用いて行うものです。<span class="in">`llm_classify`</span>は<span class="in">`labels`</span>引数に分類したいカテゴリをベクターで指定し、文章にその<span class="in">`labels`</span>を付与して、分類します。</span>
+<span id="cb45-262"><a href="#cb45-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-263"><a href="#cb45-263" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="分類"}</span></span>
+<span id="cb45-264"><a href="#cb45-264" aria-hidden="true" tabindex="-1"></a><span class="co"># 分類する</span></span>
+<span id="cb45-265"><a href="#cb45-265" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_classify</span>(d_3, translation_jp, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"positive"</span>, <span class="st">"negative"</span>), <span class="at">pred_name=</span><span class="st">"classify"</span>)</span>
+<span id="cb45-266"><a href="#cb45-266" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-267"><a href="#cb45-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-268"><a href="#cb45-268" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 抽出（extract）</span></span>
+<span id="cb45-269"><a href="#cb45-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-270"><a href="#cb45-270" aria-hidden="true" tabindex="-1"></a>抽出は、文章から指定した要素を取り出すものです。<span class="in">`llm_extract`</span>は<span class="in">`labels`</span>引数に指定したものに適合する要素を文章から抽出します。</span>
+<span id="cb45-271"><a href="#cb45-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-272"><a href="#cb45-272" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="抽出"}</span></span>
+<span id="cb45-273"><a href="#cb45-273" aria-hidden="true" tabindex="-1"></a><span class="co"># 文中から抽出する</span></span>
+<span id="cb45-274"><a href="#cb45-274" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_extract</span>(d_3, value, <span class="at">labels =</span> <span class="st">"verb"</span>, <span class="at">pred_name=</span><span class="st">"extract"</span>)</span>
+<span id="cb45-275"><a href="#cb45-275" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-276"><a href="#cb45-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-277"><a href="#cb45-277" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 適合性の評価（verify）</span></span>
+<span id="cb45-278"><a href="#cb45-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-279"><a href="#cb45-279" aria-hidden="true" tabindex="-1"></a>適合性の評価は、その文が指定した条件に適合するかどうかを評価するものです。<span class="in">`llm_verify`</span>は<span class="in">`what`</span>引数に指定した条件に文が適合するかどうかを評価します。返り値は適合していたら1、そうでなければ0が返ってきます。返り値は<span class="in">`yes_no`</span>引数に要素2個のfactorとして指定することもできます。</span>
+<span id="cb45-280"><a href="#cb45-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-281"><a href="#cb45-281" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="適合性の評価"}</span></span>
+<span id="cb45-282"><a href="#cb45-282" aria-hidden="true" tabindex="-1"></a><span class="co"># 文への適合性を評価する（1ならTRUE、0ならFALSE）</span></span>
+<span id="cb45-283"><a href="#cb45-283" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_verify</span>(d_3, value, <span class="at">what =</span> <span class="st">"Is this a famous Latin quotation?"</span>, <span class="at">pred_name=</span><span class="st">"verify"</span>)</span>
+<span id="cb45-284"><a href="#cb45-284" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-285"><a href="#cb45-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-286"><a href="#cb45-286" aria-hidden="true" tabindex="-1"></a>ここまで<span class="in">`mall`</span>の関数でqwan3.6を用いてきましたが、初回の演算ではこの6つの演算に900秒以上かかっています。qwan3.6ではラテン語であってもそこそこ正確な訳文や分類が返ってきているのが分かります。1度目の演算はとても時間がかかりますが、mallは結果をキャッシュしてくれるため、2回目以降に同じ文を与えると瞬時に結果が返ってきます。</span>
+<span id="cb45-287"><a href="#cb45-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-288"><a href="#cb45-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="演算結果"}</span></span>
+<span id="cb45-289"><a href="#cb45-289" aria-hidden="true" tabindex="-1"></a><span class="co"># 906.23秒で完了（2回目以降はキャッシュから返すため、瞬時に結果が返ってくる）</span></span>
+<span id="cb45-290"><a href="#cb45-290" aria-hidden="true" tabindex="-1"></a>d_3 <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
+<span id="cb45-291"><a href="#cb45-291" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-292"><a href="#cb45-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-293"><a href="#cb45-293" aria-hidden="true" tabindex="-1"></a><span class="fu">### mallでtranslategemmaを用いる</span></span>
+<span id="cb45-294"><a href="#cb45-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-295"><a href="#cb45-295" aria-hidden="true" tabindex="-1"></a>では、次にtranslategemma:12bで同じ演算をしてみます。利用するモデルを変更するときには、<span class="in">`llm_use`</span>のLLMモデルの指定を変更するだけです。</span>
+<span id="cb45-296"><a href="#cb45-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-297"><a href="#cb45-297" aria-hidden="true" tabindex="-1"></a>translategemma:12bでの演算は40秒ぐらいで終わります。ただし、見ての通り翻訳以外のタスクでは<span class="in">`NA`</span>が返ってきています。</span>
+<span id="cb45-298"><a href="#cb45-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-299"><a href="#cb45-299" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="translategemma:12bを用いる"}</span></span>
+<span id="cb45-300"><a href="#cb45-300" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"translategemma:12b"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_gemma_cache"</span>, <span class="at">.silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb45-301"><a href="#cb45-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-302"><a href="#cb45-302" aria-hidden="true" tabindex="-1"></a><span class="co"># positive, negative, neutralを評価する</span></span>
+<span id="cb45-303"><a href="#cb45-303" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_sentiment</span>(d_3, value) <span class="co"># データフレームと列名を指定</span></span>
+<span id="cb45-304"><a href="#cb45-304" aria-hidden="true" tabindex="-1"></a><span class="co"># 翻訳する</span></span>
+<span id="cb45-305"><a href="#cb45-305" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_translate</span>(d_3, value, <span class="at">language =</span> <span class="st">"Japanese"</span>, <span class="at">pred_name=</span><span class="st">"translation_jp"</span>)</span>
+<span id="cb45-306"><a href="#cb45-306" aria-hidden="true" tabindex="-1"></a><span class="co"># 要約する</span></span>
+<span id="cb45-307"><a href="#cb45-307" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_summarize</span>(d_3, translation_jp, <span class="at">max_words =</span> <span class="dv">10</span>, <span class="at">pred_name=</span><span class="st">"summary"</span>)</span>
+<span id="cb45-308"><a href="#cb45-308" aria-hidden="true" tabindex="-1"></a><span class="co"># 分類する</span></span>
+<span id="cb45-309"><a href="#cb45-309" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_classify</span>(d_3, translation_jp, <span class="fu">c</span>(<span class="st">"positive"</span>, <span class="st">"negative"</span>), <span class="at">pred_name=</span><span class="st">"classify"</span>)</span>
+<span id="cb45-310"><a href="#cb45-310" aria-hidden="true" tabindex="-1"></a><span class="co"># 文中から抽出する</span></span>
+<span id="cb45-311"><a href="#cb45-311" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_extract</span>(d_3, value, <span class="st">"verb"</span>, <span class="at">pred_name=</span><span class="st">"extract"</span>)</span>
+<span id="cb45-312"><a href="#cb45-312" aria-hidden="true" tabindex="-1"></a><span class="co"># 文への適合性を評価する（1ならTRUE、0ならFALSE）</span></span>
+<span id="cb45-313"><a href="#cb45-313" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_verify</span>(d_3, value, <span class="st">"Is this a famous Latin quotation?"</span>, <span class="at">pred_name=</span><span class="st">"verify"</span>)</span>
+<span id="cb45-314"><a href="#cb45-314" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-315"><a href="#cb45-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-316"><a href="#cb45-316" aria-hidden="true" tabindex="-1"></a>実際に結果を見てみると、文体がqwen3.6とは少し異なります。qwen3.6は箴言っぽい文調で返ってきて、translategemmaは現代文っぽいものが返ってきます。どちらかというとqwen3.6の方が正確な訳に近いように思います。また、英文も随分異なります。分類などはtranslategemmaではうまく回答を得ることができません。</span>
+<span id="cb45-317"><a href="#cb45-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-318"><a href="#cb45-318" aria-hidden="true" tabindex="-1"></a>やはり高性能かつ新しいqwen3.6の方が全体的に回答が優れているように見えます。ただし、演算コストが桁違いなので、簡単な問題であれば小さいモデルであるtranslategemma:12bを選ぶことにも利点はあるでしょう（translategemmaには27bのモデルもあるので、こちらを使えばもう少し翻訳はうまくなるかもしれません）。</span>
+<span id="cb45-319"><a href="#cb45-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-320"><a href="#cb45-320" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="translategemma:12bの演算結果"}</span></span>
+<span id="cb45-321"><a href="#cb45-321" aria-hidden="true" tabindex="-1"></a><span class="co"># 42.63秒で完了</span></span>
+<span id="cb45-322"><a href="#cb45-322" aria-hidden="true" tabindex="-1"></a>d_3 <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
+<span id="cb45-323"><a href="#cb45-323" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-324"><a href="#cb45-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-325"><a href="#cb45-325" aria-hidden="true" tabindex="-1"></a><span class="fu">### ベクターを引数に取る</span></span>
+<span id="cb45-326"><a href="#cb45-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-327"><a href="#cb45-327" aria-hidden="true" tabindex="-1"></a>では、最後にラテン語と英語をqwen3.6とtranslategemmaで演算し、回答を比較してみます。以下では、<span class="in">`llm_vec_`</span>の関数でベクターを用いて演算を行っています。ベクターを引数に取ると、返り値もベクターで返ってきます。文を比較すれば、どの程度正確に回答が返ってきているか、イメージしやすいのではないでしょうか。</span>
+<span id="cb45-328"><a href="#cb45-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-329"><a href="#cb45-329" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ベクターを返す関数"}</span></span>
+<span id="cb45-330"><a href="#cb45-330" aria-hidden="true" tabindex="-1"></a><span class="co"># 英文はGeminiに作成してもらったもの（日本語もGeminiが生成）</span></span>
+<span id="cb45-331"><a href="#cb45-331" aria-hidden="true" tabindex="-1"></a>comp_sentences <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/llm_comparison_sentences.csv"</span>)</span>
+<span id="cb45-332"><a href="#cb45-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-333"><a href="#cb45-333" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"qwen3.6"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_qwen_cache"</span>, <span class="at">.silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb45-334"><a href="#cb45-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-335"><a href="#cb45-335" aria-hidden="true" tabindex="-1"></a><span class="co"># 400.7秒</span></span>
+<span id="cb45-336"><a href="#cb45-336" aria-hidden="true" tabindex="-1"></a>qwen_translate <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(d[<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>) <span class="co"># Latin</span></span>
+<span id="cb45-337"><a href="#cb45-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-338"><a href="#cb45-338" aria-hidden="true" tabindex="-1"></a><span class="co"># 538.36秒</span></span>
+<span id="cb45-339"><a href="#cb45-339" aria-hidden="true" tabindex="-1"></a>qwen_Eng <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(comp_sentences[, <span class="dv">1</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>) <span class="co"># English</span></span>
+<span id="cb45-340"><a href="#cb45-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-341"><a href="#cb45-341" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"translategemma:12b"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_gemma_cache"</span>, <span class="at">.silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb45-342"><a href="#cb45-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-343"><a href="#cb45-343" aria-hidden="true" tabindex="-1"></a><span class="co"># 11.57秒</span></span>
+<span id="cb45-344"><a href="#cb45-344" aria-hidden="true" tabindex="-1"></a>gemma_translate <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(d[<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>) <span class="co"># Latin</span></span>
+<span id="cb45-345"><a href="#cb45-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-346"><a href="#cb45-346" aria-hidden="true" tabindex="-1"></a><span class="co"># 46.61秒</span></span>
+<span id="cb45-347"><a href="#cb45-347" aria-hidden="true" tabindex="-1"></a>gemma_Eng <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(comp_sentences[, <span class="dv">1</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>) <span class="co"># English</span></span>
+<span id="cb45-348"><a href="#cb45-348" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-349"><a href="#cb45-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-350"><a href="#cb45-350" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb45-351"><a href="#cb45-351" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb45-352"><a href="#cb45-352" aria-hidden="true" tabindex="-1"></a>  <span class="at">latin =</span> d[<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>],</span>
+<span id="cb45-353"><a href="#cb45-353" aria-hidden="true" tabindex="-1"></a>  <span class="at">qwen =</span>qwen_translate,</span>
+<span id="cb45-354"><a href="#cb45-354" aria-hidden="true" tabindex="-1"></a>  <span class="at">gemma =</span>gemma_translate</span>
+<span id="cb45-355"><a href="#cb45-355" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb45-356"><a href="#cb45-356" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption=</span><span class="st">"ラテン語の翻訳"</span>)</span>
+<span id="cb45-357"><a href="#cb45-357" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-358"><a href="#cb45-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-359"><a href="#cb45-359" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb45-360"><a href="#cb45-360" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb45-361"><a href="#cb45-361" aria-hidden="true" tabindex="-1"></a>  <span class="at">English =</span> comp_sentences[, <span class="dv">1</span>],</span>
+<span id="cb45-362"><a href="#cb45-362" aria-hidden="true" tabindex="-1"></a>  <span class="at">Japanese =</span>comp_sentences[, <span class="dv">2</span>],</span>
+<span id="cb45-363"><a href="#cb45-363" aria-hidden="true" tabindex="-1"></a>  <span class="at">qwen =</span> qwen_Eng,</span>
+<span id="cb45-364"><a href="#cb45-364" aria-hidden="true" tabindex="-1"></a>  <span class="at">gemma =</span> gemma_Eng</span>
+<span id="cb45-365"><a href="#cb45-365" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb45-366"><a href="#cb45-366" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption=</span><span class="st">"英語の翻訳"</span>)</span>
+<span id="cb45-367"><a href="#cb45-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ © xjorv, 2025
+  </li>  
+</ul>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
+</div>
+  </div>
+</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+</body></html>
