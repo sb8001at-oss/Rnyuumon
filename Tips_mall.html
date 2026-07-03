@@ -85,19 +85,123 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="mallとllm" class="level2">
-<h2 class="anchored" data-anchor-id="mallとllm">mallとLLM</h2>
+<section id="llmとmallパッケージ" class="level1">
+<h1>LLMとmallパッケージ</h1>
+<p>RからLLM（大規模言語モデル、Large Language Model）を利用する場合、リモートLLM（Web上で提供されているLLMのAPIに接続して利用する）と、ローカルLLM（自分のPCでLLMの演算を行う）の2つを利用することができます。RでのLLMの利用についてはQiitaに詳しい記事（<a href="https://qiita.com/bob3bob3/items/b5b242c3f9466d140a64">「R言語とLLMの連携」</a>がありますが、ココでも簡単に紹介しようと思います。</p>
+<section id="リモートllmとローカルllm" class="level3">
+<h3 class="anchored" data-anchor-id="リモートllmとローカルllm">リモートLLMとローカルLLM</h3>
+<p>リモートLLMを利用する場合、Rでは<code>ellmer</code>パッケージを利用します。<code>ellmer</code>パッケージではいろいろなLLMモデルのAPI（Anthropic、OpenAI、Geminiなど）を用いてLLMによる推論を行います。</p>
+<p>リモートLLMの利点はそのスピードと性能です。リモートLLMはその提供元のサーバーで演算を行うため、サーバーの演算能力に従いその演算速度が決まります。AIの提供元で利用しているサーバーは大抵超高性能で、お金を払わないプランを用いても回答がすぐに返ってきます。一方で、リモートLLMの利用には大抵お金がかかり、チャットを投げる量（トークン）も制限される場合があります。</p>
+<p>ローカルLLMを利用する場合には、<code>ollamar</code>パッケージを用います。<code>ollamar</code>はLLMを動かすためのローカルサーバーを簡単に管理できるソフトウェアである、Ollamaを利用したパッケージです。<code>ollamar</code>パッケージを用いることで、自分のPCにLLMのモデルをダウンロードし、チャットを投げて回答を得ることができます。</p>
+<p>ローカルLLMを用いるとお金を使わず、トークンの制限もありません。一方で演算速度は自分のPCのスペック（特にGPU）に依存し、高性能なGPUを備えていないPCでは演算にとてつもなく時間がかかります。</p>
+</section>
+<section id="rでのllm利用mall" class="level2">
+<h2 class="anchored" data-anchor-id="rでのllm利用mall">RでのLLM利用：mall</h2>
+<p>この2つのパッケージ（<code>ellmer</code>と<code>ollamar</code>）を用いれはLLMを利用することはできますが、いずれも常にチャットの内容を即時にLLMに投げて、返答を返す形で機能します。また、同じ質問をする場合には、いずれもLLMにすぐにチャットを投げてしまうため、同じ回答を得るのにもう一度演算を行う場合があります。これではトークンや時間を無駄遣いしてしまいます。</p>
+<p>そこで、<code>ellmer</code>と<code>ollamar</code>の機能を補いつつ、問い合わせの内容を絞り、データフレームの列をチャットに投げ、一度問い合わせた内容をキャッシュ（cache）に残すことでLLMへの問い合わせ回数を減らすことができるように設計されたライブラリが<code>mall</code>です。<code>mall</code>を用いれば、LLMにかかるコストを調節し、一度回答を得たチャットに対してはキャッシュを利用して速やかに返り値を得ることができます。</p>
+<p>この章では、まず<code>ellmer</code>、<code>ollamar</code>の簡単な使い方を説明し、その後<code>mall</code>を使ってデータフレームに記載した文字列をLLMに投げて回答を得るところまで説明します。</p>
+<p>まずは<code>ellmer</code>、<code>ollamar</code>、<code>mall</code>をそれぞれインストールします。またデータフレームの取り扱いのために<code>tidyverse</code>をロードします。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, tictoc, ollamar, mall)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pacman::p_load(ellmer) リモートLLMを用いる時はellmerを使う</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パッケージのインストール・ロード</strong></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, ellmer, ollamar, mall)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="ellmerパッケージ" class="level2">
+<h2 class="anchored" data-anchor-id="ellmerパッケージ">ellmerパッケージ</h2>
+<p><code>ellmer</code>では、まずはどのリモートLLM、AIモデルを用いるのかをまず選択します。例えばOpenAIのLLMであるGPTを用いるのか、AnthropicのClaudeを用いるのか、GoogleのGeminiを使うのかでそれぞれ利用する関数が異なります。</p>
+<p>AIモデルを選択したら、次にそのLLMのAPIキーを取得する必要があります。<a href="https://help.openai.com/ja-jp/articles/4936850-where-do-i-find-my-openai-api-key">GPT</a>、<a href="https://platform.claude.com/docs/ja/get-started">Claude</a>、<a href="https://ai.google.dev/gemini-api/docs/api-key?hl=ja">Gemini</a>のAPIキーの取得方法についてはそれぞれのページで確認してください。</p>
+<p>APIキーを取得したら、APIキーを環境変数に設定します。GPTではOPENAI_API_KEY、ClaudeではANTHROPIC_API_KEY、GeminiではGEMINI_API_KEYをそれぞれ設定します。環境変数の設定にはRでは<code>Sys.setenv</code>関数を用います。WindowsではGUIやコマンドプロンプトを用いて設定することもできます。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OllamarはローカルLLMをダウンロード・利用するためのライブラリ</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># まずはOllamaのアプリをダウンロードする</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># https://ollama.com/</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Ollama appが起動しているとローカルサーバーが立ち上がっていることが確認できる</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">test_connection</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>環境変数を設定する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">OPENAI_API_KEY =</span> <span class="st">"XXXXXXXXXXXXXXXXXX"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>もう一つの方法は、Rの環境（<code>.Renviron</code>）にAPIキーをセットする方法です。<code>usethis::edit_r_environ</code>関数を用いることで、環境変数をRで設定することができます。<code>usethis::edit_r_environ</code>を実行すると環境のファイルの中身が表示されるので、その中身に環境変数を追記し、保存します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.Renvironを編集する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>APIキーを設定すると、<code>ellmer</code>からそれぞれのLLMに直接アクセスできるようになります。LLMにアクセスする場合には、まず接続用のオブジェクトを作成します。このオブジェクト作成の関数は利用するLLMによって異なり、GPTでは<code>chat_openai</code>関数、Claudeでは<code>chat_anthropic</code>関数、Geminiでは<code>chat_google_gemini</code>関数を引数なしで用います。これらの関数は<a href="Tips_R6class.qmd">R6オブジェクト</a>を作成するための関数で、この関数の返り値を<code>chat</code>などの名前の変数に代入します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLM接続のためのR6オブジェクトを作成する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 引数にモデル名（例えば"gpt-4.1"）を指定すると、用いるモデルを指定できる</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 利用できるモデルはmodels_openai()で確認できる（"gpt-4.1"はデフォルト）</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>chat <span class="ot">&lt;-</span> <span class="fu">chat_openai</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>LLMにチャットを投げる場合には、<code>chat$chat</code>メソッドを用います。<code>chat$chat</code>メソッドの引数として、チャットの内容（文字列）を取ることで、Markdown形式でLLMから返答を受け取ることができます。また、<code>chat$chat</code>メソッドを実行すると、<code>chat</code>オブジェクト内に会話の内容が記録され、次のチャットの問い合わせ時にはこの記録が文脈として利用されます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMへのチャットを送信し、返答を受信する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>chat<span class="sc">$</span><span class="fu">chat</span>(<span class="st">"Who created R?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>リモートのLLMを利用すると、トークンを消費します。トークンはLLMに投げるチャットのワード数（文字数）を反映するもので、利用したトークンが増えるほど支払いが増えていきます。<code>chat</code>オブジェクトを用いたチャットでどの程度トークンを利用したのかを確認するには、<code>token_usage</code>関数を用います。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>トークンの利用を表示する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">token_usage</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="ollamarパッケージ" class="level2">
+<h2 class="anchored" data-anchor-id="ollamarパッケージ">ollamarパッケージ</h2>
+<p>ココまではリモートLLMを利用する方法を説明しましたが、ココからは<code>ollamar</code>パッケージを用いて、自分のPCでLLMを動かす方法について説明します。</p>
+<p><code>ollamar</code>パッケージは、<a href="https://ollama.com/">Ollama</a>というローカル環境でLLMを動かすためのツールを利用して、RでLLMを用いる仕組みになっています。</p>
+<p><code>ollamar</code>を使う場合、まずは<a href="https://ollama.com/download/windows">Ollamaのアプリケーションをダウンロード</a>し、インストールする必要があります。Ollamaをインストールすると、OllamaのローカルサーバーでLLMが動くようになります。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./image/ollama_window.png" class="img-fluid figure-img"></p>
+<figcaption>Ollamaのウインドウ</figcaption>
+</figure>
+</div>
+<p>このOllamaのアプリケーションを用いることで、LLMを利用することができます。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./image/ollama_chat_window.png" class="img-fluid figure-img"></p>
+<figcaption>間違った日本語にも真面目に答えてくれる</figcaption>
+</figure>
+</div>
+<p>ただし、Ollamaをインストールするだけでは、LLMをGPUで演算してくれない場合があります。Qiitaに<a href="https://qiita.com/buson0903/items/6b4160c869ab8f3ac871">OllamaにGPUを利用させる方法</a>についての記事がありますので、参考にして設定するとよいでしょう。</p>
+<p>簡単に説明すると、NIVDIAのGPUであれば</p>
+<ul>
+<li><a href="https://developer.nvidia.com/cudnn">cuDNN（CUDA Deep Neural Network library）</a></li>
+<li><a href="https://developer.nvidia.com/cuda/toolkit">CUDA Toolkit</a></li>
+<li><a href="https://www.nvidia.com/ja-jp/drivers/">NVIDIA Studio ドライバ</a></li>
+</ul>
+<p>をあらかじめインストールしておくとよいようです。</p>
+<p>また、<a href="https://www.reddit.com/r/ollama/comments/1dh54cz/how_do_i_enable_my_gpu_for_ollama_llms_on_windows/?tl=ja">Redditの記事</a>に記載されている通り、</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nvidia-smi</span> <span class="at">-L</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>で表示されるUUIDを調べて、<code>CUDA_VISIBLE_DEVICES="UUID"</code>という環境変数を設定しておくとGPUを使ってくれるようになる場合もあるようです。</p>
+<section id="ollamarでrからollamaを用いる" class="level3">
+<h3 class="anchored" data-anchor-id="ollamarでrからollamaを用いる">ollamarでRからOllamaを用いる</h3>
+<p>OllamaをRから動かすためのパッケージが<code>ollamar</code>です。Ollamaが起動している状態で、<code>test_connection</code>を実行すると、Ollamaのローカルサーバーが利用できる状態であるかを確認することができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ollamar：Ollamaの起動の確認</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ollama appが起動していると、ローカルサーバーが立ち上がっていることが確認できる</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">test_connection</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Ollama local server running</code></pre>
 </div>
@@ -109,16 +213,35 @@ Content-Type: text/plain
 Body: In memory (17 bytes)</code></pre>
 </div>
 </div>
+<p>Ollamaでも<code>ollamar</code>でも、まずはLLMのモデルをダウンロードする必要があります。Ollamaではターミナルで<code>ollama pull モデル名</code>を実行することでLLMのモデルをダウンロードすることができます。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen3.6</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>ダウンロードするモデルは<a href="https://ollama.com/search">OllamaのModelに関するページ</a>から選択することができます。LLMのモデルはパラメータ数（4bとか、8bといった数値で示されているもの）と、モデルの最適化の程度（コーディング用、論理思考用、翻訳用など）で選択します。普通は新しいものほど最適化されていて、少なめのパラメータ数でもそれなりの答えを返してくれるようになっています。</p>
+<p><code>ollamar</code>では、<code>pull</code>関数でLLMのモデルをダウンロードすることができます。この関数は上の<code>ollama pull</code>を実行するだけの関数です。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ollamaのpullを走らせるためのコード。</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ollama run qwen3.6 と同じものを走らせている。ダウンロードが激重（27GBぐらい）なので時間がかかる</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># qwen3は日本語に強いローカルLLM。もっと小さいモデルもある</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">pull</span>(<span class="st">"qwen3.6"</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">pull</span>(<span class="st">"translategemma:12b"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMモデルのダウンロード</strong></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 汎用のモデル、日本語に強い</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pull</span>(<span class="st">"qwen3.6"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 翻訳専用のモデル（Google Deepmind）</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pull</span>(<span class="st">"translategemma:12b"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>上の<code>pull</code>では、Alibabaの高性能LLMである<a href="https://ollama.com/library/qwen3.6">qwen3.6</a>とGoogle Deepmindの<a href="https://ollama.com/library/translategemma">translategemma</a>をダウンロードしています。qwen3.6は汎用のLLMで、パラメータ数は27b（270億）です。translategemmaは翻訳を専門とするLLMで、パラメータ数は12bのものをダウンロードしています。正直、qwen3.6は私のPC（GeForce RTX3070、VRAMが8GB）には重すぎるので、演算にとてつもなく時間がかかります。実用的ではありませんが、モデルの比較のためにダウンロードしています。</p>
+</section>
+<section id="ollamarでllmを用いる" class="level3">
+<h3 class="anchored" data-anchor-id="ollamarでllmを用いる">ollamarでLLMを用いる</h3>
+<p><code>ollamar</code>でLLMを利用する場合には、<code>generate</code>関数を用います。この<code>generate</code>関数は第一引数にLLMのモデル名、第ニ引数にLLMに投げるチャットを引数に取ります。LLMのモデル名はダウンロード済みのモデル（<code>list_models</code>で確認できます）から選択します。この<code>generate</code>の返り値をそのまま呼び出すとOllamaのローカルサーバーのレスポンスとBodyというものを含むものが返ってきます。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使えるモデルのリスト</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">list_models</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMにチャットを投げる</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使えるモデルのリスト</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">list_models</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                name    size parameter_size quantization_level
 1     qwen3.6:latest 23.9 GB          36.0B             Q4_K_M
@@ -127,48 +250,93 @@ Body: In memory (17 bytes)</code></pre>
 1 2026-06-27T10:38:09
 2 2026-06-27T10:38:10</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># モデルにレスポンスを求める（時間がかかる）</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">&lt;-</span> ollamar<span class="sc">::</span><span class="fu">generate</span>(<span class="st">"qwen3.6"</span>, <span class="st">"tell me a 5-word story"</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>resp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># モデルにレスポンスを求める（時間がかかる）</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">&lt;-</span> <span class="fu">generate</span>(<span class="st">"qwen3.6"</span>, <span class="st">"tell me a 5-word story"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>resp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;httr2_response&gt;
 POST http://127.0.0.1:11434/api/generate
 Status: 200 OK
 Content-Type: application/json
-Body: In memory (31469 bytes)</code></pre>
+Body: In memory (19237 bytes)</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 出力を確認</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">resp_process</span>(resp, <span class="st">"text"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>LLMの出力を確認するには、<code>resp_process</code>関数を用います。第二引数（<code>output</code>）には返り値のデータ型を文字列で指定します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMの出力を確認する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 出力を確認</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">resp_process</span>(resp, <span class="st">"text"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] ""</code></pre>
+<pre><code>[1] "Last star blinked out forever."</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データフレームで出力</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">resp_process</span>(resp, <span class="st">"df"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>出力をデータフレームの形とするには、<code>output</code>引数に<code>"df"</code>を指定します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMの出力をデータフレームで返す</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データフレームで出力</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">resp_process</span>(resp, <span class="at">output =</span> <span class="st">"df"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
-  model   response created_at                  
-  &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;                       
-1 qwen3.6 ""       2026-06-27T03:16:10.1131317Z</code></pre>
+  model   response                       created_at                  
+  &lt;chr&gt;   &lt;chr&gt;                          &lt;chr&gt;                       
+1 qwen3.6 Last star blinked out forever. 2026-07-03T12:39:11.9891089Z</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># モデルを削除する</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ollamar::delete("qwen3.5:4b")</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ollamar::delete("translategemma:4b")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>ココまでが<code>ollamar</code>の基本的な利用方法です。不要なモデルは<code>delete</code>関数で削除することもできます。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GPTのAPIキーを取得し、環境変数OPENAI_API_KEYにAPIキーを指定しないと動かない</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>chat <span class="ot">&lt;-</span> <span class="fu">chat_openai</span>()</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># APIキーが通っていれば、以下で返事が返ってくる</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>. <span class="ot">&lt;-</span> chat<span class="sc">$</span><span class="fu">chat</span>(<span class="st">"Who created R?"</span>, <span class="at">echo =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>chat</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># mallで使う場合にはllm_useで上のchat_openaiを代入した変数を用いる</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(chat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>OllamaのLLMモデルを削除する</strong></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># モデルを削除する</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">delete</span>(<span class="st">"qwen3.5:4b"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>ollamar<span class="sc">::</span><span class="fu">delete</span>(<span class="st">"translategemma:4b"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+</section>
+<section id="mall" class="level2">
+<h2 class="anchored" data-anchor-id="mall">mall</h2>
+<p>ではココからは、上記の<code>ellmer</code>と<code>ollamar</code>を利用し、決められたタスクをこなすためのパッケージである、<code>mall</code>について説明していきます。</p>
+<section id="用いるデータの準備" class="level3">
+<h3 class="anchored" data-anchor-id="用いるデータの準備">用いるデータの準備</h3>
+<p><code>mall</code>は、データフレームの列に記録した文（文字列）をLLMに投げることで、その文の感情の評価（sentiment）、翻訳（translate）、要約（summarize）、分類（classify）、抽出（extract）、適合性（verify）の6つのタスクを実行し、データフレームの列として結果を返してくれます。</p>
+<p><code>mall</code>に文字列のデータフレームを投げるためのサンプルとして、<a href="https://en.wikipedia.org/wiki/Publilius_Syrus">Publilius Syrus</a>の<a href="https://www.thelatinlibrary.com/syrus.html">名言集</a>を<code>rvest</code>で入手し、データフレームとして利用することにします。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>ラテン語のソース
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://www.thelatinlibrary.com/">このthelatinlibraryのページ</a>にはラテン語の名文がたくさん収集されています。興味があれば覗いてみて下さい。</p>
+<p>ご存知の通り、ラテン語はヨーロッパでは19世紀ぐらいまで学術語として用いられていましたが（ヨーロッパでは最近までラテン語を博士論文に使う人もいたようです）、話者は（趣味で使う人以外には）おらず、学術語としても英語やドイツ語にとって変わられています。LLMの学習に用いることのできるウェブ上のラテン語の情報は限られているため、LLMには難しめのタスクかもしれません。</p>
+</div>
+</div>
+</div>
+<p>利用するPublilius Syrusの名言のデータフレームを以下に示します。一度にたくさんの行をLLMに投げたいところですが、上記の通り、私のPCではローカルLLMに大きなタスクは投げられません。ですので、はじめの3行だけ利用することにします。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LLMに使う文を準備</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/PVBLILIVS_SYRVS_SENTENTIAE.csv"</span>, <span class="at">header=</span>F) <span class="sc">|&gt;</span> _[<span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>]</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>LLMに演算させるためのデータフレーム</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LLMに使う文を準備</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/PVBLILIVS_SYRVS_SENTENTIAE.csv"</span>, <span class="at">header=</span>F) <span class="sc">|&gt;</span> _[<span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Alienum est omne, quicquid optando evenit."
 [2] "Ab alio expectes, alteri quod feceris."    
@@ -177,19 +345,37 @@ Body: In memory (31469 bytes)</code></pre>
 [5] "Amor animi arbitrio sumitur, non ponitur." 
 [6] "Aut amat aut odit mulier, nil est tertium."</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tibbleを準備</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>d_d <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(d)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> d_d[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tibbleを準備</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>d_d <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(d)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> d_d[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
+<section id="mallでリモートllmを用いる" class="level3">
+<h3 class="anchored" data-anchor-id="mallでリモートllmを用いる">mallでリモートLLMを用いる</h3>
+<p>ではまずは、<code>ellmer</code>の機能を用いてリモートLLMを用いる方法について説明します。リモートLLMを用いる場合には、<code>ellmer::chat</code>関数（chatGPTなら<code>chat_openai</code>関数）を<code>llm_use</code>関数の引数に取ります。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://www.reddit.com/r/ollama/comments/1dh54cz/how_do_i_enable_my_gpu_for_ollama_llms_on_windows/?tl=ja</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CUDAをインストールして、Nivdiaのドライバをインストール、</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># nvidia-smi -L でUUIDを調べて、</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># CUDA_VISIBLE_DEVICES=GPU-91cd941f-14d5-1c42-2c88-87753f537d27 後ろはUUID</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># という感じで環境変数を通すとGPUを使ってくれるようになって、速くなる</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"qwen3.6"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_qwen_cache"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ellmerの機能を用いてリモートLLMを利用する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>chat <span class="ot">&lt;-</span> <span class="fu">chat_openai</span>()</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(chat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="mallでローカルllmを用いる" class="level3">
+<h3 class="anchored" data-anchor-id="mallでローカルllmを用いる">mallでローカルLLMを用いる</h3>
+<p>リモートとローカルLLMの違いは、この<code>llm_use</code>関数の引数だけです。<code>ollamar</code>の機能を用いてローカルLLMを用いる場合には、<code>llm_use</code>関数に<code>"ollama"</code>とLLMのモデル名を指定します。</p>
+<p>ただし、LLMは同じ質問に対して、ほんの少しずつ異なる回答を返すようにできています。Rではできれば同じ回答を得られる方がよい場合もありますので、乱数を用いる場合に<code>set.seed</code>を用いるのと同様に、<code>llm_use</code>関数では<code>seed</code>と<code>temperature</code>を引数として設定することができます。この<code>seed</code>と<code>temperature</code>はいずれもLLMの回答のランダム性を調整するための引数で、<code>seed</code>は固定、<code>temperature</code>は<code>0</code>に設定することで、LLMからの回答を固定することができます。</p>
+<p>また、LLMの回答が同じとなるようにしておくのであれば、以前LLMから得た回答と同じものを何度もLLMに演算させる必要はありません。ですので、<code>mall</code>では<code>.cache</code>変数に回答を保持しておくキャッシュファイルを設定することができます。</p>
+<p>以下の例では、qwen3.6を用いて、回答は固定し、キャッシュとして<code>PVBLILIVS_SYRVS_qwen_cache</code>というファイルを準備するように指定しています。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ollamarの機能を用いてローカルLLMを利用する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"qwen3.6"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_qwen_cache"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="cell-output cell-output-stderr">
 <pre><code></code></pre>
 </div>
@@ -208,49 +394,168 @@ LLM session:
 R session: cache_folder:./cache_llm/PVBLILIVS_SYRVS_qwen_cache</code></pre>
 </div>
 </div>
+</section>
+<section id="データフレームを用いてllmの演算を行う" class="level3">
+<h3 class="anchored" data-anchor-id="データフレームを用いてllmの演算を行う">データフレームを用いてLLMの演算を行う</h3>
+<p>上で述べた通り、<code>mall</code>で実行可能なタスクは以下の6つです。それぞれに対応する関数が<code>mall</code>には備わっています。</p>
+<ul>
+<li>感情の評価（sentiment）：<code>llm_sentiment</code>、<code>llm_vec_sentiment</code></li>
+<li>翻訳（translate）：<code>llm_translate</code>、<code>llm_vec_translate</code></li>
+<li>要約（summarize）：<code>llm_summarize</code>、<code>llm_vec_summarize</code></li>
+<li>分類（classify）：<code>llm_classify</code>、<code>llm_vec_classify</code></li>
+<li>抽出（extract）：<code>llm_extract</code>、<code>llm_vec_extract</code></li>
+<li>適合性（verify）：<code>llm_verify</code>、<code>llm_vec_verify</code></li>
+</ul>
+<p>それぞれのタスクに対応した2種類の関数があり、左がデータフレーム、右がベクターを引数に取る関数です。</p>
+<section id="感情の評価sentiment" class="level4">
+<h4 class="anchored" data-anchor-id="感情の評価sentiment">感情の評価（sentiment）</h4>
+<p>感情の評価（sentiment）は分類問題として昔から取り組まれてきたものです。文面を評価し、ポジティブな文であるか、ネガティブな文であるか、どちらでもないかを評価します。mallでは<code>llm_sentiment</code>か<code>llm_vec_sentiment</code>で文字列のsentimentを評価することができます。</p>
+<p><code>llm_sentiment</code>の引数はデータフレームと評価する文字列の列名です。返り値は<code>"positive"</code>、<code>"negative"</code>、<code>"neutral"</code>の3つで、結果は.sentimentという名前の列に追加されます。<code>pred_name</code>引数に文字列を指定すると、結果の列名を指定することもできます。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 906.23秒で完了</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># positive, negative, neutralを評価する</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_sentiment</span>(d_3, value) <span class="co"># データフレームと列名を指定</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 翻訳する</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_translate</span>(d_3, value, <span class="at">language =</span> <span class="st">"Japanese"</span>, <span class="at">pred_name=</span><span class="st">"translation_jp"</span>)</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 要約する</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_summarize</span>(d_3, translation_jp, <span class="at">max_words =</span> <span class="dv">10</span>, <span class="at">pred_name=</span><span class="st">"summary"</span>)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 分類する</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_classify</span>(d_3, translation_jp, <span class="fu">c</span>(<span class="st">"positive"</span>, <span class="st">"negative"</span>), <span class="at">pred_name=</span><span class="st">"classify"</span>)</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 文中から抽出する</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_extract</span>(d_3, value, <span class="st">"verb"</span>, <span class="at">pred_name=</span><span class="st">"extract"</span>)</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 文への適合性を評価する（1ならTRUE、0ならFALSE）</span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_verify</span>(d_3, value, <span class="st">"Is this a famous Latin quotation?"</span>, <span class="at">pred_name=</span><span class="st">"verify"</span>)</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>d_3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 7
-  value                .sentiment translation_jp summary classify extract verify
-  &lt;chr&gt;                &lt;chr&gt;      &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;   &lt;fct&gt; 
-1 Alienum est omne, q… negative   願って得るものはみな他事な… wishes… negative evenit  1     
-2 Ab alio expectes, a… neutral    自分がされて嬉しいことは、… treat … positive expect… 1     
-3 Animus vereri qui s… neutral    畏れることを知る者は、安全… knowin… positive scit    1     </code></pre>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>sentimentの評価</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># positive, negative, neutralを評価する</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_sentiment</span>(d_3, value) <span class="co"># データフレームと列名を指定</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+</section>
+<section id="翻訳translate" class="level4">
+<h4 class="anchored" data-anchor-id="翻訳translate">翻訳（translate）</h4>
+<p>翻訳はそのままで、文字列を翻訳するためのものです。翻訳は<code>llm_translate</code>、<code>llm_vec_translate</code>で評価することができます。<code>llm_translate</code>には、データフレームと列名の他に、翻訳先の言語を指定する<code>language</code>を引数に指定します。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 400.7秒</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>qwen_translate <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(d[<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>翻訳</strong></pre>
 </div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>comp_sentences <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/llm_comparison_sentences.csv"</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 538.36秒</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>qwen_Eng <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(comp_sentences[, <span class="dv">1</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 翻訳する</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_translate</span>(d_3, value, <span class="at">language =</span> <span class="st">"Japanese"</span>, <span class="at">pred_name=</span><span class="st">"translation_jp"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</div>
+</section>
+<section id="要約summarize" class="level4">
+<h4 class="anchored" data-anchor-id="要約summarize">要約（summarize）</h4>
+<p>AIに文の要約を任せたことがある方は多いでしょう。<code>llm_summarize</code>、<code>llm_vec_summarize</code>を用いることで、文字列を要約することができます。<code>llm_summarize</code>はデータフレームと列名に加えて、要約文の最大の文字数（<code>max_words</code>）を引数に指定します。LLMに与えているのは日本語ですが、要約文はなぜか英語になります。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"translategemma:12b"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_gemma_cache"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>要約</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 要約する</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_summarize</span>(d_3, translation_jp, <span class="at">max_words =</span> <span class="dv">10</span>, <span class="at">pred_name=</span><span class="st">"summary"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="分類classify" class="level4">
+<h4 class="anchored" data-anchor-id="分類classify">分類（classify）</h4>
+<p>分類は<a href="chapter31.qmd">31章</a>で説明した分類の手法を、LLMを分類器として用いて行うものです。<code>llm_classify</code>は<code>labels</code>引数に分類したいカテゴリをベクターで指定し、文章にその<code>labels</code>を付与して、分類します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>分類</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 分類する</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_classify</span>(d_3, translation_jp, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"positive"</span>, <span class="st">"negative"</span>), <span class="at">pred_name=</span><span class="st">"classify"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="抽出extract" class="level4">
+<h4 class="anchored" data-anchor-id="抽出extract">抽出（extract）</h4>
+<p>抽出は、文章から指定した要素を取り出すものです。<code>llm_extract</code>は<code>labels</code>引数に指定したものに適合する要素を文章から抽出します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>抽出</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 文中から抽出する</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_extract</span>(d_3, value, <span class="at">labels =</span> <span class="st">"verb"</span>, <span class="at">pred_name=</span><span class="st">"extract"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="適合性の評価verify" class="level4">
+<h4 class="anchored" data-anchor-id="適合性の評価verify">適合性の評価（verify）</h4>
+<p>適合性の評価は、その文が指定した条件に適合するかどうかを評価するものです。<code>llm_verify</code>はwhat引数に指定した条件に文が適合するかどうかを評価します。返り値は適合していたら1、そうでなければ0が返ってきます。返り値は<code>yes_no</code>引数に要素が2個のfactorで指定することもできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>適合性の評価</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 文への適合性を評価する（1ならTRUE、0ならFALSE）</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_verify</span>(d_3, value, <span class="at">what =</span> <span class="st">"Is this a famous Latin quotation?"</span>, <span class="at">pred_name=</span><span class="st">"verify"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>ここまで<code>mall</code>の関数でqwan3.6を用いてきましたが、この5つの演算に900秒以上かかっています。qwan3.6ではラテン語であってもそこそこ正確な訳文や分類が返ってきているのが分かります。1度目の演算はとても時間がかかりますが、mallは結果をキャッシュしてくれるため、2回目以降に同じ文を与えると瞬時に結果が返ってきます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>演算結果</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 906.23秒で完了（2回目以降はキャッシュから返すため、瞬時に結果が返ってくる）</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 6%">
+<col style="width: 28%">
+<col style="width: 24%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">value</th>
+<th style="text-align: left;">.sentiment</th>
+<th style="text-align: left;">translation_jp</th>
+<th style="text-align: left;">summary</th>
+<th style="text-align: left;">classify</th>
+<th style="text-align: left;">extract</th>
+<th style="text-align: left;">verify</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alienum est omne, quicquid optando evenit.</td>
+<td style="text-align: left;">negative</td>
+<td style="text-align: left;">願って得るものはみな他事なり。</td>
+<td style="text-align: left;">wishes always bring unexpected outcomes</td>
+<td style="text-align: left;">negative</td>
+<td style="text-align: left;">evenit</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ab alio expectes, alteri quod feceris.</td>
+<td style="text-align: left;">neutral</td>
+<td style="text-align: left;">自分がされて嬉しいことは、他人にもしてやれ。</td>
+<td style="text-align: left;">treat others as you wish to be treated</td>
+<td style="text-align: left;">positive</td>
+<td style="text-align: left;">expectes</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Animus vereri qui scit, scit tuta ingredi.</td>
+<td style="text-align: left;">neutral</td>
+<td style="text-align: left;">畏れることを知る者は、安全な道を歩くことを知る。</td>
+<td style="text-align: left;">knowing what to fear means walking safely</td>
+<td style="text-align: left;">positive</td>
+<td style="text-align: left;">scit</td>
+<td style="text-align: left;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>では、次にtranslategemma:12bで同じ演算をしてみます。こちらは40秒ぐらいで演算が終わります。ただし、見ての通り翻訳以外のタスクでは<code>NA</code>が返ってきています。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>translategemma:12bを用いる</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"translategemma:12b"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_gemma_cache"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="cell-output cell-output-stderr">
 <pre><code></code></pre>
 </div>
@@ -268,57 +573,137 @@ LLM session:
 
 R session: cache_folder:./cache_llm/PVBLILIVS_SYRVS_gemma_cache</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 42.63秒で完了（4bで16.52秒）</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># positive, negative, neutralを評価する</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_sentiment</span>(d_3, value) <span class="co"># データフレームと列名を指定</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># positive, negative, neutralを評価する</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_sentiment</span>(d_3, value) <span class="co"># データフレームと列名を指定</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>! There were 3 predictions with invalid output, they were coerced to NA</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 翻訳する</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_translate</span>(d_3, value, <span class="at">language =</span> <span class="st">"Japanese"</span>, <span class="at">pred_name=</span><span class="st">"translation_jp"</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 要約する</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_summarize</span>(d_3, translation_jp, <span class="at">max_words =</span> <span class="dv">10</span>, <span class="at">pred_name=</span><span class="st">"summary"</span>)</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 分類する</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_classify</span>(d_3, translation_jp, <span class="fu">c</span>(<span class="st">"positive"</span>, <span class="st">"negative"</span>), <span class="at">pred_name=</span><span class="st">"classify"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 翻訳する</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_translate</span>(d_3, value, <span class="at">language =</span> <span class="st">"Japanese"</span>, <span class="at">pred_name=</span><span class="st">"translation_jp"</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 要約する</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_summarize</span>(d_3, translation_jp, <span class="at">max_words =</span> <span class="dv">10</span>, <span class="at">pred_name=</span><span class="st">"summary"</span>)</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 分類する</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_classify</span>(d_3, translation_jp, <span class="fu">c</span>(<span class="st">"positive"</span>, <span class="st">"negative"</span>), <span class="at">pred_name=</span><span class="st">"classify"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>! There were 1 predictions with invalid output, they were coerced to NA</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 文中から抽出する</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_extract</span>(d_3, value, <span class="st">"verb"</span>, <span class="at">pred_name=</span><span class="st">"extract"</span>)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 文への適合性を評価する（1ならTRUE、0ならFALSE）</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_verify</span>(d_3, value, <span class="st">"Is this a famous Latin quotation?"</span>, <span class="at">pred_name=</span><span class="st">"verify"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 文中から抽出する</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_extract</span>(d_3, value, <span class="st">"verb"</span>, <span class="at">pred_name=</span><span class="st">"extract"</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 文への適合性を評価する（1ならTRUE、0ならFALSE）</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>d_3 <span class="ot">&lt;-</span> <span class="fu">llm_verify</span>(d_3, value, <span class="st">"Is this a famous Latin quotation?"</span>, <span class="at">pred_name=</span><span class="st">"verify"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>! There were 3 predictions with invalid output, they were coerced to NA</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>d_3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 7
-  value                .sentiment translation_jp summary classify extract verify
-  &lt;chr&gt;                &lt;chr&gt;      &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;   &lt;fct&gt; 
-1 Alienum est omne, q… &lt;NA&gt;       何でもかんでも、望んだ結果… not ev… &lt;NA&gt;     "eveni… &lt;NA&gt;  
-2 Ab alio expectes, a… &lt;NA&gt;       他人に何を期待するかは、自… expect… positive "expec… &lt;NA&gt;  
-3 Animus vereri qui s… &lt;NA&gt;       心に恐れを持つ者は、安全な… fearfu… positive "scit"  &lt;NA&gt;  </code></pre>
 </div>
+<p>実際に結果を見てみると、文体がqwen3.6とは少し異なります。qwen3.6は箴言っぽい文調で返ってきて、translategemmaは現代文っぽいものが返ってきます。どちらかというとqwen3.6の方が正確な訳に近いように思います。また、英文も随分異なります。分類などはtranslategemmaではできません。</p>
+<p>やはり高性能かつ新しいqwen3.6の方が回答も優れているように見えます。ただし、演算コストが桁違いなので、簡単な問題であれば小さいモデルであるtranslategemma:12bを選ぶことにも利点はあるでしょう（translategemmaには27bのモデルもあるので、こちらを使えばもう少し翻訳はうまくなるかもしれません）。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>translategemma:12bの演算結果</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 42.63秒で完了</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>d_3 <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 5%">
+<col style="width: 32%">
+<col style="width: 29%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 3%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">value</th>
+<th style="text-align: left;">.sentiment</th>
+<th style="text-align: left;">translation_jp</th>
+<th style="text-align: left;">summary</th>
+<th style="text-align: left;">classify</th>
+<th style="text-align: left;">extract</th>
+<th style="text-align: left;">verify</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alienum est omne, quicquid optando evenit.</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">何でもかんでも、望んだ結果になるわけではない。</td>
+<td style="text-align: left;">not everything leads to desired outcomes.</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">evenit</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ab alio expectes, alteri quod feceris.</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">他人に何を期待するかは、自分自身が相手にどうしたかによって決まる。</td>
+<td style="text-align: left;">expectations depend on how you treat others.</td>
+<td style="text-align: left;">positive</td>
+<td style="text-align: left;">expectes</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Animus vereri qui scit, scit tuta ingredi.</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">心に恐れを持つ者は、安全な道を進むことを知っている。</td>
+<td style="text-align: left;">fearful people choose safe paths, understanding their value.</td>
+<td style="text-align: left;">positive</td>
+<td style="text-align: left;">scit</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>では、最後にラテン語と英語をqwen3.6とtranslategemmaで演算し、回答を比較してみます。以下では、<code>llm_vec_</code>の関数でベクターを用いて演算を行っています。ベクターを引数に取ると、返り値もベクターで返ってきます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 英文はGeminiに作成してもらったもの（日本語もGeminiが生成）</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>comp_sentences <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/llm_comparison_sentences.csv"</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"qwen3.6"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_qwen_cache"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── mall session object </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Backend: ollama
+LLM session:
+  model:qwen3.6
+
+  seed:100
+
+  temperature:0
+
+R session: cache_folder:./cache_llm/PVBLILIVS_SYRVS_qwen_cache</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 400.7秒</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>qwen_translate <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(d[<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>) <span class="co"># Latin</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 538.36秒</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>qwen_Eng <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(comp_sentences[, <span class="dv">1</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>) <span class="co"># English</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="fu">llm_use</span>(<span class="st">"ollama"</span>, <span class="st">"translategemma:12b"</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">temperature =</span> <span class="dv">0</span>, <span class="at">.cache =</span> <span class="st">"./cache_llm/PVBLILIVS_SYRVS_gemma_cache"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+── mall session object 
+Backend: ollamaLLM session:  model:translategemma:12b
+  seed:100
+  temperature:0
+R session: cache_folder:./cache_llm/PVBLILIVS_SYRVS_gemma_cache</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 11.57秒</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>gemma_translate <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(d[<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>) <span class="co"># Latin</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 46.61秒</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>gemma_Eng <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(comp_sentences[, <span class="dv">1</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>) <span class="co"># English</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 11.57秒</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>gemma_translate <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(d[<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 46.61秒</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>gemma_Eng <span class="ot">&lt;-</span> <span class="fu">llm_vec_translate</span>(comp_sentences[, <span class="dv">1</span>], <span class="at">language =</span> <span class="st">"Japanese"</span>)</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>0.08 sec elapsed</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">latin =</span> d[<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>],</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">qwen =</span>qwen_translate,</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">gemma =</span>gemma_translate</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -364,13 +749,6 @@ R session: cache_folder:./cache_llm/PVBLILIVS_SYRVS_gemma_cache</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">English =</span> comp_sentences[, <span class="dv">1</span>],</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Japanese =</span>comp_sentences[, <span class="dv">2</span>],</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">qwen =</span> qwen_Eng,</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">gemma =</span> gemma_Eng</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -452,6 +830,9 @@ R session: cache_folder:./cache_llm/PVBLILIVS_SYRVS_gemma_cache</code></pre>
 </table>
 </div>
 </div>
+</section>
+</section>
+</section>
 </section>
 
 </main>
