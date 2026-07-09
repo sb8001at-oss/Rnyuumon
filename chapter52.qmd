@@ -1,0 +1,293 @@
+# Webスクレイピング
+
+Genimiに作ってもらったHTMLの例
+
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case1.html>
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case2.html>
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case3.html>
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case4.html>
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case5.html>
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case6.html>
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case7.html>
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case8.html>
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case9.html>
+- <https://github.com/sb8001at-oss/html_example/blob/main/html_case10.html>
+
+上記のHTMLをデプロイしたもの（Github Pagesで表示）
+
+- <https://sb8001at-oss.github.io/html_example/html_case1>
+- <https://sb8001at-oss.github.io/html_example/html_case2>
+- <https://sb8001at-oss.github.io/html_example/html_case3>
+- <https://sb8001at-oss.github.io/html_example/html_case4>
+- <https://sb8001at-oss.github.io/html_example/html_case5>
+- <https://sb8001at-oss.github.io/html_example/html_case6>
+- <https://sb8001at-oss.github.io/html_example/html_case7>
+- <https://sb8001at-oss.github.io/html_example/html_case8>
+- <https://sb8001at-oss.github.io/html_example/html_case9>
+- <https://sb8001at-oss.github.io/html_example/html_case10>
+
+```{r}
+pacman::p_load(tidyverse, rvest)
+```
+
+:::{.panel-tabset}
+
+## ページの表示
+
+```{=html}
+<iframe width="780" height="500" src="https://sb8001at-oss.github.io/html_example/html_case1" title="case1"></iframe>
+```
+
+## html
+
+```{html, eval=FALSE, filename="htmlの例（1）"}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ケース1: 超シンプル（Rのインストール）</title>
+</head>
+<body>
+    <h1>1 Rのインストール</h1>
+    <p>Rプログラミングを始めるための最初のステップです。公式サイトから環境に合わせてダウンロードします。</p>
+    <ul>
+        <li>CRAN (Comprehensive R Archive Network) - 各種OS向けのバイナリ</li>
+        <li>RStudio - 開発を効率化する統合開発環境 (IDE)</li>
+        <li>Posit - RStudioの開発元企業</li>
+    </ul>
+    <a href="https://cran.r-project.org" id="home-link">CRAN公式サイトへ</a>
+</body>
+</html>
+```
+
+:::
+
+```{r}
+case1 <- read_html("https://sb8001at-oss.github.io/html_example/html_case1")
+```
+
+```{r}
+# xmlが保存されている
+case1
+
+class(case1)
+```
+
+```{r}
+case1 |> html_text2()
+```
+
+```{r}
+case1 |> html_elements("body")
+```
+
+```{r}
+case1 |> html_elements("body") |> html_elements("h1")
+```
+
+```{r}
+case1 |> html_elements("body") |> html_elements("h1") |> html_text()
+```
+
+```{r}
+case1 |> html_elements("body") |> html_elements("h1") |> html_text2()
+```
+
+```{r}
+case1 |> html_elements("body") |> html_elements("ul") |> html_text() |> writeLines()
+case1 |> html_elements("body") |> html_elements("ul") |> html_text2() |> writeLines()
+```
+
+```{r}
+case1 |> 
+  html_elements("body") |> 
+  html_elements("ul") |> 
+  html_text() |> 
+  str_split("\n") |> 
+  unlist() |> 
+  str_trim()
+
+case1 |> 
+  html_elements("body") |> 
+  html_elements("ul") |> 
+  html_text2() |> 
+  str_split("\n") |> 
+  unlist() 
+```
+
+```{r}
+case1 |> 
+  html_elements("body") |> 
+  html_element("ul") |> 
+  html_text2()
+```
+
+
+```{r}
+case1 |> 
+  html_elements("body") |> 
+  html_element("a") |> 
+  html_text2()
+```
+
+```{r}
+case1 |> 
+  html_elements("a") |> 
+  html_attr("href")
+```
+
+```{r}
+case1 |> 
+  html_elements("a") |> 
+  html_attr("id")
+```
+
+```{r}
+case1 |>
+  html_elements("meta") |> 
+  html_attr("charset")
+```
+
+```{r}
+case1 |>
+  html_elements("meta") |> 
+  html_attrs() |> 
+  unlist()
+```
+
+
+```{r}
+case1 |> 
+  html_encoding_guess()
+```
+
+```{r}
+case1 |> 
+  html_elements("body") |> 
+  html_name()
+```
+
+
+```{r}
+case1 |> 
+  html_elements("body") |> 
+  html_children() |> 
+  html_name()
+```
+
+```{html, eval=FALSE}
+#| code-fold: TRUE
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ケース3: テーブルデータ（オブジェクト）</title>
+</head>
+<body>
+    <h1>3 オブジェクトの種類</h1>
+    <table border="1" id="sales-table">
+        <thead>
+            <tr>
+                <th>章番号</th>
+                <th>概念名</th>
+                <th>主な用途</th>
+                <th>初心者難易度</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>3</td>
+                <td>オブジェクト</td>
+                <td>データの格納先</td>
+                <td>低</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>変数</td>
+                <td>値へのラベル付け</td>
+                <td>低</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>クラス</td>
+                <td>オブジェクトの型定義</td>
+                <td>中</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+```
+
+```{r}
+case3 <- read_html("https://sb8001at-oss.github.io/html_example/html_case3")
+
+case3 |> 
+  html_elements("table") |> 
+  html_table()
+```
+
+```{r}
+t <- Sys.time()
+for(i in 1:10){
+  url <- paste0("https://sb8001at-oss.github.io/html_example/html_case", i)
+  case <- read_html(url)
+  case |> html_elements("h1") |> html_text2() |> print()
+}
+Sys.time() - t
+```
+
+```{r, eval=FALSE}
+vec <- numeric(10)
+for(i in 1:10){
+  url <- paste0("https://sb8001at-oss.github.io/html_example/html_case", i)
+  case <- read_html(url)
+  case |> html_elements("h1") |> html_text2() |> print()
+  Sys.sleep(3)
+}
+```
+
+## html_live
+
+```{r, eval=FALSE}
+# chromoteがインストールされていない場合はchromoteがインストールされる
+read_html_live("https://sb8001at-oss.github.io/html_example/html_case1")
+```
+
+```{r}
+library(chromote)
+chromote::chromote_info()
+options(chromote.headless = "new")
+b <- ChromoteSession$new()
+```
+
+
+## polite
+
+```{r}
+pacman::p_load("polite")
+```
+
+```{r}
+html_example <- bow("https://sb8001at-oss.github.io")
+html_example
+```
+
+```{r}
+html_example$robotstxt$text |> head() |> cat()
+```
+
+```{r}
+case1 <- html_example |> nod("html_example/html_case1")
+```
+
+```{r}
+case1$url
+```
+
+```{r}
+scrape(case1)
+```
+
+
