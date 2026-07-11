@@ -1,5 +1,16 @@
 # Webスクレイピング
 
+Web上から情報を集める時には、Googleなどで検索し、ホームページに移動して、欲しい情報をコピペで集めたりすることがあるかもしれません。しかし、集める情報が複数のページに渡って載っていたり、1つのページでも表などの形を取っておらず、データの収集・整理が難しい場合があります。
+
+そもそもブラウザ上でページを移動し、手でコピペをするのは大変です。ペーストする際にExcelなどに貼り付けてきちんと整形し、整えるのも面倒です。そこで、インターネットが利用され始めた初期の頃から、Webページを自動的に開いて、欲しい情報を取得し、整形するプログラムが利用されています。このプログラムを使ってWeb上から情報を集めることを、**Webスクレイピング**と呼びます。
+
+現在では、AIにお願いすればWeb上から情報を集めてくれることもあり、Webスクレイピングは昔ほど重要な技術ではなくなりつつあります。しかし、2026年現在では、[AIは従量課金制](https://forbesjapan.com/articles/detail/96932)になりつつあります。今後はまともなAIを使おうとするとお金がかかり、お金をかけないAIを使うと思い通りにデータを集めてくれないようになるかもしれません。したがって、ちょっとした情報収集には、AIではなくWebスクレイピングを用いた方がリーズナブルになり、再度Webスクレイピングに光が当たるようになるのかもしれません。
+
+また、AIに情報を与える（プロンプトやNotebookLMのソースなど）ためには、スクレイピングを行うことが有用となることもあるかもしれません。
+
+この章では、Webスクレイピングの基本的な手法を特に`rvest`[@rvest_bib]と`polite`[@polite_bib]の2つのライブラリを用いて説明していきます。
+
+<!--
 Genimiに作ってもらったHTMLの例
 
 - <https://github.com/sb8001at-oss/html_example/blob/main/html_case1.html>
@@ -25,10 +36,17 @@ Genimiに作ってもらったHTMLの例
 - <https://sb8001at-oss.github.io/html_example/html_case8>
 - <https://sb8001at-oss.github.io/html_example/html_case9>
 - <https://sb8001at-oss.github.io/html_example/html_case10>
+-->
 
-```{r}
-pacman::p_load(tidyverse, rvest)
+まずは`rvest`、`polite`と、データの取り扱いのために`tidyverse`をロードしておきます。
+
+```{r, filename="ライブラリのロード"}
+pacman::p_load(tidyverse, rvest, polite)
 ```
+
+Webスクレイピングは、WebページからHTML（ブラウザ上での表示を指定するためのマークアップ言語）のテキストをダウンロードし、そのテキストを解析することで情報を収集する手法です。ただし、情報を収集するということは、著作権があるものを収集する可能性があるということになります。また、Webページに頻繁にアクセスすると、そのWebページをひょうじするためのWebサーバーに負担がかかります。過剰に負担がかかるとWebサーバーが落ちることもあります（[DoS攻撃](https://ja.wikipedia.org/wiki/DoS%E6%94%BB%E6%92%83)と呼ばれるものです）。Webページによっては、ページのスクレイピングを制限している場合もあります。
+
+ですので、この章ではまず、私がGeminiにお願いして準備したページを利用してスクレイピングを行っていきます。以下にしめしたようなページから、情報を収集します。タブで示しているのがHTMLで、このHTMLをブラウザが読み取ってWebページの表示に整形しています。
 
 :::{.panel-tabset}
 
@@ -38,9 +56,9 @@ pacman::p_load(tidyverse, rvest)
 <iframe width="780" height="500" src="https://sb8001at-oss.github.io/html_example/html_case1" title="case1"></iframe>
 ```
 
-## html
+## HTML
 
-```{html, eval=FALSE, filename="htmlの例（1）"}
+```{html, eval=FALSE, filename="HTMLの例（1）"}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -62,122 +80,219 @@ pacman::p_load(tidyverse, rvest)
 
 :::
 
-```{r}
+## HTMLの構造
+
+HTMLは階層構造を持つマークアップ言語で、階層やその文の意味を示すタグが文中に含まれています。HTMLの基本構造は以下のような形をしています。
+
+```{html, eval=FALSE, filename="HTMLの構造"}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ケース1: 超シンプル（Rのインストール）</title>
+</head>
+<body>
+    <h1>1 Rのインストール</h1>
+    <p>Rプログラミングを始めるための最初のステップです。公式サイトから環境に合わせてダウンロードします。</p>
+    <a href="https://cran.r-project.org" id="home-link">CRAN公式サイトへ</a>
+</body>
+</html>
+```
+
+`<!DOCTYPE html>`はHTMLの頭に必ず記載される項目で、スクレイピングでは特に気にする必要がない項目です。
+
+`<html>`は、ココからHTMLの文が始まるというタグ、**element**と呼ばれるものです。`<html>`から`</html>`までがそのelementの範囲となります。
+
+`<html>`はelementの中で最も親に当たるもので、`<html>`以下には、まず`<head>`と`<body>`が設定されます。`<head>`にはそのページの設定、タイトルなどを設定します。基本的に`<head>`をスクレイピングすることはあまりないでしょう。
+
+`<body>`は我々が見ているページの内容を記載していく部分です。この`<body>`以下にページの内容が示されています。スクレイピングするのは基本的にこの`<body>`から`</body>`までの間に記載されている内容になります。
+
+さらに`<body>`以下には100以上のelementを設定することができます。代表的なelementについて以下の表に示します。その他のelementやその詳細に関しては[とほほのHTML入門](https://www.tohoho-web.com/html/index.htm)を参考にするとよいでしょう。
+
+```{r, echo=FALSE, message=FALSE}
+d <- readxl::read_excel("./data/chapter52_html_elements.xlsx")
+knitr::kable(d, caption="代表的なelementの一覧")
+```
+
+
+また、[47章](chapter47.qmd#htmlの要素)で紹介した通り、`shiny::tags`に含まれる関数名がelementとなっています。
+
+```{r, filename="shiny::tagsの関数名=element名"}
+shiny::tags |> names() |> head(10)
+```
+
+個々のelementには、そのelementに関与するパラメータが設定されていることがあります。例えば、`<a>`には、`href`というリンクを指定するパラメータが設定されています。このような、element以下に設定するパラメータのことを**attribute**と呼びます。
+
+```{html}
+<a href="https://cran.r-project.org">
+```
+
+attributeには、そのelement以下のスタイルに関わるもの（`class`、`style`、`title`など）、リンク先や画像ファイルの指定（`href`や`src`）、フォームの入力に関わるもの（`type`や`name`、`value`など）があります。
+
+とりあえずこの2つ（element・attribute）を理解しておけば、Webスクレイピングを行うことができるでしょう。
+
+## rvest
+
+`rvest`パッケージはRでWebスクレイピングを行う際のデファクトスタンダードで、RでのWebスクレイピングにはほぼ必ず利用されるパッケージです。
+
+`rvest`を用いれば、Webページの情報を簡単に取得することができます。`tidyverse`のパッケージ（`stringr`や`tibble`、`dplyr`・`tidyr`など）を用いれば、取得したデータを簡単に整理することができます。
+
+### HTMLをダウンロードする
+
+`rvest`でスクレイピングを行う際には、まず始めにWebページからHTMLをダウンロードする必要があります。このHTMLをダウンロードするための関数が`read_html`関数です。`read_html`関数はスクレイピングしたいページのURLを引数に取ります。
+
+```{r, filename="HTMLをダウンロードする：read_html関数"}
 case1 <- read_html("https://sb8001at-oss.github.io/html_example/html_case1")
 ```
 
-```{r}
-# xmlが保存されている
+ダウンロードしたHTMLはxmlというファイル形式に変換されます。このxmlを代入した変数を利用してスクレイピングを行っていきます。
+
+```{r, filename="ダウンロードしたオブジェクト"}
 case1
 
+# xmlが保存されている
 class(case1)
 ```
+
+### xmlをテキストに変換する
+
+このxmlをテキストに変換する関数が`html_text2`関数です。上のxmlはどういう形をしているのか分かりにくいのですが、こちらのテキストに変換したものであればRで取り扱うのはそれほど難しくないでしょう。
 
 ```{r}
 case1 |> html_text2()
 ```
 
-```{r}
+とは言え、単に文字列に変換してしまうと、必要な部分だけではなく、不要な部分も文字列に含まれてしまいます。取得したい情報にルール、例えば上記のelementやattributeに特徴があれば、その情報だけを取得したほうが効率がよいでしょう。
+
+ですので、rvestでは特定のelementやattributeの要素だけを抽出する方法をいくつか備えています。
+
+### elementで情報を抽出する
+
+特定のelementに設定されている要素を抽出する場合には、`html_elements`と`html_element`関数を用います。以下の例では、`case1`にダウンロードしたHTMLから、`<head>`の要素がなくなり、`<body>`の要素だけが抽出されています。
+
+```{r, filename="html_elements関数"}
 case1 |> html_elements("body")
 ```
 
-```{r}
+`<body>`の下位要素を取得する場合、`html_elements`関数をパイプで繋ぎます。
+
+```{r, filename="elementを選択する"}
 case1 |> html_elements("body") |> html_elements("h1")
 ```
 
-```{r}
-case1 |> html_elements("body") |> html_elements("h1") |> html_text()
+`<body>`の下位ではなく、全体から`<h1>`の要素を抽出する場合には、直接`<h1>`を`html_elements`に指定しても問題ありません。
+
+```{r, filename="直接h1を指定する"}
+case1 |> html_elements("h1") 
 ```
 
-```{r}
-case1 |> html_elements("body") |> html_elements("h1") |> html_text2()
+#### html_elementsとhtml_elementの違い
+
+elementを取得する関数には、`html_elements`と`html_element`の2つがあります。いずれも`read_html`の返り値にパイプで繋いで利用し、elementを文字列で指定します。2つの関数を比較すると、`html_elements`はxml_nodesetというものが要素1つで返ってきているのに対し、`html_element`ではhtml_nodeというものが要素3つで返ってきています。
+
+```{r, filename="html_elementsとhtml_element"}
+case1 |> html_elements("ul")
+case1 |> html_element("ul")
 ```
 
-```{r}
+返り値のクラスは`html_elements`はxml_nodesetで、`html_element`はxml_nodeです。
+
+```{r, filename="返り値のクラス"}
+case1 |> html_elements("ul") |> class()
+case1 |> html_element("ul") |> class()
+```
+
+この2つをテキストに変換すると、同じものが返ってきます。
+
+```{r, filename="テキストに変換した返り値を比較する"}
+case1 |> html_elements("ul") |> html_text2()
+case1 |> html_element("ul") |> html_text2()
+```
+
+どうも`<ul>`では違いが分かりにくいため、別の例として`<p>`を取得する例を示してみます。上のcase1の例では`<p>`が1つしかなくてやや使いにくいため、別の例を準備します。
+
+別の例の準備には、`minimal_html`関数を用います。この関数はテキストで記載したHTMLをxml形式に変換してくれる関数です。
+
+```{r, filename="minimal_html"}
+case_p <- minimal_html(
+  "<p>パラグラフ1</p> \n
+   <p>パラグラフ2</p>
+  "
+)
+```
+
+この`minimal_html`で作成したシンプルなHTMLで比較すると、`html_elements`では2つの`<p>`の要素が返ってきているのに対し、`html_element`では1つ目の`<p>`の要素だけが返ってきているのがわかります。
+
+つまり、`html_element`は始めのelementの要素だけが返ってくる可能性があります。通常は`html_elements`でelementを選択するようにした方がよいでしょう。
+
+```{r, filename="html_elementsとhtml_elementで返り値が違う場合"}
+case_p |> html_elements("p") |> html_text2()
+case_p |> html_element("p") |> html_text2()
+```
+
+### html_textとhtml_text2
+
+`rvest`にはxmlをテキストに変換する関数である`html_text2`に加えて、`html_text`関数もあります。この2つはelementの要素が1つで、前後にスペースが入っていなければ全く同じものが返ってきます。
+
+```{r, filename="html_textとhtml_text2"}
+case1 |> html_elements("h1") |> html_text()
+case1 |> html_elements("h1") |> html_text2()
+```
+
+ただし、`<ul>`のelementで選択すると、少し結果が変わります。`html_text`ではテキストにスペースが残るのに対し、`html_text2`ではテキストのスペースが削除されています。`stringr`の`str_trim`などでスペースを取り除けばいいんですが、スクレイピングでは`html_text2`を使った方がシンプルでよいでしょう。
+
+```{r, filename="スペースの結果が異なる"}
 case1 |> html_elements("body") |> html_elements("ul") |> html_text() |> writeLines()
 case1 |> html_elements("body") |> html_elements("ul") |> html_text2() |> writeLines()
 ```
 
-```{r}
-case1 |> 
-  html_elements("body") |> 
-  html_elements("ul") |> 
-  html_text() |> 
-  str_split("\n") |> 
-  unlist() |> 
-  str_trim()
+### attributeで情報を抽出する
 
-case1 |> 
-  html_elements("body") |> 
-  html_elements("ul") |> 
-  html_text2() |> 
-  str_split("\n") |> 
-  unlist() 
-```
+次に、attributeを用いて情報を抽出する方法について説明します。attributeを用いる場合、`html_attr`と`html_attrs`のいずれかを用います。`html_attr`は特定のelementに存在する1つのattributeの値を、`html_attrs`はすべてのattributeの値を取得する関数です。
 
-```{r}
-case1 |> 
-  html_elements("body") |> 
-  html_element("ul") |> 
-  html_text2()
-```
+`html_attrs`はxml以外の引数なしで用い、たくさんのattributeの値をベクターとして返します。特定のelementに付属する特定のattributeの値を取得したい場合には、`html_attr`を用いた方が使い勝手がよいでしょう。
 
-
-```{r}
-case1 |> 
-  html_elements("body") |> 
-  html_element("a") |> 
-  html_text2()
-```
-
-```{r}
-case1 |> 
-  html_elements("a") |> 
-  html_attr("href")
-```
-
-```{r}
-case1 |> 
-  html_elements("a") |> 
-  html_attr("id")
-```
-
-```{r}
+```{r, filename="html_attrとhtml_attrsの違い"}
+# 特定のattributeの値だけ取得
 case1 |>
   html_elements("meta") |> 
   html_attr("charset")
-```
 
-```{r}
 case1 |>
   html_elements("meta") |> 
   html_attrs() |> 
   unlist()
 ```
 
+`html_attr`と`html_attrs`はいずれも文字列のベクターを返す関数です。ですので、xmlだけを引数に取る`html_text2`で文字列に変換しようとするとエラーが出ます。
 
-```{r}
+```{r, error=TRUE, filename="html_attrの返り値"}
 case1 |> 
-  html_encoding_guess()
+  html_elements("a") |> 
+  html_attr("href")
+
+# エラー
+case1 |> 
+  html_elements("a") |> 
+  html_attr("href") |> 
+  html_text2()
 ```
 
-```{r}
-case1 |> 
-  html_elements("body") |> 
-  html_name()
+### html_table
+
+ページ上の表を抽出する際に使うのが`html_table`関数です。ページ上の表は、以下のように`<table>`を用いて記載されます。
+
+:::{.panel-tabset}
+
+## ページの表示
+
+```{=html}
+<iframe width="780" height="500" src="https://sb8001at-oss.github.io/html_example/html_case3" title="case1"></iframe>
 ```
 
+## HTML
 
-```{r}
-case1 |> 
-  html_elements("body") |> 
-  html_children() |> 
-  html_name()
-```
-
-```{html, eval=FALSE}
-#| code-fold: TRUE
-
+```{html, eval=FALSE, filename="HTMLの例（2）"}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -220,15 +335,80 @@ case1 |>
 </html>
 ```
 
-```{r}
+:::
+
+テーブルが一つであれば、xmlのオブジェクトを引数に取るだけでテーブルを`tibble`として取得することができます。
+
+```{r, filename="html_table関数"}
 case3 <- read_html("https://sb8001at-oss.github.io/html_example/html_case3")
 
 case3 |> 
-  html_elements("table") |> 
   html_table()
 ```
 
+
+### その他の関数
+
+`rvest`でよく利用する関数はここまでに説明した`read_html`、`html_elements`、`html_attr`、`html_text2`、`html_table`の5つだと思いますが、この他にもいくつかの関数が設定されています。いくつかの関数を簡単に紹介します。
+
+#### html_encoding_guess関数
+
+`html_encoding_guess`関数はHTMLのテキストのencodingを評価するための関数です。現在ではほぼすべてのHTMLがUTF-8になっているとは思いますので、それほど実用性はないかもしれません。
+
 ```{r}
+case1 |> 
+  html_encoding_guess()
+```
+
+#### html_name・html_children関数
+
+`html_name`関数はelementの名前を取得するための関数です。しかし、以下のようにelementsを選択してから名前を取得してもあまり意味はありません。
+
+```{r, filename="html_name関数"}
+case1 |> 
+  html_elements("body") |> 
+  html_name()
+```
+
+`html_children`関数はそのelementの下位のelementをすべて取得する関数です。この`html_children`関数の後で`html_name`関数を適用すると、そのelementの中に存在する下位のelementを調べることができます。
+
+```{r, filename="html_children関数で下位のelementを取得する"}
+case1 |> 
+  html_elements("body") |> 
+  html_children() |> 
+  html_name()
+```
+
+:::{.callout-tip collapse="true"}
+## html_live
+
+`rvest`には、ウェブブラウザ（Chrome）に表示されたページ上で要素を選択しながらスクレイピングを行う、`read_html_live`関数というものがあります。この`read_html_live`は`chromote`パッケージ[@chromote_bib]を利用した関数で、`chromote`のR6オブジェクトを作成することでChromeのウインドウと連携してスクレイピングをすることができる、はずの関数です。
+
+```{r, eval=FALSE, filename="read_html_liveでインタラクティブにスクレイピング"}
+# chromoteがインストールされていない場合はchromoteがインストールされる
+read_html_live("https://sb8001at-oss.github.io/html_example/html_case1")
+```
+
+しかし、現状`chromote`でR6オブジェクトを作成しようとすると、エラーが出ます。どうも`chromote`がアップデートされていない中でChromeだけどんどんアップデートされていて、セキュリティ的にアクセスできなくなっているようです。DockerでLinuxから使ってみてもなかなかうまく使うのが難しいです。`chromote`がうまく動くようになったら記載を追加したいと思います。
+
+```{r, error=TRUE, filename="chromoteでエラーが出る"}
+library(chromote)
+
+chromote::chromote_info()
+
+# R6オブジェクトを作成できない
+b <- ChromoteSession$new()
+```
+
+:::
+
+### 複数のページから情報を取得する
+
+スクレイピングしたい情報が複数のWebページに渡って存在していて、URLの名前が一定のルールに従い決められている場合には、for文を用いて簡単に複数ページのスクレイピングを行うことができます。
+
+ただし、以下の例を見ていただけるとわかる通り、このfor文では約2秒間に10回ページにアクセスしています。この程度ではDoS攻撃とはされないと思いますが、サーバーに負荷をかけるのは間違いなく、良いスクレイピングであるとは言えません。
+
+```{r, filename="for文でスクレイピング"}
 t <- Sys.time()
 for(i in 1:10){
   url <- paste0("https://sb8001at-oss.github.io/html_example/html_case", i)
@@ -238,7 +418,9 @@ for(i in 1:10){
 Sys.time() - t
 ```
 
-```{r, eval=FALSE}
+このようなfor文でのスクレイピングを行うのであれば、**途中に`Sys.sleep`関数で少し（3～10秒）時間をおいて**、再度Webページにアクセスするようにした方が、Webサーバーへの負荷が少なく、DoS攻撃とも捉えられにくいでしょう。
+
+```{r, eval=FALSE, filename="Sys.sleep関数でアクセスの時間間隔を取る"}
 vec <- numeric(10)
 for(i in 1:10){
   url <- paste0("https://sb8001at-oss.github.io/html_example/html_case", i)
@@ -248,20 +430,27 @@ for(i in 1:10){
 }
 ```
 
-## html_live
+:::{.callout-tip collapse="true"}
+## map関数でスクレイピング
 
-```{r, eval=FALSE}
-# chromoteがインストールされていない場合はchromoteがインストールされる
-read_html_live("https://sb8001at-oss.github.io/html_example/html_case1")
+スクレイピングしたいページのURLのリストが分かっているのであれば、[44章](chapter44.qmd)で紹介した`purrr::map`関数を用いてシンプルなスクリプトでスクレイピングを行うこともできます。`map`関数は内部的に[並列演算](Tips_ParallelComputing.qmd)を用いているようで、for文を用いるよりもスクレイピングは速く終わります。
+
+```{r, filename="map関数でスクレイピング"}
+url <- paste0("https://sb8001at-oss.github.io/html_example/html_case", 1:10)
+
+t <- Sys.time()
+
+map(url, read_html) |> 
+  map(~html_elements(.x, "h1")) |> 
+  map(~html_text2(.x)) |> 
+  unlist()
+
+Sys.time() - t
 ```
 
-```{r}
-library(chromote)
-chromote::chromote_info()
-options(chromote.headless = "new")
-b <- ChromoteSession$new()
-```
+for文と`map`のどちらの方がWebサーバーにより多く負荷をかけるのか分かりにくいところですが、やはり少し時間をおいてアクセスする方がスクレイピングではよいのではないかと思います。
 
+:::
 
 ## polite
 
