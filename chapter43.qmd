@@ -10,15 +10,40 @@ WebsiteやBookをRenderし、HTMLを作成した後、そのHTMLをWeb上で公�
 
 Webサーバーを運用しているサービスには、[Amazon web servise](https://aws.amazon.com/jp)や[Microsoft Azure](https://azure.microsoft.com/ja-jp)などがありますが、いずれも有料です。Quartoで作成したHTML（Webサーバーで演算を行わないので、静的なHTMLと呼ばれます）をデプロイするのであれば、これらの有料サービスではなく、無料のサービスを利用することができます。
 
-無料のサービスには、Positが運営しているQuarto専用のサービスである[**Quarto Pub**](https://quartopub.com/)や、もっと汎用的にHTMLの公開に用いることができる[**Github Pages**](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site)などがあります。
+無料のサービスには、Positが運営しているサービスである[**Connect Cloud**](https://connect.posit.cloud/)や、もっと汎用的にHTMLの公開に用いることができる[**Github Pages**](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site)などがあります。
 
 これらの無料のサービスでは公開したHTMLは基本的にはWeb上に完全に公開されます。企業内など、特定のユーザーのみがアクセスできる設定にはできません。また、アクセス数に制限があり、高頻度でアクセスされると表示が遅くなったり、表示できなくなったりします。また、HTMLのサイズにも制限があります。
 
-とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることはあまりないと思います。Quartoで作成したHTMLを公開する場合、とりあえずはQuarto pubかGithub Pagesでデプロイすることを検討するとよいでしょう。
+とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることはあまりないと思います。Quartoで作成したHTMLを公開する場合、とりあえずConnect CloudかGithub Pagesでデプロイすることを検討するとよいでしょう。
 
+## Connect Cloud
+
+[Connect Cloud](https://connect.posit.cloud/)にQuartoのHTMLをデプロイする場合には、まずConnect Cloudのアカウントを作成する必要があります。右上の「Sign Up」からアカウントを作成しましょう。Sign UpにはGooGleやGithubのアカウントを利用することもできます。
+
+![](./image/connect_cloud_toppage.png)
+
+次に、RStudio上でConnect Cloudのアカウントを登録します。OptionのPublishingの項目から、「Connect...」を選択しましょう。登録する際には[`rsconnect`](https://rstudio.github.io/rsconnect/)パッケージ[@rsconnect_bib]が必要です。登録の際に`rsconnect`をインストールするかどうかを尋ねるウインドウが表示されますので、インストールしましょう。
+
+インストール後に再び「Connect...」を選択すると、接続するサービス（Connect Cloud、Posit Connectなど）が表示されるので、Connect Cloudを選択しましょう。選択するとブラウザ上でConnect Cloudへのログインが求められます。ログインするとRStudioの認証パスキーと接続を続けるためのボタンが表示されます。ボタンを押すとアクセスが認証されます（2026年9月時点では認証パスキーの入力を求められないので、ちょっと意味がよくわかりません）。
+
+![RStudioにConnect Cloudのアカウントを登録する](./image/setting_publishing_accounts.png)
+
+後はRStudioのウインドウの右上にある「Publish」ボタンを押すと、Connect CloudへHTMLがアップロードされます。
+
+![Publishボタン](./image/publish_button.png)
+
+この他にGithubにアップロードしたqmdファイルやHTMLファイルをConnect Cloudからデプロイすることもできますが、Githubを用いるのであれば以下に紹介するより利用制限の緩いGithub Pagesを用いる方がよいでしょう。
+
+:::{.callout-tip collapse = "true"}
 ## Quarto Pub
 
-Quarto Pubは上記の通り、Positが運営しているサービスで、Rstudioを用いていれば簡単にHTMLをデプロイすることができます。
+Quarto Pubは2026年12月31日までは存続し、2027年1月1日からはConnect Cloudへ移行する予定です。[47章](chapter47.qmd)で説明するshiny.ioと共に、元々は別々のサービスとして運営されていたものをConnect Cloudに一元化することを目的としているようです。shiny.ioのアプリは比較的簡単にConnect Cloudに移行できるようにされていますが、Quarto Pubからの移行の方法は現状提供されていません。ですので、Quarto Pubにデプロイ済みの文書をConnect Cloudにデプロイする場合には、元々のファイルをRStudioで開き、上記の「Publish」の機能を用いてアップロードし直す必要があります。
+
+以下にQuarto Pubの使い方についての記事を残しておきますが、2026年12月末以降は新しくアカウントを作ることができませんので、Connect Cloudを利用するとよいでしょう。
+
+### Quarto Pubに文書をデプロイする（～2026年12月31日） {.unnumbered}
+
+[Quarto Pub](https://quartopub.com/)はPositが運営しているサービスで、Rstudioを用いていれば簡単にHTMLをデプロイすることができます。
 
 Quarto Pubにデプロイする場合、まずはQuarto Pubにアカウントを作成する必要があります。まずはQuarto Pubのホームページにアクセスし、「Sign Up」を選択しましょう。Quarto PubのログインにはGoogleやGithubのアカウントを用いることもできます。
 
@@ -32,15 +57,16 @@ quarto publish quarto-pub.qmd
 
 `quarto publish`コマンドを入力すると、Terminal上でQuarto Pubへの認証が行われます。必要な情報を入力すると、作成したQuarto PubのアカウントにProjectの.qmdもしくは指定した.qmdファイルがHTMLにRenderされた後、デプロイされます。
 
-### アクセストークン（Access Token）
+### アクセストークン（Access Token） {.unnumbered}
 
 上記のQuarto Pubの認証では、アクセストークン（Access Token）というものが要求されます。アクセストークンは上記のQuarto Pubのアカウントにログインし、アカウント内のページから取得することができます。認証の途中で入力を求められるため、コピーしておいてテキストとしてTerminalで貼り付けるとよいでしょう。詳細については[QuartoのGuide](https://quarto.org/docs/publishing/quarto-pub.html#access-tokens)のページをご参照ください。
 
-### Quarto Pubでのページの管理
+### Quarto Pubでのページの管理 {.unnumbered}
 
 Quarto Pubにログインすると、デプロイしたProjectの一覧が表示されます。このページから、デプロイしたページに移動したり、デプロイしたProjectを削除することができます。
 
 ![Quarto Pub：ページの管理](./image/quarto_pub_loggedin.png)
+:::
 
 ## Github Pages
 

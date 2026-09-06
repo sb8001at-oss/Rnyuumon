@@ -41,6 +41,12 @@ if(!require(shiny)) install.packages(("shiny"))
 shiny::runGitHub("ARIMAsim", "sb8001at-oss")
 ```
 
+また、以下のリンクからshinyliveを利用したShinyアプリを利用することもできます（起動に15秒～2分ぐらいかかります）。
+
+- [生存時間解析シミュレーター](https://surv-sim-shinylive.pages.dev/)
+- [k-meansのアニメーション](https://kmeans-shinylive.pages.dev/)
+- [時系列：ARIMAシミュレーター](https://arima-simulator-shinylive.pages.dev/)
+
 ## Shinyの基礎
 
 ShinyのWebアプリケーションをR Studioで作成する場合、まずは左上のNew Fileアイコンから「Shiny Web App...」を選択します。
@@ -322,9 +328,10 @@ verbatimTextOutput("output_rpois")
 r1 <- input$n1 |> rpois(5)
 r2 <- input$n2 |> rpois(5)
 
-output$output_rpois({
-  paste(mean(r1), mean(r2))
-})
+output$output_rpois <- 
+  renderText({
+    paste(mean(r1), mean(r2))
+  })
 ```
 
 上記は、平均値5のポアソン分布に従う乱数を100万～500万個、2セット作成し、その平均値を文字列として返すだけのShinyアプリです。返ってくる値はほぼ5になるので何の意味もないアプリですが、このShinyを走らせた場合、1つ目の`sliderInput`（`input$n1`）を変更すると、1つ目の`sliderInput`の返り値（`mean(r1)`）だけでなく、2つ目の`sliderInput`の返り値（`mean(r2)`）も計算され、値が変化します。
@@ -357,9 +364,10 @@ output$output_rpois({
 r1 <- reactive(input$n1 |> rpois(5))
 r2 <- reactive(input$n2 |> rpois(5))
 
-output$output_rpois({
-  paste(mean(r1()), mean(r2()))
-})
+output$output_rpois <- 
+  renderText({
+    paste(mean(r1()), mean(r2()))
+  })
 ```
 
 上のコードでは、`reactive`関数の引数として`input$n1 |> rpois(5)`を取り、`r1`に代入しています。この`r1`は関数オブジェクトになっており、値を呼び出す場合にはカッコを付ける（`r1()`）必要があります。同様に`r2`を`reactive`関数を用いて準備しています。
@@ -493,11 +501,25 @@ Shinyアプリを作成したら、他の人に使ってもらってデータを
 
 デプロイとは、インターネットでアクセスできるコンピュータ（Webサーバー）にWebアプリを実行する環境を整えることを指します。我々が使っている多くのWebサービス（Webアプリ）は、[Amazon Web Services（AWS）](https://aws.amazon.com/jp/)や[Google Cloud](https://cloud.google.com/)などのWebサーバーで実行されています。Shinyアプリも同様にWebサーバーにデプロイすることで、Webブラウザからアクセスし、利用することができます。
 
-Shinyの開発元であるPositはShinyアプリを簡単にデプロイするサービスである、[shinyapps.io](https://www.shinyapps.io/)や[Posit Connect](https://posit.co/products/enterprise/connect/)を展開しています。また、同じくPositが開発した[Shiny server](https://posit.co/products/open-source/shinyserver/)を用いることで、AWSやGoogle Cloudに比較的簡単にデプロイすることができます。
+Shinyの開発元であるPositはShinyアプリを簡単にデプロイするサービスである、[Posit Connect Cloud](https://connect.posit.cloud/) や[Posit Connect](https://posit.co/products/enterprise/connect/)を展開しています。また、同じくPositが開発した[Shiny server](https://posit.co/products/open-source/shinyserver/)を用いることで、AWSやGoogle Cloudに比較的簡単にデプロイすることができます。
 
-Posit Connectはエンタープライズ版で、セキュリティ面などがしっかりしています。一方で価格が相当高いので（今は公開されていませんが、昔は$5000/monthぐらいからだったと思います）、個人で安価にデプロイしたいのであればShinyapps.ioかShiny serverの2択となります。
+Posit Connectはエンタープライズ版で、セキュリティ面などがしっかりしています。一方で価格が相当高いので（今は公開されていませんが、昔は$5000/monthぐらいからだったと思います）、個人で安価にデプロイしたいのであればPosit Connect CloudかShiny serverの2択となります。
 
-### shinyapps.io
+
+:::{.callout-tip collapse="true"}
+## shinyapps.io
+
+2026年12月31日まではPositは[shinyapps.io](https://www.shinyapps.io/)というサービスを展開していましたが、2027年1月1日以降はConnect Cloudに統合される形でshinyapps.ioのサービスは終了します。
+
+Connect Cloudでは、shinyapps.ioからConnect Cloudへのアプリの移行をサポートする機能が含まれています。Connect Cloudにアカウントを作成し、ログイン後、Admin→shinyapps.ioへと移動します。このページの右上に「Link shinyapps.io account」というボタンがあるので、ココからアカウントをリンクできます。
+
+アカウントが接続できたら、この下の部分にshinyapps.ioで公開していたアプリが表示されるので、右の「migrate」のボタンを押すと、自動的にshinyapps.ioのアプリがConnect Cloudにコピーされます。
+
+![shinyapps.ioからConnect Cloudへアプリを移行する](./image/Connect_cloud_link_to_shinyapps_io.png)
+
+以下は、shinyapps.ioが現役だった時の記事です。残しておきますが、2027年には利用できなくなりますので用いない方がよいでしょう。
+
+### 過去の記事：shinyapps.ioにアプリをデプロイする
 
 最も簡単に、無料、もしくは安価にShinyアプリを公開したいのであれば、**Shinyapps.io**を用いるのがよいでしょう。Shinyapps.ioを用いるためには、まずShinyapps.ioのホームページ上でアカウントを作成する必要があります。[shinyapps.io](https://www.shinyapps.io/)に移動し、「sign up」からアカウントを作成しましょう。shinyapps.ioのアカウントを作らずに、Googleやfacebookのアカウントを用いてログインすることもできます。
 
@@ -529,9 +551,33 @@ Publishした後にWebブラウザからshinyapps.ioにログインすると、�
 
 この方法で実行したShinyアプリはローカル（自分のPC）で演算するのではなく、Positが管理しているWebサーバでアプリを実行するようになっています。URLをコピーし、共有したい人にアクセスしてもらうことでShinyアプリをWeb上で実行してもらうことができます。
 
+:::
+
+### Posit Connect Cloud
+
+Posit Connect CloudはShinyと[36章で紹介しているQuarto](chapter36.qmd)をデプロイし、公開することのできるサービスです。ShinyやQuartoはPythonにも対応しているので、Pythonで作成したShinyアプリやQuartoの文書もデプロイすることができます。
+
+まずは無料のアカウントをトップページの「Sign Up」から作成しましょう。ただし、無料のアカウントでは月に20時間までしかサーバーでの演算を行うことができません。お金を支払うとサーバーのCPU・メモリを増強／利用時間の延長／組織内のみのアクセス等を追加できるので、必要ならお金を支払って利用するとよいでしょう。
+
+アカウントはGoogleやGithubのアカウントと接続する形でも作成できます。shinyapps.ioのアカウントを同じGoogle/Githubのアカウントで作成している場合、自動的にshinyapps.ioとConnect Cloudのアカウントが接続されます。
+
+![Connect Cloudのトップページ](./image/connect_cloud_toppage.png)
+
+次に、RStudio上でConnect Cloudのアカウントを登録します。OptionのPublishingの項目から、「Connect...」を選択しましょう。登録する際には[`rsconnect`](https://rstudio.github.io/rsconnect/)パッケージ[@rsconnect_bib]が必要です。登録の際に`rsconnect`をインストールするかどうかを尋ねるウインドウが表示されますので、インストールしましょう。
+
+インストール後に再び「Connect...」を選択すると、接続するサービス（Connect Cloud、Posit Connectなど）が表示されるので、Connect Cloudを選択しましょう。選択するとブラウザ上でConnect Cloudへのログインが求められます。ログインするとRStudioの認証パスキーと接続を続けるためのボタンが表示されます。ボタンを押すとアクセスが認証されます（2026年9月時点では認証パスキーの入力を求められないので、ちょっと意味がよくわかりません）。
+
+![RStudioにConnect Cloudのアカウントを登録する](./image/setting_publishing_accounts.png)
+
+後はRStudioのウインドウの右上にある「Publish」ボタンを押すと、Connect Cloudへアプリがアップロードされます。
+
+![Publishボタン](./image/publish_button.png)
+
+この他にGithubにアップロードしたアプリケーションをConnect Cloudからデプロイすることもできますが、Githubを用いるのであれば[Tips](Tips_shinylive.qmd)で紹介している、利用制限の緩いGithub Pagesとshinyliveの組み合わせを用いる方がよいでしょう。
+
 ### shiny server
 
-上記のshinyapps.ioを用いる方法は非常に簡単で、お金もかかりませんが、一方で演算速度は遅く、たくさんの人が同時に接続することもできません。また、月あたりの使用時間が制限されています。shinyapps.ioは基本的にすべての人にShinyアプリを公開する形でデプロイするため、秘密情報を含むShinyアプリに利用するのにも向いていません。
+上記の無料のConnect Cloudを用いる方法は非常に簡単で、お金もかかりませんが、一方で演算速度は遅く、たくさんの人が同時に接続することもできません。また、月あたりの使用時間が制限されています。無料のConnect Cloudは基本的にすべての人にShinyアプリを公開する形でデプロイするため、秘密情報を含むShinyアプリに利用するのにも向いていません。お金を払えば制限を撤廃することもできますが、利益を得られないアプリに支払いを続けることも難しい場合があるでしょう。
 
 このようなサーバーの速度・接続時間・秘密情報の問題を解決するには、自前でWebサーバーを立ち上げ、管理する必要があります。自前でサーバーを立ち上げるには、個人や会社のサーバーを利用する方法とWebサーバー（Amazon Web ServicesやGoogle Cloud）を用いる方法がありますが、いずれの方法においてもShinyアプリのデプロイには[Shiny server](https://posit.co/products/open-source/shiny-server/)を用いるのが一般的です。Shiny serverを用いたShinyアプリのデプロイには[コンテナ](https://ja.wikipedia.org/wiki/Docker)を用いることが多いかと思います。Shiny server、コンテナやコンテナを用いたデプロイの方法はこの入門書の範囲を超えてしまいますので、[こちらの記事](https://qiita.com/amori/items/425e44d6a7c1e0fbec84)や[この記事](https://qiita.com/xjorv/items/947ca01b45d6207bc4e3)などを参照下さい。
 
@@ -562,9 +608,17 @@ shiny::runGitHub("surv_sim", "sb8001at-oss") # runGitHub関数で"surv_sim"と�
 
 上記の`runGitHub`関数はこのページのui.R、server.R、global.Rを読み込み、Shinyアプリを実行する関数です。GitHubでのアカウント作成・レポジトリの準備やコードの入力方法に関しては、この教科書の範囲から外れるためココでは詳細を説明しませんので、[この記事](https://yoshitaku-jp.hatenablog.com/entry/2018/07/07/225642)などを参考にしていただければと思います。
 
+### shinylive
+
+Shinyアプリをブラウザで動かすためのツールが[shinylive](https://posit-dev.github.io/r-shinylive/)です。shinyliveについては[別のTips](Tips_shinylive.qmd)で説明しているので、こちらをご参照ください。shinyliveを用いることで、Shinyアプリを静的サーバー（Github Pagesなどのサービス）にデプロイし、無料で、サーバーの演算能力を利用することなく、Shinyアプリを他の人に利用してもらうことができます。
+
+## Shinyのサンプルアプリ
+
 最後に、Shinyアプリで用いられるUI、Serverのコードと実行時のページをイメージするためのShinyアプリを以下に示します。以下のコードをコピペしてRで実行していただければ、UIやServerのイメージがつかみやすいかと思います。
 
 ```{r, filename="Shinyのサンプルアプリ", eval=FALSE}
 if(!require(shiny)) install.packages(("shiny")) # shinyの読み込み
 shiny::runGitHub("shiny_sample", "sb8001at-oss")
 ```
+
+[shinyliveでのサンプルアプリ](https://shiny-sample-shinylive.pages.dev/)

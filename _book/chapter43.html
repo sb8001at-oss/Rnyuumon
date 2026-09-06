@@ -55,7 +55,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -798,13 +817,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li>
-<a href="#quarto-pub" id="toc-quarto-pub" class="nav-link active" data-scroll-target="#quarto-pub"><span class="header-section-number">43.1</span> Quarto Pub</a>
-  <ul>
-<li><a href="#%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%83%88%E3%83%BC%E3%82%AF%E3%83%B3access-token" id="toc-アクセストークンaccess-token" class="nav-link" data-scroll-target="#%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%83%88%E3%83%BC%E3%82%AF%E3%83%B3access-token"><span class="header-section-number">43.1.1</span> アクセストークン（Access Token）</a></li>
-  <li><a href="#quarto-pub%E3%81%A7%E3%81%AE%E3%83%9A%E3%83%BC%E3%82%B8%E3%81%AE%E7%AE%A1%E7%90%86" id="toc-quarto-pubでのページの管理" class="nav-link" data-scroll-target="#quarto-pub%E3%81%A7%E3%81%AE%E3%83%9A%E3%83%BC%E3%82%B8%E3%81%AE%E7%AE%A1%E7%90%86"><span class="header-section-number">43.1.2</span> Quarto Pubでのページの管理</a></li>
-  </ul>
-</li>
+<li><a href="#connect-cloud" id="toc-connect-cloud" class="nav-link active" data-scroll-target="#connect-cloud"><span class="header-section-number">43.1</span> Connect Cloud</a></li>
   <li>
 <a href="#github-pages" id="toc-github-pages" class="nav-link" data-scroll-target="#github-pages"><span class="header-section-number">43.2</span> Github Pages</a>
   <ul>
@@ -837,15 +850,44 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </header><p>WebsiteやBookをRenderし、HTMLを作成した後、そのHTMLをWeb上で公開すれば、世界中の人達がそのWebsiteやBookを読むことができます。HTMLをWeb上で公開するというのは、Webに繋がったコンピュータ（Webサーバー）にHTMLファイルを置き、Web上でこのHTMLファイルにアクセスができるようにすることです。このHTMLの公開のことを<strong><code>デプロイ</code></strong>と呼びます。</p>
 <p>デプロイをするためには、Webサーバーが必要となります。自前でWebサーバーを準備することもできますが、通常はWebサーバーを運用しているサービスを利用することになります。</p>
 <p>Webサーバーを運用しているサービスには、<a href="https://aws.amazon.com/jp">Amazon web servise</a>や<a href="https://azure.microsoft.com/ja-jp">Microsoft Azure</a>などがありますが、いずれも有料です。Quartoで作成したHTML（Webサーバーで演算を行わないので、静的なHTMLと呼ばれます）をデプロイするのであれば、これらの有料サービスではなく、無料のサービスを利用することができます。</p>
-<p>無料のサービスには、Positが運営しているQuarto専用のサービスである<a href="https://quartopub.com/"><strong>Quarto Pub</strong></a>や、もっと汎用的にHTMLの公開に用いることができる<a href="https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site"><strong>Github Pages</strong></a>などがあります。</p>
+<p>無料のサービスには、Positが運営しているサービスである<a href="https://connect.posit.cloud/"><strong>Connect Cloud</strong></a>や、もっと汎用的にHTMLの公開に用いることができる<a href="https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site"><strong>Github Pages</strong></a>などがあります。</p>
 <p>これらの無料のサービスでは公開したHTMLは基本的にはWeb上に完全に公開されます。企業内など、特定のユーザーのみがアクセスできる設定にはできません。また、アクセス数に制限があり、高頻度でアクセスされると表示が遅くなったり、表示できなくなったりします。また、HTMLのサイズにも制限があります。</p>
-<p>とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることはあまりないと思います。Quartoで作成したHTMLを公開する場合、とりあえずはQuarto pubかGithub Pagesでデプロイすることを検討するとよいでしょう。</p>
-<section id="quarto-pub" class="level2" data-number="43.1"><h2 data-number="43.1" class="anchored" data-anchor-id="quarto-pub">
-<span class="header-section-number">43.1</span> Quarto Pub</h2>
-<p>Quarto Pubは上記の通り、Positが運営しているサービスで、Rstudioを用いていれば簡単にHTMLをデプロイすることができます。</p>
+<p>とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることはあまりないと思います。Quartoで作成したHTMLを公開する場合、とりあえずConnect CloudかGithub Pagesでデプロイすることを検討するとよいでしょう。</p>
+<section id="connect-cloud" class="level2" data-number="43.1"><h2 data-number="43.1" class="anchored" data-anchor-id="connect-cloud">
+<span class="header-section-number">43.1</span> Connect Cloud</h2>
+<p><a href="https://connect.posit.cloud/">Connect Cloud</a>にQuartoのHTMLをデプロイする場合には、まずConnect Cloudのアカウントを作成する必要があります。右上の「Sign Up」からアカウントを作成しましょう。Sign UpにはGooGleやGithubのアカウントを利用することもできます。</p>
+<p><a href="./image/connect_cloud_toppage.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="./image/connect_cloud_toppage.png" class="img-fluid"></a></p>
+<p>次に、RStudio上でConnect Cloudのアカウントを登録します。OptionのPublishingの項目から、「Connect…」を選択しましょう。登録する際には<a href="https://rstudio.github.io/rsconnect/"><code>rsconnect</code></a>パッケージ<span class="citation" data-cites="rsconnect_bib">(<a href="references.html#ref-rsconnect_bib" role="doc-biblioref">Atkins et al. 2024</a>)</span>が必要です。登録の際に<code>rsconnect</code>をインストールするかどうかを尋ねるウインドウが表示されますので、インストールしましょう。</p>
+<p>インストール後に再び「Connect…」を選択すると、接続するサービス（Connect Cloud、Posit Connectなど）が表示されるので、Connect Cloudを選択しましょう。選択するとブラウザ上でConnect Cloudへのログインが求められます。ログインするとRStudioの認証パスキーと接続を続けるためのボタンが表示されます。ボタンを押すとアクセスが認証されます（2026年9月時点では認証パスキーの入力を求められないので、ちょっと意味がよくわかりません）。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="./image/setting_publishing_accounts.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="RStudioにConnect Cloudのアカウントを登録する"><img src="./image/setting_publishing_accounts.png" class="img-fluid figure-img" alt="RStudioにConnect Cloudのアカウントを登録する"></a></p>
+<figcaption>RStudioにConnect Cloudのアカウントを登録する</figcaption></figure>
+</div>
+<p>後はRStudioのウインドウの右上にある「Publish」ボタンを押すと、Connect CloudへHTMLがアップロードされます。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="./image/publish_button.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Publishボタン"><img src="./image/publish_button.png" class="img-fluid figure-img" alt="Publishボタン"></a></p>
+<figcaption>Publishボタン</figcaption></figure>
+</div>
+<p>この他にGithubにアップロードしたqmdファイルやHTMLファイルをConnect Cloudからデプロイすることもできますが、Githubを用いるのであれば以下に紹介するより利用制限の緩いGithub Pagesを用いる方がよいでしょう。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Quarto Pub
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Quarto Pubは2026年12月31日までは存続し、2027年1月1日からはConnect Cloudへ移行する予定です。<a href="./chapter47.html">47章</a>で説明するshiny.ioと共に、元々は別々のサービスとして運営されていたものをConnect Cloudに一元化することを目的としているようです。shiny.ioのアプリは比較的簡単にConnect Cloudに移行できるようにされていますが、Quarto Pubからの移行の方法は現状提供されていません。ですので、Quarto Pubにデプロイ済みの文書をConnect Cloudにデプロイする場合には、元々のファイルをRStudioで開き、上記の「Publish」の機能を用いてアップロードし直す必要があります。</p>
+<p>以下にQuarto Pubの使い方についての記事を残しておきますが、2026年12月末以降は新しくアカウントを作ることができませんので、Connect Cloudを利用するとよいでしょう。</p>
+<section id="quarto-pubに文書をデプロイする2026年12月31日" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="quarto-pubに文書をデプロイする2026年12月31日">Quarto Pubに文書をデプロイする（～2026年12月31日）</h3>
+<p><a href="https://quartopub.com/">Quarto Pub</a>はPositが運営しているサービスで、Rstudioを用いていれば簡単にHTMLをデプロイすることができます。</p>
 <p>Quarto Pubにデプロイする場合、まずはQuarto Pubにアカウントを作成する必要があります。まずはQuarto Pubのホームページにアクセスし、「Sign Up」を選択しましょう。Quarto PubのログインにはGoogleやGithubのアカウントを用いることもできます。</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/quarto_pub.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Quarto Pubのページからアカウントを作成する"><img src="./image/quarto_pub.png" class="img-fluid figure-img" alt="Quarto Pubのページからアカウントを作成する"></a></p>
+<figure class="figure"><p><a href="./image/quarto_pub.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Quarto Pubのページからアカウントを作成する"><img src="./image/quarto_pub.png" class="img-fluid figure-img" alt="Quarto Pubのページからアカウントを作成する"></a></p>
 <figcaption>Quarto Pubのページからアカウントを作成する</figcaption></figure>
 </div>
 <p>Quarto Pubにアカウントを作成した後、TerminalでWebsiteやBookのProjectのディレクトリに移動した後、<code>quarto publish</code>コマンドを用いることでそのProject内の.qmdファイルがHTMLにRenderされ、そのHTMLがQuarto Pubにデプロイされます。</p>
@@ -858,22 +900,24 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 </div>
 <p><code>quarto publish</code>コマンドを入力すると、Terminal上でQuarto Pubへの認証が行われます。必要な情報を入力すると、作成したQuarto PubのアカウントにProjectの.qmdもしくは指定した.qmdファイルがHTMLにRenderされた後、デプロイされます。</p>
-<section id="アクセストークンaccess-token" class="level3" data-number="43.1.1"><h3 data-number="43.1.1" class="anchored" data-anchor-id="アクセストークンaccess-token">
-<span class="header-section-number">43.1.1</span> アクセストークン（Access Token）</h3>
+</section><section id="アクセストークンaccess-token" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="アクセストークンaccess-token">アクセストークン（Access Token）</h3>
 <p>上記のQuarto Pubの認証では、アクセストークン（Access Token）というものが要求されます。アクセストークンは上記のQuarto Pubのアカウントにログインし、アカウント内のページから取得することができます。認証の途中で入力を求められるため、コピーしておいてテキストとしてTerminalで貼り付けるとよいでしょう。詳細については<a href="https://quarto.org/docs/publishing/quarto-pub.html#access-tokens">QuartoのGuide</a>のページをご参照ください。</p>
-</section><section id="quarto-pubでのページの管理" class="level3" data-number="43.1.2"><h3 data-number="43.1.2" class="anchored" data-anchor-id="quarto-pubでのページの管理">
-<span class="header-section-number">43.1.2</span> Quarto Pubでのページの管理</h3>
+</section><section id="quarto-pubでのページの管理" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="quarto-pubでのページの管理">Quarto Pubでのページの管理</h3>
 <p>Quarto Pubにログインすると、デプロイしたProjectの一覧が表示されます。このページから、デプロイしたページに移動したり、デプロイしたProjectを削除することができます。</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/quarto_pub_loggedin.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Quarto Pub：ページの管理"><img src="./image/quarto_pub_loggedin.png" class="img-fluid figure-img" alt="Quarto Pub：ページの管理"></a></p>
+<figure class="figure"><p><a href="./image/quarto_pub_loggedin.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Quarto Pub：ページの管理"><img src="./image/quarto_pub_loggedin.png" class="img-fluid figure-img" alt="Quarto Pub：ページの管理"></a></p>
 <figcaption>Quarto Pub：ページの管理</figcaption></figure>
 </div>
-</section></section><section id="github-pages" class="level2" data-number="43.2"><h2 data-number="43.2" class="anchored" data-anchor-id="github-pages">
+</section>
+</div>
+</div>
+</div>
+</section><section id="github-pages" class="level2" data-number="43.2"><h2 data-number="43.2" class="anchored" data-anchor-id="github-pages">
 <span class="header-section-number">43.2</span> Github Pages</h2>
 <p>Github Pagesは、リモートリポジトリサービスであるGithubが運用している、静的なHTMLをデプロイするためのサービスです。Github PagesではGithubのリモートリポジトリに保存したHTMLを公開することができます。</p>
 <p>Githubの使い方についてはこのテキストの範囲を越えるため詳細については説明しませんが、Github Pagesを用いるために最低限必要なことのみ以下のcalloutブロックで説明します。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -882,7 +926,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>GitやGithubについてはWeb上にたくさん資料があります。以下のページなどを参考にGitに入門するとよいでしょう。</p>
 <ul>
@@ -893,12 +937,12 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <section id="gitのインストール" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="gitのインストール">Gitのインストール</h3>
 <p>Githubを使い始める前に、まずはGitをインストールしましょう。<a href="https://git-scm.com/downloads">Gitの公式ページ</a>からインストーラーをダウンロードし、インストールします。</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/git_download.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Gitのダウンロード"><img src="./image/git_download.png" class="img-fluid figure-img" alt="Gitのダウンロード"></a></p>
+<figure class="figure"><p><a href="./image/git_download.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Gitのダウンロード"><img src="./image/git_download.png" class="img-fluid figure-img" alt="Gitのダウンロード"></a></p>
 <figcaption>Gitのダウンロード</figcaption></figure>
 </div>
 <p>Githubが提供している<a href="https://desktop.github.com/download/">Github Desktop</a>にもGitが含まれています。Githubを使う前提であれば、Github Desktopをダウンロードし、インストールしてもよいでしょう。</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/github_desktop_downloads.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Github Desktopのダウンロード"><img src="./image/github_desktop_downloads.png" class="img-fluid figure-img" alt="Github Desktopのダウンロード"></a></p>
+<figure class="figure"><p><a href="./image/github_desktop_downloads.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Github Desktopのダウンロード"><img src="./image/github_desktop_downloads.png" class="img-fluid figure-img" alt="Github Desktopのダウンロード"></a></p>
 <figcaption>Github Desktopのダウンロード</figcaption></figure>
 </div>
 </section><section id="gitユーザー名とメールアドレスの登録" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="gitユーザー名とメールアドレスの登録">Git：ユーザー名とメールアドレスの登録</h3>
@@ -924,14 +968,14 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 </section><section id="githubのアカウントの取得" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="githubのアカウントの取得">Githubのアカウントの取得</h3>
 <p>次に、<a href="https://github.com/">Githubのアカウント</a>を作成します。</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/github_signup.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Githubアカウントの作成"><img src="./image/github_signup.png" class="img-fluid figure-img" alt="Githubアカウントの作成"></a></p>
+<figure class="figure"><p><a href="./image/github_signup.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Githubアカウントの作成"><img src="./image/github_signup.png" class="img-fluid figure-img" alt="Githubアカウントの作成"></a></p>
 <figcaption>Githubアカウントの作成</figcaption></figure>
 </div>
 </section><section id="githubにリモートリポジトリを作成する" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="githubにリモートリポジトリを作成する">Githubにリモートリポジトリを作成する</h3>
 <p>作成したアカウントでGithubにログインし、リモートリポジトリを作成します。リモートリポジトリとは、開発しているプログラムを保存するWeb上のフォルダのようなものです。</p>
 <p>Githubのアカウントのページで「repositories」のタブに移動すると、「new」というボタンがあります。このボタンを押すことでレポジトリ作成のページに移行します。</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/github_new_repo.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="新しいリモートレポジトリを作成する"><img src="./image/github_new_repo.png" class="img-fluid figure-img" alt="新しいリモートレポジトリを作成する"></a></p>
+<figure class="figure"><p><a href="./image/github_new_repo.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="新しいリモートレポジトリを作成する"><img src="./image/github_new_repo.png" class="img-fluid figure-img" alt="新しいリモートレポジトリを作成する"></a></p>
 <figcaption>新しいリモートレポジトリを作成する</figcaption></figure>
 </div>
 <p>この「Create a new repository」のページ上で、Repository nameをつけます。Repository nameは英語名で、スペースを入れないものとします。仮に「test」というリポジトリを作成します。</p>
@@ -971,7 +1015,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p>Web上のリモートリポジトリであるGithubと自分のPC（ローカル）で機能するローカルレポジトリであるGitを関連付けることで、Terminalから簡単にGithubへとファイルを転送することができるようになります。</p>
 <p>Github上に作成したリモートリポジトリに移動すると以下のように関連付けの方法が表示されます。</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/github_remote_add.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Githubのリモートリポジトリに表示されるコマンド"><img src="./image/github_remote_add.png" class="img-fluid figure-img" alt="Githubのリモートリポジトリに表示されるコマンド"></a></p>
+<figure class="figure"><p><a href="./image/github_remote_add.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Githubのリモートリポジトリに表示されるコマンド"><img src="./image/github_remote_add.png" class="img-fluid figure-img" alt="Githubのリモートリポジトリに表示されるコマンド"></a></p>
 <figcaption>Githubのリモートリポジトリに表示されるコマンド</figcaption></figure>
 </div>
 <p>上記のコマンドに従い、<code>git remote</code>コマンドを実行します。</p>
@@ -1005,7 +1049,7 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <p>GithubのリモートリポジトリにファイルをPushしたら、次にリモートリポジトリのページからGithub Pagesの設定を行います。</p>
 <p>Githubにログインし、ファイルをPushしたリモートリポジトリに移動します。次に、上のタブから「Setting」を選択し、左のカラムから「Pages」を選択します。選択すると以下のようなページに移動します。</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="./image/github_pages_setting.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Github Pagesの設定"><img src="./image/github_pages_setting.png" class="img-fluid figure-img" alt="Github Pagesの設定"></a></p>
+<figure class="figure"><p><a href="./image/github_pages_setting.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Github Pagesの設定"><img src="./image/github_pages_setting.png" class="img-fluid figure-img" alt="Github Pagesの設定"></a></p>
 <figcaption>Github Pagesの設定</figcaption></figure>
 </div>
 <p>このページでBranchを<code>main</code>（上の図では<code>master</code>になっています）、<code>/(root)</code>もしくは<code>/docs</code>から選択します。rootの場合はProjectのディレクトリにあるHTMLを、/docsの場合はProjectのディレクトリに作成した/docsのディレクトリ内のHTMLをそれぞれデプロイすることになります。</p>
@@ -1044,6 +1088,11 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 
 <!-- -->
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-rsconnect_bib" class="csl-entry" role="listitem">
+Atkins, Aron, Toph Allen, Hadley Wickham, Jonathan McPherson, and JJ Allaire. 2024. <em>Rsconnect: Deploy Docs, Apps, and APIs to ’Posit Connect’, ’Shinyapps.io’, and ’RPubs’</em>. <a href="https://CRAN.R-project.org/package=rsconnect">https://CRAN.R-project.org/package=rsconnect</a>.
+</div>
+</div>
 </section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1530,190 +1579,216 @@ gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>Webサーバーを運用しているサービスには、<span class="co">[</span><span class="ot">Amazon web servise</span><span class="co">](https://aws.amazon.com/jp)</span>や<span class="co">[</span><span class="ot">Microsoft Azure</span><span class="co">](https://azure.microsoft.com/ja-jp)</span>などがありますが、いずれも有料です。Quartoで作成したHTML（Webサーバーで演算を行わないので、静的なHTMLと呼ばれます）をデプロイするのであれば、これらの有料サービスではなく、無料のサービスを利用することができます。</span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>無料のサービスには、Positが運営しているQuarto専用のサービスである<span class="co">[</span><span class="ot">**Quarto Pub**</span><span class="co">](https://quartopub.com/)</span>や、もっと汎用的にHTMLの公開に用いることができる<span class="co">[</span><span class="ot">**Github Pages**</span><span class="co">](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site)</span>などがあります。</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>無料のサービスには、Positが運営しているサービスである<span class="co">[</span><span class="ot">**Connect Cloud**</span><span class="co">](https://connect.posit.cloud/)</span>や、もっと汎用的にHTMLの公開に用いることができる<span class="co">[</span><span class="ot">**Github Pages**</span><span class="co">](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site)</span>などがあります。</span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>これらの無料のサービスでは公開したHTMLは基本的にはWeb上に完全に公開されます。企業内など、特定のユーザーのみがアクセスできる設定にはできません。また、アクセス数に制限があり、高頻度でアクセスされると表示が遅くなったり、表示できなくなったりします。また、HTMLのサイズにも制限があります。</span>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることはあまりないと思います。Quartoで作成したHTMLを公開する場合、とりあえずはQuarto pubかGithub Pagesでデプロイすることを検討するとよいでしょう。</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>とは言え、個人で作成するようなWebsiteやBookではアクセス制限に到達したり、HTMLのサイズが大きくなりすぎることはあまりないと思います。Quartoで作成したHTMLを公開する場合、とりあえずConnect CloudかGithub Pagesでデプロイすることを検討するとよいでしょう。</span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto Pub</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Connect Cloud</span></span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>Quarto Pubは上記の通り、Positが運営しているサービスで、Rstudioを用いていれば簡単にHTMLをデプロイすることができます。</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Connect Cloud</span><span class="co">](https://connect.posit.cloud/)</span>にQuartoのHTMLをデプロイする場合には、まずConnect Cloudのアカウントを作成する必要があります。右上の「Sign Up」からアカウントを作成しましょう。Sign UpにはGooGleやGithubのアカウントを利用することもできます。</span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>Quarto Pubにデプロイする場合、まずはQuarto Pubにアカウントを作成する必要があります。まずはQuarto Pubのホームページにアクセスし、「Sign Up」を選択しましょう。Quarto PubのログインにはGoogleやGithubのアカウントを用いることもできます。</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="al">![](./image/connect_cloud_toppage.png)</span></span>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="al">![Quarto Pubのページからアカウントを作成する](./image/quarto_pub.png)</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>次に、RStudio上でConnect Cloudのアカウントを登録します。OptionのPublishingの項目から、「Connect...」を選択しましょう。登録する際には<span class="co">[</span><span class="ot">`rsconnect`</span><span class="co">](https://rstudio.github.io/rsconnect/)</span>パッケージ<span class="co">[</span><span class="ot">@rsconnect_bib</span><span class="co">]</span>が必要です。登録の際に<span class="in">`rsconnect`</span>をインストールするかどうかを尋ねるウインドウが表示されますので、インストールしましょう。</span>
 <span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>Quarto Pubにアカウントを作成した後、TerminalでWebsiteやBookのProjectのディレクトリに移動した後、<span class="in">`quarto publish`</span>コマンドを用いることでそのProject内の.qmdファイルがHTMLにRenderされ、そのHTMLがQuarto Pubにデプロイされます。</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>インストール後に再び「Connect...」を選択すると、接続するサービス（Connect Cloud、Posit Connectなど）が表示されるので、Connect Cloudを選択しましょう。選択するとブラウザ上でConnect Cloudへのログインが求められます。ログインするとRStudioの認証パスキーと接続を続けるためのボタンが表示されます。ボタンを押すとアクセスが認証されます（2026年9月時点では認証パスキーの入力を求められないので、ちょっと意味がよくわかりません）。</span>
 <span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="quarto publishコマンド"}</span></span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="in">quarto publish quarto-pub.qmd</span></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="al">![RStudioにConnect Cloudのアカウントを登録する](./image/setting_publishing_accounts.png)</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>後はRStudioのウインドウの右上にある「Publish」ボタンを押すと、Connect CloudへHTMLがアップロードされます。</span>
 <span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="in">`quarto publish`</span>コマンドを入力すると、Terminal上でQuarto Pubへの認証が行われます。必要な情報を入力すると、作成したQuarto PubのアカウントにProjectの.qmdもしくは指定した.qmdファイルがHTMLにRenderされた後、デプロイされます。</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="al">![Publishボタン](./image/publish_button.png)</span></span>
 <span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="fu">### アクセストークン（Access Token）</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>この他にGithubにアップロードしたqmdファイルやHTMLファイルをConnect Cloudからデプロイすることもできますが、Githubを用いるのであれば以下に紹介するより利用制限の緩いGithub Pagesを用いる方がよいでしょう。</span>
 <span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>上記のQuarto Pubの認証では、アクセストークン（Access Token）というものが要求されます。アクセストークンは上記のQuarto Pubのアカウントにログインし、アカウント内のページから取得することができます。認証の途中で入力を求められるため、コピーしておいてテキストとしてTerminalで貼り付けるとよいでしょう。詳細については<span class="co">[</span><span class="ot">QuartoのGuide</span><span class="co">](https://quarto.org/docs/publishing/quarto-pub.html#access-tokens)</span>のページをご参照ください。</span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### Quarto Pubでのページの管理</span></span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>Quarto Pubにログインすると、デプロイしたProjectの一覧が表示されます。このページから、デプロイしたページに移動したり、デプロイしたProjectを削除することができます。</span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="al">![Quarto Pub：ページの管理](./image/quarto_pub_loggedin.png)</span></span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Github Pages</span></span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>Github Pagesは、リモートリポジトリサービスであるGithubが運用している、静的なHTMLをデプロイするためのサービスです。Github PagesではGithubのリモートリポジトリに保存したHTMLを公開することができます。</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>Githubの使い方についてはこのテキストの範囲を越えるため詳細については説明しませんが、Github Pagesを用いるために最低限必要なことのみ以下のcalloutブロックで説明します。</span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Githubにリモートリポジトリを作成し、ファイルをアップロードする</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto Pub</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>Quarto Pubは2026年12月31日までは存続し、2027年1月1日からはConnect Cloudへ移行する予定です。<span class="co">[</span><span class="ot">47章</span><span class="co">](chapter47.qmd)</span>で説明するshiny.ioと共に、元々は別々のサービスとして運営されていたものをConnect Cloudに一元化することを目的としているようです。shiny.ioのアプリは比較的簡単にConnect Cloudに移行できるようにされていますが、Quarto Pubからの移行の方法は現状提供されていません。ですので、Quarto Pubにデプロイ済みの文書をConnect Cloudにデプロイする場合には、元々のファイルをRStudioで開き、上記の「Publish」の機能を用いてアップロードし直す必要があります。</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>以下にQuarto Pubの使い方についての記事を残しておきますが、2026年12月末以降は新しくアカウントを作ることができませんので、Connect Cloudを利用するとよいでしょう。</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="fu">### Quarto Pubに文書をデプロイする（～2026年12月31日） {.unnumbered}</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Quarto Pub</span><span class="co">](https://quartopub.com/)</span>はPositが運営しているサービスで、Rstudioを用いていれば簡単にHTMLをデプロイすることができます。</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>Quarto Pubにデプロイする場合、まずはQuarto Pubにアカウントを作成する必要があります。まずはQuarto Pubのホームページにアクセスし、「Sign Up」を選択しましょう。Quarto PubのログインにはGoogleやGithubのアカウントを用いることもできます。</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="al">![Quarto Pubのページからアカウントを作成する](./image/quarto_pub.png)</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>Quarto Pubにアカウントを作成した後、TerminalでWebsiteやBookのProjectのディレクトリに移動した後、<span class="in">`quarto publish`</span>コマンドを用いることでそのProject内の.qmdファイルがHTMLにRenderされ、そのHTMLがQuarto Pubにデプロイされます。</span>
 <span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>GitやGithubについてはWeb上にたくさん資料があります。以下のページなどを参考にGitに入門するとよいでしょう。</span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Gitの教科書（Git Ready）</span><span class="co">](https://git-ready.easegis.jp/)</span></span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">サル先生のGit入門</span><span class="co">](https://backlog.com/ja/git-tutorial/)</span></span>
-<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>ここでは、QuartoをGithub Pagesで公開するのに必要な部分だけ簡単に説明します。</span>
-<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="fu">### Gitのインストール {.unnumbered}</span></span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>Githubを使い始める前に、まずはGitをインストールしましょう。<span class="co">[</span><span class="ot">Gitの公式ページ</span><span class="co">](https://git-scm.com/downloads)</span>からインストーラーをダウンロードし、インストールします。</span>
-<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="al">![Gitのダウンロード](./image/git_download.png)</span></span>
-<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>Githubが提供している<span class="co">[</span><span class="ot">Github Desktop</span><span class="co">](https://desktop.github.com/download/)</span>にもGitが含まれています。Githubを使う前提であれば、Github Desktopをダウンロードし、インストールしてもよいでしょう。</span>
-<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="al">![Github Desktopのダウンロード](./image/github_desktop_downloads.png)</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="quarto publishコマンド"}</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="in">quarto publish quarto-pub.qmd</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="in">`quarto publish`</span>コマンドを入力すると、Terminal上でQuarto Pubへの認証が行われます。必要な情報を入力すると、作成したQuarto PubのアカウントにProjectの.qmdもしくは指定した.qmdファイルがHTMLにRenderされた後、デプロイされます。</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="fu">### アクセストークン（Access Token） {.unnumbered}</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>上記のQuarto Pubの認証では、アクセストークン（Access Token）というものが要求されます。アクセストークンは上記のQuarto Pubのアカウントにログインし、アカウント内のページから取得することができます。認証の途中で入力を求められるため、コピーしておいてテキストとしてTerminalで貼り付けるとよいでしょう。詳細については<span class="co">[</span><span class="ot">QuartoのGuide</span><span class="co">](https://quarto.org/docs/publishing/quarto-pub.html#access-tokens)</span>のページをご参照ください。</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="fu">### Quarto Pubでのページの管理 {.unnumbered}</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>Quarto Pubにログインすると、デプロイしたProjectの一覧が表示されます。このページから、デプロイしたページに移動したり、デプロイしたProjectを削除することができます。</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="al">![Quarto Pub：ページの管理](./image/quarto_pub_loggedin.png)</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="fu">### Git：ユーザー名とメールアドレスの登録 {.unnumbered}</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## Github Pages</span></span>
 <span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>Gitをインストールすると、TerminalからGitのコマンドを利用できるようになります。Gitのコマンドを利用して、Terminalからユーザー名とメールアドレスを登録します。</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>Github Pagesは、リモートリポジトリサービスであるGithubが運用している、静的なHTMLをデプロイするためのサービスです。Github PagesではGithubのリモートリポジトリに保存したHTMLを公開することができます。</span>
 <span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>ユーザー名は、以下のように<span class="in">`user.name`</span>として文字列で指定して登録します。以下の例ではユーザー名は「XXXXX」となります。</span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>Githubの使い方についてはこのテキストの範囲を越えるため詳細については説明しませんが、Github Pagesを用いるために最低限必要なことのみ以下のcalloutブロックで説明します。</span>
 <span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="Gitにユーザー名を登録する"}</span></span>
-<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a><span class="in">git config --global user.name "XXXXX"</span></span>
-<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>同様に、メールアドレスは<span class="in">`user.email`</span>として文字列で指定して登録します。以下の例ではメールアドレスは「XXXXX.@xjorv.com」となります。</span>
-<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="Gitにメールアドレスを登録する"}</span></span>
-<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a><span class="in">git config --global user.email "XXXXX.@xjorv.com"</span></span>
-<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse=true}</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a><span class="fu">## Githubにリモートリポジトリを作成し、ファイルをアップロードする</span></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>GitやGithubについてはWeb上にたくさん資料があります。以下のページなどを参考にGitに入門するとよいでしょう。</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Gitの教科書（Git Ready）</span><span class="co">](https://git-ready.easegis.jp/)</span></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">サル先生のGit入門</span><span class="co">](https://backlog.com/ja/git-tutorial/)</span></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>ここでは、QuartoをGithub Pagesで公開するのに必要な部分だけ簡単に説明します。</span>
 <span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a><span class="fu">### Githubのアカウントの取得 {.unnumbered}</span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a><span class="fu">### Gitのインストール {.unnumbered}</span></span>
 <span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>次に、<span class="co">[</span><span class="ot">Githubのアカウント</span><span class="co">](https://github.com/)</span>を作成します。</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>Githubを使い始める前に、まずはGitをインストールしましょう。<span class="co">[</span><span class="ot">Gitの公式ページ</span><span class="co">](https://git-scm.com/downloads)</span>からインストーラーをダウンロードし、インストールします。</span>
 <span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="al">![Githubアカウントの作成](./image/github_signup.png)</span></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="al">![Gitのダウンロード](./image/git_download.png)</span></span>
 <span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a><span class="fu">### Githubにリモートリポジトリを作成する {.unnumbered}</span></span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>Githubが提供している<span class="co">[</span><span class="ot">Github Desktop</span><span class="co">](https://desktop.github.com/download/)</span>にもGitが含まれています。Githubを使う前提であれば、Github Desktopをダウンロードし、インストールしてもよいでしょう。</span>
 <span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>作成したアカウントでGithubにログインし、リモートリポジトリを作成します。リモートリポジトリとは、開発しているプログラムを保存するWeb上のフォルダのようなものです。</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="al">![Github Desktopのダウンロード](./image/github_desktop_downloads.png)</span></span>
 <span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>Githubのアカウントのページで「repositories」のタブに移動すると、「new」というボタンがあります。このボタンを押すことでレポジトリ作成のページに移行します。</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="fu">### Git：ユーザー名とメールアドレスの登録 {.unnumbered}</span></span>
 <span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="al">![新しいリモートレポジトリを作成する](./image/github_new_repo.png)</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>Gitをインストールすると、TerminalからGitのコマンドを利用できるようになります。Gitのコマンドを利用して、Terminalからユーザー名とメールアドレスを登録します。</span>
 <span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>この「Create a new repository」のページ上で、Repository nameをつけます。Repository nameは英語名で、スペースを入れないものとします。仮に「test」というリポジトリを作成します。</span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>ユーザー名は、以下のように<span class="in">`user.name`</span>として文字列で指定して登録します。以下の例ではユーザー名は「XXXXX」となります。</span>
 <span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>また、Github Pagesで広くネットにWebsiteを公開する場合、レポジトリはPublic、つまり誰でも閲覧できる形で作成する必要があります。</span>
-<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="fu">### gitの設定とcommit {.unnumbered}</span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="Gitにユーザー名を登録する"}</span></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a><span class="in">git config --global user.name "XXXXX"</span></span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>TerminalでProjectのディレクトリに移動し、<span class="in">`git init`</span>と入力します。このコマンドを用いることで、Gitに必要なファイルがそのディレクトリに作成されます。</span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>同様に、メールアドレスは<span class="in">`user.email`</span>として文字列で指定して登録します。以下の例ではメールアドレスは「XXXXX.@xjorv.com」となります。</span>
 <span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="gitの初期設定"}</span></span>
-<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="in">git init</span></span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="Gitにメールアドレスを登録する"}</span></span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="in">git config --global user.email "XXXXX.@xjorv.com"</span></span>
 <span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>次に、ディレクトリ内に保存されているファイルを**commit**します。commitは、現在作成しているファイルの内容を記録することを指します。後ほどファイルを変更した時には、commitした点と変更した点を比較したり、commitした時点のファイルを復活させたりすることができます。</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### Githubのアカウントの取得 {.unnumbered}</span></span>
 <span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a>commitの詳細については<span class="co">[</span><span class="ot">gitのtutorial</span><span class="co">](https://git-scm.com/docs/gittutorial)</span>や<span class="co">[</span><span class="ot">サル先生のGit入門</span><span class="co">](https://backlog.com/ja/git-tutorial/)</span>をご参照下さい。</span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a>次に、<span class="co">[</span><span class="ot">Githubのアカウント</span><span class="co">](https://github.com/)</span>を作成します。</span>
 <span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>ディレクトリ内のすべてのファイルをcommitするためには、まず<span class="in">`git add`</span>コマンドを実行し、その後、<span class="in">`git commit`</span>コマンドを実行します。</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="al">![Githubアカウントの作成](./image/github_signup.png)</span></span>
 <span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>引き続き、TerminalでProjectのディレクトリに移動して、以下のように入力します。<span class="in">`-A`</span>はすべてのファイルをcommitできるように準備するためのコマンドです。</span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="fu">### Githubにリモートリポジトリを作成する {.unnumbered}</span></span>
 <span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="git add"}</span></span>
-<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="in">git add -A</span></span>
-<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a>作成したアカウントでGithubにログインし、リモートリポジトリを作成します。リモートリポジトリとは、開発しているプログラムを保存するWeb上のフォルダのようなものです。</span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>Githubのアカウントのページで「repositories」のタブに移動すると、「new」というボタンがあります。このボタンを押すことでレポジトリ作成のページに移行します。</span>
 <span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a>次に、commitを行います。commitでは**commitメッセージ**の入力が必要です。以下のように入力し、commitメッセージを追加します。</span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a><span class="al">![新しいリモートレポジトリを作成する](./image/github_new_repo.png)</span></span>
 <span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="git commit"}</span></span>
-<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="in">git commit -m "commit message"</span></span>
-<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a>この「Create a new repository」のページ上で、Repository nameをつけます。Repository nameは英語名で、スペースを入れないものとします。仮に「test」というリポジトリを作成します。</span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a>また、Github Pagesで広くネットにWebsiteを公開する場合、レポジトリはPublic、つまり誰でも閲覧できる形で作成する必要があります。</span>
 <span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a><span class="fu">### GithubのリモートリポジトリとGitを関連付ける {.unnumbered}</span></span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a><span class="fu">### gitの設定とcommit {.unnumbered}</span></span>
 <span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>Web上のリモートリポジトリであるGithubと自分のPC（ローカル）で機能するローカルレポジトリであるGitを関連付けることで、Terminalから簡単にGithubへとファイルを転送することができるようになります。</span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>TerminalでProjectのディレクトリに移動し、<span class="in">`git init`</span>と入力します。このコマンドを用いることで、Gitに必要なファイルがそのディレクトリに作成されます。</span>
 <span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>Github上に作成したリモートリポジトリに移動すると以下のように関連付けの方法が表示されます。</span>
-<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a><span class="al">![Githubのリモートリポジトリに表示されるコマンド](./image/github_remote_add.png)</span></span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="gitの初期設定"}</span></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a><span class="in">git init</span></span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a>上記のコマンドに従い、<span class="in">`git remote`</span>コマンドを実行します。</span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a>次に、ディレクトリ内に保存されているファイルを**commit**します。commitは、現在作成しているファイルの内容を記録することを指します。後ほどファイルを変更した時には、commitした点と変更した点を比較したり、commitした時点のファイルを復活させたりすることができます。</span>
 <span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="git remote"}</span></span>
-<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a><span class="in">git remote add origin https://github.com/sb8001at-oss/test.git</span></span>
-<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a>commitの詳細については<span class="co">[</span><span class="ot">gitのtutorial</span><span class="co">](https://git-scm.com/docs/gittutorial)</span>や<span class="co">[</span><span class="ot">サル先生のGit入門</span><span class="co">](https://backlog.com/ja/git-tutorial/)</span>をご参照下さい。</span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a>ディレクトリ内のすべてのファイルをcommitするためには、まず<span class="in">`git add`</span>コマンドを実行し、その後、<span class="in">`git commit`</span>コマンドを実行します。</span>
 <span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a>これでcommitしたレポジトリをリモートリポジトリにアップロードする準備が整いました。</span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a>引き続き、TerminalでProjectのディレクトリに移動して、以下のように入力します。<span class="in">`-A`</span>はすべてのファイルをcommitできるように準備するためのコマンドです。</span>
 <span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a><span class="fu">### Githubのリモートリポジトリにフォルダの内容をアップロードする</span></span>
-<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a>リモートリポジトリとの関連付けが終わったら、ファイルをリモートリポジトリに**push**（アップロード）します。<span class="in">`git push`</span>コマンドを用いて、先ほどのリモートリポジトリにファイルをアップロードします。</span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="git add"}</span></span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a><span class="in">git add -A</span></span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="git push"}</span></span>
-<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a><span class="in">git push origin main</span></span>
-<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a>pushを行うと、Githubのリモートリポジトリのページからファイルが見えるようになります。</span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a>次に、commitを行います。commitでは**commitメッセージ**の入力が必要です。以下のように入力し、commitメッセージを追加します。</span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="git commit"}</span></span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a><span class="in">git commit -m "commit message"</span></span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a><span class="fu">### GithubのリモートリポジトリとGitを関連付ける {.unnumbered}</span></span>
 <span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a><span class="fu">### Github Pagesを設定する</span></span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>Web上のリモートリポジトリであるGithubと自分のPC（ローカル）で機能するローカルレポジトリであるGitを関連付けることで、Terminalから簡単にGithubへとファイルを転送することができるようになります。</span>
 <span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>GithubのリモートリポジトリにファイルをPushしたら、次にリモートリポジトリのページからGithub Pagesの設定を行います。</span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>Github上に作成したリモートリポジトリに移動すると以下のように関連付けの方法が表示されます。</span>
 <span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a>Githubにログインし、ファイルをPushしたリモートリポジトリに移動します。次に、上のタブから「Setting」を選択し、左のカラムから「Pages」を選択します。選択すると以下のようなページに移動します。</span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a><span class="al">![Githubのリモートリポジトリに表示されるコマンド](./image/github_remote_add.png)</span></span>
 <span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a><span class="al">![Github Pagesの設定](./image/github_pages_setting.png)</span></span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a>上記のコマンドに従い、<span class="in">`git remote`</span>コマンドを実行します。</span>
 <span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a>このページでBranchを<span class="in">`main`</span>（上の図では<span class="in">`master`</span>になっています）、<span class="in">`/(root)`</span>もしくは<span class="in">`/docs`</span>から選択します。rootの場合はProjectのディレクトリにあるHTMLを、/docsの場合はProjectのディレクトリに作成した/docsのディレクトリ内のHTMLをそれぞれデプロイすることになります。</span>
-<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a>QuartoではRenderで出力するHTMLは<span class="in">`_site`</span>や<span class="in">`_book`</span>のフォルダ内に保存されるため、以下のようにYAMLで<span class="in">`docs`</span>フォルダに保存するようにしておくとよいでしょう。</span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="git remote"}</span></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a><span class="in">git remote add origin https://github.com/sb8001at-oss/test.git</span></span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="HTMLを出力するフォルダを設定する"}</span></span>
-<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
-<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> docs</span></span>
-<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a>これでcommitしたレポジトリをリモートリポジトリにアップロードする準備が整いました。</span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a><span class="fu">### Githubのリモートリポジトリにフォルダの内容をアップロードする</span></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a>リモートリポジトリとの関連付けが終わったら、ファイルをリモートリポジトリに**push**（アップロード）します。<span class="in">`git push`</span>コマンドを用いて、先ほどのリモートリポジトリにファイルをアップロードします。</span>
 <span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a>フォルダを選択し、「Save」を選択すると、HTMLがデプロイされます。少し待って、表示されるページのリンクを選択すれば、作成したHTMLにWeb上でアクセスできます。</span>
-<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a><span class="fu">## その他のサービスについて</span></span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a><span class="in">```{terminal, filename="git push"}</span></span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a><span class="in">git push origin main</span></span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">QuartoのGuide</span><span class="co">](https://quarto.org/docs/publishing/)</span>では、HTMLをデプロイするためのサービスの例として、<span class="co">[</span><span class="ot">Neltify</span><span class="co">](https://www.netlify.com/)</span>、<span class="co">[</span><span class="ot">Posit Connect</span><span class="co">](https://posit.co/products/enterprise/connect/)</span>、<span class="co">[</span><span class="ot">Posit Cloud</span><span class="co">](https://posit.cloud/)</span>、<span class="co">[</span><span class="ot">Confluence</span><span class="co">](https://www.atlassian.com/software/confluence)</span>、<span class="co">[</span><span class="ot">hugging face</span><span class="co">](https://huggingface.co/)</span>、<span class="co">[</span><span class="ot">Firebase</span><span class="co">](https://firebase.google.com/)</span>、<span class="co">[</span><span class="ot">Site44</span><span class="co">](https://www.site44.com/)</span>、<span class="co">[</span><span class="ot">Amazon S3</span><span class="co">](https://aws.amazon.com/jp/s3)</span>などが挙げられています。いずれもそれぞれ使い方が異なり、有料のものも含まれています。作成するページのトラフィックが非常に大きいようならこれらのサービスを用いることを検討してみてもよいでしょう。また、日本では<span class="co">[</span><span class="ot">さくらインターネット</span><span class="co">](https://www.sakura.ad.jp/)</span>などのクラウドサービスを用いてもデプロイすることができます。</span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a>pushを行うと、Githubのリモートリポジトリのページからファイルが見えるようになります。</span>
 <span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a><span class="fu">## Google Analytics</span></span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a>作成したページのアクセスを解析するサービスが<span class="co">[</span><span class="ot">Google Analytics</span><span class="co">](https://developers.google.com/analytics?hl=ja)</span>です。Google Analyticsを利用するには、まずGoogleのアカウントでGoogle Analyticsにログインします。次に、設定の画面からアカウントとプロパティを作成します。このプロパティがページへのアクセスを測定する機能に相当します。</span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a><span class="fu">### Github Pagesを設定する</span></span>
 <span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a>プロパティには、<span class="co">[</span><span class="ot">tracking ID</span><span class="co">](https://support.google.com/analytics/answer/9539598?hl=ja)</span>か<span class="co">[</span><span class="ot">tag measurement ID</span><span class="co">](https://support.google.com/analytics/answer/9539598?hl=en)</span>があります。このIDのいずれかを以下のようにYAMLを設定することで、Google Analyticsのページからアクセスを解析することができます。</span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a>GithubのリモートリポジトリにファイルをPushしたら、次にリモートリポジトリのページからGithub Pagesの設定を行います。</span>
 <span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Google Analyticsを用いる"}</span></span>
-<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
-<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">google-analytics</span><span class="kw">:</span><span class="at"> </span><span class="st">"G-XXXXXXXXXX"</span></span>
-<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## Google Search Console</span></span>
-<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a>Quarto PubやGithub Pagesに登録したウェブページはそのままではGoogleの検索にはかかりません。この検索の設定を行うためのツールが<span class="co">[</span><span class="ot">Google Search Console</span><span class="co">](https://search.google.com/search-console/about?hl=ja)</span>です。Google Search Consoleにページを登録し、sitemapというものを作成すると、Googleの検索にページが登録されるようになります。詳しくは、こちらの<span class="co">[</span><span class="ot">noteの記事</span><span class="co">](https://note.com/mahiro001/n/nbcbd001b630f)</span>や、<span class="co">[</span><span class="ot">Qiitaの記事</span><span class="co">](https://qiita.com/NightOwl/items/a7f972ba70f1ad037d65)</span>をご参照下さい。</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a>Githubにログインし、ファイルをPushしたリモートリポジトリに移動します。次に、上のタブから「Setting」を選択し、左のカラムから「Pages」を選択します。選択すると以下のようなページに移動します。</span>
+<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a><span class="al">![Github Pagesの設定](./image/github_pages_setting.png)</span></span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a>このページでBranchを<span class="in">`main`</span>（上の図では<span class="in">`master`</span>になっています）、<span class="in">`/(root)`</span>もしくは<span class="in">`/docs`</span>から選択します。rootの場合はProjectのディレクトリにあるHTMLを、/docsの場合はProjectのディレクトリに作成した/docsのディレクトリ内のHTMLをそれぞれデプロイすることになります。</span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a>QuartoではRenderで出力するHTMLは<span class="in">`_site`</span>や<span class="in">`_book`</span>のフォルダ内に保存されるため、以下のようにYAMLで<span class="in">`docs`</span>フォルダに保存するようにしておくとよいでしょう。</span>
+<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="HTMLを出力するフォルダを設定する"}</span></span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> docs</span></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a>フォルダを選択し、「Save」を選択すると、HTMLがデプロイされます。少し待って、表示されるページのリンクを選択すれば、作成したHTMLにWeb上でアクセスできます。</span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a><span class="fu">## その他のサービスについて</span></span>
+<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">QuartoのGuide</span><span class="co">](https://quarto.org/docs/publishing/)</span>では、HTMLをデプロイするためのサービスの例として、<span class="co">[</span><span class="ot">Neltify</span><span class="co">](https://www.netlify.com/)</span>、<span class="co">[</span><span class="ot">Posit Connect</span><span class="co">](https://posit.co/products/enterprise/connect/)</span>、<span class="co">[</span><span class="ot">Posit Cloud</span><span class="co">](https://posit.cloud/)</span>、<span class="co">[</span><span class="ot">Confluence</span><span class="co">](https://www.atlassian.com/software/confluence)</span>、<span class="co">[</span><span class="ot">hugging face</span><span class="co">](https://huggingface.co/)</span>、<span class="co">[</span><span class="ot">Firebase</span><span class="co">](https://firebase.google.com/)</span>、<span class="co">[</span><span class="ot">Site44</span><span class="co">](https://www.site44.com/)</span>、<span class="co">[</span><span class="ot">Amazon S3</span><span class="co">](https://aws.amazon.com/jp/s3)</span>などが挙げられています。いずれもそれぞれ使い方が異なり、有料のものも含まれています。作成するページのトラフィックが非常に大きいようならこれらのサービスを用いることを検討してみてもよいでしょう。また、日本では<span class="co">[</span><span class="ot">さくらインターネット</span><span class="co">](https://www.sakura.ad.jp/)</span>などのクラウドサービスを用いてもデプロイすることができます。</span>
+<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a><span class="fu">## Google Analytics</span></span>
+<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a>作成したページのアクセスを解析するサービスが<span class="co">[</span><span class="ot">Google Analytics</span><span class="co">](https://developers.google.com/analytics?hl=ja)</span>です。Google Analyticsを利用するには、まずGoogleのアカウントでGoogle Analyticsにログインします。次に、設定の画面からアカウントとプロパティを作成します。このプロパティがページへのアクセスを測定する機能に相当します。</span>
+<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a>プロパティには、<span class="co">[</span><span class="ot">tracking ID</span><span class="co">](https://support.google.com/analytics/answer/9539598?hl=ja)</span>か<span class="co">[</span><span class="ot">tag measurement ID</span><span class="co">](https://support.google.com/analytics/answer/9539598?hl=en)</span>があります。このIDのいずれかを以下のようにYAMLを設定することで、Google Analyticsのページからアクセスを解析することができます。</span>
+<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a><span class="in">```{yaml, filename="Google Analyticsを用いる"}</span></span>
+<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
+<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">google-analytics</span><span class="kw">:</span><span class="at"> </span><span class="st">"G-XXXXXXXXXX"</span></span>
+<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a><span class="fu">## Google Search Console</span></span>
+<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a>Quarto PubやGithub Pagesに登録したウェブページはそのままではGoogleの検索にはかかりません。この検索の設定を行うためのツールが<span class="co">[</span><span class="ot">Google Search Console</span><span class="co">](https://search.google.com/search-console/about?hl=ja)</span>です。Google Search Consoleにページを登録し、sitemapというものを作成すると、Googleの検索にページが登録されるようになります。詳しくは、こちらの<span class="co">[</span><span class="ot">noteの記事</span><span class="co">](https://note.com/mahiro001/n/nbcbd001b630f)</span>や、<span class="co">[</span><span class="ot">Qiitaの記事</span><span class="co">](https://qiita.com/NightOwl/items/a7f972ba70f1ad037d65)</span>をご参照下さい。</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
