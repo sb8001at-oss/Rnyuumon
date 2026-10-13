@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>ROC（受信者動作特性） – R入門</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./summary.html" rel="next">
+<link href="./Tips_mall.html" rel="prev">
+<link href="./favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-cb9799842ffb80380a10f734e32cace9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-64effab518a5b3d251254b1037208a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 100,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-M8N5QERSYQ"></script><script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-M8N5QERSYQ', { 'anonymize_ip': true});
+</script>
+</head>
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tips_ParallelComputing.html">Tips</a></li><li class="breadcrumb-item"><a href="./Tips_ROC.html">ROC（受信者動作特性）</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R入門</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/sb8001at-oss/Rnyuumon">
+            ソースコード
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/sb8001at-oss/Rnyuumon.io/discussions">
+            修正・ご意見はこちらへ
+            </a>
+          </li>
+      </ul>
+</div>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">はじめに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Rプログラミングの基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Rのインストール</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Rを使ってみよう</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">オブジェクト</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">変数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">複数の要素を含むオブジェクト・クラス</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">関数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">型・クラスの確認と変換</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">条件判断（Control structures）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">繰り返し文（Looping）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">パッケージとライブラリ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">エラー処理（error handler）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数値</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文字列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">因子（factor）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">ベクター</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">リスト・データフレーム・行列</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">データの読み込みと書き出し（I/O）</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">データセット</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Rでのデータの取り扱い</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter19.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">apply関数群</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">tidyr・dplyr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">日時データの取り扱い</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter22.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">オブジェクト指向とクラス</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter23.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">コーディング規約</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Rでのグラフ作成</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter24.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">グラフ作成：高レベルグラフィック関数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter25.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">グラフ作成：低レベルグラフィック関数とグラフィックパラメータ</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter26.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">ggplot2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter27.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">plotly</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">統計解析の基礎</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter28.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">確率分布と乱数</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter29.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">検定</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter30.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">相関と回帰</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter31.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">分類</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter32.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">教師なし学習</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter33.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">時系列分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter34.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">生存時間解析</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">R markdownとQuarto</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter35.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">R markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter36.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Quarto：Quartoの始め方</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter37.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Quarto：Markdownとレイアウト</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter38.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Quarto：chunkとchunk option</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter39.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Quarto：YAMLの基礎</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter40.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Quarto：プレゼンテーション</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter41.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Quarto：ダッシュボード</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter42.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Quarto：WebsiteとBook</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter43.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Quarto：デプロイ</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">アドバンスドな手法</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter44.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">purrr</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter45.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">地理空間情報</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter46.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">ネットワーク解析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter47.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Shiny</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter48.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">実験計画法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter49.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">因果推論：因果推論の基礎と傾向スコア</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter50.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">因果推論：差分の差分法と回帰不連続デザイン</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter51.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">因果推論：因果のネットワーク</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tips</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_ParallelComputing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">並列演算（Parallel Computing）</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System関連の関数</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S3class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S3クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S4class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S4クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_R6class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R6クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_S7class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S7クラス</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_shinylive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">webRとshinylive</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_mall.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LLMとmallパッケージ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tips_ROC.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">ROC（受信者動作特性）</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">おわりに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">参考文献</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#%E6%A4%9C%E6%9F%BB%E3%81%AE%E5%88%A4%E5%AE%9A%E3%81%A8%E9%96%BE%E5%80%A4" id="toc-検査の判定と閾値" class="nav-link active" data-scroll-target="#%E6%A4%9C%E6%9F%BB%E3%81%AE%E5%88%A4%E5%AE%9A%E3%81%A8%E9%96%BE%E5%80%A4">検査の判定と閾値</a></li>
+  <li><a href="#%E9%96%BE%E5%80%A4%E3%81%A8%E5%81%BD%E9%99%BD%E6%80%A7%E5%81%BD%E9%99%B0%E6%80%A7%E3%81%AE%E9%96%A2%E4%BF%82" id="toc-閾値と偽陽性偽陰性の関係" class="nav-link" data-scroll-target="#%E9%96%BE%E5%80%A4%E3%81%A8%E5%81%BD%E9%99%BD%E6%80%A7%E5%81%BD%E9%99%B0%E6%80%A7%E3%81%AE%E9%96%A2%E4%BF%82">閾値と偽陽性・偽陰性の関係</a></li>
+  <li>
+<a href="#roc%E6%9B%B2%E7%B7%9A" id="toc-roc曲線" class="nav-link" data-scroll-target="#roc%E6%9B%B2%E7%B7%9A">ROC曲線</a>
+  <ul>
+<li><a href="#aucarea-under-the-curve" id="toc-aucarea-under-the-curve" class="nav-link" data-scroll-target="#aucarea-under-the-curve">AUC（Area Under the Curve）</a></li>
+  <li><a href="#%E9%96%BE%E5%80%A4%E3%82%92%E6%B1%BA%E5%AE%9A%E3%81%99%E3%82%8B" id="toc-閾値を決定する" class="nav-link" data-scroll-target="#%E9%96%BE%E5%80%A4%E3%82%92%E6%B1%BA%E5%AE%9A%E3%81%99%E3%82%8B">閾値を決定する</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#proc%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8" id="toc-procパッケージ" class="nav-link" data-scroll-target="#proc%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8">pROCパッケージ</a>
+  <ul>
+<li><a href="#proc-roc%E6%9B%B2%E7%B7%9A%E3%82%92%E6%8F%8F%E7%94%BB%E3%81%99%E3%82%8B" id="toc-proc-roc曲線を描画する" class="nav-link" data-scroll-target="#proc-roc%E6%9B%B2%E7%B7%9A%E3%82%92%E6%8F%8F%E7%94%BB%E3%81%99%E3%82%8B">pROC: ROC曲線を描画する</a></li>
+  <li><a href="#proc-roc%E6%9B%B2%E7%B7%9A%E3%81%B8%E3%81%AE%E4%BF%A1%E9%A0%BC%E5%8C%BA%E9%96%93%E3%82%B9%E3%83%A0%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0%E6%9C%80%E9%81%A9%E3%81%AA%E9%96%BE%E5%80%A4%E3%81%AE%E8%A1%A8%E7%A4%BA" id="toc-proc-roc曲線への信頼区間スムージング最適な閾値の表示" class="nav-link" data-scroll-target="#proc-roc%E6%9B%B2%E7%B7%9A%E3%81%B8%E3%81%AE%E4%BF%A1%E9%A0%BC%E5%8C%BA%E9%96%93%E3%82%B9%E3%83%A0%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0%E6%9C%80%E9%81%A9%E3%81%AA%E9%96%BE%E5%80%A4%E3%81%AE%E8%A1%A8%E7%A4%BA">pROC: ROC曲線への信頼区間・スムージング・最適な閾値の表示</a></li>
+  <li><a href="#proc-%E6%A4%9C%E6%9F%BB%E5%80%A4%E3%81%AE%E8%B3%AA%E3%82%92%E6%AF%94%E8%BC%83%E3%81%99%E3%82%8B" id="toc-proc-検査値の質を比較する" class="nav-link" data-scroll-target="#proc-%E6%A4%9C%E6%9F%BB%E5%80%A4%E3%81%AE%E8%B3%AA%E3%82%92%E6%AF%94%E8%BC%83%E3%81%99%E3%82%8B">pROC: 検査値の質を比較する</a></li>
+  </ul>
+</li>
+  <li><a href="#proc-ggplot2%E3%81%AE%E3%82%B0%E3%83%A9%E3%83%95%E3%82%92%E6%8F%8F%E7%94%BB%E3%81%99%E3%82%8B" id="toc-proc-ggplot2のグラフを描画する" class="nav-link" data-scroll-target="#proc-ggplot2%E3%81%AE%E3%82%B0%E3%83%A9%E3%83%95%E3%82%92%E6%8F%8F%E7%94%BB%E3%81%99%E3%82%8B">pROC: ggplot2のグラフを描画する</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tips_ParallelComputing.html">Tips</a></li><li class="breadcrumb-item"><a href="./Tips_ROC.html">ROC（受信者動作特性）</a></li></ol></nav><div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">ROC（受信者動作特性）</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><p><strong>ROC（Receiver Operating Characteritic、受信者動作特性）</strong>とは、連続値の検査結果から陽性・陰性の判定を行う場合の閾値を決めるための手法のことです。</p>
+<section id="検査の判定と閾値" class="level2"><h2 class="anchored" data-anchor-id="検査の判定と閾値">検査の判定と閾値</h2>
+<p>例えばコロナウイルスの診断では、qPCR（Quarntitative Polymerase Chain Reaction）という手法を使ってコロナウイルスの陽性・陰性を判定します。qPCRでは結果としてC<sub>t</sub>という値が出てきます。陽性の方ではC<sub>t</sub>が小さく、陰性の方ではC<sub>t</sub>が大きくなります。C<sub>t</sub>がある値より小さい場合にはコロナウイルス陽性、大きい場合には陰性と判定します。この「ある値」のことを<strong>閾値</strong>と呼びます。</p>
+<p>閾値を小さくすると、陽性の人を確実に陽性と判定することができますが、陽性でもC<sub>t</sub>が高い人がいると見逃して陰性と判定してしまいます。</p>
+<p>逆に閾値を大きくすると、陽性の人を見逃さず判定することができますが、陰性でC<sub>t</sub>が低い人を陽性と誤って判定してしまいます。</p>
+<p>ですので、陽性の人をできるだけ正しく陽性と判定し、陰性の人をできるだけ正しく陰性と判断するためには、適切な閾値を設定する必要があります。</p>
+<p>コロナウイルス陽性の人を陽性と判定することを「真の陽性（TRUE Positive）」、コロナウイルス陰性の人を正しく陰性と判定することを「真の陰性（TRUE Negative）」と呼びます。また、陽性の人を誤って陰性と判定することを「偽陰性（FALSE Negative）」、陰性の人を誤って陽性と判定することを「偽陽性（FALSE Positive）」と呼びます。検査を受けた人には陽性・陰性の判定と、真にコロナウイルスに感染している・感染していないという状態があるはずですので、陽性・陰性・偽陽性・偽陰性の4つの割合を足すと全員分、つまり割合が1になります。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="./image/test_result_table.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="検査値の判定"><img src="./image/test_result_table.png" class="img-fluid figure-img" width="500" alt="検査値の判定"></a></p>
+<figcaption>検査値の判定</figcaption></figure>
+</div>
+<p>qPCRでうまくコロナウイルスの陽性・陰性を判定するには、偽陽性・偽陰性の割合を小さくすればよいはずです。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>検査値と陽性・陰性の関係
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>PCRはDNAを増幅する手法のことで、PCRは1サイクルにつきDNAを2倍に増加させます。C<sub>t</sub>はDNAの増幅を評価する値で、DNAの量が最大の半分になるときのサイクル数を反映するものです。実際にはあるサイクルで最大の半分になるわけではないので、ロジスティック回帰（<a href="./chapter30.html#目的変数が二項分布の場合">30章</a>で説明）で回帰して変曲点としてC<sub>t</sub>を求めます。ですので、C<sub>t</sub>は整数値ではなく、連続値として求まります。</p>
+<p>元々の検体（サンプル）に増幅対象となるDNAがたくさん含まれていると、DNAは速く増幅されます。ですので、サイクル数(C<sub>t</sub>）は小さくなります。逆にサンプルに増幅対象となるDNAが含まれない場合にはDNAはゆっくり増幅されるか、増幅されないため、C<sub>t</sub>は大きくなります。コロナウイルスの検出では、増幅の対象となるDNAがコロナウイルスのRNAに含まれる配列ですので、コロナウイルスに感染した方の検体にはコロナウイルス由来のDNAが多く含まれ、C<sub>t</sub>が小さくなります。</p>
+<p>このようにコロナウイルスの検出では値（C<sub>t</sub>）が低い場合に陽性になりますが、値が大きい場合に陽性となる場合もあります。典型的な例は糖尿病で、血中のグルコース濃度が高いと糖尿病（陽性）、そうでなければ健康（陰性）となります。どちらの場合でもROCを用いることで良い閾値を求めることができます。</p>
+</div>
+</div>
+</div>
+</section><section id="閾値と偽陽性偽陰性の関係" class="level2"><h2 class="anchored" data-anchor-id="閾値と偽陽性偽陰性の関係">閾値と偽陽性・偽陰性の関係</h2>
+<p>では、具体的に検査値と判定の関係を見ていきます。まずは陽性の人のC<sub>t</sub>値と陰性の人のC<sub>t</sub>値をポアソン分布の乱数として作成します。ポアソン分布の<code>lambda</code>（平均値と分散）は陽性で25、陰性で40とします。陽性の人と陰性の人のC<sub>t</sub>値の分布は以下のグラフの通りです。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>陽性と陰性の人のCtを作成する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="co"># Ct値は連続数を取れるが、簡便に表現するため整数値とする</span></span>
+<span><span class="va">positive_Ct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">25</span><span class="op">)</span></span>
+<span><span class="va">negative_Ct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">40</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"positive"</span>, <span class="st">"negative"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  Ct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">positive_Ct</span>, <span class="va">negative_Ct</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Ct</span>, fill <span class="op">=</span> <span class="va">outcome</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_histogram</span><span class="op">(</span>position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-2-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="Tips_ROC_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>仮に閾値をC<sub>t</sub>=30としましょう。C<sub>t</sub>が30以下の人は陽性、C<sub>t</sub>が30より大きい人は陰性とします。200人の判定のうち、真の陽性は87例、真の陰性は89例、偽陽性は11例、偽陰性は13例となっています。ですので、閾値が30の時、陽性/（陽性＋偽陰性）の割合は87%、陰性/（陰性＋偽陽性）の割合は89%となります。</p>
+<p>この陽性/（陽性＋偽陰性）の割合のことを<strong>感度</strong>、陰性/（陰性＋偽陽性）の割合のことを<strong>特異度</strong>と呼びます。感度と特異度の両方を高くすることができる閾値がより良い閾値です。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Ct=30のときの陽性・陰性の割合</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 閾値が30のときの判定を計算</span></span>
+<span><span class="va">d</span><span class="op">$</span><span class="va">threshold_30</span> <span class="op">&lt;-</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Ct</span> <span class="op">&lt;=</span> <span class="fl">30</span>, <span class="st">"posi"</span>, <span class="st">"nega"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># case_whenで評価（case_whenについては20章を参照）</span></span>
+<span><span class="fu">case_when</span><span class="op">(</span></span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">threshold_30</span> <span class="op">==</span> <span class="st">"nega"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"negative"</span> <span class="op">~</span> <span class="st">"TRUE negative"</span>,</span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">threshold_30</span> <span class="op">==</span> <span class="st">"nega"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"positive"</span> <span class="op">~</span> <span class="st">"FALSE negative"</span>,</span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">threshold_30</span> <span class="op">==</span> <span class="st">"posi"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"positive"</span> <span class="op">~</span> <span class="st">"TRUE Positive"</span>,</span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">threshold_30</span> <span class="op">==</span> <span class="st">"posi"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"negative"</span> <span class="op">~</span> <span class="st">"FALSE Positive"</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+FALSE negative FALSE Positive  TRUE negative  TRUE Positive 
+            13             11             89             87 </code></pre>
+</div>
+</div>
+<p>ではC<sub>t</sub>=35を閾値とするとどうなるでしょうか。C<sub>t</sub>=35が閾値の時、感度は99%と高くなりましたが、特異度は74%まで低下しました。感度は改善したけど特異度は悪くなったため、C<sub>t</sub>=30とC<sub>t</sub>=35のどちらが優れた閾値であるかをこの結果だけから比較するのは難しいです。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Ct=35のときの陽性・陰性の割合</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">$</span><span class="va">threshold_35</span> <span class="op">&lt;-</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Ct</span> <span class="op">&lt;=</span> <span class="fl">35</span>, <span class="st">"posi"</span>, <span class="st">"nega"</span><span class="op">)</span></span>
+<span><span class="fu">case_when</span><span class="op">(</span></span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">threshold_35</span> <span class="op">==</span> <span class="st">"nega"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"negative"</span> <span class="op">~</span> <span class="st">"TRUE negative"</span>,</span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">threshold_35</span> <span class="op">==</span> <span class="st">"nega"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"positive"</span> <span class="op">~</span> <span class="st">"FALSE negative"</span>,</span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">threshold_35</span> <span class="op">==</span> <span class="st">"posi"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"positive"</span> <span class="op">~</span> <span class="st">"TRUE Positive"</span>,</span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">threshold_35</span> <span class="op">==</span> <span class="st">"posi"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"negative"</span> <span class="op">~</span> <span class="st">"FALSE Positive"</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+FALSE negative FALSE Positive  TRUE negative  TRUE Positive 
+             1             26             74             99 </code></pre>
+</div>
+</div>
+<p>この結果をグラフで表示すると以下のようになります。閾値が大きくなると感度が上がって特異度が下がっています。逆に閾値が小さくなると感度が下がって特異度が上がります。ですので、感度と特異度には片方が大きくなるともう片方が小さくなる関係があり、同時に大きくすることはできません。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>閾値の変化と偽陽性・偽陰性の割合</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">d</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">Ct</span>, fill <span class="op">=</span> <span class="va">threshold_30</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_histogram</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">ylim</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">xlim</span><span class="op">(</span><span class="fl">14</span>, <span class="fl">55</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Ct"</span>, y <span class="op">=</span> <span class="st">"頻度"</span>, title <span class="op">=</span> <span class="st">"閾値=30の場合"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">facet_grid</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">d</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">Ct</span>, fill <span class="op">=</span> <span class="va">threshold_35</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_histogram</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">ylim</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">xlim</span><span class="op">(</span><span class="fl">14</span>, <span class="fl">55</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Ct"</span>, y <span class="op">=</span> <span class="st">"頻度"</span>, title <span class="op">=</span> <span class="st">"閾値=35の場合"</span>, caption <span class="op">=</span> <span class="st">"上の赤い部分が特異度、下の青い部分が感度"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">facet_grid</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-5-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="Tips_ROC_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>このような状況で、最適な閾値を求める方法がROCです。ROCでは、ROC曲線というものを作成して評価します。</p>
+</section><section id="roc曲線" class="level2"><h2 class="anchored" data-anchor-id="roc曲線">ROC曲線</h2>
+<p><strong>ROC曲線</strong>は、様々な閾値を設定した場合の特異度を横軸、感度を縦軸に取った曲線のことです。上の例ではC<sub>t</sub>は30と35だけを評価しましたが、ROC曲線を作成する場合、この閾値をC<sub>t</sub>の最小値から最大値まで振って、それぞれの感度と特異度を計算します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ROC曲線を作成する準備</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estimate_out</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">threshold</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">est</span> <span class="op">&lt;-</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Ct</span> <span class="op">&lt;=</span> <span class="va">threshold</span>, <span class="st">"posi"</span>, <span class="st">"nega"</span><span class="op">)</span> <span class="co"># ある閾値での判定</span></span>
+<span>  <span class="va">TP</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">est</span> <span class="op">==</span> <span class="st">"posi"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"positive"</span><span class="op">)</span> <span class="co"># 感度（TRUE positive）の数を計算</span></span>
+<span>  <span class="va">TF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">est</span> <span class="op">==</span> <span class="st">"nega"</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">==</span> <span class="st">"negative"</span><span class="op">)</span> <span class="co"># 特異度（TRUE negative）の数を計算</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">threshold</span>, <span class="va">TP</span><span class="op">/</span><span class="fl">100</span>, <span class="va">TF</span><span class="op">/</span><span class="fl">100</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Ctの最小値から最大値までのベクターを準備</span></span>
+<span><span class="va">thre</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Ct</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">d</span><span class="op">$</span><span class="va">Ct</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># mapplyで感度・特異度を計算</span></span>
+<span><span class="va">d_est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html">mapply</a></span><span class="op">(</span><span class="va">estimate_out</span>, <span class="va">thre</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">d_est</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"threshold"</span>, <span class="st">"TRUE_positive"</span>, <span class="st">"TRUE_negative"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">d_est</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: right;">threshold</th>
+<th style="text-align: right;">TRUE_positive</th>
+<th style="text-align: right;">TRUE_negative</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>ただし、普通に感度と特異度をグラフにしてしまうと、ROCとして知られているグラフとはx軸が左右逆になります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>感度と特異度をプロットする</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_negative</span>, <span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_positive</span>,type <span class="op">=</span> <span class="st">"l"</span>, xlab <span class="op">=</span> <span class="st">"特異度"</span>, ylab <span class="op">=</span> <span class="st">"感度"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-7-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="Tips_ROC_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>このx軸、感度を逆にするとROC曲線と呼ばれるものになります。ただし、正しいROCでは線は斜めに繋がず、<a href="./chapter26.html#geom_step"><code>geom_step</code></a>で示されるような階段状のグラフとして表示します。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ROC曲線:x軸を逆転させる</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_negative</span>, <span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_positive</span>,type <span class="op">=</span> <span class="st">"l"</span>, xlab <span class="op">=</span> <span class="st">"特異度"</span>, ylab <span class="op">=</span> <span class="st">"感度"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="Tips_ROC_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="aucarea-under-the-curve" class="level3"><h3 class="anchored" data-anchor-id="aucarea-under-the-curve">AUC（Area Under the Curve）</h3>
+<p>ROCを使えば閾値をうまく定めることができますが、そもそも測定した評価値の質が良くなければ、きちんと陽性・陰性を判定できません。コロナウイルスの検出の例で言うと、PCRの他に抗原検査というものがあります。PCRと抗原検査で結果が必ず一致する訳ではないので、どちらのほうが検査値として質が良いか、うまく比較する必要があります。</p>
+<p>この検査値の質を評価する指標が、ROC曲線の<strong>AUC（Area Under the Curve、曲線下面積）</strong>と呼ばれるものです。AUCはROC曲線の下側の面積のことで、この面積が大きい（1に近い）ほど、その検査値はうまく陽性・陰性を判別することができます。AUCは<a href="https://en.wikipedia.org/wiki/Trapezoidal_rule">台形法（Trapezoidal rule）</a>で計算するのが一般的ですが、台形法だと階段状のROC曲線としてのAUCの計算結果とはずれが生じます。</p>
+<p>AUCが大きい指標を用いることで、より精度の高い判定を得ることができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ROC曲線のAUCを計算する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 感度の差分を取る</span></span>
+<span><span class="va">dif_TP</span> <span class="op">&lt;-</span> <span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_positive</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 台形法で計算するため、特異度を1つずらして和を取ったベクターを計算</span></span>
+<span><span class="va">TN_tz</span> <span class="op">&lt;-</span> <span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_negative</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_negative</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 台形法でAUCを演算</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">TN_tz</span> <span class="op">*</span> <span class="va">dif_TP</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.963</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 台形法を用いないのであれば、もっとシンプルにAUCを計算できる</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_negative</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">dif_TP</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9582</code></pre>
+</div>
+</div>
+</section><section id="閾値を決定する" class="level3"><h3 class="anchored" data-anchor-id="閾値を決定する">閾値を決定する</h3>
+<p>最適な閾値は、Youden Indexというものを用いて決定します。Youden Indexは、感度と特異度を足して1を引いた指標です。最適な閾値では、このYouden Indexが最大になります。ですので、上記のROC曲線ではYouden Indexを最大にする閾値は32となり、閾値を32にすることでうまく陽性・陰性を判定することができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Youden indexを最大化する閾値を求める</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d_est</span><span class="op">$</span><span class="va">YI</span> <span class="op">&lt;-</span> <span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_positive</span> <span class="op">+</span> <span class="va">d_est</span><span class="op">$</span><span class="va">TRUE_negative</span> <span class="op">-</span> <span class="fl">1</span> <span class="co"># Youden Indexを求める</span></span>
+<span><span class="va">threshold_YI</span> <span class="op">&lt;-</span> <span class="va">d_est</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">YI</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">YI</span><span class="op">)</span><span class="op">)</span> <span class="co"># Youden Indexを最大にする点</span></span>
+<span><span class="va">threshold_YI</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  threshold TRUE_positive TRUE_negative   YI
+1        32          0.95          0.86 0.81</code></pre>
+</div>
+</div>
+<p>このYouden Indexを最大にする閾値における感度と特異度をグラフに示すと、以下の点のようになります。この点は、傾き1の線でROC曲線の接線を作成した時の接点となります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Youden Indexを最大にする点</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_path</span><span class="op">(</span>data <span class="op">=</span> <span class="va">d_est</span>, mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">TRUE_negative</span>, y <span class="op">=</span> <span class="va">TRUE_positive</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_abline</span><span class="op">(</span>slope <span class="op">=</span> <span class="fl">1</span>, intercept <span class="op">=</span> <span class="fl">0.95</span> <span class="op">+</span> <span class="fl">0.86</span>, color <span class="op">=</span> <span class="st">"#F8766D"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>data <span class="op">=</span> <span class="va">threshold_YI</span>, mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">TRUE_negative</span>, y <span class="op">=</span> <span class="va">TRUE_positive</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">5</span>, color <span class="op">=</span> <span class="st">"#00BFC4"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">scale_x_reverse</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-11-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="Tips_ROC_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="procパッケージ" class="level2"><h2 class="anchored" data-anchor-id="procパッケージ">pROCパッケージ</h2>
+<p>ココまではRのデフォルトの機能を用いてROCを計算していましたが、RにはROCの計算を行うためのパッケージがたくさんあります。ココでは、代表的なパッケージとして、<code>pROC</code><span class="citation" data-cites="pROC_bib">(<a href="references.html#ref-pROC_bib" role="doc-biblioref">Robin et al. 2011</a>)</span>を紹介します。使い方にちょっと癖があり、やや取り扱いが難しいですが、機能が豊富なパッケージです。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>パッケージのインストール・読み込み</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">pROC</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<section id="proc-roc曲線を描画する" class="level3"><h3 class="anchored" data-anchor-id="proc-roc曲線を描画する">pROC: ROC曲線を描画する</h3>
+<p>pROCでROC曲線を描画するときには、<code>plot.roc</code>関数を用います。<code>plot.roc</code>関数はformulaを引数に取り、左辺に真の判定、右辺に検査値を指定します。また、単に判定と検査値を引数に取ってもROC曲線を描くことができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pROC: plot.roc関数</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">plot.roc</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">d</span><span class="op">$</span><span class="va">Ct</span><span class="op">)</span> <span class="co"># plot.roc(d$outcome, d$Ct)でもよい</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-13-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="Tips_ROC_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>また、<code>roc</code>関数を用いて演算を行い、この<code>roc</code>関数の返り値を<code>plot</code>関数に渡すことでもROC曲線を描画することができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pROC: roc関数を用いてROC曲線を描画する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">out_roc</span> <span class="op">&lt;-</span> <span class="fu">roc</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">outcome</span>, <span class="va">d</span><span class="op">$</span><span class="va">Ct</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">out_roc</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-14-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="Tips_ROC_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>単に<code>roc</code>関数の返り値を呼ぶと、AUCが表示されます。また、<code>ci.auc</code>関数に<code>roc</code>関数の返り値を渡すとAUCの95%信頼区間が表示されます。<code>var</code>関数ではAUCの分散が、<code>roc</code>関数の引数に<code>partial.auc</code>を指定すると部分AUC（partial AUC）を計算することができます。</p>
+<p>また、<code>ci.coords</code>や<code>ci.se</code>関数を用いると、ROC曲線の信頼区間を求めることもできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>rocオブジェクトとAUC、信頼区間の計算</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">out_roc</span><span class="op">)</span> <span class="co"># rocクラスのオブジェクト</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "roc"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">out_roc</span> <span class="co"># AUCの表示</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+roc.default(response = d$outcome, predictor = d$Ct)
+
+Data: d$Ct in 100 controls (d$outcome negative) &gt; 100 cases (d$outcome positive).
+Area under the curve: 0.973</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">out_roc</span> <span class="op">|&gt;</span> <span class="fu">ci.auc</span><span class="op">(</span><span class="op">)</span> <span class="co"># AUCの信頼区間の表示</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>95% CI: 0.956-0.99 (DeLong)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">out_roc</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># AUCの分散</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.487374e-05</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">|&gt;</span> <span class="fu">roc</span><span class="op">(</span><span class="st">"outcome"</span>, <span class="st">"Ct"</span>, partial.auc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span> <span class="co"># partial AUCの演算</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+roc.data.frame(data = d, response = "outcome", predictor = "Ct",     partial.auc = c(1, 0.9))
+
+Data: Ct in 100 controls (outcome negative) &gt; 100 cases (outcome positive).
+Partial area under the curve (specificity 1-0.9): 0.08088</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">out_roc</span> <span class="op">|&gt;</span> <span class="fu">ci.coords</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.95</span>, input <span class="op">=</span> <span class="st">"sensitivity"</span><span class="op">)</span> <span class="co"># 感度が0.95のときの信頼区間</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>95% CI (2000 stratified bootstrap replicates):
+     sensitivity specificity.low specificity.median specificity.high
+0.95        0.95            0.75              0.855            0.932
+     sensitivity.low sensitivity.median sensitivity.high
+0.95            0.95               0.95             0.95</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">out_roc</span> <span class="op">|&gt;</span> <span class="fu">ci.se</span><span class="op">(</span><span class="op">)</span> <span class="co"># 広範な感度に対する特異度の信頼区間</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>95% CI (2000 stratified bootstrap replicates):
+  sp se.low se.median se.high
+ 0.0 1.0000    1.0000  1.0000
+ 0.1 1.0000    1.0000  1.0000
+ 0.2 1.0000    1.0000  1.0000
+ 0.3 1.0000    1.0000  1.0000
+ 0.4 1.0000    1.0000  1.0000
+ 0.5 0.9975    1.0000  1.0000
+ 0.6 0.9800    1.0000  1.0000
+ 0.7 0.9660    0.9900  1.0000
+ 0.8 0.9233    0.9767  1.0000
+ 0.9 0.7950    0.8880  0.9767
+ 1.0 0.4900    0.6200  0.8300</code></pre>
+</div>
+</div>
+</section><section id="proc-roc曲線への信頼区間スムージング最適な閾値の表示" class="level3"><h3 class="anchored" data-anchor-id="proc-roc曲線への信頼区間スムージング最適な閾値の表示">pROC: ROC曲線への信頼区間・スムージング・最適な閾値の表示</h3>
+<p><code>pROC</code>では信頼区間の演算を行わなくてもROC曲線に信頼区間を付け加えることができます。ただし、記法はやや特殊で、まず<code>ci=TRUE</code>を指定した<code>plot.roc</code>関数の返り値を準備します。このオブジェクトを<code>ci.se</code>関数の引数に取り、さらに返り値を<code>plot</code>関数の引数に取ることで信頼区間を含むROC曲線を描くことができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ROC曲線に信頼区間を追加する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rocobj</span> <span class="op">&lt;-</span> <span class="fu">plot.roc</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">outcome</span>, <span class="va">d</span><span class="op">$</span><span class="va">Ct</span>, ci <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 信頼区間を計算する特異度の間隔はspecificities引数に指定</span></span>
+<span><span class="va">ciobj</span> <span class="op">&lt;-</span> <span class="fu">ci.se</span><span class="op">(</span><span class="va">rocobj</span>, specificities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ciobj</span>, type <span class="op">=</span> <span class="st">"shape"</span>, col <span class="op">=</span> <span class="st">"#00BFC4"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-16-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="Tips_ROC_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>ROC曲線のスムージングを行うには、まず<code>plot.roc</code>関数を実行し、返り値をオブジェクトとした上で、その返り値を<code>smooth</code>関数の引数にとり、さらに<code>lines</code>関数内で呼び出します。<code>plot.roc</code>と<code>lines</code>関数は連続して呼び出す必要があります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>スムージング</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rocobj</span> <span class="op">&lt;-</span> <span class="fu">plot.roc</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">outcome</span>, <span class="va">d</span><span class="op">$</span><span class="va">Ct</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/smooth.html">smooth</a></span><span class="op">(</span><span class="va">rocobj</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#00BFC4"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-17-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="Tips_ROC_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>また、最適な閾値は<code>plot.roc</code>関数に<code>of</code>引数、<code>thresholds</code>引数、<code>print.thres</code>引数を以下のように指定することで表示させることができます。いずれもやや癖が強くて覚えにくいですが、自分でたくさんの演算を記述することなく演算を行うことができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>最適な閾値における信頼区間の表示</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">plot.roc</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">outcome</span>, <span class="va">d</span><span class="op">$</span><span class="va">Ct</span>, ci<span class="op">=</span><span class="cn">TRUE</span>, of<span class="op">=</span><span class="st">"thresholds"</span>, thresholds<span class="op">=</span><span class="st">"best"</span>, print.thres<span class="op">=</span><span class="st">"best"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-18-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="Tips_ROC_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>ROC曲線については以下のshinyliveのアプリも参考にしてください。</p>
+<p><a href="https://roc-shinylive.pages.dev/">ROCシミュレータ</a></p>
+</section><section id="proc-検査値の質を比較する" class="level3"><h3 class="anchored" data-anchor-id="proc-検査値の質を比較する">pROC: 検査値の質を比較する</h3>
+<p>上記の通り、ROC曲線ではAUCが高いほど、うまく陽性・陰性を判定することができます。検査値ごとにAUCを評価すれば、どの検査値が最も判定の精度が高いか評価することもできます。このAUCの比較を行い、AUCの統計的な有意差を検定するための関数が<code>roc.test</code>関数です。<code>roc.test</code>関数では、複数の検査値を引数に与えることで、検査値間のAUCを比較します。</p>
+<p>以下の例ではqPCR（C<sub>t</sub>）と抗原検査（antigen test）でのコロナウイルス検査の判定に関わる<code>roc.test</code>を行っています。この2つの検査では、qPCRでのAUCが0.9730、抗原検査でのAUCが0.8846でとなり、pは0.001以下で有意な結果を得ています。</p>
+<p>データ数が100以上あれば検定を行う必要はあまりないかもしれませんが、データが少ない時に差を評価するためには有用でしょう。また、デフォルトでは<code>roc.test</code>関数はブートストラップによるp値の計算を行いますが、この他にDelong、Venkatramanなどの手法を<code>method</code>引数に指定することで、他の手法での検定を行うこともできます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>roc.test関数でAUCの差を検定する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">positive_antigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">rlnorm</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span> <span class="co"># 陽性は対数正規分布のmeanlogが10</span></span>
+<span><span class="va">negative_antigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">rlnorm</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span> <span class="co"># 陰性は対数正規分布のmeanlogが2</span></span>
+<span><span class="va">d</span><span class="op">$</span><span class="va">antigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">positive_antigen</span>, <span class="va">negative_antigen</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">roc.test</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">outcome</span>, <span class="va">d</span><span class="op">$</span><span class="va">Ct</span>, <span class="va">d</span><span class="op">$</span><span class="va">antigen</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &lt; cases</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bootstrap test for two correlated ROC curves
+
+data:  d$Ct and d$antigen by d$outcome (negative, positive)
+D = 3.4384, boot.n = 2000, boot.stratified = 1, p-value = 0.0005851
+alternative hypothesis: true difference in AUC is not equal to 0
+sample estimates:
+AUC of roc1 AUC of roc2 
+     0.9730      0.8846 </code></pre>
+</div>
+</div>
+<p>グラフでROC曲線を表示すると以下のようになります。赤がC<sub>t</sub>、青が抗原検査です。qPCRの方がよりAUCが高いことがわかります。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>最適な閾値における信頼区間の表示</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">plot.roc</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">outcome</span>, <span class="va">d</span><span class="op">$</span><span class="va">Ct</span>, col <span class="op">=</span> <span class="st">"#F8766D"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">lines.roc</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">outcome</span>, <span class="va">d</span><span class="op">$</span><span class="va">antigen</span>, col <span class="op">=</span> <span class="st">"#00BFC4"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &lt; cases</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-20-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="Tips_ROC_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="proc-ggplot2のグラフを描画する" class="level2"><h2 class="anchored" data-anchor-id="proc-ggplot2のグラフを描画する">pROC: ggplot2のグラフを描画する</h2>
+<p>ROC曲線を<code>ggplot2</code>のグラフとして描画する場合には、<code>ggroc</code>関数を用います。<code>ggroc</code>関数は<code>roc</code>関数の返り値を引数に取ります。<code>ggplot2</code>の関数（<code>scale</code>関係の関数や<code>labs</code>など）を<code>+</code>で繋ぐことで、<code>ggplot2</code>と同様にグラフのレイアウトを変更することができます。</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>ggplot2のグラフを描画する</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">roc</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">outcome</span>, <span class="va">d</span><span class="op">$</span><span class="va">Ct</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ggroc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting levels: control = negative, case = positive</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="Tips_ROC_files/figure-html/unnamed-chunk-21-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="Tips_ROC_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-pROC_bib" class="csl-entry" role="listitem">
+Robin, Xavier, Natacha Turck, Alexandre Hainard, et al. 2011. <span>“pROC: An Open-Source Package for r and s+ to Analyze and Compare ROC Curves.”</span> <em>BMC Bioinformatics</em> 12: 77.
+</div>
+</div>
+</section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/sb8001at-oss\.github\.io\/Rnyuumon\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./Tips_mall.html" class="pagination-link" aria-label="LLMとmallパッケージ">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">LLMとmallパッケージ</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./summary.html" class="pagination-link" aria-label="おわりに">
+        <span class="nav-page-text">おわりに</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># ROC（受信者動作特性） {.unnumbered}</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE, message=FALSE}</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>**ROC（Receiver Operating Characteritic、受信者動作特性）**とは、連続値の検査結果から陽性・陰性の判定を行う場合の閾値を決めるための手法のことです。</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## 検査の判定と閾値</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>例えばコロナウイルスの診断では、qPCR（Quarntitative Polymerase Chain Reaction）という手法を使ってコロナウイルスの陽性・陰性を判定します。qPCRでは結果としてC~t~という値が出てきます。陽性の方ではC~t~が小さく、陰性の方ではC~t~が大きくなります。C~t~がある値より小さい場合にはコロナウイルス陽性、大きい場合には陰性と判定します。この「ある値」のことを**閾値**と呼びます。</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>閾値を小さくすると、陽性の人を確実に陽性と判定することができますが、陽性でもC~t~が高い人がいると見逃して陰性と判定してしまいます。</span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>逆に閾値を大きくすると、陽性の人を見逃さず判定することができますが、陰性でC~t~が低い人を陽性と誤って判定してしまいます。</span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>ですので、陽性の人をできるだけ正しく陽性と判定し、陰性の人をできるだけ正しく陰性と判断するためには、適切な閾値を設定する必要があります。</span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>コロナウイルス陽性の人を陽性と判定することを「真の陽性（TRUE Positive）」、コロナウイルス陰性の人を正しく陰性と判定することを「真の陰性（TRUE Negative）」と呼びます。また、陽性の人を誤って陰性と判定することを「偽陰性（FALSE Negative）」、陰性の人を誤って陽性と判定することを「偽陽性（FALSE Positive）」と呼びます。検査を受けた人には陽性・陰性の判定と、真にコロナウイルスに感染している・感染していないという状態があるはずですので、陽性・陰性・偽陽性・偽陰性の4つの割合を足すと全員分、つまり割合が1になります。</span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a><span class="al">![検査値の判定](./image/test_result_table.png)</span>{width=500}</span>
+<span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-24"><a href="#cb67-24" aria-hidden="true" tabindex="-1"></a>qPCRでうまくコロナウイルスの陽性・陰性を判定するには、偽陽性・偽陰性の割合を小さくすればよいはずです。</span>
+<span id="cb67-25"><a href="#cb67-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-26"><a href="#cb67-26" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip collapse="true"}</span>
+<span id="cb67-27"><a href="#cb67-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## 検査値と陽性・陰性の関係</span></span>
+<span id="cb67-28"><a href="#cb67-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-29"><a href="#cb67-29" aria-hidden="true" tabindex="-1"></a>PCRはDNAを増幅する手法のことで、PCRは1サイクルにつきDNAを2倍に増加させます。C~t~はDNAの増幅を評価する値で、DNAの量が最大の半分になるときのサイクル数を反映するものです。実際にはあるサイクルで最大の半分になるわけではないので、ロジスティック回帰（<span class="co">[</span><span class="ot">30章</span><span class="co">](chapter30.qmd#目的変数が二項分布の場合)</span>で説明）で回帰して変曲点としてC~t~を求めます。ですので、C~t~は整数値ではなく、連続値として求まります。</span>
+<span id="cb67-30"><a href="#cb67-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-31"><a href="#cb67-31" aria-hidden="true" tabindex="-1"></a>元々の検体（サンプル）に増幅対象となるDNAがたくさん含まれていると、DNAは速く増幅されます。ですので、サイクル数(C~t~）は小さくなります。逆にサンプルに増幅対象となるDNAが含まれない場合にはDNAはゆっくり増幅されるか、増幅されないため、C~t~は大きくなります。コロナウイルスの検出では、増幅の対象となるDNAがコロナウイルスのRNAに含まれる配列ですので、コロナウイルスに感染した方の検体にはコロナウイルス由来のDNAが多く含まれ、C~t~が小さくなります。</span>
+<span id="cb67-32"><a href="#cb67-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-33"><a href="#cb67-33" aria-hidden="true" tabindex="-1"></a>このようにコロナウイルスの検出では値（C~t~）が低い場合に陽性になりますが、値が大きい場合に陽性となる場合もあります。典型的な例は糖尿病で、血中のグルコース濃度が高いと糖尿病（陽性）、そうでなければ健康（陰性）となります。どちらの場合でもROCを用いることで良い閾値を求めることができます。</span>
+<span id="cb67-34"><a href="#cb67-34" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb67-35"><a href="#cb67-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-36"><a href="#cb67-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## 閾値と偽陽性・偽陰性の関係</span></span>
+<span id="cb67-37"><a href="#cb67-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-38"><a href="#cb67-38" aria-hidden="true" tabindex="-1"></a>では、具体的に検査値と判定の関係を見ていきます。まずは陽性の人のC~t~値と陰性の人のC~t~値をポアソン分布の乱数として作成します。ポアソン分布の<span class="in">`lambda`</span>（平均値と分散）は陽性で25、陰性で40とします。陽性の人と陰性の人のC~t~値の分布は以下のグラフの通りです。</span>
+<span id="cb67-39"><a href="#cb67-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-40"><a href="#cb67-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="陽性と陰性の人のCtを作成する", message=FALSE}</span></span>
+<span id="cb67-41"><a href="#cb67-41" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
+<span id="cb67-42"><a href="#cb67-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Ct値は連続数を取れるが、簡便に表現するため整数値とする</span></span>
+<span id="cb67-43"><a href="#cb67-43" aria-hidden="true" tabindex="-1"></a>positive_Ct <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100</span>, <span class="dv">25</span>)</span>
+<span id="cb67-44"><a href="#cb67-44" aria-hidden="true" tabindex="-1"></a>negative_Ct <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100</span>, <span class="dv">40</span>)</span>
+<span id="cb67-45"><a href="#cb67-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-46"><a href="#cb67-46" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb67-47"><a href="#cb67-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"positive"</span>, <span class="st">"negative"</span>), <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>)),</span>
+<span id="cb67-48"><a href="#cb67-48" aria-hidden="true" tabindex="-1"></a>  <span class="at">Ct =</span> <span class="fu">c</span>(positive_Ct, negative_Ct)</span>
+<span id="cb67-49"><a href="#cb67-49" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb67-50"><a href="#cb67-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-51"><a href="#cb67-51" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
+<span id="cb67-52"><a href="#cb67-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Ct, <span class="at">fill =</span> outcome)) <span class="sc">+</span></span>
+<span id="cb67-53"><a href="#cb67-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">position =</span> <span class="st">"dodge"</span>)</span>
+<span id="cb67-54"><a href="#cb67-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-55"><a href="#cb67-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-56"><a href="#cb67-56" aria-hidden="true" tabindex="-1"></a>仮に閾値をC~t~=30としましょう。C~t~が30以下の人は陽性、C~t~が30より大きい人は陰性とします。200人の判定のうち、真の陽性は87例、真の陰性は89例、偽陽性は11例、偽陰性は13例となっています。ですので、閾値が30の時、陽性/（陽性＋偽陰性）の割合は87%、陰性/（陰性＋偽陽性）の割合は89%となります。</span>
+<span id="cb67-57"><a href="#cb67-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-58"><a href="#cb67-58" aria-hidden="true" tabindex="-1"></a>この陽性/（陽性＋偽陰性）の割合のことを**感度**、陰性/（陰性＋偽陽性）の割合のことを**特異度**と呼びます。感度と特異度の両方を高くすることができる閾値がより良い閾値です。</span>
+<span id="cb67-59"><a href="#cb67-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-60"><a href="#cb67-60" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Ct=30のときの陽性・陰性の割合"}</span></span>
+<span id="cb67-61"><a href="#cb67-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 閾値が30のときの判定を計算</span></span>
+<span id="cb67-62"><a href="#cb67-62" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>threshold_30 <span class="ot">&lt;-</span> <span class="fu">if_else</span>(d<span class="sc">$</span>Ct <span class="sc">&lt;=</span> <span class="dv">30</span>, <span class="st">"posi"</span>, <span class="st">"nega"</span>)</span>
+<span id="cb67-63"><a href="#cb67-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-64"><a href="#cb67-64" aria-hidden="true" tabindex="-1"></a><span class="co"># case_whenで評価（case_whenについては20章を参照）</span></span>
+<span id="cb67-65"><a href="#cb67-65" aria-hidden="true" tabindex="-1"></a><span class="fu">case_when</span>(</span>
+<span id="cb67-66"><a href="#cb67-66" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>threshold_30 <span class="sc">==</span> <span class="st">"nega"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"negative"</span> <span class="sc">~</span> <span class="st">"TRUE negative"</span>,</span>
+<span id="cb67-67"><a href="#cb67-67" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>threshold_30 <span class="sc">==</span> <span class="st">"nega"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"positive"</span> <span class="sc">~</span> <span class="st">"FALSE negative"</span>,</span>
+<span id="cb67-68"><a href="#cb67-68" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>threshold_30 <span class="sc">==</span> <span class="st">"posi"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"positive"</span> <span class="sc">~</span> <span class="st">"TRUE Positive"</span>,</span>
+<span id="cb67-69"><a href="#cb67-69" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>threshold_30 <span class="sc">==</span> <span class="st">"posi"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"negative"</span> <span class="sc">~</span> <span class="st">"FALSE Positive"</span></span>
+<span id="cb67-70"><a href="#cb67-70" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="fu">factor</span>() <span class="sc">|&gt;</span> <span class="fu">table</span>()</span>
+<span id="cb67-71"><a href="#cb67-71" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-72"><a href="#cb67-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-73"><a href="#cb67-73" aria-hidden="true" tabindex="-1"></a>ではC~t~=35を閾値とするとどうなるでしょうか。C~t~=35が閾値の時、感度は99%と高くなりましたが、特異度は74%まで低下しました。感度は改善したけど特異度は悪くなったため、C~t~=30とC~t~=35のどちらが優れた閾値であるかをこの結果だけから比較するのは難しいです。</span>
+<span id="cb67-74"><a href="#cb67-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-75"><a href="#cb67-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="Ct=35のときの陽性・陰性の割合"}</span></span>
+<span id="cb67-76"><a href="#cb67-76" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>threshold_35 <span class="ot">&lt;-</span> <span class="fu">if_else</span>(d<span class="sc">$</span>Ct <span class="sc">&lt;=</span> <span class="dv">35</span>, <span class="st">"posi"</span>, <span class="st">"nega"</span>)</span>
+<span id="cb67-77"><a href="#cb67-77" aria-hidden="true" tabindex="-1"></a><span class="fu">case_when</span>(</span>
+<span id="cb67-78"><a href="#cb67-78" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>threshold_35 <span class="sc">==</span> <span class="st">"nega"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"negative"</span> <span class="sc">~</span> <span class="st">"TRUE negative"</span>,</span>
+<span id="cb67-79"><a href="#cb67-79" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>threshold_35 <span class="sc">==</span> <span class="st">"nega"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"positive"</span> <span class="sc">~</span> <span class="st">"FALSE negative"</span>,</span>
+<span id="cb67-80"><a href="#cb67-80" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>threshold_35 <span class="sc">==</span> <span class="st">"posi"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"positive"</span> <span class="sc">~</span> <span class="st">"TRUE Positive"</span>,</span>
+<span id="cb67-81"><a href="#cb67-81" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>threshold_35 <span class="sc">==</span> <span class="st">"posi"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"negative"</span> <span class="sc">~</span> <span class="st">"FALSE Positive"</span></span>
+<span id="cb67-82"><a href="#cb67-82" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="fu">factor</span>() <span class="sc">|&gt;</span> <span class="fu">table</span>()</span>
+<span id="cb67-83"><a href="#cb67-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-84"><a href="#cb67-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-85"><a href="#cb67-85" aria-hidden="true" tabindex="-1"></a>この結果をグラフで表示すると以下のようになります。閾値が大きくなると感度が上がって特異度が下がっています。逆に閾値が小さくなると感度が下がって特異度が上がります。ですので、感度と特異度には片方が大きくなるともう片方が小さくなる関係があり、同時に大きくすることはできません。</span>
+<span id="cb67-86"><a href="#cb67-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-87"><a href="#cb67-87" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="閾値の変化と偽陽性・偽陰性の割合", message=FALSE, warning=FALSE}</span></span>
+<span id="cb67-88"><a href="#cb67-88" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> </span>
+<span id="cb67-89"><a href="#cb67-89" aria-hidden="true" tabindex="-1"></a>  d <span class="sc">|&gt;</span> </span>
+<span id="cb67-90"><a href="#cb67-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Ct, <span class="at">fill =</span> threshold_30)) <span class="sc">+</span></span>
+<span id="cb67-91"><a href="#cb67-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>()<span class="sc">+</span></span>
+<span id="cb67-92"><a href="#cb67-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb67-93"><a href="#cb67-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlim</span>(<span class="dv">14</span>, <span class="dv">55</span>)<span class="sc">+</span></span>
+<span id="cb67-94"><a href="#cb67-94" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Ct"</span>, <span class="at">y =</span> <span class="st">"頻度"</span>, <span class="at">title =</span> <span class="st">"閾値=30の場合"</span>)<span class="sc">+</span></span>
+<span id="cb67-95"><a href="#cb67-95" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)<span class="sc">+</span></span>
+<span id="cb67-96"><a href="#cb67-96" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(outcome <span class="sc">~</span> .)</span>
+<span id="cb67-97"><a href="#cb67-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-98"><a href="#cb67-98" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> </span>
+<span id="cb67-99"><a href="#cb67-99" aria-hidden="true" tabindex="-1"></a>  d <span class="sc">|&gt;</span> </span>
+<span id="cb67-100"><a href="#cb67-100" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Ct, <span class="at">fill =</span> threshold_35)) <span class="sc">+</span></span>
+<span id="cb67-101"><a href="#cb67-101" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>()<span class="sc">+</span></span>
+<span id="cb67-102"><a href="#cb67-102" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb67-103"><a href="#cb67-103" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlim</span>(<span class="dv">14</span>, <span class="dv">55</span>)<span class="sc">+</span></span>
+<span id="cb67-104"><a href="#cb67-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Ct"</span>, <span class="at">y =</span> <span class="st">"頻度"</span>, <span class="at">title =</span> <span class="st">"閾値=35の場合"</span>, <span class="at">caption =</span> <span class="st">"上の赤い部分が特異度、下の青い部分が感度"</span>)<span class="sc">+</span></span>
+<span id="cb67-105"><a href="#cb67-105" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)<span class="sc">+</span></span>
+<span id="cb67-106"><a href="#cb67-106" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(outcome <span class="sc">~</span> .)</span>
+<span id="cb67-107"><a href="#cb67-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-108"><a href="#cb67-108" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2</span>
+<span id="cb67-109"><a href="#cb67-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-110"><a href="#cb67-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-111"><a href="#cb67-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-112"><a href="#cb67-112" aria-hidden="true" tabindex="-1"></a>このような状況で、最適な閾値を求める方法がROCです。ROCでは、ROC曲線というものを作成して評価します。</span>
+<span id="cb67-113"><a href="#cb67-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-114"><a href="#cb67-114" aria-hidden="true" tabindex="-1"></a><span class="fu">## ROC曲線</span></span>
+<span id="cb67-115"><a href="#cb67-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-116"><a href="#cb67-116" aria-hidden="true" tabindex="-1"></a>**ROC曲線**は、様々な閾値を設定した場合の特異度を横軸、感度を縦軸に取った曲線のことです。上の例ではC~t~は30と35だけを評価しましたが、ROC曲線を作成する場合、この閾値をC~t~の最小値から最大値まで振って、それぞれの感度と特異度を計算します。</span>
+<span id="cb67-117"><a href="#cb67-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-118"><a href="#cb67-118" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ROC曲線を作成する準備"}</span></span>
+<span id="cb67-119"><a href="#cb67-119" aria-hidden="true" tabindex="-1"></a>estimate_out <span class="ot">&lt;-</span> <span class="cf">function</span>(threshold){</span>
+<span id="cb67-120"><a href="#cb67-120" aria-hidden="true" tabindex="-1"></a>  est <span class="ot">&lt;-</span> <span class="fu">if_else</span>(d<span class="sc">$</span>Ct <span class="sc">&lt;=</span> threshold, <span class="st">"posi"</span>, <span class="st">"nega"</span>) <span class="co"># ある閾値での判定</span></span>
+<span id="cb67-121"><a href="#cb67-121" aria-hidden="true" tabindex="-1"></a>  TP <span class="ot">&lt;-</span> <span class="fu">sum</span>(est <span class="sc">==</span> <span class="st">"posi"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"positive"</span>) <span class="co"># 感度（TRUE positive）の数を計算</span></span>
+<span id="cb67-122"><a href="#cb67-122" aria-hidden="true" tabindex="-1"></a>  TF <span class="ot">&lt;-</span> <span class="fu">sum</span>(est <span class="sc">==</span> <span class="st">"nega"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>outcome <span class="sc">==</span> <span class="st">"negative"</span>) <span class="co"># 特異度（TRUE negative）の数を計算</span></span>
+<span id="cb67-123"><a href="#cb67-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(threshold, TP<span class="sc">/</span><span class="dv">100</span>, TF<span class="sc">/</span><span class="dv">100</span>)</span>
+<span id="cb67-124"><a href="#cb67-124" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb67-125"><a href="#cb67-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-126"><a href="#cb67-126" aria-hidden="true" tabindex="-1"></a><span class="co"># Ctの最小値から最大値までのベクターを準備</span></span>
+<span id="cb67-127"><a href="#cb67-127" aria-hidden="true" tabindex="-1"></a>thre <span class="ot">&lt;-</span> <span class="fu">seq</span>(d<span class="sc">$</span>Ct <span class="sc">|&gt;</span> <span class="fu">min</span>(), d<span class="sc">$</span>Ct <span class="sc">|&gt;</span> <span class="fu">max</span>(), <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb67-128"><a href="#cb67-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-129"><a href="#cb67-129" aria-hidden="true" tabindex="-1"></a><span class="co"># mapplyで感度・特異度を計算</span></span>
+<span id="cb67-130"><a href="#cb67-130" aria-hidden="true" tabindex="-1"></a>d_est <span class="ot">&lt;-</span> <span class="fu">mapply</span>(estimate_out, thre) <span class="sc">|&gt;</span> <span class="fu">t</span>() <span class="sc">|&gt;</span> <span class="fu">data.frame</span>()</span>
+<span id="cb67-131"><a href="#cb67-131" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d_est) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"threshold"</span>, <span class="st">"TRUE_positive"</span>, <span class="st">"TRUE_negative"</span>)</span>
+<span id="cb67-132"><a href="#cb67-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-133"><a href="#cb67-133" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(d_est))</span>
+<span id="cb67-134"><a href="#cb67-134" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-135"><a href="#cb67-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-136"><a href="#cb67-136" aria-hidden="true" tabindex="-1"></a>ただし、普通に感度と特異度をグラフにしてしまうと、ROCとして知られているグラフとはx軸が左右逆になります。</span>
+<span id="cb67-137"><a href="#cb67-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-138"><a href="#cb67-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="感度と特異度をプロットする", fig.width = 6, fig.height = 6}</span></span>
+<span id="cb67-139"><a href="#cb67-139" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(d_est<span class="sc">$</span>TRUE_negative, d_est<span class="sc">$</span>TRUE_positive,<span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"特異度"</span>, <span class="at">ylab =</span> <span class="st">"感度"</span>)</span>
+<span id="cb67-140"><a href="#cb67-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-141"><a href="#cb67-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-142"><a href="#cb67-142" aria-hidden="true" tabindex="-1"></a>このx軸、感度を逆にするとROC曲線と呼ばれるものになります。ただし、正しいROCでは線は斜めに繋がず、<span class="co">[</span><span class="ot">`geom_step`</span><span class="co">](chapter26.qmd#geom_step)</span>で示されるような階段状のグラフとして表示します。</span>
+<span id="cb67-143"><a href="#cb67-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-144"><a href="#cb67-144" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ROC曲線:x軸を逆転させる", fig.width = 6, fig.height = 6}</span></span>
+<span id="cb67-145"><a href="#cb67-145" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(d_est<span class="sc">$</span>TRUE_negative, d_est<span class="sc">$</span>TRUE_positive,<span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"特異度"</span>, <span class="at">ylab =</span> <span class="st">"感度"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb67-146"><a href="#cb67-146" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-147"><a href="#cb67-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-148"><a href="#cb67-148" aria-hidden="true" tabindex="-1"></a><span class="fu">### AUC（Area Under the Curve）</span></span>
+<span id="cb67-149"><a href="#cb67-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-150"><a href="#cb67-150" aria-hidden="true" tabindex="-1"></a>ROCを使えば閾値をうまく定めることができますが、そもそも測定した評価値の質が良くなければ、きちんと陽性・陰性を判定できません。コロナウイルスの検出の例で言うと、PCRの他に抗原検査というものがあります。PCRと抗原検査で結果が必ず一致する訳ではないので、どちらのほうが検査値として質が良いか、うまく比較する必要があります。</span>
+<span id="cb67-151"><a href="#cb67-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-152"><a href="#cb67-152" aria-hidden="true" tabindex="-1"></a>この検査値の質を評価する指標が、ROC曲線の**AUC（Area Under the Curve、曲線下面積）**と呼ばれるものです。AUCはROC曲線の下側の面積のことで、この面積が大きい（1に近い）ほど、その検査値はうまく陽性・陰性を判別することができます。AUCは<span class="co">[</span><span class="ot">台形法（Trapezoidal rule）</span><span class="co">](https://en.wikipedia.org/wiki/Trapezoidal_rule)</span>で計算するのが一般的ですが、台形法だと階段状のROC曲線としてのAUCの計算結果とはずれが生じます。</span>
+<span id="cb67-153"><a href="#cb67-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-154"><a href="#cb67-154" aria-hidden="true" tabindex="-1"></a>AUCが大きい指標を用いることで、より精度の高い判定を得ることができます。</span>
+<span id="cb67-155"><a href="#cb67-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-156"><a href="#cb67-156" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="ROC曲線のAUCを計算する"}</span></span>
+<span id="cb67-157"><a href="#cb67-157" aria-hidden="true" tabindex="-1"></a><span class="co"># 感度の差分を取る</span></span>
+<span id="cb67-158"><a href="#cb67-158" aria-hidden="true" tabindex="-1"></a>dif_TP <span class="ot">&lt;-</span> d_est<span class="sc">$</span>TRUE_positive <span class="sc">|&gt;</span> <span class="fu">diff</span>()</span>
+<span id="cb67-159"><a href="#cb67-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-160"><a href="#cb67-160" aria-hidden="true" tabindex="-1"></a><span class="co"># 台形法で計算するため、特異度を1つずらして和を取ったベクターを計算</span></span>
+<span id="cb67-161"><a href="#cb67-161" aria-hidden="true" tabindex="-1"></a>TN_tz <span class="ot">&lt;-</span> d_est<span class="sc">$</span>TRUE_negative[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">+</span> <span class="fu">head</span>(d_est<span class="sc">$</span>TRUE_negative, <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb67-162"><a href="#cb67-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-163"><a href="#cb67-163" aria-hidden="true" tabindex="-1"></a><span class="co"># 台形法でAUCを演算</span></span>
+<span id="cb67-164"><a href="#cb67-164" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(TN_tz <span class="sc">*</span> dif_TP <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb67-165"><a href="#cb67-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-166"><a href="#cb67-166" aria-hidden="true" tabindex="-1"></a><span class="co"># 台形法を用いないのであれば、もっとシンプルにAUCを計算できる</span></span>
+<span id="cb67-167"><a href="#cb67-167" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d_est<span class="sc">$</span>TRUE_negative[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> dif_TP)</span>
+<span id="cb67-168"><a href="#cb67-168" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-169"><a href="#cb67-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-170"><a href="#cb67-170" aria-hidden="true" tabindex="-1"></a><span class="fu">### 閾値を決定する</span></span>
+<span id="cb67-171"><a href="#cb67-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-172"><a href="#cb67-172" aria-hidden="true" tabindex="-1"></a>最適な閾値は、Youden Indexというものを用いて決定します。Youden Indexは、感度と特異度を足して1を引いた指標です。最適な閾値では、このYouden Indexが最大になります。ですので、上記のROC曲線ではYouden Indexを最大にする閾値は32となり、閾値を32にすることでうまく陽性・陰性を判定することができます。</span>
+<span id="cb67-173"><a href="#cb67-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-174"><a href="#cb67-174" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename = "Youden indexを最大化する閾値を求める"}</span></span>
+<span id="cb67-175"><a href="#cb67-175" aria-hidden="true" tabindex="-1"></a>d_est<span class="sc">$</span>YI <span class="ot">&lt;-</span> d_est<span class="sc">$</span>TRUE_positive <span class="sc">+</span> d_est<span class="sc">$</span>TRUE_negative <span class="sc">-</span> <span class="dv">1</span> <span class="co"># Youden Indexを求める</span></span>
+<span id="cb67-176"><a href="#cb67-176" aria-hidden="true" tabindex="-1"></a>threshold_YI <span class="ot">&lt;-</span> d_est <span class="sc">|&gt;</span> <span class="fu">filter</span>(YI <span class="sc">==</span> <span class="fu">max</span>(YI)) <span class="co"># Youden Indexを最大にする点</span></span>
+<span id="cb67-177"><a href="#cb67-177" aria-hidden="true" tabindex="-1"></a>threshold_YI</span>
+<span id="cb67-178"><a href="#cb67-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-179"><a href="#cb67-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-180"><a href="#cb67-180" aria-hidden="true" tabindex="-1"></a>このYouden Indexを最大にする閾値における感度と特異度をグラフに示すと、以下の点のようになります。この点は、傾き1の線でROC曲線の接線を作成した時の接点となります。</span>
+<span id="cb67-181"><a href="#cb67-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-182"><a href="#cb67-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.width = 6, fig.height = 6, filename="Youden Indexを最大にする点"}</span></span>
+<span id="cb67-183"><a href="#cb67-183" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb67-184"><a href="#cb67-184" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">data =</span> d_est, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> TRUE_negative, <span class="at">y =</span> TRUE_positive)) <span class="sc">+</span></span>
+<span id="cb67-185"><a href="#cb67-185" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="fl">0.95</span> <span class="sc">+</span> <span class="fl">0.86</span>, <span class="at">color =</span> <span class="st">"#F8766D"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb67-186"><a href="#cb67-186" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> threshold_YI, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> TRUE_negative, <span class="at">y =</span> TRUE_positive), <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"#00BFC4"</span>)<span class="sc">+</span></span>
+<span id="cb67-187"><a href="#cb67-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reverse</span>()</span>
+<span id="cb67-188"><a href="#cb67-188" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-189"><a href="#cb67-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-190"><a href="#cb67-190" aria-hidden="true" tabindex="-1"></a><span class="fu">## pROCパッケージ</span></span>
+<span id="cb67-191"><a href="#cb67-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-192"><a href="#cb67-192" aria-hidden="true" tabindex="-1"></a>ココまではRのデフォルトの機能を用いてROCを計算していましたが、RにはROCの計算を行うためのパッケージがたくさんあります。ココでは、代表的なパッケージとして、<span class="in">`pROC`</span><span class="co">[</span><span class="ot">@pROC_bib</span><span class="co">]</span>を紹介します。使い方にちょっと癖があり、やや取り扱いが難しいですが、機能が豊富なパッケージです。</span>
+<span id="cb67-193"><a href="#cb67-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-194"><a href="#cb67-194" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="パッケージのインストール・読み込み"}</span></span>
+<span id="cb67-195"><a href="#cb67-195" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(pROC)</span>
+<span id="cb67-196"><a href="#cb67-196" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-197"><a href="#cb67-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-198"><a href="#cb67-198" aria-hidden="true" tabindex="-1"></a><span class="fu">### pROC: ROC曲線を描画する</span></span>
+<span id="cb67-199"><a href="#cb67-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-200"><a href="#cb67-200" aria-hidden="true" tabindex="-1"></a>pROCでROC曲線を描画するときには、<span class="in">`plot.roc`</span>関数を用います。<span class="in">`plot.roc`</span>関数はformulaを引数に取り、左辺に真の判定、右辺に検査値を指定します。また、単に判定と検査値を引数に取ってもROC曲線を描くことができます。</span>
+<span id="cb67-201"><a href="#cb67-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-202"><a href="#cb67-202" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="pROC: plot.roc関数", fig.width = 6, fig.height = 6}</span></span>
+<span id="cb67-203"><a href="#cb67-203" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.roc</span>(d<span class="sc">$</span>outcome <span class="sc">~</span> d<span class="sc">$</span>Ct) <span class="co"># plot.roc(d$outcome, d$Ct)でもよい</span></span>
+<span id="cb67-204"><a href="#cb67-204" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-205"><a href="#cb67-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-206"><a href="#cb67-206" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`roc`</span>関数を用いて演算を行い、この<span class="in">`roc`</span>関数の返り値を<span class="in">`plot`</span>関数に渡すことでもROC曲線を描画することができます。</span>
+<span id="cb67-207"><a href="#cb67-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-208"><a href="#cb67-208" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="pROC: roc関数を用いてROC曲線を描画する", fig.width = 6, fig.height = 6}</span></span>
+<span id="cb67-209"><a href="#cb67-209" aria-hidden="true" tabindex="-1"></a>out_roc <span class="ot">&lt;-</span> <span class="fu">roc</span>(d<span class="sc">$</span>outcome, d<span class="sc">$</span>Ct)</span>
+<span id="cb67-210"><a href="#cb67-210" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(out_roc)</span>
+<span id="cb67-211"><a href="#cb67-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-212"><a href="#cb67-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-213"><a href="#cb67-213" aria-hidden="true" tabindex="-1"></a>単に<span class="in">`roc`</span>関数の返り値を呼ぶと、AUCが表示されます。また、<span class="in">`ci.auc`</span>関数に<span class="in">`roc`</span>関数の返り値を渡すとAUCの95%信頼区間が表示されます。<span class="in">`var`</span>関数ではAUCの分散が、<span class="in">`roc`</span>関数の引数に<span class="in">`partial.auc`</span>を指定すると部分AUC（partial AUC）を計算することができます。</span>
+<span id="cb67-214"><a href="#cb67-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-215"><a href="#cb67-215" aria-hidden="true" tabindex="-1"></a>また、<span class="in">`ci.coords`</span>や<span class="in">`ci.se`</span>関数を用いると、ROC曲線の信頼区間を求めることもできます。</span>
+<span id="cb67-216"><a href="#cb67-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-217"><a href="#cb67-217" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="rocオブジェクトとAUC、信頼区間の計算"}</span></span>
+<span id="cb67-218"><a href="#cb67-218" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(out_roc) <span class="co"># rocクラスのオブジェクト</span></span>
+<span id="cb67-219"><a href="#cb67-219" aria-hidden="true" tabindex="-1"></a>out_roc <span class="co"># AUCの表示</span></span>
+<span id="cb67-220"><a href="#cb67-220" aria-hidden="true" tabindex="-1"></a>out_roc <span class="sc">|&gt;</span> <span class="fu">ci.auc</span>() <span class="co"># AUCの信頼区間の表示</span></span>
+<span id="cb67-221"><a href="#cb67-221" aria-hidden="true" tabindex="-1"></a>out_roc <span class="sc">|&gt;</span> <span class="fu">var</span>() <span class="co"># AUCの分散</span></span>
+<span id="cb67-222"><a href="#cb67-222" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> <span class="fu">roc</span>(<span class="st">"outcome"</span>, <span class="st">"Ct"</span>, <span class="at">partial.auc =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.9</span>)) <span class="co"># partial AUCの演算</span></span>
+<span id="cb67-223"><a href="#cb67-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-224"><a href="#cb67-224" aria-hidden="true" tabindex="-1"></a>out_roc <span class="sc">|&gt;</span> <span class="fu">ci.coords</span>(<span class="at">x =</span> <span class="fl">0.95</span>, <span class="at">input =</span> <span class="st">"sensitivity"</span>) <span class="co"># 感度が0.95のときの信頼区間</span></span>
+<span id="cb67-225"><a href="#cb67-225" aria-hidden="true" tabindex="-1"></a>out_roc <span class="sc">|&gt;</span> <span class="fu">ci.se</span>() <span class="co"># 広範な感度に対する特異度の信頼区間</span></span>
+<span id="cb67-226"><a href="#cb67-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-227"><a href="#cb67-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-228"><a href="#cb67-228" aria-hidden="true" tabindex="-1"></a><span class="fu">### pROC: ROC曲線への信頼区間・スムージング・最適な閾値の表示</span></span>
+<span id="cb67-229"><a href="#cb67-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-230"><a href="#cb67-230" aria-hidden="true" tabindex="-1"></a><span class="in">`pROC`</span>では信頼区間の演算を行わなくてもROC曲線に信頼区間を付け加えることができます。ただし、記法はやや特殊で、まず<span class="in">`ci=TRUE`</span>を指定した<span class="in">`plot.roc`</span>関数の返り値を準備します。このオブジェクトを<span class="in">`ci.se`</span>関数の引数に取り、さらに返り値を<span class="in">`plot`</span>関数の引数に取ることで信頼区間を含むROC曲線を描くことができます。</span>
+<span id="cb67-231"><a href="#cb67-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-232"><a href="#cb67-232" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.width = 6, fig.height = 6, filename="ROC曲線に信頼区間を追加する"}</span></span>
+<span id="cb67-233"><a href="#cb67-233" aria-hidden="true" tabindex="-1"></a>rocobj <span class="ot">&lt;-</span> <span class="fu">plot.roc</span>(d<span class="sc">$</span>outcome, d<span class="sc">$</span>Ct, <span class="at">ci =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb67-234"><a href="#cb67-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-235"><a href="#cb67-235" aria-hidden="true" tabindex="-1"></a><span class="co"># 信頼区間を計算する特異度の間隔はspecificities引数に指定</span></span>
+<span id="cb67-236"><a href="#cb67-236" aria-hidden="true" tabindex="-1"></a>ciobj <span class="ot">&lt;-</span> <span class="fu">ci.se</span>(rocobj, <span class="at">specificities =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.05</span>)) </span>
+<span id="cb67-237"><a href="#cb67-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-238"><a href="#cb67-238" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ciobj, <span class="at">type =</span> <span class="st">"shape"</span>, <span class="at">col =</span> <span class="st">"#00BFC4"</span>)</span>
+<span id="cb67-239"><a href="#cb67-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-240"><a href="#cb67-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-241"><a href="#cb67-241" aria-hidden="true" tabindex="-1"></a>ROC曲線のスムージングを行うには、まず<span class="in">`plot.roc`</span>関数を実行し、返り値をオブジェクトとした上で、その返り値を<span class="in">`smooth`</span>関数の引数にとり、さらに<span class="in">`lines`</span>関数内で呼び出します。<span class="in">`plot.roc`</span>と<span class="in">`lines`</span>関数は連続して呼び出す必要があります。</span>
+<span id="cb67-242"><a href="#cb67-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-243"><a href="#cb67-243" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.width = 6, fig.height = 6, filename="スムージング"}</span></span>
+<span id="cb67-244"><a href="#cb67-244" aria-hidden="true" tabindex="-1"></a>rocobj <span class="ot">&lt;-</span> <span class="fu">plot.roc</span>(d<span class="sc">$</span>outcome, d<span class="sc">$</span>Ct)</span>
+<span id="cb67-245"><a href="#cb67-245" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">smooth</span>(rocobj), <span class="at">col =</span> <span class="st">"#00BFC4"</span>)</span>
+<span id="cb67-246"><a href="#cb67-246" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-247"><a href="#cb67-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-248"><a href="#cb67-248" aria-hidden="true" tabindex="-1"></a>また、最適な閾値は<span class="in">`plot.roc`</span>関数に<span class="in">`of`</span>引数、<span class="in">`thresholds`</span>引数、<span class="in">`print.thres`</span>引数を以下のように指定することで表示させることができます。いずれもやや癖が強くて覚えにくいですが、自分でたくさんの演算を記述することなく演算を行うことができます。</span>
+<span id="cb67-249"><a href="#cb67-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-250"><a href="#cb67-250" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.width = 6, fig.height = 6, filename="最適な閾値における信頼区間の表示"}</span></span>
+<span id="cb67-251"><a href="#cb67-251" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.roc</span>(d<span class="sc">$</span>outcome, d<span class="sc">$</span>Ct, <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">of=</span><span class="st">"thresholds"</span>, <span class="at">thresholds=</span><span class="st">"best"</span>, <span class="at">print.thres=</span><span class="st">"best"</span>)</span>
+<span id="cb67-252"><a href="#cb67-252" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-253"><a href="#cb67-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-254"><a href="#cb67-254" aria-hidden="true" tabindex="-1"></a>ROC曲線については以下のshinyliveのアプリも参考にしてください。</span>
+<span id="cb67-255"><a href="#cb67-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-256"><a href="#cb67-256" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">ROCシミュレータ</span><span class="co">](https://roc-shinylive.pages.dev/)</span></span>
+<span id="cb67-257"><a href="#cb67-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-258"><a href="#cb67-258" aria-hidden="true" tabindex="-1"></a><span class="fu">### pROC: 検査値の質を比較する</span></span>
+<span id="cb67-259"><a href="#cb67-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-260"><a href="#cb67-260" aria-hidden="true" tabindex="-1"></a>上記の通り、ROC曲線ではAUCが高いほど、うまく陽性・陰性を判定することができます。検査値ごとにAUCを評価すれば、どの検査値が最も判定の精度が高いか評価することもできます。このAUCの比較を行い、AUCの統計的な有意差を検定するための関数が<span class="in">`roc.test`</span>関数です。<span class="in">`roc.test`</span>関数では、複数の検査値を引数に与えることで、検査値間のAUCを比較します。</span>
+<span id="cb67-261"><a href="#cb67-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-262"><a href="#cb67-262" aria-hidden="true" tabindex="-1"></a>以下の例ではqPCR（C~t~）と抗原検査（antigen test）でのコロナウイルス検査の判定に関わる<span class="in">`roc.test`</span>を行っています。この2つの検査では、qPCRでのAUCが0.9730、抗原検査でのAUCが0.8846でとなり、pは0.001以下で有意な結果を得ています。</span>
+<span id="cb67-263"><a href="#cb67-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-264"><a href="#cb67-264" aria-hidden="true" tabindex="-1"></a>データ数が100以上あれば検定を行う必要はあまりないかもしれませんが、データが少ない時に差を評価するためには有用でしょう。また、デフォルトでは<span class="in">`roc.test`</span>関数はブートストラップによるp値の計算を行いますが、この他にDelong、Venkatramanなどの手法を<span class="in">`method`</span>引数に指定することで、他の手法での検定を行うこともできます。</span>
+<span id="cb67-265"><a href="#cb67-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-266"><a href="#cb67-266" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, filename="roc.test関数でAUCの差を検定する"}</span></span>
+<span id="cb67-267"><a href="#cb67-267" aria-hidden="true" tabindex="-1"></a>positive_antigen <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">5</span>) <span class="co"># 陽性は対数正規分布のmeanlogが10</span></span>
+<span id="cb67-268"><a href="#cb67-268" aria-hidden="true" tabindex="-1"></a>negative_antigen <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(<span class="dv">100</span>, <span class="dv">2</span>, <span class="dv">5</span>) <span class="co"># 陰性は対数正規分布のmeanlogが2</span></span>
+<span id="cb67-269"><a href="#cb67-269" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>antigen <span class="ot">&lt;-</span> <span class="fu">c</span>(positive_antigen, negative_antigen)</span>
+<span id="cb67-270"><a href="#cb67-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-271"><a href="#cb67-271" aria-hidden="true" tabindex="-1"></a><span class="fu">roc.test</span>(d<span class="sc">$</span>outcome, d<span class="sc">$</span>Ct, d<span class="sc">$</span>antigen)</span>
+<span id="cb67-272"><a href="#cb67-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-273"><a href="#cb67-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-274"><a href="#cb67-274" aria-hidden="true" tabindex="-1"></a>グラフでROC曲線を表示すると以下のようになります。赤がC~t~、青が抗原検査です。qPCRの方がよりAUCが高いことがわかります。</span>
+<span id="cb67-275"><a href="#cb67-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-276"><a href="#cb67-276" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.width = 6, fig.height = 6, filename="最適な閾値における信頼区間の表示"}</span></span>
+<span id="cb67-277"><a href="#cb67-277" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.roc</span>(d<span class="sc">$</span>outcome, d<span class="sc">$</span>Ct, <span class="at">col =</span> <span class="st">"#F8766D"</span>)</span>
+<span id="cb67-278"><a href="#cb67-278" aria-hidden="true" tabindex="-1"></a><span class="fu">lines.roc</span>(d<span class="sc">$</span>outcome, d<span class="sc">$</span>antigen, <span class="at">col =</span> <span class="st">"#00BFC4"</span>)</span>
+<span id="cb67-279"><a href="#cb67-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-280"><a href="#cb67-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-281"><a href="#cb67-281" aria-hidden="true" tabindex="-1"></a><span class="fu">## pROC: ggplot2のグラフを描画する</span></span>
+<span id="cb67-282"><a href="#cb67-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-283"><a href="#cb67-283" aria-hidden="true" tabindex="-1"></a>ROC曲線を<span class="in">`ggplot2`</span>のグラフとして描画する場合には、<span class="in">`ggroc`</span>関数を用います。<span class="in">`ggroc`</span>関数は<span class="in">`roc`</span>関数の返り値を引数に取ります。<span class="in">`ggplot2`</span>の関数（<span class="in">`scale`</span>関係の関数や<span class="in">`labs`</span>など）を<span class="in">`+`</span>で繋ぐことで、<span class="in">`ggplot2`</span>と同様にグラフのレイアウトを変更することができます。</span>
+<span id="cb67-284"><a href="#cb67-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-285"><a href="#cb67-285" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.width = 6, fig.height = 6, filename="ggplot2のグラフを描画する"}</span></span>
+<span id="cb67-286"><a href="#cb67-286" aria-hidden="true" tabindex="-1"></a><span class="fu">roc</span>(d<span class="sc">$</span>outcome, d<span class="sc">$</span>Ct) <span class="sc">|&gt;</span> <span class="fu">ggroc</span>()</span>
+<span id="cb67-287"><a href="#cb67-287" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb67-288"><a href="#cb67-288" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ © xjorv, 2025
+  </li>  
+</ul>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+ <a href="https://quarto.org/">Quarto</a>を用いてこの本を作成しました
+  </li>  
+</ul>
+</div>
+  </div>
+</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+</body></html>
